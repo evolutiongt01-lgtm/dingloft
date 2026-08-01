@@ -8,7 +8,7 @@
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   
-  <!-- Bootstrap Icons (Para reemplazar los emojis) -->
+  <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   
   <!-- Google Fonts: Inter -->
@@ -21,7 +21,7 @@
       --accent-color: #00e5ff;
       --accent-hover: #00b5cc;
       --text-main: #ffffff;
-      --text-muted: #d1d5db; /* Gris más claro para que sea legible */
+      --text-muted: #d1d5db;
       --border-color: rgba(255, 255, 255, 0.08);
     }
     
@@ -111,7 +111,6 @@
     .category-title { font-weight: 600; font-size: 1.1rem; z-index: 2; position: relative; }
     .category-link { color: var(--accent-color); font-size: 0.85rem; text-decoration: none; font-weight: 500; z-index: 2; position: relative; }
 
-    /* Glow de categorías */
     .cat-glow-1 { background: radial-gradient(circle at bottom right, rgba(0, 229, 255, 0.15), transparent 70%); }
     .cat-glow-2 { background: radial-gradient(circle at bottom right, rgba(0, 255, 136, 0.1), transparent 70%); }
     .cat-glow-3 { background: radial-gradient(circle at bottom right, rgba(162, 0, 255, 0.15), transparent 70%); }
@@ -140,7 +139,7 @@
       flex-shrink: 0;
       border: 1px solid rgba(255,255,255,0.03);
       font-size: 0.8rem;
-      color: #ffffff; /* Texto claro */
+      color: #ffffff;
       text-align: center;
       padding: 10px;
       font-weight: 500;
@@ -155,7 +154,7 @@
     .prod-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; }
     .prod-desc { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .prod-price { font-size: 1.2rem; font-weight: 800; color: var(--accent-color); }
-    .old-price { font-size: 0.9rem; color: #adb5bd; text-decoration: line-through; margin-right: 5px; font-weight: 400; } /* Precio viejo más claro */
+    .old-price { font-size: 0.9rem; color: #adb5bd; text-decoration: line-through; margin-right: 5px; font-weight: 400; }
     
     .btn-add-cart {
       background: var(--accent-color);
@@ -287,7 +286,6 @@
       margin-top: 50px;
     }
 
-    /* Animación pop del botón principal */
     @keyframes cartBounce {
       0% { transform: scale(1); }
       50% { transform: scale(1.15); box-shadow: 0 0 20px rgba(0, 229, 255, 0.4); }
@@ -295,6 +293,39 @@
     }
     .cart-bounce { animation: cartBounce 0.3s ease-in-out; }
     .btn-added { background-color: #00ff88 !important; color: #000 !important; }
+
+    /* =========================================
+       REGLAS PARA MÓVIL (Responsividad)
+       ========================================= */
+    @media (max-width: 991px) {
+      .hero-section { padding: 100px 0 40px; text-align: center; }
+      .hero-title { font-size: 2.8rem; }
+      .hero-paragraph-container { display: flex; justify-content: center; }
+      .hero-buttons { justify-content: center; }
+      .feature-container { flex-direction: column; align-items: center; gap: 1rem !important; }
+      
+      .trust-bar { 
+        flex-direction: column; 
+        gap: 15px; 
+        padding: 20px; 
+        border-radius: 20px; 
+        width: 90%; 
+        margin: 0 auto;
+      }
+      .trust-bar .bullet-point { display: none; } /* Oculta los puntos en móvil */
+      
+      .product-horizontal { flex-direction: column; align-items: center; text-align: center; }
+      .prod-img-box { width: 100%; height: 180px; margin-bottom: 15px; }
+      .prod-info { align-items: center; }
+      .prod-info .d-flex { flex-direction: column; gap: 15px; width: 100%; }
+      .btn-add-cart { width: 100%; justify-content: center; }
+      
+      .category-card { height: auto; text-align: center; }
+    }
+    
+    @media (max-width: 500px) {
+      .cart-drawer { width: 100%; } /* Carrito ocupa toda la pantalla en celulares pequeños */
+    }
   </style>
 </head>
 <body>
@@ -314,6 +345,12 @@
           <li class="nav-item"><a class="nav-link" href="#">Catálogo</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Preguntas</a></li>
+          <!-- Botón de carrito en menú móvil -->
+          <li class="nav-item d-lg-none mt-3">
+            <button class="btn-cyan w-100 mobile-cart-btn">
+              <i class="bi bi-cart3"></i> Ver Carrito (<span class="mobile-cart-count">0</span>)
+            </button>
+          </li>
         </ul>
       </div>
       <div class="d-none d-lg-block">
@@ -331,31 +368,35 @@
         <!-- Columna Izquierda -->
         <div class="col-lg-6 mb-5 mb-lg-0">
           <h1 class="hero-title">Software vitalicio.<br>Trabajo <span class="text-accent">sin límites.</span></h1>
-          <p class="text-muted mb-4 fs-5" style="max-width: 480px;">Licencias vitalicias creadas o distribuidas por Dingloft, instalación remota profesional y soporte experto para que trabajes sin interrupciones.</p>
           
-          <div class="d-flex gap-3 mb-5">
+          <div class="hero-paragraph-container">
+            <!-- AQUÍ ESTÁ EL TEXTO EN BLANCO QUE PEDISTE -->
+            <p class="mb-4 fs-5 text-white" style="max-width: 480px;">Licencias vitalicias creadas o distribuidas por Dingloft, instalación remota profesional y soporte experto para que trabajes sin interrupciones.</p>
+          </div>
+          
+          <div class="hero-buttons d-flex gap-3 mb-5 flex-wrap">
             <button class="btn-cyan">Ver catálogo <i class="bi bi-arrow-right"></i></button>
             <button class="btn-outline-custom">Cómo funciona <i class="bi bi-play-circle"></i></button>
           </div>
 
-          <div class="d-flex gap-4">
-            <div class="feature-item d-flex gap-2">
+          <div class="feature-container d-flex gap-4">
+            <div class="feature-item d-flex gap-2 align-items-center">
               <span class="fs-4 text-accent"><i class="bi bi-lightning-charge"></i></span>
-              <div>
+              <div class="text-start">
                 <h6>Entrega rápida</h6>
                 <p>Activación ágil y segura</p>
               </div>
             </div>
-            <div class="feature-item d-flex gap-2">
+            <div class="feature-item d-flex gap-2 align-items-center">
               <span class="fs-4 text-accent"><i class="bi bi-headset"></i></span>
-              <div>
+              <div class="text-start">
                 <h6>Soporte técnico</h6>
                 <p>Expertos a tu servicio</p>
               </div>
             </div>
-            <div class="feature-item d-flex gap-2">
+            <div class="feature-item d-flex gap-2 align-items-center">
               <span class="fs-4 text-accent"><i class="bi bi-shield-check"></i></span>
-              <div>
+              <div class="text-start">
                 <h6>Pago seguro</h6>
                 <p>Protegemos tu compra</p>
               </div>
@@ -378,39 +419,39 @@
   <div class="container text-center" style="margin-top: -30px; position: relative; z-index: 10;">
     <div class="trust-bar">
       <span><i class="bi bi-patch-check text-success"></i> Licencias vitalicias</span>
-      <span class="text-muted">•</span>
+      <span class="text-muted bullet-point">•</span>
       <span><i class="bi bi-pc-display text-info"></i> Instalación remota</span>
-      <span class="text-muted">•</span>
+      <span class="text-muted bullet-point">•</span>
       <span style="color: #25D366;"><i class="bi bi-whatsapp"></i> Atención por WhatsApp</span>
     </div>
   </div>
 
   <!-- Categorías -->
   <section class="container mt-5 pt-5">
-    <h3 class="section-title">Encuentra la herramienta ideal</h3>
+    <h3 class="section-title text-center text-lg-start">Encuentra la herramienta ideal</h3>
     <div class="row g-4">
-      <div class="col-6 col-md-3">
+      <div class="col-12 col-sm-6 col-md-3">
         <div class="category-card cat-glow-1">
           <h4 class="category-title">Diseño y<br>Arquitectura</h4>
-          <a href="#" class="category-link">Ver categoría <i class="bi bi-arrow-right"></i></a>
+          <a href="#" class="category-link mt-3 mt-lg-0">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
-      <div class="col-6 col-md-3">
+      <div class="col-12 col-sm-6 col-md-3">
         <div class="category-card cat-glow-2">
           <h4 class="category-title">Oficina y<br>Productividad</h4>
-          <a href="#" class="category-link" style="color: #00ff88;">Ver categoría <i class="bi bi-arrow-right"></i></a>
+          <a href="#" class="category-link mt-3 mt-lg-0" style="color: #00ff88;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
-      <div class="col-6 col-md-3">
+      <div class="col-12 col-sm-6 col-md-3">
         <div class="category-card cat-glow-3">
           <h4 class="category-title">Edición<br>y Video</h4>
-          <a href="#" class="category-link" style="color: #a200ff;">Ver categoría <i class="bi bi-arrow-right"></i></a>
+          <a href="#" class="category-link mt-3 mt-lg-0" style="color: #a200ff;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
-      <div class="col-6 col-md-3">
+      <div class="col-12 col-sm-6 col-md-3">
         <div class="category-card cat-glow-4">
           <h4 class="category-title">Audio y<br>Música</h4>
-          <a href="#" class="category-link" style="color: #ffa600;">Ver categoría <i class="bi bi-arrow-right"></i></a>
+          <a href="#" class="category-link mt-3 mt-lg-0" style="color: #ffa600;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
     </div>
@@ -572,9 +613,12 @@
   </section>
 
   <!-- Footer -->
-  <footer class="py-5 mt-5 border-top" style="border-color: var(--border-color) !important;">
-    <div class="container text-center text-muted small">
-      <p class="mb-1">&copy; 2026 Dingloft / Evolution Design. Todos los derechos reservados.</p>
+  <footer class="py-4 mt-5 border-top" style="border-color: var(--border-color) !important;">
+    <div class="container text-center">
+      <!-- AQUÍ ESTÁ EL FOOTER EN BLANCO Y CON EL NOMBRE CORRECTO -->
+      <p class="mb-0 text-white font-weight-bold" style="font-size: 0.9rem;">
+        &copy; 2026 Dingloft - Evolution Group. Todos los derechos reservados.
+      </p>
     </div>
   </footer>
 
@@ -593,7 +637,6 @@
       <div class="cart-empty-msg" id="empty-cart-msg">
         <p>Tu carrito está vacío.</p>
       </div>
-      <!-- Los productos se inyectarán aquí con JS -->
     </div>
     
     <div class="cart-footer">
@@ -625,13 +668,13 @@
     document.addEventListener('DOMContentLoaded', () => {
       let cart = [];
 
-      const cartBtn = document.getElementById('main-cart-btn');
+      const cartBtns = [document.getElementById('main-cart-btn'), document.querySelector('.mobile-cart-btn')];
       const cartDrawer = document.getElementById('cart-drawer');
       const cartOverlay = document.getElementById('cart-overlay');
       const closeCartBtn = document.getElementById('close-cart-btn');
       const continueShoppingBtn = document.getElementById('continue-shopping');
       
-      const cartCountBadge = document.getElementById('cart-count');
+      const cartCountBadges = [document.getElementById('cart-count'), document.querySelector('.mobile-cart-count')];
       const cartItemCountText = document.getElementById('cart-item-count-text');
       const cartItemsContainer = document.getElementById('cart-items-container');
       const emptyCartMsg = document.getElementById('empty-cart-msg');
@@ -640,10 +683,20 @@
 
       const addButtons = document.querySelectorAll('.btn-add-cart');
 
-      const openCart = (e) => { if(e) e.preventDefault(); cartDrawer.classList.add('active'); cartOverlay.classList.add('active'); };
+      const openCart = (e) => { 
+        if(e) e.preventDefault(); 
+        cartDrawer.classList.add('active'); 
+        cartOverlay.classList.add('active');
+        // Cerrar menú móvil si está abierto al abrir carrito
+        const navbarCollapse = document.getElementById('navbarNav');
+        if(navbarCollapse.classList.contains('show')) {
+          const bsCollapse = new bootstrap.Collapse(navbarCollapse, {toggle: false});
+          bsCollapse.hide();
+        }
+      };
       const closeCart = (e) => { if(e) e.preventDefault(); cartDrawer.classList.remove('active'); cartOverlay.classList.remove('active'); };
 
-      cartBtn.addEventListener('click', openCart);
+      cartBtns.forEach(btn => { if(btn) btn.addEventListener('click', openCart); });
       closeCartBtn.addEventListener('click', closeCart);
       cartOverlay.addEventListener('click', closeCart);
       continueShoppingBtn.addEventListener('click', closeCart);
@@ -686,7 +739,7 @@
           });
         }
 
-        cartCountBadge.textContent = totalItems;
+        cartCountBadges.forEach(badge => { if(badge) badge.textContent = totalItems; });
         cartItemCountText.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
         
         const formattedTotal = `$${totalPrice.toFixed(2)}`;
@@ -727,9 +780,13 @@
           
           updateCartUI(); 
           
-          cartBtn.classList.remove('cart-bounce');
-          void cartBtn.offsetWidth; 
-          cartBtn.classList.add('cart-bounce');
+          cartBtns.forEach(btn => {
+            if(btn) {
+              btn.classList.remove('cart-bounce');
+              void btn.offsetWidth; 
+              btn.classList.add('cart-bounce');
+            }
+          });
           
           const originalHTML = this.innerHTML;
           const originalBg = this.style.background;
