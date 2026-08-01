@@ -404,20 +404,31 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav align-items-center">
           <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Catálogo</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Preguntas</a></li>
+          
+          <!-- Botón de Iniciar Sesión en Menú Móvil -->
+          <li class="nav-item d-lg-none mt-3 w-100">
+            <a href="login.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none">
+              <i class="bi bi-person-circle"></i> Iniciar Sesión
+            </a>
+          </li>
           <!-- Botón de carrito en menú móvil -->
-          <li class="nav-item d-lg-none mt-3">
+          <li class="nav-item d-lg-none mt-2 w-100">
             <button class="btn-cyan w-100 mobile-cart-btn">
               <i class="bi bi-cart3"></i> Ver Carrito (<span class="mobile-cart-count">0</span>)
             </button>
           </li>
         </ul>
       </div>
-      <div class="d-none d-lg-block">
+      <div class="d-none d-lg-flex align-items-center gap-3">
+        <!-- Botón de Iniciar Sesión en PC -->
+        <a href="login.html" class="text-white text-decoration-none small fw-semibold" style="transition: color 0.3s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#fff'">
+          <i class="bi bi-person-circle"></i> Iniciar Sesión
+        </a>
         <button id="main-cart-btn" class="btn-outline-custom" style="padding: 6px 15px; font-size: 0.9rem;">
           <i class="bi bi-cart3"></i> CARRITO (<span id="cart-count">0</span>)
         </button>
