@@ -33,17 +33,39 @@
       position: relative;
     }
 
-    /* Luces de fondo para resaltar el Liquid Glass */
+    /* Animación de movimiento y cambio de colores para los orbes */
+    @keyframes orbFloat1 {
+      0% { transform: translate(0px, 0px) scale(1); background: #00e5ff; }
+      33% { transform: translate(150px, 200px) scale(1.2); background: #a200ff; }
+      66% { transform: translate(-100px, 150px) scale(0.9); background: #00ff88; }
+      100% { transform: translate(0px, 0px) scale(1); background: #00e5ff; }
+    }
+
+    @keyframes orbFloat2 {
+      0% { transform: translate(0px, 0px) scale(1); background: #a200ff; }
+      33% { transform: translate(-200px, -150px) scale(1.3); background: #00ff88; }
+      66% { transform: translate(150px, -100px) scale(0.8); background: #00e5ff; }
+      100% { transform: translate(0px, 0px) scale(1); background: #a200ff; }
+    }
+
+    @keyframes orbFloat3 {
+      0% { transform: translate(0px, 0px) scale(1); background: #00ff88; }
+      33% { transform: translate(100px, -200px) scale(1.1); background: #00e5ff; }
+      66% { transform: translate(-150px, 100px) scale(1.2); background: #a200ff; }
+      100% { transform: translate(0px, 0px) scale(1); background: #00ff88; }
+    }
+
     .bg-orb {
       position: fixed;
       border-radius: 50%;
-      filter: blur(120px);
+      filter: blur(140px);
       z-index: -1;
-      opacity: 0.4;
+      opacity: 0.35;
+      pointer-events: none;
     }
-    .orb-1 { width: 400px; height: 400px; background: var(--accent-color); top: -100px; left: -100px; }
-    .orb-2 { width: 500px; height: 500px; background: #a200ff; bottom: -100px; right: -100px; }
-    .orb-3 { width: 300px; height: 300px; background: #00ff88; top: 40%; left: 40%; opacity: 0.15; }
+    .orb-1 { width: 450px; height: 450px; top: -100px; left: -100px; animation: orbFloat1 18s infinite alternate ease-in-out; }
+    .orb-2 { width: 550px; height: 550px; bottom: -150px; right: -150px; animation: orbFloat2 22s infinite alternate ease-in-out; }
+    .orb-3 { width: 350px; height: 350px; top: 40%; left: 35%; animation: orbFloat3 15s infinite alternate ease-in-out; opacity: 0.2; }
 
     /* Estilos Glassmorphism Globales */
     .glass-effect {
@@ -367,7 +389,7 @@
 </head>
 <body>
 
-  <!-- Orbes de luz de fondo para el Liquid Glass -->
+  <!-- Orbes de luz dinámicos en movimiento y cambio de color -->
   <div class="bg-orb orb-1"></div>
   <div class="bg-orb orb-2"></div>
   <div class="bg-orb orb-3"></div>
@@ -464,25 +486,25 @@
     <h3 class="section-title text-center text-lg-start">Encuentra la herramienta ideal</h3>
     <div class="row g-4">
       <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card glass-effect cat-glow-1">
+        <div class="category-card glass-effect">
           <h4 class="category-title">Diseño y<br>Arquitectura</h4>
           <a href="#" class="category-link mt-3 mt-lg-0">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
       <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card glass-effect cat-glow-2">
+        <div class="category-card glass-effect">
           <h4 class="category-title">Oficina y<br>Productividad</h4>
           <a href="#" class="category-link mt-3 mt-lg-0" style="color: #00ff88;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
       <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card glass-effect cat-glow-3">
+        <div class="category-card glass-effect">
           <h4 class="category-title">Edición<br>y Video</h4>
           <a href="#" class="category-link mt-3 mt-lg-0" style="color: #a200ff;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
       <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card glass-effect cat-glow-4">
+        <div class="category-card glass-effect">
           <h4 class="category-title">Audio y<br>Música</h4>
           <a href="#" class="category-link mt-3 mt-lg-0" style="color: #ffa600;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
