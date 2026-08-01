@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dingloft | Software Original y Librerías de Audio</title>
+  <title>Dingloft | Software Vitalicio y Librerías de Audio</title>
   
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons (Para reemplazar los emojis) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   
   <!-- Google Fonts: Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
@@ -18,7 +21,7 @@
       --accent-color: #00e5ff;
       --accent-hover: #00b5cc;
       --text-main: #ffffff;
-      --text-muted: #9ca3af;
+      --text-muted: #d1d5db; /* Gris más claro para que sea legible */
       --border-color: rgba(255, 255, 255, 0.08);
     }
     
@@ -136,10 +139,11 @@
       justify-content: center;
       flex-shrink: 0;
       border: 1px solid rgba(255,255,255,0.03);
-      font-size: 0.7rem;
-      color: #555;
+      font-size: 0.8rem;
+      color: #ffffff; /* Texto claro */
       text-align: center;
       padding: 10px;
+      font-weight: 500;
     }
 
     .prod-info {
@@ -151,7 +155,7 @@
     .prod-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; }
     .prod-desc { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .prod-price { font-size: 1.2rem; font-weight: 800; color: var(--accent-color); }
-    .old-price { font-size: 0.9rem; color: #555; text-decoration: line-through; margin-right: 5px; font-weight: 400; }
+    .old-price { font-size: 0.9rem; color: #adb5bd; text-decoration: line-through; margin-right: 5px; font-weight: 400; } /* Precio viejo más claro */
     
     .btn-add-cart {
       background: var(--accent-color);
@@ -205,12 +209,12 @@
     .btn-close-cart {
       background: transparent;
       border: none;
-      color: var(--text-muted);
-      font-size: 1.5rem;
+      color: #ffffff;
+      font-size: 1.3rem;
       line-height: 1;
       transition: color 0.3s;
     }
-    .btn-close-cart:hover { color: #fff; }
+    .btn-close-cart:hover { color: var(--accent-color); }
 
     .cart-items-container {
       flex: 1;
@@ -235,9 +239,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.5rem;
+      font-size: 0.6rem;
       text-align: center;
-      color: #777;
+      color: #ffffff;
+      font-weight: 500;
     }
     .cart-item-info { flex: 1; }
     .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; }
@@ -266,8 +271,8 @@
       top: 0; right: 0;
       background: transparent;
       border: none;
-      color: #666;
-      font-size: 1.1rem;
+      color: #ffffff;
+      font-size: 1rem;
     }
     .cart-item-remove:hover { color: #ff4444; }
 
@@ -313,7 +318,7 @@
       </div>
       <div class="d-none d-lg-block">
         <button id="main-cart-btn" class="btn-outline-custom" style="padding: 6px 15px; font-size: 0.9rem;">
-          🛒 CARRITO (<span id="cart-count">0</span>)
+          <i class="bi bi-cart3"></i> CARRITO (<span id="cart-count">0</span>)
         </button>
       </div>
     </div>
@@ -325,31 +330,31 @@
       <div class="row align-items-center">
         <!-- Columna Izquierda -->
         <div class="col-lg-6 mb-5 mb-lg-0">
-          <h1 class="hero-title">Software original.<br>Trabajo <span class="text-accent">sin límites.</span></h1>
-          <p class="text-muted mb-4 fs-5" style="max-width: 450px;">Licencias 100% originales, instalación remota profesional y soporte experto para que trabajes sin interrupciones.</p>
+          <h1 class="hero-title">Software vitalicio.<br>Trabajo <span class="text-accent">sin límites.</span></h1>
+          <p class="text-muted mb-4 fs-5" style="max-width: 480px;">Licencias vitalicias creadas o distribuidas por Dingloft, instalación remota profesional y soporte experto para que trabajes sin interrupciones.</p>
           
           <div class="d-flex gap-3 mb-5">
-            <button class="btn-cyan">Ver catálogo →</button>
-            <button class="btn-outline-custom">Cómo funciona ⏵</button>
+            <button class="btn-cyan">Ver catálogo <i class="bi bi-arrow-right"></i></button>
+            <button class="btn-outline-custom">Cómo funciona <i class="bi bi-play-circle"></i></button>
           </div>
 
           <div class="d-flex gap-4">
             <div class="feature-item d-flex gap-2">
-              <span class="fs-4 text-accent">⚡</span>
+              <span class="fs-4 text-accent"><i class="bi bi-lightning-charge"></i></span>
               <div>
                 <h6>Entrega rápida</h6>
                 <p>Activación ágil y segura</p>
               </div>
             </div>
             <div class="feature-item d-flex gap-2">
-              <span class="fs-4 text-accent">🎧</span>
+              <span class="fs-4 text-accent"><i class="bi bi-headset"></i></span>
               <div>
                 <h6>Soporte técnico</h6>
                 <p>Expertos a tu servicio</p>
               </div>
             </div>
             <div class="feature-item d-flex gap-2">
-              <span class="fs-4 text-accent">🛡️</span>
+              <span class="fs-4 text-accent"><i class="bi bi-shield-check"></i></span>
               <div>
                 <h6>Pago seguro</h6>
                 <p>Protegemos tu compra</p>
@@ -372,11 +377,11 @@
   <!-- Barra de Confianza -->
   <div class="container text-center" style="margin-top: -30px; position: relative; z-index: 10;">
     <div class="trust-bar">
-      <span>✅ Licencias verificadas</span>
+      <span><i class="bi bi-patch-check text-success"></i> Licencias vitalicias</span>
       <span class="text-muted">•</span>
-      <span>☁️ Instalación remota</span>
+      <span><i class="bi bi-pc-display text-info"></i> Instalación remota</span>
       <span class="text-muted">•</span>
-      <span style="color: #25D366;">💬 Atención por WhatsApp</span>
+      <span style="color: #25D366;"><i class="bi bi-whatsapp"></i> Atención por WhatsApp</span>
     </div>
   </div>
 
@@ -387,25 +392,25 @@
       <div class="col-6 col-md-3">
         <div class="category-card cat-glow-1">
           <h4 class="category-title">Diseño y<br>Arquitectura</h4>
-          <a href="#" class="category-link">Ver categoría →</a>
+          <a href="#" class="category-link">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
       <div class="col-6 col-md-3">
         <div class="category-card cat-glow-2">
           <h4 class="category-title">Oficina y<br>Productividad</h4>
-          <a href="#" class="category-link" style="color: #00ff88;">Ver categoría →</a>
+          <a href="#" class="category-link" style="color: #00ff88;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
       <div class="col-6 col-md-3">
         <div class="category-card cat-glow-3">
           <h4 class="category-title">Edición<br>y Video</h4>
-          <a href="#" class="category-link" style="color: #a200ff;">Ver categoría →</a>
+          <a href="#" class="category-link" style="color: #a200ff;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
       <div class="col-6 col-md-3">
         <div class="category-card cat-glow-4">
           <h4 class="category-title">Audio y<br>Música</h4>
-          <a href="#" class="category-link" style="color: #ffa600;">Ver categoría →</a>
+          <a href="#" class="category-link" style="color: #ffa600;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
     </div>
@@ -415,7 +420,7 @@
   <section class="container mt-5 pt-4 pb-5">
     <div class="d-flex justify-content-between align-items-end mb-4">
       <h3 class="section-title mb-0">Más vendidos</h3>
-      <a href="#" class="text-accent text-decoration-none" style="font-weight: 500; font-size: 0.9rem;">Ver todo →</a>
+      <a href="#" class="text-accent text-decoration-none" style="font-weight: 500; font-size: 0.9rem;">Ver todo <i class="bi bi-arrow-right"></i></a>
     </div>
 
     <div class="row g-4">
@@ -437,7 +442,7 @@
                 <span class="old-price">$60.00</span>
                 <span class="prod-price">$27.00</span>
               </div>
-              <button class="btn-add-cart" data-id="1" data-name="SketchUp Pro 2026" data-price="27" data-img="SketchUp" data-type="Instalación incluida">Agregar 🛒</button>
+              <button class="btn-add-cart" data-id="1" data-name="SketchUp Pro 2026" data-price="27" data-img="SketchUp" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
             </div>
           </div>
         </div>
@@ -461,7 +466,7 @@
                 <span class="old-price">$100.00</span>
                 <span class="prod-price" style="color: #00ff88;">$40.00</span>
               </div>
-              <button class="btn-add-cart" style="background: #00ff88;" data-id="2" data-name="Office Home & Business" data-price="40" data-img="Office" data-type="Licencia digital">Agregar 🛒</button>
+              <button class="btn-add-cart" style="background: #00ff88;" data-id="2" data-name="Office Home & Business" data-price="40" data-img="Office" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
             </div>
           </div>
         </div>
@@ -485,7 +490,7 @@
                 <span class="old-price">$100.00</span>
                 <span class="prod-price">$35.00</span>
               </div>
-              <button class="btn-add-cart" data-id="3" data-name="AutoCAD 2026" data-price="35" data-img="AutoCAD" data-type="Instalación incluida">Agregar 🛒</button>
+              <button class="btn-add-cart" data-id="3" data-name="AutoCAD 2026" data-price="35" data-img="AutoCAD" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
             </div>
           </div>
         </div>
@@ -509,7 +514,7 @@
                 <span class="old-price">$200.00</span>
                 <span class="prod-price" style="color: #ffa600;">$40.00</span>
               </div>
-              <button class="btn-add-cart" style="background: #ffa600;" data-id="4" data-name="Nord Stage 4 Ultimate" data-price="40" data-img="Nord" data-type="Librería Kontakt">Agregar 🛒</button>
+              <button class="btn-add-cart" style="background: #ffa600;" data-id="4" data-name="Nord Stage 4 Ultimate" data-price="40" data-img="Nord" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
             </div>
           </div>
         </div>
@@ -533,7 +538,7 @@
                 <span class="old-price">$200.00</span>
                 <span class="prod-price">$25.00</span>
               </div>
-              <button class="btn-add-cart" data-id="5" data-name="Logic Pro" data-price="25" data-img="Logic" data-type="Soporte remoto">Agregar 🛒</button>
+              <button class="btn-add-cart" data-id="5" data-name="Logic Pro" data-price="25" data-img="Logic" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
             </div>
           </div>
         </div>
@@ -557,7 +562,7 @@
                 <span class="old-price">$100.00</span>
                 <span class="prod-price" style="color: #00e5ff;">$60.00</span>
               </div>
-              <button class="btn-add-cart" data-id="6" data-name="Dual Legends SF2" data-price="60" data-img="Dual" data-type="Descarga directa">Agregar 🛒</button>
+              <button class="btn-add-cart" data-id="6" data-name="Dual Legends SF2" data-price="60" data-img="Dual" data-type="Descarga directa">Agregar <i class="bi bi-cart-plus"></i></button>
             </div>
           </div>
         </div>
@@ -578,10 +583,10 @@
   <div class="cart-drawer" id="cart-drawer">
     <div class="cart-header">
       <div>
-        <h4 class="mb-1" style="font-weight: 600;">🛒 Tu carrito</h4>
+        <h4 class="mb-1" style="font-weight: 600;"><i class="bi bi-cart4"></i> Tu carrito</h4>
         <span class="text-muted" style="font-size: 0.85rem;" id="cart-item-count-text">0 productos</span>
       </div>
-      <button class="btn-close-cart" id="close-cart-btn">✕</button>
+      <button class="btn-close-cart" id="close-cart-btn"><i class="bi bi-x-lg"></i></button>
     </div>
     
     <div class="cart-items-container" id="cart-items-container">
@@ -602,7 +607,7 @@
       </div>
       
       <div class="text-center mb-3 text-muted" style="font-size: 0.8rem;">
-        🔒 Pago 100% seguro
+        <i class="bi bi-shield-lock"></i> Pago 100% seguro
       </div>
       
       <button class="btn-cyan w-100 mb-3" style="border-radius: 8px; font-size: 1.1rem; padding: 12px;">Finalizar compra</button>
@@ -618,9 +623,8 @@
   <!-- LÓGICA FUNCIONAL DEL CARRITO -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      let cart = []; // Array que guardará los productos
+      let cart = [];
 
-      // Referencias al DOM
       const cartBtn = document.getElementById('main-cart-btn');
       const cartDrawer = document.getElementById('cart-drawer');
       const cartOverlay = document.getElementById('cart-overlay');
@@ -636,7 +640,6 @@
 
       const addButtons = document.querySelectorAll('.btn-add-cart');
 
-      // Funciones para Abrir/Cerrar Carrito
       const openCart = (e) => { if(e) e.preventDefault(); cartDrawer.classList.add('active'); cartOverlay.classList.add('active'); };
       const closeCart = (e) => { if(e) e.preventDefault(); cartDrawer.classList.remove('active'); cartOverlay.classList.remove('active'); };
 
@@ -645,9 +648,7 @@
       cartOverlay.addEventListener('click', closeCart);
       continueShoppingBtn.addEventListener('click', closeCart);
 
-      // Función para renderizar el contenido del carrito
       const updateCartUI = () => {
-        // Limpiar el contenedor actual
         cartItemsContainer.innerHTML = '';
         
         let totalItems = 0;
@@ -663,7 +664,6 @@
             totalItems += item.qty;
             totalPrice += (item.price * item.qty);
 
-            // Crear el HTML de cada item en el carrito
             const itemHTML = `
               <div class="cart-item">
                 <div class="cart-item-img">[ ${item.img} ]</div>
@@ -673,20 +673,19 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <span class="fw-bold text-accent">$${item.price.toFixed(2)}</span>
                     <div class="qty-controls">
-                      <button class="qty-btn" onclick="changeQty(${index}, -1)">−</button>
+                      <button class="qty-btn" onclick="changeQty(${index}, -1)"><i class="bi bi-dash"></i></button>
                       <span class="qty-value">${item.qty}</span>
-                      <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+                      <button class="qty-btn" onclick="changeQty(${index}, 1)"><i class="bi bi-plus"></i></button>
                     </div>
                   </div>
                 </div>
-                <button class="cart-item-remove" onclick="removeItem(${index})">✕</button>
+                <button class="cart-item-remove" onclick="removeItem(${index})"><i class="bi bi-trash"></i></button>
               </div>
             `;
             cartItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
           });
         }
 
-        // Actualizar textos y números globales
         cartCountBadge.textContent = totalItems;
         cartItemCountText.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
         
@@ -695,35 +694,30 @@
         cartTotalText.textContent = formattedTotal;
       };
 
-      // Función Global para cambiar cantidad (Llamada desde el HTML inyectado)
       window.changeQty = (index, delta) => {
         if (cart[index].qty + delta > 0) {
           cart[index].qty += delta;
         } else {
-          cart.splice(index, 1); // Si baja a 0, lo elimina
+          cart.splice(index, 1);
         }
         updateCartUI();
       };
 
-      // Función Global para eliminar un item (Llamada desde la '✕')
       window.removeItem = (index) => {
         cart.splice(index, 1);
         updateCartUI();
       };
 
-      // Escuchar clics en los botones "Agregar" de los productos
       addButtons.forEach(button => {
         button.addEventListener('click', function(e) {
           e.preventDefault(); 
           
-          // Leer la data del botón apachado
           const id = this.getAttribute('data-id');
           const name = this.getAttribute('data-name');
           const price = parseFloat(this.getAttribute('data-price'));
           const img = this.getAttribute('data-img');
           const type = this.getAttribute('data-type');
           
-          // Verificar si el producto ya existe en el carrito
           const existingItem = cart.find(item => item.id === id);
           if (existingItem) {
             existingItem.qty += 1;
@@ -731,26 +725,24 @@
             cart.push({ id, name, price, img, type, qty: 1 });
           }
           
-          updateCartUI(); // Refrescar visuales del panel
+          updateCartUI(); 
           
-          // Efecto visual en la barra superior
           cartBtn.classList.remove('cart-bounce');
           void cartBtn.offsetWidth; 
           cartBtn.classList.add('cart-bounce');
           
-          // Efecto visual en el botón que apachaste
-          const originalText = this.innerText;
+          const originalHTML = this.innerHTML;
           const originalBg = this.style.background;
           
-          this.innerText = 'Agregado ✓';
+          this.innerHTML = 'Agregado <i class="bi bi-check2"></i>';
           this.classList.add('btn-added');
           
           setTimeout(() => {
-            this.innerText = originalText;
+            this.innerHTML = originalHTML;
             this.classList.remove('btn-added');
             this.style.background = originalBg;
-            openCart(); // Opcional: abre el carrito automáticamente al agregar algo
-          }, 1000);
+            openCart(); 
+          }, 800);
         });
       });
     });
