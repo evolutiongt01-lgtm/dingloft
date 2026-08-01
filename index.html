@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dingloft | Catálogo de Software y Herramientas Digitales</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #050505;
+      --card-bg: rgba(20, 20, 20, 0.6);
+      --accent-color: #00f0ff; /* Azul neón tech */
+      --text-main: #ffffff;
+      --text-muted: #a0a0a0;
+    }
+    
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Navbar Glassmorphism */
+    .navbar-glass {
+      background: rgba(5, 5, 5, 0.8);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 120px 0 80px;
+      background: radial-gradient(circle at center, rgba(0, 240, 255, 0.1) 0%, transparent 60%);
+    }
+
+    .hero-title {
+      font-weight: 800;
+      font-size: 3.5rem;
+      letter-spacing: -1px;
+    }
+
+    .text-accent {
+      color: var(--accent-color);
+    }
+
+    /* Tarjetas de Producto */
+    .product-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0, 240, 255, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 240, 255, 0.1);
+    }
+
+    .product-img-placeholder {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(45deg, #111, #222);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .product-title {
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .product-desc {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      flex-grow: 1;
+    }
+
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-top: 15px;
+    }
+
+    /* Botones */
+    .btn-neon {
+      background: transparent;
+      color: var(--accent-color);
+      border: 1px solid var(--accent-color);
+      border-radius: 50px;
+      padding: 10px 24px;
+      font-weight: 600;
+      transition: all 0.3s;
+      width: 100%;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+
+    .btn-neon:hover {
+      background: var(--accent-color);
+      color: #000;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+    }
+    
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      margin-top: 80px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navegación -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-glass fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold fs-4" href="#">
+        <span class="text-accent">D</span>ingloft
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#catalogo">Software CAD/BIM</a></li>
+          <li class="nav-item"><a class="nav-link" href="#catalogo">Audio y Producción</a></li>
+          <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
+            <a href="#" class="btn-neon" style="width: auto;">🛒 Carrito (0)</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section text-center">
+    <div class="container">
+      <p class="text-accent text-uppercase fw-bold mb-2" style="letter-spacing: 2px; font-size: 0.85rem;">Instalaciones y Soporte Remoto</p>
+      <h1 class="hero-title mb-4">Potencia tu <span class="text-accent">creatividad.</span></h1>
+      <p class="text-muted mx-auto mb-5" style="max-width: 600px; font-size: 1.1rem;">
+        El mejor catálogo de herramientas de arquitectura, edición de video, DAW's de audio y soporte técnico premium al alcance de un clic.
+      </p>
+    </div>
+  </section>
+
+  <!-- Catálogo / Tienda -->
+  <section id="catalogo" class="container pb-5">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <h3 class="fw-bold mb-0">Lanzamientos Destacados</h3>
+      <a href="#" class="text-muted text-decoration-none small">Ver todo &rarr;</a>
+    </div>
+    
+    <div class="row g-4">
+      <!-- Producto 1 -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-placeholder">
+            [ Imagen Software CAD ]
+          </div>
+          <h4 class="product-title">Suite Arquitectura Pro 2026</h4>
+          <p class="product-desc">Paquete completo que incluye AutoCAD, SketchUp y renderizadores V-Ray. Instalación remota incluida.</p>
+          <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+            <span class="product-price">$49.99</span>
+          </div>
+          <button class="btn-neon mt-auto">Añadir al carrito</button>
+        </div>
+      </div>
+
+      <!-- Producto 2 -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-placeholder">
+            [ Imagen Ableton / DAW ]
+          </div>
+          <h4 class="product-title">Ableton Live 12 Suite</h4>
+          <p class="product-desc">Configuración profesional para tracking, automatización y cadenas de mastering completas.</p>
+          <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+            <span class="product-price">$39.99</span>
+          </div>
+          <button class="btn-neon mt-auto">Añadir al carrito</button>
+        </div>
+      </div>
+
+      <!-- Producto 3 -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-placeholder">
+            [ Imagen Adobe / Edición ]
+          </div>
+          <h4 class="product-title">Adobe Creative Pack</h4>
+          <p class="product-desc">Photoshop, Premiere Pro y After Effects listos para funcionar a su máxima capacidad.</p>
+          <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+            <span class="product-price">$45.00</span>
+          </div>
+          <button class="btn-neon mt-auto">Añadir al carrito</button>
+        </div>
+      </div>
+
+      <!-- Producto 4 -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-placeholder">
+            [ Imagen Sample Packs ]
+          </div>
+          <h4 class="product-title">Mega Pack Samples Vol. 1</h4>
+          <p class="product-desc">Librería de alta calidad para producción musical, baterías y efectos de sonido en formato WAV.</p>
+          <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+            <span class="product-price">$19.99</span>
+          </div>
+          <button class="btn-neon mt-auto">Añadir al carrito</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-4 text-center">
+    <div class="container text-muted small">
+      <p class="mb-1">&copy; 2026 Dingloft / Evolution Design. Todos los derechos reservados.</p>
+      <p class="mb-0">Soporte remoto y asistencia técnica en todo el mundo.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
