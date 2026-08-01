@@ -16,13 +16,13 @@
   
   <style>
     :root {
-      --bg-color: #090b10;
-      --card-bg: #11151f;
+      --bg-color: #05070a;
       --accent-color: #00e5ff;
       --accent-hover: #00b5cc;
       --text-main: #ffffff;
       --text-muted: #d1d5db;
-      --border-color: rgba(255, 255, 255, 0.08);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --glass-bg: rgba(17, 21, 31, 0.4);
     }
     
     body {
@@ -30,12 +30,35 @@
       color: var(--text-main);
       font-family: 'Inter', sans-serif;
       overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Luces de fondo para resaltar el Liquid Glass */
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      z-index: -1;
+      opacity: 0.4;
+    }
+    .orb-1 { width: 400px; height: 400px; background: var(--accent-color); top: -100px; left: -100px; }
+    .orb-2 { width: 500px; height: 500px; background: #a200ff; bottom: -100px; right: -100px; }
+    .orb-3 { width: 300px; height: 300px; background: #00ff88; top: 40%; left: 40%; opacity: 0.15; }
+
+    /* Estilos Glassmorphism Globales */
+    .glass-effect {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     }
 
     /* Navbar */
     .navbar-glass {
-      background: rgba(9, 11, 16, 0.9);
-      backdrop-filter: blur(15px);
+      background: rgba(5, 7, 10, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border-color);
       padding: 15px 0;
       z-index: 1040;
@@ -52,36 +75,50 @@
       border-radius: 8px;
       padding: 10px 24px;
       transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
     }
-    .btn-cyan:hover { background: var(--accent-hover); color: #000; transform: translateY(-2px); }
+    .btn-cyan:hover { background: var(--accent-hover); color: #000; transform: translateY(-2px); box-shadow: 0 5px 25px rgba(0, 229, 255, 0.5); }
     
     .btn-outline-custom {
-      background: transparent;
+      background: rgba(255,255,255,0.05);
       color: var(--text-main);
       font-weight: 600;
       border: 1px solid var(--text-muted);
       border-radius: 8px;
       padding: 10px 24px;
       transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
     }
-    .btn-outline-custom:hover { border-color: var(--text-main); background: rgba(255,255,255,0.05); }
+    .btn-outline-custom:hover { border-color: var(--accent-color); color: var(--accent-color); background: rgba(0, 229, 255, 0.05); }
 
     /* Hero Section */
-    .hero-section {
-      padding: 140px 0 60px;
-      background: radial-gradient(circle at 80% 30%, rgba(0, 229, 255, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 20% 80%, rgba(138, 43, 226, 0.05) 0%, transparent 40%);
-    }
+    .hero-section { padding: 140px 0 60px; }
     .hero-title { font-weight: 800; font-size: 4rem; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
-    .text-accent { color: var(--accent-color); }
+    .text-accent { color: var(--accent-color); text-shadow: 0 0 20px rgba(0,229,255,0.3); }
     
     .feature-item h6 { font-size: 0.9rem; font-weight: 600; margin: 0; }
     .feature-item p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
 
+    .hero-img-box {
+      width: 100%;
+      height: 400px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .hero-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.4));
+      transition: transform 0.3s;
+    }
+    .hero-img-box:hover img { transform: scale(1.02); }
+
     /* Trust Bar */
     .trust-bar {
-      background: #11151f;
-      border: 1px solid var(--border-color);
       border-radius: 50px;
       padding: 15px 30px;
       display: inline-flex;
@@ -89,14 +126,12 @@
       gap: 30px;
       font-size: 0.9rem;
       font-weight: 500;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
     /* Categorías */
-    .section-title { font-weight: 700; font-size: 1.5rem; margin-bottom: 20px; }
+    .section-title { font-weight: 700; font-size: 1.5rem; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+    
     .category-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
       border-radius: 12px;
       padding: 25px;
       height: 140px;
@@ -107,42 +142,37 @@
       position: relative;
       overflow: hidden;
     }
-    .category-card:hover { border-color: var(--accent-color); transform: translateY(-5px); }
+    .category-card:hover { border-color: var(--accent-color); transform: translateY(-5px); background: rgba(255,255,255,0.05); }
     .category-title { font-weight: 600; font-size: 1.1rem; z-index: 2; position: relative; }
     .category-link { color: var(--accent-color); font-size: 0.85rem; text-decoration: none; font-weight: 500; z-index: 2; position: relative; }
 
-    .cat-glow-1 { background: radial-gradient(circle at bottom right, rgba(0, 229, 255, 0.15), transparent 70%); }
-    .cat-glow-2 { background: radial-gradient(circle at bottom right, rgba(0, 255, 136, 0.1), transparent 70%); }
-    .cat-glow-3 { background: radial-gradient(circle at bottom right, rgba(162, 0, 255, 0.15), transparent 70%); }
-    .cat-glow-4 { background: radial-gradient(circle at bottom right, rgba(255, 166, 0, 0.15), transparent 70%); }
-
     /* Productos Horizontales */
     .product-horizontal {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
       border-radius: 12px;
       padding: 15px;
       display: flex;
       gap: 20px;
       transition: all 0.3s ease;
     }
-    .product-horizontal:hover { border-color: rgba(255,255,255,0.2); background: #161b27; }
+    .product-horizontal:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); transform: translateY(-3px); }
     
     .prod-img-box {
       width: 120px;
       height: 150px;
-      background: linear-gradient(135deg, #1a202c, #11151f);
+      background: rgba(0,0,0,0.2);
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      border: 1px solid rgba(255,255,255,0.03);
-      font-size: 0.8rem;
-      color: #ffffff;
-      text-align: center;
-      padding: 10px;
-      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 15px;
+    }
+    .prod-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4));
     }
 
     .prod-info {
@@ -167,14 +197,15 @@
       width: fit-content;
       transition: all 0.3s;
     }
-    .btn-add-cart:hover { background: #fff; transform: scale(1.05); }
+    .btn-add-cart:hover { background: #fff; transform: scale(1.05); box-shadow: 0 0 15px rgba(255,255,255,0.5); }
 
     /* ====== ESTILOS DEL CARRITO LATERAL ====== */
     .cart-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(5px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       z-index: 1050;
       opacity: 0;
       visibility: hidden;
@@ -188,9 +219,11 @@
       width: 400px;
       max-width: 100%;
       height: 100vh;
-      background: #0d1117;
-      border-left: 1px solid rgba(0, 229, 255, 0.2);
-      box-shadow: -5px 0 30px rgba(0, 0, 0, 0.8);
+      background: rgba(13, 17, 23, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-left: 1px solid var(--border-color);
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8);
       z-index: 1060;
       transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       display: flex;
@@ -212,8 +245,9 @@
       font-size: 1.3rem;
       line-height: 1;
       transition: color 0.3s;
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
     }
-    .btn-close-cart:hover { color: var(--accent-color); }
+    .btn-close-cart:hover { color: var(--accent-color); transform: scale(1.1); }
 
     .cart-items-container {
       flex: 1;
@@ -232,16 +266,18 @@
     .cart-item-img {
       width: 60px;
       height: 80px;
-      background: linear-gradient(135deg, #1a202c, #11151f);
+      background: rgba(0,0,0,0.3);
       border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.05);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.6rem;
-      text-align: center;
-      color: #ffffff;
-      font-weight: 500;
+      padding: 5px;
+    }
+    .cart-item-img img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
     }
     .cart-item-info { flex: 1; }
     .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; }
@@ -253,6 +289,7 @@
       border: 1px solid rgba(255,255,255,0.2);
       border-radius: 4px;
       overflow: hidden;
+      background: rgba(0,0,0,0.2);
     }
     .qty-btn {
       background: transparent;
@@ -277,7 +314,7 @@
 
     .cart-footer {
       padding: 25px;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.4);
       border-top: 1px solid var(--border-color);
     }
     .cart-empty-msg {
@@ -292,7 +329,7 @@
       100% { transform: scale(1); }
     }
     .cart-bounce { animation: cartBounce 0.3s ease-in-out; }
-    .btn-added { background-color: #00ff88 !important; color: #000 !important; }
+    .btn-added { background-color: #00ff88 !important; color: #000 !important; box-shadow: 0 0 15px rgba(0,255,136,0.5) !important; }
 
     /* =========================================
        REGLAS PARA MÓVIL (Responsividad)
@@ -312,7 +349,7 @@
         width: 90%; 
         margin: 0 auto;
       }
-      .trust-bar .bullet-point { display: none; } /* Oculta los puntos en móvil */
+      .trust-bar .bullet-point { display: none; }
       
       .product-horizontal { flex-direction: column; align-items: center; text-align: center; }
       .prod-img-box { width: 100%; height: 180px; margin-bottom: 15px; }
@@ -324,11 +361,16 @@
     }
     
     @media (max-width: 500px) {
-      .cart-drawer { width: 100%; } /* Carrito ocupa toda la pantalla en celulares pequeños */
+      .cart-drawer { width: 100%; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Orbes de luz de fondo para el Liquid Glass -->
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
@@ -370,7 +412,6 @@
           <h1 class="hero-title">Software vitalicio.<br>Trabajo <span class="text-accent">sin límites.</span></h1>
           
           <div class="hero-paragraph-container">
-            <!-- AQUÍ ESTÁ EL TEXTO EN BLANCO QUE PEDISTE -->
             <p class="mb-4 fs-5 text-white" style="max-width: 480px;">Licencias vitalicias creadas o distribuidas por Dingloft, instalación remota profesional y soporte experto para que trabajes sin interrupciones.</p>
           </div>
           
@@ -388,13 +429,6 @@
               </div>
             </div>
             <div class="feature-item d-flex gap-2 align-items-center">
-              <span class="fs-4 text-accent"><i class="bi bi-headset"></i></span>
-              <div class="text-start">
-                <h6>Soporte técnico</h6>
-                <p>Expertos a tu servicio</p>
-              </div>
-            </div>
-            <div class="feature-item d-flex gap-2 align-items-center">
               <span class="fs-4 text-accent"><i class="bi bi-shield-check"></i></span>
               <div class="text-start">
                 <h6>Pago seguro</h6>
@@ -406,9 +440,8 @@
         
         <!-- Columna Derecha -->
         <div class="col-lg-6 text-center">
-          <div style="width: 100%; height: 400px; background: linear-gradient(145deg, #11151f, #0a0f16); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 20px; box-shadow: 0 0 50px rgba(0, 229, 255, 0.1); display: flex; align-items: center; justify-content: center; flex-direction: column;">
-            <span style="font-size: 4rem; color: rgba(255,255,255,0.05);">[ IMAGEN DASHBOARD ]</span>
-            <p class="text-muted mt-3">Visualización del espacio de trabajo</p>
+          <div class="hero-img-box glass-effect">
+            <img src="img/dashboard.png" alt="Workspace Dashboard">
           </div>
         </div>
       </div>
@@ -417,12 +450,12 @@
 
   <!-- Barra de Confianza -->
   <div class="container text-center" style="margin-top: -30px; position: relative; z-index: 10;">
-    <div class="trust-bar">
+    <div class="trust-bar glass-effect">
       <span><i class="bi bi-patch-check text-success"></i> Licencias vitalicias</span>
       <span class="text-muted bullet-point">•</span>
       <span><i class="bi bi-pc-display text-info"></i> Instalación remota</span>
       <span class="text-muted bullet-point">•</span>
-      <span style="color: #25D366;"><i class="bi bi-whatsapp"></i> Atención por WhatsApp</span>
+      <span><i class="bi bi-headset text-warning"></i> Soporte especializado</span>
     </div>
   </div>
 
@@ -431,25 +464,25 @@
     <h3 class="section-title text-center text-lg-start">Encuentra la herramienta ideal</h3>
     <div class="row g-4">
       <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card cat-glow-1">
+        <div class="category-card glass-effect cat-glow-1">
           <h4 class="category-title">Diseño y<br>Arquitectura</h4>
           <a href="#" class="category-link mt-3 mt-lg-0">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
       <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card cat-glow-2">
+        <div class="category-card glass-effect cat-glow-2">
           <h4 class="category-title">Oficina y<br>Productividad</h4>
           <a href="#" class="category-link mt-3 mt-lg-0" style="color: #00ff88;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
       <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card cat-glow-3">
+        <div class="category-card glass-effect cat-glow-3">
           <h4 class="category-title">Edición<br>y Video</h4>
           <a href="#" class="category-link mt-3 mt-lg-0" style="color: #a200ff;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
       <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card cat-glow-4">
+        <div class="category-card glass-effect cat-glow-4">
           <h4 class="category-title">Audio y<br>Música</h4>
           <a href="#" class="category-link mt-3 mt-lg-0" style="color: #ffa600;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
@@ -467,8 +500,8 @@
     <div class="row g-4">
       <!-- Producto 1: SketchUp -->
       <div class="col-12 col-lg-6">
-        <div class="product-horizontal">
-          <div class="prod-img-box">[ SketchUp 2026 ]</div>
+        <div class="product-horizontal glass-effect">
+          <div class="prod-img-box"><img src="img/sketchup.png" alt="SketchUp 2026"></div>
           <div class="prod-info">
             <div>
               <h4 class="prod-title">SketchUp Pro 2026</h4>
@@ -483,7 +516,7 @@
                 <span class="old-price">$60.00</span>
                 <span class="prod-price">$27.00</span>
               </div>
-              <button class="btn-add-cart" data-id="1" data-name="SketchUp Pro 2026" data-price="27" data-img="SketchUp" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              <button class="btn-add-cart" data-id="1" data-name="SketchUp Pro 2026" data-price="27" data-img="sketchup" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
             </div>
           </div>
         </div>
@@ -491,8 +524,8 @@
 
       <!-- Producto 2: Office -->
       <div class="col-12 col-lg-6">
-        <div class="product-horizontal">
-          <div class="prod-img-box" style="background: linear-gradient(135deg, #0f3f22, #11151f);">[ Office Suite ]</div>
+        <div class="product-horizontal glass-effect">
+          <div class="prod-img-box"><img src="img/office.png" alt="Office Suite"></div>
           <div class="prod-info">
             <div>
               <h4 class="prod-title">Office Home & Business</h4>
@@ -507,7 +540,7 @@
                 <span class="old-price">$100.00</span>
                 <span class="prod-price" style="color: #00ff88;">$40.00</span>
               </div>
-              <button class="btn-add-cart" style="background: #00ff88;" data-id="2" data-name="Office Home & Business" data-price="40" data-img="Office" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              <button class="btn-add-cart" style="background: #00ff88;" data-id="2" data-name="Office Home & Business" data-price="40" data-img="office" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
             </div>
           </div>
         </div>
@@ -515,8 +548,8 @@
 
       <!-- Producto 3: AutoCAD -->
       <div class="col-12 col-lg-6">
-        <div class="product-horizontal">
-          <div class="prod-img-box" style="background: linear-gradient(135deg, #4a1515, #11151f);">[ AutoCAD 2026 ]</div>
+        <div class="product-horizontal glass-effect">
+          <div class="prod-img-box"><img src="img/autocad.png" alt="AutoCAD 2026"></div>
           <div class="prod-info">
             <div>
               <h4 class="prod-title">AutoCAD 2026</h4>
@@ -531,7 +564,7 @@
                 <span class="old-price">$100.00</span>
                 <span class="prod-price">$35.00</span>
               </div>
-              <button class="btn-add-cart" data-id="3" data-name="AutoCAD 2026" data-price="35" data-img="AutoCAD" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              <button class="btn-add-cart" data-id="3" data-name="AutoCAD 2026" data-price="35" data-img="autocad" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
             </div>
           </div>
         </div>
@@ -539,8 +572,8 @@
 
       <!-- Producto 4: Nord Stage (EvoSound) -->
       <div class="col-12 col-lg-6">
-        <div class="product-horizontal">
-          <div class="prod-img-box" style="background: linear-gradient(135deg, #3f2a10, #11151f);">[ Nord Stage 4 ]</div>
+        <div class="product-horizontal glass-effect">
+          <div class="prod-img-box"><img src="img/nord.png" alt="Nord Stage 4"></div>
           <div class="prod-info">
             <div>
               <h4 class="prod-title">Nord Stage 4 Ultimate</h4>
@@ -555,7 +588,7 @@
                 <span class="old-price">$200.00</span>
                 <span class="prod-price" style="color: #ffa600;">$40.00</span>
               </div>
-              <button class="btn-add-cart" style="background: #ffa600;" data-id="4" data-name="Nord Stage 4 Ultimate" data-price="40" data-img="Nord" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              <button class="btn-add-cart" style="background: #ffa600;" data-id="4" data-name="Nord Stage 4 Ultimate" data-price="40" data-img="nord" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
             </div>
           </div>
         </div>
@@ -563,8 +596,8 @@
       
       <!-- Producto 5: Logic Pro -->
       <div class="col-12 col-lg-6">
-        <div class="product-horizontal">
-          <div class="prod-img-box" style="background: linear-gradient(135deg, #222, #111);">[ Logic Pro ]</div>
+        <div class="product-horizontal glass-effect">
+          <div class="prod-img-box"><img src="img/logic.png" alt="Logic Pro"></div>
           <div class="prod-info">
             <div>
               <h4 class="prod-title">Logic Pro</h4>
@@ -579,7 +612,7 @@
                 <span class="old-price">$200.00</span>
                 <span class="prod-price">$25.00</span>
               </div>
-              <button class="btn-add-cart" data-id="5" data-name="Logic Pro" data-price="25" data-img="Logic" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              <button class="btn-add-cart" data-id="5" data-name="Logic Pro" data-price="25" data-img="logic" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
             </div>
           </div>
         </div>
@@ -587,8 +620,8 @@
 
       <!-- Producto 6: Dual Legends (EvoSound) -->
       <div class="col-12 col-lg-6">
-        <div class="product-horizontal">
-          <div class="prod-img-box" style="background: linear-gradient(135deg, #1e2844, #11151f);">[ Dual Legends ]</div>
+        <div class="product-horizontal glass-effect">
+          <div class="prod-img-box"><img src="img/dual.png" alt="Dual Legends"></div>
           <div class="prod-info">
             <div>
               <h4 class="prod-title">Dual Legends SF2</h4>
@@ -603,7 +636,7 @@
                 <span class="old-price">$100.00</span>
                 <span class="prod-price" style="color: #00e5ff;">$60.00</span>
               </div>
-              <button class="btn-add-cart" data-id="6" data-name="Dual Legends SF2" data-price="60" data-img="Dual" data-type="Descarga directa">Agregar <i class="bi bi-cart-plus"></i></button>
+              <button class="btn-add-cart" data-id="6" data-name="Dual Legends SF2" data-price="60" data-img="dual" data-type="Descarga directa">Agregar <i class="bi bi-cart-plus"></i></button>
             </div>
           </div>
         </div>
@@ -615,7 +648,6 @@
   <!-- Footer -->
   <footer class="py-4 mt-5 border-top" style="border-color: var(--border-color) !important;">
     <div class="container text-center">
-      <!-- AQUÍ ESTÁ EL FOOTER EN BLANCO Y CON EL NOMBRE CORRECTO -->
       <p class="mb-0 text-white font-weight-bold" style="font-size: 0.9rem;">
         &copy; 2026 Dingloft - Evolution Group. Todos los derechos reservados.
       </p>
@@ -663,7 +695,7 @@
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- LÓGICA FUNCIONAL DEL CARRITO -->
+  <!-- LÓGICA FUNCIONAL DEL CARRITO Y LLAMADO DE IMÁGENES LOCALES -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       let cart = [];
@@ -687,7 +719,6 @@
         if(e) e.preventDefault(); 
         cartDrawer.classList.add('active'); 
         cartOverlay.classList.add('active');
-        // Cerrar menú móvil si está abierto al abrir carrito
         const navbarCollapse = document.getElementById('navbarNav');
         if(navbarCollapse.classList.contains('show')) {
           const bsCollapse = new bootstrap.Collapse(navbarCollapse, {toggle: false});
@@ -719,7 +750,9 @@
 
             const itemHTML = `
               <div class="cart-item">
-                <div class="cart-item-img">[ ${item.img} ]</div>
+                <div class="cart-item-img">
+                  <img src="img/${item.img}.png" alt="${item.name}">
+                </div>
                 <div class="cart-item-info">
                   <h4 class="cart-item-title">${item.name}</h4>
                   <p class="cart-item-desc">${item.type}</p>
