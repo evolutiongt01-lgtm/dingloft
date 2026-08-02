@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pianos Legendarios SF2 | Dingloft</title>
   
+  <!-- FAVICON -->
+  <link rel="icon" href="img/favicon.png" type="image/png">
+  
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   
@@ -236,17 +239,11 @@
     .btn-like:hover { background: rgba(255, 0, 85, 0.1); color: #ff0055; border-color: rgba(255, 0, 85, 0.3); }
     .btn-like.liked { background: rgba(255, 0, 85, 0.15); color: #ff0055; border-color: #ff0055; }
 
-    /* ====== ESTILOS DEL CARRITO LATERAL CON SCROLL IDÉNTICO AL INDEX ====== */
+    /* ====== ESTILOS DEL CARRITO LATERAL ====== */
     .cart-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      z-index: 1050;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease;
     }
     .cart-overlay.active { opacity: 1; visibility: visible; }
 
@@ -263,28 +260,17 @@
     .animated-watermark-logo { width: 240px; max-width: 80vw; animation: logoPulse 4s infinite ease-in-out; position: relative; }
 
     .cart-drawer {
-      position: fixed;
-      top: 0; right: -480px;
-      width: 450px;
-      max-width: 100%;
-      height: 100vh;
-      background: rgba(10, 14, 20, 0.95);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border-left: 1px solid var(--border-color);
-      box-shadow: -15px 0 40px rgba(0, 0, 0, 0.9);
-      z-index: 1060;
-      transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      display: flex;
-      flex-direction: column;
+      position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh;
+      background: rgba(10, 14, 20, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-left: 1px solid var(--border-color);
+      box-shadow: -15px 0 40px rgba(0, 0, 0, 0.9); z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column;
     }
     .cart-drawer.active { right: 0; }
 
     .cart-header { padding: 20px 25px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
-    .btn-close-cart { background: transparent; border: none; color: #ffffff; font-size: 1.3rem; line-height: 1; transition: color 0.3s; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-    .btn-close-cart:hover { color: var(--accent-color); transform: scale(1.1); }
+    .btn-close-cart { background: transparent; border: none; color: #ffffff; font-size: 1.3rem; line-height: 1; transition: color 0.3s; cursor: pointer; }
+    .btn-close-cart:hover { color: var(--accent-color); }
 
-    .cart-items-container { flex: 1; overflow-y: auto; padding: 20px 25px; }
+    .cart-items-container { flex: 1; overflow-y: auto; padding: 20px 25px; -webkit-overflow-scrolling: touch; }
 
     .cart-item { display: flex; gap: 15px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; }
     .cart-item-img { width: 60px; height: 80px; background: rgba(0,0,0,0.3); border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; padding: 5px; }
@@ -297,43 +283,38 @@
     .qty-btn { background: transparent; border: none; color: #fff; padding: 2px 10px; font-size: 0.9rem; cursor: pointer; }
     .qty-btn:hover { background: rgba(255,255,255,0.1); }
     .qty-value { padding: 0 10px; font-size: 0.85rem; font-weight: 600; color: #ffffff; }
-    .cart-item-remove { position: absolute; top: 0; right: 0; background: transparent; border: none; color: #ffffff; font-size: 1rem; }
+
+    .cart-item-remove { position: absolute; top: 0; right: 0; background: transparent; border: none; color: #ffffff; font-size: 1rem; cursor: pointer; }
     .cart-item-remove:hover { color: #ff4444; }
 
-    .cart-footer { padding: 20px 25px; background: rgba(0, 0, 0, 0.6); border-top: 1px solid var(--border-color); flex-shrink: 0; max-height: 60vh; overflow-y: auto; }
+    .cart-footer { padding: 20px 25px; background: rgba(0, 0, 0, 0.8); border-top: 1px solid var(--border-color); flex-shrink: 0; max-height: 55vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .cart-empty-msg { text-align: center; color: #ffffff; margin-top: 50px; }
 
     .coupon-box { display: flex; gap: 8px; margin-bottom: 15px; }
     .coupon-input { flex: 1; background: rgba(4, 9, 18, 0.7); border: 1px solid rgba(153, 185, 216, 0.25); border-radius: 8px; color: #fff; padding: 8px 12px; font-size: 0.85rem; text-transform: uppercase; }
+    .coupon-input::placeholder { color: #6f7d91; text-transform: none; }
+    .coupon-input:focus { border-color: var(--accent-color); outline: none; background: rgba(4, 9, 18, 0.9); }
     .btn-apply-coupon { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0 15px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
     .btn-apply-coupon:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
     .coupon-msg { font-size: 0.78rem; margin-bottom: 12px; font-weight: 500; }
 
-    .paypal-white-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.4); padding: 15px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); margin-top: 10px; }
+    .paypal-white-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.4); padding: 15px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); margin-top: 10px; }
 
-    .btn-free-checkout { background: #00ff88; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 14px; width: 100%; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,255,136,0.2); }
-    .btn-free-checkout:hover { background: #00e67a; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,255,136,0.4); }
+    .btn-free-checkout { background: #00ff88; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 14px; width: 100%; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,255,136,0.2); cursor: pointer; }
+    .btn-free-checkout:hover { background: #00e67a; transform: translateY(-2px); }
 
     /* ====== MODAL DE ÉXITO PROFESIONAL ====== */
     .success-modal-overlay { position: fixed; inset: 0; background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: grid; place-items: center; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     .success-modal-overlay.active { opacity: 1; visibility: visible; }
-    .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(0, 229, 255, 0.3); box-shadow: 0 25px 70px rgba(0,0,0,0.7), 0 0 30px rgba(0,229,255,0.15); border-radius: 24px; padding: 40px 30px; width: min(440px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 30px 20px; width: min(420px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     .success-modal-overlay.active .success-modal-box { transform: scale(1) translateY(0); }
-    .success-icon-ring { width: 80px; height: 80px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 20px; color: #00ff88; font-size: 2.2rem; box-shadow: 0 0 25px rgba(0, 255, 136, 0.3); animation: pulseSuccess 2s infinite ease-in-out; }
-    @keyframes pulseSuccess { 0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); } 50% { box-shadow: 0 0 30px rgba(0, 255, 136, 0.6); } }
-    .success-modal-title { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 10px; letter-spacing: -0.03em; }
-    .success-modal-desc { color: #9ba9bd; font-size: 0.95rem; line-height: 1.6; margin-bottom: 30px; }
-    .success-modal-logo { width: 130px; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3)); }
-    
+    .success-icon-ring { width: 70px; height: 70px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: #00ff88; font-size: 1.8rem; }
+
     .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(50,221,145,.5); border-radius: 12px; color: #eafff3; background: #0c251d; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
     .toast.show { transform: translateY(0); }
 
-    @media (max-width: 991px) {
-      .cart-brand-watermark { display: none; } 
-    }
-    @media (max-width: 500px) {
-      .cart-drawer { width: 100%; }
-    }
+    @media (max-width: 991px) { .cart-brand-watermark { display: none; } }
+    @media (max-width: 500px) { .cart-drawer { width: 100%; } }
   </style>
 </head>
 <body>
@@ -342,16 +323,14 @@
   <div class="bg-orb orb-2"></div>
   <div class="bg-orb orb-3"></div>
 
-  <!-- MODAL DE ÉXITO PROFESIONAL -->
+  <!-- MODAL DE ÉXITO -->
   <div class="success-modal-overlay" id="success-modal">
     <div class="success-modal-box">
-      <img src="img/dingloft.png" alt="Dingloft" class="success-modal-logo">
-      <div class="success-icon-ring">
-        <i class="bi bi-check-lg"></i>
-      </div>
-      <h3 class="success-modal-title">¡Compra Exitosa!</h3>
-      <p class="success-modal-desc" id="success-modal-text">Tu pedido se ha procesado correctamente. Redirigiendo a tu panel de descargas...</p>
-      <button class="btn-cyan w-100" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
+      <img src="img/dingloft.png" alt="Dingloft" style="width: 110px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
+      <div class="success-icon-ring"><i class="bi bi-check-lg"></i></div>
+      <h3 style="color:#fff; font-weight:800; margin-bottom:10px; font-size: 1.4rem;">¡Compra Exitosa!</h3>
+      <p id="success-modal-text" style="color:#9ba9bd; margin-bottom:25px; font-size: 0.95rem;">Tu pedido se ha procesado correctamente.</p>
+      <button class="btn-cyan w-100 py-2" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
     </div>
   </div>
 
@@ -361,9 +340,11 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
     <div class="container">
-      <a class="navbar-brand fw-bold fs-4 text-white" href="index.html">
-        <span class="text-accent">D</span>ingloft
+      <!-- LOGO DE DINGLOFT ACTUALIZADO EN VEZ DE TEXTO -->
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
       </a>
+      
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="filter: invert(1);">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -449,8 +430,13 @@
             </div>
           </div>
 
-          <div class="mb-3">
-            <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--accent-color);">$60.00</span>
+          <!-- PRECIO CON DESCUENTO Y EFECTO DE OFERTA -->
+          <div class="mb-3 d-flex align-items-end gap-3">
+            <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--accent-color) !important; line-height: 1;">$60.00</span>
+            <div class="d-flex flex-column pb-1">
+              <span class="text-muted text-decoration-line-through" style="font-size: 1.1rem; line-height: 1;">$150.00 USD</span>
+              <span class="badge bg-danger mt-1" style="font-size: 0.75rem; letter-spacing: 1px; padding: 4px 8px;">AHORRAS $90</span>
+            </div>
           </div>
 
           <div class="d-flex flex-column gap-2">
@@ -650,10 +636,8 @@
             <span class="text-white small" style="color: #f1f5f9; font-size: 0.7rem;">Comunidad Dinámica</span>
           </div>
 
-          <!-- CONTENEDOR PARA FORMULARIO / LOGIN PROMPT -->
           <div id="comment-section-wrapper" class="mb-4"></div>
 
-          <!-- CONTENEDOR DE LOS COMENTARIOS -->
           <div id="comments-container">
             <div class="text-center text-muted py-3 small">Cargando opiniones de la comunidad...</div>
           </div>
@@ -673,7 +657,7 @@
     </div>
   </footer>
 
-  <!-- ====== ESTRUCTURA DEL CARRITO LATERAL Y BLOQUEO IZQUIERDO (DE TU INDEX) ====== -->
+  <!-- ====== ESTRUCTURA DEL CARRITO LATERAL Y BLOQUEO IZQUIERDO ====== -->
   <div class="cart-overlay" id="cart-overlay"></div>
   
   <div class="cart-brand-watermark">
@@ -752,9 +736,10 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    // Exportar variables al scope global para que el script del carrito pueda leerlas
+    window.globalCurrentUser = null;
     let currentUser = null;
 
-    // COMENTARIOS BASE EN CASO DE QUE FIREBASE FALLE O ESTÉ VACÍO
     const initialDefaultComments = [
       { name: "Josué Morales (Ministerio Ebenezer)", rating: 5, text: "¡Los sonidos están a otro nivel! Usé el Ballad Keys en directo y sonó idéntico al teclado original. Súper recomendado para directo.", likes: 38, likedBy: [] },
       { name: "Carlos R.", rating: 5, text: "Probé la versión de prueba de 531.5 MB y con eso bastó para decidirme a comprar el bundle completo. Excelente atención y entrega inmediata.", likes: 24, likedBy: [] },
@@ -769,7 +754,6 @@
       { name: "Misael Castillo", rating: 5, text: "¡Impresionante! Lo probé con FL Studio Mobile y corrió de maravilla. Gracias Cesar por compartir esta tremenda herramienta.", likes: 21, likedBy: [] }
     ];
 
-    // FUNCIÓN SEGURA PARA DIBUJAR COMENTARIOS EN PANTALLA
     function renderCommentsUI(commentsData) {
         const container = document.getElementById('comments-container');
         container.innerHTML = '';
@@ -777,7 +761,6 @@
             const docId = com.id;
             let stars = '★★★★★'.substring(0, com.rating || 5) + '☆☆☆☆☆'.substring(0, 5 - (com.rating || 5));
             
-            // VERIFICAR SI EL USUARIO YA LE DIO LIKE
             let likedByArray = com.likedBy || [];
             let isLiked = currentUser && likedByArray.includes(currentUser.uid);
             let btnClass = isLiked ? "btn-like liked" : "btn-like";
@@ -799,7 +782,6 @@
         });
     }
 
-    // CARGAR COMENTARIOS (SÍ SE EJECUTA SIN INICIAR SESIÓN)
     async function loadComments() {
       const container = document.getElementById('comments-container');
       try {
@@ -810,7 +792,7 @@
         try {
             snapshot = await getDocs(q);
         } catch(readErr) {
-            console.log("Se bloquearon los permisos de lectura o la colección no existe. Cargando por defecto.");
+            console.log("Cargando por defecto debido a permisos o colección vacía.");
             renderCommentsUI(initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c })));
             return;
         }
@@ -822,7 +804,6 @@
             }
             snapshot = await getDocs(q);
           } catch(writeErr) {
-            console.log("No se pudo sembrar la base de datos. Mostrando locales.");
             renderCommentsUI(initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c })));
             return;
           }
@@ -838,13 +819,13 @@
       }
     }
 
-    // SE EJECUTA SIEMPRE AL INICIO PARA MOSTRARLOS
     document.addEventListener('DOMContentLoaded', () => {
       loadComments();
     });
 
     onAuthStateChanged(auth, (user) => {
       currentUser = user;
+      window.globalCurrentUser = user; // Exportar al otro script
       const desktopAuthContainer = document.getElementById('desktop-auth-container');
       const mobileAuthContainer = document.getElementById('mobile-auth-container');
       const commentWrapper = document.getElementById('comment-section-wrapper');
@@ -929,7 +910,6 @@
         `;
       }
       
-      // RECARGAR COMENTARIOS AHORA CON LA IDENTIDAD DEL USUARIO (PARA PINTAR SUS LIKES)
       loadComments();
     });
 
@@ -973,7 +953,6 @@
       }
     }
 
-    // MANEJADOR DE LIKES (SE GUARDA EN FIRESTORE Y SOBREVIVE A LA RECARGA)
     window.toggleLikeFirestore = async function(docId, btn) {
       if (!currentUser) {
         alert("Debes iniciar sesión para dar like.");
@@ -990,7 +969,6 @@
       let currentLikes = parseInt(countSpan.textContent);
       let isLiking = !btn.classList.contains('liked');
 
-      // 1. Cambio visual instantáneo (Optimistic UI)
       if (isLiking) {
         btn.classList.add('liked');
         btn.querySelector('i').className = 'bi bi-heart-fill';
@@ -1001,7 +979,6 @@
         countSpan.textContent = currentLikes - 1;
       }
 
-      // 2. Guardado real en Firebase usando arrayUnion y arrayRemove
       try {
         const commentRef = doc(db, "product_comments", docId);
         if (isLiking) {
@@ -1017,7 +994,6 @@
         }
       } catch (err) {
         console.error("Error al actualizar like:", err);
-        // Si falla, revertimos el cambio visual
         if (isLiking) {
           btn.classList.remove('liked');
           btn.querySelector('i').className = 'bi bi-heart';
@@ -1090,7 +1066,7 @@
     }
   </script>
 
-  <!-- Lógica del Carrito Intacta -->
+  <!-- Lógica del Carrito y Candado en Prueba Gratis -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       let cart = [];
@@ -1315,11 +1291,19 @@
         });
       });
       
-      // LÓGICA DE POPUP PARA LA PRUEBA GRATIS
+      // LÓGICA DE POPUP PARA LA PRUEBA GRATIS CON CANDADO DE SESIÓN
       const freeTrialBtn = document.getElementById('btn-free-trial');
       if (freeTrialBtn) {
         freeTrialBtn.addEventListener('click', function(e) {
           e.preventDefault();
+
+          // VALIDACIÓN: ¿Está logueado el usuario?
+          if (!window.globalCurrentUser) {
+            alert("Para descargar la prueba gratis de alta calidad, por favor inicia sesión o regístrate en Dingloft. ¡Toma solo 1 minuto!");
+            window.location.href = 'login.html';
+            return;
+          }
+
           const url = this.getAttribute('data-url') + '&confirm=t';
           const toast = document.getElementById('toast-message');
 
