@@ -194,7 +194,6 @@
       text-align: center; letter-spacing: 1px; font-size: 0.85rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; margin-bottom: 25px; padding: 0 10px; line-height: 1.5;
     }
     
-    /* TECLADOS OPTIMIZADOS PARA MÓVIL */
     .keyboard-card {
       background: linear-gradient(145deg, rgba(12, 17, 26, 0.9), rgba(6, 9, 15, 0.98));
       border: 1px solid var(--border-color); 
@@ -218,9 +217,24 @@
     }
     .keyboard-card h5 { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.5px; margin: 0; color: #fff; }
 
+    /* NOTA DEL CREADOR (FOTO DE PERFIL ARREGLADA EN MÓVIL) */
     .creator-note-box {
       background: linear-gradient(135deg, rgba(0, 229, 255, 0.07), rgba(122, 0, 255, 0.04));
       border: 1px solid rgba(0, 229, 255, 0.25); border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .creator-avatar {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      min-height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00e5ff, #7a00ff);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #000;
+      flex-shrink: 0;
     }
 
     .software-badge-box {
@@ -244,13 +258,28 @@
     }
     .form-control-custom::placeholder { color: #94a3b8; }
 
-    /* MEDIA QUERIES ESPECÍFICAS PARA TELÉFONOS */
+    /* ESTILO BOTÓN LIKE */
+    .btn-like {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #94a3b8;
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-like:hover { background: rgba(255, 0, 85, 0.1); color: #ff0055; border-color: rgba(255, 0, 85, 0.3); }
+    .btn-like.liked { background: rgba(255, 0, 85, 0.15); color: #ff0055; border-color: #ff0055; }
+
     @media (max-width: 768px) {
       .product-detail-section { padding: 90px 0 20px; }
       h1 { font-size: 2.2rem !important; }
       .btn-cyan, .btn-outline-cyan { padding: 12px 15px; font-size: 0.95rem; }
       .compatible-title { font-size: 0.8rem; }
-      .creator-note-box { padding: 15px; }
     }
 
     /* CARRITO Y TOAST */
@@ -360,8 +389,9 @@
           <span class="text-uppercase text-info fw-bold" style="font-size: 0.7rem; letter-spacing: 2px;">Colección Premium de Pianos</span>
           <h1 class="fw-bold my-2 text-white" style="font-size: 2.5rem; letter-spacing: -1px;">Pianos Legendarios SF2</h1>
           
+          <!-- Texto actualizado con +100 -->
           <p class="text-white mb-3" style="font-size: 0.98rem; line-height: 1.6; color: #f1f5f9;">
-            Sonidos de escenario extravagantes y profesionales para Nord Stage 4, Motif XF8 y Montage M8x. Una librería maestra que <b>más de 100 músicos ya utilizan en vivo en sus iglesias y ministerios</b>.
+            Sonidos de escenario extravagantes y profesionales para Nord Stage 4, Motif XF8 y Montage M8x. Una librería maestra que <b>+100 músicos ya utilizan en vivo en sus iglesias y ministerios</b>.
           </p>
 
           <!-- Especificaciones de Peso y Regalos -->
@@ -446,12 +476,12 @@
         </div>
       </div>
 
-      <!-- NOTA DEL CREADOR (CESAR) -->
+      <!-- NOTA DEL CREADOR (CON AVATAR ARREGLADO) -->
       <div class="row justify-content-center mb-4">
         <div class="col-lg-10">
           <div class="creator-note-box">
             <div class="d-flex align-items-center gap-3 mb-2">
-              <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #00e5ff, #7a00ff); display: grid; place-items: center; font-weight: 800; font-size: 1rem; color: #000;">C</div>
+              <div class="creator-avatar">C</div>
               <div>
                 <h6 class="text-white mb-0 fw-bold">Nota del Creador</h6>
                 <small class="text-info" style="font-size: 0.75rem;">Cesar — Músico y Desarrollador (Ministerio Ebenezer, California)</small>
@@ -539,7 +569,7 @@
         </div>
       </div>
 
-      <!-- SECCIÓN DE PRODUCTOS SIMILARES (CARRUSEL MÓVIL) -->
+      <!-- SECCIÓN DE PRODUCTOS SIMILARES -->
       <div class="row justify-content-center my-4">
         <div class="col-lg-10">
           <div class="d-flex justify-content-between align-items-center mb-3">
@@ -599,7 +629,7 @@
         </div>
       </div>
 
-      <!-- SECCIÓN DE COMENTARIOS Y RESEÑAS -->
+      <!-- SECCIÓN DE COMENTARIOS CON LIKES (16 A 40 LIKES INICIALES) -->
       <div class="row justify-content-center comments-section">
         <div class="col-lg-10">
           <div class="d-flex justify-content-between align-items-center mb-3">
@@ -637,8 +667,11 @@
                 <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Josué Morales (Ebenezer)</h6>
                 <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
               </div>
-              <p class="text-white mb-1 small" style="color: #f1f5f9; font-size: 0.8rem;">¡Los sonidos están a otro nivel! Usé el Ballad Keys en directo y sonó idéntico al teclado original.</p>
-              <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 2 días</small>
+              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">¡Los sonidos están a otro nivel! Usé el Ballad Keys en directo y sonó idéntico al teclado original.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 2 días</small>
+                <button class="btn-like" onclick="toggleLike(this)"><i class="bi bi-heart"></i> <span class="like-count">38</span></button>
+              </div>
             </div>
 
             <div class="comment-card">
@@ -646,8 +679,11 @@
                 <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Carlos R.</h6>
                 <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
               </div>
-              <p class="text-white mb-1 small" style="color: #f1f5f9; font-size: 0.8rem;">Probé la versión de prueba de 531.5 MB y con eso bastó para comprar el bundle completo.</p>
-              <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 4 días</small>
+              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">Probé la versión de prueba de 531.5 MB y con eso bastó para comprar el bundle completo.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 4 días</small>
+                <button class="btn-like" onclick="toggleLike(this)"><i class="bi bi-heart"></i> <span class="like-count">24</span></button>
+              </div>
             </div>
 
             <div class="comment-card">
@@ -655,8 +691,11 @@
                 <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Pastor Esteban Gómez</h6>
                 <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
               </div>
-              <p class="text-white mb-1 small" style="color: #f1f5f9; font-size: 0.8rem;">Los pads para la administración le dieron otra atmósfera a nuestras reuniones.</p>
-              <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 5 días</small>
+              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">Los pads para la administración le dieron otra atmósfera a nuestras reuniones.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 5 días</small>
+                <button class="btn-like" onclick="toggleLike(this)"><i class="bi bi-heart"></i> <span class="like-count">31</span></button>
+              </div>
             </div>
 
             <div class="comment-card">
@@ -664,8 +703,35 @@
                 <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Marco Tulio</h6>
                 <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
               </div>
-              <p class="text-white mb-1 small" style="color: #f1f5f9; font-size: 0.8rem;">Con Audio Evolution va perfecto y cero latencia. ¡Gran trabajo Cesar!</p>
-              <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 1 semana</small>
+              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">Con Audio Evolution va perfecto y cero latencia. ¡Gran trabajo Cesar!</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 1 semana</small>
+                <button class="btn-like" onclick="toggleLike(this)"><i class="bi bi-heart"></i> <span class="like-count">19</span></button>
+              </div>
+            </div>
+
+            <div class="comment-card">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Samuel Pineda</h6>
+                <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
+              </div>
+              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">¡Muy recomendado! Lo instalé en BS-16i para mi iPad y la respuesta al tacto es increíble.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 2 semanas</small>
+                <button class="btn-like" onclick="toggleLike(this)"><i class="bi bi-heart"></i> <span class="like-count">27</span></button>
+              </div>
+            </div>
+
+            <div class="comment-card">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Joel Hernández</h6>
+                <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
+              </div>
+              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">Tremendo aporte para los músicos cristianos. Tener los sonidos del Motif y Nord en la palma de la mano no tiene precio.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 3 semanas</small>
+                <button class="btn-like" onclick="toggleLike(this)"><i class="bi bi-heart"></i> <span class="like-count">35</span></button>
+              </div>
             </div>
           </div>
 
@@ -770,6 +836,23 @@
   </script>
 
   <script>
+    // FUNCIÓN GLOBAL PARA DAR LIKE A LOS COMENTARIOS
+    window.toggleLike = function(btn) {
+      const icon = btn.querySelector('bi-heart, i');
+      const countSpan = btn.querySelector('.like-count');
+      let count = parseInt(countSpan.textContent);
+
+      if (btn.classList.contains('liked')) {
+        btn.classList.remove('liked');
+        icon.className = 'bi bi-heart';
+        countSpan.textContent = count - 1;
+      } else {
+        btn.classList.add('liked');
+        icon.className = 'bi bi-heart-fill';
+        countSpan.textContent = count + 1;
+      }
+    };
+
     document.addEventListener('DOMContentLoaded', () => {
       let cart = [];
       let couponApplied = false;
@@ -912,8 +995,11 @@
               <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> ${name}</h6>
               <span class="text-warning small" style="font-size: 0.75rem;">${stars}</span>
             </div>
-            <p class="text-white mb-1 small" style="color: #f1f5f9; font-size: 0.8rem;">${text}</p>
-            <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Justo ahora</small>
+            <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">${text}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Justo ahora</small>
+              <button class="btn-like" onclick="toggleLike(this)"><i class="bi bi-heart"></i> <span class="like-count">1</span></button>
+            </div>
           </div>
         `;
 
