@@ -14,8 +14,8 @@
   <!-- Google Fonts: Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
 
-  <!-- SDK OFICIAL DE PAYPAL -->
-  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
+  <!-- SDK OFICIAL DE PAYPAL CON TU CLIENT ID REAL DE DISEÑO DE EVOLUCIÓN -->
+  <script src="https://www.paypal.com/sdk/js?client-id=BAA88yHrlAVHUFkzsqrlDE1atrFHrCZe7j0XOYtbB4YlxcxBASouD2NAU2J_BV1fp9-jGGYK2Mh4bHN20&currency=USD"></script>
   
   <style>
     :root {
@@ -1450,7 +1450,6 @@
             cartItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
           });
 
-          // Aplicar descuento de cupón si está activo
           let finalTotal = totalPrice;
           if (couponApplied) {
             finalTotal = 0;
@@ -1477,7 +1476,6 @@
         cartTotalText.textContent = `$${(couponApplied ? 0 : totalPrice).toFixed(2)}`;
       };
 
-      // VALIDACIÓN DEL CUPÓN
       applyCouponBtn.addEventListener('click', () => {
         const code = couponInput.value.trim().toUpperCase();
         if (code === 'ADMIN_EVOLUTION') {
