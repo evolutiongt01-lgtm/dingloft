@@ -523,7 +523,7 @@
                 <span class="fw-bold text-accent">$60.00</span>
               </div>
               <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Nord + Yamaha + Bonus PAD</p>
-              <button class="btn-cyan w-100 py-2 d-flex align-items-center justify-content-center gap-2" id="btn-buy-now" data-id="9" data-name="Pianos Legendarios SF2" data-price="60" data-img="pianos_bundle_boxes" data-type="Librería vitalicia">
+              <button class="btn-cyan w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="9" data-name="Pianos Legendarios SF2" data-price="60" data-img="pianos_bundle_boxes" data-type="Librería vitalicia">
                 <i class="bi bi-cart3"></i> AGREGAR BUNDLE
               </button>
             </div>
@@ -1147,6 +1147,9 @@
                 uid: user.uid, userEmail: user.email, paypalOrderId: details.id,
                 payerName: details.payer.name.given_name, items: itemsComprados, createdAt: serverTimestamp()
               });
+              
+              if (typeof window.clearCart === 'function') window.clearCart();
+              
               mostrarModalExito(`¡Pago exitoso, ${details.payer.name.given_name}! Redirigiendo a tu cuenta...`);
               setTimeout(() => { window.location.href = 'account.html'; }, 2200);
             } catch (error) { console.error("Error:", error); }
@@ -1168,6 +1171,9 @@
             uid: user.uid, userEmail: user.email, paypalOrderId: "PEDIDO-GRATUITO-" + Date.now(),
             payerName: user.displayName || "Usuario", items: itemsComprados, createdAt: serverTimestamp()
           });
+          
+          if (typeof window.clearCart === 'function') window.clearCart();
+          
           mostrarModalExito("¡Pedido procesado con éxito! Redirigiendo a tus descargas...");
           setTimeout(() => { window.location.href = 'account.html'; }, 2200);
         } catch (error) {
@@ -1179,10 +1185,10 @@
     }
   </script>
 
-  <!-- Lógica del Carrito (Botón de Descarga Directa sin candado) -->
+  <!-- Lógica del Carrito (Botón de Descarga Directa sin candado y LocalStorage) -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      let cart = [];
+      let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
       let couponApplied = false;
 
       const cartBtns = [document.getElementById('main-cart-btn'), document.querySelector('.mobile-cart-btn')];
@@ -1325,7 +1331,20 @@
         
         if(cartSubtotalText) cartSubtotalText.textContent = `$${totalPrice.toFixed(2)}`;
         if(cartTotalText) cartTotalText.textContent = `$${(couponApplied ? 0 : totalPrice).toFixed(2)}`;
+        
+        // GUARDAR EL ESTADO DEL CARRITO EN LA MEMORIA DEL NAVEGADOR
+        localStorage.setItem('dingloft_cart', JSON.stringify(cart));
       };
+
+      // Función para limpiar el carrito una vez comprado
+      window.clearCart = () => {
+        cart = [];
+        localStorage.removeItem('dingloft_cart');
+        updateCartUI();
+      };
+
+      // Iniciar el carrito apenas cargue la página
+      updateCartUI();
 
       if(applyCouponBtn) {
         applyCouponBtn.addEventListener('click', () => {
@@ -1404,7 +1423,6 @@
         });
       });
       
-      // LÓGICA DE POPUP PARA LA PRUEBA GRATIS (SIN CANDADO DE SESIÓN)
       const freeTrialBtn = document.getElementById('btn-free-trial');
       if (freeTrialBtn) {
         freeTrialBtn.addEventListener('click', function(e) {
