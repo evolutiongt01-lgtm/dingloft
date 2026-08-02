@@ -115,25 +115,27 @@
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Lógica de Firebase y Google Auth -->
+  <!-- Lógica de Firebase, Auth y Firestore con la nueva configuración -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // Configuración de Firebase corregida
+    // Configuración exacta de tu nueva app web en Firebase
     const firebaseConfig = {
-      apiKey: "AIzaSyAKxQdUM49CvBaXWJ5DF3s7EaNKlJRGhA",
+      apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
       authDomain: "login-dingloft.firebaseapp.com",
       projectId: "login-dingloft",
       storageBucket: "login-dingloft.firebasestorage.app",
       messagingSenderId: "549466738202",
-      appId: "1:549466738202:web:2da709e9cd5b823776cba3",
-      measurementId: "G-5LE2VYVPM0"
+      appId: "1:549466738202:web:8bf305fe2c753e9d76cba3",
+      measurementId: "G-R9SGZCDN13"
     };
 
-    // Inicializar Firebase
+    // Inicializar Firebase, Auth y Firestore
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
     // Capturar el resultado cuando Google redirija de vuelta a la página
@@ -156,6 +158,23 @@
         await signInWithRedirect(auth, provider);
       } catch (error) {
         console.error("Error al iniciar la redirección:", error);
+        alert(`Error [${error.code}]: ${error.message}`);
+      }
+    });
+
+    // Inicio de sesión con Correo y Contraseña
+    const loginForm = document.getElementById('login-form');
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        alert(`¡Bienvenido de nuevo, ${userCredential.user.email}!`);
+        window.location.href = 'index.html';
+      } catch (error) {
+        console.error("Error al iniciar sesión:", error.code, error.message);
         alert(`Error [${error.code}]: ${error.message}`);
       }
     });
