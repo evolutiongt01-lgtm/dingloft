@@ -137,7 +137,7 @@
   
   <div class="toast" role="status">La descarga comenzará en breve.</div>
 
-  <!-- LÓGICA DE FIREBASE Y ENLACES DIRECTOS DE DESCARGA -->
+  <!-- LÓGICA DE FIREBASE Y ENLACES DIRECTOS DE GOOGLE DRIVE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -157,14 +157,16 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // MAPA DE ENLACES DIRECTOS DE GOOGLE DRIVE CONFIGURADOS
+    // MAPA CON TODOS LOS ENLACES CONVERTIDOS ESTRICTAMENTE A DESCARGA DIRECTA
     const downloadLinksMap = {
       "AutoCAD 2026": "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase",
       "Microsoft Office 2024": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
+      "Office Home & Business": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
       "SketchUp Pro 2026": "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD",
       "Bonus PAD": "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj",
       "Nord Essential SF2": "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1",
       "Nord Stage 4 Ultimate Library": "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1",
+      "Nord Essentials SF2 Collection": "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1",
       "Yamaha Legacy Collection SF2": "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe",
       "Bonus Yamaha Legacy": "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj",
       "Cosmos Collection": "https://drive.google.com/uc?export=download&id=1Z3Xk2MiDMk90PP2jajvVwG3bWHUmSzeL",
@@ -178,7 +180,7 @@
       "Rhodes Affair 2 (Windows)": "https://drive.google.com/uc?export=download&id=1C2Lj_8jMqRLdjdd1O4jSdOQYwrDayJx_",
       "Rhodes Affair 2": "https://drive.google.com/uc?export=download&id=1B6dfQJjCh0vzOAuf6eTtuKQ91EAhfFKY",
       "Montage 8 & Nord Stage 3": "https://drive.google.com/uc?export=download&id=1OayW_WEpr6Y3Ea5e9wVBC7kLpDptRJA1",
-      "SketchUp 2026 & AutoCAD 2026": "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD",
+      "SketchUp & AutoCAD Combo": "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD",
       "Biblias E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo",
       "Biblias y Diccionarios para E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo"
     };
@@ -229,7 +231,7 @@
                 let imgProd = producto.img || "autocad"; 
                 let typeProd = producto.type || 'Instalador digital';
                 
-                // Obtener el enlace directo mapeado o usar un fallback genérico de descarga
+                // Forzar el uso del link directo mapeado o el que venga en base de datos
                 let directLink = producto.downloadUrl || downloadLinksMap[nombreProd] || "https://drive.google.com";
                 
                 if(typeof producto === 'string') {
