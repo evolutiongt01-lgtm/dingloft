@@ -36,6 +36,12 @@
       position: relative;
     }
 
+    /* Clase para bloquear el scroll de la página fondo / izquierda cuando el carrito está abierto */
+    body.cart-open {
+      overflow: hidden !important;
+      height: 100vh;
+    }
+
     /* Animación de movimiento y cambio de colores para los orbes */
     @keyframes orbFloat1 {
       0% { transform: translate(0px, 0px) scale(1); background: #00e5ff; }
@@ -1385,13 +1391,23 @@
         if(e) e.preventDefault(); 
         cartDrawer.classList.add('active'); 
         cartOverlay.classList.add('active');
+        document.body.classList.add('cart-open'); // BLOQUEAR SCROLL DE LA PÁGINA FONDO/IZQUIERDA
+        
+        updateCartUI();
+
         const navbarCollapse = document.getElementById('navbarNav');
         if(navbarCollapse.classList.contains('show')) {
           const bsCollapse = new bootstrap.Collapse(navbarCollapse, {toggle: false});
           bsCollapse.hide();
         }
       };
-      const closeCart = (e) => { if(e) e.preventDefault(); cartDrawer.classList.remove('active'); cartOverlay.classList.remove('active'); };
+
+      const closeCart = (e) => { 
+        if(e) e.preventDefault(); 
+        cartDrawer.classList.remove('active'); 
+        cartOverlay.classList.remove('active'); 
+        document.body.classList.remove('cart-open'); // RESTAURAR SCROLL
+      };
 
       cartBtns.forEach(btn => { if(btn) btn.addEventListener('click', openCart); });
       closeCartBtn.addEventListener('click', closeCart);
@@ -1530,7 +1546,7 @@
           const img = this.getAttribute('data-img');
           const type = this.getAttribute('data-type');
           
-          const existingItem = cart.find(item => item.id === id);
+          const existingItem = cart.indexBy ? null : cart.find(item => item.id === id);
           if (existingItem) {
             existingItem.qty += 1;
           } else {
