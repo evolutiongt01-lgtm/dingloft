@@ -411,7 +411,7 @@
           <li class="nav-item"><a class="nav-link" href="#">Preguntas</a></li>
           
           <!-- Botón de Iniciar Sesión en Menú Móvil -->
-          <li class="nav-item d-lg-none mt-3 w-100">
+          <li class="nav-item d-lg-none mt-3 w-100" id="mobile-auth-container">
             <a href="login.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none">
               <i class="bi bi-person-circle"></i> Iniciar Sesión
             </a>
@@ -426,9 +426,11 @@
       </div>
       <div class="d-none d-lg-flex align-items-center gap-3">
         <!-- Botón de Iniciar Sesión en PC -->
-        <a href="login.html" class="text-white text-decoration-none small fw-semibold" style="transition: color 0.3s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#fff'">
-          <i class="bi bi-person-circle"></i> Iniciar Sesión
-        </a>
+        <div id="desktop-auth-container">
+          <a href="login.html" class="text-white text-decoration-none small fw-semibold d-flex align-items-center gap-2" style="transition: color 0.3s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#fff'">
+            <i class="bi bi-person-circle fs-5"></i> Iniciar Sesión
+          </a>
+        </div>
         <button id="main-cart-btn" class="btn-outline-custom" style="padding: 6px 15px; font-size: 0.9rem;">
           <i class="bi bi-cart3"></i> CARRITO (<span id="cart-count">0</span>)
         </button>
@@ -941,6 +943,67 @@
 
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Lógica de Firebase Auth para actualizar UI de "Iniciar Sesión" a "Perfil" -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
+      authDomain: "login-dingloft.firebaseapp.com",
+      projectId: "login-dingloft",
+      storageBucket: "login-dingloft.firebasestorage.app",
+      messagingSenderId: "549466738202",
+      appId: "1:549466738202:web:8bf305fe2c753e9d76cba3",
+      measurementId: "G-R9SGZCDN13"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      const desktopAuthContainer = document.getElementById('desktop-auth-container');
+      const mobileAuthContainer = document.getElementById('mobile-auth-container');
+
+      if (user) {
+        // Sacar el nombre corto del usuario (primer nombre o inicio del correo)
+        let displayName = "Usuario";
+        if (user.displayName) {
+          displayName = user.displayName.split(' ')[0];
+        } else if (user.email) {
+          displayName = user.email.split('@')[0];
+        }
+
+        // Generar la foto (usa la de Google si la tiene, o una inicial si no)
+        let avatarHtml = '';
+        if (user.photoURL) {
+          avatarHtml = `<img src="${user.photoURL}" alt="Perfil" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">`;
+        } else {
+          const initial = displayName.charAt(0).toUpperCase();
+          avatarHtml = `<div style="width: 28px; height: 28px; border-radius: 50%; background: var(--accent-color); color: #000; display: grid; place-items: center; font-weight: bold; font-size: 14px;">${initial}</div>`;
+        }
+
+        // Actualizar UI del escritorio
+        if (desktopAuthContainer) {
+          desktopAuthContainer.innerHTML = `
+            <a href="account.html" class="text-white text-decoration-none small fw-semibold d-flex align-items-center gap-2" style="transition: color 0.3s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#fff'">
+              ${avatarHtml} Hola, ${displayName}
+            </a>
+          `;
+        }
+
+        // Actualizar UI del móvil
+        if (mobileAuthContainer) {
+          mobileAuthContainer.innerHTML = `
+            <a href="account.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none d-flex align-items-center justify-content-center gap-2">
+              ${avatarHtml} Mi Cuenta
+            </a>
+          `;
+        }
+      }
+    });
+  </script>
 
   <!-- LÓGICA FUNCIONAL DEL CARRITO Y LLAMADO DE IMÁGENES LOCALES -->
   <script>
