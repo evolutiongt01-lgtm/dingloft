@@ -302,7 +302,7 @@
       .compatible-title { font-size: 0.8rem; }
     }
 
-    /* CARRITO LATERAL IDÉNTICO AL INDEX EXITOSO (SCROLL FLUIDO EN IPHONE Y MAC) */
+    /* CARRITO LATERAL CON SCROLL INDEPENDIENTE PERFECTO */
     .cart-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -970,7 +970,6 @@
           </div>
         `;
       }
-      loadComments();
     });
 
     window.renderPayPalStable = function(monto) {
@@ -1015,6 +1014,7 @@
       { name: "Misael Castillo", rating: 5, text: "¡Impresionante! Lo probé con FL Studio Mobile y corrió de maravilla. Gracias Cesar por compartir esta tremenda herramienta.", likes: 21 }
     ];
 
+    // CARGAR COMENTARIOS AL INSTANTE PARA CUALQUIER VISITANTE (INDEPENDIENTE DEL LOGIN)
     async function loadComments() {
       const container = document.getElementById('comments-container');
       try {
@@ -1060,6 +1060,11 @@
         console.error("Error cargando comentarios:", err);
       }
     }
+
+    // Ejecutar la carga de comentarios de inmediato al abrir la página
+    document.addEventListener('DOMContentLoaded', () => {
+      loadComments();
+    });
 
     async function handleCommentSubmit(e) {
       e.preventDefault();
