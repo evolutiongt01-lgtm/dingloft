@@ -247,6 +247,28 @@
       background: rgba(12, 17, 26, 0.85); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 12px;
     }
     .comment-card:hover { border-color: rgba(0,229,255,0.4); }
+    
+    /* CAJA DE LOGIN PROFESIONAL PARA QUIENES NO HAN INICIADO SESIÓN */
+    .login-prompt-box {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.06), rgba(17, 21, 31, 0.95));
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      border-radius: 16px;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .login-prompt-icon {
+      width: 60px; height: 60px;
+      background: rgba(0, 229, 255, 0.1);
+      border: 2px solid var(--accent-color);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 15px;
+      color: var(--accent-color);
+      font-size: 1.5rem;
+    }
+
     .comment-form-box {
       background: rgba(12, 17, 26, 0.95); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.4);
     }
@@ -628,41 +650,22 @@
         </div>
       </div>
 
-      <!-- SECCIÓN DE COMENTARIOS (SOLO USUARIOS REGISTRADOS) -->
+      <!-- SECCIÓN DE COMENTARIOS Y RESEÑAS -->
       <div class="row justify-content-center comments-section">
         <div class="col-lg-10">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-chat-square-text text-accent" style="color:var(--accent-color)"></i> Opiniones de la Comunidad</h5>
-            <span class="text-white small" style="color: #f1f5f9; font-size: 0.7rem;">Requiere iniciar sesión</span>
+            <span class="text-white small" style="color: #f1f5f9; font-size: 0.7rem;">Comunidad Dinámica</span>
           </div>
 
-          <div class="comment-form-box mb-3">
-            <h6 class="text-white mb-2 fw-semibold" style="font-size: 0.9rem;">Deja tu reseña o comentario</h6>
-            <form id="comment-form">
-              <div class="row g-2">
-                <div class="col-12 col-md-6">
-                  <input type="text" id="comment-name" class="form-control form-control-custom" placeholder="Tu Nombre o Iglesia" required>
-                </div>
-                <div class="col-12 col-md-6">
-                  <select id="comment-rating" class="form-control form-control-custom">
-                    <option value="5">★★★★★ (5/5 - Excelente)</option>
-                    <option value="4">★★★★☆ (4/5 - Muy bueno)</option>
-                    <option value="3">★★★☆☆ (3/5 - Bueno)</option>
-                  </select>
-                </div>
-                <div class="col-12">
-                  <textarea id="comment-text" class="form-control form-control-custom" rows="2" placeholder="Escribe tu experiencia..." required></textarea>
-                </div>
-                <div class="col-12 text-end">
-                  <button type="submit" class="btn-cyan px-3 py-1" style="font-size: 0.85rem;" id="btn-submit-comment">Publicar</button>
-                </div>
-              </div>
-            </form>
+          <!-- CONTENEDOR CONDICIONAL PARA EL FORMULARIO DE COMENTARIOS -->
+          <div id="comment-section-wrapper" class="mb-4">
+            <!-- Se llena dinámicamente: Si está logueado muestra el formulario, si no, muestra la tarjeta profesional de login -->
           </div>
 
-          <!-- Contenedor de Comentarios -->
+          <!-- Contenedor de Comentarios (VISIBLE SIEMPRE PARA TODOS) -->
           <div id="comments-container">
-            <div class="text-center text-muted py-3 small">Cargando opiniones...</div>
+            <div class="text-center text-muted py-3 small">Cargando opiniones de la comunidad...</div>
           </div>
 
         </div>
@@ -708,7 +711,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- LÓGICA DE FIREBASE Y COMENTARIOS CON AUTENTICACIÓN -->
+  <!-- LÓGICA DE FIREBASE Y CONTROL DE SESIÓN -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -733,11 +736,58 @@
     onAuthStateChanged(auth, (user) => {
       currentUser = user;
       const desktopAuthContainer = document.getElementById('desktop-auth-container');
+      const commentWrapper = document.getElementById('comment-section-wrapper');
+
       if (user) {
         let displayName = user.displayName || user.email.split('@')[0];
         desktopAuthContainer.innerHTML = `<a href="account.html" class="text-white text-decoration-none small fw-semibold">Mi Cuenta (${displayName})</a>`;
+        
+        // MOSTRAR FORMULARIO PROFESIONAL SI ESTÁ LOGUEADO
+        commentWrapper.innerHTML = `
+          <div class="comment-form-box">
+            <h6 class="text-white mb-2 fw-semibold" style="font-size: 0.9rem;">Deja tu reseña o comentario</h6>
+            <form id="comment-form">
+              <div class="row g-2">
+                <div class="col-12 col-md-6">
+                  <input type="text" id="comment-name" class="form-control form-control-custom" value="${displayName}" placeholder="Tu Nombre o Iglesia" required>
+                </div>
+                <div class="col-12 col-md-6">
+                  <select id="comment-rating" class="form-control form-control-custom">
+                    <option value="5">★★★★★ (5/5 - Excelente)</option>
+                    <option value="4">★★★★☆ (4/5 - Muy bueno)</option>
+                    <option value="3">★★★☆☆ (3/5 - Bueno)</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <textarea id="comment-text" class="form-control form-control-custom" rows="2" placeholder="Escribe tu experiencia..." required></textarea>
+                </div>
+                <div class="col-12 text-end">
+                  <button type="submit" class="btn-cyan px-3 py-1" style="font-size: 0.85rem;" id="btn-submit-comment">Publicar Comentario</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        `;
+
+        // Añadir evento al formulario creado dinámicamente
+        document.getElementById('comment-form').addEventListener('submit', handleCommentSubmit);
+
       } else {
         desktopAuthContainer.innerHTML = `<a href="login.html" class="text-white text-decoration-none small fw-semibold">Iniciar Sesión</a>`;
+        
+        // MOSTRAR TARJETA PROFESIONAL DE INVITACIÓN AL LOGIN SI NO HA INICIADO SESIÓN
+        commentWrapper.innerHTML = `
+          <div class="login-prompt-box">
+            <div class="login-prompt-icon">
+              <i class="bi bi-lock-fill"></i>
+            </div>
+            <h5 class="text-white fw-bold mb-2 fs-6">Inicia sesión para dejar tu reseña</h5>
+            <p class="text-white small mb-3" style="color: #cbd5e1; font-size: 0.85rem;">Únete a nuestra comunidad de músicos, comparte tu opinión y apoya con un like.</p>
+            <a href="login.html" class="btn-cyan d-inline-block px-4 py-2 text-decoration-none" style="font-size: 0.9rem;">
+              <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión / Registrarse
+            </a>
+          </div>
+        `;
       }
       loadComments();
     });
@@ -771,19 +821,20 @@
     };
 
     const initialDefaultComments = [
-      { name: "Josué Morales (Ministerio Ebenezer)", rating: 5, text: "¡Los sonidos están a otro nivel! Usé el Ballad Keys en directo y sonó idéntico al teclado original. Súper recomendado para directo.", likes: 38, likedBy: [] },
-      { name: "Carlos R.", rating: 5, text: "Probé la versión de prueba de 531.5 MB y con eso bastó para decidirme a comprar el bundle completo. Excelente atención y entrega inmediata.", likes: 24, likedBy: [] },
-      { name: "Pastor Esteban Gómez", rating: 5, text: "Los pads para la administración y las guitarras eléctricas le dieron otra atmósfera a nuestras reuniones. ¡Una bendición tener este nivel de audio en una tablet!", likes: 31, likedBy: [] },
-      { name: "Marco Tulio (Tecladista)", rating: 5, text: "Tenía dudas de cómo correría en mi celular con Audio Evolution, pero con la prueba comprobé la fluidez. ¡Va perfecto y cero latencia!", likes: 19, likedBy: [] },
-      { name: "Daniel Siquiej", rating: 5, text: "El Motif XF8 incluido en la colección suena brutal. Valió cada centavo, la descarga llegó rapidísimo a mi panel de cuenta.", likes: 27, likedBy: [] },
-      { name: "David Cifuentes", rating: 5, text: "Excelente calidad de sampleo. Es la mejor inversión que hemos hecho para nuestro equipo de alabanza en la iglesia local.", likes: 40, likedBy: [] },
-      { name: "Samuel Pineda", rating: 5, text: "¡Muy recomendado! Lo instalé en BS-16i para mi iPad y la respuesta al tacto es increíble. Se nota el trabajo de sampleo profesional.", likes: 22, likedBy: [] },
-      { name: "Emanuel Vásquez", rating: 4, text: "Los pianos suenan súper limpios en las mezclas de en vivo. El único detalle es que tardé un poco en configurar los canales, pero soporte ayudó rápido.", likes: 16, likedBy: [] },
-      { name: "Joel Hernández", rating: 5, text: "Tremendo aporte para los músicos cristianos. Tener los sonidos del Motif y Nord en la palma de la mano no tiene precio.", likes: 33, likedBy: [] },
-      { name: "Jonathan Orellana", rating: 5, text: "El bonus PAD de regalo está excelente para las transiciones. 10/10 en calidad de audio y atención al cliente de Dingloft.", likes: 29, likedBy: [] },
-      { name: "Misael Castillo", rating: 5, text: "¡Impresionante! Lo probé con FL Studio Mobile y corrió de maravilla. Gracias Cesar por compartir esta tremenda herramienta.", likes: 21, likedBy: [] }
+      { name: "Josué Morales (Ministerio Ebenezer)", rating: 5, text: "¡Los sonidos están a otro nivel! Usé el Ballad Keys en directo y sonó idéntico al teclado original. Súper recomendado para directo.", likes: 38 },
+      { name: "Carlos R.", rating: 5, text: "Probé la versión de prueba de 531.5 MB y con eso bastó para decidirme a comprar el bundle completo. Excelente atención y entrega inmediata.", likes: 24 },
+      { name: "Pastor Esteban Gómez", rating: 5, text: "Los pads para la administración y las guitarras eléctricas le dieron otra atmósfera a nuestras reuniones. ¡Una bendición tener este nivel de audio en una tablet!", likes: 31 },
+      { name: "Marco Tulio (Tecladista)", rating: 5, text: "Tenía dudas de cómo correría en mi celular con Audio Evolution, pero con la prueba comprobé la fluidez. ¡Va perfecto y cero latencia!", likes: 19 },
+      { name: "Daniel Siquiej", rating: 5, text: "El Motif XF8 incluido en la colección suena brutal. Valió cada centavo, la descarga llegó rapidísimo a mi panel de cuenta.", likes: 27 },
+      { name: "David Cifuentes", rating: 5, text: "Excelente calidad de sampleo. Es la mejor inversión que hemos hecho para nuestro equipo de alabanza en la iglesia local.", likes: 40 },
+      { name: "Samuel Pineda", rating: 5, text: "¡Muy recomendado! Lo instalé en BS-16i para mi iPad y la respuesta al tacto es increíble. Se nota el trabajo de sampleo profesional.", likes: 22 },
+      { name: "Emanuel Vásquez", rating: 4, text: "Los pianos suenan súper limpios en las mezclas de en vivo. El único detalle es que tardé un poco en configurar los canales, pero soporte ayudó rápido.", likes: 16 },
+      { name: "Joel Hernández", rating: 5, text: "Tremendo aporte para los músicos cristianos. Tener los sonidos del Motif y Nord en la palma de la mano no tiene precio.", likes: 33 },
+      { name: "Jonathan Orellana", rating: 5, text: "El bonus PAD de regalo está excelente para las transiciones. 10/10 en calidad de audio y atención al cliente de Dingloft.", likes: 29 },
+      { name: "Misael Castillo", rating: 5, text: "¡Impresionante! Lo probé con FL Studio Mobile y corrió de maravilla. Gracias Cesar por compartir esta tremenda herramienta.", likes: 21 }
     ];
 
+    // CARGAR COMENTARIOS (VISIBLE SIEMPRE PARA TODOS)
     async function loadComments() {
       const container = document.getElementById('comments-container');
       try {
@@ -798,7 +849,6 @@
               rating: com.rating,
               text: com.text,
               likes: com.likes,
-              likedBy: [],
               createdAt: serverTimestamp()
             });
           }
@@ -810,11 +860,6 @@
           const com = docSnap.data();
           const docId = docSnap.id;
           let stars = '★★★★★'.substring(0, com.rating || 5) + '☆☆☆☆☆'.substring(0, 5 - (com.rating || 5));
-          
-          let likedBy = com.likedBy || [];
-          let userHasLiked = currentUser && likedBy.includes(currentUser.uid);
-          let likeBtnClass = userHasLiked ? "btn-like liked" : "btn-like";
-          let heartIcon = userHasLiked ? "bi bi-heart-fill" : "bi bi-heart";
 
           container.insertAdjacentHTML('beforeend', `
             <div class="comment-card" id="comment-${docId}">
@@ -825,7 +870,7 @@
               <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">${com.text}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Opinión verificada</small>
-                <button class="${likeBtnClass}" onclick="toggleLikeFirestore('${docId}')"><i class="${heartIcon}"></i> <span class="like-count">${com.likes || 0}</span></button>
+                <button class="btn-like" onclick="toggleLikeFirestore('${docId}', this)"><i class="bi bi-heart"></i> <span class="like-count">${com.likes || 0}</span></button>
               </div>
             </div>
           `);
@@ -836,12 +881,10 @@
       }
     }
 
-    // PUBLICAR COMENTARIO (SOLO SI HA INICIADO SESIÓN)
-    const commentForm = document.getElementById('comment-form');
-    commentForm.addEventListener('submit', async (e) => {
+    // MANEJADOR DE ENVÍO DE COMENTARIOS
+    async function handleCommentSubmit(e) {
       e.preventDefault();
       if (!currentUser) {
-        alert("Debes iniciar sesión para publicar un comentario.");
         window.location.href = 'login.html';
         return;
       }
@@ -862,11 +905,10 @@
           rating: rating,
           text: text,
           likes: 0,
-          likedBy: [],
           createdAt: serverTimestamp()
         });
 
-        commentForm.reset();
+        document.getElementById('comment-form').reset();
         loadComments();
 
         const toast = document.getElementById('toast-message');
@@ -879,51 +921,36 @@
         alert("Ocurrió un error al publicar.");
       } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = "Publicar";
+        submitBtn.textContent = "Publicar Comentario";
       }
-    });
+    }
 
-    // DAR/QUITAR LIKE CON RESTRICCIÓN DE LOGIN Y REGISTRO EN FIRESTORE
-    window.toggleLikeFirestore = async function(docId) {
+    // DAR/QUITAR LIKE (ACTUALIZA EN TIEMPO REAL EN FIRESTORE)
+    window.toggleLikeFirestore = async function(docId, btn) {
       if (!currentUser) {
-        alert("Debes iniciar sesión para dar like a los comentarios.");
+        alert("Debes iniciar sesión para dar like.");
         window.location.href = 'login.html';
         return;
       }
 
+      const countSpan = btn.querySelector('.like-count');
+      let currentLikes = parseInt(countSpan.textContent);
+      let newLikes;
+
+      if (btn.classList.contains('liked')) {
+        btn.classList.remove('liked');
+        btn.querySelector('i').className = 'bi bi-heart';
+        newLikes = currentLikes - 1;
+      } else {
+        btn.classList.add('liked');
+        btn.querySelector('i').className = 'bi bi-heart-fill';
+        newLikes = currentLikes + 1;
+      }
+      countSpan.textContent = newLikes;
+
       try {
         const commentRef = doc(db, "product_comments", docId);
-        // Hacemos una consulta rápida para obtener el estado actual
-        const snapshot = await getDocs(query(collection(db, "product_comments")));
-        
-        // Buscamos el documento actual
-        let currentLikes = 0;
-        let likedBy = [];
-        
-        // Nota: para simplificar en cliente, leemos del DOM o Firestore
-        const commentCard = document.getElementById(`comment-${docId}`);
-        const countSpan = commentCard.querySelector('.like-count');
-        const btn = commentCard.querySelector('.btn-like');
-        
-        // Hacemos lectura directa por doc id (requiere importar getDoc, o podemos gestionarlo mediante actualización)
-        // Optimizamos recargando o actualizando
-        window.location.reload = false; // mantenemos fluidez
-        
-        // Para evitar llamadas extras, usamos la transacción visual y actualizamos
-        let isLiked = btn.classList.contains('liked');
-        let newLikes = isLiked ? parseInt(countSpan.textContent) - 1 : parseInt(countSpan.textContent) + 1;
-
-        if (isLiked) {
-          btn.classList.remove('liked');
-          btn.querySelector('i').className = 'bi bi-heart';
-        } else {
-          btn.classList.add('liked');
-          btn.querySelector('i').className = 'bi bi-heart-fill';
-        }
-        countSpan.textContent = newLikes;
-
         await updateDoc(commentRef, { likes: newLikes });
-
       } catch (err) {
         console.error("Error al actualizar like:", err);
       }
