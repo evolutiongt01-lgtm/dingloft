@@ -108,24 +108,68 @@
           </form>
         </section>
       </div>
-      <div class="trust-bar"><span><i class="bi bi-shield-lock"></i>Pago seguro</span><span><i class="bi bi-headset"></i>Soporte técnico</span><span><i class="bi bi-patch-check"></i>Accesos verific---
+      <div class="trust-bar"><span><i class="bi bi-shield-lock"></i>Pago seguro</span><span><i class="bi bi-headset"></i>Soporte técnico</span><span><i class="bi bi-patch-check"></i>Accesos verificados</span></div>
+    </div>
+  </main>
 
-```javascript
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
-  authDomain: "login-dingloft.firebaseapp.com",
-  projectId: "login-dingloft",
-  storageBucket: "login-dingloft.firebasestorage.app",
-  messagingSenderId: "549466738202",
-  appId: "1:549466738202:web:2da709e9cd5b823776cba3",
-  measurementId: "G-5LE2VYVPM0"
-};
+  <!-- Lógica de Firebase y Google Auth -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+    // Configuración de Firebase corregida
+    const firebaseConfig = {
+      apiKey: "AIzaSyAKxQdUM49CvBaXWJ5DF3s7EaNKlJRGhA",
+      authDomain: "login-dingloft.firebaseapp.com",
+      projectId: "login-dingloft",
+      storageBucket: "login-dingloft.firebasestorage.app",
+      messagingSenderId: "549466738202",
+      appId: "1:549466738202:web:2da709e9cd5b823776cba3",
+      measurementId: "G-5LE2VYVPM0"
+    };
+
+    // Inicializar Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    // Capturar el resultado cuando Google redirija de vuelta a la página
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result) {
+          const user = result.user;
+          alert(`¡Bienvenido, ${user.displayName || user.email}! Has iniciado sesión correctamente.`);
+          window.location.href = 'index.html';
+        }
+      }).catch((error) => {
+        console.error("Error en redirección de Google:", error.code, error.message);
+        alert(`Error [${error.code}]: ${error.message}`);
+      });
+
+    // Botón de Google
+    const googleBtn = document.getElementById('google-login-btn');
+    googleBtn.addEventListener('click', async () => {
+      try {
+        await signInWithRedirect(auth, provider);
+      } catch (error) {
+        console.error("Error al iniciar la redirección:", error);
+        alert(`Error [${error.code}]: ${error.message}`);
+      }
+    });
+
+    // Mostrar/Ocultar contraseña
+    const passwordToggle = document.querySelector('.toggle-password');
+    const passwordInput = document.querySelector('#password');
+
+    passwordToggle?.addEventListener('click', () => {
+      const isHidden = passwordInput.type === 'password';
+      passwordInput.type = isHidden ? 'text' : 'password';
+      passwordToggle.querySelector('i').className = isHidden ? 'bi bi-eye-slash' : 'bi bi-eye';
+      passwordToggle.setAttribute('aria-label', isHidden ? 'Ocultar contraseña' : 'Mostrar contraseña');
+    });
+  </script>
+</body>
+</html>
