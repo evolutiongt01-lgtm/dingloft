@@ -20,22 +20,38 @@
     .nav a i { width:21px; font-size:1.3rem; text-align:center; } .nav a:hover { background:rgba(64,93,126,.15); color:white; }
     .nav a.active { color:var(--cyan); font-weight:700; background:linear-gradient(90deg,rgba(0,220,255,.13),rgba(41,71,112,.18)); box-shadow:inset 2px 0 var(--cyan); }
     .profile { margin-top:auto; padding:18px; border:1px solid var(--line); border-radius:17px; background:rgba(10,16,28,.68); } .profile-top { display:flex; align-items:center; gap:12px; }
-    .avatar { width:42px; height:42px; display:grid; place-items:center; border-radius:50%; color:#07131e; font-weight:800; background:linear-gradient(135deg,#4ce7ff,#8b5bff); box-shadow:0 0 0 2px rgba(37,214,247,.42); }
+    
+    /* Contenedor del Avatar en Sidebar */
+    .avatar { width:42px; height:42px; display:grid; place-items:center; border-radius:50%; color:#07131e; font-weight:800; background:linear-gradient(135deg,#4ce7ff,#8b5bff); box-shadow:0 0 0 2px rgba(37,214,247,.42); overflow:hidden; }
+    
     .profile strong { display:block; font-size:.87rem; } .profile small { display:block; margin-top:4px; color:var(--muted); font-size:.72rem; overflow:hidden; text-overflow:ellipsis; }
     .logout { width:100%; display:flex; gap:12px; align-items:center; margin-top:17px; padding:12px 0 0; border:0; border-top:1px solid var(--line); color:#c7d3e1; background:transparent; text-align:left; font-size:.86rem; }
     .content { min-width:0; padding:42px clamp(25px,5vw,78px) 37px; } .top { display:flex; align-items:center; justify-content:space-between; gap:20px; }
     .top h1 { margin:0; letter-spacing:-.06em; font-size:clamp(2rem,3vw,3.2rem); } .top p { margin:.7rem 0 0; color:var(--muted); } .top-actions { display:flex; gap:13px; align-items:center; }
     .icon-button { position:relative; display:grid; place-items:center; width:45px; height:45px; border:1px solid var(--line); border-radius:13px; color:#dbe9f6; background:rgba(14,23,38,.65); } .icon-button::after { content:''; position:absolute; top:8px; right:8px; width:7px; height:7px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan); }
-    .top-avatar { width:45px; height:45px; border:1px solid var(--cyan); border-radius:50%; display:grid; place-items:center; color:#07131e; background:linear-gradient(135deg,#f5b36e,#a56bff); font-weight:800; }
+    
+    /* Contenedor del Avatar Top */
+    .top-avatar { width:45px; height:45px; border:1px solid var(--cyan); border-radius:50%; display:grid; place-items:center; color:#07131e; background:linear-gradient(135deg,#f5b36e,#a56bff); font-weight:800; overflow:hidden; }
+    
     .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin:34px 0 26px; } .stat { display:flex; align-items:center; gap:19px; min-height:118px; padding:23px 26px; border:1px solid var(--line); border-radius:18px; background:linear-gradient(145deg,rgba(18,29,47,.84),rgba(8,14,25,.71)); }
     .stat i { width:57px; height:57px; display:grid; place-items:center; border-radius:16px; font-size:1.75rem; color:var(--cyan); border:1px solid rgba(0,217,255,.55); background:rgba(0,210,255,.08); } .stat:nth-child(2) i{color:var(--violet);border-color:rgba(154,92,255,.6);background:rgba(154,92,255,.08)} .stat:nth-child(3) i{color:var(--green);border-color:rgba(53,221,146,.6);background:rgba(53,221,146,.08)}
     .stat span { display:block; color:#cad5e3; font-size:.89rem; } .stat strong { display:block; margin-top:4px; font-size:2rem; line-height:1; color:var(--cyan); } .stat:nth-child(2) strong{color:var(--violet)} .stat:nth-child(3) strong{color:var(--green)}
     .dashboard { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(320px,.9fr); gap:23px; } .card { border:1px solid var(--line); border-radius:20px; background:linear-gradient(145deg,rgba(16,27,45,.82),rgba(8,14,25,.78)); box-shadow:0 18px 35px rgba(0,0,0,.15); }
     .card-title { display:flex; justify-content:space-between; align-items:center; padding:25px 29px 16px; } .card-title h2 { margin:0; font-size:1.28rem; letter-spacing:-.04em; } .card-title a { color:var(--cyan); text-decoration:none; font-size:.84rem; font-weight:700; }
     .downloads { padding:0 18px 18px; } .download-row { display:grid; grid-template-columns:68px minmax(120px,1fr) auto; gap:17px; align-items:center; padding:11px; border:1px solid transparent; border-radius:15px; transition:.2s ease; } .download-row:hover{border-color:var(--line);background:rgba(54,77,108,.13)}
-    .product-art { width:62px; height:72px; border:1px solid rgba(158,203,255,.35); border-radius:10px; background:linear-gradient(145deg,#071119,#007ea1 52%,#5d29a5); position:relative; overflow:hidden; } .product-art::after { content:''; position:absolute; width:90px; height:90px; left:18px; top:27px; border:12px solid rgba(255,255,255,.56); border-radius:20px; transform:rotate(36deg); } .product-art.orange{background:linear-gradient(145deg,#1a0e0b,#ff633f 55%,#7d2434)} .product-art.purple{background:linear-gradient(145deg,#150c2f,#7d4cff 55%,#10c6e8)}
+    
+    /* Configuración para las imágenes de los productos en Descargas */
+    .product-art { width:62px; height:72px; border:1px solid rgba(158,203,255,.35); border-radius:10px; background:#071119; overflow:hidden; display:flex; justify-content:center; align-items:center; }
+    .product-art img { width:100%; height:100%; object-fit:contain; padding:5px; }
+    
     .download-row h3 { margin:0 0 7px; font-size:1rem; letter-spacing:-.025em; } .download-row p { margin:0; color:var(--muted); font-size:.78rem; } .badge { display:inline-flex; align-items:center; gap:6px; margin-top:7px; color:var(--green); font-size:.72rem; font-weight:700; } .download-btn { width:43px; height:43px; border:1px solid rgba(0,217,255,.5); border-radius:11px; color:var(--cyan); background:rgba(0,213,255,.08); font-size:1.2rem; transition:.2s ease; } .download-btn:hover{background:var(--cyan);color:#04111a;transform:translateY(-2px)}
-    .right { display:grid; gap:23px; align-content:start; } .recent { padding:0 25px 8px; } .recent-item { display:flex; align-items:center; gap:13px; padding:16px 0; border-top:1px solid var(--line); } .recent-item:first-child{border-top:0}.recent-art{width:42px;height:42px;border-radius:9px;background:linear-gradient(145deg,#1e0b20,#f24c67,#100d20)}.recent-item:nth-child(3) .recent-art{background:linear-gradient(145deg,#0a1830,#48dfff,#2e56db)}.recent-item:nth-child(4) .recent-art{background:linear-gradient(145deg,#160b2b,#905cff,#00d5f2)}.recent-item strong{font-size:.9rem}.recent-item button{margin-left:auto;border:0;background:transparent;color:var(--cyan);font-size:1.3rem}
+    .right { display:grid; gap:23px; align-content:start; } .recent { padding:0 25px 8px; } .recent-item { display:flex; align-items:center; gap:13px; padding:16px 0; border-top:1px solid var(--line); } .recent-item:first-child{border-top:0}
+    
+    /* Configuración para las imágenes de los productos en Recientes */
+    .recent-art { width:42px; height:42px; border-radius:9px; background:#0a1830; overflow:hidden; display:flex; justify-content:center; align-items:center; border:1px solid rgba(158,203,255,.15); }
+    .recent-art img { width:100%; height:100%; object-fit:contain; padding:3px; }
+    
+    .recent-item strong{font-size:.9rem}.recent-item button{margin-left:auto;border:0;background:transparent;color:var(--cyan);font-size:1.3rem}
     .support { padding:27px 28px; background:linear-gradient(145deg,rgba(17,33,54,.92),rgba(7,20,32,.88)); } .support-icon { width:62px;height:62px;display:grid;place-items:center;border:1px solid var(--cyan);border-radius:50%;font-size:1.75rem;color:var(--cyan);margin-bottom:17px; } .support h2{margin:0 0 8px;font-size:1.35rem;letter-spacing:-.045em}.support p{color:#c0ccda;line-height:1.55;font-size:.9rem;margin:0 0 22px}.support button{width:100%;border:0;border-radius:10px;padding:14px;background:linear-gradient(100deg,#0bd8f4,#1cbeeb);color:#03111a;font-weight:800}.support button i{margin-right:8px}
     .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; } .toast.show{transform:translateY(0)}
@@ -54,22 +70,57 @@
         <a href="#soporte"><i class="bi bi-headset"></i><span>Soporte</span></a>
       </nav>
       <div class="profile">
-        <div class="profile-top"><div class="avatar">AT</div><div><strong>Antonio Tepaz</strong><small>antonio@tepaz.com</small></div></div>
+        <!-- IDs agregados para que Firebase inserte la foto, nombre y correo del cliente real -->
+        <div class="profile-top">
+          <div class="avatar" id="sidebar-avatar">...</div>
+          <div>
+            <strong id="sidebar-name">Cargando...</strong>
+            <small id="sidebar-email">...</small>
+          </div>
+        </div>
         <button class="logout"><i class="bi bi-box-arrow-right"></i><span>Cerrar sesión</span></button>
       </div>
     </aside>
 
     <main class="content" id="resumen">
-      <div class="top"><div><h1>Hola, Antonio</h1><p>Aquí tienes el control de tus productos, descargas y soporte.</p></div><div class="top-actions"><button class="icon-button" aria-label="Notificaciones"><i class="bi bi-bell"></i></button><div class="top-avatar">AT</div></div></div>
+      <div class="top">
+        <div>
+          <!-- ID agregado para el nombre del saludo -->
+          <h1>Hola, <span id="welcome-name">...</span></h1>
+          <p>Aquí tienes el control de tus productos, descargas y soporte.</p>
+        </div>
+        <div class="top-actions">
+          <button class="icon-button" aria-label="Notificaciones"><i class="bi bi-bell"></i></button>
+          <!-- ID agregado para la foto miniatura de arriba a la derecha -->
+          <div class="top-avatar" id="top-avatar"></div>
+        </div>
+      </div>
       <section class="stats" aria-label="Resumen de la cuenta"><article class="stat"><i class="bi bi-shield-check"></i><div><span>Licencias activas</span><strong>6</strong></div></article><article class="stat"><i class="bi bi-download"></i><div><span>Descargas disponibles</span><strong>14</strong></div></article><article class="stat"><i class="bi bi-bag-check"></i><div><span>Pedidos realizados</span><strong>8</strong></div></article></section>
       <section class="dashboard">
         <article class="card" id="descargas"><div class="card-title"><h2>Descargas disponibles</h2><a href="#">Ver todas <i class="bi bi-arrow-right"></i></a></div><div class="downloads">
-          <div class="download-row"><div class="product-art"></div><div><h3>AutoCAD 2026</h3><p>Instalador para Windows · 2.4 GB</p><span class="badge"><i class="bi bi-check-circle-fill"></i> Licencia vitalicia</span></div><button class="download-btn" data-product="AutoCAD 2026" aria-label="Descargar AutoCAD 2026"><i class="bi bi-download"></i></button></div>
-          <div class="download-row"><div class="product-art orange"></div><div><h3>SketchUp 2026</h3><p>Instalador para Windows · 1.1 GB</p><span class="badge"><i class="bi bi-check-circle-fill"></i> Licencia vitalicia</span></div><button class="download-btn" data-product="SketchUp 2026" aria-label="Descargar SketchUp 2026"><i class="bi bi-download"></i></button></div>
-          <div class="download-row"><div class="product-art purple"></div><div><h3>Logic Pro</h3><p>Instalador para macOS · 1.8 GB</p><span class="badge"><i class="bi bi-check-circle-fill"></i> Licencia vitalicia</span></div><button class="download-btn" data-product="Logic Pro" aria-label="Descargar Logic Pro"><i class="bi bi-download"></i></button></div>
+          
+          <div class="download-row">
+            <div class="product-art"><img src="img/autocad.png" alt="AutoCAD 2026"></div>
+            <div><h3>AutoCAD 2026</h3><p>Instalador para Windows · 2.4 GB</p><span class="badge"><i class="bi bi-check-circle-fill"></i> Licencia vitalicia</span></div><button class="download-btn" data-product="AutoCAD 2026" aria-label="Descargar AutoCAD 2026"><i class="bi bi-download"></i></button>
+          </div>
+          
+          <div class="download-row">
+            <div class="product-art"><img src="img/sketchup.png" alt="SketchUp 2026"></div>
+            <div><h3>SketchUp 2026</h3><p>Instalador para Windows · 1.1 GB</p><span class="badge"><i class="bi bi-check-circle-fill"></i> Licencia vitalicia</span></div><button class="download-btn" data-product="SketchUp 2026" aria-label="Descargar SketchUp 2026"><i class="bi bi-download"></i></button>
+          </div>
+          
+          <div class="download-row">
+            <div class="product-art"><img src="img/logic.png" alt="Logic Pro"></div>
+            <div><h3>Logic Pro</h3><p>Instalador para macOS · 1.8 GB</p><span class="badge"><i class="bi bi-check-circle-fill"></i> Licencia vitalicia</span></div><button class="download-btn" data-product="Logic Pro" aria-label="Descargar Logic Pro"><i class="bi bi-download"></i></button>
+          </div>
+
         </div></article>
         <aside class="right">
-          <article class="card"><div class="card-title"><h2>Descargas recientes</h2></div><div class="recent"><div class="recent-item"><div class="recent-art"></div><strong>AutoCAD 2026</strong><button aria-label="Descargar AutoCAD 2026"><i class="bi bi-download"></i></button></div><div class="recent-item"><div class="recent-art"></div><strong>SketchUp 2026</strong><button aria-label="Descargar SketchUp 2026"><i class="bi bi-download"></i></button></div><div class="recent-item"><div class="recent-art"></div><strong>Logic Pro</strong><button aria-label="Descargar Logic Pro"><i class="bi bi-download"></i></button></div></div></article>
+          <article class="card"><div class="card-title"><h2>Descargas recientes</h2></div><div class="recent">
+            <div class="recent-item"><div class="recent-art"><img src="img/autocad.png" alt="AutoCAD 2026"></div><strong>AutoCAD 2026</strong><button aria-label="Descargar AutoCAD 2026"><i class="bi bi-download"></i></button></div>
+            <div class="recent-item"><div class="recent-art"><img src="img/sketchup.png" alt="SketchUp 2026"></div><strong>SketchUp 2026</strong><button aria-label="Descargar SketchUp 2026"><i class="bi bi-download"></i></button></div>
+            <div class="recent-item"><div class="recent-art"><img src="img/logic.png" alt="Logic Pro"></div><strong>Logic Pro</strong><button aria-label="Descargar Logic Pro"><i class="bi bi-download"></i></button></div>
+          </div></article>
           <article class="card support" id="soporte"><div class="support-icon"><i class="bi bi-headset"></i></div><h2>¿Necesitas ayuda?</h2><p>Nuestro equipo de soporte está listo para ayudarte con tu instalación o licencia.</p><button><i class="bi bi-chat-dots"></i>Hablar con soporte</button></article>
         </aside>
       </section>
@@ -77,6 +128,7 @@
     </main>
   </div>
   <div class="toast" role="status">La descarga comenzará en breve.</div>
+  
   <script>
     const toast = document.querySelector('.toast');
     document.querySelectorAll('.download-btn').forEach(button => {
@@ -85,6 +137,68 @@
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 2800);
       });
+    });
+  </script>
+
+  <!-- LÓGICA DE FIREBASE PARA CARGAR FOTO Y NOMBRE DEL USUARIO REAL -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
+      authDomain: "login-dingloft.firebaseapp.com",
+      projectId: "login-dingloft",
+      storageBucket: "login-dingloft.firebasestorage.app",
+      messagingSenderId: "549466738202",
+      appId: "1:549466738202:web:8bf305fe2c753e9d76cba3",
+      measurementId: "G-R9SGZCDN13"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Sacar el nombre completo o usar la primera parte del correo
+        let displayName = user.displayName || user.email.split('@')[0];
+        // Sacar solo el primer nombre para el "Hola, Nombre"
+        let firstName = displayName.split(' ')[0];
+
+        // Insertar los textos en los HTML
+        document.getElementById('welcome-name').textContent = firstName;
+        document.getElementById('sidebar-name').textContent = displayName;
+        document.getElementById('sidebar-email').textContent = user.email;
+
+        // Validar si tiene foto de Google, si no, poner la inicial
+        let avatarHtml = '';
+        if (user.photoURL) {
+          // Si entró con Google y tiene foto
+          avatarHtml = `<img src="${user.photoURL}" alt="Perfil" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+        } else {
+          // Si entró con correo y no tiene foto, usamos su inicial
+          const initial = firstName.charAt(0).toUpperCase();
+          avatarHtml = `<div style="width: 100%; height: 100%; display: grid; place-items: center; font-size: 1.2rem;">${initial}</div>`;
+        }
+
+        // Pintar la foto en la barra lateral y en la esquina superior derecha
+        document.getElementById('sidebar-avatar').innerHTML = avatarHtml;
+        document.getElementById('top-avatar').innerHTML = avatarHtml;
+
+      } else {
+        // Si no está logueado, lo regresamos al login
+        window.location.href = 'login.html';
+      }
+    });
+
+    // Funcionalidad del botón Cerrar Sesión
+    document.querySelector('.logout').addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+        window.location.href = 'login.html';
+      } catch (error) {
+        console.error("Error al cerrar sesión:", error);
+      }
     });
   </script>
 </body>
