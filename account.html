@@ -39,13 +39,13 @@
     .product-art { width:62px; height:72px; border:1px solid rgba(158,203,255,.35); border-radius:10px; background:#071119; overflow:hidden; display:flex; justify-content:center; align-items:center; }
     .product-art img { width:100%; height:100%; object-fit:contain; padding:5px; }
     
-    .download-row h3 { margin:0 0 7px; font-size:1rem; letter-spacing:-.025em; } .download-row p { margin:0; color:var(--muted); font-size:.78rem; } .badge { display:inline-flex; align-items:center; gap:6px; margin-top:7px; color:var(--green); font-size:.72rem; font-weight:700; } .download-btn { width:43px; height:43px; border:1px solid rgba(0,217,255,.5); border-radius:11px; color:var(--cyan); background:rgba(0,213,255,.08); font-size:1.2rem; transition:.2s ease; } .download-btn:hover{background:var(--cyan);color:#04111a;transform:translateY(-2px)}
+    .download-row h3 { margin:0 0 7px; font-size:1rem; letter-spacing:-.025em; } .download-row p { margin:0; color:var(--muted); font-size:.78rem; } .badge { display:inline-flex; align-items:center; gap:6px; margin-top:7px; color:var(--green); font-size:.72rem; font-weight:700; } .download-btn { width:43px; height:43px; border:1px solid rgba(0,217,255,.5); border-radius:11px; color:var(--cyan); background:rgba(0,213,255,.08); font-size:1.2rem; display:grid; place-items:center; text-decoration:none; transition:.2s ease; } .download-btn:hover{background:var(--cyan);color:#04111a;transform:translateY(-2px)}
     .right { display:grid; gap:23px; align-content:start; } .recent { padding:0 25px 8px; } .recent-item { display:flex; align-items:center; gap:13px; padding:16px 0; border-top:1px solid var(--line); } .recent-item:first-child{border-top:0}
     
     .recent-art { width:42px; height:42px; border-radius:9px; background:#0a1830; overflow:hidden; display:flex; justify-content:center; align-items:center; border:1px solid rgba(158,203,255,.15); }
     .recent-art img { width:100%; height:100%; object-fit:contain; padding:3px; }
     
-    .recent-item strong{font-size:.9rem}.recent-item button{margin-left:auto;border:0;background:transparent;color:var(--cyan);font-size:1.3rem; transition: .2s ease; cursor: pointer;} .recent-item button:hover { transform: translateY(-2px); text-shadow: 0 0 8px var(--cyan); }
+    .recent-item strong{font-size:.9rem}.recent-item a.download-btn-recent{margin-left:auto;border:0;background:transparent;color:var(--cyan);font-size:1.3rem; text-decoration:none; transition: .2s ease; cursor: pointer;} .recent-item a.download-btn-recent:hover { transform: translateY(-2px); text-shadow: 0 0 8px var(--cyan); }
     .support { padding:27px 28px; background:linear-gradient(145deg,rgba(17,33,54,.92),rgba(7,20,32,.88)); } .support-icon { width:62px;height:62px;display:grid;place-items:center;border:1px solid var(--cyan);border-radius:50%;font-size:1.75rem;color:var(--cyan);margin-bottom:17px; } .support h2{margin:0 0 8px;font-size:1.35rem;letter-spacing:-.045em}.support p{color:#c0ccda;line-height:1.55;font-size:.9rem;margin:0 0 22px}.support button{width:100%;border:0;border-radius:10px;padding:14px;background:linear-gradient(100deg,#0bd8f4,#1cbeeb);color:#03111a;font-weight:800}.support button i{margin-right:8px}
     .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
@@ -137,7 +137,7 @@
   
   <div class="toast" role="status">La descarga comenzará en breve.</div>
 
-  <!-- LÓGICA DE FIREBASE (AUTH + FIRESTORE DATABASE) -->
+  <!-- LÓGICA DE FIREBASE Y ENLACES DIRECTOS DE DESCARGA -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -157,9 +157,34 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    // MAPA DE ENLACES DIRECTOS DE GOOGLE DRIVE CONFIGURADOS
+    const downloadLinksMap = {
+      "AutoCAD 2026": "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase",
+      "Microsoft Office 2024": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
+      "SketchUp Pro 2026": "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD",
+      "Bonus PAD": "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj",
+      "Nord Essential SF2": "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1",
+      "Nord Stage 4 Ultimate Library": "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1",
+      "Yamaha Legacy Collection SF2": "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe",
+      "Bonus Yamaha Legacy": "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj",
+      "Cosmos Collection": "https://drive.google.com/uc?export=download&id=1Z3Xk2MiDMk90PP2jajvVwG3bWHUmSzeL",
+      "Yamaha Premium Keys": "https://drive.google.com/uc?export=download&id=1I73jq9Baj9uJi0-RHpUCvX-X5dwGOJcd",
+      "Yamaha Premium Keys v2.0": "https://drive.google.com/uc?export=download&id=1I73jq9Baj9uJi0-RHpUCvX-X5dwGOJcd",
+      "Yamaha Premium Keys (Bonus)": "https://drive.google.com/uc?export=download&id=1I73jq9Baj9uJi0-RHpUCvX-X5dwGOJcd",
+      "Yamaha Premium Keys (Bonus 2)": "https://drive.google.com/uc?export=download&id=1_ubpxmpvlHTCKO6Wdbpjpys-YLVQkEs6",
+      "Kontakt 8 (Win)": "https://drive.google.com/uc?export=download&id=1Wg895Pq8em6h-vGLIy0C-2vDFGZURFSl",
+      "Kontakt 7 (Mac)": "https://drive.google.com/uc?export=download&id=13deJgVvPCi6haaLXET3qV2K7mQ_ojMA2",
+      "Rhodes Affair 2 (Mac)": "https://drive.google.com/uc?export=download&id=1B6dfQJjCh0vzOAuf6eTtuKQ91EAhfFKY",
+      "Rhodes Affair 2 (Windows)": "https://drive.google.com/uc?export=download&id=1C2Lj_8jMqRLdjdd1O4jSdOQYwrDayJx_",
+      "Rhodes Affair 2": "https://drive.google.com/uc?export=download&id=1B6dfQJjCh0vzOAuf6eTtuKQ91EAhfFKY",
+      "Montage 8 & Nord Stage 3": "https://drive.google.com/uc?export=download&id=1OayW_WEpr6Y3Ea5e9wVBC7kLpDptRJA1",
+      "SketchUp 2026 & AutoCAD 2026": "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD",
+      "Biblias E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo",
+      "Biblias y Diccionarios para E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo"
+    };
+
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // --- 1. SETEAR PERFIL DE USUARIO ---
         let displayName = user.displayName || user.email.split('@')[0];
         let firstName = displayName.split(' ')[0];
 
@@ -177,7 +202,6 @@
         document.getElementById('sidebar-avatar').innerHTML = avatarHtml;
         document.getElementById('top-avatar').innerHTML = avatarHtml;
 
-        // --- 2. LEER COMPRAS DESDE FIRESTORE ---
         const downloadsContainer = document.getElementById('downloads-container');
         const recentContainer = document.getElementById('recent-container');
 
@@ -205,6 +229,9 @@
                 let imgProd = producto.img || "autocad"; 
                 let typeProd = producto.type || 'Instalador digital';
                 
+                // Obtener el enlace directo mapeado o usar un fallback genérico de descarga
+                let directLink = producto.downloadUrl || downloadLinksMap[nombreProd] || "https://drive.google.com";
+                
                 if(typeof producto === 'string') {
                     const prodLower = producto.toLowerCase();
                     if(prodLower.includes("sketchup")) imgProd = "sketchup";
@@ -222,9 +249,9 @@
                       <p>${typeProd}</p>
                       <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso vitalicio</span>
                     </div>
-                    <button class="download-btn" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
+                    <a href="${directLink}" target="_blank" class="download-btn" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
                       <i class="bi bi-download"></i>
-                    </button>
+                    </a>
                   </div>
                 `;
                 downloadsContainer.insertAdjacentHTML('beforeend', rowHTML);
@@ -234,9 +261,9 @@
                     <div class="recent-item">
                       <div class="recent-art"><img src="img/${imgProd}.png" alt="${nombreProd}"></div>
                       <strong>${nombreProd}</strong>
-                      <button class="download-btn-recent" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
+                      <a href="${directLink}" target="_blank" class="download-btn-recent" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
                         <i class="bi bi-download"></i>
-                      </button>
+                      </a>
                     </div>
                   `;
                   recentContainer.insertAdjacentHTML('beforeend', recentHTML);
