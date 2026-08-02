@@ -14,7 +14,7 @@
   <!-- Google Fonts: Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
 
-  <!-- SDK OFICIAL DE PAYPAL (Reemplaza 'sb' por tu Client ID real cuando estés en producción) -->
+  <!-- SDK OFICIAL DE PAYPAL -->
   <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
   
   <style>
@@ -356,6 +356,37 @@
     .cart-bounce { animation: cartBounce 0.3s ease-in-out; }
     .btn-added { background-color: #00ff88 !important; color: #000 !important; box-shadow: 0 0 15px rgba(0,255,136,0.5) !important; }
 
+    /* Contenedor blanco y botón X para el formulario de tarjeta de PayPal */
+    .paypal-card-wrapper {
+      position: relative;
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 15px 15px 5px 15px;
+      margin-top: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .btn-close-paypal-card {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      background: #f1f5f9;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      color: #333;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10;
+      transition: background 0.2s;
+    }
+    .btn-close-paypal-card:hover {
+      background: #e2e8f0;
+      color: #000;
+    }
+
     /* =========================================
         REGLAS PARA MÓVIL (Responsividad)
         ========================================= */
@@ -528,7 +559,7 @@
     </div>
   </section>
 
-  <!-- Catálogo Completo (Todos los productos) -->
+  <!-- Catálogo Completo -->
   <section class="container mt-5 pt-4 pb-5">
     <div class="d-flex justify-content-between align-items-end mb-4">
       <h3 class="section-title mb-0">Catálogo Completo</h3>
@@ -937,8 +968,13 @@
         <i class="bi bi-shield-lock"></i> Pago 100% seguro con PayPal
       </div>
       
-      <!-- CONTENEDOR DEL BOTÓN DE PAYPAL -->
-      <div id="paypal-button-container" class="mb-3"></div>
+      <!-- CONTENEDOR ENVOLTORIO BLANCO CON BOTÓN X DE CIRE -->
+      <div class="paypal-card-wrapper mb-3">
+        <button type="button" class="btn-close-paypal-card" onclick="location.reload();" title="Cancelar / Cambiar opción">
+          <i class="bi bi-x-lg"></i>
+        </button>
+        <div id="paypal-button-container"></div>
+      </div>
 
       <div class="text-center">
         <a href="#" class="text-accent text-decoration-none" id="continue-shopping">Seguir comprando</a>
@@ -1010,7 +1046,6 @@
     // RENDERIZAR BOTÓN DE PAYPAL DINÁMICO
     paypal.Buttons({
       createOrder: (data, actions) => {
-        // Calcular el total actual del carrito desde la variable global
         const totalAmount = window.cartTotalPrice || 0;
         
         if (totalAmount <= 0) {
@@ -1040,7 +1075,6 @@
           try {
             const itemsComprados = window.cartItemsList || [];
 
-            // GUARDAR COMPRA EN FIRESTORE AUTOMÁTICAMENTE
             await addDoc(collection(db, "purchases"), {
               uid: user.uid,
               userEmail: user.email,
@@ -1111,7 +1145,6 @@
         let totalItems = 0;
         let totalPrice = 0;
 
-        // Variables globales expuestas para PayPal
         window.cartItemsList = [];
         window.cartTotalPrice = 0;
 
@@ -1125,7 +1158,6 @@
             totalItems += item.qty;
             totalPrice += (item.price * item.qty);
 
-            // Poblar lista para Firestore
             for(let i=0; i<item.qty; i++) {
               window.cartItemsList.push({
                 name: item.name,
