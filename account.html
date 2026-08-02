@@ -185,19 +185,19 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // MAPA DE ENLACES INDIVIDUALES (Para compras sencillas)
+    // MAPA DE ENLACES INDIVIDUALES
     const downloadLinksMap = {
       "AutoCAD 2026": "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase",
       "Microsoft Office 2024": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
       "Office Home & Business": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
       "SketchUp Pro 2026": "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD",
-      "Cosmos Collection": "https://drive.google.com/uc?export=download&id=1Z3Xk2MiDMk90PP2jajvVwG3bWHUmSzeL",
+      "Cosmo Collection": "https://drive.google.com/uc?export=download&id=1Z3Xk2MiDMk90PP2jajvVwG3bWHUmSzeL",
       "Montage 8 & Nord Stage 3": "https://drive.google.com/uc?export=download&id=1OayW_WEpr6Y3Ea5e9wVBC7kLpDptRJA1",
       "Biblias E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo",
       "Biblias y Diccionarios para E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo"
     };
 
-    // MAPA DE PAQUETES (BUNDLES) CON SUS SUB-ARCHIVOS
+    // MAPA DE PAQUETES (BUNDLES) CON TODOS SUS ARCHIVOS AGRUPADOS EXACTAMENTE COMO LOS PEDISTE
     const bundlesMap = {
       "Nord Essentials SF2 Collection": [
         { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
@@ -209,10 +209,10 @@
       ],
       "Yamaha Legacy Collection SF2": [
         { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
-        { name: "Bonus Yamaha Legacy", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
+        { name: "Bonus", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
       ],
       "Yamaha Premium Keys": [
-        { name: "Yamaha Premium Keys v2.0", url: "https://drive.google.com/uc?export=download&id=1I73jq9Baj9uJi0-RHpUCvX-X5dwGOJcd" },
+        { name: "Yamaha Premium Keys v2.0", url: "https://drive.google.com/uc?export=download&id=1r7yW_100iqzQTY7K96Yv05jvFCgq2Abw" },
         { name: "Yamaha Premium Keys (Bonus)", url: "https://drive.google.com/uc?export=download&id=1I73jq9Baj9uJi0-RHpUCvX-X5dwGOJcd" },
         { name: "Yamaha Premium Keys (Bonus 2)", url: "https://drive.google.com/uc?export=download&id=1_ubpxmpvlHTCKO6Wdbpjpys-YLVQkEs6" },
         { name: "Kontakt 8 (Win)", url: "https://drive.google.com/uc?export=download&id=1Wg895Pq8em6h-vGLIy0C-2vDFGZURFSl" },
@@ -223,12 +223,12 @@
         { name: "Rhodes Affair 2 (Windows)", url: "https://drive.google.com/uc?export=download&id=1C2Lj_8jMqRLdjdd1O4jSdOQYwrDayJx_" }
       ],
       "SketchUp 2026 & AutoCAD 2026": [
-        { name: "SketchUp 2026 (Mac)", url: "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD" },
-        { name: "AutoCAD 2026 (Mac)", url: "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase" }
+        { name: "Sketchup (Mac)", url: "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD" },
+        { name: "AutoCAD (Mac)", url: "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase" }
       ],
       "SketchUp & AutoCAD Combo": [
-        { name: "SketchUp 2026 (Mac)", url: "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD" },
-        { name: "AutoCAD 2026 (Mac)", url: "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase" }
+        { name: "Sketchup (Mac)", url: "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD" },
+        { name: "AutoCAD (Mac)", url: "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase" }
       ]
     };
 
@@ -289,7 +289,6 @@
 
                 // VERIFICAR SI EL PRODUCTO ES UN PAQUETE (BUNDLE) O INDIVIDUAL
                 if (bundlesMap[nombreProd]) {
-                  // ES UN PAQUETE DE VARIOS ARCHIVOS
                   let subHTML = '';
                   bundlesMap[nombreProd].forEach(subItem => {
                     subHTML += `
@@ -322,7 +321,6 @@
                   `;
                   downloadsContainer.insertAdjacentHTML('beforeend', bundleHTML);
 
-                  // Para descargas recientes, agregamos solo un acceso rápido al primer archivo del bundle
                   if(totalProgramas <= 3) {
                     const firstUrl = bundlesMap[nombreProd][0].url;
                     const recentHTML = `
@@ -338,7 +336,6 @@
                   }
 
                 } else {
-                  // ES UN ARCHIVO INDIVIDUAL NORMAL
                   let directLink = producto.downloadUrl || downloadLinksMap[nombreProd] || "https://drive.google.com";
                   
                   const singleHTML = `
@@ -379,11 +376,10 @@
 
           const toast = document.getElementById('toast-message');
 
-          // EVENTO DE CLIC PARA TODOS LOS BOTONES DE DESCARGA (GRANDES, CHICOS Y RECIENTES)
           document.querySelectorAll('.download-btn, .download-btn-small, .download-btn-recent').forEach(button => {
             button.addEventListener('click', (e) => {
               e.preventDefault();
-              e.stopPropagation(); // Evita que se despliegue el menú si hizo clic en el botón directo
+              e.stopPropagation();
               
               const url = button.getAttribute('data-url') + '&confirm=t';
               const productName = button.getAttribute('data-product');
