@@ -248,7 +248,6 @@
     }
     .comment-card:hover { border-color: rgba(0,229,255,0.4); }
     
-    /* CAJA DE LOGIN PROFESIONAL PARA QUIENES NO HAN INICIADO SESIÓN */
     .login-prompt-box {
       background: linear-gradient(135deg, rgba(0, 229, 255, 0.06), rgba(17, 21, 31, 0.95));
       border: 1px solid rgba(0, 229, 255, 0.3);
@@ -280,7 +279,6 @@
     }
     .form-control-custom::placeholder { color: #94a3b8; }
 
-    /* ESTILO BOTÓN LIKE */
     .btn-like {
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -304,35 +302,196 @@
       .compatible-title { font-size: 0.8rem; }
     }
 
-    /* CARRITO Y TOAST */
+    /* CARRITO LATERAL IDÉNTICO AL INDEX EXITOSO (SCROLL FLUIDO EN IPHONE Y MAC) */
     .cart-overlay {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 1050;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
     }
     .cart-overlay.active { opacity: 1; visibility: visible; }
+
     .cart-drawer {
-      position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh;
-      background: rgba(10, 14, 20, 0.95); backdrop-filter: blur(25px); border-left: 1px solid var(--border-color);
-      z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column;
+      position: fixed;
+      top: 0; right: -480px;
+      width: 450px;
+      max-width: 100%;
+      height: 100vh;
+      background: rgba(10, 14, 20, 0.95);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-left: 1px solid var(--border-color);
+      box-shadow: -15px 0 40px rgba(0, 0, 0, 0.9);
+      z-index: 1060;
+      transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: flex;
+      flex-direction: column;
     }
     .cart-drawer.active { right: 0; }
-    .cart-header { padding: 20px 25px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-    .btn-close-cart { background: transparent; border: none; color: #fff; font-size: 1.3rem; cursor: pointer; }
-    .cart-items-container { flex: 1; overflow-y: auto; padding: 20px 25px; }
-    .cart-item { display: flex; gap: 15px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; }
-    .cart-item-img { width: 60px; height: 80px; background: rgba(0,0,0,0.3); border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 5px; }
-    .cart-item-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+    .cart-header {
+      padding: 20px 25px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .btn-close-cart {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 1.3rem;
+      line-height: 1;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+    .btn-close-cart:hover { color: var(--accent-color); }
+
+    .cart-items-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 25px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 15px;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      position: relative;
+    }
+    .cart-item-img {
+      width: 60px;
+      height: 80px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+    }
+    .cart-item-img img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
     .cart-item-info { flex: 1; }
-    .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; color: #fff; }
-    .cart-item-desc { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px; }
-    .cart-item-remove { position: absolute; top: 0; right: 0; background: transparent; border: none; color: #fff; cursor: pointer; }
-    .cart-footer { padding: 20px 25px; background: rgba(0, 0, 0, 0.6); border-top: 1px solid var(--border-color); }
-    .coupon-box { display: flex; gap: 8px; margin-bottom: 15px; }
-    .coupon-input { flex: 1; background: rgba(4, 9, 18, 0.7); border: 1px solid rgba(153, 185, 216, 0.25); border-radius: 8px; color: #fff; padding: 8px 12px; font-size: 0.85rem; text-transform: uppercase; }
-    .btn-apply-coupon { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0 15px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
-    .paypal-white-card { background: rgba(255, 255, 255, 0.85); padding: 15px; border-radius: 16px; margin-top: 10px; }
+    .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; color: #ffffff; }
+    .cart-item-desc { font-size: 0.75rem; color: #ffffff; opacity: 0.85; margin-bottom: 10px; }
     
-    .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(50,221,145,.5); border-radius: 12px; color: #eafff3; background: #0c251d; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
-    .toast.show { transform: translateY(0); }
+    .qty-controls {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      background: rgba(0,0,0,0.2);
+    }
+    .qty-btn {
+      background: transparent;
+      border: none;
+      color: #fff;
+      padding: 2px 10px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .qty-btn:hover { background: rgba(255,255,255,0.1); }
+    .qty-value { padding: 0 10px; font-size: 0.85rem; font-weight: 600; color: #ffffff; }
+
+    .cart-item-remove {
+      position: absolute;
+      top: 0; right: 0;
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .cart-item-remove:hover { color: #ff4444; }
+
+    .cart-footer {
+      padding: 20px 25px;
+      background: rgba(0, 0, 0, 0.8);
+      border-top: 1px solid var(--border-color);
+      flex-shrink: 0;
+      max-height: 55vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .cart-empty-msg {
+      text-align: center;
+      color: #ffffff;
+      margin-top: 50px;
+    }
+
+    .coupon-box {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    .coupon-input {
+      flex: 1;
+      background: rgba(4, 9, 18, 0.7);
+      border: 1px solid rgba(153, 185, 216, 0.25);
+      border-radius: 8px;
+      color: #fff;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+    .coupon-input::placeholder { color: #6f7d91; text-transform: none; }
+    .coupon-input:focus { border-color: var(--accent-color); outline: none; background: rgba(4, 9, 18, 0.9); }
+    .btn-apply-coupon {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 0 15px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-apply-coupon:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
+    .coupon-msg { font-size: 0.78rem; margin-bottom: 12px; font-weight: 500; }
+
+    .paypal-white-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 15px;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      margin-top: 10px;
+    }
+
+    .btn-free-checkout {
+      background: #00ff88;
+      color: #000;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      width: 100%;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 25px rgba(0,255,136,0.2);
+      cursor: pointer;
+    }
+    .btn-free-checkout:hover {
+      background: #00e67a;
+      transform: translateY(-2px);
+    }
 
     .success-modal-overlay {
       position: fixed; inset: 0; background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(15px); z-index: 2000; display: grid; place-items: center; opacity: 0; visibility: hidden; transition: all 0.4s;
@@ -660,7 +819,7 @@
 
           <!-- CONTENEDOR CONDICIONAL PARA EL FORMULARIO DE COMENTARIOS -->
           <div id="comment-section-wrapper" class="mb-4">
-            <!-- Se llena dinámicamente: Si está logueado muestra el formulario, si no, muestra la tarjeta profesional de login -->
+            <!-- Se llena dinámicamente según la sesión -->
           </div>
 
           <!-- Contenedor de Comentarios (VISIBLE SIEMPRE PARA TODOS) -->
@@ -683,29 +842,54 @@
     </div>
   </footer>
 
-  <!-- CARRITO LATERAL -->
+  <!-- CARRITO LATERAL IDÉNTICO AL INDEX -->
   <div class="cart-overlay" id="cart-overlay"></div>
   <div class="cart-drawer" id="cart-drawer">
     <div class="cart-header">
-      <h4 class="mb-0 text-white fw-semibold fs-5"><i class="bi bi-cart4"></i> Tu carrito</h4>
+      <div>
+        <h4 class="mb-1 text-white" style="font-weight: 600;"><i class="bi bi-cart4"></i> Tu carrito</h4>
+        <span class="text-white" style="font-size: 0.85rem;" id="cart-item-count-text">0 productos</span>
+      </div>
       <button class="btn-close-cart" id="close-cart-btn"><i class="bi bi-x-lg"></i></button>
     </div>
+    
     <div class="cart-items-container" id="cart-items-container">
-      <div class="text-center text-white mt-5" id="empty-cart-msg"><p>Tu carrito está vacío.</p></div>
+      <div class="cart-empty-msg" id="empty-cart-msg">
+        <p>Tu carrito está vacío.</p>
+      </div>
     </div>
+    
     <div class="cart-footer">
       <div class="coupon-box" id="coupon-section" style="display: none;">
         <input type="text" id="coupon-input" class="coupon-input" placeholder="Código de descuento">
         <button type="button" id="apply-coupon-btn" class="btn-apply-coupon">Aplicar</button>
       </div>
-      <div id="coupon-msg" style="font-size: 0.75rem; margin-bottom: 10px; display: none;"></div>
-      <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;"><span class="text-white small">Subtotal</span><span id="cart-subtotal" class="text-white small">$0.00</span></div>
-      <div class="d-flex justify-content-between mb-3" id="total-row" style="display: none;"><span class="fs-6 fw-bold text-white">Total</span><span class="fs-5 fw-bold text-accent" id="cart-total" style="color:var(--accent-color)">$0.00</span></div>
+      <div id="coupon-msg" class="coupon-msg" style="display: none;"></div>
+
+      <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;">
+        <span class="text-white">Subtotal</span>
+        <span id="cart-subtotal" class="text-white">$0.00</span>
+      </div>
+      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;">
+        <span class="fs-5 fw-bold text-white">Total</span>
+        <span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span>
+      </div>
+      
+      <div class="text-center mb-3 text-white" style="font-size: 0.85rem; font-weight: 500; display: none;" id="security-badge-box">
+        <i class="bi bi-shield-lock"></i> Pago 100% seguro con PayPal
+      </div>
       
       <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;">
         <div id="paypal-button-container" class="w-100"></div>
       </div>
-      <div class="text-center"><a href="index.html" class="text-accent text-decoration-none small" style="color:var(--accent-color)">Seguir comprando</a></div>
+
+      <button id="free-checkout-btn" class="btn-free-checkout mb-3" style="display: none;">
+        Obtener gratis <i class="bi bi-download ms-1"></i>
+      </button>
+
+      <div class="text-center" id="continue-shopping-box" style="display: none;">
+        <a href="#" class="text-accent text-decoration-none" id="continue-shopping">Seguir comprando</a>
+      </div>
     </div>
   </div>
 
@@ -742,7 +926,6 @@
         let displayName = user.displayName || user.email.split('@')[0];
         desktopAuthContainer.innerHTML = `<a href="account.html" class="text-white text-decoration-none small fw-semibold">Mi Cuenta (${displayName})</a>`;
         
-        // MOSTRAR FORMULARIO PROFESIONAL SI ESTÁ LOGUEADO
         commentWrapper.innerHTML = `
           <div class="comment-form-box">
             <h6 class="text-white mb-2 fw-semibold" style="font-size: 0.9rem;">Deja tu reseña o comentario</h6>
@@ -769,13 +952,11 @@
           </div>
         `;
 
-        // Añadir evento al formulario creado dinámicamente
         document.getElementById('comment-form').addEventListener('submit', handleCommentSubmit);
 
       } else {
         desktopAuthContainer.innerHTML = `<a href="login.html" class="text-white text-decoration-none small fw-semibold">Iniciar Sesión</a>`;
         
-        // MOSTRAR TARJETA PROFESIONAL DE INVITACIÓN AL LOGIN SI NO HA INICIADO SESIÓN
         commentWrapper.innerHTML = `
           <div class="login-prompt-box">
             <div class="login-prompt-icon">
@@ -834,7 +1015,6 @@
       { name: "Misael Castillo", rating: 5, text: "¡Impresionante! Lo probé con FL Studio Mobile y corrió de maravilla. Gracias Cesar por compartir esta tremenda herramienta.", likes: 21 }
     ];
 
-    // CARGAR COMENTARIOS (VISIBLE SIEMPRE PARA TODOS)
     async function loadComments() {
       const container = document.getElementById('comments-container');
       try {
@@ -881,7 +1061,6 @@
       }
     }
 
-    // MANEJADOR DE ENVÍO DE COMENTARIOS
     async function handleCommentSubmit(e) {
       e.preventDefault();
       if (!currentUser) {
@@ -925,7 +1104,6 @@
       }
     }
 
-    // DAR/QUITAR LIKE (ACTUALIZA EN TIEMPO REAL EN FIRESTORE)
     window.toggleLikeFirestore = async function(docId, btn) {
       if (!currentUser) {
         alert("Debes iniciar sesión para dar like.");
@@ -957,7 +1135,7 @@
     };
   </script>
 
-  <!-- LÓGICA DE CARRITO Y COMPRA -->
+  <!-- LÓGICA IDÉNTICA AL INDEX PARA SCROLL SUAVE EN CARRITO -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       let cart = [];
@@ -967,119 +1145,214 @@
       const cartDrawer = document.getElementById('cart-drawer');
       const cartOverlay = document.getElementById('cart-overlay');
       const closeCartBtn = document.getElementById('close-cart-btn');
+      const continueShoppingBtn = document.getElementById('continue-shopping');
+      
       const cartCount = document.getElementById('cart-count');
+      const cartItemCountText = document.getElementById('cart-item-count-text');
       const cartItemsContainer = document.getElementById('cart-items-container');
       const emptyCartMsg = document.getElementById('empty-cart-msg');
       const cartSubtotalText = document.getElementById('cart-subtotal');
       const cartTotalText = document.getElementById('cart-total');
       const paypalWrapper = document.getElementById('paypal-container-wrapper');
+      const freeCheckoutBtn = document.getElementById('free-checkout-btn');
+      const securityBadge = document.getElementById('security-badge-box');
       const couponSection = document.getElementById('coupon-section');
       const subtotalRow = document.getElementById('subtotal-row');
       const totalRow = document.getElementById('total-row');
-      const toast = document.getElementById('toast-message');
+      const continueShoppingBox = document.getElementById('continue-shopping-box');
 
-      const openCart = () => { cartDrawer.classList.add('active'); cartOverlay.classList.add('active'); document.body.classList.add('cart-open'); updateCartUI(); };
-      const closeCart = () => { cartDrawer.classList.remove('active'); cartOverlay.classList.remove('active'); document.body.classList.remove('cart-open'); };
+      const couponInput = document.getElementById('coupon-input');
+      const applyCouponBtn = document.getElementById('apply-coupon-btn');
+      const couponMsg = document.getElementById('coupon-msg');
 
-      cartBtn.addEventListener('click', openCart);
+      const addButtons = document.querySelectorAll('#btn-buy-now');
+
+      const openCart = (e) => { 
+        if(e) e.preventDefault(); 
+        cartDrawer.classList.add('active'); 
+        cartOverlay.classList.add('active');
+        document.body.classList.add('cart-open');
+        updateCartUI();
+      };
+
+      const closeCart = (e) => { 
+        if(e) e.preventDefault(); 
+        cartDrawer.classList.remove('active'); 
+        cartOverlay.classList.remove('active'); 
+        document.body.classList.remove('cart-open');
+      };
+
+      if(cartBtn) cartBtn.addEventListener('click', openCart);
       closeCartBtn.addEventListener('click', closeCart);
       cartOverlay.addEventListener('click', closeCart);
+      continueShoppingBtn.addEventListener('click', closeCart);
 
       const updateCartUI = () => {
         cartItemsContainer.innerHTML = '';
-        let totalItems = 0, totalPrice = 0;
+        
+        let totalItems = 0;
+        let totalPrice = 0;
+
         window.cartItemsList = [];
+        window.cartTotalPrice = 0;
 
         if (cart.length === 0) {
           cartItemsContainer.appendChild(emptyCartMsg);
           emptyCartMsg.style.display = 'block';
           paypalWrapper.style.display = 'none';
+          freeCheckoutBtn.style.display = 'none';
+          securityBadge.style.display = 'none';
           couponSection.style.display = 'none';
           subtotalRow.style.display = 'none';
           totalRow.style.display = 'none';
+          continueShoppingBox.style.display = 'none';
+          couponApplied = false;
+          couponMsg.style.display = 'none';
+          couponInput.value = '';
         } else {
           emptyCartMsg.style.display = 'none';
           couponSection.style.display = 'flex';
           subtotalRow.style.display = 'flex';
           totalRow.style.display = 'flex';
-
+          continueShoppingBox.style.display = 'block';
+          
           cart.forEach((item, index) => {
             totalItems += item.qty;
             totalPrice += (item.price * item.qty);
+
             for(let i=0; i<item.qty; i++) {
-              window.cartItemsList.push({ name: item.name, img: item.img, type: item.type, price: couponApplied ? 0 : item.price });
+              window.cartItemsList.push({
+                name: item.name,
+                img: item.img,
+                type: item.type,
+                price: couponApplied ? 0 : item.price
+              });
             }
 
-            cartItemsContainer.insertAdjacentHTML('beforeend', `
+            const itemHTML = `
               <div class="cart-item">
-                <div class="cart-item-img"><img src="img/${item.img}.png" alt="${item.name}"></div>
+                <div class="cart-item-img">
+                  <img src="img/${item.img}.png" alt="${item.name}">
+                </div>
                 <div class="cart-item-info">
                   <h4 class="cart-item-title">${item.name}</h4>
                   <p class="cart-item-desc">${item.type}</p>
-                  <span class="fw-bold text-accent" style="color:var(--accent-color)">$${(couponApplied ? 0 : item.price).toFixed(2)}</span>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-bold text-accent">$${(couponApplied ? 0 : item.price).toFixed(2)}</span>
+                    <div class="qty-controls">
+                      <button class="qty-btn" onclick="changeQty(${index}, -1)"><i class="bi bi-dash"></i></button>
+                      <span class="qty-value">${item.qty}</span>
+                      <button class="qty-btn" onclick="changeQty(${index}, 1)"><i class="bi bi-plus"></i></button>
+                    </div>
+                  </div>
                 </div>
                 <button class="cart-item-remove" onclick="removeItem(${index})"><i class="bi bi-trash"></i></button>
               </div>
-            `);
+            `;
+            cartItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
           });
 
-          let finalTotal = couponApplied ? 0 : totalPrice;
-          paypalWrapper.style.display = finalTotal > 0 ? 'block' : 'none';
-          if (finalTotal > 0 && typeof window.renderPayPalStable === 'function') {
-            setTimeout(() => window.renderPayPalStable(finalTotal), 100);
+          let finalTotal = totalPrice;
+          if (couponApplied) { finalTotal = 0; }
+
+          window.cartTotalPrice = totalPrice;
+          window.cartFinalTotal = finalTotal;
+
+          if (finalTotal === 0) {
+            paypalWrapper.style.display = 'none';
+            securityBadge.style.display = 'none';
+            freeCheckoutBtn.style.display = 'block';
+          } else {
+            paypalWrapper.style.display = 'block';
+            securityBadge.style.display = 'block';
+            freeCheckoutBtn.style.display = 'none';
+            
+            setTimeout(() => {
+                if (typeof window.renderPayPalStable === 'function') {
+                    window.renderPayPalStable(finalTotal);
+                }
+            }, 100);
           }
         }
-        cartCount.textContent = totalItems;
+
+        if(cartCount) cartCount.textContent = totalItems;
+        if(cartItemCountText) cartItemCountText.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
+        
         cartSubtotalText.textContent = `$${totalPrice.toFixed(2)}`;
         cartTotalText.textContent = `$${(couponApplied ? 0 : totalPrice).toFixed(2)}`;
       };
 
-      const buyBtn = document.getElementById('btn-buy-now');
-      buyBtn.addEventListener('click', function() {
-        const id = this.getAttribute('data-id');
-        const name = this.getAttribute('data-name');
-        const price = parseFloat(this.getAttribute('data-price'));
-        const img = this.getAttribute('data-img');
-        const type = this.getAttribute('data-type');
-
-        const existing = cart.find(i => i.id === id);
-        if (existing) { existing.qty += 1; } else { cart.push({ id, name, price, img, type, qty: 1 }); }
-        updateCartUI();
-        openCart();
-      });
-
-      // LÓGICA DE POPUP PARA LA PRUEBA GRATIS
-      const freeTrialBtn = document.getElementById('btn-free-trial');
-      freeTrialBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const url = this.getAttribute('data-url') + '&confirm=t';
-
-        toast.textContent = `Preparando la prueba gratis (531.5 MB)...`;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3500);
-
-        const width = 600;
-        const height = 450;
-        const left = (window.innerWidth / 2) - (width / 2);
-        const top = (window.innerHeight / 2) - (height / 2);
-        
-        const popup = window.open(
-          url, 
-          'PruebaGratisDingloft', 
-          `width=${width},height=${height},top=${top},left=${left},toolbar=no,menubar=no,location=no,status=no`
-        );
-
-        setTimeout(() => {
-          if (popup && !popup.closed) {
-            popup.close();
-            toast.textContent = `Descarga iniciada. ¡Disfruta tus samples!`;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+      if(applyCouponBtn) {
+        applyCouponBtn.addEventListener('click', () => {
+          const code = couponInput.value.trim().toUpperCase();
+          if (code === 'ADMIN_EVOLUTION') {
+            couponApplied = true;
+            couponMsg.style.display = 'block';
+            couponMsg.style.color = '#00ff88';
+            couponMsg.innerHTML = '<i class="bi bi-check-circle-fill"></i> ¡Cupón ADMIN_EVOLUTION aplicado!';
+            updateCartUI();
+          } else {
+            couponApplied = false;
+            couponMsg.style.display = 'block';
+            couponMsg.style.color = '#ff4444';
+            couponMsg.innerHTML = '<i class="bi bi-x-circle-fill"></i> Código de cupón inválido.';
+            updateCartUI();
           }
-        }, 12000);
-      });
+        });
+      }
 
-      window.removeItem = (index) => { cart.splice(index, 1); updateCartUI(); };
+      window.changeQty = (index, delta) => {
+        if (cart[index].qty + delta > 0) {
+          cart[index].qty += delta;
+        } else {
+          cart.splice(index, 1);
+        }
+        updateCartUI();
+      };
+
+      window.removeItem = (index) => {
+        cart.splice(index, 1);
+        updateCartUI();
+      };
+
+      addButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.preventDefault(); 
+          
+          const id = this.getAttribute('data-id');
+          const name = this.getAttribute('data-name');
+          const price = parseFloat(this.getAttribute('data-price'));
+          const img = this.getAttribute('data-img');
+          const type = this.getAttribute('data-type');
+          
+          const existingItem = cart.find(item => item.id === id);
+          if (existingItem) {
+            existingItem.qty += 1;
+          } else {
+            cart.push({ id, name, price, img, type, qty: 1 });
+          }
+          
+          updateCartUI(); 
+          
+          if(cartBtn) {
+            cartBtn.classList.remove('cart-bounce');
+            void cartBtn.offsetWidth; 
+            cartBtn.classList.add('cart-bounce');
+          }
+          
+          const originalHTML = this.innerHTML;
+          this.innerHTML = 'Agregado <i class="bi bi-check2"></i>';
+          this.style.background = '#00ff88';
+          this.style.color = '#000';
+          
+          setTimeout(() => {
+            this.innerHTML = originalHTML;
+            this.style.background = '';
+            this.style.color = '';
+            openCart(); 
+          }, 800);
+        });
+      });
     });
   </script>
 </body>
