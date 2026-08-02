@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Cuenta | Dingloft</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root { --cyan:#11d5f7; --violet:#7c4dff; --ink:#060911; --panel:rgba(12,18,31,.78); --line:rgba(169,201,229,.17); --muted:#9ba9bd; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; color:#f7fbff; font-family:'Inter',sans-serif; background:radial-gradient(circle at 18% 45%,rgba(90,48,238,.24),transparent 33%),radial-gradient(circle at 78% 38%,rgba(0,211,255,.12),transparent 32%),var(--ink); overflow-x:hidden; }
+    body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:-1; opacity:.32; background-image:linear-gradient(rgba(119,185,255,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(119,185,255,.10) 1px,transparent 1px); background-size:72px 72px; mask-image:linear-gradient(to bottom,black,transparent 82%); }
+    a { color:inherit; }
+    .site-header { height:100px; display:flex; align-items:center; border-bottom:1px solid var(--line); background:rgba(5,8,15,.58); backdrop-filter:blur(18px); }
+    .shell { width:min(1400px,calc(100% - 48px)); margin:0 auto; }
+    .site-header .shell { display:flex; align-items:center; justify-content:space-between; }
+    .brand { text-decoration:none; color:#fff; font-size:1.65rem; font-weight:800; letter-spacing:-.07em; }
+    .brand span { color:var(--cyan); }
+    .logout-btn { border:1px solid rgba(255,80,80,0.4); border-radius:10px; color:#ff8080; text-decoration:none; font-weight:600; font-size:.92rem; padding:.75rem 1rem; background:transparent; cursor:pointer; transition:.2s ease; }
+    .logout-btn:hover { background:rgba(255,80,80,0.1); border-color:#ff5050; }
+    .account-page { padding:56px 0; }
+    .account-grid { display:grid; grid-template-columns:300px 1fr; gap:40px; }
+    .account-sidebar { padding:30px; border:1px solid var(--line); border-radius:20px; background:var(--panel); backdrop-filter:blur(18px); height:fit-content; }
+    .user-info h3 { font-size:1.2rem; font-weight:800; margin:0 0 5px; color:#fff; }
+    .user-info p { color:var(--muted); font-size:.88rem; margin:0 0 20px; word-break:break-all; }
+    .account-content { padding:40px; border:1px solid var(--line); border-radius:25px; background:linear-gradient(145deg,rgba(18,25,42,.90),rgba(7,11,22,.82)); box-shadow:0 28px 80px rgba(0,0,0,.38); backdrop-filter:blur(18px); }
+    .account-content h2 { font-size:1.8rem; font-weight:800; letter-spacing:-.04em; margin-bottom:1rem; }
+    .access-card { display:flex; justify-content:space-between; align-items:center; padding:20px; border:1px solid var(--line); border-radius:15px; background:rgba(4,9,18,.55); margin-bottom:15px; }
+    .access-info h4 { font-size:1.1rem; font-weight:700; margin:0 0 5px; color:#fff; }
+    .access-info p { font-size:.85rem; color:var(--muted); margin:0; }
+    .btn-download { border:0; border-radius:10px; padding:10px 20px; font-weight:700; background:linear-gradient(100deg,#0dd9f4,#32bdf9); color:#03111a; text-decoration:none; transition:.2s ease; }
+    .btn-download:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,210,245,.3); }
+    @media (max-width: 900px) { .account-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="shell">
+      <a class="brand" href="index.html"><span>D</span>ingloft</a>
+      <button id="logout-btn" class="logout-btn"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</button>
+    </div>
+  </header>
+
+  <main class="account-page">
+    <div class="shell">
+      <div class="account-grid">
+        <!-- Sidebar de Perfil -->
+        <div class="account-sidebar">
+          <div class="user-info">
+            <h3 id="user-name">Cargando...</h3>
+            <p id="user-email">Verificando sesión...</p>
+          </div>
+          <hr style="border-color: var(--line); margin: 20px 0;">
+          <ul class="list-unstyled mb-0" style="display: grid; gap: 10px; font-weight: 600; font-size: .95rem;">
+            <li><a href="#" style="color: var(--cyan); text-decoration: none;"><i class="bi bi-grid me-2"></i>Mis Licencias</a></li>
+            <li><a href="index.html" style="color: var(--muted); text-decoration: none;"><i class="bi bi-shop me-2"></i>Ir a la Tienda</a></li>
+          </ul>
+        </div>
+
+        <!-- Contenido Principal / Accesos -->
+        <div class="account-content">
+          <h2>Tus Accesos y Licencias</h2>
+          <p style="color: var(--muted); margin-bottom: 30px;">Aquí encontrarás los instaladores y herramientas digitales asociadas a tu cuenta.</p>
+          
+          <div id="access-list">
+            <!-- Ejemplo estático de producto activo -->
+            <div class="access-card">
+              <div class="access-info">
+                <h4>Dingloft Studio Suite Pro</h4>
+                <p>Licencia permanente • Versión 2026</p>
+              </div>
+              <a href="#" class="btn-download"><i class="bi bi-download me-1"></i> Descargar</a>
+            </div>
+
+            <div class="access-card">
+              <div class="access-info">
+                <h4>Evolution Design - Herramientas 3D</h4>
+                <p>Acceso a plugins y assets en la nube</p>
+              </div>
+              <a href="#" class="btn-download"><i class="bi bi-download me-1"></i> Descargar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Firebase Auth Guard & Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
+      authDomain: "login-dingloft.firebaseapp.com",
+      projectId: "login-dingloft",
+      storageBucket: "login-dingloft.firebasestorage.app",
+      messagingSenderId: "549466738202",
+      appId: "1:549466738202:web:8bf305fe2c753e9d76cba3",
+      measurementId: "G-R9SGZCDN13"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Proteger la ruta: Si no hay usuario logueado, mandarlo al login
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById('user-name').textContent = user.displayName || "Usuario Dingloft";
+        document.getElementById('user-email').textContent = user.email;
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+
+    // Botón de Cerrar Sesión
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+        window.location.href = 'login.html';
+      } catch (error) {
+        console.error("Error al cerrar sesión:", error);
+      }
+    });
+  </script>
+</body>
+</html>
