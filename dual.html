@@ -100,6 +100,67 @@
     .nav-link { color: var(--text-main) !important; font-size: 0.9rem; font-weight: 500; margin: 0 10px; }
     .nav-link:hover { color: var(--accent-color) !important; }
 
+    /* ====== NUEVOS ESTILOS LIQUID GLASS PARA SESIÓN ====== */
+    .btn-liquid-glass {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.05);
+      color: #fff !important;
+      border-radius: 50px;
+      padding: 6px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .btn-liquid-glass:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--accent-color);
+      box-shadow: 0 8px 25px rgba(0, 229, 255, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .mobile-liquid-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.02));
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6), 0 0 15px rgba(0, 229, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px;
+      transition: all 0.3s ease;
+      margin: 0 auto;
+    }
+    .mobile-liquid-avatar:hover {
+      transform: scale(1.1);
+      border-color: var(--accent-color);
+      box-shadow: 0 8px 30px rgba(0, 229, 255, 0.5);
+    }
+    .mobile-liquid-avatar img, .mobile-liquid-avatar .avatar-fallback {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .mobile-liquid-avatar .avatar-fallback {
+      background: var(--accent-color);
+      color: #000;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 1.4rem;
+    }
+
     /* Botones Globales */
     .btn-cyan {
       background: var(--accent-color);
@@ -132,7 +193,7 @@
       font-weight: 600;
       border: 1px solid var(--text-muted);
       border-radius: 8px;
-      padding: 10px 24px;
+      padding: 6px 15px;
       transition: all 0.3s ease;
       backdrop-filter: blur(5px);
     }
@@ -340,7 +401,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
     <div class="container">
-      <!-- LOGO DE DINGLOFT ACTUALIZADO EN VEZ DE TEXTO -->
+      <!-- LOGO DE DINGLOFT EN VEZ DE TEXTO -->
       <a class="navbar-brand d-flex align-items-center" href="index.html">
         <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
       </a>
@@ -353,7 +414,6 @@
           <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
           <li class="nav-item"><a class="nav-link" href="index.html">Catálogo</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
-          <li class="nav-item"><a class="nav-link" href="account.html">Mi Cuenta</a></li>
           
           <li class="nav-item d-lg-none mt-3 w-100" id="mobile-auth-container">
             <a href="login.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none">
@@ -434,7 +494,7 @@
           <div class="mb-3 d-flex align-items-end gap-3">
             <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--accent-color) !important; line-height: 1;">$60.00</span>
             <div class="d-flex flex-column pb-1">
-              <span class="text-muted text-decoration-line-through" style="font-size: 1.1rem; line-height: 1;">$150.00 USD</span>
+              <span class="text-decoration-line-through" style="color: rgba(255,255,255,0.75); font-size: 1.1rem; line-height: 1;">$150.00 USD</span>
               <span class="badge bg-danger mt-1" style="font-size: 0.75rem; letter-spacing: 1px; padding: 4px 8px;">AHORRAS $90</span>
             </div>
           </div>
@@ -825,7 +885,7 @@
 
     onAuthStateChanged(auth, (user) => {
       currentUser = user;
-      window.globalCurrentUser = user; // Exportar al otro script
+      window.globalCurrentUser = user; 
       const desktopAuthContainer = document.getElementById('desktop-auth-container');
       const mobileAuthContainer = document.getElementById('mobile-auth-container');
       const commentWrapper = document.getElementById('comment-section-wrapper');
@@ -835,23 +895,29 @@
         if (user.displayName) displayName = user.displayName.split(' ')[0];
         else if (user.email) displayName = user.email.split('@')[0];
 
-        let avatarHtml = user.photoURL 
-          ? `<img src="${user.photoURL}" alt="Perfil" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">`
-          : `<div style="width: 28px; height: 28px; border-radius: 50%; background: var(--accent-color); color: #000; display: grid; place-items: center; font-weight: bold; font-size: 14px;">${displayName.charAt(0).toUpperCase()}</div>`;
+        let avatarHtmlDesktop = user.photoURL 
+          ? `<img src="${user.photoURL}" alt="Perfil" style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover;">`
+          : `<div style="width: 26px; height: 26px; border-radius: 50%; background: var(--accent-color); color: #000; display: grid; place-items: center; font-weight: bold; font-size: 13px;">${displayName.charAt(0).toUpperCase()}</div>`;
 
         if (desktopAuthContainer) {
           desktopAuthContainer.innerHTML = `
-            <a href="account.html" class="text-white text-decoration-none small fw-semibold d-flex align-items-center gap-2" style="transition: color 0.3s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#fff'">
-              ${avatarHtml} Hola, ${displayName}
+            <a href="account.html" class="btn-liquid-glass">
+              ${avatarHtmlDesktop} Hola, ${displayName}
             </a>
           `;
         }
 
         if (mobileAuthContainer) {
+          let mobileContent = user.photoURL 
+            ? `<img src="${user.photoURL}" alt="Perfil">`
+            : `<div class="avatar-fallback">${displayName.charAt(0).toUpperCase()}</div>`;
+            
           mobileAuthContainer.innerHTML = `
-            <a href="account.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none d-flex align-items-center justify-content-center gap-2">
-              ${avatarHtml} Mi Cuenta
-            </a>
+            <div class="d-flex justify-content-center w-100 mt-3 mb-1">
+              <a href="account.html" class="mobile-liquid-avatar" title="Ir a Mi Cuenta">
+                ${mobileContent}
+              </a>
+            </div>
           `;
         }
 
@@ -1066,7 +1132,7 @@
     }
   </script>
 
-  <!-- Lógica del Carrito y Candado en Prueba Gratis -->
+  <!-- Lógica del Carrito (Botón de Descarga Directa sin candado) -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       let cart = [];
@@ -1291,19 +1357,12 @@
         });
       });
       
-      // LÓGICA DE POPUP PARA LA PRUEBA GRATIS CON CANDADO DE SESIÓN
+      // LÓGICA DE POPUP PARA LA PRUEBA GRATIS (SIN CANDADO DE SESIÓN)
       const freeTrialBtn = document.getElementById('btn-free-trial');
       if (freeTrialBtn) {
         freeTrialBtn.addEventListener('click', function(e) {
           e.preventDefault();
-
-          // VALIDACIÓN: ¿Está logueado el usuario?
-          if (!window.globalCurrentUser) {
-            alert("Para descargar la prueba gratis de alta calidad, por favor inicia sesión o regístrate en Dingloft. ¡Toma solo 1 minuto!");
-            window.location.href = 'login.html';
-            return;
-          }
-
+          
           const url = this.getAttribute('data-url') + '&confirm=t';
           const toast = document.getElementById('toast-message');
 
