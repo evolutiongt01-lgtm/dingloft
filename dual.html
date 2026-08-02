@@ -23,7 +23,7 @@
       --accent-color: #00e5ff;
       --accent-hover: #00b5cc;
       --text-main: #ffffff;
-      --text-muted: #e2e8f0; /* Blanco suave súper legible */
+      --text-muted: #e2e8f0;
       --border-color: rgba(255, 255, 255, 0.1);
       --glass-bg: rgba(17, 21, 31, 0.4);
     }
@@ -113,6 +113,7 @@
       padding: 14px 30px;
       transition: all 0.3s ease;
       font-size: 1.05rem;
+      cursor: pointer;
     }
     .btn-outline-cyan:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 25px rgba(0,229,255,0.5); }
 
@@ -129,97 +130,71 @@
 
     .product-detail-section { padding: 130px 0 40px; }
     
-    .product-boxes-display {
-      width: 100%;
-      border-radius: 16px;
-      padding: 15px;
-    }
-    .product-boxes-display img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.7));
-    }
+    .product-boxes-display { width: 100%; border-radius: 16px; padding: 15px; }
+    .product-boxes-display img { width: 100%; height: auto; object-fit: contain; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.7)); }
 
     .feature-box { text-align: center; padding: 10px; }
     .feature-icon-circle {
-      width: 48px; height: 48px;
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      background: rgba(0, 229, 255, 0.05);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 10px;
-      color: var(--accent-color);
-      font-size: 1.2rem;
+      width: 48px; height: 48px; border: 1px solid rgba(0, 229, 255, 0.3); background: rgba(0, 229, 255, 0.05);
+      border-radius: 50%; display: grid; place-items: center; margin: 0 auto 10px; color: var(--accent-color); font-size: 1.2rem;
     }
     .feature-title { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; line-height: 1.3; margin: 0; }
 
     .compatible-section { padding: 30px 0 60px; }
     .compatible-title {
-      text-align: center;
-      letter-spacing: 2px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--accent-color);
-      text-transform: uppercase;
-      margin-bottom: 35px;
+      text-align: center; letter-spacing: 2px; font-size: 0.9rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; margin-bottom: 35px;
     }
     
     .keyboard-card {
       background: linear-gradient(145deg, rgba(12, 17, 26, 0.85), rgba(6, 9, 15, 0.95));
+      border: 1px solid var(--border-color); border-radius: 14px; padding: 25px 20px; text-align: center;
+      transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+    }
+    .keyboard-card:hover { border-color: rgba(0, 229, 255, 0.4); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .keyboard-card img { max-width: 100%; height: 75px; object-fit: contain; margin-bottom: 18px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
+    .keyboard-card h5 { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.5px; margin: 0; color: #fff; }
+
+    .software-badge-box {
+      background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: 12px;
+      padding: 15px 20px; display: flex; align-items: center; gap: 15px; transition: 0.3s;
+    }
+    .software-badge-box:hover { border-color: var(--accent-color); background: rgba(0, 229, 255, 0.04); }
+    .software-badge-box i { font-size: 1.8rem; color: var(--accent-color); }
+
+    /* SECCIÓN DE COMENTARIOS Y RESEÑAS */
+    .comments-section { padding: 50px 0; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 40px; }
+    .comment-card {
+      background: rgba(12, 17, 26, 0.6);
       border: 1px solid var(--border-color);
       border-radius: 14px;
-      padding: 25px 20px;
-      text-align: center;
-      transition: all 0.3s ease;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .keyboard-card:hover {
-      border-color: rgba(0, 229, 255, 0.4);
-      transform: translateY(-4px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    .keyboard-card img {
-      max-width: 100%;
-      height: 75px;
-      object-fit: contain;
-      margin-bottom: 18px;
-      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
-    }
-    .keyboard-card h5 {
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      margin: 0;
-      color: #fff;
-    }
-
-    /* Tarjetas de Compatibilidad de Software */
-    .software-badge-box {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
+      padding: 20px;
+      margin-bottom: 15px;
       transition: 0.3s;
     }
-    .software-badge-box:hover {
-      border-color: var(--accent-color);
-      background: rgba(0, 229, 255, 0.04);
+    .comment-card:hover { border-color: rgba(0,229,255,0.3); }
+    .comment-form-box {
+      background: rgba(12, 17, 26, 0.85);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
-    .software-badge-box i {
-      font-size: 1.8rem;
-      color: var(--accent-color);
+    .form-control-custom {
+      background: rgba(5, 7, 10, 0.8);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .form-control-custom:focus {
+      background: rgba(5, 7, 10, 0.95);
+      border-color: var(--accent-color);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(0,229,255,0.2);
+      outline: none;
     }
 
-    /* CARRITO LATERAL */
+    /* CARRITO Y TOAST */
     .cart-overlay {
       position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(10px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease;
@@ -246,6 +221,9 @@
     .coupon-input { flex: 1; background: rgba(4, 9, 18, 0.7); border: 1px solid rgba(153, 185, 216, 0.25); border-radius: 8px; color: #fff; padding: 8px 12px; font-size: 0.85rem; text-transform: uppercase; }
     .btn-apply-coupon { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0 15px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
     .paypal-white-card { background: rgba(255, 255, 255, 0.85); padding: 15px; border-radius: 16px; margin-top: 10px; }
+    
+    .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(50,221,145,.5); border-radius: 12px; color: #eafff3; background: #0c251d; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
+    .toast.show { transform: translateY(0); }
 
     /* MODAL DE ÉXITO */
     .success-modal-overlay {
@@ -278,6 +256,9 @@
       <button class="btn-cyan w-100" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
     </div>
   </div>
+
+  <!-- TOAST FLOTANTE -->
+  <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
@@ -319,6 +300,7 @@
         <div class="col-lg-6">
           <span class="text-uppercase text-info fw-bold" style="font-size: 0.75rem; letter-spacing: 2px;">Colección Premium de Pianos</span>
           <h1 class="fw-bold my-2 text-white" style="font-size: 2.8rem; letter-spacing: -1.5px;">Pianos Legendarios SF2</h1>
+          
           <p class="text-white mb-3" style="font-size: 1.05rem; line-height: 1.6; opacity: 0.95;">
             Sonidos de escenario extravagantes y profesionales para Nord Stage 4, Motif XF8 y Montage M8x. Una librería maestra que <b>más de 100 músicos ya utilizan en vivo en sus iglesias y ministerios</b>.
           </p>
@@ -359,18 +341,18 @@
           </div>
 
           <!-- Precio -->
-          <div class="mb-4 d-flex align-items-center justify-content-between">
-            <span class="fw-extrabold" style="font-size: 2.8rem; letter-spacing: -1px; color: var(--accent-color);">$60.00</span>
+          <div class="mb-4">
+            <span class="fw-extrabold text-white" style="font-size: 2.8rem; letter-spacing: -1px; color: var(--accent-color);">$60.00</span>
           </div>
 
-          <!-- Botones de Acción (Comprar + Prueba Gratis) -->
+          <!-- Botones de Acción -->
           <div class="d-flex flex-column gap-3">
             <button class="btn-cyan w-100 d-flex align-items-center justify-content-center gap-2" id="btn-buy-now" data-id="9" data-name="Pianos Legendarios SF2" data-price="60" data-img="pianos_bundle_boxes" data-type="Librería vitalicia">
               <i class="bi bi-cart3 fs-5"></i> AGREGAR AL CARRITO ($60.00)
             </button>
-            <a href="https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" target="_blank" class="btn-outline-cyan w-100 text-center text-decoration-none d-flex align-items-center justify-content-center gap-2">
+            <button class="btn-outline-cyan w-100 d-flex align-items-center justify-content-center gap-2" id="btn-free-trial" data-url="https://drive.google.com/uc?export=download&id=1zoVl-fS-D_ex1EUmLGXfEytU2Q00nQYE">
               <i class="bi bi-gift fs-5"></i> DESCARGAR PRUEBA GRATIS (500 MB / 3 Samples)
-            </a>
+            </button>
           </div>
 
         </div>
@@ -463,7 +445,7 @@
       </div>
 
       <!-- SECCIÓN DE VIDEO CON EFECTO LIQUID GLASS -->
-      <div class="row justify-content-center mt-5">
+      <div class="row justify-content-center mb-5">
         <div class="col-lg-10">
           <div class="text-center mb-4">
             <span class="text-uppercase text-info fw-bold" style="font-size: 0.75rem; letter-spacing: 2px;">Demostración en vivo</span>
@@ -475,6 +457,64 @@
               <iframe src="https://www.youtube.com/embed/_fnfuhxFwFw" title="Demostración de Pianos SF2 Dingloft" allowfullscreen style="border:0;"></iframe>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN DE COMENTARIOS Y RESEÑAS (SIN NECESIDAD DE LOGIN PREVIO) -->
+      <div class="row justify-content-center comments-section">
+        <div class="col-lg-10">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold text-white mb-0"><i class="bi bi-chat-square-text text-accent"></i> Opiniones de la Comunidad</h3>
+            <span class="text-muted small">Comenta libremente sin registrarte</span>
+          </div>
+
+          <!-- Formulario para dejar comentario al instante -->
+          <div class="comment-form-box mb-4">
+            <h5 class="text-white mb-3 fw-semibold">Deja tu reseña o comentario</h5>
+            <form id="comment-form">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <input type="text" id="comment-name" class="form-control form-control-custom" placeholder="Tu Nombre o Iglesia" required>
+                </div>
+                <div class="col-md-6">
+                  <select id="comment-rating" class="form-control form-control-custom">
+                    <option value="5">★★★★★ (5/5 - Excelente)</option>
+                    <option value="4">★★★★☆ (4/5 - Muy bueno)</option>
+                    <option value="3">★★★☆☆ (3/5 - Bueno)</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <textarea id="comment-text" class="form-control form-control-custom" rows="3" placeholder="¿Qué te parecieron los sonidos? Escribe tu experiencia..." required></textarea>
+                </div>
+                <div class="col-12 text-end">
+                  <button type="submit" class="btn-cyan px-4 py-2" style="font-size: 0.9rem;">Publicar Comentario</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Contenedor donde se muestran los comentarios -->
+          <div id="comments-container">
+            <!-- Comentario de ejemplo precargado -->
+            <div class="comment-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="text-white mb-0 fw-bold"><i class="bi bi-person-circle text-accent"></i> Josué Morales (Ministerio Ebenezer)</h6>
+                <span class="text-warning small">★★★★★</span>
+              </div>
+              <p class="text-white mb-1 small" style="opacity: 0.9;">¡Los sonidos están a otro nivel! Usé el Ballad Keys y el Pad en el servicio de jóvenes y sonó idéntico al teclado original. Súper recomendado para directo.</p>
+              <small class="text-muted" style="font-size: 0.75rem;">Hace 2 días</small>
+            </div>
+
+            <div class="comment-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="text-white mb-0 fw-bold"><i class="bi bi-person-circle text-accent"></i> Carlos R.</h6>
+                <span class="text-warning small">★★★★★</span>
+              </div>
+              <p class="text-white mb-1 small" style="opacity: 0.9;">Probé la versión de prueba de 500 MB y con eso bastó para decidirme a comprar el bundle completo. Excelente atención y entrega inmediata.</p>
+              <small class="text-muted" style="font-size: 0.75rem;">Hace 4 días</small>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -593,6 +633,7 @@
       const couponSection = document.getElementById('coupon-section');
       const subtotalRow = document.getElementById('subtotal-row');
       const totalRow = document.getElementById('total-row');
+      const toast = document.getElementById('toast-message');
 
       const openCart = () => { cartDrawer.classList.add('active'); cartOverlay.classList.add('active'); document.body.classList.add('cart-open'); updateCartUI(); };
       const closeCart = () => { cartDrawer.classList.remove('active'); cartOverlay.classList.remove('active'); document.body.classList.remove('cart-open'); };
@@ -662,6 +703,72 @@
         if (existing) { existing.qty += 1; } else { cart.push({ id, name, price, img, type, qty: 1 }); }
         updateCartUI();
         openCart();
+      });
+
+      // LÓGICA DE POPUP PARA LA PRUEBA GRATIS
+      const freeTrialBtn = document.getElementById('btn-free-trial');
+      freeTrialBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const url = this.getAttribute('data-url') + '&confirm=t';
+
+        toast.textContent = `Preparando la prueba gratis (500 MB)...`;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3500);
+
+        const width = 600;
+        const height = 450;
+        const left = (window.innerWidth / 2) - (width / 2);
+        const top = (window.innerHeight / 2) - (height / 2);
+        
+        const popup = window.open(
+          url, 
+          'PruebaGratisDingloft', 
+          `width=${width},height=${height},top=${top},left=${left},toolbar=no,menubar=no,location=no,status=no`
+        );
+
+        setTimeout(() => {
+          if (popup && !popup.closed) {
+            popup.close();
+            toast.textContent = `Descarga iniciada. ¡Disfruta tus samples!`;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+          }
+        }, 12000);
+      });
+
+      // LÓGICA PARA AGREGAR COMENTARIOS AL INSTANTE SIN LOGUEARSE
+      const commentForm = document.getElementById('comment-form');
+      const commentsContainer = document.getElementById('comments-container');
+
+      commentForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('comment-name').value.trim();
+        const rating = parseInt(document.getElementById('comment-rating').value);
+        const text = document.getElementById('comment-text').value.trim();
+
+        if(!name || !text) return;
+
+        let stars = '';
+        for(let i=0; i<rating; i++) { stars += '★'; }
+        for(let i=rating; i<5; i++) { stars += '☆'; }
+
+        const newCommentHTML = `
+          <div class="comment-card" style="animation: fadeIn 0.5s ease;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="text-white mb-0 fw-bold"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> ${name}</h6>
+              <span class="text-warning small">${stars}</span>
+            </div>
+            <p class="text-white mb-1 small" style="opacity: 0.9;">${text}</p>
+            <small class="text-muted" style="font-size: 0.75rem;">Justo ahora</small>
+          </div>
+        `;
+
+        commentsContainer.insertAdjacentHTML('afterbegin', newCommentHTML);
+        commentForm.reset();
+
+        toast.textContent = `¡Comentario publicado con éxito!`;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
       });
 
       window.removeItem = (index) => { cart.splice(index, 1); updateCartUI(); };
