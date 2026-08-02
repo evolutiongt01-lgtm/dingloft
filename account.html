@@ -34,8 +34,23 @@
     .stat span { display:block; color:#cad5e3; font-size:.89rem; } .stat strong { display:block; margin-top:4px; font-size:2rem; line-height:1; color:var(--cyan); } .stat:nth-child(2) strong{color:var(--violet)} .stat:nth-child(3) strong{color:var(--green)}
     .dashboard { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(320px,.9fr); gap:23px; } .card { border:1px solid var(--line); border-radius:20px; background:linear-gradient(145deg,rgba(16,27,45,.82),rgba(8,14,25,.78)); box-shadow:0 18px 35px rgba(0,0,0,.15); }
     .card-title { display:flex; justify-content:space-between; align-items:center; padding:25px 29px 16px; } .card-title h2 { margin:0; font-size:1.28rem; letter-spacing:-.04em; } .card-title a { color:var(--cyan); text-decoration:none; font-size:.84rem; font-weight:700; }
-    .downloads { padding:0 18px 18px; } .download-row { display:grid; grid-template-columns:68px minmax(120px,1fr) auto; gap:17px; align-items:center; padding:11px; border:1px solid transparent; border-radius:15px; transition:.2s ease; } .download-row:hover{border-color:var(--line);background:rgba(54,77,108,.13)}
+    .downloads { padding:0 18px 18px; } 
+    .download-row { display:grid; grid-template-columns:68px minmax(120px,1fr) auto; gap:17px; align-items:center; padding:11px; border:1px solid transparent; border-radius:15px; transition:.2s ease; } 
+    .download-row:hover{border-color:var(--line);background:rgba(54,77,108,.13)}
     
+    /* ESTILOS PARA BUNDLES DESPLEGABLES */
+    .bundle-container { display: flex; flex-direction: column; gap: 0; }
+    .download-row.has-subs.active { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-color: var(--line); background: rgba(54,77,108,.13); }
+    .sub-downloads { display: none; padding: 12px 15px 12px 25px; margin-left: 35px; margin-bottom: 12px; border-left: 2px solid var(--line); flex-direction: column; gap: 8px; background: rgba(8, 14, 25, 0.4); border-radius: 0 0 15px 15px; }
+    .sub-downloads.active { display: flex; }
+    .sub-download-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(255,255,255,0.03); border-radius: 10px; font-size: 0.9rem; border: 1px solid var(--line); transition: .2s ease; }
+    .sub-download-row:hover { background: rgba(54,77,108,.13); border-color: rgba(18, 215, 246, 0.3); }
+    .sub-download-row i.bi-file-earmark-zip { color: var(--cyan); margin-right: 8px; font-size: 1.1rem; }
+    .download-btn-small { width: 36px; height: 36px; border: 1px solid rgba(0,217,255,.5); border-radius: 9px; color: var(--cyan); background: rgba(0,213,255,.08); font-size: 1.1rem; display: grid; place-items: center; transition: .2s ease; cursor: pointer; }
+    .download-btn-small:hover { background: var(--cyan); color: #04111a; transform: translateY(-2px); }
+    .toggle-btn { width:43px; height:43px; background:transparent; border:none; color:var(--muted); font-size:1.4rem; transition:.3s ease; cursor:pointer; display: grid; place-items: center;}
+    .toggle-btn.active { transform: rotate(180deg); color: var(--cyan); }
+
     .product-art { width:62px; height:72px; border:1px solid rgba(158,203,255,.35); border-radius:10px; background:#071119; overflow:hidden; display:flex; justify-content:center; align-items:center; }
     .product-art img { width:100%; height:100%; object-fit:contain; padding:5px; }
     
@@ -137,6 +152,19 @@
   
   <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
+  <script>
+    // FUNCIÓN GLOBAL PARA DESPLEGAR LOS BUNDLES
+    window.toggleBundle = function(element) {
+      const container = element.parentElement;
+      const subs = container.querySelector('.sub-downloads');
+      const btn = element.querySelector('.toggle-btn');
+      
+      subs.classList.toggle('active');
+      btn.classList.toggle('active');
+      element.classList.toggle('active');
+    };
+  </script>
+
   <!-- LÓGICA DE FIREBASE Y DESCARGA CON POPUP -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -157,32 +185,51 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // MAPA DE ENLACES DE DESCARGA DIRECTA DE GOOGLE DRIVE
+    // MAPA DE ENLACES INDIVIDUALES (Para compras sencillas)
     const downloadLinksMap = {
       "AutoCAD 2026": "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase",
       "Microsoft Office 2024": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
       "Office Home & Business": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
       "SketchUp Pro 2026": "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD",
-      "Bonus PAD": "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj",
-      "Nord Essential SF2": "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1",
-      "Nord Stage 4 Ultimate Library": "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1",
-      "Nord Essentials SF2 Collection": "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1",
-      "Yamaha Legacy Collection SF2": "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe",
-      "Bonus Yamaha Legacy": "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj",
       "Cosmos Collection": "https://drive.google.com/uc?export=download&id=1Z3Xk2MiDMk90PP2jajvVwG3bWHUmSzeL",
-      "Yamaha Premium Keys": "https://drive.google.com/uc?export=download&id=1I73jq9Baj9uJi0-RHpUCvX-X5dwGOJcd",
-      "Yamaha Premium Keys v2.0": "https://drive.google.com/uc?export=download&id=1I73jq9Baj9uJi0-RHpUCvX-X5dwGOJcd",
-      "Yamaha Premium Keys (Bonus)": "https://drive.google.com/uc?export=download&id=1I73jq9Baj9uJi0-RHpUCvX-X5dwGOJcd",
-      "Yamaha Premium Keys (Bonus 2)": "https://drive.google.com/uc?export=download&id=1_ubpxmpvlHTCKO6Wdbpjpys-YLVQkEs6",
-      "Kontakt 8 (Win)": "https://drive.google.com/uc?export=download&id=1Wg895Pq8em6h-vGLIy0C-2vDFGZURFSl",
-      "Kontakt 7 (Mac)": "https://drive.google.com/uc?export=download&id=13deJgVvPCi6haaLXET3qV2K7mQ_ojMA2",
-      "Rhodes Affair 2 (Mac)": "https://drive.google.com/uc?export=download&id=1B6dfQJjCh0vzOAuf6eTtuKQ91EAhfFKY",
-      "Rhodes Affair 2 (Windows)": "https://drive.google.com/uc?export=download&id=1C2Lj_8jMqRLdjdd1O4jSdOQYwrDayJx_",
-      "Rhodes Affair 2": "https://drive.google.com/uc?export=download&id=1B6dfQJjCh0vzOAuf6eTtuKQ91EAhfFKY",
       "Montage 8 & Nord Stage 3": "https://drive.google.com/uc?export=download&id=1OayW_WEpr6Y3Ea5e9wVBC7kLpDptRJA1",
-      "SketchUp & AutoCAD Combo": "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD",
       "Biblias E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo",
       "Biblias y Diccionarios para E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo"
+    };
+
+    // MAPA DE PAQUETES (BUNDLES) CON SUS SUB-ARCHIVOS
+    const bundlesMap = {
+      "Nord Essentials SF2 Collection": [
+        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
+        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
+      ],
+      "Nord Stage 4 Ultimate Library": [
+        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
+        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
+      ],
+      "Yamaha Legacy Collection SF2": [
+        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
+        { name: "Bonus Yamaha Legacy", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
+      ],
+      "Yamaha Premium Keys": [
+        { name: "Yamaha Premium Keys v2.0", url: "https://drive.google.com/uc?export=download&id=1I73jq9Baj9uJi0-RHpUCvX-X5dwGOJcd" },
+        { name: "Yamaha Premium Keys (Bonus)", url: "https://drive.google.com/uc?export=download&id=1I73jq9Baj9uJi0-RHpUCvX-X5dwGOJcd" },
+        { name: "Yamaha Premium Keys (Bonus 2)", url: "https://drive.google.com/uc?export=download&id=1_ubpxmpvlHTCKO6Wdbpjpys-YLVQkEs6" },
+        { name: "Kontakt 8 (Win)", url: "https://drive.google.com/uc?export=download&id=1Wg895Pq8em6h-vGLIy0C-2vDFGZURFSl" },
+        { name: "Kontakt 7 (Mac)", url: "https://drive.google.com/uc?export=download&id=13deJgVvPCi6haaLXET3qV2K7mQ_ojMA2" }
+      ],
+      "Rhodes Affair 2": [
+        { name: "Rhodes Affair 2 (Mac)", url: "https://drive.google.com/uc?export=download&id=1B6dfQJjCh0vzOAuf6eTtuKQ91EAhfFKY" },
+        { name: "Rhodes Affair 2 (Windows)", url: "https://drive.google.com/uc?export=download&id=1C2Lj_8jMqRLdjdd1O4jSdOQYwrDayJx_" }
+      ],
+      "SketchUp 2026 & AutoCAD 2026": [
+        { name: "SketchUp 2026 (Mac)", url: "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD" },
+        { name: "AutoCAD 2026 (Mac)", url: "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase" }
+      ],
+      "SketchUp & AutoCAD Combo": [
+        { name: "SketchUp 2026 (Mac)", url: "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD" },
+        { name: "AutoCAD 2026 (Mac)", url: "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase" }
+      ]
     };
 
     onAuthStateChanged(auth, async (user) => {
@@ -231,8 +278,6 @@
                 let imgProd = producto.img || "autocad"; 
                 let typeProd = producto.type || 'Instalador digital';
                 
-                let directLink = producto.downloadUrl || downloadLinksMap[nombreProd] || "https://drive.google.com";
-                
                 if(typeof producto === 'string') {
                     const prodLower = producto.toLowerCase();
                     if(prodLower.includes("sketchup")) imgProd = "sketchup";
@@ -242,32 +287,87 @@
                     else if(prodLower.includes("cinema")) imgProd = "cinema4d";
                 }
 
-                const rowHTML = `
-                  <div class="download-row">
-                    <div class="product-art"><img src="img/${imgProd}.png" alt="${nombreProd}"></div>
-                    <div>
-                      <h3>${nombreProd}</h3>
-                      <p>${typeProd}</p>
-                      <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso vitalicio</span>
-                    </div>
-                    <button class="download-btn" data-url="${directLink}" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
-                      <i class="bi bi-download"></i>
-                    </button>
-                  </div>
-                `;
-                downloadsContainer.insertAdjacentHTML('beforeend', rowHTML);
+                // VERIFICAR SI EL PRODUCTO ES UN PAQUETE (BUNDLE) O INDIVIDUAL
+                if (bundlesMap[nombreProd]) {
+                  // ES UN PAQUETE DE VARIOS ARCHIVOS
+                  let subHTML = '';
+                  bundlesMap[nombreProd].forEach(subItem => {
+                    subHTML += `
+                      <div class="sub-download-row">
+                        <div><i class="bi bi-file-earmark-zip"></i> ${subItem.name}</div>
+                        <button class="download-btn-small" data-url="${subItem.url}" data-product="${subItem.name}" aria-label="Descargar ${subItem.name}">
+                          <i class="bi bi-download"></i>
+                        </button>
+                      </div>
+                    `;
+                  });
 
-                if(totalProgramas <= 3) {
-                  const recentHTML = `
-                    <div class="recent-item">
-                      <div class="recent-art"><img src="img/${imgProd}.png" alt="${nombreProd}"></div>
-                      <strong>${nombreProd}</strong>
-                      <button class="download-btn-recent" data-url="${directLink}" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
+                  const bundleHTML = `
+                    <div class="bundle-container">
+                      <div class="download-row has-subs" style="cursor:pointer;" onclick="toggleBundle(this)">
+                        <div class="product-art"><img src="img/${imgProd}.png" alt="${nombreProd}"></div>
+                        <div>
+                          <h3>${nombreProd}</h3>
+                          <p>${typeProd} (Pack de ${bundlesMap[nombreProd].length} archivos)</p>
+                          <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso vitalicio</span>
+                        </div>
+                        <button class="toggle-btn" aria-label="Ver archivos del paquete">
+                          <i class="bi bi-chevron-down"></i>
+                        </button>
+                      </div>
+                      <div class="sub-downloads">
+                        ${subHTML}
+                      </div>
+                    </div>
+                  `;
+                  downloadsContainer.insertAdjacentHTML('beforeend', bundleHTML);
+
+                  // Para descargas recientes, agregamos solo un acceso rápido al primer archivo del bundle
+                  if(totalProgramas <= 3) {
+                    const firstUrl = bundlesMap[nombreProd][0].url;
+                    const recentHTML = `
+                      <div class="recent-item">
+                        <div class="recent-art"><img src="img/${imgProd}.png" alt="${nombreProd}"></div>
+                        <strong>${nombreProd}</strong>
+                        <button class="download-btn-recent" data-url="${firstUrl}" data-product="${nombreProd} (Parte 1)" aria-label="Descargar ${nombreProd}">
+                          <i class="bi bi-download"></i>
+                        </button>
+                      </div>
+                    `;
+                    recentContainer.insertAdjacentHTML('beforeend', recentHTML);
+                  }
+
+                } else {
+                  // ES UN ARCHIVO INDIVIDUAL NORMAL
+                  let directLink = producto.downloadUrl || downloadLinksMap[nombreProd] || "https://drive.google.com";
+                  
+                  const singleHTML = `
+                    <div class="download-row">
+                      <div class="product-art"><img src="img/${imgProd}.png" alt="${nombreProd}"></div>
+                      <div>
+                        <h3>${nombreProd}</h3>
+                        <p>${typeProd}</p>
+                        <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso vitalicio</span>
+                      </div>
+                      <button class="download-btn" data-url="${directLink}" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
                         <i class="bi bi-download"></i>
                       </button>
                     </div>
                   `;
-                  recentContainer.insertAdjacentHTML('beforeend', recentHTML);
+                  downloadsContainer.insertAdjacentHTML('beforeend', singleHTML);
+
+                  if(totalProgramas <= 3) {
+                    const recentHTML = `
+                      <div class="recent-item">
+                        <div class="recent-art"><img src="img/${imgProd}.png" alt="${nombreProd}"></div>
+                        <strong>${nombreProd}</strong>
+                        <button class="download-btn-recent" data-url="${directLink}" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
+                          <i class="bi bi-download"></i>
+                        </button>
+                      </div>
+                    `;
+                    recentContainer.insertAdjacentHTML('beforeend', recentHTML);
+                  }
                 }
               });
             });
@@ -279,12 +379,12 @@
 
           const toast = document.getElementById('toast-message');
 
-          // DISPARAR DESCARGA CON EL TRUCO DEL POPUP ELEGANTE
-          document.querySelectorAll('.download-btn, .download-btn-recent').forEach(button => {
+          // EVENTO DE CLIC PARA TODOS LOS BOTONES DE DESCARGA (GRANDES, CHICOS Y RECIENTES)
+          document.querySelectorAll('.download-btn, .download-btn-small, .download-btn-recent').forEach(button => {
             button.addEventListener('click', (e) => {
               e.preventDefault();
+              e.stopPropagation(); // Evita que se despliegue el menú si hizo clic en el botón directo
               
-              // Le agregamos el parámetro &confirm=t para intentar forzar la descarga silenciosa cuando el peso lo permite
               const url = button.getAttribute('data-url') + '&confirm=t';
               const productName = button.getAttribute('data-product');
 
@@ -292,21 +392,17 @@
               toast.classList.add('show');
               setTimeout(() => toast.classList.remove('show'), 3500);
 
-              // Calcular el centro exacto de la pantalla
               const width = 600;
               const height = 450;
               const left = (window.innerWidth / 2) - (width / 2);
               const top = (window.innerHeight / 2) - (height / 2);
               
-              // Abrir una ventanita limpia sin barras de navegación justo encima de tu página
               const popup = window.open(
                 url, 
                 'DescargaSegura', 
                 `width=${width},height=${height},top=${top},left=${left},toolbar=no,menubar=no,location=no,status=no`
               );
 
-              // Auto-cerrar la ventanita después de 12 segundos 
-              // (Tiempo suficiente para que el cliente le dé a "Descargar de todos modos")
               setTimeout(() => {
                 if (popup && !popup.closed) {
                   popup.close();
