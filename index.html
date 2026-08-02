@@ -238,7 +238,7 @@
     }
     .cart-overlay.active { opacity: 1; visibility: visible; }
 
-    /* LOGO ANIMADO FLOTANTE EN LA PARTE DESENFOCADA IZQUIERDA */
+    /* LOGO ANIMADO FLOTANTE CON EFECTO DE LUCES DE NEÓN */
     .cart-brand-watermark {
       position: fixed;
       top: 50%;
@@ -256,14 +256,33 @@
       visibility: visible;
       transform: translate(-50%, -50%) scale(1);
     }
-    @keyframes logoPulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 20px rgba(0,229,255,0.3)); }
-      50% { transform: translate(-50%, -50%) scale(1.04); filter: drop-shadow(0 0 35px rgba(0,229,255,0.6)); }
+    
+    .cart-brand-watermark::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(0, 229, 255, 0.5) 0%, rgba(162, 0, 255, 0.3) 40%, transparent 70%);
+      transform: translate(-50%, -50%);
+      filter: blur(30px);
+      z-index: -1;
+      animation: lightGlow 3s infinite alternate ease-in-out;
     }
+    
+    @keyframes logoPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 20px rgba(0,229,255,0.5)); }
+      50% { transform: translate(-50%, -50%) scale(1.05); filter: drop-shadow(0 0 40px rgba(0,229,255,0.8)); }
+    }
+    @keyframes lightGlow {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+      100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+    }
+    
     .animated-watermark-logo {
       width: 240px;
       max-width: 80vw;
       animation: logoPulse 4s infinite ease-in-out;
+      position: relative;
     }
 
     .cart-drawer {
@@ -334,8 +353,8 @@
       object-fit: contain;
     }
     .cart-item-info { flex: 1; }
-    .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; }
-    .cart-item-desc { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px; }
+    .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; color: #ffffff; }
+    .cart-item-desc { font-size: 0.75rem; color: #ffffff; opacity: 0.85; margin-bottom: 10px; }
     
     .qty-controls {
       display: inline-flex;
@@ -354,7 +373,7 @@
       cursor: pointer;
     }
     .qty-btn:hover { background: rgba(255,255,255,0.1); }
-    .qty-value { padding: 0 10px; font-size: 0.85rem; font-weight: 600; }
+    .qty-value { padding: 0 10px; font-size: 0.85rem; font-weight: 600; color: #ffffff; }
 
     .cart-item-remove {
       position: absolute;
@@ -377,7 +396,7 @@
     }
     .cart-empty-msg {
       text-align: center;
-      color: var(--text-muted);
+      color: #ffffff;
       margin-top: 50px;
     }
 
@@ -420,6 +439,25 @@
       color: #000;
     }
 
+    /* Botón especial para pedidos $0.00 */
+    .btn-free-checkout {
+      background: #00ff88;
+      color: #000;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      width: 100%;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 25px rgba(0,255,136,0.2);
+    }
+    .btn-free-checkout:hover {
+      background: #00e67a;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0,255,136,0.4);
+    }
+
     /* =========================================
         REGLAS PARA MÓVIL (Responsividad)
         ========================================= */
@@ -447,7 +485,7 @@
       .btn-add-cart { width: 100%; justify-content: center; }
       
       .category-card { height: auto; text-align: center; }
-      .cart-brand-watermark { display: none; } /* Ocultar en móviles pequeños para dejar espacio */
+      .cart-brand-watermark { display: none; } 
     }
     
     @media (max-width: 500px) {
@@ -974,7 +1012,7 @@
   <!-- ====== ESTRUCTURA DEL CARRITO LATERAL Y BLOQUEO IZQUIERDO ====== -->
   <div class="cart-overlay" id="cart-overlay"></div>
   
-  <!-- Logo animado flotando en la zona izquierda bloqueada (Ruta corregida) -->
+  <!-- Logo animado flotando en la zona izquierda bloqueada con efecto de luces -->
   <div class="cart-brand-watermark">
     <img src="img/dingloft.png" alt="Dingloft Logo" class="animated-watermark-logo">
   </div>
@@ -982,8 +1020,8 @@
   <div class="cart-drawer" id="cart-drawer">
     <div class="cart-header">
       <div>
-        <h4 class="mb-1" style="font-weight: 600;"><i class="bi bi-cart4"></i> Tu carrito</h4>
-        <span class="text-muted" style="font-size: 0.85rem;" id="cart-item-count-text">0 productos</span>
+        <h4 class="mb-1 text-white" style="font-weight: 600;"><i class="bi bi-cart4"></i> Tu carrito</h4>
+        <span class="text-white" style="font-size: 0.85rem;" id="cart-item-count-text">0 productos</span>
       </div>
       <button class="btn-close-cart" id="close-cart-btn"><i class="bi bi-x-lg"></i></button>
     </div>
@@ -996,26 +1034,31 @@
     
     <div class="cart-footer">
       <div class="d-flex justify-content-between mb-2">
-        <span class="text-muted">Subtotal</span>
-        <span id="cart-subtotal">$0.00</span>
+        <span class="text-white">Subtotal</span>
+        <span id="cart-subtotal" class="text-white">$0.00</span>
       </div>
       <div class="d-flex justify-content-between mb-4">
-        <span class="fs-5 fw-bold">Total</span>
+        <span class="fs-5 fw-bold text-white">Total</span>
         <span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span>
       </div>
       
-      <!-- MODIFICADO: Texto e icono en blanco puro -->
+      <!-- Texto e icono en blanco puro -->
       <div class="text-center mb-3 text-white" style="font-size: 0.85rem; font-weight: 500;">
         <i class="bi bi-shield-lock"></i> Pago 100% seguro con PayPal
       </div>
       
-      <!-- CONTENEDOR ENVOLTORIO BLANCO CON BOTÓN X DE CIERRE -->
-      <div class="paypal-card-wrapper mb-3">
+      <!-- CONTENEDOR ENVOLTORIO BLANCO CON BOTÓN X DE CIERRE (Solo visible si > $0) -->
+      <div class="paypal-card-wrapper mb-3" id="paypal-container-wrapper">
         <button type="button" class="btn-close-paypal-card" onclick="location.reload();" title="Cancelar / Cambiar opción">
           <i class="bi bi-x-lg"></i>
         </button>
         <div id="paypal-button-container"></div>
       </div>
+
+      <!-- BOTÓN PARA PEDIDOS GRATUITOS (Solo visible si total es $0) -->
+      <button id="free-checkout-btn" class="btn-free-checkout mb-3" style="display: none;">
+        Completar pedido gratis <i class="bi bi-download ms-1"></i>
+      </button>
 
       <div class="text-center">
         <a href="#" class="text-accent text-decoration-none" id="continue-shopping">Seguir comprando</a>
@@ -1026,7 +1069,7 @@
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Lógica de Firebase Auth e integración con PayPal -->
+  <!-- Lógica de Firebase Auth, PayPal y Checkout Gratis -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -1090,8 +1133,8 @@
         const totalAmount = window.cartTotalPrice || 0;
         
         if (totalAmount <= 0) {
-          alert("Tu carrito está vacío.");
-          throw new Error("Carrito vacío");
+          alert("Tu carrito está vacío o es gratuito.");
+          throw new Error("Carrito vacío o gratuito");
         }
 
         return actions.order.create({
@@ -1141,6 +1184,43 @@
       }
     }).render('#paypal-button-container');
 
+    // LÓGICA PARA PEDIDOS GRATUITOS ($0.00)
+    const freeCheckoutBtn = document.getElementById('free-checkout-btn');
+    freeCheckoutBtn.addEventListener('click', async () => {
+      const user = auth.currentUser;
+
+      if (!user) {
+        alert("Debes iniciar sesión para descargar este programa.");
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        const itemsComprados = window.cartItemsList || [];
+        
+        // Efecto visual de carga
+        freeCheckoutBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 8px;"></span> Procesando...';
+        freeCheckoutBtn.disabled = true;
+
+        await addDoc(collection(db, "purchases"), {
+          uid: user.uid,
+          userEmail: user.email,
+          paypalOrderId: "GRATUITO-" + Date.now(),
+          payerName: user.displayName || "Usuario",
+          items: itemsComprados,
+          createdAt: serverTimestamp()
+        });
+
+        alert(`¡Pedido completado con éxito! Redirigiendo a tus descargas...`);
+        window.location.href = 'account.html';
+
+      } catch (error) {
+        console.error("Error guardando pedido gratuito en Firestore:", error);
+        alert("Ocurrió un error al procesar tu pedido. Contacta a soporte.");
+        freeCheckoutBtn.innerHTML = 'Completar pedido gratis <i class="bi bi-download ms-1"></i>';
+        freeCheckoutBtn.disabled = false;
+      }
+    });
   </script>
 
   <!-- LÓGICA FUNCIONAL DEL CARRITO -->
@@ -1160,6 +1240,8 @@
       const emptyCartMsg = document.getElementById('empty-cart-msg');
       const cartSubtotalText = document.getElementById('cart-subtotal');
       const cartTotalText = document.getElementById('cart-total');
+      const paypalWrapper = document.getElementById('paypal-container-wrapper');
+      const freeCheckoutBtn = document.getElementById('free-checkout-btn');
 
       const addButtons = document.querySelectorAll('.btn-add-cart');
 
@@ -1192,6 +1274,8 @@
         if (cart.length === 0) {
           cartItemsContainer.appendChild(emptyCartMsg);
           emptyCartMsg.style.display = 'block';
+          paypalWrapper.style.display = 'none';
+          freeCheckoutBtn.style.display = 'none';
         } else {
           emptyCartMsg.style.display = 'none';
           
@@ -1230,6 +1314,15 @@
             `;
             cartItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
           });
+
+          // Controlar qué botón mostrar según el total
+          if (totalPrice === 0) {
+            paypalWrapper.style.display = 'none';
+            freeCheckoutBtn.style.display = 'block';
+          } else {
+            paypalWrapper.style.display = 'block';
+            freeCheckoutBtn.style.display = 'none';
+          }
         }
 
         window.cartTotalPrice = totalPrice;
