@@ -13,6 +13,9 @@
   
   <!-- Google Fonts: Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+
+  <!-- SDK OFICIAL DE PAYPAL (Reemplaza 'sb' por tu Client ID real cuando estés en producción) -->
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
   
   <style>
     :root {
@@ -354,8 +357,8 @@
     .btn-added { background-color: #00ff88 !important; color: #000 !important; box-shadow: 0 0 15px rgba(0,255,136,0.5) !important; }
 
     /* =========================================
-       REGLAS PARA MÓVIL (Responsividad)
-       ========================================= */
+        REGLAS PARA MÓVIL (Responsividad)
+        ========================================= */
     @media (max-width: 991px) {
       .hero-section { padding: 100px 0 40px; text-align: center; }
       .hero-title { font-size: 2.8rem; }
@@ -931,10 +934,12 @@
       </div>
       
       <div class="text-center mb-3 text-muted" style="font-size: 0.8rem;">
-        <i class="bi bi-shield-lock"></i> Pago 100% seguro
+        <i class="bi bi-shield-lock"></i> Pago 100% seguro con PayPal
       </div>
       
-      <button class="btn-cyan w-100 mb-3" style="border-radius: 8px; font-size: 1.1rem; padding: 12px;">Finalizar compra</button>
+      <!-- CONTENEDOR DEL BOTÓN DE PAYPAL -->
+      <div id="paypal-button-container" class="mb-3"></div>
+
       <div class="text-center">
         <a href="#" class="text-accent text-decoration-none" id="continue-shopping">Seguir comprando</a>
       </div>
@@ -944,10 +949,11 @@
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Lógica de Firebase Auth para actualizar UI de "Iniciar Sesión" a "Perfil" -->
+  <!-- Lógica de Firebase Auth e integración con PayPal -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
@@ -961,13 +967,13 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
     onAuthStateChanged(auth, (user) => {
       const desktopAuthContainer = document.getElementById('desktop-auth-container');
       const mobileAuthContainer = document.getElementById('mobile-auth-container');
 
       if (user) {
-        // Sacar el nombre corto del usuario (primer nombre o inicio del correo)
         let displayName = "Usuario";
         if (user.displayName) {
           displayName = user.displayName.split(' ')[0];
@@ -975,7 +981,6 @@
           displayName = user.email.split('@')[0];
         }
 
-        // Generar la foto (usa la de Google si la tiene, o una inicial si no)
         let avatarHtml = '';
         if (user.photoURL) {
           avatarHtml = `<img src="${user.photoURL}" alt="Perfil" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">`;
@@ -984,7 +989,6 @@
           avatarHtml = `<div style="width: 28px; height: 28px; border-radius: 50%; background: var(--accent-color); color: #000; display: grid; place-items: center; font-weight: bold; font-size: 14px;">${initial}</div>`;
         }
 
-        // Actualizar UI del escritorio
         if (desktopAuthContainer) {
           desktopAuthContainer.innerHTML = `
             <a href="account.html" class="text-white text-decoration-none small fw-semibold d-flex align-items-center gap-2" style="transition: color 0.3s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#fff'">
@@ -993,7 +997,6 @@
           `;
         }
 
-        // Actualizar UI del móvil
         if (mobileAuthContainer) {
           mobileAuthContainer.innerHTML = `
             <a href="account.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none d-flex align-items-center justify-content-center gap-2">
@@ -1003,9 +1006,69 @@
         }
       }
     });
+
+    // RENDERIZAR BOTÓN DE PAYPAL DINÁMICO
+    paypal.Buttons({
+      createOrder: (data, actions) => {
+        // Calcular el total actual del carrito desde la variable global
+        const totalAmount = window.cartTotalPrice || 0;
+        
+        if (totalAmount <= 0) {
+          alert("Tu carrito está vacío.");
+          throw new Error("Carrito vacío");
+        }
+
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: totalAmount.toFixed(2)
+            }
+          }]
+        });
+      },
+
+      onApprove: async (data, actions) => {
+        return actions.order.capture().then(async (details) => {
+          const user = auth.currentUser;
+
+          if (!user) {
+            alert("Debes iniciar sesión para registrar tus programas en tu cuenta.");
+            window.location.href = 'login.html';
+            return;
+          }
+
+          try {
+            const itemsComprados = window.cartItemsList || [];
+
+            // GUARDAR COMPRA EN FIRESTORE AUTOMÁTICAMENTE
+            await addDoc(collection(db, "purchases"), {
+              uid: user.uid,
+              userEmail: user.email,
+              paypalOrderId: details.id,
+              payerName: details.payer.name.given_name,
+              items: itemsComprados,
+              createdAt: serverTimestamp()
+            });
+
+            alert(`¡Pago exitoso, ${details.payer.name.given_name}! Redirigiendo a tu cuenta...`);
+            window.location.href = 'account.html';
+
+          } catch (error) {
+            console.error("Error guardando la compra en Firestore:", error);
+            alert("El pago en PayPal se realizó, pero ocurrió un error al guardar tus programas. Contacta a soporte.");
+          }
+        });
+      },
+
+      onError: (err) => {
+        console.error("Error con PayPal:", err);
+        alert("Ocurrió un error al procesar el pago con PayPal.");
+      }
+    }).render('#paypal-button-container');
+
   </script>
 
-  <!-- LÓGICA FUNCIONAL DEL CARRITO Y LLAMADO DE IMÁGENES LOCALES -->
+  <!-- LÓGICA FUNCIONAL DEL CARRITO -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       let cart = [];
@@ -1048,6 +1111,10 @@
         let totalItems = 0;
         let totalPrice = 0;
 
+        // Variables globales expuestas para PayPal
+        window.cartItemsList = [];
+        window.cartTotalPrice = 0;
+
         if (cart.length === 0) {
           cartItemsContainer.appendChild(emptyCartMsg);
           emptyCartMsg.style.display = 'block';
@@ -1057,6 +1124,16 @@
           cart.forEach((item, index) => {
             totalItems += item.qty;
             totalPrice += (item.price * item.qty);
+
+            // Poblar lista para Firestore
+            for(let i=0; i<item.qty; i++) {
+              window.cartItemsList.push({
+                name: item.name,
+                img: item.img,
+                type: item.type,
+                price: item.price
+              });
+            }
 
             const itemHTML = `
               <div class="cart-item">
@@ -1081,6 +1158,8 @@
             cartItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
           });
         }
+
+        window.cartTotalPrice = totalPrice;
 
         cartCountBadges.forEach(badge => { if(badge) badge.textContent = totalItems; });
         cartItemCountText.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
