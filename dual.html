@@ -39,27 +39,24 @@
       position: relative;
     }
 
-    /* Clase para bloquear el scroll de la página fondo / izquierda cuando el carrito está abierto */
     body.cart-open {
       overflow: hidden !important;
       height: 100vh;
     }
 
-    /* Animación de movimiento y cambio de colores para los orbes */
+    /* Animación de orbes */
     @keyframes orbFloat1 {
       0% { transform: translate(0px, 0px) scale(1); background: #00e5ff; }
       33% { transform: translate(150px, 200px) scale(1.2); background: #a200ff; }
       66% { transform: translate(-100px, 150px) scale(0.9); background: #00ff88; }
       100% { transform: translate(0px, 0px) scale(1); background: #00e5ff; }
     }
-
     @keyframes orbFloat2 {
       0% { transform: translate(0px, 0px) scale(1); background: #a200ff; }
       33% { transform: translate(-200px, -150px) scale(1.3); background: #00ff88; }
       66% { transform: translate(150px, -100px) scale(0.8); background: #00e5ff; }
       100% { transform: translate(0px, 0px) scale(1); background: #a200ff; }
     }
-
     @keyframes orbFloat3 {
       0% { transform: translate(0px, 0px) scale(1); background: #00ff88; }
       33% { transform: translate(100px, -200px) scale(1.1); background: #00e5ff; }
@@ -68,34 +65,20 @@
     }
 
     .bg-orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(140px);
-      z-index: -1;
-      opacity: 0.35;
-      pointer-events: none;
+      position: fixed; border-radius: 50%; filter: blur(140px); z-index: -1; opacity: 0.35; pointer-events: none;
     }
     .orb-1 { width: 450px; height: 450px; top: -100px; left: -100px; animation: orbFloat1 18s infinite alternate ease-in-out; }
     .orb-2 { width: 550px; height: 550px; bottom: -150px; right: -150px; animation: orbFloat2 22s infinite alternate ease-in-out; }
     .orb-3 { width: 350px; height: 350px; top: 40%; left: 35%; animation: orbFloat3 15s infinite alternate ease-in-out; opacity: 0.2; }
 
-    /* Estilos Glassmorphism Globales */
     .glass-effect {
-      background: var(--glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-color);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     }
 
-    /* Navbar */
     .navbar-glass {
-      background: rgba(5, 7, 10, 0.6);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border-color);
-      padding: 15px 0;
-      z-index: 1040;
+      background: rgba(5, 7, 10, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color); padding: 15px 0; z-index: 1040;
     }
     .nav-link { color: var(--text-main) !important; font-size: 0.9rem; font-weight: 500; margin: 0 10px; }
     .nav-link:hover { color: var(--accent-color) !important; }
@@ -103,99 +86,53 @@
     /* ====== NUEVOS ESTILOS LIQUID GLASS PARA SESIÓN ====== */
     .btn-liquid-glass {
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.05);
-      color: #fff !important;
-      border-radius: 50px;
-      padding: 6px 16px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      text-decoration: none;
-      transition: all 0.3s ease;
+      color: #fff !important; border-radius: 50px; padding: 6px 16px; display: inline-flex;
+      align-items: center; gap: 8px; font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: all 0.3s ease;
     }
     .btn-liquid-glass:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: var(--accent-color);
-      box-shadow: 0 8px 25px rgba(0, 229, 255, 0.35);
-      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.15); border-color: var(--accent-color);
+      box-shadow: 0 8px 25px rgba(0, 229, 255, 0.35); transform: translateY(-2px);
     }
 
     .mobile-liquid-avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
+      width: 65px; height: 65px; border-radius: 50%;
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.02));
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       border: 2px solid rgba(255, 255, 255, 0.4);
       box-shadow: 0 8px 25px rgba(0,0,0,0.6), 0 0 15px rgba(0, 229, 255, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 3px;
-      transition: all 0.3s ease;
-      margin: 0 auto;
+      display: flex; align-items: center; justify-content: center; padding: 4px;
+      transition: all 0.3s ease; margin: 0 auto; text-decoration: none;
     }
     .mobile-liquid-avatar:hover {
-      transform: scale(1.1);
-      border-color: var(--accent-color);
-      box-shadow: 0 8px 30px rgba(0, 229, 255, 0.5);
+      transform: scale(1.05); border-color: var(--accent-color); box-shadow: 0 8px 30px rgba(0, 229, 255, 0.5);
     }
-    .mobile-liquid-avatar img, .mobile-liquid-avatar .avatar-fallback {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
+    .mobile-liquid-avatar img {
+      width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;
     }
     .mobile-liquid-avatar .avatar-fallback {
-      background: var(--accent-color);
-      color: #000;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      font-size: 1.4rem;
+      background: var(--accent-color); color: #000; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.6rem; width: 100%; height: 100%; border-radius: 50%; margin: 0;
     }
 
     /* Botones Globales */
     .btn-cyan {
-      background: var(--accent-color);
-      color: #000;
-      font-weight: 600;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 24px;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+      background: var(--accent-color); color: #000; font-weight: 600; border: none; border-radius: 8px;
+      padding: 10px 24px; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
     }
     .btn-cyan:hover { background: var(--accent-hover); color: #000; transform: translateY(-2px); box-shadow: 0 5px 25px rgba(0, 229, 255, 0.5); }
     
     .btn-outline-cyan {
-      background: rgba(0, 229, 255, 0.08);
-      color: var(--accent-color);
-      font-weight: 700;
-      border: 1px solid var(--accent-color);
-      border-radius: 8px;
-      padding: 10px 24px;
-      transition: all 0.3s ease;
-      font-size: 0.95rem;
-      cursor: pointer;
+      background: rgba(0, 229, 255, 0.08); color: var(--accent-color); font-weight: 700; border: 1px solid var(--accent-color);
+      border-radius: 8px; padding: 10px 24px; transition: all 0.3s ease; font-size: 0.95rem; cursor: pointer;
     }
     .btn-outline-cyan:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 25px rgba(0,229,255,0.5); }
 
     .btn-outline-custom {
-      background: rgba(255,255,255,0.05);
-      color: var(--text-main);
-      font-weight: 600;
-      border: 1px solid var(--text-muted);
-      border-radius: 8px;
-      padding: 6px 15px;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(5px);
+      background: rgba(255,255,255,0.05); color: var(--text-main); font-weight: 600; border: 1px solid var(--text-muted);
+      border-radius: 8px; padding: 10px 24px; transition: all 0.3s ease; backdrop-filter: blur(5px);
     }
     .btn-outline-custom:hover { border-color: var(--accent-color); color: var(--accent-color); background: rgba(0, 229, 255, 0.05); }
 
@@ -211,32 +148,21 @@
     }
     .feature-title { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; line-height: 1.2; margin: 0; }
 
+    /* OPCIONES DE COMPRA SPLIT */
+    .package-card { border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-color); }
+    .package-card:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.08) !important; border-color: rgba(255,255,255,0.3); }
+
     .compatible-section { padding: 20px 0 50px; }
     .compatible-title {
       text-align: center; letter-spacing: 1px; font-size: 0.85rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; margin-bottom: 25px; padding: 0 10px; line-height: 1.5;
     }
     
     .keyboard-card {
-      background: linear-gradient(145deg, rgba(12, 17, 26, 0.9), rgba(6, 9, 15, 0.98));
-      border: 1px solid var(--border-color); 
-      border-radius: 16px; 
-      padding: 20px 15px; 
-      text-align: center;
-      transition: all 0.3s ease; 
-      height: 100%; 
-      display: flex; 
-      flex-direction: column; 
-      justify-content: space-between; 
-      align-items: center;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      background: linear-gradient(145deg, rgba(12, 17, 26, 0.9), rgba(6, 9, 15, 0.98)); border: 1px solid var(--border-color); 
+      border-radius: 16px; padding: 20px 15px; text-align: center; transition: all 0.3s ease; height: 100%; display: flex; 
+      flex-direction: column; justify-content: space-between; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.4);
     }
-    .keyboard-card img {
-      width: 100%;
-      height: 90px;
-      object-fit: contain;
-      margin-bottom: 12px;
-      filter: drop-shadow(0 8px 15px rgba(0,0,0,0.7));
-    }
+    .keyboard-card img { width: 100%; height: 90px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.7)); }
     .keyboard-card h5 { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.5px; margin: 0; color: #fff; }
 
     .creator-note-box {
@@ -302,13 +228,10 @@
 
     /* ====== ESTILOS DEL CARRITO LATERAL ====== */
     .cart-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease;
     }
     .cart-overlay.active { opacity: 1; visibility: visible; }
 
-    /* LOGO ANIMADO FLOTANTE */
     .cart-brand-watermark {
       position: fixed; top: 50%; left: 30%; transform: translate(-50%, -50%) scale(0.9); text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none;
     }
@@ -321,9 +244,7 @@
     .animated-watermark-logo { width: 240px; max-width: 80vw; animation: logoPulse 4s infinite ease-in-out; position: relative; }
 
     .cart-drawer {
-      position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh;
-      background: rgba(10, 14, 20, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-left: 1px solid var(--border-color);
-      box-shadow: -15px 0 40px rgba(0, 0, 0, 0.9); z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column;
+      position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh; background: rgba(10, 14, 20, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-left: 1px solid var(--border-color); box-shadow: -15px 0 40px rgba(0, 0, 0, 0.9); z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column;
     }
     .cart-drawer.active { right: 0; }
 
@@ -415,12 +336,12 @@
           <li class="nav-item"><a class="nav-link" href="index.html">Catálogo</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
           
-          <li class="nav-item d-lg-none mt-3 w-100" id="mobile-auth-container">
-            <a href="login.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none">
-              <i class="bi bi-person-circle"></i> Iniciar Sesión
-            </a>
+          <!-- CONTENEDOR DE SESIÓN MÓVIL (AVATAR O BOTÓN) -->
+          <li class="nav-item d-lg-none w-100" id="mobile-auth-container">
+            <!-- Se inyecta por JS -->
           </li>
-          <li class="nav-item d-lg-none mt-2 w-100">
+          
+          <li class="nav-item d-lg-none mt-2 mb-2 w-100">
             <button class="btn-cyan w-100 mobile-cart-btn">
               <i class="bi bi-cart3"></i> Ver Carrito (<span class="mobile-cart-count">0</span>)
             </button>
@@ -428,10 +349,9 @@
         </ul>
       </div>
       <div class="d-none d-lg-flex align-items-center gap-3">
+        <!-- CONTENEDOR DE SESIÓN PC (BOTÓN LIQUID GLASS) -->
         <div id="desktop-auth-container">
-          <a href="login.html" class="text-white text-decoration-none small fw-semibold d-flex align-items-center gap-2" style="transition: color 0.3s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#fff'">
-            <i class="bi bi-person-circle fs-5"></i> Iniciar Sesión
-          </a>
+          <!-- Se inyecta por JS -->
         </div>
         <button id="main-cart-btn" class="btn-outline-custom" style="padding: 6px 15px; font-size: 0.9rem;">
           <i class="bi bi-cart3"></i> CARRITO (<span id="cart-count">0</span>)
@@ -469,27 +389,6 @@
             </div>
           </div>
 
-          <div class="row g-2 mb-3 pt-2 border-top border-bottom border-secondary border-opacity-25 py-2">
-            <div class="col-4">
-              <div class="feature-box">
-                <div class="feature-icon-circle"><i class="bi bi-shield-check"></i></div>
-                <p class="feature-title text-white">Garantizado</p>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="feature-box">
-                <div class="feature-icon-circle"><i class="bi bi-infinity"></i></div>
-                <p class="feature-title text-white">Vitalicio</p>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="feature-box">
-                <div class="feature-icon-circle"><i class="bi bi-download"></i></div>
-                <p class="feature-title text-white">Inmediato</p>
-              </div>
-            </div>
-          </div>
-
           <!-- PRECIO CON DESCUENTO Y EFECTO DE OFERTA -->
           <div class="mb-3 d-flex align-items-end gap-3">
             <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--accent-color) !important; line-height: 1;">$60.00</span>
@@ -499,12 +398,49 @@
             </div>
           </div>
 
-          <div class="d-flex flex-column gap-2">
-            <button class="btn-cyan w-100 d-flex align-items-center justify-content-center gap-2" id="btn-buy-now" data-id="9" data-name="Pianos Legendarios SF2" data-price="60" data-img="pianos_bundle_boxes" data-type="Librería vitalicia">
-              <i class="bi bi-cart3 fs-5"></i> AGREGAR AL CARRITO ($60.00)
-            </button>
+          <!-- ====== NUEVA SECCIÓN DE OPCIONES DE COMPRA ====== -->
+          <div class="purchase-options mt-4">
+            <p class="text-info fw-bold mb-2" style="font-size: 0.8rem; letter-spacing: 1px;"><i class="bi bi-cart-check"></i> ELIGE TU PAQUETE:</p>
+            
+            <!-- Opcion Bundle -->
+            <div class="package-card glass-effect p-3 mb-2" style="border-color: var(--accent-color); background: rgba(0, 229, 255, 0.05); position: relative; overflow: hidden;">
+              <div class="position-absolute top-0 end-0 bg-accent text-dark px-2 py-1 fw-bold" style="font-size: 0.65rem; border-bottom-left-radius: 8px; background: var(--accent-color);">MÁS POPULAR</div>
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="fw-bold text-white">Bundle Completo</span>
+                <span class="fw-bold text-accent">$60.00</span>
+              </div>
+              <p class="small text-muted mb-2" style="font-size: 0.75rem;">Nord + Yamaha + Bonus PAD</p>
+              <button class="btn-cyan w-100 py-2 d-flex align-items-center justify-content-center gap-2" id="btn-buy-now" data-id="9" data-name="Pianos Legendarios SF2" data-price="60" data-img="pianos_bundle_boxes" data-type="Librería vitalicia">
+                <i class="bi bi-cart3"></i> AGREGAR BUNDLE
+              </button>
+            </div>
+
+            <!-- Opcion Nord -->
+            <div class="package-card glass-effect p-3 mb-2">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="fw-bold text-white">Solo Nord Essentials</span>
+                <span class="fw-bold text-white">$33.00</span>
+              </div>
+              <p class="small text-muted mb-2" style="font-size: 0.75rem;">Stage 3/4 Pianos + Bonus PAD</p>
+              <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="10" data-name="Nord Essentials SF2 Collection" data-price="33" data-img="nordessentials" data-type="Librería vitalicia">
+                <i class="bi bi-cart-plus"></i> AGREGAR NORD
+              </button>
+            </div>
+
+            <!-- Opcion Yamaha -->
+            <div class="package-card glass-effect p-3 mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="fw-bold text-white">Solo Yamaha Legacy</span>
+                <span class="fw-bold text-white">$29.00</span>
+              </div>
+              <p class="small text-muted mb-2" style="font-size: 0.75rem;">Serie Motif/Montage + Bonus PAD</p>
+              <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="13" data-name="Yamaha Legacy Collection SF2" data-price="29" data-img="yamahalegacy" data-type="Librería vitalicia">
+                <i class="bi bi-cart-plus"></i> AGREGAR YAMAHA
+              </button>
+            </div>
+
             <button class="btn-outline-cyan w-100 d-flex align-items-center justify-content-center gap-2" id="btn-free-trial" data-url="https://drive.google.com/uc?export=download&id=1zoVl-fS-D_ex1EUmLGXfEytU2Q00nQYE">
-              <i class="bi bi-gift fs-5"></i> PRUEBA GRATIS (531.5 MB / 3 Samples)
+              <i class="bi bi-gift fs-5"></i> PRUEBA GRATIS (531.5 MB)
             </button>
           </div>
         </div>
@@ -550,7 +486,8 @@
             </div>
             <p class="text-white mb-2" style="font-size: 0.9rem; line-height: 1.6; color: #f1f5f9;">
               "Desarrollé esta librería pensando en la realidad de los pianistas evangélicos en directo. Al ser miembro de una de las iglesias de <b>Ministerios Ebenezer en California</b>, me pasaba buscando constantemente los timbres exactos a los que estamos acostumbrados para llevarlos a una configuración portátil en móvil o iPad.<br><br>
-              Para que comprueben la calidad antes de adquirir la versión completa, les obsequio esta <b>prueba gratuita de 531.5 MB</b> con la base esencial: el icónico *Grand Piano* del Yamaha Motif y Montage M8x, y si eres usuario de Nord, el legendario *Royal Grand* junto a un Pad de ambientación."
+              Pensando en la economía de los músicos, <b>he dividido el paquete principal</b> para que puedas elegir llevarte todo el arsenal (Nord + Yamaha) o comprar únicamente la marca que utilizas (Solo Nord o Solo Yamaha) y ahorrar. Lo mejor es que <b>cualquier paquete que elijas incluye de regalo el Bonus PAD de ambientación</b>.<br><br>
+              Para que comprueben la calidad antes de adquirir cualquier versión, les obsequio esta <b>prueba gratuita de 531.5 MB</b> con la base esencial: el icónico *Grand Piano* del Yamaha Motif y Montage M8x, y si eres usuario de Nord, el legendario *Royal Grand* junto a un Pad."
             </p>
             <div class="text-end text-info small fw-semibold" style="font-size: 0.75rem;"><i class="bi bi-patch-check-fill"></i> Diseñado por músicos, para músicos.</div>
           </div>
@@ -796,7 +733,6 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Exportar variables al scope global para que el script del carrito pueda leerlas
     window.globalCurrentUser = null;
     let currentUser = null;
 
@@ -913,10 +849,11 @@
             : `<div class="avatar-fallback">${displayName.charAt(0).toUpperCase()}</div>`;
             
           mobileAuthContainer.innerHTML = `
-            <div class="d-flex justify-content-center w-100 mt-3 mb-1">
-              <a href="account.html" class="mobile-liquid-avatar" title="Ir a Mi Cuenta">
+            <div class="d-flex flex-column align-items-center w-100 mt-3 mb-2">
+              <a href="account.html" class="mobile-liquid-avatar mb-1" title="Ir a Mi Cuenta">
                 ${mobileContent}
               </a>
+              <span class="text-white small fw-bold mt-1" style="font-size: 0.8rem;">Mi Cuenta</span>
             </div>
           `;
         }
@@ -951,16 +888,18 @@
       } else {
         if (desktopAuthContainer) {
           desktopAuthContainer.innerHTML = `
-            <a href="login.html" class="text-white text-decoration-none small fw-semibold d-flex align-items-center gap-2" style="transition: color 0.3s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#fff'">
+            <a href="login.html" class="btn-liquid-glass">
               <i class="bi bi-person-circle fs-5"></i> Iniciar Sesión
             </a>
           `;
         }
         if (mobileAuthContainer) {
           mobileAuthContainer.innerHTML = `
-            <a href="login.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none d-flex align-items-center justify-content-center gap-2">
-              <i class="bi bi-person-circle"></i> Iniciar Sesión
-            </a>
+            <div class="d-flex justify-content-center w-100 mt-3 mb-2 px-3">
+              <a href="login.html" class="btn-liquid-glass w-100 justify-content-center py-2" style="font-size: 0.95rem;">
+                <i class="bi bi-person-circle"></i> Iniciar Sesión
+              </a>
+            </div>
           `;
         }
 
@@ -1132,7 +1071,7 @@
     }
   </script>
 
-  <!-- Lógica del Carrito (Botón de Descarga Directa sin candado) -->
+  <!-- Lógica del Carrito -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       let cart = [];
@@ -1357,7 +1296,7 @@
         });
       });
       
-      // LÓGICA DE POPUP PARA LA PRUEBA GRATIS (SIN CANDADO DE SESIÓN)
+      // LÓGICA DE POPUP PARA LA PRUEBA GRATIS SIN CANDADO DE SESIÓN
       const freeTrialBtn = document.getElementById('btn-free-trial');
       if (freeTrialBtn) {
         freeTrialBtn.addEventListener('click', function(e) {
