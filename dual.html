@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dual Legends SF2 | Dingloft</title>
+  <title>Pianos Legendarios SF2 | Dingloft</title>
   
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,7 +23,7 @@
       --accent-color: #00e5ff;
       --accent-hover: #00b5cc;
       --text-main: #ffffff;
-      --text-muted: #d1d5db;
+      --text-muted: #9ba9bd;
       --border-color: rgba(255, 255, 255, 0.1);
       --glass-bg: rgba(17, 21, 31, 0.4);
     }
@@ -43,27 +43,25 @@
 
     @keyframes orbFloat1 {
       0% { transform: translate(0px, 0px) scale(1); background: #00e5ff; }
-      33% { transform: translate(150px, 200px) scale(1.2); background: #a200ff; }
-      66% { transform: translate(-100px, 150px) scale(0.9); background: #00ff88; }
+      50% { transform: translate(100px, 150px) scale(1.2); background: #ff0055; }
       100% { transform: translate(0px, 0px) scale(1); background: #00e5ff; }
     }
     @keyframes orbFloat2 {
-      0% { transform: translate(0px, 0px) scale(1); background: #a200ff; }
-      33% { transform: translate(-200px, -150px) scale(1.3); background: #00ff88; }
-      66% { transform: translate(150px, -100px) scale(0.8); background: #00e5ff; }
-      100% { transform: translate(0px, 0px) scale(1); background: #a200ff; }
+      0% { transform: translate(0px, 0px) scale(1); background: #7000ff; }
+      50% { transform: translate(-120px, -100px) scale(1.3); background: #00e5ff; }
+      100% { transform: translate(0px, 0px) scale(1); background: #7000ff; }
     }
 
     .bg-orb {
       position: fixed;
       border-radius: 50%;
-      filter: blur(140px);
+      filter: blur(150px);
       z-index: -1;
-      opacity: 0.35;
+      opacity: 0.25;
       pointer-events: none;
     }
-    .orb-1 { width: 450px; height: 450px; top: -100px; left: -100px; animation: orbFloat1 18s infinite alternate ease-in-out; }
-    .orb-2 { width: 550px; height: 550px; bottom: -150px; right: -150px; animation: orbFloat2 22s infinite alternate ease-in-out; }
+    .orb-1 { width: 500px; height: 500px; top: 10%; left: -100px; animation: orbFloat1 20s infinite alternate ease-in-out; }
+    .orb-2 { width: 600px; height: 600px; bottom: 5%; right: -150px; animation: orbFloat2 25s infinite alternate ease-in-out; }
 
     .glass-effect {
       background: var(--glass-bg);
@@ -74,121 +72,136 @@
     }
 
     .navbar-glass {
-      background: rgba(5, 7, 10, 0.6);
+      background: rgba(5, 7, 10, 0.7);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border-color);
       padding: 15px 0;
       z-index: 1040;
     }
-    .nav-link { color: var(--text-main) !important; font-size: 0.9rem; font-weight: 500; margin: 0 10px; }
+    .nav-link { color: var(--text-main) !important; font-size: 0.9rem; font-weight: 500; margin: 0 12px; }
     .nav-link:hover { color: var(--accent-color) !important; }
 
     .btn-cyan {
       background: var(--accent-color);
       color: #000;
-      font-weight: 600;
+      font-weight: 700;
       border: none;
-      border-radius: 8px;
-      padding: 12px 30px;
+      border-radius: 10px;
+      padding: 14px 30px;
       transition: all 0.3s ease;
-      box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+      font-size: 1.05rem;
     }
-    .btn-cyan:hover { background: var(--accent-hover); color: #000; transform: translateY(-2px); box-shadow: 0 5px 25px rgba(0, 229, 255, 0.5); }
-    
+    .btn-cyan:hover { background: var(--accent-hover); color: #000; transform: translateY(-2px); box-shadow: 0 5px 30px rgba(0, 229, 255, 0.6); }
+
     .btn-outline-custom {
       background: rgba(255,255,255,0.05);
       color: var(--text-main);
       font-weight: 600;
       border: 1px solid var(--text-muted);
       border-radius: 8px;
-      padding: 10px 24px;
+      padding: 8px 20px;
       transition: all 0.3s ease;
-      backdrop-filter: blur(5px);
     }
     .btn-outline-custom:hover { border-color: var(--accent-color); color: var(--accent-color); background: rgba(0, 229, 255, 0.05); }
 
-    .product-detail-section { padding: 130px 0 60px; }
-    .product-big-img {
+    /* SECCIÓN PRINCIPAL */
+    .product-detail-section { padding: 130px 0 40px; }
+    
+    .product-boxes-display {
       width: 100%;
-      max-height: 450px;
-      background: rgba(0,0,0,0.3);
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 30px;
-      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 15px;
+      position: relative;
     }
-    .product-big-img img {
-      max-width: 100%;
-      max-height: 380px;
+    .product-boxes-display img {
+      width: 100%;
+      height: auto;
       object-fit: contain;
-      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.5));
+      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.7));
     }
 
-    .old-price { font-size: 1.2rem; color: #adb5bd; text-decoration: line-through; margin-right: 10px; }
-    .prod-price { font-size: 2rem; font-weight: 800; color: var(--accent-color); }
-
-    .spec-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(0, 229, 255, 0.08);
-      border: 1px solid rgba(0, 229, 255, 0.2);
-      padding: 8px 16px;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 500;
+    /* Iconos de características */
+    .feature-box {
+      text-align: center;
+      padding: 10px;
+    }
+    .feature-icon-circle {
+      width: 48px; height: 48px;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      background: rgba(0, 229, 255, 0.05);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 10px;
       color: var(--accent-color);
-      margin-right: 10px;
-      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+    .feature-title {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      line-height: 1.3;
+      margin: 0;
+    }
+
+    /* TARJETAS INFERIORES DE TECLADOS */
+    .compatible-section { padding: 40px 0 80px; }
+    .compatible-title {
+      text-align: center;
+      letter-spacing: 4px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      text-transform: uppercase;
+      margin-bottom: 35px;
+      position: relative;
+    }
+    
+    .keyboard-card {
+      background: linear-gradient(145deg, rgba(12, 17, 26, 0.85), rgba(6, 9, 15, 0.95));
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 25px 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .keyboard-card:hover {
+      border-color: rgba(0, 229, 255, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .keyboard-card img {
+      max-width: 100%;
+      height: 75px;
+      object-fit: contain;
+      margin-bottom: 18px;
+      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
+    }
+    .keyboard-card h5 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin: 0;
+      color: #fff;
     }
 
     /* CARRITO LATERAL */
     .cart-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(10px);
-      z-index: 1050;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease;
     }
     .cart-overlay.active { opacity: 1; visibility: visible; }
-
-    .cart-brand-watermark {
-      position: fixed;
-      top: 50%; left: 30%;
-      transform: translate(-50%, -50%) scale(0.9);
-      text-align: center;
-      z-index: 1055;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.4s ease;
-      pointer-events: none;
-    }
-    .cart-overlay.active ~ .cart-brand-watermark {
-      opacity: 0.85;
-      visibility: visible;
-      transform: translate(-50%, -50%) scale(1);
-    }
-    .animated-watermark-logo { width: 240px; max-width: 80vw; position: relative; }
-
     .cart-drawer {
-      position: fixed;
-      top: 0; right: -480px;
-      width: 450px;
-      max-width: 100%;
-      height: 100vh;
-      background: rgba(10, 14, 20, 0.95);
-      backdrop-filter: blur(25px);
-      border-left: 1px solid var(--border-color);
-      z-index: 1060;
-      transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      display: flex;
-      flex-direction: column;
+      position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh;
+      background: rgba(10, 14, 20, 0.95); backdrop-filter: blur(25px); border-left: 1px solid var(--border-color);
+      z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column;
     }
     .cart-drawer.active { right: 0; }
     .cart-header { padding: 20px 25px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
@@ -200,9 +213,6 @@
     .cart-item-info { flex: 1; }
     .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; color: #fff; }
     .cart-item-desc { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px; }
-    .qty-controls { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; background: rgba(0,0,0,0.2); }
-    .qty-btn { background: transparent; border: none; color: #fff; padding: 2px 10px; cursor: pointer; }
-    .qty-value { padding: 0 10px; font-size: 0.85rem; font-weight: 600; color: #fff; }
     .cart-item-remove { position: absolute; top: 0; right: 0; background: transparent; border: none; color: #fff; cursor: pointer; }
     .cart-footer { padding: 20px 25px; background: rgba(0,0,0,0.6); border-top: 1px solid var(--border-color); }
     .coupon-box { display: flex; gap: 8px; margin-bottom: 15px; }
@@ -246,57 +256,110 @@
   <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
     <div class="container">
       <a class="navbar-brand fw-bold fs-4 text-white" href="index.html">
-        <span class="text-accent">D</span>ingloft
+        <span class="text-accent" style="color:var(--accent-color)">D</span>ingloft
       </a>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="index.html">CATÁLOGO</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">SOPORTE</a></li>
+          <li class="nav-item"><a class="nav-link" href="account.html">MI CUENTA</a></li>
+        </ul>
+      </div>
       <div class="d-flex align-items-center gap-3">
-        <div id="desktop-auth-container">
+        <div id="desktop-auth-container" class="d-none d-lg-block">
           <a href="login.html" class="text-white text-decoration-none small fw-semibold">Iniciar Sesión</a>
         </div>
-        <button id="main-cart-btn" class="btn-outline-custom" style="padding: 6px 15px; font-size: 0.9rem;">
+        <button id="main-cart-btn" class="btn-outline-custom d-flex align-items-center gap-2" style="font-size: 0.85rem;">
           <i class="bi bi-cart3"></i> CARRITO (<span id="cart-count">0</span>)
         </button>
       </div>
     </div>
   </nav>
 
-  <!-- Detalle del Producto -->
+  <!-- SECCIÓN SUPERIOR: CAJAS 3D Y DETALLES -->
   <section class="product-detail-section">
     <div class="container">
-      <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html" class="text-accent text-decoration-none">Inicio</a></li>
-          <li class="breadcrumb-item active text-muted" aria-current="page">Dual Legends SF2</li>
-        </ol>
-      </nav>
-
-      <div class="row g-5 align-items-center">
+      <div class="row align-items-center g-5">
+        
+        <!-- Columna Izquierda: Imagen 3D de las Cajas -->
         <div class="col-lg-6">
-          <div class="product-big-img glass-effect">
-            <img src="img/dual.png" alt="Dual Legends SF2">
+          <div class="product-boxes-display glass-effect">
+            <img src="img/pianos_bundle_boxes.png" alt="Pianos Legendarios SF2 Bundle">
           </div>
         </div>
+
+        <!-- Columna Derecha: Información y Precio -->
         <div class="col-lg-6">
-          <span class="badge bg-info text-dark mb-3 px-3 py-2 fw-bold" style="border-radius: 20px;">Librería SF2 Profesional</span>
-          <h1 class="fw-bold mb-3" style="font-size: 2.8rem; letter-spacing: -1px;">Dual Legends SF2</h1>
-          <p class="text-muted mb-4" style="font-size: 1.05rem; line-height: 1.7;">
-            Sample library de alta gama en formato SF2 diseñada específicamente para workstations y módulos de sonido virtuales. Obtén timbres legendarios con la máxima fidelidad y rendimiento optimizado para directos en escenario.
+          <span class="text-uppercase text-info fw-bold" style="font-size: 0.75rem; letter-spacing: 2px;">Colección Premium de Pianos</span>
+          <h1 class="fw-bold my-2 text-white" style="font-size: 3rem; letter-spacing: -1.5px;">Pianos Legendarios SF2</h1>
+          <p class="text-muted mb-4" style="font-size: 1.05rem; line-height: 1.6;">
+            Sonidos de escenario para Nord Stage 4, Motif XF8 y Montage M8x.
           </p>
 
+          <!-- Iconos de Beneficios en 3 columnas -->
+          <div class="row g-2 mb-4 pt-2 border-top border-bottom border-secondary border-opacity-25 py-3">
+            <div class="col-4">
+              <div class="feature-box">
+                <div class="feature-icon-circle"><i class="bi bi-shield-check"></i></div>
+                <p class="feature-title">Compatibilidad garantizada</p>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="feature-box">
+                <div class="feature-icon-circle"><i class="bi bi-infinity"></i></div>
+                <p class="feature-title">Acceso vitalicio</p>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="feature-box">
+                <div class="feature-icon-circle"><i class="bi bi-download"></i></div>
+                <p class="feature-title">Descarga inmediata</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Precio -->
           <div class="mb-4">
-            <span class="spec-badge"><i class="bi bi-check2-circle"></i> Formato SF2 Universal</span>
-            <span class="spec-badge"><i class="bi bi-shield-check"></i> Acceso Vitalicio</span>
-            <span class="spec-badge"><i class="bi bi-headphones"></i> Calidad de Estudio</span>
+            <span class="fw-extrabold text-white" style="font-size: 2.8rem; letter-spacing: -1px; color: var(--accent-color);">$60.00</span>
           </div>
 
-          <div class="d-flex align-items-center mb-4">
-            <span class="old-price">$100.00</span>
-            <span class="prod-price">$60.00</span>
-          </div>
-
-          <div class="d-flex gap-3">
-            <button class="btn-cyan btn-lg flex-grow-1" id="btn-buy-now" data-id="9" data-name="Dual Legends SF2" data-price="60" data-img="dual" data-type="Librería vitalicia">
-              Agregar al Carrito <i class="bi bi-cart-plus ms-2"></i>
+          <!-- Botón Agregar al Carrito -->
+          <div>
+            <button class="btn-cyan w-100 d-flex align-items-center justify-content-center gap-2" id="btn-buy-now" data-id="9" data-name="Pianos Legendarios SF2" data-price="60" data-img="pianos_bundle_boxes" data-type="Librería vitalicia">
+              <i class="bi bi-cart3 fs-5"></i> AGREGAR AL CARRITO
             </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN INFERIOR: COMPATIBLE CON / MUESTREO -->
+  <section class="compatible-section">
+    <div class="container">
+      <div class="compatible-title">Capturado directamente de la fuente: Sonidos sampleados de los sintetizadores originales</div>
+      
+      <div class="row g-4 justify-content-center">
+        <!-- 1. Nord Stage 4 -->
+        <div class="col-md-4">
+          <div class="keyboard-card">
+            <img src="img/keyboard_nord4.png" alt="Nord Stage 4">
+            <h5>NORD STAGE 4</h5>
+          </div>
+        </div>
+        <!-- 2. Motif XF8 -->
+        <div class="col-md-4">
+          <div class="keyboard-card">
+            <img src="img/keyboard_motifxf8.png" alt="Motif XF8">
+            <h5>MOTIF XF8</h5>
+          </div>
+        </div>
+        <!-- 3. Montage M8x -->
+        <div class="col-md-4">
+          <div class="keyboard-card">
+            <img src="img/keyboard_montagem8x.png" alt="Montage M8x">
+            <h5>MONTAGE M8X</h5>
           </div>
         </div>
       </div>
@@ -314,10 +377,6 @@
 
   <!-- CARRITO LATERAL -->
   <div class="cart-overlay" id="cart-overlay"></div>
-  <div class="cart-brand-watermark">
-    <img src="img/dingloft.png" alt="Dingloft Logo" class="animated-watermark-logo">
-  </div>
-
   <div class="cart-drawer" id="cart-drawer">
     <div class="cart-header">
       <h4 class="mb-0 text-white fw-semibold"><i class="bi bi-cart4"></i> Tu carrito</h4>
@@ -333,13 +392,12 @@
       </div>
       <div id="coupon-msg" style="font-size: 0.78rem; margin-bottom: 12px; display: none;"></div>
       <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;"><span class="text-white">Subtotal</span><span id="cart-subtotal" class="text-white">$0.00</span></div>
-      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;"><span class="fs-5 fw-bold text-white">Total</span><span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span></div>
+      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;"><span class="fs-5 fw-bold text-white">Total</span><span class="fs-4 fw-bold text-accent" id="cart-total" style="color:var(--accent-color)">$0.00</span></div>
       
       <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;">
         <div id="paypal-button-container" class="w-100"></div>
       </div>
-      <button id="free-checkout-btn" class="btn-cyan w-100 mb-3" style="display: none; background: #00ff88; color: #000;">Obtener gratis <i class="bi bi-download"></i></button>
-      <div class="text-center"><a href="index.html" class="text-accent text-decoration-none small">Seguir comprando</a></div>
+      <div class="text-center"><a href="index.html" class="text-accent text-decoration-none small" style="color:var(--accent-color)">Seguir comprando</a></div>
     </div>
   </div>
 
@@ -459,7 +517,7 @@
                 <div class="cart-item-info">
                   <h4 class="cart-item-title">${item.name}</h4>
                   <p class="cart-item-desc">${item.type}</p>
-                  <span class="fw-bold text-accent">$${(couponApplied ? 0 : item.price).toFixed(2)}</span>
+                  <span class="fw-bold text-accent" style="color:var(--accent-color)">$${(couponApplied ? 0 : item.price).toFixed(2)}</span>
                 </div>
                 <button class="cart-item-remove" onclick="removeItem(${index})"><i class="bi bi-trash"></i></button>
               </div>
