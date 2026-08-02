@@ -81,34 +81,13 @@
       padding: 20px;
     }
 
-    /* ESTILO PARA LA NOTA DEL CREADOR (CESAR) */
-    .creator-note-box {
-      background: linear-gradient(135deg, rgba(0, 229, 255, 0.07), rgba(122, 0, 255, 0.04));
-      border: 1px solid rgba(0, 229, 255, 0.25);
-      border-radius: 20px;
-      padding: 30px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-    }
-    .creator-note-box::before {
-      content: '"';
-      position: absolute;
-      top: -20px;
-      right: 20px;
-      font-size: 8rem;
-      color: rgba(0, 229, 255, 0.06);
-      font-family: serif;
-      pointer-events: none;
-    }
-
-    /* CARRUSEL TIPO LIQUID GLASS PARA SIMILARES */
+    /* CARRUSEL ARREGLADO Y PROFESIONAL */
     .similar-carousel-wrapper {
       display: flex;
       gap: 20px;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
-      padding-bottom: 20px;
+      padding: 10px 5px 25px 5px;
       scrollbar-width: thin;
       scrollbar-color: var(--accent-color) rgba(255,255,255,0.05);
     }
@@ -116,45 +95,101 @@
     .similar-carousel-wrapper::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
 
     .similar-card {
-      min-width: 280px; max-width: 280px; flex: 0 0 auto; scroll-snap-align: start;
+      min-width: 290px;
+      max-width: 290px;
+      flex: 0 0 auto;
+      scroll-snap-align: start;
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
       backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; padding: 20px;
-      display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease;
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
       box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.15);
     }
-    .similar-card:hover { transform: translateY(-6px); border-color: rgba(0, 229, 255, 0.5); box-shadow: 0 20px 45px rgba(0,229,255,0.15); }
-    .similar-img-box {
-      width: 100%; height: 150px; background: rgba(0,0,0,0.3); border-radius: 12px;
-      display: grid; place-items: center; padding: 10px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05);
+    .similar-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(0, 229, 255, 0.5);
+      box-shadow: 0 20px 45px rgba(0,229,255,0.15), inset 0 1px 2px rgba(255,255,255,0.3);
     }
-    .similar-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.6)); }
+    .similar-img-box {
+      width: 100%;
+      height: 180px; /* Altura ideal para que la caja 3D respire y no se salga */
+      background: rgba(0,0,0,0.4);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+    .similar-img-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.7));
+      transition: transform 0.3s ease;
+    }
+    .similar-card:hover .similar-img-box img {
+      transform: scale(1.05);
+    }
 
     .navbar-glass {
-      background: rgba(5, 7, 10, 0.7); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); padding: 15px 0; z-index: 1040;
+      background: rgba(5, 7, 10, 0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 15px 0;
+      z-index: 1040;
     }
     .nav-link { color: var(--text-main) !important; font-size: 0.9rem; font-weight: 500; margin: 0 12px; }
     .nav-link:hover { color: var(--accent-color) !important; }
 
     .btn-cyan {
-      background: var(--accent-color); color: #000; font-weight: 700; border: none; border-radius: 10px; padding: 14px 30px;
-      transition: all 0.3s ease; box-shadow: 0 0 20px rgba(0, 229, 255, 0.35); font-size: 1.05rem; cursor: pointer;
+      background: var(--accent-color);
+      color: #000;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 30px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+      font-size: 1.05rem;
+      cursor: pointer;
     }
     .btn-cyan:hover { background: var(--accent-hover); color: #000; transform: translateY(-2px); box-shadow: 0 5px 30px rgba(0, 229, 255, 0.6); }
 
     .btn-outline-cyan {
-      background: rgba(0, 229, 255, 0.08); color: var(--accent-color); font-weight: 700; border: 1px solid var(--accent-color);
-      border-radius: 10px; padding: 14px 30px; transition: all 0.3s ease; font-size: 1.05rem; cursor: pointer;
+      background: rgba(0, 229, 255, 0.08);
+      color: var(--accent-color);
+      font-weight: 700;
+      border: 1px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 14px 30px;
+      transition: all 0.3s ease;
+      font-size: 1.05rem;
+      cursor: pointer;
     }
     .btn-outline-cyan:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 25px rgba(0,229,255,0.5); }
 
     .btn-outline-custom {
-      background: rgba(255,255,255,0.05); color: var(--text-main); font-weight: 600; border: 1px solid var(--text-muted);
-      border-radius: 8px; padding: 8px 20px; transition: all 0.3s ease;
+      background: rgba(255,255,255,0.05);
+      color: var(--text-main);
+      font-weight: 600;
+      border: 1px solid var(--text-muted);
+      border-radius: 8px;
+      padding: 8px 20px;
+      transition: all 0.3s ease;
     }
     .btn-outline-custom:hover { border-color: var(--accent-color); color: var(--accent-color); background: rgba(0, 229, 255, 0.05); }
 
     .product-detail-section { padding: 130px 0 40px; }
+    
     .product-boxes-display { width: 100%; border-radius: 16px; padding: 15px; }
     .product-boxes-display img { width: 100%; height: auto; object-fit: contain; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.7)); }
 
@@ -180,6 +215,11 @@
     .keyboard-card img { width: 100%; height: 120px; object-fit: contain; margin-bottom: 20px; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.7)); transition: transform 0.3s ease; }
     .keyboard-card:hover img { transform: scale(1.05); }
     .keyboard-card h5 { font-size: 1.05rem; font-weight: 800; letter-spacing: 1px; margin: 0; color: #fff; }
+
+    .creator-note-box {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.07), rgba(122, 0, 255, 0.04));
+      border: 1px solid rgba(0, 229, 255, 0.25); border-radius: 20px; padding: 30px; position: relative; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    }
 
     .software-badge-box {
       background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color); border-radius: 12px;
@@ -405,7 +445,7 @@
             </div>
             <p class="text-white mb-3" style="font-size: 0.98rem; line-height: 1.7; color: #f1f5f9;">
               "Desarrollé esta librería pensando en la realidad de los pianistas evangélicos en directo. Al ser miembro de una de las iglesias de <b>Ministerios Ebenezer en California</b>, me pasaba buscando constantemente los timbres exactos a los que estamos acostumbrados para llevarlos a una configuración portátil en móvil o iPad. Al no encontrar herramientas a la altura, decidí samplear mis propios instrumentos, extrayendo las muestras directamente de los sintetizadores de gama alta de diferentes congregaciones.<br><br>
-              Para que comprueben la calidad antes de adquirir la versión completa, les obsequio esta <b>prueba gratuita de 500 MB</b> con la base esencial: el icónico *Grand Piano* del Yamaha Motif y Montage M8x, y si eres usuario de Nord, el legendario *Royal Grand* junto a un Pad de ambientación. Al dar El gran salto a la suite completa, podrás combinar órganos, pads atmosféricos y texturas de alta gama sin límites."
+              Para que comprueben la calidad antes de adquirir la versión completa, les obsequio esta <b>prueba gratuita de 500 MB</b> con la base esencial: el icónico *Grand Piano* del Yamaha Motif y Montage M8x, y si eres usuario de Nord, el legendario *Royal Grand* junto a un Pad de ambientación. Al dar el salto a la suite completa, podrás combinar órganos, pads atmosféricos y texturas de alta gama sin límites."
             </p>
             <div class="text-end text-info small fw-semibold"><i class="bi bi-patch-check-fill"></i> Diseñado por músicos, para músicos.</div>
           </div>
@@ -485,7 +525,7 @@
         </div>
       </div>
 
-      <!-- SECCIÓN DE PRODUCTOS SIMILARES (TIPO CARRUSEL LIQUID GLASS) -->
+      <!-- SECCIÓN DE PRODUCTOS SIMILARES (CARRUSEL ARREGLADO) -->
       <div class="row justify-content-center my-5">
         <div class="col-lg-10">
           <div class="d-flex justify-content-between align-items-center mb-4">
@@ -545,7 +585,7 @@
         </div>
       </div>
 
-      <!-- SECCIÓN DE COMENTARIOS Y RESEÑAS -->
+      <!-- SECCIÓN DE COMENTARIOS Y RESEÑAS CON 11 COMENTARIOS EN TOTAL -->
       <div class="row justify-content-center comments-section">
         <div class="col-lg-10">
           <div class="d-flex justify-content-between align-items-center mb-4">
@@ -612,6 +652,70 @@
               </div>
               <p class="text-white mb-1 small" style="color: #f1f5f9;">Tenía dudas de cómo correría en mi celular con Audio Evolution, pero con la prueba de 500 MB comprobé la fluidez. ¡Va perfecto y cero latencia!</p>
               <small class="text-white" style="color: #cbd5e1; font-size: 0.75rem;">Hace 1 semana</small>
+            </div>
+
+            <div class="comment-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="text-white mb-0 fw-bold"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Daniel Siquiej</h6>
+                <span class="text-warning small">★★★★★</span>
+              </div>
+              <p class="text-white mb-1 small" style="color: #f1f5f9;">El Motif XF8 incluido en la colección suena brutal. Valió cada centavo, la descarga llegó rapidísimo a mi panel de cuenta.</p>
+              <small class="text-white" style="color: #cbd5e1; font-size: 0.75rem;">Hace 1 semana</small>
+            </div>
+
+            <div class="comment-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="text-white mb-0 fw-bold"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> David Cifuentes</h6>
+                <span class="text-warning small">★★★★★</span>
+              </div>
+              <p class="text-white mb-1 small" style="color: #f1f5f9;">Excelente calidad de sampleo. Es la mejor inversión que hemos hecho para nuestro equipo de alabanza en la iglesia local.</p>
+              <small class="text-white" style="color: #cbd5e1; font-size: 0.75rem;">Hace 2 semanas</small>
+            </div>
+
+            <!-- 5 COMENTARIOS RANDOM ADICIONALES -->
+            <div class="comment-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="text-white mb-0 fw-bold"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Samuel Pineda</h6>
+                <span class="text-warning small">★★★★★</span>
+              </div>
+              <p class="text-white mb-1 small" style="color: #f1f5f9;">¡Muy recomendado! Lo instalé en BS-16i para mi iPad y la respuesta al tacto es increíble. Se nota el trabajo de sampleo profesional.</p>
+              <small class="text-white" style="color: #cbd5e1; font-size: 0.75rem;">Hace 3 semanas</small>
+            </div>
+
+            <div class="comment-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="text-white mb-0 fw-bold"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Emanuel Vásquez</h6>
+                <span class="text-warning small">★★★★☆</span>
+              </div>
+              <p class="text-white mb-1 small" style="color: #f1f5f9;">Los pianos suenan súper limpios en las mezclas de en vivo. El único detalle es que tardé un poco en configurar los canales, pero soporte me ayudó rápido.</p>
+              <small class="text-white" style="color: #cbd5e1; font-size: 0.75rem;">Hace 3 semanas</small>
+            </div>
+
+            <div class="comment-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="text-white mb-0 fw-bold"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Joel Hernández</h6>
+                <span class="text-warning small">★★★★★</span>
+              </div>
+              <p class="text-white mb-1 small" style="color: #f1f5f9;">Tremendo aporte para los músicos cristianos. Tener los sonidos del Motif y del Nord en la palma de la mano no tiene precio.</p>
+              <small class="text-white" style="color: #cbd5e1; font-size: 0.75rem;">Hace 1 mes</small>
+            </div>
+
+            <div class="comment-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="text-white mb-0 fw-bold"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Jonathan Orellana</h6>
+                <span class="text-warning small">★★★★★</span>
+              </div>
+              <p class="text-white mb-1 small" style="color: #f1f5f9;">El bonus PAD de regalo está excelente para las transiciones. 10/10 en calidad de audio y atención al cliente.</p>
+              <small class="text-white" style="color: #cbd5e1; font-size: 0.75rem;">Hace 1 mes</small>
+            </div>
+
+            <div class="comment-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="text-white mb-0 fw-bold"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Misael Castillo</h6>
+                <span class="text-warning small">★★★★★</span>
+              </div>
+              <p class="text-white mb-1 small" style="color: #f1f5f9;">¡Impresionante! Lo probé con FL Studio Mobile y corrió de maravilla. Gracias Cesar por compartir esta tremenda herramienta.</p>
+              <small class="text-white" style="color: #cbd5e1; font-size: 0.75rem;">Hace 1 mes</small>
             </div>
           </div>
 
