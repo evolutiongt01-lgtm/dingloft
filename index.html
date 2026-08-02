@@ -14,7 +14,7 @@
   <!-- Google Fonts: Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
 
-  <!-- SDK OFICIAL DE PAYPAL CON TU CLIENT ID REAL DE DISEÑO DE EVOLUCIÓN -->
+  <!-- SDK OFICIAL DE PAYPAL CON TU CLIENT ID REAL -->
   <script src="https://www.paypal.com/sdk/js?client-id=BAA88yHrlAVHUFkzsqrlDE1atrFHrCZe7j0XOYtbB4YlxcxBASouD2NAU2J_BV1fp9-jGGYK2Mh4bHN20&currency=USD"></script>
   
   <style>
@@ -1147,28 +1147,28 @@
     
     <div class="cart-footer">
       <!-- INPUT DE CUPÓN DE DESCUENTO -->
-      <div class="coupon-box">
+      <div class="coupon-box" id="coupon-section" style="display: none;">
         <input type="text" id="coupon-input" class="coupon-input" placeholder="Código de descuento">
         <button type="button" id="apply-coupon-btn" class="btn-apply-coupon">Aplicar</button>
       </div>
       <div id="coupon-msg" class="coupon-msg" style="display: none;"></div>
 
-      <div class="d-flex justify-content-between mb-2">
+      <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;">
         <span class="text-white">Subtotal</span>
         <span id="cart-subtotal" class="text-white">$0.00</span>
       </div>
-      <div class="d-flex justify-content-between mb-4">
+      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;">
         <span class="fs-5 fw-bold text-white">Total</span>
         <span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span>
       </div>
       
       <!-- Texto e icono en blanco puro -->
-      <div class="text-center mb-3 text-white" style="font-size: 0.85rem; font-weight: 500;" id="security-badge-box">
+      <div class="text-center mb-3 text-white" style="font-size: 0.85rem; font-weight: 500; display: none;" id="security-badge-box">
         <i class="bi bi-shield-lock"></i> Pago 100% seguro con PayPal
       </div>
       
       <!-- CONTENEDOR ENVOLTORIO BLANCO CON BOTÓN X DE CIERRE -->
-      <div class="paypal-card-wrapper mb-3" id="paypal-container-wrapper">
+      <div class="paypal-card-wrapper mb-3" id="paypal-container-wrapper" style="display: none;">
         <button type="button" class="btn-close-paypal-card" onclick="location.reload();" title="Cancelar / Cambiar opción">
           <i class="bi bi-x-lg"></i>
         </button>
@@ -1177,10 +1177,10 @@
 
       <!-- BOTÓN PARA PEDIDOS GRATUITOS / CUPÓN -->
       <button id="free-checkout-btn" class="btn-free-checkout mb-3" style="display: none;">
-        Obtener con cupón <i class="bi bi-download ms-1"></i>
+        Obtener gratis <i class="bi bi-download ms-1"></i>
       </button>
 
-      <div class="text-center">
+      <div class="text-center" id="continue-shopping-box" style="display: none;">
         <a href="#" class="text-accent text-decoration-none" id="continue-shopping">Seguir comprando</a>
       </div>
     </div>
@@ -1260,8 +1260,8 @@
         const totalAmount = window.cartFinalTotal ?? window.cartTotalPrice ?? 0;
         
         if (totalAmount <= 0) {
-          alert("Tu carrito está vacío o es gratuito.");
-          throw new Error("Carrito vacío o gratuito");
+          alert("Tu carrito es gratuito.");
+          throw new Error("Carrito gratuito");
         }
 
         return actions.order.create({
@@ -1331,19 +1331,19 @@
         await addDoc(collection(db, "purchases"), {
           uid: user.uid,
           userEmail: user.email,
-          paypalOrderId: "CUPON-ADMIN-" + Date.now(),
+          paypalOrderId: "PEDIDO-GRATIS-" + Date.now(),
           payerName: user.displayName || "Usuario",
           items: itemsComprados,
           createdAt: serverTimestamp()
         });
 
-        mostrarModalExito("¡Pedido con cupón aplicado con éxito! Redirigiendo a tus descargas...");
+        mostrarModalExito("¡Pedido procesado con éxito! Redirigiendo a tus descargas...");
         setTimeout(() => { window.location.href = 'account.html'; }, 2200);
 
       } catch (error) {
-        console.error("Error guardando pedido con cupón en Firestore:", error);
+        console.error("Error guardando pedido gratuito en Firestore:", error);
         alert("Ocurrió un error al procesar tu pedido. Contacta a soporte.");
-        freeCheckoutBtn.innerHTML = 'Obtener con cupón <i class="bi bi-download ms-1"></i>';
+        freeCheckoutBtn.innerHTML = 'Obtener gratis <i class="bi bi-download ms-1"></i>';
         freeCheckoutBtn.disabled = false;
       }
     });
@@ -1370,6 +1370,10 @@
       const paypalWrapper = document.getElementById('paypal-container-wrapper');
       const freeCheckoutBtn = document.getElementById('free-checkout-btn');
       const securityBadge = document.getElementById('security-badge-box');
+      const couponSection = document.getElementById('coupon-section');
+      const subtotalRow = document.getElementById('subtotal-row');
+      const totalRow = document.getElementById('total-row');
+      const continueShoppingBox = document.getElementById('continue-shopping-box');
 
       const couponInput = document.getElementById('coupon-input');
       const applyCouponBtn = document.getElementById('apply-coupon-btn');
@@ -1408,11 +1412,20 @@
           emptyCartMsg.style.display = 'block';
           paypalWrapper.style.display = 'none';
           freeCheckoutBtn.style.display = 'none';
+          securityBadge.style.display = 'none';
+          couponSection.style.display = 'none';
+          subtotalRow.style.display = 'none';
+          totalRow.style.display = 'none';
+          continueShoppingBox.style.display = 'none';
           couponApplied = false;
           couponMsg.style.display = 'none';
           couponInput.value = '';
         } else {
           emptyCartMsg.style.display = 'none';
+          couponSection.style.display = 'flex';
+          subtotalRow.style.display = 'flex';
+          totalRow.style.display = 'flex';
+          continueShoppingBox.style.display = 'block';
           
           cart.forEach((item, index) => {
             totalItems += item.qty;
@@ -1482,7 +1495,7 @@
           couponApplied = true;
           couponMsg.style.display = 'block';
           couponMsg.style.color = '#00ff88';
-          couponMsg.innerHTML = '<i class="bi bi-check-circle-fill"></i> ¡Cupón ADMIN_EVOLUTION aplicado! 100% de descuento.';
+          couponMsg.innerHTML = '<i class="bi bi-check-circle-fill"></i> ¡Cupón ADMIN_EVOLUTION aplicado!';
           updateCartUI();
         } else {
           couponApplied = false;
