@@ -1261,61 +1261,74 @@
     });
 
     // RENDERIZAR BOTÓN DE PAYPAL DINÁMICO
-    paypal.Buttons({
-      createOrder: (data, actions) => {
-        const totalAmount = window.cartFinalTotal ?? window.cartTotalPrice ?? 0;
+    let paypalButtonsRendered = false;
+
+    window.renderPayPalButtons = function() {
+        if (paypalButtonsRendered) return;
         
-        if (totalAmount <= 0) {
-          alert("Tu carrito es gratuito.");
-          throw new Error("Carrito gratuito");
-        }
+        const container = document.getElementById('paypal-button-container');
+        if (container) {
+            container.innerHTML = ''; // Limpiar el contenedor antes de renderizar
+            paypal.Buttons({
+              createOrder: (data, actions) => {
+                const totalAmount = window.cartFinalTotal ?? window.cartTotalPrice ?? 0;
+                
+                if (totalAmount <= 0) {
+                  alert("Tu carrito es gratuito.");
+                  throw new Error("Carrito gratuito");
+                }
 
-        return actions.order.create({
-          purchase_units: [{
-            amount: {
-              value: totalAmount.toFixed(2)
-            }
-          }]
-        });
-      },
+                return actions.order.create({
+                  purchase_units: [{
+                    amount: {
+                      value: totalAmount.toFixed(2)
+                    }
+                  }]
+                });
+              },
 
-      onApprove: async (data, actions) => {
-        return actions.order.capture().then(async (details) => {
-          const user = auth.currentUser;
+              onApprove: async (data, actions) => {
+                return actions.order.capture().then(async (details) => {
+                  const user = auth.currentUser;
 
-          if (!user) {
-            alert("Debes iniciar sesión para registrar tus programas en tu cuenta.");
-            window.location.href = 'login.html';
-            return;
-          }
+                  if (!user) {
+                    alert("Debes iniciar sesión para registrar tus programas en tu cuenta.");
+                    window.location.href = 'login.html';
+                    return;
+                  }
 
-          try {
-            const itemsComprados = window.cartItemsList || [];
+                  try {
+                    const itemsComprados = window.cartItemsList || [];
 
-            await addDoc(collection(db, "purchases"), {
-              uid: user.uid,
-              userEmail: user.email,
-              paypalOrderId: details.id,
-              payerName: details.payer.name.given_name,
-              items: itemsComprados,
-              createdAt: serverTimestamp()
+                    await addDoc(collection(db, "purchases"), {
+                      uid: user.uid,
+                      userEmail: user.email,
+                      paypalOrderId: details.id,
+                      payerName: details.payer.name.given_name,
+                      items: itemsComprados,
+                      createdAt: serverTimestamp()
+                    });
+
+                    mostrarModalExito(`¡Pago exitoso, ${details.payer.name.given_name}! Redirigiendo a tu cuenta...`);
+                    setTimeout(() => { window.location.href = 'account.html'; }, 2200);
+
+                  } catch (error) {
+                    console.error("Error guardando la compra en Firestore:", error);
+                    alert("El pago en PayPal se realizó, pero ocurrió un error al guardar tus programas. Contacta a soporte.");
+                  }
+                });
+              },
+
+              onError: (err) => {
+                console.error("Error con PayPal:", err);
+                alert("Ocurrió un error al procesar el pago con PayPal.");
+              }
+            }).render('#paypal-button-container').then(() => {
+                paypalButtonsRendered = true;
             });
+        }
+    };
 
-            mostrarModalExito(`¡Pago exitoso, ${details.payer.name.given_name}! Redirigiendo a tu cuenta...`);
-            setTimeout(() => { window.location.href = 'account.html'; }, 2200);
-
-          } catch (error) {
-            console.error("Error guardando la compra en Firestore:", error);
-            alert("El pago en PayPal se realizó, pero ocurrió un error al guardar tus programas. Contacta a soporte.");
-          }
-        });
-      },
-
-      onError: (err) => {
-        console.error("Error con PayPal:", err);
-        alert("Ocurrió un error al procesar el pago con PayPal.");
-      }
-    }).render('#paypal-button-container');
 
     // LÓGICA PARA PEDIDOS GRATUITOS / CUPÓN ($0.00)
     const freeCheckoutBtn = document.getElementById('free-checkout-btn');
@@ -1394,6 +1407,11 @@
         document.body.classList.add('cart-open'); // BLOQUEAR SCROLL DE LA PÁGINA FONDO/IZQUIERDA
         
         updateCartUI();
+
+        // Renderizar PayPal si es necesario cuando se abre el carrito
+        if (window.cartFinalTotal > 0) {
+            window.renderPayPalButtons();
+        }
 
         const navbarCollapse = document.getElementById('navbarNav');
         if(navbarCollapse.classList.contains('show')) {
@@ -1495,6 +1513,10 @@
             paypalWrapper.style.display = 'block';
             securityBadge.style.display = 'block';
             freeCheckoutBtn.style.display = 'none';
+            // Asegurar que PayPal se renderice si el total es mayor a 0 y el carrito está abierto
+            if(cartDrawer.classList.contains('active')) {
+               window.renderPayPalButtons();
+            }
           }
         }
 
