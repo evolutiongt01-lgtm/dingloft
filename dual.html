@@ -39,24 +39,27 @@
       position: relative;
     }
 
+    /* Clase para bloquear el scroll de la página fondo / izquierda cuando el carrito está abierto */
     body.cart-open {
       overflow: hidden !important;
       height: 100vh;
     }
 
-    /* Animación de orbes */
+    /* Animación de movimiento y cambio de colores para los orbes */
     @keyframes orbFloat1 {
       0% { transform: translate(0px, 0px) scale(1); background: #00e5ff; }
       33% { transform: translate(150px, 200px) scale(1.2); background: #a200ff; }
       66% { transform: translate(-100px, 150px) scale(0.9); background: #00ff88; }
       100% { transform: translate(0px, 0px) scale(1); background: #00e5ff; }
     }
+
     @keyframes orbFloat2 {
       0% { transform: translate(0px, 0px) scale(1); background: #a200ff; }
       33% { transform: translate(-200px, -150px) scale(1.3); background: #00ff88; }
       66% { transform: translate(150px, -100px) scale(0.8); background: #00e5ff; }
       100% { transform: translate(0px, 0px) scale(1); background: #a200ff; }
     }
+
     @keyframes orbFloat3 {
       0% { transform: translate(0px, 0px) scale(1); background: #00ff88; }
       33% { transform: translate(100px, -200px) scale(1.1); background: #00e5ff; }
@@ -65,20 +68,34 @@
     }
 
     .bg-orb {
-      position: fixed; border-radius: 50%; filter: blur(140px); z-index: -1; opacity: 0.35; pointer-events: none;
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(140px);
+      z-index: -1;
+      opacity: 0.35;
+      pointer-events: none;
     }
     .orb-1 { width: 450px; height: 450px; top: -100px; left: -100px; animation: orbFloat1 18s infinite alternate ease-in-out; }
     .orb-2 { width: 550px; height: 550px; bottom: -150px; right: -150px; animation: orbFloat2 22s infinite alternate ease-in-out; }
     .orb-3 { width: 350px; height: 350px; top: 40%; left: 35%; animation: orbFloat3 15s infinite alternate ease-in-out; opacity: 0.2; }
 
+    /* Estilos Glassmorphism Globales */
     .glass-effect {
-      background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-color); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     }
 
+    /* Navbar */
     .navbar-glass {
-      background: rgba(5, 7, 10, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border-color); padding: 15px 0; z-index: 1040;
+      background: rgba(5, 7, 10, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 15px 0;
+      z-index: 1040;
     }
     .nav-link { color: var(--text-main) !important; font-size: 0.9rem; font-weight: 500; margin: 0 10px; }
     .nav-link:hover { color: var(--accent-color) !important; }
@@ -86,53 +103,106 @@
     /* ====== NUEVOS ESTILOS LIQUID GLASS PARA SESIÓN ====== */
     .btn-liquid-glass {
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.05);
-      color: #fff !important; border-radius: 50px; padding: 6px 16px; display: inline-flex;
-      align-items: center; gap: 8px; font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: all 0.3s ease;
+      color: #fff !important;
+      border-radius: 50px;
+      padding: 6px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
     }
     .btn-liquid-glass:hover {
-      background: rgba(255, 255, 255, 0.15); border-color: var(--accent-color);
-      box-shadow: 0 8px 25px rgba(0, 229, 255, 0.35); transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--accent-color);
+      box-shadow: 0 8px 25px rgba(0, 229, 255, 0.35);
+      transform: translateY(-2px);
     }
 
     .mobile-liquid-avatar {
-      width: 65px; height: 65px; border-radius: 50%;
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.02));
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 2px solid rgba(255, 255, 255, 0.4);
       box-shadow: 0 8px 25px rgba(0,0,0,0.6), 0 0 15px rgba(0, 229, 255, 0.25);
-      display: flex; align-items: center; justify-content: center; padding: 4px;
-      transition: all 0.3s ease; margin: 0 auto; text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      transition: all 0.3s ease;
+      margin: 0 auto;
+      text-decoration: none;
     }
     .mobile-liquid-avatar:hover {
-      transform: scale(1.05); border-color: var(--accent-color); box-shadow: 0 8px 30px rgba(0, 229, 255, 0.5);
+      transform: scale(1.05);
+      border-color: var(--accent-color);
+      box-shadow: 0 8px 30px rgba(0, 229, 255, 0.5);
     }
     .mobile-liquid-avatar img {
-      width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
     }
     .mobile-liquid-avatar .avatar-fallback {
-      background: var(--accent-color); color: #000; display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 1.6rem; width: 100%; height: 100%; border-radius: 50%; margin: 0;
+      background: var(--accent-color);
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.6rem;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      margin: 0;
     }
 
     /* Botones Globales */
     .btn-cyan {
-      background: var(--accent-color); color: #000; font-weight: 600; border: none; border-radius: 8px;
-      padding: 10px 24px; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+      background: var(--accent-color);
+      color: #000;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 24px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
     }
     .btn-cyan:hover { background: var(--accent-hover); color: #000; transform: translateY(-2px); box-shadow: 0 5px 25px rgba(0, 229, 255, 0.5); }
     
     .btn-outline-cyan {
-      background: rgba(0, 229, 255, 0.08); color: var(--accent-color); font-weight: 700; border: 1px solid var(--accent-color);
-      border-radius: 8px; padding: 10px 24px; transition: all 0.3s ease; font-size: 0.95rem; cursor: pointer;
+      background: rgba(0, 229, 255, 0.08);
+      color: var(--accent-color);
+      font-weight: 700;
+      border: 1px solid var(--accent-color);
+      border-radius: 8px;
+      padding: 10px 24px;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      cursor: pointer;
     }
     .btn-outline-cyan:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 25px rgba(0,229,255,0.5); }
 
     .btn-outline-custom {
-      background: rgba(255,255,255,0.05); color: var(--text-main); font-weight: 600; border: 1px solid var(--text-muted);
-      border-radius: 8px; padding: 10px 24px; transition: all 0.3s ease; backdrop-filter: blur(5px);
+      background: rgba(255,255,255,0.05);
+      color: var(--text-main);
+      font-weight: 600;
+      border: 1px solid var(--text-muted);
+      border-radius: 8px;
+      padding: 10px 24px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
     }
     .btn-outline-custom:hover { border-color: var(--accent-color); color: var(--accent-color); background: rgba(0, 229, 255, 0.05); }
 
@@ -146,7 +216,7 @@
       width: 40px; height: 40px; border: 1px solid rgba(0, 229, 255, 0.3); background: rgba(0, 229, 255, 0.05);
       border-radius: 50%; display: grid; place-items: center; margin: 0 auto 8px; color: var(--accent-color); font-size: 1rem;
     }
-    .feature-title { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; line-height: 1.2; margin: 0; }
+    .feature-title { font-size: 0.75rem; color: rgba(255,255,255,0.85); font-weight: 500; line-height: 1.2; margin: 0; }
 
     /* OPCIONES DE COMPRA SPLIT */
     .package-card { border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-color); }
@@ -158,11 +228,26 @@
     }
     
     .keyboard-card {
-      background: linear-gradient(145deg, rgba(12, 17, 26, 0.9), rgba(6, 9, 15, 0.98)); border: 1px solid var(--border-color); 
-      border-radius: 16px; padding: 20px 15px; text-align: center; transition: all 0.3s ease; height: 100%; display: flex; 
-      flex-direction: column; justify-content: space-between; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      background: linear-gradient(145deg, rgba(12, 17, 26, 0.9), rgba(6, 9, 15, 0.98));
+      border: 1px solid var(--border-color); 
+      border-radius: 16px; 
+      padding: 20px 15px; 
+      text-align: center;
+      transition: all 0.3s ease; 
+      height: 100%; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between; 
+      align-items: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
     }
-    .keyboard-card img { width: 100%; height: 90px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.7)); }
+    .keyboard-card img {
+      width: 100%;
+      height: 90px;
+      object-fit: contain;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 8px 15px rgba(0,0,0,0.7));
+    }
     .keyboard-card h5 { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.5px; margin: 0; color: #fff; }
 
     .creator-note-box {
@@ -228,10 +313,13 @@
 
     /* ====== ESTILOS DEL CARRITO LATERAL ====== */
     .cart-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease;
     }
     .cart-overlay.active { opacity: 1; visibility: visible; }
 
+    /* LOGO ANIMADO FLOTANTE */
     .cart-brand-watermark {
       position: fixed; top: 50%; left: 30%; transform: translate(-50%, -50%) scale(0.9); text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none;
     }
@@ -244,7 +332,9 @@
     .animated-watermark-logo { width: 240px; max-width: 80vw; animation: logoPulse 4s infinite ease-in-out; position: relative; }
 
     .cart-drawer {
-      position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh; background: rgba(10, 14, 20, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-left: 1px solid var(--border-color); box-shadow: -15px 0 40px rgba(0, 0, 0, 0.9); z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column;
+      position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh;
+      background: rgba(10, 14, 20, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-left: 1px solid var(--border-color);
+      box-shadow: -15px 0 40px rgba(0, 0, 0, 0.9); z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column;
     }
     .cart-drawer.active { right: 0; }
 
@@ -389,6 +479,27 @@
             </div>
           </div>
 
+          <div class="row g-2 mb-3 pt-2 border-top border-bottom border-secondary border-opacity-25 py-2">
+            <div class="col-4">
+              <div class="feature-box">
+                <div class="feature-icon-circle"><i class="bi bi-shield-check"></i></div>
+                <p class="feature-title text-white">Garantizado</p>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="feature-box">
+                <div class="feature-icon-circle"><i class="bi bi-infinity"></i></div>
+                <p class="feature-title text-white">Vitalicio</p>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="feature-box">
+                <div class="feature-icon-circle"><i class="bi bi-download"></i></div>
+                <p class="feature-title text-white">Inmediato</p>
+              </div>
+            </div>
+          </div>
+
           <!-- PRECIO CON DESCUENTO Y EFECTO DE OFERTA -->
           <div class="mb-3 d-flex align-items-end gap-3">
             <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--accent-color) !important; line-height: 1;">$60.00</span>
@@ -409,7 +520,7 @@
                 <span class="fw-bold text-white">Bundle Completo</span>
                 <span class="fw-bold text-accent">$60.00</span>
               </div>
-              <p class="small text-muted mb-2" style="font-size: 0.75rem;">Nord + Yamaha + Bonus PAD</p>
+              <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Nord + Yamaha + Bonus PAD</p>
               <button class="btn-cyan w-100 py-2 d-flex align-items-center justify-content-center gap-2" id="btn-buy-now" data-id="9" data-name="Pianos Legendarios SF2" data-price="60" data-img="pianos_bundle_boxes" data-type="Librería vitalicia">
                 <i class="bi bi-cart3"></i> AGREGAR BUNDLE
               </button>
@@ -421,7 +532,7 @@
                 <span class="fw-bold text-white">Solo Nord Essentials</span>
                 <span class="fw-bold text-white">$33.00</span>
               </div>
-              <p class="small text-muted mb-2" style="font-size: 0.75rem;">Stage 3/4 Pianos + Bonus PAD</p>
+              <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Stage 3/4 Pianos + Bonus PAD</p>
               <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="10" data-name="Nord Essentials SF2 Collection" data-price="33" data-img="nordessentials" data-type="Librería vitalicia">
                 <i class="bi bi-cart-plus"></i> AGREGAR NORD
               </button>
@@ -433,7 +544,7 @@
                 <span class="fw-bold text-white">Solo Yamaha Legacy</span>
                 <span class="fw-bold text-white">$29.00</span>
               </div>
-              <p class="small text-muted mb-2" style="font-size: 0.75rem;">Serie Motif/Montage + Bonus PAD</p>
+              <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Serie Motif/Montage + Bonus PAD</p>
               <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="13" data-name="Yamaha Legacy Collection SF2" data-price="29" data-img="yamahalegacy" data-type="Librería vitalicia">
                 <i class="bi bi-cart-plus"></i> AGREGAR YAMAHA
               </button>
@@ -733,6 +844,7 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    // Exportar variables al scope global para que el script del carrito pueda leerlas
     window.globalCurrentUser = null;
     let currentUser = null;
 
@@ -1071,7 +1183,7 @@
     }
   </script>
 
-  <!-- Lógica del Carrito -->
+  <!-- Lógica del Carrito (Botón de Descarga Directa sin candado) -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       let cart = [];
@@ -1296,7 +1408,7 @@
         });
       });
       
-      // LÓGICA DE POPUP PARA LA PRUEBA GRATIS SIN CANDADO DE SESIÓN
+      // LÓGICA DE POPUP PARA LA PRUEBA GRATIS (SIN CANDADO DE SESIÓN)
       const freeTrialBtn = document.getElementById('btn-free-trial');
       if (freeTrialBtn) {
         freeTrialBtn.addEventListener('click', function(e) {
