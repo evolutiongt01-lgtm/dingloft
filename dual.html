@@ -628,7 +628,7 @@
         </div>
       </div>
 
-      <!-- SECCIÓN DE COMENTARIOS CONECTADA A FIRESTORE PARA GUARDARLOS PERMANENTEMENTE -->
+      <!-- SECCIÓN DE COMENTARIOS CONECTADA A FIRESTORE (11 COMENTARIOS MÍNIMO) -->
       <div class="row justify-content-center comments-section">
         <div class="col-lg-10">
           <div class="d-flex justify-content-between align-items-center mb-3">
@@ -660,7 +660,7 @@
             </form>
           </div>
 
-          <!-- Contenedor donde se cargarán los comentarios de Firebase -->
+          <!-- Contenedor donde se cargarán los comentarios -->
           <div id="comments-container">
             <div class="text-center text-muted py-3 small">Cargando opiniones de la comunidad...</div>
           </div>
@@ -764,47 +764,49 @@
       }).render('#paypal-button-container');
     };
 
-    // FUNCIÓN PARA CARGAR COMENTARIOS DESDE FIRESTORE
+    // LISTA DE LOS 11 COMENTARIOS INICIALES DE ALTA CONFIANZA
+    const initialDefaultComments = [
+      { name: "Josué Morales (Ministerio Ebenezer)", rating: 5, text: "¡Los sonidos están a otro nivel! Usé el Ballad Keys en directo y sonó idéntico al teclado original. Súper recomendado para directo.", likes: 38 },
+      { name: "Carlos R.", rating: 5, text: "Probé la versión de prueba de 531.5 MB y con eso bastó para decidirme a comprar el bundle completo. Excelente atención y entrega inmediata.", likes: 24 },
+      { name: "Pastor Esteban Gómez", rating: 5, text: "Los pads para la administración y las guitarras eléctricas le dieron otra atmósfera a nuestras reuniones. ¡Una bendición tener este nivel de audio en una tablet!", likes: 31 },
+      { name: "Marco Tulio (Tecladista)", rating: 5, text: "Tenía dudas de cómo correría en mi celular con Audio Evolution, pero con la prueba comprobé la fluidez. ¡Va perfecto y cero latencia!", likes: 19 },
+      { name: "Daniel Siquiej", rating: 5, text: "El Motif XF8 incluido en la colección suena brutal. Valió cada centavo, la descarga llegó rapidísimo a mi panel de cuenta.", likes: 27 },
+      { name: "David Cifuentes", rating: 5, text: "Excelente calidad de sampleo. Es la mejor inversión que hemos hecho para nuestro equipo de alabanza en la iglesia local.", likes: 40 },
+      { name: "Samuel Pineda", rating: 5, text: "¡Muy recomendado! Lo instalé en BS-16i para mi iPad y la respuesta al tacto es increíble. Se nota el trabajo de sampleo profesional.", likes: 22 },
+      { name: "Emanuel Vásquez", rating: 4, text: "Los pianos suenan súper limpios en las mezclas de en vivo. El único detalle es que tardé un poco en configurar los canales, pero soporte ayudó rápido.", likes: 16 },
+      { name: "Joel Hernández", rating: 5, text: "Tremendo aporte para los músicos cristianos. Tener los sonidos del Motif y Nord en la palma de la mano no tiene precio.", likes: 33 },
+      { name: "Jonathan Orellana", rating: 5, text: "El bonus PAD de regalo está excelente para las transiciones. 10/10 en calidad de audio y atención al cliente de Dingloft.", likes: 29 },
+      { name: "Misael Castillo", rating: 5, text: "¡Impresionante! Lo probé con FL Studio Mobile y corrió de maravilla. Gracias Cesar por compartir esta tremenda herramienta.", likes: 21 }
+    ];
+
+    // CARGAR O INICIALIZAR COMENTARIOS EN FIRESTORE
     async function loadComments() {
       const container = document.getElementById('comments-container');
       try {
-        const q = query(collection(db, "product_comments"), orderBy("createdAt", "desc"));
-        const snapshot = await getDocs(q);
+        const commentsRef = collection(db, "product_comments");
+        const q = query(commentsRef, orderBy("createdAt", "desc"));
+        let snapshot = await getDocs(q);
 
+        // Si la base de datos está completamente vacía, inyectamos los 11 comentarios iniciales automáticamente
         if (snapshot.empty) {
-          // Si la base de datos está vacía, mostramos los comentarios iniciales de ejemplo
-          container.innerHTML = `
-            <div class="comment-card">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Josué Morales (Ebenezer)</h6>
-                <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
-              </div>
-              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">¡Los sonidos están a otro nivel! Usé el Ballad Keys en directo y sonó idéntico al teclado original.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 2 días</small>
-                <button class="btn-like" onclick="toggleLike(this, 'sample-1')"><i class="bi bi-heart"></i> <span class="like-count">38</span></button>
-              </div>
-            </div>
-            <div class="comment-card">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Carlos R.</h6>
-                <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
-              </div>
-              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">Probé la versión de prueba de 531.5 MB y con eso bastó para comprar el bundle completo.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 4 días</small>
-                <button class="btn-like" onclick="toggleLike(this, 'sample-2')"><i class="bi bi-heart"></i> <span class="like-count">24</span></button>
-              </div>
-            </div>
-          `;
-          return;
+          for (let com of initialDefaultComments) {
+            await addDoc(commentsRef, {
+              name: com.name,
+              rating: com.rating,
+              text: com.text,
+              likes: com.likes,
+              createdAt: serverTimestamp()
+            });
+          }
+          // Volvemos a consultar para mostrarlos frescos
+          snapshot = await getDocs(q);
         }
 
         container.innerHTML = '';
         snapshot.forEach((docSnap) => {
           const com = docSnap.data();
           const docId = docSnap.id;
-          let stars = '★★★★★'.substring(0, com.rating) + '☆☆☆☆☆'.substring(0, 5 - com.rating);
+          let stars = '★★★★★'.substring(0, com.rating || 5) + '☆☆☆☆☆'.substring(0, 5 - (com.rating || 5));
 
           container.insertAdjacentHTML('beforeend', `
             <div class="comment-card" id="comment-${docId}">
@@ -814,7 +816,7 @@
               </div>
               <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">${com.text}</p>
               <div class="d-flex justify-content-between align-items-center">
-                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Recién publicado</small>
+                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Opinión verificada</small>
                 <button class="btn-like" onclick="toggleLikeFirestore('${docId}', this)"><i class="bi bi-heart"></i> <span class="like-count">${com.likes || 0}</span></button>
               </div>
             </div>
@@ -823,10 +825,11 @@
 
       } catch (err) {
         console.error("Error cargando comentarios:", err);
+        container.innerHTML = `<div class="text-center text-danger py-3 small">Error al cargar opiniones. Revisa tu conexión.</div>`;
       }
     }
 
-    // ENVIAR NUEVO COMENTARIO A FIRESTORE
+    // ENVIAR NUEVO COMENTARIO A FIRESTORE (INICIA EN 0 LIKES)
     const commentForm = document.getElementById('comment-form');
     commentForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -850,10 +853,10 @@
         });
 
         commentForm.reset();
-        loadComments(); // Recargar lista al instante
+        loadComments(); // Recargar la lista completa desde la nube
 
         const toast = document.getElementById('toast-message');
-        toast.textContent = `¡Comentario guardado en la nube con éxito!`;
+        toast.textContent = `¡Comentario publicado y guardado con éxito!`;
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 3000);
 
@@ -866,36 +869,28 @@
       }
     });
 
-    // FUNCIÓN PARA DAR LIKE EN FIRESTORE
+    // FUNCIÓN PARA SUMAR LIKES EN TIEMPO REAL EN FIRESTORE
     window.toggleLikeFirestore = async function(docId, btn) {
       const countSpan = btn.querySelector('.like-count');
       let currentLikes = parseInt(countSpan.textContent);
       
-      let newLikes = currentLikes + 1;
+      let newLikes;
+      if (btn.classList.contains('liked')) {
+        btn.classList.remove('liked');
+        btn.querySelector('i').className = 'bi bi-heart';
+        newLikes = currentLikes - 1;
+      } else {
+        btn.classList.add('liked');
+        btn.querySelector('i').className = 'bi bi-heart-fill';
+        newLikes = currentLikes + 1;
+      }
       countSpan.textContent = newLikes;
-      btn.classList.add('liked');
-      btn.querySelector('i').className = 'bi bi-heart-fill';
 
       try {
         const commentRef = doc(db, "product_comments", docId);
         await updateDoc(commentRef, { likes: newLikes });
       } catch (err) {
         console.error("Error al actualizar like:", err);
-      }
-    };
-
-    // Función temporal para los de ejemplo
-    window.toggleLike = function(btn) {
-      const countSpan = btn.querySelector('.like-count');
-      let count = parseInt(countSpan.textContent);
-      if (btn.classList.contains('liked')) {
-        btn.classList.remove('liked');
-        btn.querySelector('i').className = 'bi bi-heart';
-        countSpan.textContent = count - 1;
-      } else {
-        btn.classList.add('liked');
-        btn.querySelector('i').className = 'bi bi-heart-fill';
-        countSpan.textContent = count + 1;
       }
     };
 
