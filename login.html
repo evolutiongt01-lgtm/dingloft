@@ -104,7 +104,7 @@
             <button type="submit" class="btn-login"><i class="bi bi-lock-fill me-2"></i>Iniciar sesión</button>
             <div class="divider">o</div>
             <button type="button" id="google-login-btn" class="btn-google"><span class="google-dot"></span>Continuar con Google</button>
-            <p class="register">¿Aún no tienes cuenta? <a href="#">Crear cuenta</a></p>
+            <p class="register">¿Aún no tienes cuenta? <a href="register.html">Crear cuenta</a></p>
           </form>
         </section>
       </div>
@@ -163,7 +163,6 @@
       try {
         const result = await signInWithPopup(auth, provider);
         await guardarUsuarioEnFirestore(result.user);
-        // No necesitamos redireccionar aquí porque el onAuthStateChanged de arriba lo hará
       } catch (error) {
         console.error("Error al iniciar con Google:", error);
         alert(`Error [${error.code}]: ${error.message}`);
@@ -180,7 +179,6 @@
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         await guardarUsuarioEnFirestore(userCredential.user);
-        // Igual, el onAuthStateChanged se encarga de la redirección
       } catch (error) {
         console.error("Error al iniciar sesión:", error);
         alert(`Error [${error.code}]: ${error.message}`);
