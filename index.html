@@ -14,8 +14,8 @@
   <!-- Google Fonts: Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
 
-  <!-- SDK OFICIAL DE PAYPAL CON TU CLIENT ID REAL -->
-  <script src="https://www.paypal.com/sdk/js?client-id=BAA88yHrlAVHUFkzsqrlDE1atrFHrCZe7j0XOYtbB4YlxcxBASouD2NAU2J_BV1fp9-jGGYK2Mh4bHN20&currency=USD"></script>
+  <!-- PAYPAL SDK: CON TU CLIENT ID OFICIAL DE EVOLUTION DESIGN -->
+  <script src="https://www.paypal.com/sdk/js?client-id=BAA88hYhrlAVHUFkzsqrlDE1atrFHrCZe7j0XOYtbB4YlxcxBASouD2NAU2J_BV1fp9-jGGYK2Mh4bHN20&currency=USD"></script>
   
   <style>
     :root {
@@ -446,15 +446,16 @@
     .btn-apply-coupon:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
     .coupon-msg { font-size: 0.78rem; margin-bottom: 12px; font-weight: 500; }
 
-    /* Contenedor blanco y botón X para el formulario de tarjeta de PayPal */
-    .paypal-card-wrapper {
-      position: relative;
-      background: #ffffff;
-      border-radius: 14px;
+    /* Contenedor blanco idéntico al de Evolution Design para PayPal */
+    .paypal-white-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.4);
       padding: 15px;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
       margin-top: 10px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      min-height: 150px;
     }
 
     /* Botón especial para pedidos $0.00 */
@@ -1153,9 +1154,9 @@
         <i class="bi bi-shield-lock"></i> Pago 100% seguro con PayPal
       </div>
       
-      <!-- CONTENEDOR DE PAYPAL -->
-      <div class="paypal-card-wrapper mb-3" id="paypal-container-wrapper" style="display: none;">
-        <div id="paypal-button-container"></div>
+      <!-- CONTENEDOR ESTILO EVOLUTION DESIGN CON TARJETA BLANCA -->
+      <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;">
+        <div id="paypal-button-container" class="w-100"></div>
       </div>
 
       <!-- BOTÓN PARA PEDIDOS GRATUITOS / CUPÓN -->
@@ -1172,7 +1173,7 @@
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Lógica de Firebase Auth y renderizado dinámico global de PayPal -->
+  <!-- Lógica de Firebase Auth y renderizado exacto de PayPal -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -1237,31 +1238,30 @@
       }
     });
 
-    // FUNCIÓN DE RENDERIZADO ESTABLE DE PAYPAL
-    let renderedOnce = false;
+    // RENDERIZAR PAYPAL IDÉNTICO AL SISTEMA ESTABLE DE EVOLUTION DESIGN
+    let paypalRenderedInstance = null;
 
-    window.renderPayPal = function() {
+    window.renderPayPalStable = function(monto) {
         const container = document.getElementById('paypal-button-container');
         if (!container) return;
         
         container.innerHTML = ''; // Limpiar previo
 
-        const amount = window.cartFinalTotal ?? window.cartTotalPrice ?? 0;
-        if (amount <= 0) return;
+        if (typeof paypal === 'undefined') return;
 
         paypal.Buttons({
-          createOrder: (data, actions) => {
+          style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
+          createOrder: function(data, actions) {
             return actions.order.create({
               purchase_units: [{
                 amount: {
-                  value: amount.toFixed(2)
+                  value: monto.toFixed(2)
                 }
               }]
             });
           },
-
-          onApprove: async (data, actions) => {
-            return actions.order.capture().then(async (details) => {
+          onApprove: async function(data, actions) {
+            return actions.order.capture().then(async function(details) {
               const user = auth.currentUser;
 
               if (!user) {
@@ -1291,8 +1291,7 @@
               }
             });
           },
-
-          onError: (err) => {
+          onError: function(err) {
             console.error("Error con PayPal:", err);
             alert("Ocurrió un error al procesar el pago con PayPal.");
           }
@@ -1478,10 +1477,10 @@
             securityBadge.style.display = 'block';
             freeCheckoutBtn.style.display = 'none';
             
-            // Renderizar PayPal justo aquí cuando el wrapper se muestra
+            // Renderizar de forma idéntica a Evolution Design
             setTimeout(() => {
-                if (typeof window.renderPayPal === 'function') {
-                    window.renderPayPal();
+                if (typeof window.renderPayPalStable === 'function') {
+                    window.renderPayPalStable(finalTotal);
                 }
             }, 100);
           }
