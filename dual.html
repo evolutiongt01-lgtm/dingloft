@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dual Legends SF2 | Dingloft</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+
+  <!-- PAYPAL SDK -->
+  <script src="https://www.paypal.com/sdk/js?client-id=BAA88hYhrlAVHUFkzsqrlDE1atrFHrCZe7j0XOYtbB4YlxcxBASouD2NAU2J_BV1fp9-jGGYK2Mh4bHN20&currency=USD"></script>
+  
+  <style>
+    :root {
+      --bg-color: #05070a;
+      --accent-color: #00e5ff;
+      --accent-hover: #00b5cc;
+      --text-main: #ffffff;
+      --text-muted: #d1d5db;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --glass-bg: rgba(17, 21, 31, 0.4);
+    }
+    
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body.cart-open {
+      overflow: hidden !important;
+      height: 100vh;
+    }
+
+    @keyframes orbFloat1 {
+      0% { transform: translate(0px, 0px) scale(1); background: #00e5ff; }
+      33% { transform: translate(150px, 200px) scale(1.2); background: #a200ff; }
+      66% { transform: translate(-100px, 150px) scale(0.9); background: #00ff88; }
+      100% { transform: translate(0px, 0px) scale(1); background: #00e5ff; }
+    }
+    @keyframes orbFloat2 {
+      0% { transform: translate(0px, 0px) scale(1); background: #a200ff; }
+      33% { transform: translate(-200px, -150px) scale(1.3); background: #00ff88; }
+      66% { transform: translate(150px, -100px) scale(0.8); background: #00e5ff; }
+      100% { transform: translate(0px, 0px) scale(1); background: #a200ff; }
+    }
+
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(140px);
+      z-index: -1;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    .orb-1 { width: 450px; height: 450px; top: -100px; left: -100px; animation: orbFloat1 18s infinite alternate ease-in-out; }
+    .orb-2 { width: 550px; height: 550px; bottom: -150px; right: -150px; animation: orbFloat2 22s infinite alternate ease-in-out; }
+
+    .glass-effect {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar-glass {
+      background: rgba(5, 7, 10, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 15px 0;
+      z-index: 1040;
+    }
+    .nav-link { color: var(--text-main) !important; font-size: 0.9rem; font-weight: 500; margin: 0 10px; }
+    .nav-link:hover { color: var(--accent-color) !important; }
+
+    .btn-cyan {
+      background: var(--accent-color);
+      color: #000;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 30px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+    }
+    .btn-cyan:hover { background: var(--accent-hover); color: #000; transform: translateY(-2px); box-shadow: 0 5px 25px rgba(0, 229, 255, 0.5); }
+    
+    .btn-outline-custom {
+      background: rgba(255,255,255,0.05);
+      color: var(--text-main);
+      font-weight: 600;
+      border: 1px solid var(--text-muted);
+      border-radius: 8px;
+      padding: 10px 24px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+    .btn-outline-custom:hover { border-color: var(--accent-color); color: var(--accent-color); background: rgba(0, 229, 255, 0.05); }
+
+    .product-detail-section { padding: 130px 0 60px; }
+    .product-big-img {
+      width: 100%;
+      max-height: 450px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      border: 1px solid var(--border-color);
+    }
+    .product-big-img img {
+      max-width: 100%;
+      max-height: 380px;
+      object-fit: contain;
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.5));
+    }
+
+    .old-price { font-size: 1.2rem; color: #adb5bd; text-decoration: line-through; margin-right: 10px; }
+    .prod-price { font-size: 2rem; font-weight: 800; color: var(--accent-color); }
+
+    .spec-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--accent-color);
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* CARRITO LATERAL */
+    .cart-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      z-index: 1050;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .cart-overlay.active { opacity: 1; visibility: visible; }
+
+    .cart-brand-watermark {
+      position: fixed;
+      top: 50%; left: 30%;
+      transform: translate(-50%, -50%) scale(0.9);
+      text-align: center;
+      z-index: 1055;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+      pointer-events: none;
+    }
+    .cart-overlay.active ~ .cart-brand-watermark {
+      opacity: 0.85;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .animated-watermark-logo { width: 240px; max-width: 80vw; position: relative; }
+
+    .cart-drawer {
+      position: fixed;
+      top: 0; right: -480px;
+      width: 450px;
+      max-width: 100%;
+      height: 100vh;
+      background: rgba(10, 14, 20, 0.95);
+      backdrop-filter: blur(25px);
+      border-left: 1px solid var(--border-color);
+      z-index: 1060;
+      transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: flex;
+      flex-direction: column;
+    }
+    .cart-drawer.active { right: 0; }
+    .cart-header { padding: 20px 25px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+    .btn-close-cart { background: transparent; border: none; color: #fff; font-size: 1.3rem; cursor: pointer; }
+    .cart-items-container { flex: 1; overflow-y: auto; padding: 20px 25px; }
+    .cart-item { display: flex; gap: 15px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; }
+    .cart-item-img { width: 60px; height: 80px; background: rgba(0,0,0,0.3); border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 5px; }
+    .cart-item-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .cart-item-info { flex: 1; }
+    .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; color: #fff; }
+    .cart-item-desc { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px; }
+    .qty-controls { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; background: rgba(0,0,0,0.2); }
+    .qty-btn { background: transparent; border: none; color: #fff; padding: 2px 10px; cursor: pointer; }
+    .qty-value { padding: 0 10px; font-size: 0.85rem; font-weight: 600; color: #fff; }
+    .cart-item-remove { position: absolute; top: 0; right: 0; background: transparent; border: none; color: #fff; cursor: pointer; }
+    .cart-footer { padding: 20px 25px; background: rgba(0,0,0,0.6); border-top: 1px solid var(--border-color); }
+    .coupon-box { display: flex; gap: 8px; margin-bottom: 15px; }
+    .coupon-input { flex: 1; background: rgba(4, 9, 18, 0.7); border: 1px solid rgba(153, 185, 216, 0.25); border-radius: 8px; color: #fff; padding: 8px 12px; font-size: 0.85rem; text-transform: uppercase; }
+    .btn-apply-coupon { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0 15px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+    .paypal-white-card { background: rgba(255, 255, 255, 0.85); padding: 15px; border-radius: 16px; margin-top: 10px; }
+
+    /* MODAL DE ÉXITO */
+    .success-modal-overlay {
+      position: fixed; inset: 0; background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(15px);
+      z-index: 2000; display: grid; place-items: center; opacity: 0; visibility: hidden; transition: all 0.4s;
+    }
+    .success-modal-overlay.active { opacity: 1; visibility: visible; }
+    .success-modal-box {
+      background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98));
+      border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 40px 30px; width: min(440px, 90%); text-align: center;
+    }
+    .success-icon-ring {
+      width: 80px; height: 80px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%;
+      display: grid; place-items: center; margin: 0 auto 20px; color: #00ff88; font-size: 2.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+
+  <!-- MODAL DE ÉXITO -->
+  <div class="success-modal-overlay" id="success-modal">
+    <div class="success-modal-box">
+      <img src="img/dingloft.png" alt="Dingloft" style="width: 130px; margin-bottom: 20px;">
+      <div class="success-icon-ring"><i class="bi bi-check-lg"></i></div>
+      <h3 style="color:#fff; font-weight:800; margin-bottom:10px;">¡Compra Exitosa!</h3>
+      <p id="success-modal-text" style="color:#9ba9bd; margin-bottom:30px;">Tu pedido se ha procesado correctamente.</p>
+      <button class="btn-cyan w-100" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold fs-4 text-white" href="index.html">
+        <span class="text-accent">D</span>ingloft
+      </a>
+      <div class="d-flex align-items-center gap-3">
+        <div id="desktop-auth-container">
+          <a href="login.html" class="text-white text-decoration-none small fw-semibold">Iniciar Sesión</a>
+        </div>
+        <button id="main-cart-btn" class="btn-outline-custom" style="padding: 6px 15px; font-size: 0.9rem;">
+          <i class="bi bi-cart3"></i> CARRITO (<span id="cart-count">0</span>)
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Detalle del Producto -->
+  <section class="product-detail-section">
+    <div class="container">
+      <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html" class="text-accent text-decoration-none">Inicio</a></li>
+          <li class="breadcrumb-item active text-muted" aria-current="page">Dual Legends SF2</li>
+        </ol>
+      </nav>
+
+      <div class="row g-5 align-items-center">
+        <div class="col-lg-6">
+          <div class="product-big-img glass-effect">
+            <img src="img/dual.png" alt="Dual Legends SF2">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <span class="badge bg-info text-dark mb-3 px-3 py-2 fw-bold" style="border-radius: 20px;">Librería SF2 Profesional</span>
+          <h1 class="fw-bold mb-3" style="font-size: 2.8rem; letter-spacing: -1px;">Dual Legends SF2</h1>
+          <p class="text-muted mb-4" style="font-size: 1.05rem; line-height: 1.7;">
+            Sample library de alta gama en formato SF2 diseñada específicamente para workstations y módulos de sonido virtuales. Obtén timbres legendarios con la máxima fidelidad y rendimiento optimizado para directos en escenario.
+          </p>
+
+          <div class="mb-4">
+            <span class="spec-badge"><i class="bi bi-check2-circle"></i> Formato SF2 Universal</span>
+            <span class="spec-badge"><i class="bi bi-shield-check"></i> Acceso Vitalicio</span>
+            <span class="spec-badge"><i class="bi bi-headphones"></i> Calidad de Estudio</span>
+          </div>
+
+          <div class="d-flex align-items-center mb-4">
+            <span class="old-price">$100.00</span>
+            <span class="prod-price">$60.00</span>
+          </div>
+
+          <div class="d-flex gap-3">
+            <button class="btn-cyan btn-lg flex-grow-1" id="btn-buy-now" data-id="9" data-name="Dual Legends SF2" data-price="60" data-img="dual" data-type="Librería vitalicia">
+              Agregar al Carrito <i class="bi bi-cart-plus ms-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-4 mt-5 border-top" style="border-color: var(--border-color) !important;">
+    <div class="container text-center">
+      <p class="mb-0 text-white font-weight-bold" style="font-size: 0.9rem;">
+        &copy; 2026 Dingloft - Evolution Group. Todos los derechos reservados.
+      </p>
+    </div>
+  </footer>
+
+  <!-- CARRITO LATERAL -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-brand-watermark">
+    <img src="img/dingloft.png" alt="Dingloft Logo" class="animated-watermark-logo">
+  </div>
+
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h4 class="mb-0 text-white fw-semibold"><i class="bi bi-cart4"></i> Tu carrito</h4>
+      <button class="btn-close-cart" id="close-cart-btn"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="cart-items-container" id="cart-items-container">
+      <div class="text-center text-white mt-5" id="empty-cart-msg"><p>Tu carrito está vacío.</p></div>
+    </div>
+    <div class="cart-footer">
+      <div class="coupon-box" id="coupon-section" style="display: none;">
+        <input type="text" id="coupon-input" class="coupon-input" placeholder="Código de descuento">
+        <button type="button" id="apply-coupon-btn" class="btn-apply-coupon">Aplicar</button>
+      </div>
+      <div id="coupon-msg" style="font-size: 0.78rem; margin-bottom: 12px; display: none;"></div>
+      <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;"><span class="text-white">Subtotal</span><span id="cart-subtotal" class="text-white">$0.00</span></div>
+      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;"><span class="fs-5 fw-bold text-white">Total</span><span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span></div>
+      
+      <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;">
+        <div id="paypal-button-container" class="w-100"></div>
+      </div>
+      <button id="free-checkout-btn" class="btn-cyan w-100 mb-3" style="display: none; background: #00ff88; color: #000;">Obtener gratis <i class="bi bi-download"></i></button>
+      <div class="text-center"><a href="index.html" class="text-accent text-decoration-none small">Seguir comprando</a></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- LÓGICA DE FIREBASE Y CARRITO -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
+      authDomain: "login-dingloft.firebaseapp.com",
+      projectId: "login-dingloft",
+      storageBucket: "login-dingloft.firebasestorage.app",
+      messagingSenderId: "549466738202",
+      appId: "1:549466738202:web:8bf305fe2c753e9d76cba3",
+      measurementId: "G-R9SGZCDN13"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, (user) => {
+      const desktopAuthContainer = document.getElementById('desktop-auth-container');
+      if (user) {
+        let displayName = user.displayName || user.email.split('@')[0];
+        desktopAuthContainer.innerHTML = `<a href="account.html" class="text-white text-decoration-none small fw-semibold">Mi Cuenta</a>`;
+      }
+    });
+
+    window.renderPayPalStable = function(monto) {
+      const container = document.getElementById('paypal-button-container');
+      if (!container) return;
+      container.innerHTML = '';
+      if (typeof paypal === 'undefined') return;
+
+      paypal.Buttons({
+        style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
+        createOrder: function(data, actions) {
+          return actions.order.create({ purchase_units: [{ amount: { value: monto.toFixed(2) } }] });
+        },
+        onApprove: async function(data, actions) {
+          return actions.order.capture().then(async function(details) {
+            const user = auth.currentUser;
+            if (!user) { window.location.href = 'login.html'; return; }
+            try {
+              await addDoc(collection(db, "purchases"), {
+                uid: user.uid, userEmail: user.email, paypalOrderId: details.id,
+                payerName: details.payer.name.given_name, items: window.cartItemsList || [], createdAt: serverTimestamp()
+              });
+              document.getElementById('success-modal').classList.add('active');
+              setTimeout(() => { window.location.href = 'account.html'; }, 2200);
+            } catch (err) { console.error(err); }
+          });
+        }
+      }).render('#paypal-button-container');
+    };
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let cart = [];
+      let couponApplied = false;
+
+      const cartBtn = document.getElementById('main-cart-btn');
+      const cartDrawer = document.getElementById('cart-drawer');
+      const cartOverlay = document.getElementById('cart-overlay');
+      const closeCartBtn = document.getElementById('close-cart-btn');
+      const cartCount = document.getElementById('cart-count');
+      const cartItemsContainer = document.getElementById('cart-items-container');
+      const emptyCartMsg = document.getElementById('empty-cart-msg');
+      const cartSubtotalText = document.getElementById('cart-subtotal');
+      const cartTotalText = document.getElementById('cart-total');
+      const paypalWrapper = document.getElementById('paypal-container-wrapper');
+      const couponSection = document.getElementById('coupon-section');
+      const subtotalRow = document.getElementById('subtotal-row');
+      const totalRow = document.getElementById('total-row');
+
+      const openCart = () => { cartDrawer.classList.add('active'); cartOverlay.classList.add('active'); document.body.classList.add('cart-open'); updateCartUI(); };
+      const closeCart = () => { cartDrawer.classList.remove('active'); cartOverlay.classList.remove('active'); document.body.classList.remove('cart-open'); };
+
+      cartBtn.addEventListener('click', openCart);
+      closeCartBtn.addEventListener('click', closeCart);
+      cartOverlay.addEventListener('click', closeCart);
+
+      const updateCartUI = () => {
+        cartItemsContainer.innerHTML = '';
+        let totalItems = 0, totalPrice = 0;
+        window.cartItemsList = [];
+
+        if (cart.length === 0) {
+          cartItemsContainer.appendChild(emptyCartMsg);
+          emptyCartMsg.style.display = 'block';
+          paypalWrapper.style.display = 'none';
+          couponSection.style.display = 'none';
+          subtotalRow.style.display = 'none';
+          totalRow.style.display = 'none';
+        } else {
+          emptyCartMsg.style.display = 'none';
+          couponSection.style.display = 'flex';
+          subtotalRow.style.display = 'flex';
+          totalRow.style.display = 'flex';
+
+          cart.forEach((item, index) => {
+            totalItems += item.qty;
+            totalPrice += (item.price * item.qty);
+            for(let i=0; i<item.qty; i++) {
+              window.cartItemsList.push({ name: item.name, img: item.img, type: item.type, price: couponApplied ? 0 : item.price });
+            }
+
+            cartItemsContainer.insertAdjacentHTML('beforeend', `
+              <div class="cart-item">
+                <div class="cart-item-img"><img src="img/${item.img}.png" alt="${item.name}"></div>
+                <div class="cart-item-info">
+                  <h4 class="cart-item-title">${item.name}</h4>
+                  <p class="cart-item-desc">${item.type}</p>
+                  <span class="fw-bold text-accent">$${(couponApplied ? 0 : item.price).toFixed(2)}</span>
+                </div>
+                <button class="cart-item-remove" onclick="removeItem(${index})"><i class="bi bi-trash"></i></button>
+              </div>
+            `);
+          });
+
+          let finalTotal = couponApplied ? 0 : totalPrice;
+          paypalWrapper.style.display = finalTotal > 0 ? 'block' : 'none';
+          if (finalTotal > 0 && typeof window.renderPayPalStable === 'function') {
+            setTimeout(() => window.renderPayPalStable(finalTotal), 100);
+          }
+        }
+        cartCount.textContent = totalItems;
+        cartSubtotalText.textContent = `$${totalPrice.toFixed(2)}`;
+        cartTotalText.textContent = `$${(couponApplied ? 0 : totalPrice).toFixed(2)}`;
+      };
+
+      const buyBtn = document.getElementById('btn-buy-now');
+      buyBtn.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        const name = this.getAttribute('data-name');
+        const price = parseFloat(this.getAttribute('data-price'));
+        const img = this.getAttribute('data-img');
+        const type = this.getAttribute('data-type');
+
+        const existing = cart.find(i => i.id === id);
+        if (existing) { existing.qty += 1; } else { cart.push({ id, name, price, img, type, qty: 1 }); }
+        updateCartUI();
+        openCart();
+      });
+
+      window.removeItem = (index) => { cart.splice(index, 1); updateCartUI(); };
+    });
+  </script>
+</body>
+</html>
