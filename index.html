@@ -451,30 +451,10 @@
       position: relative;
       background: #ffffff;
       border-radius: 14px;
-      padding: 15px 15px 5px 15px;
+      padding: 15px;
       margin-top: 10px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    }
-    .btn-close-paypal-card {
-      position: absolute;
-      top: 8px;
-      right: 10px;
-      background: #f1f5f9;
-      border: none;
-      border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      display: grid;
-      place-items: center;
-      color: #333;
-      font-weight: bold;
-      cursor: pointer;
-      z-index: 10;
-      transition: background 0.2s;
-    }
-    .btn-close-paypal-card:hover {
-      background: #e2e8f0;
-      color: #000;
+      min-height: 150px;
     }
 
     /* Botón especial para pedidos $0.00 */
@@ -1173,11 +1153,8 @@
         <i class="bi bi-shield-lock"></i> Pago 100% seguro con PayPal
       </div>
       
-      <!-- CONTENEDOR ENVOLTORIO BLANCO CON BOTÓN X DE CIERRE -->
+      <!-- CONTENEDOR DE PAYPAL -->
       <div class="paypal-card-wrapper mb-3" id="paypal-container-wrapper" style="display: none;">
-        <button type="button" class="btn-close-paypal-card" onclick="location.reload();" title="Cancelar / Cambiar opción">
-          <i class="bi bi-x-lg"></i>
-        </button>
         <div id="paypal-button-container"></div>
       </div>
 
@@ -1195,7 +1172,7 @@
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Lógica de Firebase Auth, PayPal y Checkout con Modal Profesional -->
+  <!-- Lógica de Firebase Auth y renderizado dinámico global de PayPal -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -1260,32 +1237,24 @@
       }
     });
 
-    // Variable global para controlar la instancia de PayPal
-    window.paypalButtonsInstance = null;
+    // FUNCIÓN DE RENDERIZADO ESTABLE DE PAYPAL
+    let renderedOnce = false;
 
-    // Función global para renderizar botones de PayPal
-    window.renderPayPalButtons = function() {
+    window.renderPayPal = function() {
         const container = document.getElementById('paypal-button-container');
         if (!container) return;
-
-        // Limpiar botones anteriores si existen
-        if (window.paypalButtonsInstance) {
-            window.paypalButtonsInstance.close();
-            window.paypalButtonsInstance = null;
-        }
-        container.innerHTML = '';
-
-        const totalAmount = window.cartFinalTotal ?? window.cartTotalPrice ?? 0;
         
-        // No renderizar si el total no es mayor a cero
-        if (totalAmount <= 0) return;
+        container.innerHTML = ''; // Limpiar previo
 
-        window.paypalButtonsInstance = paypal.Buttons({
+        const amount = window.cartFinalTotal ?? window.cartTotalPrice ?? 0;
+        if (amount <= 0) return;
+
+        paypal.Buttons({
           createOrder: (data, actions) => {
             return actions.order.create({
               purchase_units: [{
                 amount: {
-                  value: totalAmount.toFixed(2)
+                  value: amount.toFixed(2)
                 }
               }]
             });
@@ -1327,9 +1296,7 @@
             console.error("Error con PayPal:", err);
             alert("Ocurrió un error al procesar el pago con PayPal.");
           }
-        });
-        
-        window.paypalButtonsInstance.render('#paypal-button-container');
+        }).render('#paypal-button-container');
     };
 
     // LÓGICA PARA PEDIDOS GRATUITOS / CUPÓN ($0.00)
@@ -1410,11 +1377,6 @@
         
         updateCartUI();
 
-        // Renderizar PayPal si es necesario cuando se abre el carrito
-        if (window.cartFinalTotal > 0) {
-            window.renderPayPalButtons();
-        }
-
         const navbarCollapse = document.getElementById('navbarNav');
         if(navbarCollapse.classList.contains('show')) {
           const bsCollapse = new bootstrap.Collapse(navbarCollapse, {toggle: false});
@@ -1456,11 +1418,6 @@
           couponApplied = false;
           couponMsg.style.display = 'none';
           couponInput.value = '';
-          
-          if (window.paypalButtonsInstance) {
-              window.paypalButtonsInstance.close();
-              window.paypalButtonsInstance = null;
-          }
         } else {
           emptyCartMsg.style.display = 'none';
           couponSection.style.display = 'flex';
@@ -1516,18 +1473,17 @@
             paypalWrapper.style.display = 'none';
             securityBadge.style.display = 'none';
             freeCheckoutBtn.style.display = 'block';
-            if (window.paypalButtonsInstance) {
-                window.paypalButtonsInstance.close();
-                window.paypalButtonsInstance = null;
-            }
           } else {
             paypalWrapper.style.display = 'block';
             securityBadge.style.display = 'block';
             freeCheckoutBtn.style.display = 'none';
-            // Renderizar PayPal dinámicamente cuando el total es mayor a 0
-            if (cartDrawer.classList.contains('active')) {
-                window.renderPayPalButtons();
-            }
+            
+            // Renderizar PayPal justo aquí cuando el wrapper se muestra
+            setTimeout(() => {
+                if (typeof window.renderPayPal === 'function') {
+                    window.renderPayPal();
+                }
+            }, 100);
           }
         }
 
@@ -1579,7 +1535,7 @@
           const img = this.getAttribute('data-img');
           const type = this.getAttribute('data-type');
           
-          const existingItem = cart.indexBy ? null : cart.find(item => item.id === id);
+          const existingItem = cart.find(item => item.id === id);
           if (existingItem) {
             existingItem.qty += 1;
           } else {
