@@ -125,43 +125,43 @@
       transform: translateY(-2px);
     }
 
-    .mobile-liquid-avatar {
-      width: 65px;
-      height: 65px;
+    /* Avatar compacto para la barra superior móvil */
+    .mobile-nav-avatar {
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.02));
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 2px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.6), 0 0 15px rgba(0, 229, 255, 0.25);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 10px rgba(0, 229, 255, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 4px;
+      padding: 2px;
       transition: all 0.3s ease;
-      margin: 0 auto;
       text-decoration: none;
     }
-    .mobile-liquid-avatar:hover {
+    .mobile-nav-avatar:hover {
       transform: scale(1.05);
       border-color: var(--accent-color);
-      box-shadow: 0 8px 30px rgba(0, 229, 255, 0.5);
+      box-shadow: 0 4px 20px rgba(0, 229, 255, 0.4);
     }
-    .mobile-liquid-avatar img {
+    .mobile-nav-avatar img {
       width: 100%;
       height: 100%;
       border-radius: 50%;
       object-fit: cover;
       display: block;
     }
-    .mobile-liquid-avatar .avatar-fallback {
+    .mobile-nav-avatar .avatar-fallback {
       background: var(--accent-color);
       color: #000;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 1.6rem;
+      font-size: 1.1rem;
       width: 100%;
       height: 100%;
       border-radius: 50%;
@@ -200,7 +200,7 @@
       font-weight: 600;
       border: 1px solid var(--text-muted);
       border-radius: 8px;
-      padding: 10px 24px;
+      padding: 6px 15px;
       transition: all 0.3s ease;
       backdrop-filter: blur(5px);
     }
@@ -417,19 +417,21 @@
         <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
       </a>
       
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="filter: invert(1);">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <!-- ELEMENTOS MÓVILES A LA DERECHA (AVATAR + HAMBURGUESA) -->
+      <div class="d-flex align-items-center gap-2 d-lg-none">
+        <div id="mobile-auth-container">
+          <!-- Se inyecta por JS -->
+        </div>
+        <button class="navbar-toggler border-0 p-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="filter: invert(1);">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+
       <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
         <ul class="navbar-nav align-items-center">
           <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
           <li class="nav-item"><a class="nav-link" href="index.html">Catálogo</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
-          
-          <!-- CONTENEDOR DE SESIÓN MÓVIL (AVATAR O BOTÓN) -->
-          <li class="nav-item d-lg-none w-100" id="mobile-auth-container">
-            <!-- Se inyecta por JS -->
-          </li>
           
           <li class="nav-item d-lg-none mt-2 mb-2 w-100">
             <button class="btn-cyan w-100 mobile-cart-btn">
@@ -542,10 +544,10 @@
             <div class="package-card glass-effect p-3 mb-3">
               <div class="d-flex justify-content-between align-items-center mb-1">
                 <span class="fw-bold text-white">Solo Yamaha Legacy</span>
-                <span class="fw-bold text-white">$29.00</span>
+                <span class="fw-bold text-white">$33.00</span>
               </div>
               <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Serie Motif/Montage + Bonus PAD</p>
-              <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="13" data-name="Yamaha Legacy Collection SF2" data-price="29" data-img="yamahalegacy" data-type="Librería vitalicia">
+              <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="13" data-name="Yamaha Legacy Collection SF2" data-price="33" data-img="yamahalegacy" data-type="Librería vitalicia">
                 <i class="bi bi-cart-plus"></i> AGREGAR YAMAHA
               </button>
             </div>
@@ -844,7 +846,6 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Exportar variables al scope global para que el script del carrito pueda leerlas
     window.globalCurrentUser = null;
     let currentUser = null;
 
@@ -961,12 +962,9 @@
             : `<div class="avatar-fallback">${displayName.charAt(0).toUpperCase()}</div>`;
             
           mobileAuthContainer.innerHTML = `
-            <div class="d-flex flex-column align-items-center w-100 mt-3 mb-2">
-              <a href="account.html" class="mobile-liquid-avatar mb-1" title="Ir a Mi Cuenta">
-                ${mobileContent}
-              </a>
-              <span class="text-white small fw-bold mt-1" style="font-size: 0.8rem;">Mi Cuenta</span>
-            </div>
+            <a href="account.html" class="mobile-nav-avatar" title="Ir a Mi Cuenta">
+              ${mobileContent}
+            </a>
           `;
         }
 
@@ -1007,11 +1005,9 @@
         }
         if (mobileAuthContainer) {
           mobileAuthContainer.innerHTML = `
-            <div class="d-flex justify-content-center w-100 mt-3 mb-2 px-3">
-              <a href="login.html" class="btn-liquid-glass w-100 justify-content-center py-2" style="font-size: 0.95rem;">
-                <i class="bi bi-person-circle"></i> Iniciar Sesión
-              </a>
-            </div>
+            <a href="login.html" class="btn-liquid-glass px-2 py-1" style="font-size: 0.8rem;">
+              <i class="bi bi-person-circle"></i>
+            </a>
           `;
         }
 
