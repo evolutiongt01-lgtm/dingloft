@@ -23,7 +23,7 @@
       --accent-color: #00e5ff;
       --accent-hover: #00b5cc;
       --text-main: #ffffff;
-      --text-muted: #9ba9bd;
+      --text-muted: #e2e8f0; /* Blanco suave súper legible */
       --border-color: rgba(255, 255, 255, 0.1);
       --glass-bg: rgba(17, 21, 31, 0.4);
     }
@@ -71,7 +71,6 @@
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     }
 
-    /* EFECTO LIQUID GLASS PARA EL CONTENEDOR DE VIDEO */
     .liquid-glass-container {
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
       backdrop-filter: blur(25px) saturate(180%);
@@ -80,23 +79,11 @@
       border-radius: 24px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.2);
       padding: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-    .liquid-glass-container::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -50%;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.05), transparent);
-      transform: skewX(-20deg);
-      pointer-events: none;
     }
 
     .navbar-glass {
       background: rgba(5, 7, 10, 0.7);
       backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border-color);
       padding: 15px 0;
       z-index: 1040;
@@ -117,6 +104,18 @@
     }
     .btn-cyan:hover { background: var(--accent-hover); color: #000; transform: translateY(-2px); box-shadow: 0 5px 30px rgba(0, 229, 255, 0.6); }
 
+    .btn-outline-cyan {
+      background: rgba(0, 229, 255, 0.08);
+      color: var(--accent-color);
+      font-weight: 700;
+      border: 1px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 14px 30px;
+      transition: all 0.3s ease;
+      font-size: 1.05rem;
+    }
+    .btn-outline-cyan:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 25px rgba(0,229,255,0.5); }
+
     .btn-outline-custom {
       background: rgba(255,255,255,0.05);
       color: var(--text-main);
@@ -134,7 +133,6 @@
       width: 100%;
       border-radius: 16px;
       padding: 15px;
-      position: relative;
     }
     .product-boxes-display img {
       width: 100%;
@@ -201,6 +199,26 @@
       color: #fff;
     }
 
+    /* Tarjetas de Compatibilidad de Software */
+    .software-badge-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      transition: 0.3s;
+    }
+    .software-badge-box:hover {
+      border-color: var(--accent-color);
+      background: rgba(0, 229, 255, 0.04);
+    }
+    .software-badge-box i {
+      font-size: 1.8rem;
+      color: var(--accent-color);
+    }
+
     /* CARRITO LATERAL */
     .cart-overlay {
       position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75);
@@ -223,7 +241,7 @@
     .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; color: #fff; }
     .cart-item-desc { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px; }
     .cart-item-remove { position: absolute; top: 0; right: 0; background: transparent; border: none; color: #fff; cursor: pointer; }
-    .cart-footer { padding: 20px 25px; background: rgba(0,0,0,0.6); border-top: 1px solid var(--border-color); }
+    .cart-footer { padding: 20px 25px; background: rgba(0, 0, 0, 0.6); border-top: 1px solid var(--border-color); }
     .coupon-box { display: flex; gap: 8px; margin-bottom: 15px; }
     .coupon-input { flex: 1; background: rgba(4, 9, 18, 0.7); border: 1px solid rgba(153, 185, 216, 0.25); border-radius: 8px; color: #fff; padding: 8px 12px; font-size: 0.85rem; text-transform: uppercase; }
     .btn-apply-coupon { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0 15px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
@@ -300,10 +318,23 @@
         <!-- Columna Derecha: Información y Precio -->
         <div class="col-lg-6">
           <span class="text-uppercase text-info fw-bold" style="font-size: 0.75rem; letter-spacing: 2px;">Colección Premium de Pianos</span>
-          <h1 class="fw-bold my-2 text-white" style="font-size: 3rem; letter-spacing: -1.5px;">Pianos Legendarios SF2</h1>
-          <p class="text-muted mb-4" style="font-size: 1.05rem; line-height: 1.6;">
-            Sonidos de escenario para Nord Stage 4, Motif XF8 y Montage M8x.
+          <h1 class="fw-bold my-2 text-white" style="font-size: 2.8rem; letter-spacing: -1.5px;">Pianos Legendarios SF2</h1>
+          <p class="text-white mb-3" style="font-size: 1.05rem; line-height: 1.6; opacity: 0.95;">
+            Sonidos de escenario extravagantes y profesionales para Nord Stage 4, Motif XF8 y Montage M8x. Una librería maestra que <b>más de 100 músicos ya utilizan en vivo en sus iglesias y ministerios</b>.
           </p>
+
+          <!-- Especificaciones de Peso y Regalos -->
+          <div class="mb-3 p-3 rounded-3" style="background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.2);">
+            <div class="d-flex justify-content-between text-white small mb-1">
+              <span><i class="bi bi-file-earmark-zip text-info"></i> Yamaha Legacy Collection:</span> <b>3.71 GB</b>
+            </div>
+            <div class="d-flex justify-content-between text-white small mb-1">
+              <span><i class="bi bi-file-earmark-zip text-info"></i> Nord Essentials SF2:</span> <b>2.73 GB</b>
+            </div>
+            <div class="d-flex justify-content-between text-success small fw-bold">
+              <span><i class="bi bi-gift-fill"></i> Bonus PAD de Regalo:</span> <b>INCLUIDO GRATIS</b>
+            </div>
+          </div>
 
           <!-- Iconos de Beneficios en 3 columnas -->
           <div class="row g-2 mb-4 pt-2 border-top border-bottom border-secondary border-opacity-25 py-3">
@@ -328,15 +359,18 @@
           </div>
 
           <!-- Precio -->
-          <div class="mb-4">
-            <span class="fw-extrabold text-white" style="font-size: 2.8rem; letter-spacing: -1px; color: var(--accent-color);">$60.00</span>
+          <div class="mb-4 d-flex align-items-center justify-content-between">
+            <span class="fw-extrabold" style="font-size: 2.8rem; letter-spacing: -1px; color: var(--accent-color);">$60.00</span>
           </div>
 
-          <!-- Botón Agregar al Carrito -->
-          <div>
+          <!-- Botones de Acción (Comprar + Prueba Gratis) -->
+          <div class="d-flex flex-column gap-3">
             <button class="btn-cyan w-100 d-flex align-items-center justify-content-center gap-2" id="btn-buy-now" data-id="9" data-name="Pianos Legendarios SF2" data-price="60" data-img="pianos_bundle_boxes" data-type="Librería vitalicia">
-              <i class="bi bi-cart3 fs-5"></i> AGREGAR AL CARRITO
+              <i class="bi bi-cart3 fs-5"></i> AGREGAR AL CARRITO ($60.00)
             </button>
+            <a href="https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" target="_blank" class="btn-outline-cyan w-100 text-center text-decoration-none d-flex align-items-center justify-content-center gap-2">
+              <i class="bi bi-gift fs-5"></i> DESCARGAR PRUEBA GRATIS (500 MB / 3 Samples)
+            </a>
           </div>
 
         </div>
@@ -344,31 +378,86 @@
     </div>
   </section>
 
-  <!-- SECCIÓN INFERIOR: COMPATIBLE CON / MUESTREO -->
+  <!-- SECCIÓN INFERIOR: COMPATIBLE CON Y MUESTREO -->
   <section class="compatible-section">
     <div class="container">
       <div class="compatible-title">Capturado directamente de la fuente: Sonidos sampleados de los sintetizadores originales</div>
       
+      <!-- Teclados compatibles -->
       <div class="row g-4 justify-content-center mb-5">
-        <!-- 1. Nord Stage 4 -->
         <div class="col-md-4">
           <div class="keyboard-card">
             <img src="img/keyboard_nord4.png" alt="Nord Stage 4">
             <h5>NORD STAGE 4</h5>
           </div>
         </div>
-        <!-- 2. Motif XF8 -->
         <div class="col-md-4">
           <div class="keyboard-card">
             <img src="img/keyboard_motifxf8.png" alt="Motif XF8">
             <h5>MOTIF XF8</h5>
           </div>
         </div>
-        <!-- 3. Montage M8x -->
         <div class="col-md-4">
           <div class="keyboard-card">
             <img src="img/keyboard_montagem8x.png" alt="Montage M8x">
             <h5>MONTAGE M8X</h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPATIBILIDAD CON SOFTWARE DE AUDIO -->
+      <div class="row justify-content-center mb-5">
+        <div class="col-lg-10">
+          <div class="text-center mb-4">
+            <h4 class="fw-bold text-white">Software y Aplicaciones Compatibles (Formato SF2)</h4>
+            <p class="text-white small" style="opacity: 0.85;">Optimizado para correr de forma fluida en tablets, celulares y computadoras.</p>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="software-badge-box">
+                <i class="bi bi-phone-fill"></i>
+                <div>
+                  <h6 class="text-white mb-0 fw-bold">Audio Evolution Mobile</h6>
+                  <small class="text-white" style="opacity: 0.7;">iOS y Android</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="software-badge-box">
+                <i class="bi bi-music-note-list"></i>
+                <div>
+                  <h6 class="text-white mb-0 fw-bold">BS-16i / BS Bismark</h6>
+                  <small class="text-white" style="opacity: 0.7;">SoundFont Player</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="software-badge-box">
+                <i class="bi bi-sliders"></i>
+                <div>
+                  <h6 class="text-white mb-0 fw-bold">Caustic 3</h6>
+                  <small class="text-white" style="opacity: 0.7;">Modular Synth SF2</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="software-badge-box">
+                <i class="bi bi-laptop"></i>
+                <div>
+                  <h6 class="text-white mb-0 fw-bold">FL Studio Mobile</h6>
+                  <small class="text-white" style="opacity: 0.7;">DirectWave / SoundFonts</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="software-badge-box">
+                <i class="bi bi-soundwave"></i>
+                <div>
+                  <h6 class="text-white mb-0 fw-bold">Cualquier Reproductor SF2</h6>
+                  <small class="text-white" style="opacity: 0.7;">VST / Standalone de PC y Mac</small>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
