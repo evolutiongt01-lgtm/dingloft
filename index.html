@@ -458,6 +458,74 @@
       box-shadow: 0 10px 30px rgba(0,255,136,0.4);
     }
 
+    /* ====== MODAL DE ÉXITO PROFESIONAL (CUSTOM POPUP) ====== */
+    .success-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 5, 8, 0.85);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      z-index: 2000;
+      display: grid;
+      place-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .success-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .success-modal-box {
+      background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98));
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      box-shadow: 0 25px 70px rgba(0,0,0,0.7), 0 0 30px rgba(0,229,255,0.15);
+      border-radius: 24px;
+      padding: 40px 30px;
+      width: min(440px, 90%);
+      text-align: center;
+      transform: scale(0.85) translateY(20px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .success-modal-overlay.active .success-modal-box {
+      transform: scale(1) translateY(0);
+    }
+    .success-icon-ring {
+      width: 80px; height: 80px;
+      background: rgba(0, 255, 136, 0.1);
+      border: 2px solid #00ff88;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 20px;
+      color: #00ff88;
+      font-size: 2.2rem;
+      box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
+      animation: pulseSuccess 2s infinite ease-in-out;
+    }
+    @keyframes pulseSuccess {
+      0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(0, 255, 136, 0.6); }
+    }
+    .success-modal-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing: -0.03em;
+    }
+    .success-modal-desc {
+      color: #9ba9bd;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+    .success-modal-logo {
+      width: 130px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));
+    }
+
     /* =========================================
         REGLAS PARA MÓVIL (Responsividad)
         ========================================= */
@@ -499,6 +567,19 @@
   <div class="bg-orb orb-1"></div>
   <div class="bg-orb orb-2"></div>
   <div class="bg-orb orb-3"></div>
+
+  <!-- MODAL DE ÉXITO PROFESIONAL -->
+  <div class="success-modal-overlay" id="success-modal">
+    <div class="success-modal-box">
+      <img src="img/dingloft.png" alt="Dingloft" class="success-modal-logo">
+      <div class="success-icon-ring">
+        <i class="bi bi-check-lg"></i>
+      </div>
+      <h3 class="success-modal-title">¡Compra Exitosa!</h3>
+      <p class="success-modal-desc" id="success-modal-text">Tu pedido se ha procesado correctamente. Redirigiendo a tu panel de descargas...</p>
+      <button class="btn-cyan w-100" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
+    </div>
+  </div>
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
@@ -1047,7 +1128,7 @@
         <i class="bi bi-shield-lock"></i> Pago 100% seguro con PayPal
       </div>
       
-      <!-- CONTENEDOR ENVOLTORIO BLANCO CON BOTÓN X DE CIERRE (Solo visible si > $0) -->
+      <!-- CONTENEDOR ENVOLTORIO BLANCO CON BOTÓN X DE CIERRE -->
       <div class="paypal-card-wrapper mb-3" id="paypal-container-wrapper">
         <button type="button" class="btn-close-paypal-card" onclick="location.reload();" title="Cancelar / Cambiar opción">
           <i class="bi bi-x-lg"></i>
@@ -1055,7 +1136,7 @@
         <div id="paypal-button-container"></div>
       </div>
 
-      <!-- BOTÓN PARA PEDIDOS GRATUITOS (Solo visible si total es $0) -->
+      <!-- BOTÓN PARA PEDIDOS GRATUITOS -->
       <button id="free-checkout-btn" class="btn-free-checkout mb-3" style="display: none;">
         Completar pedido gratis <i class="bi bi-download ms-1"></i>
       </button>
@@ -1069,7 +1150,7 @@
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Lógica de Firebase Auth, PayPal y Checkout Gratis -->
+  <!-- Lógica de Firebase Auth, PayPal y Checkout con Modal Profesional -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -1088,6 +1169,13 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+
+    function mostrarModalExito(mensaje) {
+      const modal = document.getElementById('success-modal');
+      const text = document.getElementById('success-modal-text');
+      if (text && mensaje) text.textContent = mensaje;
+      if (modal) modal.classList.add('active');
+    }
 
     onAuthStateChanged(auth, (user) => {
       const desktopAuthContainer = document.getElementById('desktop-auth-container');
@@ -1168,8 +1256,8 @@
               createdAt: serverTimestamp()
             });
 
-            alert(`¡Pago exitoso, ${details.payer.name.given_name}! Redirigiendo a tu cuenta...`);
-            window.location.href = 'account.html';
+            mostrarModalExito(`¡Pago exitoso, ${details.payer.name.given_name}! Redirigiendo a tu cuenta...`);
+            setTimeout(() => { window.location.href = 'account.html'; }, 2200);
 
           } catch (error) {
             console.error("Error guardando la compra en Firestore:", error);
@@ -1198,7 +1286,6 @@
       try {
         const itemsComprados = window.cartItemsList || [];
         
-        // Efecto visual de carga
         freeCheckoutBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 8px;"></span> Procesando...';
         freeCheckoutBtn.disabled = true;
 
@@ -1211,8 +1298,8 @@
           createdAt: serverTimestamp()
         });
 
-        alert(`¡Pedido completado con éxito! Redirigiendo a tus descargas...`);
-        window.location.href = 'account.html';
+        mostrarModalExito("¡Pedido gratuito completado con éxito! Redirigiendo a tus descargas...");
+        setTimeout(() => { window.location.href = 'account.html'; }, 2200);
 
       } catch (error) {
         console.error("Error guardando pedido gratuito en Firestore:", error);
@@ -1315,7 +1402,6 @@
             cartItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
           });
 
-          // Controlar qué botón mostrar según el total
           if (totalPrice === 0) {
             paypalWrapper.style.display = 'none';
             freeCheckoutBtn.style.display = 'block';
