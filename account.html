@@ -79,7 +79,7 @@
       <div class="top">
         <div>
           <h1>Hola, <span id="welcome-name">...</span></h1>
-          <p>Aquí tienes el control de tus productos, descargas y soporte.</p>
+          <p>Aquí tienes el control de tus programas, descargas y soporte.</p>
         </div>
         <div class="top-actions">
           <button class="icon-button" aria-label="Notificaciones"><i class="bi bi-bell"></i></button>
@@ -89,8 +89,8 @@
       
       <section class="stats" aria-label="Resumen de la cuenta">
         <article class="stat">
-          <i class="bi bi-shield-check"></i>
-          <div><span>Licencias activas</span><strong id="stat-licencias">0</strong></div>
+          <i class="bi bi-laptop"></i>
+          <div><span>Programas activos</span><strong id="stat-programas">0</strong></div>
         </article>
         <article class="stat">
           <i class="bi bi-download"></i>
@@ -106,8 +106,7 @@
         <article class="card" id="descargas">
           <div class="card-title"><h2>Descargas disponibles</h2><a href="#">Ver todas <i class="bi bi-arrow-right"></i></a></div>
           <div class="downloads" id="downloads-container">
-            <!-- Los productos comprados se inyectarán aquí mediante JS -->
-            <p style="color: var(--muted); padding: 15px;">Cargando tus licencias...</p>
+            <p style="color: var(--muted); padding: 15px;">Cargando tus programas...</p>
           </div>
         </article>
         
@@ -115,7 +114,6 @@
           <article class="card">
             <div class="card-title"><h2>Descargas recientes</h2></div>
             <div class="recent" id="recent-container">
-              <!-- Descargas recientes inyectadas aquí -->
               <p style="color: var(--muted); padding: 15px; font-size: 0.85rem;">Cargando...</p>
             </div>
           </article>
@@ -123,14 +121,14 @@
           <article class="card support" id="soporte">
             <div class="support-icon"><i class="bi bi-headset"></i></div>
             <h2>¿Necesitas ayuda?</h2>
-            <p>Nuestro equipo de soporte está listo para ayudarte con tu instalación o licencia.</p>
+            <p>Nuestro equipo de soporte está listo para ayudarte con tu instalación o programa.</p>
             <button><i class="bi bi-chat-dots"></i>Hablar con soporte</button>
           </article>
         </aside>
       </section>
       
       <div class="trust">
-        <span><i class="bi bi-shield-check"></i>Licencias verificadas</span>
+        <span><i class="bi bi-check-circle-fill"></i>Programas verificados</span>
         <span><i class="bi bi-cloud-arrow-down"></i>Instalación remota</span>
         <span><i class="bi bi-headset"></i>Soporte técnico</span>
       </div>
@@ -187,42 +185,42 @@
           const q = query(collection(db, "purchases"), where("uid", "==", user.uid));
           const querySnapshot = await getDocs(q);
 
-          let totalLicencias = 0;
+          let totalProgramas = 0;
           let pedidosRealizados = querySnapshot.size; 
           downloadsContainer.innerHTML = '';
           recentContainer.innerHTML = '';
 
           if (querySnapshot.empty) {
-            downloadsContainer.innerHTML = '<p style="color: var(--muted); padding: 15px;">Aún no tienes compras registradas. Ve a la tienda para adquirir tus licencias.</p>';
+            downloadsContainer.innerHTML = '<p style="color: var(--muted); padding: 15px;">Aún no tienes programas comprados. Ve al catálogo para conseguir tus instaladores.</p>';
             recentContainer.innerHTML = '<p style="color: var(--muted); padding: 15px; font-size: 0.85rem;">No hay descargas recientes.</p>';
           } else {
             querySnapshot.forEach((docSnap) => {
               const compra = docSnap.data();
-              const items = compra.items || []; // Array de productos (ej: [{name: "AutoCAD 2026", img: "autocad", type: "Licencia vitalicia"}])
+              const items = compra.items || [];
               
               items.forEach(producto => {
-                totalLicencias++;
+                totalProgramas++;
                 
-                // Mapeo en caso de que los datos vengan como texto simple en vez de objeto
                 let nombreProd = producto.name || producto;
                 let imgProd = producto.img || "autocad"; 
-                let typeProd = producto.type || 'Licencia digital';
+                let typeProd = producto.type || 'Instalador digital';
                 
                 if(typeof producto === 'string') {
                     const prodLower = producto.toLowerCase();
                     if(prodLower.includes("sketchup")) imgProd = "sketchup";
                     else if(prodLower.includes("logic")) imgProd = "logic";
                     else if(prodLower.includes("twinmotion")) imgProd = "twinmotion";
+                    else if(prodLower.includes("office")) imgProd = "office";
+                    else if(prodLower.includes("cinema")) imgProd = "cinema4d";
                 }
 
-                // Generar HTML para panel principal
                 const rowHTML = `
                   <div class="download-row">
                     <div class="product-art"><img src="img/${imgProd}.png" alt="${nombreProd}"></div>
                     <div>
                       <h3>${nombreProd}</h3>
                       <p>${typeProd}</p>
-                      <span class="badge"><i class="bi bi-check-circle-fill"></i> ${compra.status || 'Activa'}</span>
+                      <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso vitalicio</span>
                     </div>
                     <button class="download-btn" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
                       <i class="bi bi-download"></i>
@@ -231,8 +229,7 @@
                 `;
                 downloadsContainer.insertAdjacentHTML('beforeend', rowHTML);
 
-                // Generar HTML para Recientes (Pintamos las 3 últimas nomás)
-                if(totalLicencias <= 3) {
+                if(totalProgramas <= 3) {
                   const recentHTML = `
                     <div class="recent-item">
                       <div class="recent-art"><img src="img/${imgProd}.png" alt="${nombreProd}"></div>
@@ -248,12 +245,10 @@
             });
           }
 
-          // Actualizar numeritos en las tarjetas de estadísticas
-          document.getElementById('stat-licencias').textContent = totalLicencias;
-          document.getElementById('stat-descargas').textContent = totalLicencias > 0 ? (totalLicencias * 2) + 2 : 0; 
+          document.getElementById('stat-programas').textContent = totalProgramas;
+          document.getElementById('stat-descargas').textContent = totalProgramas > 0 ? (totalProgramas * 2) : 0; 
           document.getElementById('stat-pedidos').textContent = pedidosRealizados;
 
-          // Re-aplicar funcionalidad del Toast de descarga a los botones recién creados
           const toast = document.querySelector('.toast');
           document.querySelectorAll('.download-btn, .download-btn-recent').forEach(button => {
             button.addEventListener('click', () => {
@@ -264,17 +259,15 @@
           });
 
         } catch(error) {
-          console.error("Error cargando compras:", error);
-          downloadsContainer.innerHTML = '<p style="color: #ff5050; padding: 15px;">Hubo un error al cargar tus licencias.</p>';
+          console.error("Error cargando programas:", error);
+          downloadsContainer.innerHTML = '<p style="color: #ff5050; padding: 15px;">Hubo un error al cargar tus programas.</p>';
         }
 
       } else {
-        // Redirigir si no está autenticado
         window.location.href = 'login.html';
       }
     });
 
-    // Logout
     document.querySelector('.logout').addEventListener('click', async () => {
       try {
         await signOut(auth);
