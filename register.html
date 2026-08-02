@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear cuenta | Dingloft</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root { --cyan:#11d5f7; --violet:#7c4dff; --ink:#060911; --panel:rgba(12,18,31,.78); --line:rgba(169,201,229,.17); --muted:#9ba9bd; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; color:#f7fbff; font-family:'Inter',sans-serif; background:radial-gradient(circle at 18% 45%,rgba(90,48,238,.24),transparent 33%),radial-gradient(circle at 78% 38%,rgba(0,211,255,.12),transparent 32%),var(--ink); overflow-x:hidden; }
+    body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:-1; opacity:.32; background-image:linear-gradient(rgba(119,185,255,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(119,185,255,.10) 1px,transparent 1px); background-size:72px 72px; mask-image:linear-gradient(to bottom,black,transparent 82%); }
+    a { color:inherit; }
+    .site-header { height:100px; display:flex; align-items:center; border-bottom:1px solid var(--line); background:rgba(5,8,15,.58); backdrop-filter:blur(18px); }
+    .shell { width:min(1400px,calc(100% - 48px)); margin:0 auto; }
+    .site-header .shell { display:flex; align-items:center; justify-content:space-between; }
+    .brand { text-decoration:none; color:#fff; font-size:1.65rem; font-weight:800; letter-spacing:-.07em; }
+    .brand span { color:var(--cyan); }
+    .back-link { border:1px solid var(--line); border-radius:10px; color:#e7f4ff; text-decoration:none; font-weight:600; font-size:.92rem; padding:.75rem 1rem; transition:.2s ease; }
+    .back-link:hover { border-color:var(--cyan); color:var(--cyan); transform:translateX(-2px); }
+    .login-page { min-height:calc(100vh - 100px); display:flex; align-items:center; padding:56px 0 36px; }
+    .login-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(460px,560px); gap:clamp(44px,7vw,120px); align-items:center; }
+    .hero-copy { max-width:580px; }
+    .eyebrow { color:var(--cyan); font-size:.8rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; margin-bottom:1rem; }
+    .hero-copy h1 { margin:0 0 1rem; font-size:clamp(2.3rem,4vw,4.2rem); letter-spacing:-.065em; line-height:1.02; }
+    .hero-copy h1 em { color:var(--cyan); font-style:normal; }
+    .hero-copy p { color:#b4c0d3; max-width:490px; line-height:1.7; margin:0 0 2.4rem; }
+    .login-card { padding:clamp(30px,4vw,47px); border:1px solid rgba(150,192,230,.27); border-radius:25px; background:linear-gradient(145deg,rgba(18,25,42,.90),rgba(7,11,22,.82)); box-shadow:0 28px 80px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.05); backdrop-filter:blur(18px); }
+    .login-card h2 { font-size:2rem; letter-spacing:-.055em; margin:0 0 .55rem; font-weight:800; } .login-card > p { color:var(--muted); margin-bottom:2rem; }
+    .form-label { color:#e7eef8; font-size:.9rem; font-weight:700; margin-bottom:.65rem; }
+    .field { position:relative; margin-bottom:1.3rem; } .field .bi { position:absolute; left:17px; top:50%; transform:translateY(-50%); color:#afbed1; z-index:2; } .field .toggle-password { left:auto; right:15px; border:0; background:transparent; color:#afbed1; }
+    .form-control { width:100%; height:56px; border:1px solid rgba(153,185,216,.25); border-radius:11px; color:#fff; background:rgba(4,9,18,.55); padding:0 50px; box-shadow:none; } .form-control::placeholder{color:#6f7d91}.form-control:focus{color:#fff;background:rgba(4,9,18,.78);border-color:var(--cyan);box-shadow:0 0 0 4px rgba(0,217,255,.10)}
+    .btn-login { width:100%; border:0; border-radius:11px; padding:16px; font-weight:800; background:linear-gradient(100deg,#0dd9f4,#32bdf9); color:#03111a; box-shadow:0 14px 30px rgba(0,210,245,.2); transition:.2s ease; margin-top: 1rem; } .btn-login:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(0,210,245,.34)}
+    .divider { display:flex; align-items:center; gap:12px; color:#708097; font-size:.8rem; margin:1.5rem 0; } .divider::before,.divider::after{content:'';height:1px;flex:1;background:var(--line)}
+    .btn-google { width:100%; border:1px solid rgba(0,216,255,.68); border-radius:11px; color:#f1f7ff; background:transparent; font-weight:700; padding:13px; cursor:pointer; transition:.2s ease; } .btn-google:hover { background:rgba(0,216,255,0.08); }
+    .google-dot{display:inline-grid;place-items:center;width:20px;height:20px;margin-right:9px;border-radius:50%;background:conic-gradient(#4285f4 0 25%,#34a853 0 45%,#fbbc05 0 70%,#ea4335 0)}
+    .register { color:#8998ae; text-align:center; font-size:.88rem; margin:1.45rem 0 0; } .register a{color:var(--cyan);font-weight:700;text-decoration:none}
+    @media (max-width: 950px) { .login-page{align-items:flex-start}.login-grid{grid-template-columns:1fr;max-width:600px;margin:0 auto}.hero-copy{text-align:center;margin:auto}.hero-copy p{margin-left:auto;margin-right:auto}.login-card{margin-top:12px} }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="shell">
+      <a class="brand" href="index.html"><span>D</span>ingloft</a>
+      <a href="index.html" class="back-link"><i class="bi bi-arrow-left"></i> <span>Volver a la tienda</span></a>
+    </div>
+  </header>
+
+  <main class="login-page">
+    <div class="shell">
+      <div class="login-grid">
+        <section class="hero-copy">
+          <div class="eyebrow">Únete a Dingloft</div>
+          <h1>Crea tu cuenta.<br><em>Obtén tus programas.</em></h1>
+          <p>Registra tu cuenta para tener acceso instantáneo a tus instaladores y soporte prioritario.</p>
+        </section>
+
+        <section class="login-card">
+          <h2>Crear una cuenta</h2>
+          <p>Llena tus datos para comenzar.</p>
+          <form id="register-form">
+            <label for="fullname" class="form-label">Nombre completo</label>
+            <div class="field">
+              <i class="bi bi-person"></i>
+              <input type="text" class="form-control" id="fullname" placeholder="Ej. César Mátzar" required>
+            </div>
+
+            <label for="email" class="form-label">Correo electrónico</label>
+            <div class="field">
+              <i class="bi bi-envelope"></i>
+              <input type="email" class="form-control" id="email" placeholder="tucorreo@dominio.com" required>
+            </div>
+
+            <label for="password" class="form-label">Contraseña</label>
+            <div class="field">
+              <i class="bi bi-lock"></i>
+              <input type="password" class="form-control" id="password" placeholder="Mínimo 6 caracteres" minlength="6" required>
+              <button class="toggle-password" type="button"><i class="bi bi-eye"></i></button>
+            </div>
+
+            <button type="submit" class="btn-login"><i class="bi bi-person-plus-fill me-2"></i>Registrarme</button>
+            
+            <div class="divider">o</div>
+            <button type="button" id="google-register-btn" class="btn-google"><span class="google-dot"></span>Registrarme con Google</button>
+            
+            <p class="register">¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a></p>
+          </form>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
+      authDomain: "login-dingloft.firebaseapp.com",
+      projectId: "login-dingloft",
+      storageBucket: "login-dingloft.firebasestorage.app",
+      messagingSenderId: "549466738202",
+      appId: "1:549466738202:web:8bf305fe2c753e9d76cba3",
+      measurementId: "G-R9SGZCDN13"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    // Redireccionar si ya está logueado
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = 'index.html';
+      }
+    });
+
+    async function guardarUsuarioEnFirestore(user, name) {
+      try {
+        const userRef = doc(db, "users", user.uid);
+        await setDoc(userRef, {
+          uid: user.uid,
+          email: user.email,
+          displayName: name || user.displayName || "Usuario Dingloft",
+          createdAt: serverTimestamp()
+        }, { merge: true });
+      } catch (error) {
+        console.error("Error al guardar en Firestore:", error);
+      }
+    }
+
+    // REGISTRO CON CORREO
+    const registerForm = document.getElementById('register-form');
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('fullname').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Asignar el nombre al perfil de Auth
+        await updateProfile(user, { displayName: name });
+        await guardarUsuarioEnFirestore(user, name);
+
+      } catch (error) {
+        console.error("Error al registrar:", error);
+        alert(`Error [${error.code}]: ${error.message}`);
+      }
+    });
+
+    // REGISTRO CON GOOGLE
+    document.getElementById('google-register-btn').addEventListener('click', async () => {
+      try {
+        const result = await signInWithPopup(auth, provider);
+        await guardarUsuarioEnFirestore(result.user, result.user.displayName);
+      } catch (error) {
+        console.error("Error con Google:", error);
+        alert(`Error [${error.code}]: ${error.message}`);
+      }
+    });
+
+    // Toggle Password
+    const passwordToggle = document.querySelector('.toggle-password');
+    const passwordInput = document.querySelector('#password');
+    passwordToggle?.addEventListener('click', () => {
+      const isHidden = passwordInput.type === 'password';
+      passwordInput.type = isHidden ? 'text' : 'password';
+      passwordToggle.querySelector('i').className = isHidden ? 'bi bi-eye-slash' : 'bi bi-eye';
+    });
+  </script>
+</body>
+</html>
