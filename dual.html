@@ -217,7 +217,6 @@
     }
     .keyboard-card h5 { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.5px; margin: 0; color: #fff; }
 
-    /* NOTA DEL CREADOR (FOTO DE PERFIL ARREGLADA EN MÓVIL) */
     .creator-note-box {
       background: linear-gradient(135deg, rgba(0, 229, 255, 0.07), rgba(122, 0, 255, 0.04));
       border: 1px solid rgba(0, 229, 255, 0.25); border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
@@ -247,6 +246,7 @@
     .comment-card {
       background: rgba(12, 17, 26, 0.85); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 12px;
     }
+    .comment-card:hover { border-color: rgba(0,229,255,0.4); }
     .comment-form-box {
       background: rgba(12, 17, 26, 0.95); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.4);
     }
@@ -389,7 +389,6 @@
           <span class="text-uppercase text-info fw-bold" style="font-size: 0.7rem; letter-spacing: 2px;">Colección Premium de Pianos</span>
           <h1 class="fw-bold my-2 text-white" style="font-size: 2.5rem; letter-spacing: -1px;">Pianos Legendarios SF2</h1>
           
-          <!-- Texto actualizado con +100 -->
           <p class="text-white mb-3" style="font-size: 0.98rem; line-height: 1.6; color: #f1f5f9;">
             Sonidos de escenario extravagantes y profesionales para Nord Stage 4, Motif XF8 y Montage M8x. Una librería maestra que <b>+100 músicos ya utilizan en vivo en sus iglesias y ministerios</b>.
           </p>
@@ -476,7 +475,7 @@
         </div>
       </div>
 
-      <!-- NOTA DEL CREADOR (CON AVATAR ARREGLADO) -->
+      <!-- NOTA DEL CREADOR -->
       <div class="row justify-content-center mb-4">
         <div class="col-lg-10">
           <div class="creator-note-box">
@@ -629,12 +628,12 @@
         </div>
       </div>
 
-      <!-- SECCIÓN DE COMENTARIOS CON LIKES (16 A 40 LIKES INICIALES) -->
+      <!-- SECCIÓN DE COMENTARIOS CONECTADA A FIRESTORE PARA GUARDARLOS PERMANENTEMENTE -->
       <div class="row justify-content-center comments-section">
         <div class="col-lg-10">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-chat-square-text text-accent" style="color:var(--accent-color)"></i> Opiniones de la Comunidad</h5>
-            <span class="text-white small" style="color: #f1f5f9; font-size: 0.7rem;">Sin registro</span>
+            <span class="text-white small" style="color: #f1f5f9; font-size: 0.7rem;">Guardado en la nube</span>
           </div>
 
           <div class="comment-form-box mb-3">
@@ -655,84 +654,15 @@
                   <textarea id="comment-text" class="form-control form-control-custom" rows="2" placeholder="Escribe tu experiencia..." required></textarea>
                 </div>
                 <div class="col-12 text-end">
-                  <button type="submit" class="btn-cyan px-3 py-1" style="font-size: 0.85rem;">Publicar</button>
+                  <button type="submit" class="btn-cyan px-3 py-1" style="font-size: 0.85rem;" id="btn-submit-comment">Publicar</button>
                 </div>
               </div>
             </form>
           </div>
 
+          <!-- Contenedor donde se cargarán los comentarios de Firebase -->
           <div id="comments-container">
-            <div class="comment-card">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Josué Morales (Ebenezer)</h6>
-                <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
-              </div>
-              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">¡Los sonidos están a otro nivel! Usé el Ballad Keys en directo y sonó idéntico al teclado original.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 2 días</small>
-                <button class="btn-like" onclick="toggleLike(this)"><i class="bi bi-heart"></i> <span class="like-count">38</span></button>
-              </div>
-            </div>
-
-            <div class="comment-card">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Carlos R.</h6>
-                <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
-              </div>
-              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">Probé la versión de prueba de 531.5 MB y con eso bastó para comprar el bundle completo.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 4 días</small>
-                <button class="btn-like" onclick="toggleLike(this)"><i class="bi bi-heart"></i> <span class="like-count">24</span></button>
-              </div>
-            </div>
-
-            <div class="comment-card">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Pastor Esteban Gómez</h6>
-                <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
-              </div>
-              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">Los pads para la administración le dieron otra atmósfera a nuestras reuniones.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 5 días</small>
-                <button class="btn-like" onclick="toggleLike(this)"><i class="bi bi-heart"></i> <span class="like-count">31</span></button>
-              </div>
-            </div>
-
-            <div class="comment-card">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Marco Tulio</h6>
-                <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
-              </div>
-              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">Con Audio Evolution va perfecto y cero latencia. ¡Gran trabajo Cesar!</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 1 semana</small>
-                <button class="btn-like" onclick="toggleLike(this)"><i class="bi bi-heart"></i> <span class="like-count">19</span></button>
-              </div>
-            </div>
-
-            <div class="comment-card">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Samuel Pineda</h6>
-                <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
-              </div>
-              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">¡Muy recomendado! Lo instalé en BS-16i para mi iPad y la respuesta al tacto es increíble.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 2 semanas</small>
-                <button class="btn-like" onclick="toggleLike(this)"><i class="bi bi-heart"></i> <span class="like-count">27</span></button>
-              </div>
-            </div>
-
-            <div class="comment-card">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Joel Hernández</h6>
-                <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
-              </div>
-              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">Tremendo aporte para los músicos cristianos. Tener los sonidos del Motif y Nord en la palma de la mano no tiene precio.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 3 semanas</small>
-                <button class="btn-like" onclick="toggleLike(this)"><i class="bi bi-heart"></i> <span class="like-count">35</span></button>
-              </div>
-            </div>
+            <div class="text-center text-muted py-3 small">Cargando opiniones de la comunidad...</div>
           </div>
 
         </div>
@@ -778,11 +708,11 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- LÓGICA DE FIREBASE Y CARRITO -->
+  <!-- LÓGICA DE FIREBASE Y COMENTARIOS EN TIEMPO REAL -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
@@ -833,26 +763,150 @@
         }
       }).render('#paypal-button-container');
     };
-  </script>
 
-  <script>
-    // FUNCIÓN GLOBAL PARA DAR LIKE A LOS COMENTARIOS
+    // FUNCIÓN PARA CARGAR COMENTARIOS DESDE FIRESTORE
+    async function loadComments() {
+      const container = document.getElementById('comments-container');
+      try {
+        const q = query(collection(db, "product_comments"), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+          // Si la base de datos está vacía, mostramos los comentarios iniciales de ejemplo
+          container.innerHTML = `
+            <div class="comment-card">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Josué Morales (Ebenezer)</h6>
+                <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
+              </div>
+              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">¡Los sonidos están a otro nivel! Usé el Ballad Keys en directo y sonó idéntico al teclado original.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 2 días</small>
+                <button class="btn-like" onclick="toggleLike(this, 'sample-1')"><i class="bi bi-heart"></i> <span class="like-count">38</span></button>
+              </div>
+            </div>
+            <div class="comment-card">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> Carlos R.</h6>
+                <span class="text-warning small" style="font-size: 0.75rem;">★★★★★</span>
+              </div>
+              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">Probé la versión de prueba de 531.5 MB y con eso bastó para comprar el bundle completo.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Hace 4 días</small>
+                <button class="btn-like" onclick="toggleLike(this, 'sample-2')"><i class="bi bi-heart"></i> <span class="like-count">24</span></button>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = '';
+        snapshot.forEach((docSnap) => {
+          const com = docSnap.data();
+          const docId = docSnap.id;
+          let stars = '★★★★★'.substring(0, com.rating) + '☆☆☆☆☆'.substring(0, 5 - com.rating);
+
+          container.insertAdjacentHTML('beforeend', `
+            <div class="comment-card" id="comment-${docId}">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> ${com.name}</h6>
+                <span class="text-warning small" style="font-size: 0.75rem;">${stars}</span>
+              </div>
+              <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">${com.text}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Recién publicado</small>
+                <button class="btn-like" onclick="toggleLikeFirestore('${docId}', this)"><i class="bi bi-heart"></i> <span class="like-count">${com.likes || 0}</span></button>
+              </div>
+            </div>
+          `);
+        });
+
+      } catch (err) {
+        console.error("Error cargando comentarios:", err);
+      }
+    }
+
+    // ENVIAR NUEVO COMENTARIO A FIRESTORE
+    const commentForm = document.getElementById('comment-form');
+    commentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('comment-name').value.trim();
+      const rating = parseInt(document.getElementById('comment-rating').value);
+      const text = document.getElementById('comment-text').value.trim();
+      const submitBtn = document.getElementById('btn-submit-comment');
+
+      if (!name || !text) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Publicando...";
+
+      try {
+        await addDoc(collection(db, "product_comments"), {
+          name: name,
+          rating: rating,
+          text: text,
+          likes: 0,
+          createdAt: serverTimestamp()
+        });
+
+        commentForm.reset();
+        loadComments(); // Recargar lista al instante
+
+        const toast = document.getElementById('toast-message');
+        toast.textContent = `¡Comentario guardado en la nube con éxito!`;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+
+      } catch (err) {
+        console.error("Error al guardar comentario:", err);
+        alert("Ocurrió un error al publicar el comentario.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Publicar";
+      }
+    });
+
+    // FUNCIÓN PARA DAR LIKE EN FIRESTORE
+    window.toggleLikeFirestore = async function(docId, btn) {
+      const countSpan = btn.querySelector('.like-count');
+      let currentLikes = parseInt(countSpan.textContent);
+      
+      let newLikes = currentLikes + 1;
+      countSpan.textContent = newLikes;
+      btn.classList.add('liked');
+      btn.querySelector('i').className = 'bi bi-heart-fill';
+
+      try {
+        const commentRef = doc(db, "product_comments", docId);
+        await updateDoc(commentRef, { likes: newLikes });
+      } catch (err) {
+        console.error("Error al actualizar like:", err);
+      }
+    };
+
+    // Función temporal para los de ejemplo
     window.toggleLike = function(btn) {
-      const icon = btn.querySelector('bi-heart, i');
       const countSpan = btn.querySelector('.like-count');
       let count = parseInt(countSpan.textContent);
-
       if (btn.classList.contains('liked')) {
         btn.classList.remove('liked');
-        icon.className = 'bi bi-heart';
+        btn.querySelector('i').className = 'bi bi-heart';
         countSpan.textContent = count - 1;
       } else {
         btn.classList.add('liked');
-        icon.className = 'bi bi-heart-fill';
+        btn.querySelector('i').className = 'bi bi-heart-fill';
         countSpan.textContent = count + 1;
       }
     };
 
+    // Cargar comentarios al abrir la página
+    document.addEventListener('DOMContentLoaded', () => {
+      loadComments();
+    });
+  </script>
+
+  <!-- LÓGICA DE CARRITO Y COMPRA -->
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
       let cart = [];
       let couponApplied = false;
@@ -971,44 +1025,6 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
           }
         }, 12000);
-      });
-
-      // LÓGICA PARA AGREGAR COMENTARIOS AL INSTANTE SIN LOGUEARSE
-      const commentForm = document.getElementById('comment-form');
-      const commentsContainer = document.getElementById('comments-container');
-
-      commentForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('comment-name').value.trim();
-        const rating = parseInt(document.getElementById('comment-rating').value);
-        const text = document.getElementById('comment-text').value.trim();
-
-        if(!name || !text) return;
-
-        let stars = '';
-        for(let i=0; i<rating; i++) { stars += '★'; }
-        for(let i=rating; i<5; i++) { stars += '☆'; }
-
-        const newCommentHTML = `
-          <div class="comment-card" style="animation: fadeIn 0.5s ease;">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> ${name}</h6>
-              <span class="text-warning small" style="font-size: 0.75rem;">${stars}</span>
-            </div>
-            <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">${text}</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <small class="text-white" style="color: #cbd5e1; font-size: 0.7rem;">Justo ahora</small>
-              <button class="btn-like" onclick="toggleLike(this)"><i class="bi bi-heart"></i> <span class="like-count">1</span></button>
-            </div>
-          </div>
-        `;
-
-        commentsContainer.insertAdjacentHTML('afterbegin', newCommentHTML);
-        commentForm.reset();
-
-        toast.textContent = `¡Comentario publicado con éxito!`;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
       });
 
       window.removeItem = (index) => { cart.splice(index, 1); updateCartUI(); };
