@@ -198,7 +198,10 @@
       flex-shrink: 0;
       border: 1px solid rgba(255,255,255,0.05);
       padding: 15px;
+      text-decoration: none;
+      transition: transform 0.3s;
     }
+    .prod-img-box:hover { transform: scale(1.03); }
     .prod-img-box img {
       width: 100%;
       height: 100%;
@@ -212,7 +215,8 @@
       justify-content: space-between;
       width: 100%;
     }
-    .prod-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; }
+    .prod-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; color: #fff; text-decoration: none; transition: color 0.3s; display: inline-block; }
+    .prod-title:hover { color: var(--accent-color); }
     .prod-desc { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .prod-price { font-size: 1.2rem; font-weight: 800; color: var(--accent-color); }
     .old-price { font-size: 0.9rem; color: #adb5bd; text-decoration: line-through; margin-right: 5px; font-weight: 400; }
@@ -742,10 +746,10 @@
       <!-- 1. E-Sword -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/esword.png" alt="E-Sword"></div>
+          <a href="esword.html" class="prod-img-box"><img src="img/esword.png" alt="E-Sword"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">Biblias y Diccionarios para E-Sword</h4>
+              <a href="esword.html" class="prod-title">Biblias y Diccionarios para E-Sword</a>
               <p class="prod-desc">Colección completa de módulos bíblicos en español. Descarga gratuita.</p>
               <div class="mb-2">
                 <span class="text-success" style="font-size: 0.8rem; font-weight: 600;">GRATIS</span>
@@ -764,10 +768,10 @@
       <!-- 2. SketchUp Pro 2026 -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/sketchup.png" alt="SketchUp 2026"></div>
+          <a href="sketchup.html" class="prod-img-box"><img src="img/sketchup.png" alt="SketchUp 2026"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">SketchUp Pro 2026</h4>
+              <a href="sketchup.html" class="prod-title">SketchUp Pro 2026</a>
               <p class="prod-desc">Modelado 3D profesional y avanzado, ideal para arquitectura y proyectos BIM.</p>
               <div class="mb-2">
                 <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
@@ -788,10 +792,10 @@
       <!-- 3. SketchUp & AutoCAD Combo -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/combo.png" alt="SketchUp & AutoCAD"></div>
+          <a href="combo.html" class="prod-img-box"><img src="img/combo.png" alt="SketchUp & AutoCAD"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">SketchUp 2026 & AutoCAD 2026</h4>
+              <a href="combo.html" class="prod-title">SketchUp 2026 & AutoCAD 2026</a>
               <p class="prod-desc">Combo profesional esencial para flujos de trabajo de ingeniería y construcción.</p>
               <div class="mb-2">
                 <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
@@ -812,10 +816,10 @@
       <!-- 4. Office -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/office.png" alt="Office Suite"></div>
+          <a href="office.html" class="prod-img-box"><img src="img/office.png" alt="Office Suite"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">Office Home & Business</h4>
+              <a href="office.html" class="prod-title">Office Home & Business</a>
               <p class="prod-desc">Productividad completa para todos los días: Word, Excel, PowerPoint y más.</p>
               <div class="mb-2">
                 <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
@@ -836,10 +840,10 @@
       <!-- 5. AutoCAD -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/autocad.png" alt="AutoCAD 2026"></div>
+          <a href="autocad.html" class="prod-img-box"><img src="img/autocad.png" alt="AutoCAD 2026"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">AutoCAD 2026</h4>
+              <a href="autocad.html" class="prod-title">AutoCAD 2026</a>
               <p class="prod-desc">El estándar de la industria para diseño y dibujo técnico asistido por computadora.</p>
               <div class="mb-2">
                 <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
@@ -860,10 +864,10 @@
       <!-- 6. Cinema 4D -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/cinema4d.png" alt="Cinema 4D"></div>
+          <a href="cinema4d.html" class="prod-img-box"><img src="img/cinema4d.png" alt="Cinema 4D"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">Cinema 4D</h4>
+              <a href="cinema4d.html" class="prod-title">Cinema 4D</a>
               <p class="prod-desc">Software profesional de gráficos 3D, animación y renderizado avanzado.</p>
               <div class="mb-2">
                 <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
@@ -884,10 +888,10 @@
       <!-- 7. Logic Pro -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/logic.png" alt="Logic Pro"></div>
+          <a href="logic.html" class="prod-img-box"><img src="img/logic.png" alt="Logic Pro"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">Logic Pro</h4>
+              <a href="logic.html" class="prod-title">Logic Pro</a>
               <p class="prod-desc">Estación de trabajo de audio digital avanzada para producción, mezcla y masterización.</p>
               <div class="mb-2">
                 <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
@@ -908,10 +912,10 @@
       <!-- 8. Nord Stage 4 Library -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/nord.png" alt="Nord Stage 4"></div>
+          <a href="nord.html" class="prod-img-box"><img src="img/nord.png" alt="Nord Stage 4"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">Nord Stage 4 Ultimate Library</h4>
+              <a href="nord.html" class="prod-title">Nord Stage 4 Ultimate Library</a>
               <p class="prod-desc">Librería definitiva optimizada para Kontakt con samples de alta fidelidad.</p>
               <div class="mb-2">
                 <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
@@ -932,10 +936,10 @@
       <!-- 9. Dual Legends SF2 -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/dual.png" alt="Dual Legends"></div>
+          <a href="dual.html" class="prod-img-box"><img src="img/dual.png" alt="Dual Legends"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">Dual Legends SF2</h4>
+              <a href="dual.html" class="prod-title">Dual Legends SF2</a>
               <p class="prod-desc">Sample library en formato SF2 para workstations y módulos de sonido.</p>
               <div class="mb-2">
                 <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
@@ -956,10 +960,10 @@
       <!-- 10. Nord Essentials -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/nordessentials.png" alt="Nord Essentials"></div>
+          <a href="nordessentials.html" class="prod-img-box"><img src="img/nordessentials.png" alt="Nord Essentials"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">Nord Essentials SF2 Collection</h4>
+              <a href="nordessentials.html" class="prod-title">Nord Essentials SF2 Collection</a>
               <p class="prod-desc">Edición especial EvoSound con los mejores patches clásicos.</p>
               <div class="mb-2">
                 <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
@@ -980,10 +984,10 @@
       <!-- 11. Rhodes Affair 2 -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/rhodes.png" alt="Rhodes Affair 2"></div>
+          <a href="rhodes.html" class="prod-img-box"><img src="img/rhodes.png" alt="Rhodes Affair 2"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">Rhodes Affair 2</h4>
+              <a href="rhodes.html" class="prod-title">Rhodes Affair 2</a>
               <p class="prod-desc">Sonidos de piano eléctrico cálidos y profesionales para tus directos.</p>
               <div class="mb-2">
                 <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
@@ -1004,10 +1008,10 @@
       <!-- 12. Cosmos Collection -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/cosmos.png" alt="Cosmos Collection"></div>
+          <a href="cosmos.html" class="prod-img-box"><img src="img/cosmos.png" alt="Cosmos Collection"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">Cosmos Collection</h4>
+              <a href="cosmos.html" class="prod-title">Cosmos Collection</a>
               <p class="prod-desc">Pack de expansión con pads y texturas espaciales de alta calidad.</p>
               <div class="mb-2">
                 <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
@@ -1028,10 +1032,10 @@
       <!-- 13. Yamaha Legacy -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/yamahalegacy.png" alt="Yamaha Legacy"></div>
+          <a href="yamahalegacy.html" class="prod-img-box"><img src="img/yamahalegacy.png" alt="Yamaha Legacy"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">Yamaha Legacy Collection SF2</h4>
+              <a href="yamahalegacy.html" class="prod-title">Yamaha Legacy Collection SF2</a>
               <p class="prod-desc">Compatible con series XS, XF, ES y S90 para máxima versatilidad.</p>
               <div class="mb-2">
                 <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
@@ -1052,10 +1056,10 @@
       <!-- 14. Yamaha Premium Keys -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/yamahakeys.png" alt="Yamaha Premium Keys"></div>
+          <a href="yamahakeys.html" class="prod-img-box"><img src="img/yamahakeys.png" alt="Yamaha Premium Keys"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">Yamaha Premium Keys</h4>
+              <a href="yamahakeys.html" class="prod-title">Yamaha Premium Keys</a>
               <p class="prod-desc">Librería Kontakt enfocada en pianos acústicos y eléctricos de gama alta.</p>
               <div class="mb-2">
                 <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
@@ -1076,10 +1080,10 @@
       <!-- 15. Montage & Nord MainStage -->
       <div class="col-12 col-lg-6">
         <div class="product-horizontal glass-effect">
-          <div class="prod-img-box"><img src="img/mainstage.png" alt="Montage & Nord"></div>
+          <a href="mainstage.html" class="prod-img-box"><img src="img/mainstage.png" alt="Montage & Nord"></a>
           <div class="prod-info">
             <div>
-              <h4 class="prod-title">Montage 8 & Nord Stage 3</h4>
+              <a href="mainstage.html" class="prod-title">Montage 8 & Nord Stage 3</a>
               <p class="prod-desc">Conciertos configurados y listos para usar en Apple MainStage.</p>
               <div class="mb-2">
                 <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
