@@ -45,7 +45,7 @@
     .recent-art { width:42px; height:42px; border-radius:9px; background:#0a1830; overflow:hidden; display:flex; justify-content:center; align-items:center; border:1px solid rgba(158,203,255,.15); }
     .recent-art img { width:100%; height:100%; object-fit:contain; padding:3px; }
     
-    .recent-item strong{font-size:.9rem}.recent-item a.download-btn-recent{margin-left:auto;border:0;background:transparent;color:var(--cyan);font-size:1.3rem; text-decoration:none; transition: .2s ease; cursor: pointer;} .recent-item a.download-btn-recent:hover { transform: translateY(-2px); text-shadow: 0 0 8px var(--cyan); }
+    .recent-item strong{font-size:.9rem}.recent-item button.download-btn-recent{margin-left:auto;border:0;background:transparent;color:var(--cyan);font-size:1.3rem; transition: .2s ease; cursor: pointer;} .recent-item button.download-btn-recent:hover { transform: translateY(-2px); text-shadow: 0 0 8px var(--cyan); }
     .support { padding:27px 28px; background:linear-gradient(145deg,rgba(17,33,54,.92),rgba(7,20,32,.88)); } .support-icon { width:62px;height:62px;display:grid;place-items:center;border:1px solid var(--cyan);border-radius:50%;font-size:1.75rem;color:var(--cyan);margin-bottom:17px; } .support h2{margin:0 0 8px;font-size:1.35rem;letter-spacing:-.045em}.support p{color:#c0ccda;line-height:1.55;font-size:.9rem;margin:0 0 22px}.support button{width:100%;border:0;border-radius:10px;padding:14px;background:linear-gradient(100deg,#0bd8f4,#1cbeeb);color:#03111a;font-weight:800}.support button i{margin-right:8px}
     .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
@@ -137,7 +137,10 @@
   
   <div class="toast" role="status">La descarga comenzará en breve.</div>
 
-  <!-- LÓGICA DE FIREBASE Y ENLACES DIRECTOS DE GOOGLE DRIVE -->
+  <!-- IFRAME OCULTO PARA FORZAR DESCARGA INTERNA SIN ABRIR PESTAÑAS -->
+  <iframe id="download-frame" style="display:none;"></iframe>
+
+  <!-- LÓGICA DE FIREBASE Y DESCARGA INTERNA -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -157,7 +160,7 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // MAPA CON TODOS LOS ENLACES CONVERTIDOS ESTRICTAMENTE A DESCARGA DIRECTA
+    // MAPA DE ENLACES DE DESCARGA DIRECTA DE GOOGLE DRIVE
     const downloadLinksMap = {
       "AutoCAD 2026": "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase",
       "Microsoft Office 2024": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
@@ -231,7 +234,6 @@
                 let imgProd = producto.img || "autocad"; 
                 let typeProd = producto.type || 'Instalador digital';
                 
-                // Forzar el uso del link directo mapeado o el que venga en base de datos
                 let directLink = producto.downloadUrl || downloadLinksMap[nombreProd] || "https://drive.google.com";
                 
                 if(typeof producto === 'string') {
@@ -251,9 +253,9 @@
                       <p>${typeProd}</p>
                       <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso vitalicio</span>
                     </div>
-                    <a href="${directLink}" target="_blank" class="download-btn" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
+                    <button class="download-btn" data-url="${directLink}" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
                       <i class="bi bi-download"></i>
-                    </a>
+                    </button>
                   </div>
                 `;
                 downloadsContainer.insertAdjacentHTML('beforeend', rowHTML);
@@ -263,9 +265,9 @@
                     <div class="recent-item">
                       <div class="recent-art"><img src="img/${imgProd}.png" alt="${nombreProd}"></div>
                       <strong>${nombreProd}</strong>
-                      <a href="${directLink}" target="_blank" class="download-btn-recent" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
+                      <button class="download-btn-recent" data-url="${directLink}" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
                         <i class="bi bi-download"></i>
-                      </a>
+                      </button>
                     </div>
                   `;
                   recentContainer.insertAdjacentHTML('beforeend', recentHTML);
@@ -279,11 +281,21 @@
           document.getElementById('stat-pedidos').textContent = pedidosRealizados;
 
           const toast = document.querySelector('.toast');
+          const downloadFrame = document.getElementById('download-frame');
+
+          // DISPARAR DESCARGA INTERNA SIN SALIR DE LA PÁGINA
           document.querySelectorAll('.download-btn, .download-btn-recent').forEach(button => {
-            button.addEventListener('click', () => {
-              toast.textContent = `Preparando la descarga de ${button.dataset.product}...`;
+            button.addEventListener('click', (e) => {
+              e.preventDefault();
+              const url = button.getAttribute('data-url');
+              const productName = button.getAttribute('data-product');
+
+              toast.textContent = `Iniciando descarga de ${productName}...`;
               toast.classList.add('show');
-              setTimeout(() => toast.classList.remove('show'), 2800);
+              setTimeout(() => toast.classList.remove('show'), 3000);
+
+              // Cargar el link en el iframe oculto para forzar la bajada local
+              downloadFrame.src = url;
             });
           });
 
