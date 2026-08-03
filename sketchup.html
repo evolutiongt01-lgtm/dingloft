@@ -1008,7 +1008,7 @@
     async function loadComments() {
       const container = document.getElementById('comments-container');
       try {
-        const commentsRef = collection(db, "product_comments_sk26");
+        const commentsRef = collection(db, "sketchup_comments_final"); // <--- CARPETA NUEVA LIMPIA
         const q = query(commentsRef, orderBy("createdAt", "desc"));
         let snapshot;
         
@@ -1019,25 +1019,17 @@
             return;
         }
 
-        if (snapshot.empty) {
-          try {
-            for (let com of initialDefaultComments) {
-              await addDoc(commentsRef, { ...com, createdAt: serverTimestamp() });
-            }
-            snapshot = await getDocs(q);
-          } catch(writeErr) {
-            renderCommentsUI(initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c })));
-            return;
-          }
-        }
+        let dbComments = [];
+        snapshot.forEach(docSnap => dbComments.push({ id: docSnap.id, ...docSnap.data() }));
 
-        let commentsData = [];
-        snapshot.forEach(docSnap => commentsData.push({ id: docSnap.id, ...docSnap.data() }));
-        renderCommentsUI(commentsData);
+        // Unimos los comentarios de la BD con los locales sin guardarlos a la mala
+        const allComments = [...dbComments, ...initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c }))];
+
+        renderCommentsUI(allComments);
 
       } catch (err) {
         console.error("Error crítico cargando comentarios:", err);
-        container.innerHTML = '<div class="text-center text-white py-3">Error al cargar opiniones. Revisa tu conexión.</div>';
+        renderCommentsUI(initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c })));
       }
     }
 
@@ -1135,7 +1127,7 @@
       submitBtn.textContent = "Publicando...";
 
       try {
-        await addDoc(collection(db, "product_comments_sk26"), {
+        await addDoc(collection(db, "sketchup_comments_final"), {
           name: name,
           rating: rating,
           text: text,
@@ -1188,7 +1180,7 @@
       }
 
       try {
-        const commentRef = doc(db, "product_comments_sk26", docId);
+        const commentRef = doc(db, "sketchup_comments_final", docId);
         if (isLiking) {
           await updateDoc(commentRef, {
              likes: increment(1),
@@ -1498,6 +1490,19 @@
           }, 800);
         });
       });
+      
+      const freeTrialBtn = document.getElementById('btn-free-trial');
+      if (freeTrialBtn) {
+        freeTrialBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          const url = this.getAttribute('data-url');
+          if (url.startsWith('#')) {
+            window.location.hash = url;
+            return;
+          }
+        });
+      }
     });
   </script>
 </body>
