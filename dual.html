@@ -50,24 +50,30 @@
       transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       z-index: 1;
     }
-    .page-wrapper.menu-pushed, .navbar-glass.menu-pushed {
-      transform: translateX(280px);
-    }
 
-    /* MENÚ LATERAL OCULTO */
+    /* MENÚ LATERAL OCULTO A LA IZQUIERDA */
     .side-menu-drawer {
       position: fixed;
       top: 0;
-      left: -280px;
+      left: -280px; /* Escondido fuera de la pantalla */
       width: 280px;
       height: 100vh;
       background: linear-gradient(145deg, rgba(10, 14, 20, 0.98), rgba(5, 7, 10, 1));
       border-right: 1px solid var(--border-color);
-      z-index: 0; /* Queda por debajo, pero al empujar la pagina se revela */
+      z-index: 1040;
       padding: 25px 20px;
       display: flex;
       flex-direction: column;
+      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
+
+    /* LA MAGIA DEL PUSH: TODO SE MUEVE AL MISMO TIEMPO */
+    .side-menu-drawer.active, 
+    .page-wrapper.menu-pushed, 
+    .navbar-glass.menu-pushed {
+      transform: translateX(280px);
+    }
+
     .side-menu-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1035;
       opacity: 0; visibility: hidden; transition: opacity 0.4s; cursor: pointer;
@@ -114,7 +120,7 @@
     /* ====== ANIMACIONES DE ORBES ====== */
     @keyframes orbFloat1 { 0% { transform: translate(0px, 0px) scale(1); background: #00e5ff; } 50% { transform: translate(150px, 200px) scale(1.2); background: #a200ff; } 100% { transform: translate(0px, 0px) scale(1); background: #00e5ff; } }
     @keyframes orbFloat2 { 0% { transform: translate(0px, 0px) scale(1); background: #a200ff; } 50% { transform: translate(-200px, -150px) scale(1.3); background: #00ff88; } 100% { transform: translate(0px, 0px) scale(1); background: #a200ff; } }
-    .bg-orb { position: fixed; border-radius: 50%; filter: blur(140px); z-index: -1; opacity: 0.35; pointer-events: none; }
+    .bg-orb { position: absolute; border-radius: 50%; filter: blur(140px); z-index: -1; opacity: 0.35; pointer-events: none; }
     .orb-1 { width: 450px; height: 450px; top: -100px; left: -100px; animation: orbFloat1 18s infinite alternate ease-in-out; }
     .orb-2 { width: 550px; height: 550px; bottom: -150px; right: -150px; animation: orbFloat2 22s infinite alternate ease-in-out; }
 
@@ -123,7 +129,8 @@
     /* ====== NAVBAR Y BOTONES LIQUID ====== */
     .navbar-glass {
       background: rgba(5, 7, 10, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border-color); padding: 12px 0; z-index: 1040; transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      border-bottom: 1px solid var(--border-color); padding: 12px 0; z-index: 1040; 
+      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     
     .btn-liquid-glass {
@@ -287,6 +294,20 @@
     <div class="bg-orb orb-2"></div>
     <div class="bg-orb orb-3"></div>
 
+    <!-- MODAL DE ÉXITO -->
+    <div class="success-modal-overlay" id="success-modal">
+      <div class="success-modal-box">
+        <img src="img/dingloft.png" alt="Dingloft" style="width: 110px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
+        <div class="success-icon-ring"><i class="bi bi-check-lg"></i></div>
+        <h3 style="color:#fff; font-weight:800; margin-bottom:10px; font-size: 1.4rem;">¡Compra Exitosa!</h3>
+        <p id="success-modal-text" style="color:#9ba9bd; margin-bottom:25px; font-size: 0.95rem;">Tu pedido se ha procesado correctamente.</p>
+        <button class="btn-cyan w-100 py-2" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
+      </div>
+    </div>
+
+    <!-- TOAST FLOTANTE -->
+    <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
+
     <!-- Navbar FIJA pero que también se empuja -->
     <nav class="navbar navbar-expand-lg navbar-glass fixed-top" id="main-navbar">
       <div class="container d-flex justify-content-between align-items-center">
@@ -393,7 +414,6 @@
               </div>
             </div>
 
-            <!-- PRECIO CON DESCUENTO Y EFECTO DE OFERTA -->
             <div class="mb-3 d-flex align-items-end gap-3">
               <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--accent-color) !important; line-height: 1;">$60.00</span>
               <div class="d-flex flex-column pb-1">
@@ -637,7 +657,7 @@
             <div id="comment-section-wrapper" class="mb-4"></div>
 
             <div id="comments-container">
-              <div class="text-center text-muted py-3 small">Cargando opiniones de la comunidad...</div>
+              <div class="text-center text-white py-3 small">Cargando opiniones de la comunidad...</div>
             </div>
 
           </div>
@@ -670,7 +690,7 @@
       <div id="live-search-results">
         <p class="text-center" style="color: rgba(255,255,255,0.7); font-size: 0.9rem;" id="search-empty-state">Escribe el nombre del producto para buscar...</p>
         
-        <!-- Elementos ocultos por defecto, se muestran con JS -->
+        <!-- Pianos Legendarios Bundle -->
         <a href="#" class="search-result-item" data-title="pianos legendarios sf2 bundle completo" style="display: none;">
           <img src="img/pianos_bundle_boxes.png" alt="Bundle">
           <div>
@@ -679,7 +699,8 @@
           </div>
         </a>
         
-        <a href="nordessentials.html" class="search-result-item" data-title="nord essentials sf2" style="display: none;">
+        <!-- Nord Essentials -->
+        <a href="nordessentials.html" class="search-result-item" data-title="nord essentials sf2 pianos" style="display: none;">
           <img src="img/nordessentials.png" alt="Nord">
           <div>
             <h6 class="mb-0 text-white fw-bold">Nord Essentials SF2</h6>
@@ -687,11 +708,39 @@
           </div>
         </a>
         
-        <a href="yamahakeys.html" class="search-result-item" data-title="yamaha legacy collection sf2" style="display: none;">
+        <!-- Yamaha Legacy -->
+        <a href="yamahakeys.html" class="search-result-item" data-title="yamaha legacy collection sf2 motif montage" style="display: none;">
           <img src="img/yamahakeys.png" alt="Yamaha">
           <div>
             <h6 class="mb-0 text-white fw-bold">Yamaha Legacy SF2</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$33.00</span>
+          </div>
+        </a>
+
+        <!-- Cosmos Collection -->
+        <a href="cosmos.html" class="search-result-item" data-title="cosmos collection pads texturas" style="display: none;">
+          <img src="img/cosmos.png" alt="Cosmos">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">Cosmos Collection</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$70.00</span>
+          </div>
+        </a>
+
+        <!-- Yamaha Premium Keys -->
+        <a href="yamahakeys.html" class="search-result-item" data-title="yamaha premium keys pianos acusticos" style="display: none;">
+          <img src="img/yamahakeys.png" alt="Yamaha Keys">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">Yamaha Premium Keys</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
+          </div>
+        </a>
+
+        <!-- Rhodes Affair 2 -->
+        <a href="rhodes.html" class="search-result-item" data-title="rhodes affair 2 piano electrico" style="display: none;">
+          <img src="img/rhodes.png" alt="Rhodes">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">Rhodes Affair 2</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
           </div>
         </a>
       </div>
@@ -757,10 +806,10 @@
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- ====== LOGICA DEL MENÚ PUSH Y BUSCADOR ====== -->
+  <!-- ====== LÓGICA DEL MENÚ PUSH Y BUSCADOR ====== -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Sidebar Push Logic
+      // 1. Lógica del Menú Push
       const btnOpenSidebar = document.getElementById('btn-open-sidebar');
       const sideMenu = document.getElementById('side-menu');
       const sideMenuOverlay = document.getElementById('side-menu-overlay');
@@ -778,7 +827,7 @@
       if(btnOpenSidebar) btnOpenSidebar.addEventListener('click', toggleSidebar);
       if(sideMenuOverlay) sideMenuOverlay.addEventListener('click', toggleSidebar);
 
-      // 2. Fullscreen Search Logic
+      // 2. Lógica del Buscador
       const searchOverlayFullscreen = document.getElementById('search-overlay-fullscreen');
       const btnOpenSearchMobile = document.getElementById('btn-open-search-mobile');
       const btnOpenSearchDesktop = document.getElementById('btn-open-search-desktop');
@@ -805,7 +854,6 @@
       if(btnOpenSearchDesktop) btnOpenSearchDesktop.addEventListener('click', openSearch);
       if(btnCloseSearch) btnCloseSearch.addEventListener('click', closeSearch);
 
-      // Lógica de filtrado en vivo
       liveSearchInput.addEventListener('input', function() {
         const query = this.value.toLowerCase().trim();
         let found = false;
@@ -1229,7 +1277,7 @@
         if(e) e.preventDefault(); 
         cartDrawer.classList.add('active'); 
         cartOverlay.classList.add('active');
-        document.body.classList.add('cart-open');
+        document.body.classList.add('no-scroll');
         updateCartUI();
       };
 
@@ -1237,7 +1285,7 @@
         if(e) e.preventDefault(); 
         cartDrawer.classList.remove('active'); 
         cartOverlay.classList.remove('active'); 
-        document.body.classList.remove('cart-open');
+        document.body.classList.remove('no-scroll');
       };
 
       cartBtns.forEach(btn => { if(btn) btn.addEventListener('click', openCart); });
