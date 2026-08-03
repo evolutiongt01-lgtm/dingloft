@@ -133,26 +133,24 @@
       transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       will-change: transform;
     }
-    
-    .btn-liquid-glass {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.05); color: #fff !important;
-      border-radius: 50px; padding: 6px 16px; display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
-      font-size: 0.85rem; text-decoration: none; transition: all 0.3s ease;
-    }
-    .btn-liquid-glass:hover { background: rgba(255, 255, 255, 0.15); border-color: var(--accent-color); box-shadow: 0 8px 25px rgba(0, 229, 255, 0.35); transform: translateY(-2px); }
 
+    /* Iconos y avatares redondos estilo Liquid Glass (Universal para PC y Móvil) */
     .mobile-liquid-btn, .mobile-nav-avatar {
-      width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.02));
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 2px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 0 10px rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center;
-      transition: all 0.3s ease; text-decoration: none; color: #fff; padding: 2px; cursor: pointer; border-style: none;
+      width: 40px; height: 40px; border-radius: 50%; 
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02));
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3), inset 0 0 10px rgba(255, 255, 255, 0.1); 
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease; text-decoration: none; color: #fff; padding: 0; cursor: pointer; flex-shrink: 0;
     }
-    .mobile-liquid-btn i { font-size: 1.3rem; }
+    .mobile-liquid-btn i { font-size: 1.15rem; margin: 0; padding: 0; line-height: 1; }
     .mobile-liquid-btn:hover, .mobile-nav-avatar:hover { transform: scale(1.05); border-color: var(--accent-color); color: var(--accent-color); box-shadow: 0 4px 20px rgba(0, 229, 255, 0.4); }
     .mobile-nav-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
-    .mobile-nav-avatar .avatar-fallback { background: var(--accent-color); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; width: 100%; height: 100%; border-radius: 50%; margin: 0; }
+    .mobile-nav-avatar .avatar-fallback { background: var(--accent-color); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; width: 100%; height: 100%; border-radius: 50%; margin: 0; }
+
+    .nav-link { color: var(--text-main) !important; font-size: 0.95rem; font-weight: 500; margin: 0 10px; transition: color 0.3s; }
+    .nav-link:hover { color: var(--accent-color) !important; }
 
     .btn-cyan { background: var(--accent-color); color: #000; font-weight: 600; border: none; border-radius: 8px; padding: 10px 24px; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(0, 229, 255, 0.3); }
     .btn-cyan:hover { background: var(--accent-hover); color: #000; transform: translateY(-2px); box-shadow: 0 5px 25px rgba(0, 229, 255, 0.5); }
@@ -207,8 +205,8 @@
     .btn-like:hover { background: rgba(255, 0, 85, 0.1); color: #ff0055; border-color: rgba(255, 0, 85, 0.3); }
     .btn-like.liked { background: rgba(255, 0, 85, 0.15); color: #ff0055; border-color: #ff0055; }
 
-    /* ====== CARRITO LATERAL ====== */
-    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    /* ====== CARRITO LATERAL (AHORA CON EFECTO LIQUID GLASS) ====== */
+    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
     .cart-overlay.active { opacity: 1; visibility: visible; }
     .cart-brand-watermark { position: fixed; top: 50%; left: 30%; transform: translate(-50%, -50%) scale(0.9); text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none; }
     .cart-overlay.active ~ .cart-brand-watermark { opacity: 0.85; visibility: visible; transform: translate(-50%, -50%) scale(1); }
@@ -217,26 +215,33 @@
     @keyframes lightGlow { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } 100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; } }
     .animated-watermark-logo { width: 240px; max-width: 80vw; animation: logoPulse 4s infinite ease-in-out; position: relative; }
 
-    .cart-drawer { position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh; background: rgba(10, 14, 20, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-left: 1px solid var(--border-color); box-shadow: -15px 0 40px rgba(0, 0, 0, 0.9); z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; }
+    /* EL PANEL DEL CARRITO - EFECTO CRISTAL LÍQUIDO */
+    .cart-drawer { 
+      position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh; 
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.5)); 
+      backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); 
+      border-left: 1px solid rgba(255, 255, 255, 0.2); box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8), inset 2px 0 15px rgba(255, 255, 255, 0.05); 
+      z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; 
+    }
     .cart-drawer.active { right: 0; }
-    .cart-header { padding: 20px 25px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    .cart-header { padding: 20px 25px; border-bottom: 1px solid rgba(255, 255, 255, 0.15); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
     .btn-close-cart { background: transparent; border: none; color: #ffffff; font-size: 1.3rem; line-height: 1; transition: color 0.3s; cursor: pointer; }
     .btn-close-cart:hover { color: var(--accent-color); }
     .cart-items-container { flex: 1; overflow-y: auto; padding: 20px 25px; -webkit-overflow-scrolling: touch; }
-    .cart-item { display: flex; gap: 15px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; }
-    .cart-item-img { width: 60px; height: 80px; background: rgba(0,0,0,0.3); border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; padding: 5px; }
+    .cart-item { display: flex; gap: 15px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); position: relative; }
+    .cart-item-img { width: 60px; height: 80px; background: rgba(0,0,0,0.3); border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; padding: 5px; }
     .cart-item-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
     .cart-item-info { flex: 1; }
     .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; color: #ffffff; }
     .cart-item-desc { font-size: 0.75rem; color: #ffffff; opacity: 0.85; margin-bottom: 10px; }
-    .qty-controls { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; background: rgba(0,0,0,0.2); }
+    .qty-controls { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; background: rgba(0,0,0,0.3); }
     .qty-btn { background: transparent; border: none; color: #fff; padding: 2px 10px; font-size: 0.9rem; cursor: pointer; }
     .qty-btn:hover { background: rgba(255,255,255,0.1); }
     .qty-value { padding: 0 10px; font-size: 0.85rem; font-weight: 600; color: #ffffff; }
     .cart-item-remove { position: absolute; top: 0; right: 0; background: transparent; border: none; color: #ffffff; font-size: 1rem; cursor: pointer; }
     .cart-item-remove:hover { color: #ff4444; }
 
-    .cart-footer { padding: 20px 25px; background: rgba(0, 0, 0, 0.8); border-top: 1px solid var(--border-color); flex-shrink: 0; max-height: 55vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .cart-footer { padding: 20px 25px; background: rgba(0, 0, 0, 0.3); border-top: 1px solid rgba(255, 255, 255, 0.15); flex-shrink: 0; max-height: 55vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .cart-empty-msg { text-align: center; color: #ffffff; margin-top: 50px; }
     .coupon-box { display: flex; gap: 8px; margin-bottom: 15px; }
     .coupon-input { flex: 1; background: rgba(4, 9, 18, 0.7); border: 1px solid rgba(153, 185, 216, 0.25); border-radius: 8px; color: #fff; padding: 8px 12px; font-size: 0.85rem; text-transform: uppercase; }
@@ -258,9 +263,6 @@
     .success-icon-ring { width: 70px; height: 70px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: #00ff88; font-size: 1.8rem; }
     .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(50,221,145,.5); border-radius: 12px; color: #eafff3; background: #0c251d; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
     .toast.show { transform: translateY(0); }
-
-    @media (max-width: 991px) { .cart-brand-watermark { display: none; } }
-    @media (max-width: 500px) { .cart-drawer { width: 100%; } }
   </style>
 </head>
 <body>
@@ -308,64 +310,48 @@
     <!-- TOAST FLOTANTE -->
     <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
-    <!-- Navbar FIJA perfectamente centrada -->
+    <!-- ====== NAVBAR PRINCIPAL CENTRADA ====== -->
     <nav class="navbar navbar-glass fixed-top" id="main-navbar">
-      <div class="container d-flex justify-content-between align-items-center position-relative">
+      <div class="container d-flex align-items-center position-relative">
         
-        <!-- MÓVIL IZQUIERDA: HAMBURGUESA PUSH -->
-        <div class="d-flex align-items-center gap-2 d-lg-none" style="z-index: 2;">
-          <button class="mobile-liquid-btn" id="btn-open-sidebar" title="Menú">
+        <!-- IZQUIERDA (FLEX 1) -->
+        <div class="d-flex align-items-center" style="flex: 1; gap: 15px; z-index: 2;">
+          <button class="mobile-liquid-btn d-lg-none" id="btn-open-sidebar" title="Menú">
             <i class="bi bi-list"></i>
+          </button>
+          <!-- Enlaces PC -->
+          <div class="d-none d-lg-flex gap-3">
+            <a class="nav-link" href="index.html">Inicio</a>
+            <a class="nav-link" href="index.html">Catálogo</a>
+          </div>
+        </div>
+
+        <!-- CENTRO (LOGO ABSOLUTO PARA ESTAR PERFECTO) -->
+        <div class="d-flex justify-content-center" style="z-index: 1;">
+          <a class="navbar-brand position-absolute top-50 start-50 translate-middle m-0 p-0 d-flex align-items-center" href="index.html">
+            <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
+          </a>
+        </div>
+        
+        <!-- DERECHA (FLEX 1) -->
+        <div class="d-flex align-items-center justify-content-end gap-2 gap-md-3" style="flex: 1; z-index: 2;">
+          <button class="mobile-liquid-btn" id="btn-open-search-global" title="Buscar">
+            <i class="bi bi-search"></i>
+          </button>
+          
+          <div id="auth-container-global">
+            <!-- El JS inyecta el Avatar Liquid Glass aquí -->
+          </div>
+
+          <!-- BOTÓN CARRITO LIQUID GLASS (UNIVERSAL PARA PC Y MÓVIL) -->
+          <button class="mobile-liquid-btn position-relative cart-btn-global" title="Carrito">
+            <i class="bi bi-cart3"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-dark" id="cart-count-badge" style="font-size: 0.65rem; padding: 0.35em 0.5em; background-color: var(--accent-color); border: 2px solid var(--bg-color);">0</span>
           </button>
         </div>
 
-        <!-- MENÚ PC IZQUIERDA -->
-        <div class="collapse navbar-collapse d-none d-lg-flex" style="flex: 1;">
-          <ul class="navbar-nav align-items-center">
-            <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link" href="index.html">Catálogo</a></li>
-          </ul>
-        </div>
-        
-        <!-- LOGO PERFECTAMENTE CENTRADO -->
-        <a class="navbar-brand position-absolute top-50 start-50 translate-middle" href="index.html" style="z-index: 10;">
-          <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
-        </a>
-        
-        <!-- DERECHA (MÓVIL Y PC) -->
-        <div class="d-flex align-items-center gap-2 justify-content-end" style="flex: 1; z-index: 2;">
-          
-          <!-- DERECHA MÓVIL: LUPA Y PERFIL -->
-          <div class="d-flex align-items-center gap-2 d-lg-none">
-            <button class="mobile-liquid-btn" id="btn-open-search-mobile" title="Buscar">
-              <i class="bi bi-search"></i>
-            </button>
-            <div id="mobile-auth-container">
-              <!-- El avatar liquid glass se inyecta por JS aquí -->
-            </div>
-          </div>
-
-          <!-- DERECHA PC -->
-          <div class="d-none d-lg-flex align-items-center gap-3">
-            <button class="btn-liquid-glass px-3" id="btn-open-search-desktop">
-              <i class="bi bi-search"></i>
-            </button>
-            <div id="desktop-auth-container">
-              <!-- Se inyecta por JS -->
-            </div>
-            <button id="main-cart-btn" class="btn-outline-custom" style="padding: 6px 15px; font-size: 0.9rem;">
-              <i class="bi bi-cart3"></i> CARRITO (<span id="cart-count">0</span>)
-            </button>
-          </div>
-
-        </div>
       </div>
     </nav>
-
-    <!-- Botón Carrito Flotante para Móvil -->
-    <button class="btn-cyan mobile-cart-btn d-lg-none" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; border-radius: 50px; padding: 12px 20px; box-shadow: 0 10px 25px rgba(0,229,255,0.4);">
-      <i class="bi bi-cart3 fs-5"></i> <span class="mobile-cart-count ms-1">0</span>
-    </button>
 
     <!-- SECCIÓN SUPERIOR: CAJAS 3D Y DETALLES -->
     <section class="product-detail-section">
@@ -499,7 +485,6 @@
           </div>
         </div>
 
-        <!-- NOTA DEL CREADOR RESTAURADA -->
         <div class="row justify-content-center mb-4">
           <div class="col-lg-10">
             <div class="creator-note-box">
@@ -697,42 +682,42 @@
         
         <!-- RESULTADOS MUSICALES -->
         <a href="#" class="search-result-item" data-title="pianos legendarios sf2 bundle completo" style="display: none;">
-          <img src="img/pianos_bundle_boxes.png" alt="Bundle">
+          <img src="img/pianos_bundle_boxes.png" alt="Bundle" onerror="this.src='https://ui-avatars.com/api/?name=Pi&background=00e5ff&color=000'">
           <div>
             <h6 class="mb-0 text-white fw-bold">Pianos Legendarios Bundle</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$60.00</span>
           </div>
         </a>
         <a href="nordessentials.html" class="search-result-item" data-title="nord essentials sf2 pianos" style="display: none;">
-          <img src="img/nordessentials.png" alt="Nord">
+          <img src="img/nordessentials.png" alt="Nord" onerror="this.src='https://ui-avatars.com/api/?name=No&background=00e5ff&color=000'">
           <div>
             <h6 class="mb-0 text-white fw-bold">Nord Essentials SF2</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$33.00</span>
           </div>
         </a>
         <a href="yamahakeys.html" class="search-result-item" data-title="yamaha legacy collection sf2 motif montage" style="display: none;">
-          <img src="img/yamahakeys.png" alt="Yamaha">
+          <img src="img/yamahakeys.png" alt="Yamaha" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
           <div>
             <h6 class="mb-0 text-white fw-bold">Yamaha Legacy SF2</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$33.00</span>
           </div>
         </a>
         <a href="cosmos.html" class="search-result-item" data-title="cosmos collection pads texturas" style="display: none;">
-          <img src="img/cosmos.png" alt="Cosmos">
+          <img src="img/cosmos.png" alt="Cosmos" onerror="this.src='https://ui-avatars.com/api/?name=Co&background=00e5ff&color=000'">
           <div>
             <h6 class="mb-0 text-white fw-bold">Cosmos Collection</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$70.00</span>
           </div>
         </a>
         <a href="yamahakeys.html" class="search-result-item" data-title="yamaha premium keys pianos acusticos" style="display: none;">
-          <img src="img/yamahakeys.png" alt="Yamaha Keys">
+          <img src="img/yamahakeys.png" alt="Yamaha Keys" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
           <div>
             <h6 class="mb-0 text-white fw-bold">Yamaha Premium Keys</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
           </div>
         </a>
         <a href="rhodes.html" class="search-result-item" data-title="rhodes affair 2 piano electrico" style="display: none;">
-          <img src="img/rhodes.png" alt="Rhodes">
+          <img src="img/rhodes.png" alt="Rhodes" onerror="this.src='https://ui-avatars.com/api/?name=Rh&background=00e5ff&color=000'">
           <div>
             <h6 class="mb-0 text-white fw-bold">Rhodes Affair 2</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
@@ -741,7 +726,6 @@
 
         <!-- RESULTADOS SOFTWARE ARQUITECTURA / INGENIERÍA -->
         <a href="sketchup.html" class="search-result-item" data-title="sketchup pro 3d arquitectura diseño" style="display: none;">
-          <!-- Si no tienes img/sketchup.png, usará este ícono por defecto -->
           <img src="img/sketchup.png" alt="SketchUp" onerror="this.src='https://ui-avatars.com/api/?name=Sk&background=00e5ff&color=000'">
           <div>
             <h6 class="mb-0 text-white fw-bold">SketchUp Pro 2026</h6>
@@ -822,10 +806,6 @@
       <button id="free-checkout-btn" class="btn-free-checkout mb-3" style="display: none;">
         Obtener gratis <i class="bi bi-download ms-1"></i>
       </button>
-
-      <div class="text-center" id="continue-shopping-box" style="display: none;">
-        <a href="#" class="text-accent text-decoration-none" id="continue-shopping">Seguir comprando</a>
-      </div>
     </div>
   </div>
 
@@ -855,7 +835,7 @@
 
       // 2. Lógica del Buscador
       const searchOverlayFullscreen = document.getElementById('search-overlay-fullscreen');
-      const btnOpenSearchMobile = document.getElementById('btn-open-search-mobile');
+      const btnOpenSearchGlobal = document.getElementById('btn-open-search-global');
       const btnOpenSearchDesktop = document.getElementById('btn-open-search-desktop');
       const btnCloseSearch = document.getElementById('btn-close-search');
       const liveSearchInput = document.getElementById('live-search-input');
@@ -876,7 +856,7 @@
         searchEmptyState.textContent = 'Escribe el nombre del producto para buscar...';
       }
 
-      if(btnOpenSearchMobile) btnOpenSearchMobile.addEventListener('click', openSearch);
+      if(btnOpenSearchGlobal) btnOpenSearchGlobal.addEventListener('click', openSearch);
       if(btnOpenSearchDesktop) btnOpenSearchDesktop.addEventListener('click', openSearch);
       if(btnCloseSearch) btnCloseSearch.addEventListener('click', closeSearch);
 
@@ -1018,7 +998,7 @@
       currentUser = user;
       window.globalCurrentUser = user; 
       const desktopAuthContainer = document.getElementById('desktop-auth-container');
-      const mobileAuthContainer = document.getElementById('mobile-auth-container');
+      const authContainerGlobal = document.getElementById('auth-container-global');
       const commentWrapper = document.getElementById('comment-section-wrapper');
 
       if (user) {
@@ -1038,12 +1018,12 @@
           `;
         }
 
-        if (mobileAuthContainer) {
+        if (authContainerGlobal) {
           let mobileContent = user.photoURL 
             ? `<img src="${user.photoURL}" alt="Perfil">`
             : `<div class="avatar-fallback">${displayName.charAt(0).toUpperCase()}</div>`;
             
-          mobileAuthContainer.innerHTML = `
+          authContainerGlobal.innerHTML = `
             <a href="account.html" class="mobile-nav-avatar" title="Ir a Mi Cuenta">
               ${mobileContent}
             </a>
@@ -1085,8 +1065,8 @@
             </a>
           `;
         }
-        if (mobileAuthContainer) {
-          mobileAuthContainer.innerHTML = `
+        if (authContainerGlobal) {
+          authContainerGlobal.innerHTML = `
             <a href="login.html" class="mobile-liquid-btn" title="Iniciar Sesión">
               <i class="bi bi-person-fill"></i>
             </a>
@@ -1273,13 +1253,13 @@
       let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
       let couponApplied = false;
 
-      const cartBtns = [document.getElementById('main-cart-btn'), document.querySelector('.mobile-cart-btn')];
+      const cartBtns = document.querySelectorAll('.cart-btn-global, #main-cart-btn');
       const cartDrawer = document.getElementById('cart-drawer');
       const cartOverlay = document.getElementById('cart-overlay');
       const closeCartBtn = document.getElementById('close-cart-btn');
-      const continueShoppingBtn = document.getElementById('continue-shopping');
       
-      const cartCountBadges = [document.getElementById('cart-count'), document.querySelector('.mobile-cart-count')];
+      const cartCountBadge = document.getElementById('cart-count-badge');
+      const cartCountDesktop = document.getElementById('cart-count');
       const cartItemCountText = document.getElementById('cart-item-count-text');
       const cartItemsContainer = document.getElementById('cart-items-container');
       const emptyCartMsg = document.getElementById('empty-cart-msg');
@@ -1291,7 +1271,6 @@
       const couponSection = document.getElementById('coupon-section');
       const subtotalRow = document.getElementById('subtotal-row');
       const totalRow = document.getElementById('total-row');
-      const continueShoppingBox = document.getElementById('continue-shopping-box');
 
       const couponInput = document.getElementById('coupon-input');
       const applyCouponBtn = document.getElementById('apply-coupon-btn');
@@ -1317,7 +1296,6 @@
       cartBtns.forEach(btn => { if(btn) btn.addEventListener('click', openCart); });
       if(closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
       if(cartOverlay) cartOverlay.addEventListener('click', closeCart);
-      if(continueShoppingBtn) continueShoppingBtn.addEventListener('click', closeCart);
 
       const updateCartUI = () => {
         cartItemsContainer.innerHTML = '';
@@ -1337,7 +1315,6 @@
           if(couponSection) couponSection.style.display = 'none';
           if(subtotalRow) subtotalRow.style.display = 'none';
           if(totalRow) totalRow.style.display = 'none';
-          if(continueShoppingBox) continueShoppingBox.style.display = 'none';
           couponApplied = false;
           if(couponMsg) couponMsg.style.display = 'none';
           if(couponInput) couponInput.value = '';
@@ -1346,7 +1323,6 @@
           if(couponSection) couponSection.style.display = 'flex';
           if(subtotalRow) subtotalRow.style.display = 'flex';
           if(totalRow) totalRow.style.display = 'flex';
-          if(continueShoppingBox) continueShoppingBox.style.display = 'block';
           
           cart.forEach((item, index) => {
             totalItems += item.qty;
@@ -1402,7 +1378,8 @@
           }
         }
 
-        cartCountBadges.forEach(badge => { if(badge) badge.textContent = totalItems; });
+        if(cartCountBadge) cartCountBadge.textContent = totalItems;
+        if(cartCountDesktop) cartCountDesktop.textContent = totalItems;
         if(cartItemCountText) cartItemCountText.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
         
         if(cartSubtotalText) cartSubtotalText.textContent = `$${totalPrice.toFixed(2)}`;
@@ -1470,14 +1447,6 @@
           }
           
           updateCartUI(); 
-          
-          cartBtns.forEach(btn => {
-            if(btn) {
-              btn.classList.remove('cart-bounce');
-              void btn.offsetWidth; 
-              btn.classList.add('cart-bounce');
-            }
-          });
           
           const originalHTML = this.innerHTML;
           const originalBg = this.style.background;
