@@ -39,8 +39,7 @@
       padding: 0;
     }
 
-    /* Evita que el body sea scrolleable globalmente */
-    body.no-scroll { overflow: hidden !important; height: 100vh; touch-action: none; }
+    body.no-scroll { overflow: hidden !important; height: 100vh; }
 
     /* ====== EFECTO PUSH MENU ULTRA FLUIDO ====== */
     .page-wrapper {
@@ -67,7 +66,6 @@
       flex-direction: column;
       transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       will-change: transform;
-      overscroll-behavior: none;
     }
 
     .side-menu-drawer.active, 
@@ -79,7 +77,6 @@
     .side-menu-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1035;
       opacity: 0; visibility: hidden; transition: opacity 0.4s; cursor: pointer;
-      touch-action: none;
     }
     .side-menu-overlay.active { opacity: 1; visibility: visible; }
 
@@ -160,10 +157,10 @@
     .mobile-nav-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
     .mobile-nav-avatar .avatar-fallback { background: var(--accent-color); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; width: 100%; height: 100%; border-radius: 50%; margin: 0; }
 
-    /* ====== BOTÓN FLOTANTE DEL CARRITO (MÓVIL SOLAMENTE) ====== */
+    /* ====== BOTÓN FLOTANTE DEL CARRITO (UNIVERSAL) ====== */
     .btn-floating-cart {
       position: fixed;
-      bottom: 25px;
+      bottom: 30px;
       right: 25px;
       z-index: 1030;
       width: 60px;
@@ -195,6 +192,14 @@
       border-radius: 50%;
       padding: 2px 7px;
       border: 2px solid var(--bg-color);
+    }
+    
+    /* Para móviles, elevamos el botón flotante para evitar la barra inferior de Safari/Chrome */
+    @media (max-width: 768px) {
+      .btn-floating-cart {
+        bottom: 90px;
+        right: 20px;
+      }
     }
 
     .nav-link { color: var(--text-main) !important; font-size: 0.95rem; font-weight: 500; margin: 0 10px; transition: color 0.3s; }
@@ -271,15 +276,9 @@
     .btn-like:hover { background: rgba(255, 0, 85, 0.1); color: #ff0055; border-color: rgba(255, 0, 85, 0.3); }
     .btn-like.liked { background: rgba(255, 0, 85, 0.15); color: #ff0055; border-color: #ff0055; }
 
-    /* ====== CARRITO LATERAL (LIQUID GLASS) CON ANTI-SCROLL CHAINING ====== */
-    .cart-overlay { 
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-      background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); 
-      z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; 
-      touch-action: none; /* Bloquea arrastre en el fondo */
-    }
+    /* ====== CARRITO LATERAL (LIQUID GLASS) ====== */
+    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; touch-action: none; }
     .cart-overlay.active { opacity: 1; visibility: visible; }
-    
     .cart-brand-watermark { position: fixed; top: 50%; left: 30%; transform: translate(-50%, -50%) scale(0.9); text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none; }
     .cart-overlay.active ~ .cart-brand-watermark { opacity: 0.85; visibility: visible; transform: translate(-50%, -50%) scale(1); }
     .cart-brand-watermark::after { content: ''; position: absolute; top: 50%; left: 50%; width: 260px; height: 260px; background: radial-gradient(circle, rgba(0, 229, 255, 0.5) 0%, rgba(162, 0, 255, 0.3) 40%, transparent 70%); transform: translate(-50%, -50%); filter: blur(30px); z-index: -1; animation: lightGlow 3s infinite alternate ease-in-out; }
@@ -293,15 +292,13 @@
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.5)); 
       backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); 
       border-left: 1px solid rgba(255, 255, 255, 0.2); box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8), inset 2px 0 15px rgba(255, 255, 255, 0.05); 
-      z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; 
-      overscroll-behavior: none; /* Previene rebote en iOS */
+      z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; overscroll-behavior: none;
     }
     .cart-drawer.active { right: 0; }
     .cart-header { padding: 20px 25px; border-bottom: 1px solid rgba(255, 255, 255, 0.15); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
     .btn-close-cart { background: transparent; border: none; color: #ffffff; font-size: 1.3rem; line-height: 1; transition: color 0.3s; cursor: pointer; }
     .btn-close-cart:hover { color: var(--accent-color); }
     
-    /* ZONAS SCROLLEABLES CON BLOQUEO AL FONDO (Overscroll Contain) */
     .cart-items-container { flex: 1; overflow-y: auto; padding: 20px 25px; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
     .cart-footer { padding: 20px 25px; background: rgba(0, 0, 0, 0.3); border-top: 1px solid rgba(255, 255, 255, 0.15); flex-shrink: 0; max-height: 55vh; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
     
@@ -340,8 +337,6 @@
     .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(50,221,145,.5); border-radius: 12px; color: #eafff3; background: #0c251d; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
     .toast.show { transform: translateY(0); }
 
-    @media (max-width: 991px) { .cart-brand-watermark { display: none; } }
-    @media (max-width: 500px) { .cart-drawer { width: 100%; } }
   </style>
 </head>
 <body>
@@ -441,8 +436,8 @@
       </div>
     </nav>
 
-    <!-- ====== BOTÓN FLOTANTE UNIVERSAL DEL CARRITO EN MÓVIL ====== -->
-    <button class="btn-floating-cart cart-btn-global d-md-none" title="Ver Carrito">
+    <!-- ====== BOTÓN FLOTANTE UNIVERSAL DEL CARRITO EN PANTALLA (PC Y MÓVIL) ====== -->
+    <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
       <i class="bi bi-cart3 fs-4"></i>
       <span class="badge-floating cart-badge-count-global">0</span>
     </button>
@@ -670,7 +665,7 @@
           </div>
         </div>
 
-        <!-- SECCIÓN DE PRODUCTOS SIMILARES (LÓGICA CORREGIDA) -->
+        <!-- SECCIÓN DE PRODUCTOS SIMILARES (CORREGIDA) -->
         <div class="row justify-content-center my-4">
           <div class="col-lg-10">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -806,11 +801,25 @@
           </div>
         </a>
 
-        <!-- RESULTADOS SOFTWARE ARQUITECTURA / INGENIERÍA -->
-        <a href="sketchup.html" class="search-result-item" data-title="sketchup pro 3d arquitectura diseño" style="display: none;">
+        <!-- RESULTADOS SOFTWARE ARQUITECTURA / INGENIERÍA (CORREGIDO SIN REVIT) -->
+        <a href="sketchup.html" class="search-result-item" data-title="sketchup pro 2026 3d arquitectura diseño" style="display: none;">
           <img src="img/sketchup.png" alt="SketchUp" onerror="this.src='https://ui-avatars.com/api/?name=Sk&background=00e5ff&color=000'">
           <div>
             <h6 class="mb-0 text-white fw-bold">SketchUp Pro 2026</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">Ver detalles</span>
+          </div>
+        </a>
+        <a href="#" class="search-result-item" data-title="autocad 2026 arquitectura ingenieria" style="display: none;">
+          <img src="img/autocad.png" alt="AutoCAD" onerror="this.src='https://ui-avatars.com/api/?name=AC&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">AutoCAD 2026</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">Ver detalles</span>
+          </div>
+        </a>
+        <a href="#" class="search-result-item" data-title="sketchup autocad duo bundle arquitectura" style="display: none;">
+          <img src="img/sketchup.png" alt="Duo" onerror="this.src='https://ui-avatars.com/api/?name=Duo&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">Dúo SketchUp + AutoCAD</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">Ver detalles</span>
           </div>
         </a>
@@ -825,13 +834,6 @@
           <img src="img/esword.png" alt="e-Sword" onerror="this.src='https://ui-avatars.com/api/?name=eS&background=00e5ff&color=000'">
           <div>
             <h6 class="mb-0 text-white fw-bold">e-Sword Premium Mods</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">Ver detalles</span>
-          </div>
-        </a>
-        <a href="#" class="search-result-item" data-title="autocad revit bim arquitectura" style="display: none;">
-          <img src="img/autocad.png" alt="AutoCAD" onerror="this.src='https://ui-avatars.com/api/?name=AC&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">AutoCAD & Revit 2026</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">Ver detalles</span>
           </div>
         </a>
