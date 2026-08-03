@@ -157,7 +157,7 @@
     .mobile-nav-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
     .mobile-nav-avatar .avatar-fallback { background: var(--accent-color); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; width: 100%; height: 100%; border-radius: 50%; margin: 0; }
 
-    /* ====== BOTÓN FLOTANTE DEL CARRITO (UNIVERSAL EN PANTALLA) ====== */
+    /* ====== BOTÓN FLOTANTE DEL CARRITO (MÓVIL SOLAMENTE) ====== */
     .btn-floating-cart {
       position: fixed;
       bottom: 25px;
@@ -327,8 +327,6 @@
     .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(50,221,145,.5); border-radius: 12px; color: #eafff3; background: #0c251d; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
     .toast.show { transform: translateY(0); }
 
-    @media (max-width: 991px) { .cart-brand-watermark { display: none; } }
-    @media (max-width: 500px) { .cart-drawer { width: 100%; } }
   </style>
 </head>
 <body>
@@ -383,17 +381,17 @@
         <!-- IZQUIERDA (MÓVIL Y PC) -->
         <div class="d-flex align-items-center gap-2" style="flex: 1; z-index: 2;">
           <!-- Hamburguesa (Móvil) -->
-          <button class="mobile-liquid-btn d-lg-none" id="btn-open-sidebar" title="Menú">
+          <button class="mobile-liquid-btn d-md-none" id="btn-open-sidebar" title="Menú">
             <i class="bi bi-list"></i>
           </button>
           
           <!-- Lupa a la par del sándwich (Móvil) -->
-          <button class="mobile-liquid-btn d-lg-none" id="btn-open-search-mobile" title="Buscar">
+          <button class="mobile-liquid-btn d-md-none" id="btn-open-search-mobile" title="Buscar">
             <i class="bi bi-search"></i>
           </button>
 
           <!-- Enlaces PC -->
-          <div class="d-none d-lg-flex gap-3">
+          <div class="d-none d-md-flex gap-3">
             <a class="nav-link" href="index.html">Inicio</a>
             <a class="nav-link" href="index.html">Catálogo</a>
           </div>
@@ -410,7 +408,7 @@
         <div class="d-flex align-items-center justify-content-end gap-2 gap-md-3" style="flex: 1; z-index: 2;">
           
           <!-- Lupa PC -->
-          <button class="mobile-liquid-btn d-none d-lg-flex" id="btn-open-search-desktop" title="Buscar">
+          <button class="mobile-liquid-btn d-none d-md-flex" id="btn-open-search-desktop" title="Buscar">
             <i class="bi bi-search"></i>
           </button>
 
@@ -420,7 +418,7 @@
           </div>
 
           <!-- BOTÓN CARRITO TEXTO (Solo PC) -->
-          <button id="main-cart-btn" class="btn-outline-custom d-none d-lg-flex align-items-center gap-2 cart-btn-global" style="padding: 6px 15px; font-size: 0.9rem;">
+          <button id="main-cart-btn" class="btn-outline-custom d-none d-md-flex align-items-center gap-2 cart-btn-global" style="padding: 6px 15px; font-size: 0.9rem;">
             <i class="bi bi-cart3"></i> CARRITO (<span class="cart-badge-count-global">0</span>)
           </button>
         </div>
@@ -428,8 +426,8 @@
       </div>
     </nav>
 
-    <!-- ====== BOTÓN FLOTANTE UNIVERSAL DEL CARRITO EN PANTALLA ====== -->
-    <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
+    <!-- ====== BOTÓN FLOTANTE UNIVERSAL DEL CARRITO EN MÓVIL ====== -->
+    <button class="btn-floating-cart cart-btn-global d-md-none" title="Ver Carrito">
       <i class="bi bi-cart3 fs-4"></i>
       <span class="badge-floating cart-badge-count-global">0</span>
     </button>
@@ -657,7 +655,7 @@
           </div>
         </div>
 
-        <!-- SECCIÓN DE PRODUCTOS SIMILARES -->
+        <!-- SECCIÓN DE PRODUCTOS SIMILARES (SIN NORD) -->
         <div class="row justify-content-center my-4">
           <div class="col-lg-10">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -699,18 +697,6 @@
                 <div class="d-flex justify-content-between align-items-center mt-2">
                   <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$30.00</span>
                   <a href="rhodes.html" class="btn-outline-custom py-1 px-2">Ver más</a>
-                </div>
-              </div>
-
-              <div class="similar-card">
-                <div>
-                  <div class="similar-img-box"><img src="img/nordessentials.png" alt="Nord Essentials"></div>
-                  <h6 class="text-white fw-bold fs-6 mb-1">Nord Essentials SF2</h6>
-                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Patches clásicos esenciales.</p>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$33.00</span>
-                  <a href="nordessentials.html" class="btn-outline-custom py-1 px-2">Ver más</a>
                 </div>
               </div>
             </div>
@@ -1108,7 +1094,6 @@
     onAuthStateChanged(auth, (user) => {
       currentUser = user;
       window.globalCurrentUser = user; 
-      const desktopAuthContainer = document.getElementById('desktop-auth-container');
       const authContainerGlobal = document.getElementById('auth-container-global');
       const commentWrapper = document.getElementById('comment-section-wrapper');
 
@@ -1119,18 +1104,6 @@
         let displayName = "Usuario";
         if (user.displayName) displayName = user.displayName.split(' ')[0];
         else if (user.email) displayName = user.email.split('@')[0];
-
-        let avatarHtmlDesktop = user.photoURL 
-          ? `<img src="${user.photoURL}" alt="Perfil" style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover;">`
-          : `<div style="width: 26px; height: 26px; border-radius: 50%; background: var(--accent-color); color: #000; display: grid; place-items: center; font-weight: bold; font-size: 13px;">${displayName.charAt(0).toUpperCase()}</div>`;
-
-        if (desktopAuthContainer) {
-          desktopAuthContainer.innerHTML = `
-            <a href="account.html" class="btn-liquid-glass">
-              ${avatarHtmlDesktop} Hola, ${displayName}
-            </a>
-          `;
-        }
 
         if (authContainerGlobal) {
           let mobileContent = user.photoURL 
@@ -1172,13 +1145,6 @@
         document.getElementById('comment-form').addEventListener('submit', handleCommentSubmit);
 
       } else {
-        if (desktopAuthContainer) {
-          desktopAuthContainer.innerHTML = `
-            <a href="login.html" class="btn-liquid-glass">
-              <i class="bi bi-person-circle fs-5"></i> Iniciar Sesión
-            </a>
-          `;
-        }
         if (authContainerGlobal) {
           authContainerGlobal.innerHTML = `
             <a href="login.html" class="mobile-liquid-btn" title="Iniciar Sesión">
