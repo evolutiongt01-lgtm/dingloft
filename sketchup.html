@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pianos Legendarios SF2 | Dingloft</title>
+  <title>SketchUp Pro 2026 | Dingloft</title>
   
   <!-- FAVICON -->
   <link rel="icon" href="img/favicon.png" type="image/png">
@@ -39,7 +39,7 @@
       padding: 0;
     }
 
-    body.no-scroll { overflow: hidden !important; height: 100vh; }
+    body.no-scroll { overflow: hidden !important; height: 100vh; touch-action: none; }
 
     /* ====== EFECTO PUSH MENU ULTRA FLUIDO ====== */
     .page-wrapper {
@@ -66,6 +66,7 @@
       flex-direction: column;
       transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       will-change: transform;
+      overscroll-behavior: none;
     }
 
     .side-menu-drawer.active, 
@@ -77,6 +78,7 @@
     .side-menu-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1035;
       opacity: 0; visibility: hidden; transition: opacity 0.4s; cursor: pointer;
+      touch-action: none;
     }
     .side-menu-overlay.active { opacity: 1; visibility: visible; }
 
@@ -110,9 +112,7 @@
     .search-input-liquid input::placeholder { color: rgba(255, 255, 255, 0.7); }
     
     .search-results-container {
-      max-height: 60vh;
-      overflow-y: auto;
-      padding-right: 5px;
+      max-height: 60vh; overflow-y: auto; padding-right: 5px; overscroll-behavior: contain;
     }
     .search-results-container::-webkit-scrollbar { width: 5px; }
     .search-results-container::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
@@ -165,7 +165,7 @@
     .mobile-nav-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
     .mobile-nav-avatar .avatar-fallback { background: var(--accent-color); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; width: 100%; height: 100%; border-radius: 50%; margin: 0; }
 
-    /* ====== BOTÓN FLOTANTE DEL CARRITO (ARREGLADO FUERA DEL PAGE-WRAPPER) ====== */
+    /* ====== BOTÓN FLOTANTE DEL CARRITO (UNIVERSAL FUERA DEL WRAPPER) ====== */
     .btn-floating-cart {
       position: fixed;
       bottom: max(30px, env(safe-area-inset-bottom));
@@ -200,6 +200,13 @@
       border-radius: 50%;
       padding: 2px 7px;
       border: 2px solid var(--bg-color);
+    }
+
+    @media (max-width: 768px) {
+      .btn-floating-cart {
+        bottom: 90px;
+        right: 20px;
+      }
     }
 
     .nav-link { color: var(--text-main) !important; font-size: 0.95rem; font-weight: 500; margin: 0 10px; transition: color 0.3s; }
@@ -244,9 +251,10 @@
 
     .compatible-section { padding: 20px 0 50px; }
     .compatible-title { text-align: center; letter-spacing: 1px; font-size: 0.85rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; margin-bottom: 25px; padding: 0 10px; line-height: 1.5; }
+    
     .keyboard-card { background: linear-gradient(145deg, rgba(12, 17, 26, 0.9), rgba(6, 9, 15, 0.98)); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px 15px; text-align: center; transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
-    .keyboard-card img { width: 100%; height: 90px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.7)); }
-    .keyboard-card h5 { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.5px; margin: 0; color: #fff; }
+    .keyboard-card i { font-size: 3rem; margin-bottom: 10px; color: var(--accent-color); filter: drop-shadow(0 0 10px rgba(0,229,255,0.3)); }
+    .keyboard-card h5 { font-size: 0.85rem; font-weight: 800; letter-spacing: 0.5px; margin: 0; color: #fff; }
 
     .creator-note-box { background: linear-gradient(135deg, rgba(0, 229, 255, 0.07), rgba(122, 0, 255, 0.04)); border: 1px solid rgba(0, 229, 255, 0.25); border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
     .creator-avatar { width: 48px; height: 48px; min-width: 48px; min-height: 48px; border-radius: 50%; background: linear-gradient(135deg, #00e5ff, #7a00ff); display: grid; place-items: center; font-weight: 800; font-size: 1.1rem; color: #000; flex-shrink: 0; }
@@ -276,7 +284,7 @@
     .btn-like:hover { background: rgba(255, 0, 85, 0.1); color: #ff0055; border-color: rgba(255, 0, 85, 0.3); }
     .btn-like.liked { background: rgba(255, 0, 85, 0.15); color: #ff0055; border-color: #ff0055; }
 
-    /* ====== CARRITO LATERAL (LIQUID GLASS) ====== */
+    /* ====== CARRITO LATERAL (LIQUID GLASS) CON ANTI-SCROLL CHAINING ====== */
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; touch-action: none; }
     .cart-overlay.active { opacity: 1; visibility: visible; }
     .cart-brand-watermark { position: fixed; top: 50%; left: 30%; transform: translate(-50%, -50%) scale(0.9); text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none; }
@@ -286,7 +294,7 @@
     @keyframes lightGlow { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } 100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; } }
     .animated-watermark-logo { width: 240px; max-width: 80vw; animation: logoPulse 4s infinite ease-in-out; position: relative; }
 
-    /* EL PANEL DEL CARRITO */
+    /* EL PANEL DEL CARRITO - EFECTO CRISTAL LÍQUIDO */
     .cart-drawer { 
       position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh; 
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.5)); 
@@ -435,32 +443,33 @@
       </div>
     </nav>
 
-    <!-- SECCIÓN SUPERIOR: CAJAS 3D Y DETALLES -->
+    <!-- SECCIÓN SUPERIOR: CAJAS 3D Y DETALLES (AHORA CON SKETCHUP) -->
     <section class="product-detail-section">
       <div class="container">
         <div class="row align-items-center g-4">
           <div class="col-lg-6">
             <div class="product-boxes-display glass-effect">
-              <img src="img/pianos_bundle_boxes.png" alt="Pianos Legendarios SF2 Bundle">
+              <!-- Reemplaza esto con tu imagen principal de SketchUp o el combo -->
+              <img src="img/sketchup.png" alt="SketchUp Pro 2026 Bundle" onerror="this.src='https://ui-avatars.com/api/?name=SketchUp&background=00e5ff&color=000&size=400'">
             </div>
           </div>
           <div class="col-lg-6">
-            <span class="text-uppercase text-info fw-bold" style="font-size: 0.7rem; letter-spacing: 2px;">Colección Premium de Pianos</span>
-            <h1 class="fw-bold my-2 text-white" style="font-size: 2.5rem; letter-spacing: -1px;">Pianos Legendarios SF2</h1>
+            <span class="text-uppercase text-info fw-bold" style="font-size: 0.7rem; letter-spacing: 2px;">Software de Arquitectura y Diseño</span>
+            <h1 class="fw-bold my-2 text-white" style="font-size: 2.5rem; letter-spacing: -1px;">SketchUp Pro 2026</h1>
             
             <p class="text-white mb-3" style="font-size: 0.98rem; line-height: 1.6; color: #f1f5f9;">
-              Sonidos de escenario extravagantes y profesionales para Nord Stage 4, Motif XF8 y Montage M8x. Una librería maestra que <b>+100 músicos ya utilizan en vivo en sus iglesias y ministerios</b>.
+              El estándar de la industria para modelado 3D profesional y proyectos BIM. Crea, visualiza y documenta tus ideas con total libertad y sin ataduras de suscripciones mensuales.
             </p>
 
             <div class="mb-3 p-3 rounded-3" style="background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.2);">
               <div class="d-flex justify-content-between text-white small mb-1">
-                <span><i class="bi bi-file-earmark-zip text-info"></i> Yamaha Legacy Collection:</span> <b class="text-white">3.71 GB</b>
+                <span><i class="bi bi-box-seam text-info"></i> SketchUp Pro 2026:</span> <b class="text-white">INCLUIDO</b>
               </div>
               <div class="d-flex justify-content-between text-white small mb-1">
-                <span><i class="bi bi-file-earmark-zip text-info"></i> Nord Essentials SF2:</span> <b class="text-white">2.73 GB</b>
+                <span><i class="bi bi-display text-info"></i> V-Ray Next (Renderizado):</span> <b class="text-white">INCLUIDO</b>
               </div>
               <div class="d-flex justify-content-between text-success small fw-bold">
-                <span><i class="bi bi-gift-fill"></i> Bonus PAD de Regalo:</span> <b class="text-success">INCLUIDO GRATIS</b>
+                <span><i class="bi bi-gift-fill"></i> Bonus Pack Materiales 4K:</span> <b class="text-success">INCLUIDO GRATIS</b>
               </div>
             </div>
 
@@ -487,53 +496,54 @@
 
             <!-- PRECIO CON DESCUENTO Y EFECTO DE OFERTA -->
             <div class="mb-3 d-flex align-items-end gap-3">
-              <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--accent-color) !important; line-height: 1;">$60.00</span>
+              <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--accent-color) !important; line-height: 1;">$27.00</span>
               <div class="d-flex flex-column pb-1">
-                <span class="text-decoration-line-through" style="color: rgba(255,255,255,0.75); font-size: 1.1rem; line-height: 1;">$150.00 USD</span>
-                <span class="badge bg-danger mt-1" style="font-size: 0.75rem; letter-spacing: 1px; padding: 4px 8px;">AHORRAS $90</span>
+                <span class="text-decoration-line-through" style="color: rgba(255,255,255,0.75); font-size: 1.1rem; line-height: 1;">$65.00 USD</span>
+                <span class="badge bg-danger mt-1" style="font-size: 0.75rem; letter-spacing: 1px; padding: 4px 8px;">AHORRAS $38</span>
               </div>
             </div>
 
             <!-- ====== SECCIÓN DE OPCIONES DE COMPRA ====== -->
             <div class="purchase-options mt-4">
-              <p class="text-info fw-bold mb-2" style="font-size: 0.8rem; letter-spacing: 1px;"><i class="bi bi-cart-check"></i> ELIGE TU PAQUETE:</p>
+              <p class="text-info fw-bold mb-2" style="font-size: 0.8rem; letter-spacing: 1px;"><i class="bi bi-cart-check"></i> ELIGE TU LICENCIA:</p>
               
+              <!-- EL COMBO REQUERIDO -->
               <div class="package-card glass-effect p-3 mb-2" style="border-color: var(--accent-color); background: rgba(0, 229, 255, 0.05); position: relative; overflow: hidden;">
                 <div class="position-absolute top-0 end-0 px-2 py-1 fw-bold" style="font-size: 0.65rem; border-bottom-left-radius: 8px; background: var(--accent-color); color: #000;">MÁS POPULAR</div>
                 <div class="d-flex justify-content-between align-items-center mb-1">
-                  <span class="fw-bold text-white">Bundle Completo</span>
-                  <span class="fw-bold text-accent">$60.00</span>
+                  <span class="fw-bold text-white">Combo: SketchUp + AutoCAD 2026</span>
+                  <span class="fw-bold text-accent">$50.00</span>
                 </div>
-                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Nord + Yamaha + Bonus PAD</p>
-                <button class="btn-cyan w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="9" data-name="Pianos Legendarios SF2 Bundle" data-price="60" data-img="pianos_bundle_boxes" data-type="Librería vitalicia">
-                  <i class="bi bi-cart3"></i> AGREGAR BUNDLE
+                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Las dos herramientas esenciales para tu flujo de trabajo de diseño y arquitectura.</p>
+                <button class="btn-cyan w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="16" data-name="SketchUp 2026 & AutoCAD 2026" data-price="50" data-img="sketchup" data-type="Licencia vitalicia">
+                  <i class="bi bi-cart3"></i> AGREGAR COMBO
                 </button>
               </div>
 
               <div class="package-card glass-effect p-3 mb-2">
                 <div class="d-flex justify-content-between align-items-center mb-1">
-                  <span class="fw-bold text-white">Solo Nord Essentials</span>
-                  <span class="fw-bold text-white">$33.00</span>
+                  <span class="fw-bold text-white">Solo SketchUp Pro 2026</span>
+                  <span class="fw-bold text-white">$27.00</span>
                 </div>
-                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Stage 3/4 Pianos + Bonus PAD</p>
-                <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="10" data-name="Nord Essentials SF2 Collection" data-price="33" data-img="nordessentials" data-type="Librería vitalicia">
-                  <i class="bi bi-cart-plus"></i> AGREGAR NORD
+                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Modelado 3D avanzado y renderizado profesional.</p>
+                <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="15" data-name="SketchUp Pro 2026" data-price="27" data-img="sketchup" data-type="Licencia vitalicia">
+                  <i class="bi bi-cart-plus"></i> AGREGAR SKETCHUP
                 </button>
               </div>
 
               <div class="package-card glass-effect p-3 mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-1">
-                  <span class="fw-bold text-white">Solo Yamaha Legacy</span>
-                  <span class="fw-bold text-white">$33.00</span>
+                  <span class="fw-bold text-white">Solo AutoCAD 2026</span>
+                  <span class="fw-bold text-white">$35.00</span>
                 </div>
-                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Serie Motif/Montage + Bonus PAD</p>
-                <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="13" data-name="Yamaha Legacy Collection SF2" data-price="33" data-img="yamahalegacy" data-type="Librería vitalicia">
-                  <i class="bi bi-cart-plus"></i> AGREGAR YAMAHA
+                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">El estándar de la industria para diseño y dibujo técnico.</p>
+                <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="14" data-name="AutoCAD 2026" data-price="35" data-img="autocad" data-type="Licencia vitalicia">
+                  <i class="bi bi-cart-plus"></i> AGREGAR AUTOCAD
                 </button>
               </div>
 
-              <button class="btn-outline-cyan w-100 d-flex align-items-center justify-content-center gap-2" id="btn-free-trial" data-url="https://drive.google.com/uc?export=download&id=1zoVl-fS-D_ex1EUmLGXfEytU2Q00nQYE">
-                <i class="bi bi-gift fs-5"></i> PRUEBA GRATIS (531.5 MB)
+              <button class="btn-outline-cyan w-100 d-flex align-items-center justify-content-center gap-2" id="btn-free-trial" data-url="#video-instalacion">
+                <i class="bi bi-play-circle fs-5"></i> VER GUÍA DE INSTALACIÓN
               </button>
             </div>
           </div>
@@ -541,28 +551,28 @@
       </div>
     </section>
 
-    <!-- SECCIÓN INFERIOR: COMPATIBLE CON Y MUESTREO -->
+    <!-- SECCIÓN INFERIOR: COMPATIBILIDAD -->
     <section class="compatible-section">
       <div class="container">
-        <div class="compatible-title">Capturado directamente de la fuente</div>
+        <div class="compatible-title">Plataformas y Plugins Compatibles</div>
         
         <div class="row g-3 justify-content-center mb-4">
           <div class="col-4">
-            <div class="keyboard-card">
-              <img src="img/keyboard_nord4.png" alt="Nord Stage 4">
-              <h5>NORD STAGE 4</h5>
+            <div class="keyboard-card" style="padding-top: 25px;">
+              <i class="bi bi-windows" style="font-size: 3rem; margin-bottom: 15px; color: var(--accent-color); filter: drop-shadow(0 0 10px rgba(0,229,255,0.3)); display: block;"></i>
+              <h5>WINDOWS 10/11</h5>
             </div>
           </div>
           <div class="col-4">
-            <div class="keyboard-card">
-              <img src="img/keyboard_motifxf8.png" alt="Motif XF8">
-              <h5>MOTIF XF8</h5>
+            <div class="keyboard-card" style="padding-top: 25px;">
+              <i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: #ffffff; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); display: block;"></i>
+              <h5>MAC (INTEL/M1/M2)</h5>
             </div>
           </div>
           <div class="col-4">
-            <div class="keyboard-card">
-              <img src="img/keyboard_montagem8x.png" alt="Montage M8x">
-              <h5>MONTAGE M8X</h5>
+            <div class="keyboard-card" style="padding-top: 25px;">
+              <i class="bi bi-box" style="font-size: 3rem; margin-bottom: 15px; color: #a200ff; filter: drop-shadow(0 0 10px rgba(162,0,255,0.3)); display: block;"></i>
+              <h5>V-RAY & ENSCAPE</h5>
             </div>
           </div>
         </div>
@@ -571,18 +581,18 @@
           <div class="col-lg-10">
             <div class="creator-note-box">
               <div class="d-flex align-items-center gap-3 mb-2">
-                <div class="creator-avatar">C</div>
+                <div class="creator-avatar">E</div>
                 <div>
                   <h6 class="text-white mb-0 fw-bold">Nota del Creador</h6>
-                  <small class="text-info" style="font-size: 0.75rem;">Cesar — Músico y Desarrollador</small>
+                  <small class="text-info" style="font-size: 0.75rem;">Evolution Group — Desarrolladores</small>
                 </div>
               </div>
               <p class="text-white mb-2" style="font-size: 0.9rem; line-height: 1.6; color: #f1f5f9;">
-                "Desarrollé esta librería pensando en la realidad de los pianistas evangélicos en directo. Al ser miembro de una de las iglesias de <b>Ministerios Ebenezer en Guatemala</b>, me pasaba buscando constantemente los timbres exactos a los que estamos acostumbrados para llevarlos a una configuración portátil en móvil o iPad.<br><br>
-                Pensando en la economía de los músicos, <b>he dividido el paquete principal</b> para que puedas elegir llevarte todo el arsenal (Nord + Yamaha) o comprar únicamente la marca que utilizas (Solo Nord o Solo Yamaha) y ahorrar. Lo mejor es que <b>cualquier paquete que elijas incluye de regalo el Bonus PAD de ambientación</b>.<br><br>
-                Para que comprueben la calidad antes de adquirir cualquier versión, les obsequio esta <b>prueba gratuita de 531.5 MB</b> con la base esencial: el icónico *Grand Piano* del Yamaha Motif y Montage M8x, y si eres usuario de Nord, el legendario *Royal Grand* junto a un Pad."
+                "Adaptamos y preconfiguramos esta versión de SketchUp Pro 2026 pensando en la comunidad de arquitectos e ingenieros. Desarrollé esto específicamente para <b>no pagar mensualidades y pues obtener todo en un solo programa</b> de forma vitalicia.<br><br>
+                Al trabajar en proyectos, me topaba con que las suscripciones mensuales consumían todo el presupuesto. Por eso, pensando en la economía de los creadores, puedes elegir llevarte solo SketchUp, o aprovechar nuestro <b>Combo Estrella con AutoCAD 2026</b>.<br><br>
+                Todo viene activado de forma permanente y listo para integrarse a tu flujo de trabajo, para que te enfoques únicamente en diseñar y no en configuraciones molestas."
               </p>
-              <div class="text-end text-info small fw-semibold" style="font-size: 0.75rem;"><i class="bi bi-patch-check-fill"></i> Diseñado por músicos, para músicos.</div>
+              <div class="text-end text-info small fw-semibold" style="font-size: 0.75rem;"><i class="bi bi-patch-check-fill"></i> Software sin límites.</div>
             </div>
           </div>
         </div>
@@ -590,52 +600,52 @@
         <div class="row justify-content-center mb-4">
           <div class="col-lg-10">
             <div class="text-center mb-3">
-              <h4 class="fw-bold text-white fs-5">Software y Aplicaciones Compatibles (Formato SF2)</h4>
-              <p class="text-white small" style="color: #f1f5f9; font-size: 0.8rem;">Optimizado para correr de forma fluida en tablets, celulares y computadoras.</p>
+              <h4 class="fw-bold text-white fs-5">Motores de Renderizado Compatibles</h4>
+              <p class="text-white small" style="color: #f1f5f9; font-size: 0.8rem;">El paquete está optimizado para funcionar sin problemas con los plugins más usados.</p>
             </div>
             <div class="row g-2">
               <div class="col-6 col-md-4">
                 <div class="software-badge-box">
-                  <i class="bi bi-phone-fill"></i>
+                  <i class="bi bi-camera-video-fill"></i>
                   <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Audio Evolution</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">iOS y Android</small>
+                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">V-Ray Next</h6>
+                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Fotorealismo HD</small>
                   </div>
                 </div>
               </div>
               <div class="col-6 col-md-4">
                 <div class="software-badge-box">
-                  <i class="bi bi-music-note-list"></i>
+                  <i class="bi bi-tree"></i>
                   <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">BS-16i / Bismark</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">SoundFont Player</small>
+                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Enscape 3D</h6>
+                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Renderizado en Tiempo Real</small>
                   </div>
                 </div>
               </div>
               <div class="col-6 col-md-4">
                 <div class="software-badge-box">
-                  <i class="bi bi-sliders"></i>
+                  <i class="bi bi-brightness-high"></i>
                   <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Caustic 3</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Modular Synth</small>
+                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Lumion</h6>
+                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Animaciones Arquitectónicas</small>
                   </div>
                 </div>
               </div>
               <div class="col-6 col-md-6">
                 <div class="software-badge-box">
-                  <i class="bi bi-laptop"></i>
+                  <i class="bi bi-grid-1x2"></i>
                   <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">FL Studio Mobile</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85);">DirectWave</small>
+                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Twinmotion</h6>
+                    <small class="text-white" style="color: rgba(255,255,255,0.85);">Visualización Ágil</small>
                   </div>
                 </div>
               </div>
               <div class="col-12 col-md-6">
                 <div class="software-badge-box">
-                  <i class="bi bi-soundwave"></i>
+                  <i class="bi bi-layers-half"></i>
                   <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Cualquier Reproductor SF2</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85);">VST / PC / Mac</small>
+                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Layout Integrado</h6>
+                    <small class="text-white" style="color: rgba(255,255,255,0.85);">Para planos 2D perfectos</small>
                   </div>
                 </div>
               </div>
@@ -644,62 +654,62 @@
         </div>
 
         <!-- SECCIÓN DE VIDEO CON EFECTO LIQUID GLASS -->
-        <div class="row justify-content-center mb-4">
+        <div class="row justify-content-center mb-4" id="video-instalacion">
           <div class="col-lg-10">
             <div class="text-center mb-3">
-              <span class="text-uppercase text-info fw-bold" style="font-size: 0.65rem; letter-spacing: 2px;">Demostración en vivo</span>
-              <h3 class="fw-bold text-white mt-1 fs-5">Escucha cómo suena este arsenal en acción</h3>
+              <span class="text-uppercase text-info fw-bold" style="font-size: 0.65rem; letter-spacing: 2px;">Guía y Demostración</span>
+              <h3 class="fw-bold text-white mt-1 fs-5">Míralo en acción y aprende a instalarlo</h3>
             </div>
             <div class="liquid-glass-container">
               <div class="ratio ratio-16x9 rounded-3 overflow-hidden" style="box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
-                <iframe src="https://www.youtube.com/embed/_fnfuhxFwFw" title="Demostración de Pianos SF2 Dingloft" allowfullscreen style="border:0;"></iframe>
+                <iframe src="https://www.youtube.com/embed/Ns6ntMsTkc4" title="Demostración y Guía" allowfullscreen style="border:0;"></iframe>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- SECCIÓN DE PRODUCTOS SIMILARES -->
+        <!-- SECCIÓN DE PRODUCTOS SIMILARES (SOFTWARE) -->
         <div class="row justify-content-center my-4">
           <div class="col-lg-10">
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-collection-play text-accent" style="color:var(--accent-color)"></i> Librerías Similares</h5>
+              <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-collection-play text-accent" style="color:var(--accent-color)"></i> Productos Recomendados</h5>
               <span class="text-white small" style="color: #f1f5f9; font-size: 0.75rem;">Desliza <i class="bi bi-arrow-right"></i></span>
             </div>
 
             <div class="similar-carousel-wrapper">
               <div class="similar-card">
                 <div>
-                  <div class="similar-img-box"><img src="img/cosmos.png" alt="Cosmos Collection"></div>
-                  <h6 class="text-white fw-bold fs-6 mb-1">Cosmos Collection</h6>
-                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Pads y texturas espaciales.</p>
+                  <div class="similar-img-box"><img src="img/autocad.png" alt="AutoCAD" onerror="this.src='https://ui-avatars.com/api/?name=AC&background=00e5ff&color=000'"></div>
+                  <h6 class="text-white fw-bold fs-6 mb-1">AutoCAD 2026</h6>
+                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Diseño y dibujo técnico.</p>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-2">
-                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$70.00</span>
-                  <a href="cosmos.html" class="btn-outline-custom py-1 px-2">Ver más</a>
+                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$35.00</span>
+                  <a href="#" class="btn-outline-custom py-1 px-2">Ver más</a>
                 </div>
               </div>
 
               <div class="similar-card">
                 <div>
-                  <div class="similar-img-box"><img src="img/yamahakeys.png" alt="Yamaha Premium Keys"></div>
-                  <h6 class="text-white fw-bold fs-6 mb-1">Yamaha Premium Keys</h6>
-                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Pianos acústicos y eléctricos.</p>
+                  <div class="similar-img-box"><img src="img/office.png" alt="Office" onerror="this.src='https://ui-avatars.com/api/?name=Of&background=00e5ff&color=000'"></div>
+                  <h6 class="text-white fw-bold fs-6 mb-1">Office Home & Business</h6>
+                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Productividad diaria total.</p>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-2">
-                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$30.00</span>
-                  <a href="yamahakeys.html" class="btn-outline-custom py-1 px-2">Ver más</a>
+                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$40.00</span>
+                  <a href="office.html" class="btn-outline-custom py-1 px-2">Ver más</a>
                 </div>
               </div>
 
               <div class="similar-card">
                 <div>
-                  <div class="similar-img-box"><img src="img/rhodes.png" alt="Rhodes Affair 2"></div>
-                  <h6 class="text-white fw-bold fs-6 mb-1">Rhodes Affair 2</h6>
-                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Sonidos de piano eléctrico cálidos.</p>
+                  <div class="similar-img-box"><img src="img/cinema4d.png" alt="Cinema 4D" onerror="this.src='https://ui-avatars.com/api/?name=C4&background=00e5ff&color=000'"></div>
+                  <h6 class="text-white fw-bold fs-6 mb-1">Cinema 4D</h6>
+                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Renderizado avanzado 3D.</p>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-2">
-                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$30.00</span>
-                  <a href="rhodes.html" class="btn-outline-custom py-1 px-2">Ver más</a>
+                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$35.00</span>
+                  <a href="#" class="btn-outline-custom py-1 px-2">Ver más</a>
                 </div>
               </div>
             </div>
@@ -742,7 +752,6 @@
   <!-- ========================================================================= -->
 
   <!-- ====== BOTÓN FLOTANTE UNIVERSAL DEL CARRITO EN PANTALLA ====== -->
-  <!-- (Colocado aquí para que el transform del page-wrapper no rompa el position: fixed) -->
   <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
     <i class="bi bi-cart3 fs-4"></i>
     <span class="badge-floating cart-badge-count-global">0</span>
@@ -761,78 +770,7 @@
       <div id="live-search-results" class="search-results-container">
         <p class="text-center" style="color: rgba(255,255,255,0.7); font-size: 0.9rem;" id="search-empty-state">Escribe el nombre del producto para buscar...</p>
         
-        <!-- PRODUCTOS EXACTOS DEL CATÁLOGO -->
-        <a href="#" class="search-result-item" data-title="yamaha legacy collection sf2 motif montage" style="display: none;">
-          <img src="img/yamahakeys.png" alt="Yamaha Legacy" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Yamaha Legacy Collection SF2</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$33.00</span>
-          </div>
-        </a>
-        <a href="#" class="search-result-item" data-title="montage 8 nord stage 3" style="display: none;">
-          <img src="img/nordessentials.png" alt="Montage 8" onerror="this.src='https://ui-avatars.com/api/?name=Mo&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Montage 8 & Nord Stage 3</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$27.00</span>
-          </div>
-        </a>
-        <a href="yamahakeys.html" class="search-result-item" data-title="yamaha premium keys pianos acusticos" style="display: none;">
-          <img src="img/yamahakeys.png" alt="Yamaha Premium" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Yamaha Premium Keys</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
-          </div>
-        </a>
-        <a href="#" class="search-result-item" data-title="logic pro" style="display: none;">
-          <img src="img/logicpro.png" alt="Logic Pro" onerror="this.src='https://ui-avatars.com/api/?name=Lo&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Logic Pro</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$25.00</span>
-          </div>
-        </a>
-        <a href="#" class="search-result-item" data-title="dual legends sf2" style="display: none;">
-          <img src="img/duallegends.png" alt="Dual Legends" onerror="this.src='https://ui-avatars.com/api/?name=Du&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Dual Legends SF2</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$60.00</span>
-          </div>
-        </a>
-        <a href="rhodes.html" class="search-result-item" data-title="rhodes affair 2 piano electrico" style="display: none;">
-          <img src="img/rhodes.png" alt="Rhodes" onerror="this.src='https://ui-avatars.com/api/?name=Rh&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Rhodes Affair 2</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
-          </div>
-        </a>
-        <a href="#" class="search-result-item" data-title="nord stage 4 ultimate library" style="display: none;">
-          <img src="img/nord4.png" alt="Nord Stage 4" onerror="this.src='https://ui-avatars.com/api/?name=No&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Nord Stage 4 Ultimate Library</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$40.00</span>
-          </div>
-        </a>
-        <a href="nordessentials.html" class="search-result-item" data-title="nord essentials sf2 collection" style="display: none;">
-          <img src="img/nordessentials.png" alt="Nord Essentials" onerror="this.src='https://ui-avatars.com/api/?name=No&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Nord Essentials SF2 Collection</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$33.00</span>
-          </div>
-        </a>
-        <a href="cosmos.html" class="search-result-item" data-title="cosmos collection pads texturas" style="display: none;">
-          <img src="img/cosmos.png" alt="Cosmos" onerror="this.src='https://ui-avatars.com/api/?name=Co&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Cosmos Collection</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$70.00</span>
-          </div>
-        </a>
-        <a href="esword.html" class="search-result-item" data-title="biblias y diccionarios para e-sword" style="display: none;">
-          <img src="img/esword.png" alt="e-Sword" onerror="this.src='https://ui-avatars.com/api/?name=eS&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Biblias y Diccionarios para E-Sword</h6>
-            <span class="text-accent small fw-bold" style="color: #00ff88;">GRATIS</span>
-          </div>
-        </a>
-        <a href="#" class="search-result-item" data-title="sketchup 2026 autocad 2026 duo bundle arquitectura" style="display: none;">
+        <a href="#" class="search-result-item" data-title="sketchup 2026 autocad 2026 duo bundle arquitectura combo" style="display: none;">
           <img src="img/sketchup.png" alt="Duo" onerror="this.src='https://ui-avatars.com/api/?name=Du&background=00e5ff&color=000'">
           <div>
             <h6 class="mb-0 text-white fw-bold">SketchUp 2026 & AutoCAD 2026</h6>
@@ -851,20 +789,6 @@
           <div>
             <h6 class="mb-0 text-white fw-bold">SketchUp Pro 2026</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$27.00</span>
-          </div>
-        </a>
-        <a href="office.html" class="search-result-item" data-title="office home business word excel powerpoint" style="display: none;">
-          <img src="img/office.png" alt="Office" onerror="this.src='https://ui-avatars.com/api/?name=Of&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Office Home & Business</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$40.00</span>
-          </div>
-        </a>
-        <a href="#" class="search-result-item" data-title="cinema 4d render" style="display: none;">
-          <img src="img/cinema4d.png" alt="Cinema 4D" onerror="this.src='https://ui-avatars.com/api/?name=C4&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Cinema 4D</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$35.00</span>
           </div>
         </a>
       </div>
@@ -1035,7 +959,6 @@
           }
         });
 
-        // Buscar los botones de compra y bloquear si ya lo tiene
         const buyButtons = document.querySelectorAll('.btn-add-cart, #btn-buy-now');
         buyButtons.forEach(btn => {
           const prodName = btn.getAttribute('data-name');
@@ -1051,18 +974,13 @@
       }
     }
 
+    // COMENTARIOS ADAPTADOS AL SOFTWARE
     const initialDefaultComments = [
-      { name: "Josué Morales (Ministerio Ebenezer)", rating: 5, text: "¡Los sonidos están a otro nivel! Usé el Ballad Keys en directo y sonó idéntico al teclado original. Súper recomendado para directo.", likes: 38, likedBy: [] },
-      { name: "Carlos R.", rating: 5, text: "Probé la versión de prueba de 531.5 MB y con eso bastó para decidirme a comprar el bundle completo. Excelente atención y entrega inmediata.", likes: 24, likedBy: [] },
-      { name: "Pastor Esteban Gómez", rating: 5, text: "Los pads para la administración y las guitarras eléctricas le dieron otra atmósfera a nuestras reuniones. ¡Una bendición tener este nivel de audio en una tablet!", likes: 31, likedBy: [] },
-      { name: "Marco Tulio (Tecladista)", rating: 5, text: "Tenía dudas de cómo correría en mi celular con Audio Evolution, pero con la prueba comprobé la fluidez. ¡Va perfecto y cero latencia!", likes: 19, likedBy: [] },
-      { name: "Daniel Siquiej", rating: 5, text: "El Motif XF8 incluido en la colección suena brutal. Valió cada centavo, la descarga llegó rapidísimo a mi panel de cuenta.", likes: 27, likedBy: [] },
-      { name: "David Cifuentes", rating: 5, text: "Excelente calidad de sampleo. Es la mejor inversión que hemos hecho para nuestro equipo de alabanza en la iglesia local.", likes: 40, likedBy: [] },
-      { name: "Samuel Pineda", rating: 5, text: "¡Muy recomendado! Lo instalé en BS-16i para mi iPad y la respuesta al tacto es increíble. Se nota el trabajo de sampleo profesional.", likes: 22, likedBy: [] },
-      { name: "Emanuel Vásquez", rating: 4, text: "Los pianos suenan súper limpios en las mezclas de en vivo. El único detalle es que tardé un poco en configurar los canales, pero soporte ayudó rápido.", likes: 16, likedBy: [] },
-      { name: "Joel Hernández", rating: 5, text: "Tremendo aporte para los músicos cristianos. Tener los sonidos del Motif y Nord en la palma de la mano no tiene precio.", likes: 33, likedBy: [] },
-      { name: "Jonathan Orellana", rating: 5, text: "El bonus PAD de regalo está excelente para las transiciones. 10/10 en calidad de audio y atención al cliente de Dingloft.", likes: 29, likedBy: [] },
-      { name: "Misael Castillo", rating: 5, text: "¡Impresionante! Lo probé con FL Studio Mobile y corrió de maravilla. Gracias Cesar por compartir esta tremenda herramienta.", likes: 21, likedBy: [] }
+      { name: "Carlos Arévalo", rating: 5, text: "¡Me funcionó perfecto en mi MacBook! El proceso para no pagar mensualidad es una maravilla. Súper recomendado.", likes: 38, likedBy: [] },
+      { name: "Arq. Sofia M.", rating: 5, text: "Compré el combo de SketchUp y AutoCAD. La descarga fue inmediata y el tutorial de instalación súper claro. Gracias a Evolution Group.", likes: 24, likedBy: [] },
+      { name: "Estudio Creativo 5", rating: 5, text: "Hacer renders con V-Ray ahora corre muchísimo más rápido en mi PC. Definitivamente vale la pena la inversión para uso profesional.", likes: 31, likedBy: [] },
+      { name: "Daniel Siquiej", rating: 5, text: "Me ahorraron cientos de dólares en suscripciones. Funciona excelente para mis proyectos de ingeniería.", likes: 27, likedBy: [] },
+      { name: "David Cifuentes", rating: 5, text: "Excelente calidad de los materiales 4K que incluyen de regalo. Es la mejor inversión que hemos hecho para nuestro despacho.", likes: 40, likedBy: [] }
     ];
 
     function renderCommentsUI(commentsData) {
@@ -1096,7 +1014,7 @@
     async function loadComments() {
       const container = document.getElementById('comments-container');
       try {
-        const commentsRef = collection(db, "product_comments");
+        const commentsRef = collection(db, "product_comments_sketchup");
         const q = query(commentsRef, orderBy("createdAt", "desc"));
         let snapshot;
         
@@ -1140,7 +1058,6 @@
       const commentWrapper = document.getElementById('comment-section-wrapper');
 
       if (user) {
-        // Ejecutar sistema anti-recompras si el usuario está logueado
         checkUserPurchases(user.uid);
 
         let displayName = "Usuario";
@@ -1165,7 +1082,7 @@
             <form id="comment-form">
               <div class="row g-2">
                 <div class="col-12 col-md-6">
-                  <input type="text" id="comment-name" class="form-control form-control-custom" value="${displayName}" placeholder="Tu Nombre o Iglesia" required>
+                  <input type="text" id="comment-name" class="form-control form-control-custom" value="${displayName}" placeholder="Tu Nombre o Estudio" required>
                 </div>
                 <div class="col-12 col-md-6">
                   <select id="comment-rating" class="form-control form-control-custom">
@@ -1199,7 +1116,7 @@
           <div class="login-prompt-box">
             <div class="login-prompt-icon"><i class="bi bi-lock-fill"></i></div>
             <h5 class="text-white fw-bold mb-2 fs-6">Inicia sesión para dejar tu reseña</h5>
-            <p class="text-white small mb-3" style="color: rgba(255,255,255,0.85); font-size: 0.85rem;">Únete a nuestra comunidad de músicos, comparte tu opinión y apoya con un like.</p>
+            <p class="text-white small mb-3" style="color: rgba(255,255,255,0.85); font-size: 0.85rem;">Únete a nuestra comunidad, comparte tu opinión y apoya con un like.</p>
             <a href="login.html" class="btn-cyan d-inline-block px-4 py-2 text-decoration-none" style="font-size: 0.9rem;">
               <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión / Registrarse
             </a>
@@ -1224,7 +1141,7 @@
       submitBtn.textContent = "Publicando...";
 
       try {
-        await addDoc(collection(db, "product_comments"), {
+        await addDoc(collection(db, "product_comments_sketchup"), {
           name: name,
           rating: rating,
           text: text,
@@ -1277,7 +1194,7 @@
       }
 
       try {
-        const commentRef = doc(db, "product_comments", docId);
+        const commentRef = doc(db, "product_comments_sketchup", docId);
         if (isLiking) {
           await updateDoc(commentRef, {
              likes: increment(1),
@@ -1375,7 +1292,7 @@
       let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
       let couponApplied = false;
 
-      const cartBtns = document.querySelectorAll('.cart-btn-global, #main-cart-btn');
+      const cartBtns = document.querySelectorAll('.cart-btn-global');
       const cartDrawer = document.getElementById('cart-drawer');
       const cartOverlay = document.getElementById('cart-overlay');
       const closeCartBtn = document.getElementById('close-cart-btn');
@@ -1587,44 +1504,6 @@
           }, 800);
         });
       });
-      
-      const freeTrialBtn = document.getElementById('btn-free-trial');
-      if (freeTrialBtn) {
-        freeTrialBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          
-          const url = this.getAttribute('data-url') + '&confirm=t';
-          const toast = document.getElementById('toast-message');
-
-          if(toast){
-            toast.textContent = `Preparando la prueba gratis (531.5 MB)...`;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3500);
-          }
-
-          const width = 600;
-          const height = 450;
-          const left = (window.innerWidth / 2) - (width / 2);
-          const top = (window.innerHeight / 2) - (height / 2);
-          
-          const popup = window.open(
-            url, 
-            'PruebaGratisDingloft', 
-            `width=${width},height=${height},top=${top},left=${left},toolbar=no,menubar=no,location=no,status=no`
-          );
-
-          setTimeout(() => {
-            if (popup && !popup.closed) {
-              popup.close();
-              if(toast) {
-                toast.textContent = `Descarga iniciada. ¡Disfruta tus samples!`;
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 3000);
-              }
-            }
-          }, 12000);
-        });
-      }
     });
   </script>
 </body>
