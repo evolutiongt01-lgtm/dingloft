@@ -41,21 +41,21 @@
 
     body.no-scroll { overflow: hidden !important; height: 100vh; }
 
-    /* ====== EFECTO PUSH MENU (TIPO FACEBOOK) ====== */
+    /* ====== EFECTO PUSH MENU ULTRA FLUIDO ====== */
     .page-wrapper {
       position: relative;
       width: 100%;
       min-height: 100vh;
       background-color: var(--bg-color);
       transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      will-change: transform;
       z-index: 1;
     }
 
-    /* MENÚ LATERAL OCULTO A LA IZQUIERDA */
     .side-menu-drawer {
       position: fixed;
       top: 0;
-      left: -280px; /* Escondido fuera de la pantalla */
+      left: -280px; 
       width: 280px;
       height: 100vh;
       background: linear-gradient(145deg, rgba(10, 14, 20, 0.98), rgba(5, 7, 10, 1));
@@ -65,9 +65,9 @@
       display: flex;
       flex-direction: column;
       transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      will-change: transform;
     }
 
-    /* LA MAGIA DEL PUSH: TODO SE MUEVE AL MISMO TIEMPO */
     .side-menu-drawer.active, 
     .page-wrapper.menu-pushed, 
     .navbar-glass.menu-pushed {
@@ -131,6 +131,7 @@
       background: rgba(5, 7, 10, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border-color); padding: 12px 0; z-index: 1040; 
       transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      will-change: transform;
     }
     
     .btn-liquid-glass {
@@ -146,7 +147,7 @@
       width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.02));
       backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 2px solid rgba(255, 255, 255, 0.4);
       box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 0 10px rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center;
-      transition: all 0.3s ease; text-decoration: none; color: #fff; padding: 2px; cursor: pointer;
+      transition: all 0.3s ease; text-decoration: none; color: #fff; padding: 2px; cursor: pointer; border-style: none;
     }
     .mobile-liquid-btn i { font-size: 1.3rem; }
     .mobile-liquid-btn:hover, .mobile-nav-avatar:hover { transform: scale(1.05); border-color: var(--accent-color); color: var(--accent-color); box-shadow: 0 4px 20px rgba(0, 229, 255, 0.4); }
@@ -274,7 +275,6 @@
     <div class="d-flex flex-column gap-2">
       <a href="index.html" class="side-menu-link"><i class="bi bi-house-door"></i> Inicio</a>
       <a href="index.html" class="side-menu-link"><i class="bi bi-collection-play"></i> Catálogo</a>
-      <a href="#" class="side-menu-link"><i class="bi bi-headset"></i> Soporte</a>
       <a href="account.html" class="side-menu-link" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 15px;">
         <i class="bi bi-person-circle text-accent" style="color: var(--accent-color);"></i> Mi Cuenta
       </a>
@@ -308,53 +308,56 @@
     <!-- TOAST FLOTANTE -->
     <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
-    <!-- Navbar FIJA pero que también se empuja -->
-    <nav class="navbar navbar-expand-lg navbar-glass fixed-top" id="main-navbar">
-      <div class="container d-flex justify-content-between align-items-center">
+    <!-- Navbar FIJA perfectamente centrada -->
+    <nav class="navbar navbar-glass fixed-top" id="main-navbar">
+      <div class="container d-flex justify-content-between align-items-center position-relative">
         
         <!-- MÓVIL IZQUIERDA: HAMBURGUESA PUSH -->
-        <div class="d-flex align-items-center gap-2 d-lg-none">
+        <div class="d-flex align-items-center gap-2 d-lg-none" style="z-index: 2;">
           <button class="mobile-liquid-btn" id="btn-open-sidebar" title="Menú">
             <i class="bi bi-list"></i>
           </button>
         </div>
 
-        <!-- LOGO AL CENTRO -->
-        <a class="navbar-brand d-flex align-items-center mx-auto mx-lg-0" href="index.html">
-          <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
-        </a>
-        
-        <!-- MÓVIL DERECHA: LUPA Y PERFIL -->
-        <div class="d-flex align-items-center gap-2 d-lg-none">
-          <button class="mobile-liquid-btn" id="btn-open-search-mobile" title="Buscar">
-            <i class="bi bi-search"></i>
-          </button>
-          <div id="mobile-auth-container">
-            <!-- El avatar liquid glass se inyecta por JS aquí -->
-          </div>
-        </div>
-
-        <!-- MENÚ PC -->
-        <div class="collapse navbar-collapse justify-content-center d-none d-lg-block">
+        <!-- MENÚ PC IZQUIERDA -->
+        <div class="collapse navbar-collapse d-none d-lg-flex" style="flex: 1;">
           <ul class="navbar-nav align-items-center">
             <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
             <li class="nav-item"><a class="nav-link" href="index.html">Catálogo</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
           </ul>
         </div>
         
-        <div class="d-none d-lg-flex align-items-center gap-3">
-          <!-- Botón de buscar PC -->
-          <button class="btn-liquid-glass px-3" id="btn-open-search-desktop">
-            <i class="bi bi-search"></i>
-          </button>
+        <!-- LOGO PERFECTAMENTE CENTRADO -->
+        <a class="navbar-brand position-absolute top-50 start-50 translate-middle" href="index.html" style="z-index: 10;">
+          <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
+        </a>
+        
+        <!-- DERECHA (MÓVIL Y PC) -->
+        <div class="d-flex align-items-center gap-2 justify-content-end" style="flex: 1; z-index: 2;">
           
-          <div id="desktop-auth-container">
-            <!-- Se inyecta por JS -->
+          <!-- DERECHA MÓVIL: LUPA Y PERFIL -->
+          <div class="d-flex align-items-center gap-2 d-lg-none">
+            <button class="mobile-liquid-btn" id="btn-open-search-mobile" title="Buscar">
+              <i class="bi bi-search"></i>
+            </button>
+            <div id="mobile-auth-container">
+              <!-- El avatar liquid glass se inyecta por JS aquí -->
+            </div>
           </div>
-          <button id="main-cart-btn" class="btn-outline-custom" style="padding: 6px 15px; font-size: 0.9rem;">
-            <i class="bi bi-cart3"></i> CARRITO (<span id="cart-count">0</span>)
-          </button>
+
+          <!-- DERECHA PC -->
+          <div class="d-none d-lg-flex align-items-center gap-3">
+            <button class="btn-liquid-glass px-3" id="btn-open-search-desktop">
+              <i class="bi bi-search"></i>
+            </button>
+            <div id="desktop-auth-container">
+              <!-- Se inyecta por JS -->
+            </div>
+            <button id="main-cart-btn" class="btn-outline-custom" style="padding: 6px 15px; font-size: 0.9rem;">
+              <i class="bi bi-cart3"></i> CARRITO (<span id="cart-count">0</span>)
+            </button>
+          </div>
+
         </div>
       </div>
     </nav>
@@ -414,6 +417,7 @@
               </div>
             </div>
 
+            <!-- PRECIO CON DESCUENTO Y EFECTO DE OFERTA -->
             <div class="mb-3 d-flex align-items-end gap-3">
               <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--accent-color) !important; line-height: 1;">$60.00</span>
               <div class="d-flex flex-column pb-1">
@@ -495,6 +499,7 @@
           </div>
         </div>
 
+        <!-- NOTA DEL CREADOR RESTAURADA -->
         <div class="row justify-content-center mb-4">
           <div class="col-lg-10">
             <div class="creator-note-box">
@@ -682,15 +687,15 @@
     <div class="search-modal-box">
       <div class="search-input-liquid mb-4">
         <i class="bi bi-search text-accent" style="font-size: 1.4rem;"></i>
-        <input type="text" id="live-search-input" placeholder="Buscar Nord, Yamaha, Pads..." autocomplete="off">
-        <button class="btn-close-search" id="btn-close-search" style="background: transparent; border: none; color: #fff; font-size: 1.5rem;"><i class="bi bi-x-lg"></i></button>
+        <input type="text" id="live-search-input" placeholder="Buscar Nord, SketchUp, Pads..." autocomplete="off">
+        <button class="btn-close-search" id="btn-close-search" style="background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;"><i class="bi bi-x-lg"></i></button>
       </div>
       
       <!-- Contenedor de Resultados Visuales -->
       <div id="live-search-results">
         <p class="text-center" style="color: rgba(255,255,255,0.7); font-size: 0.9rem;" id="search-empty-state">Escribe el nombre del producto para buscar...</p>
         
-        <!-- Pianos Legendarios Bundle -->
+        <!-- RESULTADOS MUSICALES -->
         <a href="#" class="search-result-item" data-title="pianos legendarios sf2 bundle completo" style="display: none;">
           <img src="img/pianos_bundle_boxes.png" alt="Bundle">
           <div>
@@ -698,8 +703,6 @@
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$60.00</span>
           </div>
         </a>
-        
-        <!-- Nord Essentials -->
         <a href="nordessentials.html" class="search-result-item" data-title="nord essentials sf2 pianos" style="display: none;">
           <img src="img/nordessentials.png" alt="Nord">
           <div>
@@ -707,8 +710,6 @@
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$33.00</span>
           </div>
         </a>
-        
-        <!-- Yamaha Legacy -->
         <a href="yamahakeys.html" class="search-result-item" data-title="yamaha legacy collection sf2 motif montage" style="display: none;">
           <img src="img/yamahakeys.png" alt="Yamaha">
           <div>
@@ -716,8 +717,6 @@
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$33.00</span>
           </div>
         </a>
-
-        <!-- Cosmos Collection -->
         <a href="cosmos.html" class="search-result-item" data-title="cosmos collection pads texturas" style="display: none;">
           <img src="img/cosmos.png" alt="Cosmos">
           <div>
@@ -725,8 +724,6 @@
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$70.00</span>
           </div>
         </a>
-
-        <!-- Yamaha Premium Keys -->
         <a href="yamahakeys.html" class="search-result-item" data-title="yamaha premium keys pianos acusticos" style="display: none;">
           <img src="img/yamahakeys.png" alt="Yamaha Keys">
           <div>
@@ -734,13 +731,42 @@
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
           </div>
         </a>
-
-        <!-- Rhodes Affair 2 -->
         <a href="rhodes.html" class="search-result-item" data-title="rhodes affair 2 piano electrico" style="display: none;">
           <img src="img/rhodes.png" alt="Rhodes">
           <div>
             <h6 class="mb-0 text-white fw-bold">Rhodes Affair 2</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
+          </div>
+        </a>
+
+        <!-- RESULTADOS SOFTWARE ARQUITECTURA / INGENIERÍA -->
+        <a href="sketchup.html" class="search-result-item" data-title="sketchup pro 3d arquitectura diseño" style="display: none;">
+          <!-- Si no tienes img/sketchup.png, usará este ícono por defecto -->
+          <img src="img/sketchup.png" alt="SketchUp" onerror="this.src='https://ui-avatars.com/api/?name=Sk&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">SketchUp Pro 2026</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">Ver detalles</span>
+          </div>
+        </a>
+        <a href="office.html" class="search-result-item" data-title="microsoft office word excel powerpoint" style="display: none;">
+          <img src="img/office.png" alt="Office" onerror="this.src='https://ui-avatars.com/api/?name=Of&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">Microsoft Office Suite</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">Ver detalles</span>
+          </div>
+        </a>
+        <a href="esword.html" class="search-result-item" data-title="e-sword modulos biblias diccionarios cristianos" style="display: none;">
+          <img src="img/esword.png" alt="e-Sword" onerror="this.src='https://ui-avatars.com/api/?name=eS&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">e-Sword Premium Mods</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">Ver detalles</span>
+          </div>
+        </a>
+        <a href="#" class="search-result-item" data-title="autocad revit bim arquitectura" style="display: none;">
+          <img src="img/autocad.png" alt="AutoCAD" onerror="this.src='https://ui-avatars.com/api/?name=AC&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">AutoCAD & Revit 2026</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">Ver detalles</span>
           </div>
         </a>
       </div>
