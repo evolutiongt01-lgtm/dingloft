@@ -109,6 +109,14 @@
     .search-input-liquid input { background: transparent; border: none; color: #fff; width: 100%; font-size: 1.2rem; outline: none; font-weight: 500; }
     .search-input-liquid input::placeholder { color: rgba(255, 255, 255, 0.7); }
     
+    .search-results-container {
+      max-height: 60vh;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+    .search-results-container::-webkit-scrollbar { width: 5px; }
+    .search-results-container::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
+
     .search-result-item {
       display: flex; align-items: center; gap: 15px; padding: 15px; background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; text-decoration: none;
@@ -157,12 +165,12 @@
     .mobile-nav-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
     .mobile-nav-avatar .avatar-fallback { background: var(--accent-color); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; width: 100%; height: 100%; border-radius: 50%; margin: 0; }
 
-    /* ====== BOTÓN FLOTANTE DEL CARRITO (UNIVERSAL) ====== */
+    /* ====== BOTÓN FLOTANTE DEL CARRITO (ARREGLADO FUERA DEL PAGE-WRAPPER) ====== */
     .btn-floating-cart {
       position: fixed;
-      bottom: 30px;
+      bottom: max(30px, env(safe-area-inset-bottom));
       right: 25px;
-      z-index: 1030;
+      z-index: 9999; /* Z-INDEX DIOS */
       width: 60px;
       height: 60px;
       border-radius: 50%;
@@ -192,14 +200,6 @@
       border-radius: 50%;
       padding: 2px 7px;
       border: 2px solid var(--bg-color);
-    }
-    
-    /* Para móviles, elevamos el botón flotante para evitar la barra inferior de Safari/Chrome */
-    @media (max-width: 768px) {
-      .btn-floating-cart {
-        bottom: 90px;
-        right: 20px;
-      }
     }
 
     .nav-link { color: var(--text-main) !important; font-size: 0.95rem; font-weight: 500; margin: 0 10px; transition: color 0.3s; }
@@ -286,7 +286,7 @@
     @keyframes lightGlow { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } 100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; } }
     .animated-watermark-logo { width: 240px; max-width: 80vw; animation: logoPulse 4s infinite ease-in-out; position: relative; }
 
-    /* EL PANEL DEL CARRITO - EFECTO CRISTAL LÍQUIDO */
+    /* EL PANEL DEL CARRITO */
     .cart-drawer { 
       position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh; 
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.5)); 
@@ -336,7 +336,6 @@
     .success-icon-ring { width: 70px; height: 70px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: #00ff88; font-size: 1.8rem; }
     .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(50,221,145,.5); border-radius: 12px; color: #eafff3; background: #0c251d; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
     .toast.show { transform: translateY(0); }
-
   </style>
 </head>
 <body>
@@ -435,12 +434,6 @@
 
       </div>
     </nav>
-
-    <!-- ====== BOTÓN FLOTANTE UNIVERSAL DEL CARRITO EN PANTALLA (PC Y MÓVIL) ====== -->
-    <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
-      <i class="bi bi-cart3 fs-4"></i>
-      <span class="badge-floating cart-badge-count-global">0</span>
-    </button>
 
     <!-- SECCIÓN SUPERIOR: CAJAS 3D Y DETALLES -->
     <section class="product-detail-section">
@@ -665,7 +658,7 @@
           </div>
         </div>
 
-        <!-- SECCIÓN DE PRODUCTOS SIMILARES (CORREGIDA) -->
+        <!-- SECCIÓN DE PRODUCTOS SIMILARES -->
         <div class="row justify-content-center my-4">
           <div class="col-lg-10">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -744,38 +737,84 @@
 
   </div><!-- FIN DE PAGE WRAPPER -->
 
+  <!-- ========================================================================= -->
+  <!-- MODALES Y ELEMENTOS FIJOS (FUERA DEL PAGE-WRAPPER PARA EVITAR BUGS DE CSS)-->
+  <!-- ========================================================================= -->
+
+  <!-- ====== BOTÓN FLOTANTE UNIVERSAL DEL CARRITO EN PANTALLA ====== -->
+  <!-- (Colocado aquí para que el transform del page-wrapper no rompa el position: fixed) -->
+  <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
+    <i class="bi bi-cart3 fs-4"></i>
+    <span class="badge-floating cart-badge-count-global">0</span>
+  </button>
+
   <!-- ====== MODAL DE BUSCADOR A PANTALLA COMPLETA ====== -->
   <div class="search-overlay-fullscreen" id="search-overlay-fullscreen">
     <div class="search-modal-box">
       <div class="search-input-liquid mb-4">
         <i class="bi bi-search text-accent" style="font-size: 1.4rem;"></i>
-        <input type="text" id="live-search-input" placeholder="Buscar Nord, SketchUp, Pads..." autocomplete="off">
+        <input type="text" id="live-search-input" placeholder="Buscar productos..." autocomplete="off">
         <button class="btn-close-search" id="btn-close-search" style="background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;"><i class="bi bi-x-lg"></i></button>
       </div>
       
       <!-- Contenedor de Resultados Visuales -->
-      <div id="live-search-results">
+      <div id="live-search-results" class="search-results-container">
         <p class="text-center" style="color: rgba(255,255,255,0.7); font-size: 0.9rem;" id="search-empty-state">Escribe el nombre del producto para buscar...</p>
         
-        <!-- RESULTADOS MUSICALES -->
-        <a href="#" class="search-result-item" data-title="pianos legendarios sf2 bundle completo" style="display: none;">
-          <img src="img/pianos_bundle_boxes.png" alt="Bundle" onerror="this.src='https://ui-avatars.com/api/?name=Pi&background=00e5ff&color=000'">
+        <!-- PRODUCTOS EXACTOS DEL CATÁLOGO -->
+        <a href="#" class="search-result-item" data-title="yamaha legacy collection sf2 motif montage" style="display: none;">
+          <img src="img/yamahakeys.png" alt="Yamaha Legacy" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
           <div>
-            <h6 class="mb-0 text-white fw-bold">Pianos Legendarios Bundle</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$60.00</span>
-          </div>
-        </a>
-        <a href="nordessentials.html" class="search-result-item" data-title="nord essentials sf2 pianos" style="display: none;">
-          <img src="img/nordessentials.png" alt="Nord" onerror="this.src='https://ui-avatars.com/api/?name=No&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Nord Essentials SF2</h6>
+            <h6 class="mb-0 text-white fw-bold">Yamaha Legacy Collection SF2</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$33.00</span>
           </div>
         </a>
-        <a href="yamahakeys.html" class="search-result-item" data-title="yamaha legacy collection sf2 motif montage" style="display: none;">
-          <img src="img/yamahakeys.png" alt="Yamaha" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
+        <a href="#" class="search-result-item" data-title="montage 8 nord stage 3" style="display: none;">
+          <img src="img/nordessentials.png" alt="Montage 8" onerror="this.src='https://ui-avatars.com/api/?name=Mo&background=00e5ff&color=000'">
           <div>
-            <h6 class="mb-0 text-white fw-bold">Yamaha Legacy SF2</h6>
+            <h6 class="mb-0 text-white fw-bold">Montage 8 & Nord Stage 3</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$27.00</span>
+          </div>
+        </a>
+        <a href="yamahakeys.html" class="search-result-item" data-title="yamaha premium keys pianos acusticos" style="display: none;">
+          <img src="img/yamahakeys.png" alt="Yamaha Premium" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">Yamaha Premium Keys</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
+          </div>
+        </a>
+        <a href="#" class="search-result-item" data-title="logic pro" style="display: none;">
+          <img src="img/logicpro.png" alt="Logic Pro" onerror="this.src='https://ui-avatars.com/api/?name=Lo&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">Logic Pro</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$25.00</span>
+          </div>
+        </a>
+        <a href="#" class="search-result-item" data-title="dual legends sf2" style="display: none;">
+          <img src="img/duallegends.png" alt="Dual Legends" onerror="this.src='https://ui-avatars.com/api/?name=Du&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">Dual Legends SF2</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$60.00</span>
+          </div>
+        </a>
+        <a href="rhodes.html" class="search-result-item" data-title="rhodes affair 2 piano electrico" style="display: none;">
+          <img src="img/rhodes.png" alt="Rhodes" onerror="this.src='https://ui-avatars.com/api/?name=Rh&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">Rhodes Affair 2</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
+          </div>
+        </a>
+        <a href="#" class="search-result-item" data-title="nord stage 4 ultimate library" style="display: none;">
+          <img src="img/nord4.png" alt="Nord Stage 4" onerror="this.src='https://ui-avatars.com/api/?name=No&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">Nord Stage 4 Ultimate Library</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$40.00</span>
+          </div>
+        </a>
+        <a href="nordessentials.html" class="search-result-item" data-title="nord essentials sf2 collection" style="display: none;">
+          <img src="img/nordessentials.png" alt="Nord Essentials" onerror="this.src='https://ui-avatars.com/api/?name=No&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">Nord Essentials SF2 Collection</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$33.00</span>
           </div>
         </a>
@@ -786,68 +825,54 @@
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$70.00</span>
           </div>
         </a>
-        <a href="yamahakeys.html" class="search-result-item" data-title="yamaha premium keys pianos acusticos" style="display: none;">
-          <img src="img/yamahakeys.png" alt="Yamaha Keys" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
+        <a href="esword.html" class="search-result-item" data-title="biblias y diccionarios para e-sword" style="display: none;">
+          <img src="img/esword.png" alt="e-Sword" onerror="this.src='https://ui-avatars.com/api/?name=eS&background=00e5ff&color=000'">
           <div>
-            <h6 class="mb-0 text-white fw-bold">Yamaha Premium Keys</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
+            <h6 class="mb-0 text-white fw-bold">Biblias y Diccionarios para E-Sword</h6>
+            <span class="text-accent small fw-bold" style="color: #00ff88;">GRATIS</span>
           </div>
         </a>
-        <a href="rhodes.html" class="search-result-item" data-title="rhodes affair 2 piano electrico" style="display: none;">
-          <img src="img/rhodes.png" alt="Rhodes" onerror="this.src='https://ui-avatars.com/api/?name=Rh&background=00e5ff&color=000'">
+        <a href="#" class="search-result-item" data-title="sketchup 2026 autocad 2026 duo bundle arquitectura" style="display: none;">
+          <img src="img/sketchup.png" alt="Duo" onerror="this.src='https://ui-avatars.com/api/?name=Du&background=00e5ff&color=000'">
           <div>
-            <h6 class="mb-0 text-white fw-bold">Rhodes Affair 2</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
-          </div>
-        </a>
-
-        <!-- RESULTADOS SOFTWARE ARQUITECTURA / INGENIERÍA (CORREGIDO SIN REVIT) -->
-        <a href="sketchup.html" class="search-result-item" data-title="sketchup pro 2026 3d arquitectura diseño" style="display: none;">
-          <img src="img/sketchup.png" alt="SketchUp" onerror="this.src='https://ui-avatars.com/api/?name=Sk&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">SketchUp Pro 2026</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">Ver detalles</span>
+            <h6 class="mb-0 text-white fw-bold">SketchUp 2026 & AutoCAD 2026</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$50.00</span>
           </div>
         </a>
         <a href="#" class="search-result-item" data-title="autocad 2026 arquitectura ingenieria" style="display: none;">
           <img src="img/autocad.png" alt="AutoCAD" onerror="this.src='https://ui-avatars.com/api/?name=AC&background=00e5ff&color=000'">
           <div>
             <h6 class="mb-0 text-white fw-bold">AutoCAD 2026</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">Ver detalles</span>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$35.00</span>
           </div>
         </a>
-        <a href="#" class="search-result-item" data-title="sketchup autocad duo bundle arquitectura" style="display: none;">
-          <img src="img/sketchup.png" alt="Duo" onerror="this.src='https://ui-avatars.com/api/?name=Duo&background=00e5ff&color=000'">
+        <a href="sketchup.html" class="search-result-item" data-title="sketchup pro 2026 3d arquitectura diseño" style="display: none;">
+          <img src="img/sketchup.png" alt="SketchUp" onerror="this.src='https://ui-avatars.com/api/?name=Sk&background=00e5ff&color=000'">
           <div>
-            <h6 class="mb-0 text-white fw-bold">Dúo SketchUp + AutoCAD</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">Ver detalles</span>
+            <h6 class="mb-0 text-white fw-bold">SketchUp Pro 2026</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$27.00</span>
           </div>
         </a>
-        <a href="office.html" class="search-result-item" data-title="microsoft office word excel powerpoint" style="display: none;">
+        <a href="office.html" class="search-result-item" data-title="office home business word excel powerpoint" style="display: none;">
           <img src="img/office.png" alt="Office" onerror="this.src='https://ui-avatars.com/api/?name=Of&background=00e5ff&color=000'">
           <div>
-            <h6 class="mb-0 text-white fw-bold">Microsoft Office Suite</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">Ver detalles</span>
+            <h6 class="mb-0 text-white fw-bold">Office Home & Business</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$40.00</span>
           </div>
         </a>
-        <a href="esword.html" class="search-result-item" data-title="e-sword modulos biblias diccionarios cristianos" style="display: none;">
-          <img src="img/esword.png" alt="e-Sword" onerror="this.src='https://ui-avatars.com/api/?name=eS&background=00e5ff&color=000'">
+        <a href="#" class="search-result-item" data-title="cinema 4d render" style="display: none;">
+          <img src="img/cinema4d.png" alt="Cinema 4D" onerror="this.src='https://ui-avatars.com/api/?name=C4&background=00e5ff&color=000'">
           <div>
-            <h6 class="mb-0 text-white fw-bold">e-Sword Premium Mods</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">Ver detalles</span>
+            <h6 class="mb-0 text-white fw-bold">Cinema 4D</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$35.00</span>
           </div>
         </a>
       </div>
     </div>
   </div>
 
-  <!-- ====== ESTRUCTURA DEL CARRITO LATERAL (CON ANTI-SCROLL CHAINING) ====== -->
+  <!-- ====== ESTRUCTURA DEL CARRITO LATERAL ====== -->
   <div class="cart-overlay" id="cart-overlay"></div>
-  
-  <div class="cart-brand-watermark">
-    <img src="img/dingloft.png" alt="Dingloft Logo" class="animated-watermark-logo">
-  </div>
-
   <div class="cart-drawer" id="cart-drawer">
     <div class="cart-header">
       <div>
@@ -1111,7 +1136,6 @@
     onAuthStateChanged(auth, (user) => {
       currentUser = user;
       window.globalCurrentUser = user; 
-      const desktopAuthContainer = document.getElementById('desktop-auth-container');
       const authContainerGlobal = document.getElementById('auth-container-global');
       const commentWrapper = document.getElementById('comment-section-wrapper');
 
@@ -1122,18 +1146,6 @@
         let displayName = "Usuario";
         if (user.displayName) displayName = user.displayName.split(' ')[0];
         else if (user.email) displayName = user.email.split('@')[0];
-
-        let avatarHtmlDesktop = user.photoURL 
-          ? `<img src="${user.photoURL}" alt="Perfil" style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover;">`
-          : `<div style="width: 26px; height: 26px; border-radius: 50%; background: var(--accent-color); color: #000; display: grid; place-items: center; font-weight: bold; font-size: 13px;">${displayName.charAt(0).toUpperCase()}</div>`;
-
-        if (desktopAuthContainer) {
-          desktopAuthContainer.innerHTML = `
-            <a href="account.html" class="btn-liquid-glass">
-              ${avatarHtmlDesktop} Hola, ${displayName}
-            </a>
-          `;
-        }
 
         if (authContainerGlobal) {
           let mobileContent = user.photoURL 
@@ -1175,13 +1187,6 @@
         document.getElementById('comment-form').addEventListener('submit', handleCommentSubmit);
 
       } else {
-        if (desktopAuthContainer) {
-          desktopAuthContainer.innerHTML = `
-            <a href="login.html" class="btn-liquid-glass">
-              <i class="bi bi-person-circle fs-5"></i> Iniciar Sesión
-            </a>
-          `;
-        }
         if (authContainerGlobal) {
           authContainerGlobal.innerHTML = `
             <a href="login.html" class="mobile-liquid-btn" title="Iniciar Sesión">
