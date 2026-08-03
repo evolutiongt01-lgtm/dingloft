@@ -39,7 +39,6 @@
       position: relative;
     }
 
-    /* Clase para bloquear el scroll de la página fondo / izquierda cuando el carrito está abierto */
     body.cart-open {
       overflow: hidden !important;
       height: 100vh;
@@ -52,14 +51,12 @@
       66% { transform: translate(-100px, 150px) scale(0.9); background: #00ff88; }
       100% { transform: translate(0px, 0px) scale(1); background: #00e5ff; }
     }
-
     @keyframes orbFloat2 {
       0% { transform: translate(0px, 0px) scale(1); background: #a200ff; }
       33% { transform: translate(-200px, -150px) scale(1.3); background: #00ff88; }
       66% { transform: translate(150px, -100px) scale(0.8); background: #00e5ff; }
       100% { transform: translate(0px, 0px) scale(1); background: #a200ff; }
     }
-
     @keyframes orbFloat3 {
       0% { transform: translate(0px, 0px) scale(1); background: #00ff88; }
       33% { transform: translate(100px, -200px) scale(1.1); background: #00e5ff; }
@@ -68,141 +65,69 @@
     }
 
     .bg-orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(140px);
-      z-index: -1;
-      opacity: 0.35;
-      pointer-events: none;
+      position: fixed; border-radius: 50%; filter: blur(140px); z-index: -1; opacity: 0.35; pointer-events: none;
     }
     .orb-1 { width: 450px; height: 450px; top: -100px; left: -100px; animation: orbFloat1 18s infinite alternate ease-in-out; }
     .orb-2 { width: 550px; height: 550px; bottom: -150px; right: -150px; animation: orbFloat2 22s infinite alternate ease-in-out; }
     .orb-3 { width: 350px; height: 350px; top: 40%; left: 35%; animation: orbFloat3 15s infinite alternate ease-in-out; opacity: 0.2; }
 
-    /* Estilos Glassmorphism Globales */
     .glass-effect {
-      background: var(--glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-color);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     }
 
     /* Navbar */
     .navbar-glass {
-      background: rgba(5, 7, 10, 0.6);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border-color);
-      padding: 15px 0;
-      z-index: 1040;
+      background: rgba(5, 7, 10, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color); padding: 15px 0; z-index: 1040;
     }
     .nav-link { color: var(--text-main) !important; font-size: 0.9rem; font-weight: 500; margin: 0 10px; }
     .nav-link:hover { color: var(--accent-color) !important; }
 
-    /* ====== NUEVOS ESTILOS LIQUID GLASS PARA SESIÓN ====== */
+    /* ====== BOTONES Y AVATARES LIQUID GLASS ====== */
     .btn-liquid-glass {
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.05);
-      color: #fff !important;
-      border-radius: 50px;
-      padding: 6px 16px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      text-decoration: none;
-      transition: all 0.3s ease;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.05); color: #fff !important;
+      border-radius: 50px; padding: 6px 16px; display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+      font-size: 0.85rem; text-decoration: none; transition: all 0.3s ease;
     }
     .btn-liquid-glass:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: var(--accent-color);
-      box-shadow: 0 8px 25px rgba(0, 229, 255, 0.35);
-      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.15); border-color: var(--accent-color); box-shadow: 0 8px 25px rgba(0, 229, 255, 0.35); transform: translateY(-2px);
     }
 
-    /* Avatar compacto para la barra superior móvil */
-    .mobile-nav-avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
+    /* Iconos móviles y avatar (Lupa, Home, Foto) unificados */
+    .mobile-liquid-btn, .mobile-nav-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.02));
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 10px rgba(0, 229, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2px;
-      transition: all 0.3s ease;
-      text-decoration: none;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 2px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 10px rgba(0, 229, 255, 0.2); display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease; text-decoration: none; color: #fff; padding: 2px; border-style: none;
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
-    .mobile-nav-avatar:hover {
-      transform: scale(1.05);
-      border-color: var(--accent-color);
-      box-shadow: 0 4px 20px rgba(0, 229, 255, 0.4);
+    .mobile-liquid-btn i { font-size: 1.2rem; }
+    .mobile-liquid-btn:hover, .mobile-nav-avatar:hover {
+      transform: scale(1.05); border-color: var(--accent-color); color: var(--accent-color); box-shadow: 0 4px 20px rgba(0, 229, 255, 0.4); background: rgba(255, 255, 255, 0.1);
     }
-    .mobile-nav-avatar img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      display: block;
-    }
-    .mobile-nav-avatar .avatar-fallback {
-      background: var(--accent-color);
-      color: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 1.1rem;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      margin: 0;
-    }
+    .mobile-nav-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+    .mobile-nav-avatar .avatar-fallback { background: var(--accent-color); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; width: 100%; height: 100%; border-radius: 50%; margin: 0; }
 
     /* Botones Globales */
     .btn-cyan {
-      background: var(--accent-color);
-      color: #000;
-      font-weight: 600;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 24px;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+      background: var(--accent-color); color: #000; font-weight: 600; border: none; border-radius: 8px;
+      padding: 10px 24px; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
     }
     .btn-cyan:hover { background: var(--accent-hover); color: #000; transform: translateY(-2px); box-shadow: 0 5px 25px rgba(0, 229, 255, 0.5); }
     
     .btn-outline-cyan {
-      background: rgba(0, 229, 255, 0.08);
-      color: var(--accent-color);
-      font-weight: 700;
-      border: 1px solid var(--accent-color);
-      border-radius: 8px;
-      padding: 10px 24px;
-      transition: all 0.3s ease;
-      font-size: 0.95rem;
-      cursor: pointer;
+      background: rgba(0, 229, 255, 0.08); color: var(--accent-color); font-weight: 700; border: 1px solid var(--accent-color);
+      border-radius: 8px; padding: 10px 24px; transition: all 0.3s ease; font-size: 0.95rem; cursor: pointer;
     }
     .btn-outline-cyan:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 25px rgba(0,229,255,0.5); }
 
     .btn-outline-custom {
-      background: rgba(255,255,255,0.05);
-      color: var(--text-main);
-      font-weight: 600;
-      border: 1px solid var(--text-muted);
-      border-radius: 8px;
-      padding: 6px 15px;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(5px);
+      background: rgba(255,255,255,0.05); color: var(--text-main); font-weight: 600; border: 1px solid var(--text-muted);
+      border-radius: 8px; padding: 6px 15px; transition: all 0.3s ease; backdrop-filter: blur(5px);
     }
     .btn-outline-custom:hover { border-color: var(--accent-color); color: var(--accent-color); background: rgba(0, 229, 255, 0.05); }
 
@@ -212,10 +137,7 @@
     .product-boxes-display img { width: 100%; height: auto; object-fit: contain; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.7)); }
 
     .feature-box { text-align: center; padding: 5px; }
-    .feature-icon-circle {
-      width: 40px; height: 40px; border: 1px solid rgba(0, 229, 255, 0.3); background: rgba(0, 229, 255, 0.05);
-      border-radius: 50%; display: grid; place-items: center; margin: 0 auto 8px; color: var(--accent-color); font-size: 1rem;
-    }
+    .feature-icon-circle { width: 40px; height: 40px; border: 1px solid rgba(0, 229, 255, 0.3); background: rgba(0, 229, 255, 0.05); border-radius: 50%; display: grid; place-items: center; margin: 0 auto 8px; color: var(--accent-color); font-size: 1rem; }
     .feature-title { font-size: 0.75rem; color: rgba(255,255,255,0.85); font-weight: 500; line-height: 1.2; margin: 0; }
 
     /* OPCIONES DE COMPRA SPLIT */
@@ -223,69 +145,40 @@
     .package-card:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.08) !important; border-color: rgba(255,255,255,0.3); }
 
     .compatible-section { padding: 20px 0 50px; }
-    .compatible-title {
-      text-align: center; letter-spacing: 1px; font-size: 0.85rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; margin-bottom: 25px; padding: 0 10px; line-height: 1.5;
-    }
+    .compatible-title { text-align: center; letter-spacing: 1px; font-size: 0.85rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; margin-bottom: 25px; padding: 0 10px; line-height: 1.5; }
     
     .keyboard-card {
-      background: linear-gradient(145deg, rgba(12, 17, 26, 0.9), rgba(6, 9, 15, 0.98));
-      border: 1px solid var(--border-color); 
-      border-radius: 16px; 
-      padding: 20px 15px; 
-      text-align: center;
-      transition: all 0.3s ease; 
-      height: 100%; 
-      display: flex; 
-      flex-direction: column; 
-      justify-content: space-between; 
-      align-items: center;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      background: linear-gradient(145deg, rgba(12, 17, 26, 0.9), rgba(6, 9, 15, 0.98)); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px 15px; text-align: center; transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.4);
     }
-    .keyboard-card img {
-      width: 100%;
-      height: 90px;
-      object-fit: contain;
-      margin-bottom: 12px;
-      filter: drop-shadow(0 8px 15px rgba(0,0,0,0.7));
-    }
+    .keyboard-card img { width: 100%; height: 90px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.7)); }
     .keyboard-card h5 { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.5px; margin: 0; color: #fff; }
 
-    .creator-note-box {
-      background: linear-gradient(135deg, rgba(0, 229, 255, 0.07), rgba(122, 0, 255, 0.04));
-      border: 1px solid rgba(0, 229, 255, 0.25); border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    /* ====== PORTAFOLIO Y CREADOR ====== */
+    .portfolio-card {
+      background: linear-gradient(145deg, rgba(12, 17, 26, 0.95), rgba(5, 7, 10, 0.98));
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
     }
-    .creator-avatar {
-      width: 48px; height: 48px; min-width: 48px; min-height: 48px; border-radius: 50%; background: linear-gradient(135deg, #00e5ff, #7a00ff);
-      display: grid; place-items: center; font-weight: 800; font-size: 1.1rem; color: #000; flex-shrink: 0;
+    .portfolio-avatar {
+      width: 100px; height: 100px; border-radius: 50%; padding: 4px;
+      background: linear-gradient(135deg, var(--accent-color), #a200ff);
+      box-shadow: 0 10px 25px rgba(0, 229, 255, 0.3); flex-shrink: 0; margin: 0 auto;
     }
+    .portfolio-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #05070a; background: #111; }
 
-    .software-badge-box {
-      background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color); border-radius: 12px;
-      padding: 12px 15px; display: flex; align-items: center; gap: 12px;
-    }
+    .software-badge-box { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 15px; display: flex; align-items: center; gap: 12px; }
     .software-badge-box i { font-size: 1.5rem; color: var(--accent-color); }
 
-    .liquid-glass-container {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
-      backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); padding: 12px;
-    }
+    .liquid-glass-container { background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); padding: 12px; }
 
     /* CARRUSEL OPTIMIZADO PARA MÓVIL */
-    .similar-carousel-wrapper {
-      display: flex; gap: 15px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 10px 5px 20px 5px; scrollbar-width: thin; scrollbar-color: var(--accent-color) rgba(255,255,255,0.05);
-    }
+    .similar-carousel-wrapper { display: flex; gap: 15px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 10px 5px 20px 5px; scrollbar-width: thin; scrollbar-color: var(--accent-color) rgba(255,255,255,0.05); }
     .similar-carousel-wrapper::-webkit-scrollbar { height: 5px; }
     .similar-carousel-wrapper::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
-
-    .similar-card {
-      min-width: 260px; max-width: 260px; flex: 0 0 auto; scroll-snap-align: start; background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
-      backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between;
-      transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
-    .similar-img-box {
-      width: 100%; height: 150px; background: rgba(0,0,0,0.4); border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 8px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden;
-    }
+    .similar-card { min-width: 260px; max-width: 260px; flex: 0 0 auto; scroll-snap-align: start; background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    .similar-img-box { width: 100%; height: 150px; background: rgba(0,0,0,0.4); border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 8px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; }
     .similar-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.6)); }
 
     /* ====== COMENTARIOS ====== */
@@ -293,75 +186,49 @@
     .comment-card { background: rgba(12, 17, 26, 0.85); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 12px; }
     .comment-card:hover { border-color: rgba(0,229,255,0.4); }
     
-    .login-prompt-box {
-      background: linear-gradient(135deg, rgba(0, 229, 255, 0.06), rgba(17, 21, 31, 0.95)); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 16px; padding: 30px 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    .login-prompt-icon {
-      width: 60px; height: 60px; background: rgba(0, 229, 255, 0.1); border: 2px solid var(--accent-color); border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: var(--accent-color); font-size: 1.5rem;
-    }
+    .login-prompt-box { background: linear-gradient(135deg, rgba(0, 229, 255, 0.06), rgba(17, 21, 31, 0.95)); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 16px; padding: 30px 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .login-prompt-icon { width: 60px; height: 60px; background: rgba(0, 229, 255, 0.1); border: 2px solid var(--accent-color); border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: var(--accent-color); font-size: 1.5rem; }
 
     .comment-form-box { background: rgba(12, 17, 26, 0.95); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
     .form-control-custom { background: rgba(5, 7, 10, 0.9); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 8px; padding: 10px; font-size: 0.9rem; }
     .form-control-custom:focus { background: rgba(5, 7, 10, 1); border-color: var(--accent-color); color: #fff; box-shadow: 0 0 10px rgba(0,229,255,0.3); outline: none; }
     .form-control-custom::placeholder { color: #94a3b8; }
 
-    .btn-like {
-      background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #94a3b8; border-radius: 20px; padding: 3px 10px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s ease;
-    }
+    .btn-like { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #94a3b8; border-radius: 20px; padding: 3px 10px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s ease; }
     .btn-like:hover { background: rgba(255, 0, 85, 0.1); color: #ff0055; border-color: rgba(255, 0, 85, 0.3); }
     .btn-like.liked { background: rgba(255, 0, 85, 0.15); color: #ff0055; border-color: #ff0055; }
 
     /* ====== ESTILOS DEL CARRITO LATERAL ====== */
-    .cart-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease;
-    }
+    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
     .cart-overlay.active { opacity: 1; visibility: visible; }
-
-    /* LOGO ANIMADO FLOTANTE */
-    .cart-brand-watermark {
-      position: fixed; top: 50%; left: 30%; transform: translate(-50%, -50%) scale(0.9); text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none;
-    }
+    .cart-brand-watermark { position: fixed; top: 50%; left: 30%; transform: translate(-50%, -50%) scale(0.9); text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none; }
     .cart-overlay.active ~ .cart-brand-watermark { opacity: 0.85; visibility: visible; transform: translate(-50%, -50%) scale(1); }
-    .cart-brand-watermark::after {
-      content: ''; position: absolute; top: 50%; left: 50%; width: 260px; height: 260px; background: radial-gradient(circle, rgba(0, 229, 255, 0.5) 0%, rgba(162, 0, 255, 0.3) 40%, transparent 70%); transform: translate(-50%, -50%); filter: blur(30px); z-index: -1; animation: lightGlow 3s infinite alternate ease-in-out;
-    }
+    .cart-brand-watermark::after { content: ''; position: absolute; top: 50%; left: 50%; width: 260px; height: 260px; background: radial-gradient(circle, rgba(0, 229, 255, 0.5) 0%, rgba(162, 0, 255, 0.3) 40%, transparent 70%); transform: translate(-50%, -50%); filter: blur(30px); z-index: -1; animation: lightGlow 3s infinite alternate ease-in-out; }
     @keyframes logoPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 20px rgba(0,229,255,0.5)); } 50% { transform: translate(-50%, -50%) scale(1.05); filter: drop-shadow(0 0 40px rgba(0,229,255,0.8)); } }
     @keyframes lightGlow { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } 100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; } }
     .animated-watermark-logo { width: 240px; max-width: 80vw; animation: logoPulse 4s infinite ease-in-out; position: relative; }
 
-    .cart-drawer {
-      position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh;
-      background: rgba(10, 14, 20, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-left: 1px solid var(--border-color);
-      box-shadow: -15px 0 40px rgba(0, 0, 0, 0.9); z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column;
-    }
+    .cart-drawer { position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh; background: rgba(10, 14, 20, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-left: 1px solid var(--border-color); box-shadow: -15px 0 40px rgba(0, 0, 0, 0.9); z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; }
     .cart-drawer.active { right: 0; }
-
     .cart-header { padding: 20px 25px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
     .btn-close-cart { background: transparent; border: none; color: #ffffff; font-size: 1.3rem; line-height: 1; transition: color 0.3s; cursor: pointer; }
     .btn-close-cart:hover { color: var(--accent-color); }
-
     .cart-items-container { flex: 1; overflow-y: auto; padding: 20px 25px; -webkit-overflow-scrolling: touch; }
-
     .cart-item { display: flex; gap: 15px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; }
     .cart-item-img { width: 60px; height: 80px; background: rgba(0,0,0,0.3); border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; padding: 5px; }
     .cart-item-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
     .cart-item-info { flex: 1; }
     .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; color: #ffffff; }
     .cart-item-desc { font-size: 0.75rem; color: #ffffff; opacity: 0.85; margin-bottom: 10px; }
-    
     .qty-controls { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; background: rgba(0,0,0,0.2); }
     .qty-btn { background: transparent; border: none; color: #fff; padding: 2px 10px; font-size: 0.9rem; cursor: pointer; }
     .qty-btn:hover { background: rgba(255,255,255,0.1); }
     .qty-value { padding: 0 10px; font-size: 0.85rem; font-weight: 600; color: #ffffff; }
-
     .cart-item-remove { position: absolute; top: 0; right: 0; background: transparent; border: none; color: #ffffff; font-size: 1rem; cursor: pointer; }
     .cart-item-remove:hover { color: #ff4444; }
 
     .cart-footer { padding: 20px 25px; background: rgba(0, 0, 0, 0.8); border-top: 1px solid var(--border-color); flex-shrink: 0; max-height: 55vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .cart-empty-msg { text-align: center; color: #ffffff; margin-top: 50px; }
-
     .coupon-box { display: flex; gap: 8px; margin-bottom: 15px; }
     .coupon-input { flex: 1; background: rgba(4, 9, 18, 0.7); border: 1px solid rgba(153, 185, 216, 0.25); border-radius: 8px; color: #fff; padding: 8px 12px; font-size: 0.85rem; text-transform: uppercase; }
     .coupon-input::placeholder { color: #6f7d91; text-transform: none; }
@@ -371,7 +238,6 @@
     .coupon-msg { font-size: 0.78rem; margin-bottom: 12px; font-weight: 500; }
 
     .paypal-white-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.4); padding: 15px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); margin-top: 10px; }
-
     .btn-free-checkout { background: #00ff88; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 14px; width: 100%; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,255,136,0.2); cursor: pointer; }
     .btn-free-checkout:hover { background: #00e67a; transform: translateY(-2px); }
 
@@ -381,7 +247,6 @@
     .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 30px 20px; width: min(420px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     .success-modal-overlay.active .success-modal-box { transform: scale(1) translateY(0); }
     .success-icon-ring { width: 70px; height: 70px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: #00ff88; font-size: 1.8rem; }
-
     .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(50,221,145,.5); border-radius: 12px; color: #eafff3; background: #0c251d; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
     .toast.show { transform: translateY(0); }
 
@@ -411,37 +276,35 @@
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
-    <div class="container">
-      <!-- LOGO DE DINGLOFT EN VEZ DE TEXTO -->
+    <div class="container d-flex justify-content-between align-items-center">
+      <!-- LOGO DE DINGLOFT -->
       <a class="navbar-brand d-flex align-items-center" href="index.html">
         <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
       </a>
       
-      <!-- ELEMENTOS MÓVILES A LA DERECHA (AVATAR + HAMBURGUESA) -->
-      <div class="d-flex align-items-center gap-2 d-lg-none">
-        <div id="mobile-auth-container">
-          <!-- Se inyecta por JS -->
-        </div>
-        <button class="navbar-toggler border-0 p-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="filter: invert(1);">
-          <span class="navbar-toggler-icon"></span>
+      <!-- ====== MENÚ MÓVIL (NUEVO ESTILO SIN HAMBURGUESA) ====== -->
+      <div class="d-flex align-items-center gap-3 d-lg-none">
+        <a href="index.html" class="mobile-liquid-btn" title="Inicio">
+          <i class="bi bi-house-door-fill"></i>
+        </a>
+        <button class="mobile-liquid-btn" title="Buscar">
+          <i class="bi bi-search"></i>
         </button>
+        <div id="mobile-auth-container">
+          <!-- El avatar liquid glass se inyecta por JS aquí -->
+        </div>
       </div>
 
-      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <!-- ====== MENÚ PC ====== -->
+      <div class="collapse navbar-collapse justify-content-center d-none d-lg-block" id="navbarNav">
         <ul class="navbar-nav align-items-center">
           <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
           <li class="nav-item"><a class="nav-link" href="index.html">Catálogo</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
-          
-          <li class="nav-item d-lg-none mt-2 mb-2 w-100">
-            <button class="btn-cyan w-100 mobile-cart-btn">
-              <i class="bi bi-cart3"></i> Ver Carrito (<span class="mobile-cart-count">0</span>)
-            </button>
-          </li>
         </ul>
       </div>
+      
       <div class="d-none d-lg-flex align-items-center gap-3">
-        <!-- CONTENEDOR DE SESIÓN PC (BOTÓN LIQUID GLASS) -->
         <div id="desktop-auth-container">
           <!-- Se inyecta por JS -->
         </div>
@@ -451,6 +314,11 @@
       </div>
     </div>
   </nav>
+
+  <!-- Botón Carrito Flotante para Móvil -->
+  <button class="btn-cyan mobile-cart-btn d-lg-none" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; border-radius: 50px; padding: 12px 20px; box-shadow: 0 10px 25px rgba(0,229,255,0.4);">
+    <i class="bi bi-cart3 fs-5"></i> <span class="mobile-cart-count ms-1">0</span>
+  </button>
 
   <!-- SECCIÓN SUPERIOR: CAJAS 3D Y DETALLES -->
   <section class="product-detail-section">
@@ -502,7 +370,6 @@
             </div>
           </div>
 
-          <!-- PRECIO CON DESCUENTO Y EFECTO DE OFERTA -->
           <div class="mb-3 d-flex align-items-end gap-3">
             <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--accent-color) !important; line-height: 1;">$60.00</span>
             <div class="d-flex flex-column pb-1">
@@ -511,24 +378,22 @@
             </div>
           </div>
 
-          <!-- ====== NUEVA SECCIÓN DE OPCIONES DE COMPRA ====== -->
+          <!-- ====== SECCIÓN DE OPCIONES DE COMPRA ====== -->
           <div class="purchase-options mt-4">
             <p class="text-info fw-bold mb-2" style="font-size: 0.8rem; letter-spacing: 1px;"><i class="bi bi-cart-check"></i> ELIGE TU PAQUETE:</p>
             
-            <!-- Opcion Bundle -->
             <div class="package-card glass-effect p-3 mb-2" style="border-color: var(--accent-color); background: rgba(0, 229, 255, 0.05); position: relative; overflow: hidden;">
-              <div class="position-absolute top-0 end-0 bg-accent text-dark px-2 py-1 fw-bold" style="font-size: 0.65rem; border-bottom-left-radius: 8px; background: var(--accent-color);">MÁS POPULAR</div>
+              <div class="position-absolute top-0 end-0 px-2 py-1 fw-bold" style="font-size: 0.65rem; border-bottom-left-radius: 8px; background: var(--accent-color); color: #000;">MÁS POPULAR</div>
               <div class="d-flex justify-content-between align-items-center mb-1">
                 <span class="fw-bold text-white">Bundle Completo</span>
                 <span class="fw-bold text-accent">$60.00</span>
               </div>
               <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Nord + Yamaha + Bonus PAD</p>
-              <button class="btn-cyan w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="9" data-name="Pianos Legendarios SF2" data-price="60" data-img="pianos_bundle_boxes" data-type="Librería vitalicia">
+              <button class="btn-cyan w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="9" data-name="Pianos Legendarios SF2 Bundle" data-price="60" data-img="pianos_bundle_boxes" data-type="Librería vitalicia">
                 <i class="bi bi-cart3"></i> AGREGAR BUNDLE
               </button>
             </div>
 
-            <!-- Opcion Nord -->
             <div class="package-card glass-effect p-3 mb-2">
               <div class="d-flex justify-content-between align-items-center mb-1">
                 <span class="fw-bold text-white">Solo Nord Essentials</span>
@@ -540,7 +405,6 @@
               </button>
             </div>
 
-            <!-- Opcion Yamaha -->
             <div class="package-card glass-effect p-3 mb-3">
               <div class="d-flex justify-content-between align-items-center mb-1">
                 <span class="fw-bold text-white">Solo Yamaha Legacy</span>
@@ -561,12 +425,53 @@
     </div>
   </section>
 
+  <!-- ====== PORTAFOLIO Y CREADOR (NUEVO DISEÑO) ====== -->
+  <section class="container mt-5 mb-5">
+    <div class="portfolio-card">
+      <div class="d-flex flex-column flex-md-row align-items-center gap-4">
+        <div class="portfolio-avatar">
+          <!-- Si subes una foto tuya a img/cesar.png, cámbialo aquí. Si no, genera el avatar "C" -->
+          <img src="img/cesar.png" alt="Cesar Matzar" onerror="this.src='https://ui-avatars.com/api/?name=Cesar&background=00e5ff&color=000&size=120'">
+        </div>
+        <div class="text-center text-md-start flex-grow-1">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-2 gap-3">
+            <div>
+              <h4 class="text-white fw-bold mb-1 d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                Cesar Matzar <i class="bi bi-patch-check-fill text-accent fs-5" style="color: var(--accent-color);"></i>
+              </h4>
+              <p class="text-info small fw-semibold mb-0" style="letter-spacing: 0.5px;">Ingeniero de Audio, Músico y Desarrollador</p>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn-cyan py-1 px-3 d-flex align-items-center gap-2" style="font-size: 0.85rem;"><i class="bi bi-person-plus-fill"></i> Seguir</button>
+              <a href="index.html" class="btn-outline-cyan py-1 px-3 text-decoration-none" style="font-size: 0.85rem;"><i class="bi bi-grid-fill"></i> Portafolio</a>
+            </div>
+          </div>
+          <p class="text-white small mt-3" style="color: #f1f5f9; line-height: 1.6; text-align: justify;">
+            Especialista en integración de multitracks, MainStage y programación de sintetizadores líderes como Yamaha Motif, Montage M8x y Nord Stage 4. 
+            Apasionado por elevar la calidad del audio en vivo en iglesias cristianas, diseñando configuraciones de monitores personales alámbricos para latencia cero 
+            y gestionando ruteos complejos en consolas como Behringer WING. He dividido este paquete pensando en la economía de los músicos, para que adquieran únicamente lo que su ministerio necesita.
+          </p>
+          <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-5 mt-4 pt-3 border-top border-secondary border-opacity-25">
+            <div class="text-center">
+              <span class="d-block text-white fw-bold fs-4">12.4K</span>
+              <span class="text-muted" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Seguidores</span>
+            </div>
+            <div class="text-center">
+              <span class="d-block text-white fw-bold fs-4">48</span>
+              <span class="text-muted" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Productos Digitales</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- SECCIÓN INFERIOR: COMPATIBLE CON Y MUESTREO -->
   <section class="compatible-section">
     <div class="container">
-      <div class="compatible-title">Capturado directamente de la fuente: Sonidos sampleados de los sintetizadores originales</div>
+      <div class="compatible-title">Capturado directamente de la fuente</div>
       
-      <div class="row g-3 justify-content-center mb-4">
+      <div class="row g-3 justify-content-center mb-5">
         <div class="col-4">
           <div class="keyboard-card">
             <img src="img/keyboard_nord4.png" alt="Nord Stage 4">
@@ -583,26 +488,6 @@
           <div class="keyboard-card">
             <img src="img/keyboard_montagem8x.png" alt="Montage M8x">
             <h5>MONTAGE M8X</h5>
-          </div>
-        </div>
-      </div>
-
-      <div class="row justify-content-center mb-4">
-        <div class="col-lg-10">
-          <div class="creator-note-box">
-            <div class="d-flex align-items-center gap-3 mb-2">
-              <div class="creator-avatar">C</div>
-              <div>
-                <h6 class="text-white mb-0 fw-bold">Nota del Creador</h6>
-                <small class="text-info" style="font-size: 0.75rem;">Cesar — Músico y Desarrollador (Ministerio Ebenezer, California)</small>
-              </div>
-            </div>
-            <p class="text-white mb-2" style="font-size: 0.9rem; line-height: 1.6; color: #f1f5f9;">
-              "Desarrollé esta librería pensando en la realidad de los pianistas evangélicos en directo. Al ser miembro de una de las iglesias de <b>Ministerios Ebenezer en California</b>, me pasaba buscando constantemente los timbres exactos a los que estamos acostumbrados para llevarlos a una configuración portátil en móvil o iPad.<br><br>
-              Pensando en la economía de los músicos, <b>he dividido el paquete principal</b> para que puedas elegir llevarte todo el arsenal (Nord + Yamaha) o comprar únicamente la marca que utilizas (Solo Nord o Solo Yamaha) y ahorrar. Lo mejor es que <b>cualquier paquete que elijas incluye de regalo el Bonus PAD de ambientación</b>.<br><br>
-              Para que comprueben la calidad antes de adquirir cualquier versión, les obsequio esta <b>prueba gratuita de 531.5 MB</b> con la base esencial: el icónico *Grand Piano* del Yamaha Motif y Montage M8x, y si eres usuario de Nord, el legendario *Royal Grand* junto a un Pad."
-            </p>
-            <div class="text-end text-info small fw-semibold" style="font-size: 0.75rem;"><i class="bi bi-patch-check-fill"></i> Diseñado por músicos, para músicos.</div>
           </div>
         </div>
       </div>
@@ -691,7 +576,7 @@
               <div>
                 <div class="similar-img-box"><img src="img/cosmos.png" alt="Cosmos Collection"></div>
                 <h6 class="text-white fw-bold fs-6 mb-1">Cosmos Collection</h6>
-                <p class="text-white small mb-2" style="color:#cbd5e1; font-size: 0.75rem;">Pads y texturas espaciales.</p>
+                <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Pads y texturas espaciales.</p>
               </div>
               <div class="d-flex justify-content-between align-items-center mt-2">
                 <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$70.00</span>
@@ -703,7 +588,7 @@
               <div>
                 <div class="similar-img-box"><img src="img/yamahakeys.png" alt="Yamaha Premium Keys"></div>
                 <h6 class="text-white fw-bold fs-6 mb-1">Yamaha Premium Keys</h6>
-                <p class="text-white small mb-2" style="color:#cbd5e1; font-size: 0.75rem;">Pianos acústicos y eléctricos.</p>
+                <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Pianos acústicos y eléctricos.</p>
               </div>
               <div class="d-flex justify-content-between align-items-center mt-2">
                 <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$30.00</span>
@@ -715,7 +600,7 @@
               <div>
                 <div class="similar-img-box"><img src="img/rhodes.png" alt="Rhodes Affair 2"></div>
                 <h6 class="text-white fw-bold fs-6 mb-1">Rhodes Affair 2</h6>
-                <p class="text-white small mb-2" style="color:#cbd5e1; font-size: 0.75rem;">Sonidos de piano eléctrico cálidos.</p>
+                <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Sonidos de piano eléctrico cálidos.</p>
               </div>
               <div class="d-flex justify-content-between align-items-center mt-2">
                 <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$30.00</span>
@@ -727,7 +612,7 @@
               <div>
                 <div class="similar-img-box"><img src="img/nordessentials.png" alt="Nord Essentials"></div>
                 <h6 class="text-white fw-bold fs-6 mb-1">Nord Essentials SF2</h6>
-                <p class="text-white small mb-2" style="color:#cbd5e1; font-size: 0.75rem;">Patches clásicos esenciales.</p>
+                <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Patches clásicos esenciales.</p>
               </div>
               <div class="d-flex justify-content-between align-items-center mt-2">
                 <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$33.00</span>
@@ -767,7 +652,7 @@
     </div>
   </footer>
 
-  <!-- ====== ESTRUCTURA DEL CARRITO LATERAL Y BLOQUEO IZQUIERDO ====== -->
+  <!-- ====== ESTRUCTURA DEL CARRITO LATERAL ====== -->
   <div class="cart-overlay" id="cart-overlay"></div>
   
   <div class="cart-brand-watermark">
@@ -858,7 +743,7 @@
       { name: "David Cifuentes", rating: 5, text: "Excelente calidad de sampleo. Es la mejor inversión que hemos hecho para nuestro equipo de alabanza en la iglesia local.", likes: 40, likedBy: [] },
       { name: "Samuel Pineda", rating: 5, text: "¡Muy recomendado! Lo instalé en BS-16i para mi iPad y la respuesta al tacto es increíble. Se nota el trabajo de sampleo profesional.", likes: 22, likedBy: [] },
       { name: "Emanuel Vásquez", rating: 4, text: "Los pianos suenan súper limpios en las mezclas de en vivo. El único detalle es que tardé un poco en configurar los canales, pero soporte ayudó rápido.", likes: 16, likedBy: [] },
-      { name: "Joel Hernández", rating: 5, text: "Tremendo aporte para los músicos cristianos. Tener los sonidos del Motif y Nord en la palma de la mano no tiene precio.", likes: 33, likedBy: [] },
+      { name: "Joel Hernández", rating: 5, text: "Tremendo aporte para musicians cristianos. Tener los sonidos del Motif y Nord en la palma de la mano no tiene precio.", likes: 33, likedBy: [] },
       { name: "Jonathan Orellana", rating: 5, text: "El bonus PAD de regalo está excelente para las transiciones. 10/10 en calidad de audio y atención al cliente de Dingloft.", likes: 29, likedBy: [] },
       { name: "Misael Castillo", rating: 5, text: "¡Impresionante! Lo probé con FL Studio Mobile y corrió de maravilla. Gracias Cesar por compartir esta tremenda herramienta.", likes: 21, likedBy: [] }
     ];
@@ -1005,8 +890,8 @@
         }
         if (mobileAuthContainer) {
           mobileAuthContainer.innerHTML = `
-            <a href="login.html" class="btn-liquid-glass px-2 py-1" style="font-size: 0.8rem;">
-              <i class="bi bi-person-circle"></i>
+            <a href="login.html" class="mobile-liquid-btn" title="Iniciar Sesión">
+              <i class="bi bi-person-fill"></i>
             </a>
           `;
         }
@@ -1332,18 +1217,15 @@
         if(cartSubtotalText) cartSubtotalText.textContent = `$${totalPrice.toFixed(2)}`;
         if(cartTotalText) cartTotalText.textContent = `$${(couponApplied ? 0 : totalPrice).toFixed(2)}`;
         
-        // GUARDAR EL ESTADO DEL CARRITO EN LA MEMORIA DEL NAVEGADOR
         localStorage.setItem('dingloft_cart', JSON.stringify(cart));
       };
 
-      // Función para limpiar el carrito una vez comprado
       window.clearCart = () => {
         cart = [];
         localStorage.removeItem('dingloft_cart');
         updateCartUI();
       };
 
-      // Iniciar el carrito apenas cargue la página
       updateCartUI();
 
       if(applyCouponBtn) {
