@@ -1,1 +1,870 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin | Dingloft</title>
+  
+  <link rel="icon" href="img/favicon.png" type="image/png">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <style>
+    :root { --bg:#060911; --panel:#0c1421; --line:rgba(173,201,232,.14); --text:#f4f8ff; --muted:#9eacc0; --cyan:#12d7f6; --violet:#9a5cff; --green:#35dd92; --red:#ff5050; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; color:var(--text); font-family:Inter,system-ui,sans-serif; background:radial-gradient(circle at 70% 14%,rgba(255,80,80,.05),transparent 28%),radial-gradient(circle at 15% 80%,rgba(0,202,255,.08),transparent 28%),var(--bg); overflow-x: hidden; }
+    button,a { font:inherit; } button { cursor:pointer; }
+    
+    /* BLOQUEO DE SEGURIDAD */
+    #security-lock { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #04070a; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
+    #security-lock.unlocked { opacity: 0; visibility: hidden; pointer-events: none; }
+    .lock-box { background: rgba(16, 27, 45, 0.6); border: 1px solid rgba(255, 80, 80, 0.3); border-radius: 20px; padding: 40px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,80,80,0.05); backdrop-filter: blur(10px); }
+    .lock-box i { font-size: 3rem; color: var(--red); margin-bottom: 10px; display: block; }
+    .lock-box h2 { margin: 0 0 10px; font-weight: 800; color: white; letter-spacing: -1px; }
+    .lock-box p { color: var(--muted); font-size: 0.9rem; margin-bottom: 25px; }
+    .pass-input { width: 100%; padding: 14px; background: rgba(0,0,0,0.5); border: 1px solid var(--line); border-radius: 12px; color: white; font-family: monospace; font-size: 1.1rem; text-align: center; margin-bottom: 15px; letter-spacing: 2px; transition: .2s; }
+    .pass-input:focus { outline: none; border-color: var(--red); box-shadow: 0 0 15px rgba(255,80,80,0.2); }
+    .btn-unlock { width: 100%; padding: 14px; background: linear-gradient(90deg, #ff5050, #ff2a2a); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem; transition: .2s; text-transform: uppercase; letter-spacing: 1px; }
+    .btn-unlock:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,80,80,0.3); }
 
+    /* REPRODUCTOR DE MÚSICA FLOTANTE LIQUID GLASS */
+    .music-player-pill { position: fixed; bottom: 25px; right: 25px; background: rgba(16, 27, 45, 0.75); border: 1px solid rgba(255, 255, 255, 0.15); padding: 12px 18px; border-radius: 50px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 15px 35px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 14px; z-index: 9999; max-width: 340px; width: 100%; }
+    .music-icon-box { width: 40px; height: 40px; background: rgba(53, 221, 146, 0.15); border: 1px solid rgba(53, 221, 146, 0.4); border-radius: 50%; display: grid; place-items: center; color: var(--green); font-size: 1.1rem; flex-shrink: 0; animation: pulseMusic 2s infinite ease-in-out; }
+    @keyframes pulseMusic { 0%, 100% { box-shadow: 0 0 5px rgba(53,221,146,0.2); } 50% { box-shadow: 0 0 15px rgba(53,221,146,0.6); } }
+    .music-info { overflow: hidden; flex: 1; }
+    .music-title { font-size: 0.82rem; font-weight: 700; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; }
+    .music-artist { font-size: 0.72rem; color: var(--muted); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .music-controls { display: flex; align-items: center; gap: 8px; }
+    .music-btn { background: rgba(255,255,255,0.06); border: 1px solid var(--line); color: white; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 0.85rem; transition: .2s; cursor: pointer; }
+    .music-btn:hover { background: var(--green); color: #04111a; border-color: var(--green); }
+
+    /* MODAL INTERACTIVO LIQUID GLASS */
+    .custom-modal-overlay { position: fixed; inset: 0; background: rgba(4, 8, 15, 0.85); backdrop-filter: blur(12px); z-index: 999999; display: grid; place-items: center; opacity: 0; pointer-events: none; transition: .3s ease; }
+    .custom-modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .custom-modal-box { width: 90%; max-width: 420px; background: linear-gradient(145deg, rgba(16,27,45,0.95), rgba(8,14,25,0.98)); border: 1px solid rgba(255,255,255,0.15); border-radius: 24px; padding: 30px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.6); transform: scale(0.9); transition: .3s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .custom-modal-overlay.active .custom-modal-box { transform: scale(1); }
+    .custom-modal-icon { width: 60px; height: 60px; background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.3); border-radius: 50%; display: grid; place-items: center; color: var(--red); font-size: 1.5rem; margin: 0 auto 15px; }
+    .custom-modal-title { font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 8px; }
+    .custom-modal-desc { font-size: 0.88rem; color: var(--muted); margin-bottom: 25px; line-height: 1.5; }
+    .custom-modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .app { min-height:100vh; display:grid; grid-template-columns:292px 1fr; filter: blur(10px); transition: filter 0.5s ease; }
+    body.unlocked .app { filter: blur(0); }
+
+    /* WIDGET LIQUID GLASS (RELOJ DINÁMICO) */
+    .world-clock-pill { display: inline-flex; align-items: center; gap: 20px; background: rgba(16, 27, 45, 0.45); border: 1px solid rgba(255, 255, 255, 0.12); padding: 10px 22px; border-radius: 50px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 0 12px rgba(255,255,255,0.03); margin-top: 15px; flex-wrap: wrap; }
+    .clock-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 600; color: #c4d0df; }
+    .clock-item i { color: var(--cyan); font-size: 1rem; }
+    .clock-item span { color: white; font-family: monospace; font-size: 0.9rem; }
+    .clock-divider { width: 1px; height: 16px; background: var(--line); }
+
+    .sidebar { position:sticky; top:0; height:100vh; display:flex; flex-direction:column; padding:33px 17px 20px; border-right:1px solid var(--line); background:rgba(4,8,15,.77); backdrop-filter:blur(18px); }
+    .brand { margin:0 36px 50px; text-decoration:none; color:white; font-weight:800; font-size:1.75rem; letter-spacing:-.07em; } .brand span { color:var(--red); }
+    .nav { display:grid; gap:7px; } .nav a { display:flex; gap:16px; align-items:center; padding:15px 19px; border-radius:13px; text-decoration:none; color:#c4d0df; font-size:.96rem; transition:.2s ease; }
+    .nav a i { width:21px; font-size:1.3rem; text-align:center; } .nav a:hover { background:rgba(255,255,255,.05); color:white; }
+    .nav a.active { color:var(--red); font-weight:700; background:linear-gradient(90deg,rgba(255,80,80,.1),rgba(41,71,112,.05)); box-shadow:inset 2px 0 var(--red); }
+    .profile { margin-top:auto; padding:18px; border:1px solid var(--line); border-radius:17px; background:rgba(10,16,28,.68); } .profile-top { display:flex; align-items:center; gap:12px; }
+    .avatar { width:42px; height:42px; display:grid; place-items:center; border-radius:50%; color:#07131e; font-weight:800; background:linear-gradient(135deg,#ff8a8a,#ff5050); box-shadow:0 0 0 2px rgba(255,80,80,.42); overflow:hidden; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile strong { display:block; font-size:.87rem; } .profile small { display:block; margin-top:4px; color:var(--muted); font-size:.72rem; overflow:hidden; text-overflow:ellipsis; }
+    .logout { width:100%; display:flex; gap:12px; align-items:center; margin-top:17px; padding:12px 0 0; border:0; border-top:1px solid var(--line); color:#c7d3e1; background:transparent; text-align:left; font-size:.86rem; }
+    
+    .content { min-width:0; padding:42px clamp(25px,5vw,78px) 37px; } 
+    .top { display:flex; flex-direction: column; gap: 15px; }
+    .top h1 { margin:0; letter-spacing:-.06em; font-size:clamp(2rem,3vw,3.2rem); } 
+    
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin:34px 0 26px; } .stat { display:flex; align-items:center; gap:19px; min-height:118px; padding:23px 26px; border:1px solid var(--line); border-radius:18px; background:linear-gradient(145deg,rgba(18,29,47,.84),rgba(8,14,25,.71)); }
+    .stat i { width:57px; height:57px; display:grid; place-items:center; border-radius:16px; font-size:1.75rem; color:var(--red); border:1px solid rgba(255,80,80,.55); background:rgba(255,80,80,.08); } 
+    .stat:nth-child(2) i{color:var(--cyan);border-color:rgba(0,217,255,.55);background:rgba(0,210,255,.08)}
+    .stat:nth-child(3) i{color:var(--violet);border-color:rgba(154,92,255,.55);background:rgba(154,92,255,.08)}
+    .stat:nth-child(4) i{color:var(--green);border-color:rgba(53,221,146,.55);background:rgba(53,221,146,.08)}
+    .stat span { display:block; color:#cad5e3; font-size:.89rem; } .stat strong { display:block; margin-top:4px; font-size:2rem; line-height:1; color:var(--text); } 
+
+    .table-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+    .search-input { flex: 1; min-width: 240px; padding: 12px 16px; background: rgba(16, 27, 45, 0.6); border: 1px solid var(--line); border-radius: 12px; color: white; font-family: inherit; font-size: 0.9rem; }
+    .search-input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 10px rgba(18,215,246,0.2); }
+    .btn-export { background: rgba(53,221,146,0.1); border: 1px solid var(--green); color: var(--green); padding: 12px 20px; border-radius: 12px; font-weight: 700; font-size: 0.88rem; display: flex; align-items: center; gap: 8px; transition: .2s; }
+    .btn-export:hover { background: var(--green); color: #04111a; box-shadow: 0 5px 15px rgba(53,221,146,0.3); }
+
+    .tabs-header { display: flex; border-bottom: 1px solid var(--line); margin-bottom: 25px; overflow-x: auto; white-space: nowrap; }
+    .tab-btn { flex: 1; min-width: 150px; max-width: 220px; background: transparent; border: none; padding: 15px 10px; color: var(--muted); font-size: 0.95rem; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; transition: .2s ease; }
+    .tab-btn:hover { color: white; }
+    .tab-btn.active { color: var(--red); border-bottom-color: var(--red); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* TARJETAS DE RESERVA */
+    .reserva-card { background: rgba(16, 27, 45, 0.4); border: 1px solid var(--line); border-radius: 16px; padding: 20px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 20px; transition: .2s ease; }
+    .reserva-card:hover { border-color: rgba(255,255,255,0.2); background: rgba(16, 27, 45, 0.6); }
+    .reserva-header { width: 100%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 12px; }
+    .reserva-header strong { font-size: 1.1rem; color: white; display: flex; align-items: center; gap: 8px; }
+    .status-badge { padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid; }
+    .status-pendiente { color: var(--green); background: rgba(53, 221, 146, 0.15); border-color: rgba(53, 221, 146, 0.3); }
+    .status-completado { color: var(--cyan); background: rgba(18, 215, 246, 0.15); border-color: rgba(18, 215, 246, 0.3); }
+    
+    .reserva-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; width: 100%; }
+    .data-group span { display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 4px; }
+    .data-group strong { display: block; font-size: 0.9rem; color: #fff; }
+    .code-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(18, 215, 246, 0.3); color: var(--cyan); padding: 8px 12px; border-radius: 8px; font-family: monospace; font-size: 1rem; letter-spacing: 1px; display: inline-block; }
+    
+    .reserva-actions { width: 100%; display: flex; justify-content: flex-end; gap: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px; margin-top: 5px; }
+    .admin-btn { padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; border: none; transition: .2s; display: flex; align-items: center; gap: 6px; }
+    .btn-marcar { background: rgba(18, 215, 246, 0.1); color: var(--cyan); border: 1px solid var(--cyan); }
+    .btn-marcar:hover { background: var(--cyan); color: #000; }
+    .btn-eliminar { background: rgba(255, 80, 80, 0.1); color: var(--red); border: 1px solid var(--red); }
+    .btn-eliminar:hover { background: var(--red); color: #fff; }
+
+    /* TABLAS Y NOTAS */
+    .table-responsive { overflow-x: auto; background: rgba(16, 27, 45, 0.4); border: 1px solid var(--line); border-radius: 16px; padding: 5px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
+    th { padding: 15px 20px; font-size: 0.85rem; color: var(--muted); border-bottom: 1px solid var(--line); font-weight: 600; text-transform: uppercase; }
+    td { padding: 15px 20px; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.05); color: #c4d0df; vertical-align: middle; }
+    tr:hover td { background: rgba(255,255,255,0.02); color: white; }
+    
+    .compra-item { display: block; font-size: 0.85rem; color: var(--cyan); background: rgba(0,213,255,0.05); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0,213,255,0.1); margin-bottom: 4px; width: fit-content; }
+    .admin-note-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: 8px; color: white; padding: 8px 10px; font-size: 0.85rem; }
+    .admin-note-input:focus { outline: none; border-color: var(--cyan); }
+
+    .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(18,215,246,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 999999; } .toast.show{transform:translateY(0)}
+
+    @media(max-width:1200px){.stats{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:1080px){.app{grid-template-columns:78px 1fr}.sidebar{padding:25px 10px}.brand{margin:0 auto 42px;font-size:0}.brand span{font-size:1.8rem}.nav a{justify-content:center;padding:15px}.nav a span,.profile strong,.profile small,.logout span{display:none}.profile{padding:12px;display:grid;place-items:center}.logout{justify-content:center}}
+    @media(max-width:700px){.app{display:block}.sidebar{position:static;height:auto;padding:16px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:1.5rem;margin:0 8px 13px}.brand span{font-size:inherit}.nav{display:flex;overflow:auto}.nav a{min-width:55px;padding:12px}.nav a span{display:none}.profile{display:none}.content{padding:28px 16px}.top{align-items:flex-start;}.reserva-actions{flex-direction: column;}.stats{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+  <!-- PANTALLA DE BLOQUEO CON CONTRASEÑA -->
+  <div id="security-lock">
+    <div class="lock-box">
+      <i class="bi bi-shield-lock-fill"></i>
+      <h2>Acceso Restringido</h2>
+      <p>Centro de comando de Dingloft. Ingresa la contraseña maestra para continuar.</p>
+      <input type="password" id="admin-pass" class="pass-input" placeholder="•••••••••" onkeypress="if(event.key === 'Enter') unlockPanel()">
+      <button class="btn-unlock" onclick="unlockPanel()">Desbloquear Panel</button>
+      <p id="pass-error" style="color: var(--red); font-size: 0.8rem; margin-top: 15px; display: none; margin-bottom: 0;">Contraseña incorrecta. Intenta de nuevo.</p>
+    </div>
+  </div>
+
+  <!-- REPRODUCTOR DE MÚSICA FLOTANTE (ADORACIÓN ESTABLE) -->
+  <div class="music-player-pill" id="music-player-container" style="display: none;">
+    <div class="music-icon-box"><i class="bi bi-headphones"></i></div>
+    <div class="music-info">
+      <p class="music-title" id="track-title">Adoración Continua</p>
+      <p class="music-artist" id="track-artist">Ministerio de Alabanza</p>
+    </div>
+    <div class="music-controls">
+      <button class="music-btn" onclick="cambiarPistaMusica(-1)" title="Anterior"><i class="bi bi-skip-backward-fill"></i></button>
+      <button class="music-btn" id="play-pause-btn" onclick="togglePlayMusic()" title="Play/Pause"><i class="bi bi-play-fill"></i></button>
+      <button class="music-btn" onclick="cambiarPistaMusica(1)" title="Siguiente"><i class="bi bi-skip-forward-fill"></i></button>
+    </div>
+    <audio id="audio-player" onended="cambiarPistaMusica(1)"></audio>
+  </div>
+
+  <!-- MODAL INTERACTIVO LIQUID GLASS -->
+  <div class="custom-modal-overlay" id="customConfirmModal">
+    <div class="custom-modal-box">
+      <div class="custom-modal-icon"><i class="bi bi-exclamation-triangle"></i></div>
+      <div class="custom-modal-title" id="modalConfirmTitle">¿Estás seguro?</div>
+      <div class="custom-modal-desc" id="modalConfirmDesc">Esta acción eliminará el registro permanentemente de la base de datos.</div>
+      <div class="custom-modal-btns">
+        <button class="admin-btn" style="background: rgba(255,255,255,0.08); color: white; justify-content: center;" onclick="cerrarModalConfirm()">Cancelar</button>
+        <button class="admin-btn btn-eliminar" style="justify-content: center;" id="modalConfirmBtnYes">Sí, eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <a href="index.html" class="brand"><span>D</span>ingloft</a>
+      <nav class="nav">
+        <a href="account.html" style="color: var(--muted);"><i class="bi bi-arrow-left-circle"></i><span>Volver a mi Cuenta</span></a>
+        <a href="#" class="active"><i class="bi bi-shield-lock"></i><span>Modo Admin</span></a>
+      </nav>
+      <div class="profile">
+        <div class="profile-top">
+          <div class="avatar" id="sidebar-avatar"><i class="bi bi-incognito"></i></div>
+          <div>
+            <strong id="sidebar-name">Cargando...</strong>
+            <small id="sidebar-email">...</small>
+          </div>
+        </div>
+        <button class="logout"><i class="bi bi-box-arrow-right"></i><span>Cerrar sesión</span></button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="top">
+        <div>
+          <h1>Panel de <span style="color: var(--red);">Control</span></h1>
+          <p id="welcome-msg-p">¡Hola, bienvenido jefe! Dios bendiga tu trabajo y tu negocio hoy. 🙏🚀</p>
+        </div>
+        
+        <div>
+          <div class="world-clock-pill" id="widget-reloj-dinamico">
+            <!-- Reloj dinámico por usuario -->
+          </div>
+        </div>
+      </div>
+      
+      <section class="stats">
+        <article class="stat">
+          <i class="bi bi-calendar-event"></i>
+          <div><span>Reservas Activas</span><strong id="stat-reservas">0</strong></div>
+        </article>
+        <article class="stat">
+          <i class="bi bi-people"></i>
+          <div><span>Clientes Registrados</span><strong id="stat-clientes">0</strong></div>
+        </article>
+        <article class="stat">
+          <i class="bi bi-bag-check"></i>
+          <div><span>Total Compras</span><strong id="stat-compras">0</strong></div>
+        </article>
+        <article class="stat">
+          <i class="bi bi-cash-stack"></i>
+          <div><span>Ganancias Totales</span><strong id="stat-ganancias" style="color: var(--green);">$0.00</strong></div>
+        </article>
+      </section>
+
+      <div class="tabs-header">
+        <button class="tab-btn active" onclick="switchAdminTab('reservas', this)"><i class="bi bi-headset"></i> Reservas</button>
+        <button class="tab-btn" onclick="switchAdminTab('clientes', this)"><i class="bi bi-people"></i> Clientes</button>
+        <button class="tab-btn" onclick="switchAdminTab('compras', this)"><i class="bi bi-receipt"></i> Compras</button>
+        <button class="tab-btn" onclick="switchAdminTab('ganancias', this)"><i class="bi bi-graph-up-arrow"></i> Ganancias</button>
+      </div>
+
+      <!-- TAB: RESERVAS -->
+      <div id="tab-reservas" class="tab-content active">
+        <div class="table-toolbar">
+          <input type="text" id="search-reservas" class="search-input" placeholder="🔍 Buscar por correo o software..." onkeyup="filtrarTabla('reservas-container', '.reserva-card', this.value)">
+        </div>
+        <div id="reservas-container">
+          <p style="color: var(--muted);">Cargando panel de reservas...</p>
+        </div>
+      </div>
+
+      <!-- TAB: CLIENTES -->
+      <div id="tab-clientes" class="tab-content">
+        <div class="table-toolbar">
+          <input type="text" id="search-clientes" class="search-input" placeholder="🔍 Buscar cliente por correo..." onkeyup="filtrarTablaGenerica('clientes-tbody', this.value)">
+          <button class="btn-export" onclick="exportarExcel('tabla-clientes', 'clientes_dingloft.csv')"><i class="bi bi-file-earmark-excel"></i> Exportar CSV</button>
+        </div>
+        <div class="table-responsive">
+          <table id="tabla-clientes">
+            <thead>
+              <tr>
+                <th>Email del Cliente</th>
+                <th>Compras</th>
+                <th>Reservas</th>
+                <th>Notas Privadas</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="clientes-tbody">
+              <tr><td colspan="6" style="text-align: center;">Escaneando base de datos...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB: HISTORIAL DE COMPRAS -->
+      <div id="tab-compras" class="tab-content">
+        <div class="table-toolbar">
+          <input type="text" id="search-compras" class="search-input" placeholder="🔍 Buscar compra por cliente o ID..." onkeyup="filtrarTablaGenerica('compras-tbody', this.value)">
+          <button class="btn-export" onclick="exportarExcel('tabla-compras', 'compras_dingloft.csv')"><i class="bi bi-file-earmark-excel"></i> Exportar CSV</button>
+        </div>
+        <div class="table-responsive">
+          <table id="tabla-compras">
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Productos Comprados</th>
+                <th>Transacción (ID)</th>
+                <th>Fecha</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="compras-tbody">
+              <tr><td colspan="5" style="text-align: center;">Cargando historial...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB: GANANCIAS -->
+      <div id="tab-ganancias" class="tab-content">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 25px;">
+           <div style="background: rgba(53,221,146,0.08); border: 1px solid rgba(53,221,146,0.3); border-radius: 20px; padding: 25px;">
+              <span style="color: var(--muted); font-size: 0.85rem; display: block; margin-bottom: 5px;">Ingresos por Instalaciones Remotas</span>
+              <strong style="font-size: 2.2rem; color: var(--green);" id="ganancias-reservas">$0.00 USD</strong>
+           </div>
+           <div style="background: rgba(18,215,246,0.08); border: 1px solid rgba(18,215,246,0.3); border-radius: 20px; padding: 25px;">
+              <span style="color: var(--muted); font-size: 0.85rem; display: block; margin-bottom: 5px;">Ingresos por Software y Librerías</span>
+              <strong style="font-size: 2.2rem; color: var(--cyan);" id="ganancias-software">$0.00 USD</strong>
+           </div>
+        </div>
+
+        <div class="table-toolbar">
+          <button class="btn-export" onclick="exportarExcel('tabla-ganancias', 'ganancias_dingloft.csv')"><i class="bi bi-file-earmark-excel"></i> Exportar CSV</button>
+        </div>
+        <div class="table-responsive">
+          <table id="tabla-ganancias">
+            <thead>
+              <tr>
+                <th>Concepto / Origen</th>
+                <th>Detalle</th>
+                <th>Monto Ingresado</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+            <tbody id="ganancias-tbody">
+              <tr><td colspan="4" style="text-align: center;">Calculando balance financiero...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+  
+  <div class="toast" id="toast-message">Actualizado correctamente.</div>
+
+  <script>
+    window.adminEmailActual = "";
+
+    // 6 CANCIONES DE ADORACIÓN CRISTIANA (ENLACES ESTABLES DE AUDIO PURO)
+    const playlistAlabanzas = [
+        { title: "Cerca de Tí", artist: "Julio Melgar", url: "https://ia600304.us.archive.org/34/items/JulioMelgarCercaDeTi/Julio%20Melgar%20-%20Cerca%20De%20Ti.mp3" },
+        { title: "Gracia Sublime", artist: "Miel San Marcos", url: "https://ia801905.us.archive.org/11/items/MielSanMarcosGraciaSublime/Miel%20San%20Marcos%20-%20Gracia%20Sublime.mp3" },
+        { title: "Jehová es mi Pastor", artist: "Ministerios Ebenezer", url: "https://ia801601.us.archive.org/29/items/JehovaEsMiPastorEbenezer/Jehova%20es%20mi%20pastor.mp3" },
+        { title: "Tus Cuerdas de Amor", artist: "Adoración en Vivo", url: "https://ia800903.us.archive.org/15/items/TusCuerdasDeAmor/Tus%20Cuerdas%20de%20Amor.mp3" },
+        { title: "Espíritu Santo Ven", artist: "Ministerio de Adoración", url: "https://ia801408.us.archive.org/5/items/EspirituSantoVen/Espiritu%20Santo%20Ven.mp3" },
+        { title: "Maravilloso Dios", artist: "Alabanza Cristiana", url: "https://ia800906.us.archive.org/1/items/MaravillosoDios_201805/Maravilloso%20Dios.mp3" }
+    ];
+    let currentTrackIndex = 0;
+
+    function inicializarReproductorAleatorio() {
+        const audio = document.getElementById('audio-player');
+        if (!audio) return;
+        currentTrackIndex = Math.floor(Math.random() * playlistAlabanzas.length);
+        cargarPista(currentTrackIndex);
+    }
+
+    function cargarPista(index) {
+        const audio = document.getElementById('audio-player');
+        const titleEl = document.getElementById('track-title');
+        const artistEl = document.getElementById('track-artist');
+        if(!audio) return;
+        
+        audio.src = playlistAlabanzas[index].url;
+        if(titleEl) titleEl.textContent = playlistAlabanzas[index].title;
+        if(artistEl) artistEl.textContent = playlistAlabanzas[index].artist;
+    }
+
+    window.togglePlayMusic = function() {
+        const audio = document.getElementById('audio-player');
+        const btn = document.getElementById('play-pause-btn');
+        if (!audio) return;
+        if (audio.paused) {
+            audio.volume = 1.0;
+            audio.play();
+            if(btn) btn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+        } else {
+            audio.pause();
+            if(btn) btn.innerHTML = '<i class="bi bi-play-fill"></i>';
+        }
+    }
+
+    window.cambiarPistaMusica = function(dir) {
+        currentTrackIndex = (currentTrackIndex + dir + playlistAlabanzas.length) % playlistAlabanzas.length;
+        cargarPista(currentTrackIndex);
+        const audio = document.getElementById('audio-player');
+        const btn = document.getElementById('play-pause-btn');
+        if(audio) {
+            audio.volume = 1.0;
+            audio.play();
+        }
+        if(btn) btn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+    }
+
+    // RELOJ MUNDIAL DINÁMICO
+    function actualizarRelojes() {
+        const opcionesMiami = { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+        const opcionesGuate = { timeZone: 'America/Guatemala', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+        const opcionesTexas = { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+
+        const ahora = new Date();
+        const horaMiami = ahora.toLocaleTimeString('en-US', opcionesMiami);
+        const horaGuate = ahora.toLocaleTimeString('en-US', opcionesGuate);
+        const horaTexas = ahora.toLocaleTimeString('en-US', opcionesTexas);
+
+        const widgetEl = document.getElementById('widget-reloj-dinamico');
+        if (!widgetEl) return;
+
+        if (window.adminEmailActual === 'tepaz2025@gmail.com') {
+            widgetEl.innerHTML = `
+                <div class="clock-item"><i class="bi bi-clock"></i> Miami: <span id="clock-miami">${horaMiami}</span></div>
+                <div class="clock-divider"></div>
+                <div class="clock-item"><i class="bi bi-clock"></i> Texas: <span id="clock-texas">${horaTexas}</span></div>
+            `;
+        } else {
+            widgetEl.innerHTML = `
+                <div class="clock-item"><i class="bi bi-clock"></i> Miami: <span id="clock-miami">${horaMiami}</span></div>
+                <div class="clock-divider"></div>
+                <div class="clock-item"><i class="bi bi-clock"></i> Guatemala: <span id="clock-guate">${horaGuate}</span></div>
+            `;
+        }
+    }
+    setInterval(actualizarRelojes, 1000);
+    actualizarRelojes();
+
+    window.adminNombreReal = "Jefe";
+
+    // FRASES EVANGÉLICAS PROFUNDAS + CONTROL DE VOLUMEN AUTOMÁTICO (DUCKING)
+    function hablarBienvenida(nombre) {
+        if ('speechSynthesis' in window) {
+            const frasesEvangelicasLargas = [
+                `Sistema Dingloft en línea. Hola ${nombre}, bendiciones en este día. Recuerda que la palabra del Señor nos enseña en Josué uno nueve: Esfuérzate y sé valiente, no temas ni desmayes, porque Jehová tu Dios estará contigo en dondequiera que vayas. Hoy encomendamos cada proyecto, cada cliente y cada meta de Dingloft en las manos del Creador para que su favor nos rodee como un escudo. ¡Que tengas una jornada de absoluta victoria y prosperidad celestial!`,
+                `Bienvenido al centro de mando, jefe ${nombre.toUpperCase()}. Dice el libro de Proverbios: Confía en Jehová con todo tu corazón, y no te apoyes en tu propia prudencia; reconócelo en todos tus caminos, y Él enderezará tus veredas. Hoy declaramos que las puertas de la gracia se abren delante de este negocio. Que cada venta, cada soporte y cada esfuerzo esté cubierto por la bendición de Dios. ¡A facturar y dar honra al Altísimo hoy!`,
+                `Conexión establecida con éxito, estimado ${nombre}. En este momento abrimos las puertas de la administración de Dingloft bajo la cobertura del Todopoderoso. Como dice el Salmo treinta y siete: Deléitate asimismo en Jehová, y Él te concederá las peticiones de tu corazón. Encomienda a Jehová tu camino, confía en Él, y Él hará resplandecer tu justicia como la luz. ¡Adelante con fe y con la convicción de que el éxito ya ha sido preparado para ti hoy!`
+            ];
+
+            const fraseElegida = frasesEvangelicasLargas[Math.floor(Math.random() * frasesEvangelicasLargas.length)];
+            const pTop = document.getElementById('welcome-msg-p');
+            if(pTop) pTop.textContent = fraseElegida;
+
+            // 1. INICIAR MÚSICA EN VOLUMEN BAJO (15%) MIENTRAS HABLA EL BOT
+            const audioPlayer = document.getElementById('audio-player');
+            const playBtn = document.getElementById('play-pause-btn');
+            document.getElementById('music-player-container').style.display = 'flex';
+            inicializarReproductorAleatorio();
+
+            if(audioPlayer) {
+                audioPlayer.volume = 0.15; // Ducking al 15%
+                audioPlayer.play().then(() => {
+                    if(playBtn) playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+                }).catch(e => console.log("Autoplay de audio bloqueado:", e));
+            }
+
+            // 2. CONFIGURAR LA VOZ
+            window.speechSynthesis.cancel(); // Limpiar cualquier voz previa
+            const utterance = new SpeechSynthesisUtterance(fraseElegida);
+            utterance.lang = 'es-ES';
+            utterance.rate = 1.0; 
+            utterance.pitch = 0.95; 
+
+            const voces = window.speechSynthesis.getVoices();
+            const vozEspanol = voces.find(v => v.lang.includes('es') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Microsoft')));
+            if (vozEspanol) utterance.voice = vozEspanol;
+
+            // 3. AL TERMINAR LA VOZ, SUBIR EL VOLUMEN AL 100%
+            utterance.onend = function() {
+                if(audioPlayer) {
+                    audioPlayer.volume = 1.0; // ¡Sube al máximo la adoración!
+                }
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+    }
+
+    window.unlockPanel = function() {
+        const pass = document.getElementById('admin-pass').value;
+        const errorMsg = document.getElementById('pass-error');
+        
+        if(pass === "Lanuevaera1") {
+            document.getElementById('security-lock').classList.add('unlocked');
+            document.body.classList.add('unlocked');
+            
+            hablarBienvenida(window.adminNombreReal);
+
+            if (window.iniciarCargaDeDatos) window.iniciarCargaDeDatos();
+        } else {
+            errorMsg.style.display = 'block';
+            document.getElementById('admin-pass').value = '';
+        }
+    }
+
+    function switchAdminTab(tabId, element) {
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      element.classList.add('active');
+    }
+
+    window.mostrarToast = function(mensaje, color) {
+      const toast = document.getElementById('toast-message');
+      toast.textContent = mensaje;
+      toast.style.borderColor = color;
+      toast.style.background = `rgba(${color === 'var(--green)' ? '53,221,146' : '255,80,80'}, 0.1)`;
+      toast.style.color = color;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    window.mostrarModalConfirm = function(titulo, descripcion, callbackSi) {
+        document.getElementById('modalConfirmTitle').textContent = titulo;
+        document.getElementById('modalConfirmDesc').textContent = descripcion;
+        const btnSi = document.getElementById('modalConfirmBtnYes');
+        
+        let nuevoBtn = btnSi.cloneNode(true);
+        btnSi.parentNode.replaceChild(nuevoBtn, btnSi);
+        document.getElementById('customConfirmModal').classList.add('active');
+        
+        nuevoBtn.addEventListener('click', () => {
+            cerrarModalConfirm();
+            if(callbackSi) callbackSi();
+        });
+    }
+
+    window.cerrarModalConfirm = function() {
+        document.getElementById('customConfirmModal').classList.remove('active');
+    }
+
+    window.filtrarTabla = function(containerId, cardSelector, query) {
+        const container = document.getElementById(containerId);
+        const cards = container.querySelectorAll(cardSelector);
+        const filtro = query.toLowerCase();
+        cards.forEach(card => {
+            const texto = card.textContent.toLowerCase();
+            card.style.display = texto.includes(filtro) ? 'flex' : 'none';
+        });
+    }
+
+    window.filtrarTablaGenerica = function(tbodyId, query) {
+        const tbody = document.getElementById(tbodyId);
+        const rows = tbody.querySelectorAll('tr');
+        const filtro = query.toLowerCase();
+        rows.forEach(row => {
+            const texto = row.textContent.toLowerCase();
+            row.style.display = texto.includes(filtro) ? '' : 'none';
+        });
+    }
+
+    window.exportarExcel = function(tableId, filename) {
+        let csv = [];
+        let rows = document.querySelectorAll(`#${tableId} tr`);
+        rows.forEach(row => {
+            let cols = row.querySelectorAll('td, th');
+            let data = [];
+            cols.forEach(col => {
+                let input = col.querySelector('input');
+                let text = input ? input.value : col.innerText;
+                data.push('"' + text.replace(/"/g, '""') + '"');
+            });
+            csv.push(data.join(','));
+        });
+
+        let csvFile = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+        let downloadLink = document.createElement('a');
+        downloadLink.download = filename;
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        downloadLink.style.display = 'none';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        mostrarToast("Reporte exportado con éxito.", "var(--green)");
+    }
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
+      authDomain: "login-dingloft.firebaseapp.com",
+      projectId: "login-dingloft",
+      storageBucket: "login-dingloft.firebasestorage.app",
+      messagingSenderId: "549466738202",
+      appId: "1:549466738202:web:8bf305fe2c753e9d76cba3",
+      measurementId: "G-R9SGZCDN13"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        if (user.email !== 'evolutiongt01@gmail.com' && user.email !== 'tepaz2025@gmail.com') {
+          window.location.href = 'account.html';
+          return;
+        }
+
+        window.adminEmailActual = user.email;
+        window.adminNombreReal = (user.email === 'tepaz2025@gmail.com') ? "Antonio" : "César";
+        document.getElementById('sidebar-name').textContent = `${window.adminNombreReal} (Admin)`;
+        document.getElementById('sidebar-email').textContent = user.email;
+
+        window.iniciarCargaDeDatos = async function() {
+           await loadAdminData();
+        };
+
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+
+    async function loadAdminData() {
+        const reservasContainer = document.getElementById('reservas-container');
+        const clientesTbody = document.getElementById('clientes-tbody');
+        const comprasTbody = document.getElementById('compras-tbody');
+        const gananciasTbody = document.getElementById('ganancias-tbody');
+        
+        try {
+            const notasSnap = await getDocs(collection(db, "admin_notes"));
+            let notasMap = {};
+            notasSnap.forEach(d => { notasMap[d.id] = d.data().note || ''; });
+
+            const reservasSnap = await getDocs(collection(db, "reservas"));
+            let reservas = [];
+            reservasSnap.forEach(d => reservas.push({ id: d.id, ...d.data() }));
+            
+            reservas.sort((a, b) => {
+                if (a.estado === 'pendiente' && b.estado !== 'pendiente') return -1;
+                if (a.estado !== 'pendiente' && b.estado === 'pendiente') return 1;
+                return b.timestampReserva - a.timestampReserva;
+            });
+
+            let activasCount = 0;
+            let totalGananciasReservas = 0;
+            let ingresosGananciasHTML = '';
+            reservasContainer.innerHTML = '';
+
+            if (reservas.length === 0) {
+                reservasContainer.innerHTML = '<p style="color: var(--muted);"><i class="bi bi-check2-circle"></i> Todo limpio, jefe. No hay reservas pendientes.</p>';
+            } else {
+                reservas.forEach(r => {
+                    if (r.estado === 'pendiente') activasCount++;
+                    
+                    let montoReserva = (r.montoPagado !== undefined) ? r.montoPagado : 10.00;
+                    totalGananciasReservas += montoReserva;
+
+                    let fechaReservaStr = r.creado ? new Date(r.creado.toMillis()).toLocaleString('es-ES') : r.fecha;
+                    ingresosGananciasHTML += `
+                        <tr>
+                            <td><span style="color:var(--green); font-weight:600;"><i class="bi bi-calendar-check"></i> Instalación Remota</span></td>
+                            <td>${r.email} (${r.software})</td>
+                            <td><strong style="color:var(--green);">+$${montoReserva.toFixed(2)} USD</strong></td>
+                            <td>${fechaReservaStr}</td>
+                        </tr>
+                    `;
+
+                    let estadoClass = r.estado === 'completado' ? 'status-completado' : 'status-pendiente';
+                    let estadoTexto = r.estado === 'completado' ? '<i class="bi bi-check-all"></i> Completado' : '<i class="bi bi-clock"></i> Pendiente';
+                    let codAcceso = r.codigoAcceso ? `<div class="code-box">${r.codigoAcceso}</div>` : `<span style="color: var(--muted); font-style: italic;">Aún no proporcionado</span>`;
+
+                    let html = `
+                    <div class="reserva-card">
+                        <div class="reserva-header">
+                            <strong><i class="bi bi-person-circle"></i> ${r.email}</strong>
+                            <span class="status-badge ${estadoClass}">${estadoTexto}</span>
+                        </div>
+                        <div class="reserva-body">
+                            <div class="data-group"><span>Fecha y Hora (Miami / Tu Hora Local)</span><strong>${r.fecha} - ${r.hora}</strong></div>
+                            <div class="data-group"><span>Software</span><strong>${r.software}</strong></div>
+                            <div class="data-group"><span>Comentario / Problema</span><strong>${r.comentario}</strong></div>
+                            <div class="data-group"><span>Código de Acceso Cliente</span>${codAcceso}</div>
+                        </div>
+                        <div class="reserva-actions">
+                            ${r.estado === 'pendiente' ? `<button class="admin-btn btn-marcar" onclick="marcarCompletado('${r.id}')"><i class="bi bi-check-lg"></i> Marcar Completada</button>` : ''}
+                            <button class="admin-btn btn-eliminar" onclick="confirmarEliminarReserva('${r.id}')"><i class="bi bi-trash"></i> Eliminar</button>
+                        </div>
+                    </div>`;
+                    reservasContainer.insertAdjacentHTML('beforeend', html);
+                });
+            }
+            document.getElementById('stat-reservas').textContent = activasCount;
+
+            const comprasSnap = await getDocs(collection(db, "purchases"));
+            let totalCompras = 0;
+            let clientesMap = {};
+            let comprasArr = [];
+            let totalGananciasSoftware = 0;
+            let ingresosSoftwareHTML = '';
+
+            reservas.forEach(r => {
+                if(!clientesMap[r.email]) clientesMap[r.email] = { email: r.email, reservas: 0, compras: 0 };
+                clientesMap[r.email].reservas++;
+            });
+
+            comprasSnap.forEach(c => {
+                totalCompras++;
+                let data = c.data();
+                comprasArr.push({ id: c.id, ...data });
+
+                let email = data.userEmail || data.payerName || "Desconocido";
+                if(!clientesMap[email]) clientesMap[email] = { email: email, reservas: 0, compras: 0 };
+                
+                let subTotalCompra = 0;
+                if (data.items && Array.isArray(data.items)) {
+                    data.items.forEach(it => {
+                        let precioProd = it.price ? parseFloat(it.price) : 0;
+                        subTotalCompra += precioProd;
+                    });
+                }
+                totalGananciasSoftware += subTotalCompra;
+                clientesMap[email].compras += (data.items ? data.items.length : 1);
+
+                let fechaCompraStr = data.createdAt ? new Date(data.createdAt.toMillis()).toLocaleString('es-ES') : 'Desconocida';
+                let listaProdsStr = data.items ? data.items.map(i => i.name).join(', ') : 'Software digital';
+
+                ingresosSoftwareHTML += `
+                    <tr>
+                        <td><span style="color:var(--cyan); font-weight:600;"><i class="bi bi-bag-check"></i> Venta de Software</span></td>
+                        <td>${email} (${listaProdsStr})</td>
+                        <td><strong style="color:var(--cyan);">+$${subTotalCompra.toFixed(2)} USD</strong></td>
+                        <td>${fechaCompraStr}</td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('stat-compras').textContent = totalCompras;
+            let clientesArr = Object.values(clientesMap);
+            document.getElementById('stat-clientes').textContent = clientesArr.length;
+
+            let gananciaTotalGral = totalGananciasReservas + totalGananciasSoftware;
+            document.getElementById('stat-ganancias').textContent = `$${gananciaTotalGral.toFixed(2)}`;
+            document.getElementById('ganancias-reservas').textContent = `$${totalGananciasReservas.toFixed(2)} USD`;
+            document.getElementById('ganancias-software').textContent = `$${totalGananciasSoftware.toFixed(2)} USD`;
+
+            gananciasTbody.innerHTML = ingresosGananciasHTML + ingresosSoftwareHTML;
+            if(gananciasTbody.innerHTML.trim() === "") {
+                gananciasTbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No hay registros de ingresos todavía.</td></tr>';
+            }
+
+            clientesTbody.innerHTML = '';
+            if(clientesArr.length === 0) {
+                clientesTbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay clientes aún.</td></tr>';
+            } else {
+                clientesArr.forEach(c => {
+                    let estado = c.compras > 0 ? '<span style="color:var(--green);"><i class="bi bi-circle-fill" style="font-size:0.6rem;"></i> Activo</span>' : '<span style="color:var(--cyan);"><i class="bi bi-circle-fill" style="font-size:0.6rem;"></i> Interesado</span>';
+                    let safeEmailKey = c.email.replace(/[@\.]/g, '_');
+                    let notaActual = notasMap[safeEmailKey] || '';
+
+                    let tr = `<tr>
+                        <td><strong>${c.email}</strong></td>
+                        <td>${c.compras} items</td>
+                        <td>${c.reservas} sesiones</td>
+                        <td><input type="text" class="admin-note-input" value="${notaActual}" placeholder="Escribe una nota..." onchange="guardarNotaCliente('${safeEmailKey}', this.value)"></td>
+                        <td>${estado}</td>
+                        <td>
+                           <button class="admin-btn btn-eliminar" onclick="confirmarEliminarCliente('${c.email}')" style="padding: 6px 12px; font-size: 0.78rem;">
+                              <i class="bi bi-trash"></i> Borrar
+                           </button>
+                        </td>
+                    </tr>`;
+                    clientesTbody.insertAdjacentHTML('beforeend', tr);
+                });
+            }
+
+            comprasArr.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+            comprasTbody.innerHTML = '';
+            
+            if(comprasArr.length === 0) {
+                comprasTbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">El historial de compras está vacío.</td></tr>';
+            } else {
+                comprasArr.forEach(comp => {
+                    let fecha = comp.createdAt ? new Date(comp.createdAt.toMillis()).toLocaleString('es-ES') : 'Desconocida';
+                    let prods = comp.items ? comp.items.map(i => `<span class="compra-item">${i.name} ($${i.price || 0})</span>`).join('') : '<span style="color:var(--muted)">Sin items</span>';
+                    let idTransaccion = comp.paypalOrderId || 'Gratis/Manual';
+                    let pName = comp.payerName || 'Usuario';
+                    let pEmail = comp.userEmail || 'N/A';
+
+                    let tr = `<tr>
+                        <td><strong>${pName}</strong><br><small style="color:var(--muted);">${pEmail}</small></td>
+                        <td>${prods}</td>
+                        <td><span class="code-box" style="font-size:0.8rem; padding: 4px 8px;">${idTransaccion}</span></td>
+                        <td>${fecha}</td>
+                        <td>
+                           <button class="admin-btn btn-eliminar" onclick="confirmarEliminarCompra('${comp.id}')" style="padding: 6px 12px; font-size: 0.78rem;">
+                              <i class="bi bi-trash"></i> Borrar
+                           </button>
+                        </td>
+                    </tr>`;
+                    comprasTbody.insertAdjacentHTML('beforeend', tr);
+                });
+            }
+
+        } catch(e) {
+            console.error(e);
+            reservasContainer.innerHTML = `<p style="color: var(--red);">Error leyendo la base de datos.</p>`;
+        }
+    }
+
+    window.guardarNotaCliente = async function(emailKey, notaTexto) {
+        try {
+            await setDoc(doc(db, "admin_notes", emailKey), { note: notaTexto }, { merge: true });
+            window.mostrarToast("Nota guardada correctamente.", "var(--green)");
+        } catch(e) {
+            console.error(e);
+            window.mostrarToast("Error guardando nota.", "var(--red)");
+        }
+    }
+
+    window.marcarCompletado = async function(id) {
+        try {
+            await updateDoc(doc(db, "reservas", id), { estado: "completado" });
+            window.mostrarToast("Reserva marcada como completada.", "var(--cyan)");
+            await loadAdminData();
+        } catch(e) {
+            console.error(e);
+            window.mostrarToast("Error actualizando reserva.", "var(--red)");
+        }
+    }
+
+    window.confirmarEliminarReserva = function(id) {
+        mostrarModalConfirm("¿Eliminar Reserva?", "Esta acción borrará la reserva del sistema permanentemente.", async () => {
+            try {
+                await deleteDoc(doc(db, "reservas", id));
+                window.mostrarToast("Reserva eliminada del historial.", "var(--red)");
+                await loadAdminData();
+            } catch(e) {
+                window.mostrarToast("Error eliminando reserva.", "var(--red)");
+            }
+        });
+    }
+
+    window.confirmarEliminarCompra = function(id) {
+        mostrarModalConfirm("¿Eliminar Pedido?", "Esto borrará el registro de compra y ajustará las ganancias totales.", async () => {
+            try {
+                await deleteDoc(doc(db, "purchases", id));
+                window.mostrarToast("Pedido eliminado del historial.", "var(--red)");
+                await loadAdminData();
+            } catch(e) {
+                window.mostrarToast("Error eliminando pedido.", "var(--red)");
+            }
+        });
+    }
+
+    window.confirmarEliminarCliente = function(emailCliente) {
+        mostrarModalConfirm("¿Eliminar Cliente?", `Esto borrará las notas y referencias de ${emailCliente}.`, async () => {
+            try {
+                let safeKey = emailCliente.replace(/[@\.]/g, '_');
+                await deleteDoc(doc(db, "admin_notes", safeKey));
+                window.mostrarToast("Cliente eliminado de la lista.", "var(--red)");
+                await loadAdminData();
+            } catch(e) {
+                window.mostrarToast("Error eliminando cliente.", "var(--red)");
+            }
+        });
+    }
+
+    document.querySelector('.logout').addEventListener('click', async () => {
+      try { await signOut(auth); window.location.href = 'login.html'; } catch (error) { console.error(error); }
+    });
+  </script>
+</body>
+</html>
