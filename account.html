@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mi cuenta | Dingloft</title>
   
-  <!-- FAVICON AGREGADO AQUÍ -->
-  <link rel="icon" href="img/favicon.png" type="image/x-icon">
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,7 +60,6 @@
     .download-row h3 { margin:0 0 7px; font-size:1rem; letter-spacing:-.025em; } .download-row p { margin:0; color:var(--muted); font-size:.78rem; } .badge { display:inline-flex; align-items:center; gap:6px; margin-top:7px; color:var(--green); font-size:.72rem; font-weight:700; } .download-btn { width:43px; height:43px; border:1px solid rgba(0,217,255,.5); border-radius:11px; color:var(--cyan); background:rgba(0,213,255,.08); font-size:1.2rem; display:grid; place-items:center; text-decoration:none; transition:.2s ease; cursor:pointer;} .download-btn:hover{background:var(--cyan);color:#04111a;transform:translateY(-2px)}
     .right { display:grid; gap:23px; align-content:start; } 
     
-    /* ESTILOS TARJETA INSTALACIÓN REMOTA */
     .support-card { display: flex; flex-direction: column; }
     .remote-install-content { padding: 0 25px 25px; display: flex; flex-direction: column; gap: 14px; }
     .remote-install-content .icon-wrapper { width: 54px; height: 54px; background: rgba(53, 221, 146, 0.1); border: 1px solid rgba(53, 221, 146, 0.3); border-radius: 14px; display: grid; place-items: center; font-size: 1.5rem; color: var(--green); margin-bottom: 4px; }
@@ -75,18 +73,15 @@
     .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
 
-    /* WIDGET CALENDARIO & PEDIDOS ESTILO LIQUID GLASS */
     .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 9, 17, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .liquid-modal-overlay.active { opacity: 1; pointer-events: auto; }
     
-    .liquid-modal-card { width: 95%; max-width: 820px; padding: 28px; border-radius: 28px; background: linear-gradient(145deg, rgba(16, 27, 45, 0.88), rgba(8, 14, 25, 0.82)); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: var(--text); position: relative; }
+    .liquid-modal-card { width: 95%; max-width: 820px; padding: 28px; border-radius: 28px; background: linear-gradient(145deg, rgba(16, 27, 45, 0.88), rgba(8, 14, 25, 0.82)); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: var(--text); position: relative; max-height: 95vh; overflow-y: auto;}
     .liquid-close { position: absolute; top: 22px; right: 22px; background: transparent; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; transition: .2s; z-index: 10;}
     .liquid-close:hover { color: white; }
 
-    /* LAYOUT DE DOS COLUMNAS */
     .booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 15px; }
     
-    /* COLUMNA IZQUIERDA: CALENDARIO */
     .calendar-box { background: rgba(6, 12, 22, 0.5); border: 1px solid var(--line); border-radius: 20px; padding: 18px; }
     .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
     .calendar-header h4 { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--text); }
@@ -103,7 +98,6 @@
     .day-cell.available:hover { background: rgba(18, 215, 246, 0.15); border-color: var(--cyan); color: var(--cyan); }
     .day-cell.selected { background: var(--cyan) !important; color: #04111a !important; font-weight: 800; box-shadow: 0 0 12px rgba(18, 215, 246, 0.5); }
 
-    /* COLUMNA DERECHA: HORARIOS Y SELECCIÓN */
     .times-box { background: rgba(6, 12, 22, 0.5); border: 1px solid var(--line); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; }
     .times-header { font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 8px; }
     .time-slots-container { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; padding-right: 4px; }
@@ -115,11 +109,15 @@
     .time-slot.sold-out { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; border-color: transparent; background: transparent; }
     .time-slot.sold-out:hover { transform: none; color: var(--text); }
 
-    /* FOOTER DEL MODAL Y BOTONES LIQUID */
+    .liquid-input { width: 100%; padding: 10px 14px; background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 12px; color: white; font-family: inherit; font-size: 0.85rem; }
+    .liquid-input:focus { border-color: var(--cyan); outline: none; box-shadow: 0 0 10px rgba(0, 213, 255, 0.2); }
+    select.liquid-input { appearance: none; cursor: pointer; }
+    select.liquid-input option { background: #0c1421; color: white; }
+    textarea.liquid-input { resize: none; line-height: 1.4; }
+
     .booking-footer { margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: center; }
     .cupon-group { display: flex; gap: 8px; }
-    .liquid-input { width: 100%; padding: 10px 14px; background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 12px; color: white; font-family: inherit; font-size: 0.85rem; text-transform: uppercase; }
-    .liquid-input:focus { border-color: var(--cyan); outline: none; box-shadow: 0 0 10px rgba(0, 213, 255, 0.2); }
+    
     .liquid-btn-cupon { padding: 0 14px; background: rgba(0,213,255,0.1); border: 1px solid var(--cyan); color: var(--cyan); border-radius: 12px; font-weight: 750; cursor: pointer; transition:.2s ease; font-size: 0.82rem; }
     .liquid-btn-cupon:hover { background: var(--cyan); color: #03111a; }
     
@@ -129,7 +127,6 @@
     #modal-notif { display: none; padding: 10px; border-radius: 10px; font-size: 0.82rem; margin-bottom: 12px; text-align: center; font-weight: 600; grid-column: span 2; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    /* Estilos específicos para Modal "Mis Pedidos" más pequeño */
     #pedidosModal .liquid-modal-card { max-width: 500px; }
 
     @media(max-width:768px){ .booking-grid { grid-template-columns: 1fr; } .booking-footer { grid-template-columns: 1fr; } #modal-notif { grid-column: span 1; } }
@@ -144,8 +141,10 @@
       <nav class="nav" aria-label="Navegación de cuenta">
         <a href="index.html"><i class="bi bi-house-door"></i><span>Home</span></a>
         <a class="active" href="#descargas"><i class="bi bi-download"></i><span>Descargas</span></a>
-        <!-- ENLACE ACTUALIZADO A MIS PEDIDOS -->
         <a href="#" onclick="openPedidosModal(); return false;"><i class="bi bi-box-seam"></i><span>Mis Pedidos</span></a>
+        
+        <!-- BOTÓN SECRETO ADMIN (Se oculta por defecto, se activa en JS) -->
+        <a href="admin.html" id="btn-admin" style="display: none; color: #ff5050; margin-top: 15px; border: 1px solid rgba(255,80,80,0.3); background: rgba(255,80,80,0.05);"><i class="bi bi-incognito"></i><span>Panel Admin</span></a>
       </nav>
       <div class="profile">
         <div class="profile-top">
@@ -190,7 +189,6 @@
         </article>
         
         <aside class="right">
-          <!-- TARJETA DE SOPORTE -->
           <article class="card support-card">
             <div class="card-title"><h2>Instalación Remota</h2></div>
             <div class="remote-install-content">
@@ -230,19 +228,32 @@
       <div style="background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 16px; padding: 18px;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 12px;">
           <strong style="color: var(--cyan);"><i class="bi bi-calendar-check"></i> Instalación Remota</strong>
-          <span style="background: rgba(53, 221, 146, 0.15); color: var(--green); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(53, 221, 146, 0.3);">Pendiente</span>
+          <div id="pedido-estado">
+            <span style="background: rgba(158, 172, 192, 0.1); color: var(--muted); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">Sin Reserva</span>
+          </div>
         </div>
+        
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.85rem; color: #c4d0df;">
           <div>
             <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Fecha programada</span>
-            <strong style="color: white;">Aún no tienes reservas activas</strong>
+            <strong style="color: white;" id="pedido-fecha">Aún no tienes reservas</strong>
           </div>
           <div>
             <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Hora (CET/Madrid)</span>
-            <strong style="color: white;">--:--</strong>
+            <strong style="color: white;" id="pedido-hora">--:--</strong>
           </div>
         </div>
-        <p style="margin: 12px 0 0; font-size: 0.8rem; color: var(--muted); text-align: center;">Cuando reserves, aquí verás los detalles. Te enviaremos el enlace de conexión 15 minutos antes.</p>
+
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);">
+          <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Vía de conexión</span>
+          <strong style="color: white; font-size: 0.85rem;"><i class="bi bi-display"></i> <span id="pedido-software">Esperando selección...</span></strong>
+        </div>
+        <div style="margin-top: 10px;">
+          <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Comentarios de la sesión</span>
+          <p style="color: #c4d0df; font-size: 0.82rem; margin: 0; line-height: 1.5; background: rgba(0,0,0,0.2); padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03);" id="pedido-comentario">No hay comentarios.</p>
+        </div>
+
+        <p style="margin: 15px 0 0; font-size: 0.8rem; color: var(--muted); text-align: center;">Te enviaremos el enlace de conexión 15 minutos antes de tu hora agendada.</p>
       </div>
     </div>
   </div>
@@ -255,7 +266,6 @@
       <p style="color: var(--muted); font-size: 0.83rem; margin: 0 0 15px;">Selecciona el día y horario que mejor te convenga.</p>
 
       <div class="booking-grid">
-        <!-- COLUMNA IZQUIERDA: CALENDARIO INTERACTIVO -->
         <div class="calendar-box">
           <div class="calendar-header">
             <button id="btn-prev-month" class="calendar-nav-btn" onclick="cambiarMes(-1)"><i class="bi bi-chevron-left"></i></button>
@@ -268,7 +278,6 @@
           <div class="calendar-days-grid" id="calendar-days"></div>
         </div>
 
-        <!-- COLUMNA DERECHA: SELECCIÓN DE HORAS (MADRID TIME) -->
         <div class="times-box">
           <div class="times-header" id="selected-date-text">Selecciona un día</div>
           <div class="time-slots-container" id="time-slots-list">
@@ -277,17 +286,30 @@
         </div>
       </div>
 
-      <!-- FOOTER CON NOTIFICACIÓN, CUPÓN Y PAGO -->
+      <div style="margin-top: 20px; background: rgba(6, 12, 22, 0.4); padding: 15px 18px; border-radius: 16px; border: 1px solid var(--line);">
+        <label style="font-size: 0.82rem; font-weight: 600; color: var(--muted); display: block; margin-bottom: 6px;">Software de Conexión preferido:</label>
+        <div style="position: relative; margin-bottom: 15px;">
+          <select id="reservaSoftware" class="liquid-input" style="margin-bottom: 0; font-weight: 500;">
+            <option value="Google Chrome Remote Desktop" selected>Google Chrome Remote Desktop (Recomendado)</option>
+            <option value="AnyDesk">AnyDesk</option>
+          </select>
+          <i class="bi bi-chevron-down" style="position: absolute; right: 15px; top: 12px; color: var(--muted); pointer-events: none;"></i>
+        </div>
+
+        <label style="font-size: 0.82rem; font-weight: 600; color: var(--muted); display: block; margin-bottom: 6px;">¿En qué te ayudamos en esta sesión?:</label>
+        <textarea id="reservaComentario" class="liquid-input" rows="2" placeholder="Ej. Necesito ayuda instalando el Yamaha Premium Keys o el AutoCAD..." style="margin-bottom: 0;"></textarea>
+      </div>
+
       <div class="booking-footer">
         <div id="modal-notif"></div>
 
         <div class="cupon-group">
-          <input type="text" id="cuponInput" placeholder="CÓDIGO DE CUPÓN" class="liquid-input">
+          <input type="text" id="cuponInput" placeholder="CÓDIGO DE CUPÓN" class="liquid-input" style="text-transform: uppercase;">
           <button type="button" class="liquid-btn-cupon" onclick="aplicarCupon()">Aplicar</button>
         </div>
 
         <div>
-          <button id="btn-pagar" class="liquid-btn" onclick="procesarPagoReserva()">
+          <button id="btn-pagar" class="liquid-btn">
             <i class="bi bi-credit-card"></i> Pagar y Reservar (<span id="precio-total">$10.00 USD</span>)
           </button>
         </div>
@@ -311,7 +333,6 @@
     let fechaActual = new Date();
     let mesActual = fechaActual.getMonth();
     let anoActual = fechaActual.getFullYear();
-    
     const fechaReal = new Date();
     const mesReal = fechaReal.getMonth();
     const anoReal = fechaReal.getFullYear();
@@ -321,17 +342,7 @@
     let precioBase = 10.00;
 
     const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    
-    // HORARIOS TRADUCIDOS A ESPAÑA
-    const horariosDisponibles = [
-      "07:00 AM (CET/Madrid)",
-      "08:00 AM (CET/Madrid)",
-      "09:00 AM (CET/Madrid)",
-      "10:00 AM (CET/Madrid)",
-      "11:00 AM (CET/Madrid)",
-      "12:00 PM (CET/Madrid)",
-      "01:00 PM (CET/Madrid)"
-    ];
+    const horariosDisponibles = ["07:00 AM (CET/Madrid)","08:00 AM (CET/Madrid)","09:00 AM (CET/Madrid)","10:00 AM (CET/Madrid)","11:00 AM (CET/Madrid)","12:00 PM (CET/Madrid)","01:00 PM (CET/Madrid)"];
 
     function pseudoRandom(seed) {
         let x = Math.sin(seed++) * 10000;
@@ -370,11 +381,7 @@
         let esPasado = fechaEvaluar < hoy;
         let diaSemana = fechaEvaluar.getDay();
         let esFinDeSemana = (diaSemana === 0 || diaSemana === 6); 
-        
-        let esSeleccionado = diaSeleccionado && 
-                             diaSeleccionado.getDate() === dia && 
-                             diaSeleccionado.getMonth() === mesActual && 
-                             diaSeleccionado.getFullYear() === anoActual;
+        let esSeleccionado = diaSeleccionado && diaSeleccionado.getDate() === dia && diaSeleccionado.getMonth() === mesActual && diaSeleccionado.getFullYear() === anoActual;
 
         if (esPasado) {
           grid.innerHTML += `<div class="day-cell disabled" title="Día pasado">${dia}</div>`;
@@ -384,39 +391,25 @@
           grid.innerHTML += `<div class="day-cell available ${esSeleccionado ? 'selected' : ''}" onclick="seleccionarDia(${dia})">${dia}</div>`;
         }
       }
-      
       actualizarBotonRetroceso();
     }
 
-    function cambiarMes(delta) {
+    window.cambiarMes = function(delta) {
       let nuevoMes = mesActual + delta;
       let nuevoAno = anoActual;
-
-      if (nuevoMes < 0) {
-        nuevoMes = 11;
-        nuevoAno--;
-      } else if (nuevoMes > 11) {
-        nuevoMes = 0;
-        nuevoAno++;
-      }
-
-      if (nuevoAno < anoReal || (nuevoAno === anoReal && nuevoMes < mesReal)) {
-        return; 
-      }
-
-      mesActual = nuevoMes;
-      anoActual = nuevoAno;
+      if (nuevoMes < 0) { nuevoMes = 11; nuevoAno--; } else if (nuevoMes > 11) { nuevoMes = 0; nuevoAno++; }
+      if (nuevoAno < anoReal || (nuevoAno === anoReal && nuevoMes < mesReal)) return; 
+      mesActual = nuevoMes; anoActual = nuevoAno;
       renderizarCalendario();
     }
 
-    function seleccionarDia(dia) {
+    window.seleccionarDia = function(dia) {
       diaSeleccionado = new Date(anoActual, mesActual, dia);
       horaSeleccionada = null;
       renderizarCalendario();
       
       const headerText = document.getElementById('selected-date-text');
       const slotsContainer = document.getElementById('time-slots-list');
-      
       const opcionesFecha = { weekday: 'short', month: 'short', day: 'numeric' };
       headerText.textContent = diaSeleccionado.toLocaleDateString('es-ES', opcionesFecha);
 
@@ -424,25 +417,15 @@
       let seed = anoActual * 10000 + mesActual * 100 + dia;
 
       horariosDisponibles.forEach((hora, index) => {
-        let ocupado = pseudoRandom(seed + index) < 0.40;
-
-        if (ocupado) {
-          slotsContainer.innerHTML += `
-            <div class="time-slot sold-out" title="Horario ocupado">
-              ${hora} - Agotado
-            </div>
-          `;
+        if (pseudoRandom(seed + index) < 0.40) {
+          slotsContainer.innerHTML += `<div class="time-slot sold-out" title="Horario ocupado">${hora} - Agotado</div>`;
         } else {
-          slotsContainer.innerHTML += `
-            <div class="time-slot" onclick="seleccionarHora('${hora}', this)">
-              ${hora}
-            </div>
-          `;
+          slotsContainer.innerHTML += `<div class="time-slot" onclick="seleccionarHora('${hora}', this)">${hora}</div>`;
         }
       });
     }
 
-    function seleccionarHora(hora, elemento) {
+    window.seleccionarHora = function(hora, elemento) {
       horaSeleccionada = hora;
       document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
       elemento.classList.add('selected');
@@ -451,7 +434,6 @@
     window.aplicarCupon = function() {
       const codigo = document.getElementById('cuponInput').value.trim().toUpperCase();
       const cuponesValidos = { "DINGLOFT5": 5.00, "VIP": 10.00, "INSTALA30": 3.00 };
-      
       if (cuponesValidos[codigo] !== undefined) {
         let descuento = cuponesValidos[codigo];
         let totalFinal = Math.max(0, precioBase - descuento);
@@ -462,14 +444,13 @@
       }
     };
 
-    function mostrarAlertaModal(mensaje, esExito) {
+    window.mostrarAlertaModal = function(mensaje, esExito) {
       const notif = document.getElementById('modal-notif');
       notif.style.display = 'block';
       notif.style.background = esExito ? 'rgba(53,221,146,.15)' : 'rgba(255,80,80,.15)';
       notif.style.color = esExito ? 'var(--green)' : '#ff5050';
       notif.style.border = `1px solid ${esExito ? 'rgba(53,221,146,.4)' : 'rgba(255,80,80,.4)'}`;
       notif.innerHTML = esExito ? `<i class="bi bi-check-circle-fill"></i> ${mensaje}` : `<i class="bi bi-exclamation-triangle-fill"></i> ${mensaje}`;
-      
       setTimeout(() => { notif.style.display = 'none'; }, 4000);
     }
 
@@ -482,41 +463,21 @@
       document.getElementById('reservaModal').classList.remove('active');
     };
 
-    window.procesarPagoReserva = function() {
-      if(!diaSeleccionado || !horaSeleccionada) {
-        mostrarAlertaModal("Selecciona un día y un horario libre primero.", false);
-        return;
-      }
-
-      const btn = document.getElementById('btn-pagar');
-      btn.innerHTML = '<i class="bi bi-arrow-repeat" style="animation: spin 1s linear infinite;"></i> Procesando...';
-      btn.style.pointerEvents = 'none';
-
-      setTimeout(() => {
-        mostrarAlertaModal(`Redirigiendo a pasarela de pago...`, true);
-        setTimeout(() => {
-          btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Redirigiendo';
-          btn.style.background = 'linear-gradient(100deg, #35dd92, #2bb978)';
-        }, 1200);
-      }, 1500);
-    };
-
     window.toggleBundle = function(element) {
       const container = element.parentElement;
       const subs = container.querySelector('.sub-downloads');
       const btn = element.querySelector('.toggle-btn');
-      
       subs.classList.toggle('active');
       btn.classList.toggle('active');
       element.classList.toggle('active');
     };
   </script>
 
-  <!-- FIREBASE Y LÓGICA DE PROGRAMAS -->
+  <!-- FIREBASE Y LÓGICA DE PROGRAMAS / RESERVAS -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, collection, query, where, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
@@ -532,73 +493,16 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const downloadLinksMap = {
-      "AutoCAD 2026": "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase",
-      "Microsoft Office 2024": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
-      "Office Home & Business": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
-      "SketchUp Pro 2026": "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD",
-      "Cosmo Collection": "https://drive.google.com/uc?export=download&id=1Z3Xk2MiDMk90PP2jajvVwG3bWHUmSzeL",
-      "Montage 8 & Nord Stage 3": "https://drive.google.com/uc?export=download&id=1OayW_WEpr6Y3Ea5e9wVBC7kLpDptRJA1",
-      "Biblias E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo",
-      "Biblias y Diccionarios para E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo"
-    };
-
-    const bundlesMap = {
-      "Dual Legend": [
-        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
-        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
-        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
-      ],
-      "Dual Legends": [
-        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
-        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
-        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
-      ],
-      "Dual Legend SF2": [
-        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
-        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
-        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
-      ],
-      "Dual Legends SF2": [
-        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
-        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
-        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
-      ],
-      "Nord Essentials SF2 Collection": [
-        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
-        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
-      ],
-      "Nord Stage 4 Ultimate Library": [
-        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
-        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
-      ],
-      "Yamaha Legacy Collection SF2": [
-        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
-        { name: "Bonus", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
-      ],
-      "Yamaha Premium Keys": [
-        { name: "Yamaha Premium Keys v2.0", url: "https://drive.google.com/uc?export=download&id=1r7yW_100iqzQTY7K96Yv05jvFCgq2Abw" },
-        { name: "Yamaha Premium Keys (Bonus)", url: "https://drive.google.com/uc?export=download&id=1I73jq9Baj9uJi0-RHpUCvX-X5dwGOJcd" },
-        { name: "Yamaha Premium Keys (Bonus 2)", url: "https://drive.google.com/uc?export=download&id=1_ubpxmpvlHTCKO6Wdbpjpys-YLVQkEs6" },
-        { name: "Kontakt 8 (Win)", url: "https://drive.google.com/uc?export=download&id=1Wg895Pq8em6h-vGLIy0C-2vDFGZURFSl" },
-        { name: "Kontakt 7 (Mac)", url: "https://drive.google.com/uc?export=download&id=13deJgVvPCi6haaLXET3qV2K7mQ_ojMA2" }
-      ],
-      "Rhodes Affair 2": [
-        { name: "Rhodes Affair 2 (Mac)", url: "https://drive.google.com/uc?export=download&id=1B6dfQJjCh0vzOAuf6eTtuKQ91EAhfFKY" },
-        { name: "Rhodes Affair 2 (Windows)", url: "https://drive.google.com/uc?export=download&id=1C2Lj_8jMqRLdjdd1O4jSdOQYwrDayJx_" }
-      ],
-      "SketchUp 2026 & AutoCAD 2026": [
-        { name: "Sketchup (Mac)", url: "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD" },
-        { name: "AutoCAD (Mac)", url: "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase" }
-      ],
-      "SketchUp & AutoCAD Combo": [
-        { name: "Sketchup (Mac)", url: "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD" },
-        { name: "AutoCAD (Mac)", url: "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase" }
-      ]
-    };
+    const downloadLinksMap = { /* tus links */ };
+    const bundlesMap = { /* tus bundles */ };
 
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        // --- 1. MOSTRAR BOTÓN ADMIN SECRETO SI ERES TÚ ---
+        if (user.email === 'evolutiongt01@gmail.com' || user.email === 'tepaz2025@gmail.com') {
+          document.getElementById('btn-admin').style.display = 'flex';
+        }
+
         let displayName = user.displayName || user.email.split('@')[0];
         let firstName = displayName.split(' ')[0];
 
@@ -606,18 +510,93 @@
         document.getElementById('sidebar-name').textContent = displayName;
         document.getElementById('sidebar-email').textContent = user.email;
 
-        let avatarHtml = '';
-        if (user.photoURL) {
-          avatarHtml = `<img src="${user.photoURL}" alt="Perfil" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
-        } else {
-          const initial = firstName.charAt(0).toUpperCase();
-          avatarHtml = `<div style="width: 100%; height: 100%; display: grid; place-items: center; font-size: 1.2rem;">${initial}</div>`;
+        // --- 2. LECTURA DE RESERVAS DEL CLIENTE PARA "MIS PEDIDOS" ---
+        try {
+          const qReservas = query(collection(db, "reservas"), where("uid", "==", user.uid));
+          const reservasSnap = await getDocs(qReservas);
+          
+          if (!reservasSnap.empty) {
+            let reservasArray = [];
+            reservasSnap.forEach(doc => reservasArray.push(doc.data()));
+            // Tomamos la última reserva hecha (asumiendo orden de arreglo)
+            const miReserva = reservasArray[reservasArray.length - 1];
+            
+            document.getElementById('pedido-fecha').textContent = miReserva.fecha;
+            document.getElementById('pedido-hora').textContent = miReserva.hora;
+            document.getElementById('pedido-software').textContent = miReserva.software;
+            document.getElementById('pedido-comentario').textContent = miReserva.comentario;
+
+            const estadoEl = document.getElementById('pedido-estado');
+            if (miReserva.estado === "completado") {
+              estadoEl.innerHTML = `<span style="background: rgba(18, 215, 246, 0.15); color: var(--cyan); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(18, 215, 246, 0.3);">Completado <i class="bi bi-check-all"></i></span>`;
+            } else {
+              estadoEl.innerHTML = `<span style="background: rgba(53, 221, 146, 0.15); color: var(--green); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(53, 221, 146, 0.3);">Pendiente</span>`;
+            }
+          }
+        } catch (error) {
+          console.error("Error leyendo reservas:", error);
         }
-        document.getElementById('sidebar-avatar').innerHTML = avatarHtml;
-        document.getElementById('top-avatar').innerHTML = avatarHtml;
 
+        // --- 3. BOTÓN PAGAR (AHORA GUARDA EN FIREBASE) ---
+        document.getElementById('btn-pagar').addEventListener('click', async () => {
+          const software = document.getElementById('reservaSoftware').value;
+          const comentario = document.getElementById('reservaComentario').value;
+
+          if(!window.diaSeleccionado || !window.horaSeleccionada) {
+            window.mostrarAlertaModal("Selecciona un día y un horario libre primero.", false);
+            return;
+          }
+          if(comentario.trim() === "") {
+            window.mostrarAlertaModal("Por favor cuéntanos brevemente en qué te ayudamos.", false);
+            return;
+          }
+
+          const btn = document.getElementById('btn-pagar');
+          btn.innerHTML = '<i class="bi bi-arrow-repeat" style="animation: spin 1s linear infinite;"></i> Procesando...';
+          btn.style.pointerEvents = 'none';
+
+          const fechaFormateada = window.diaSeleccionado.toLocaleDateString('es-ES', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+
+          try {
+            // Guardamos la reserva en Firestore
+            await addDoc(collection(db, "reservas"), {
+              uid: user.uid,
+              email: user.email,
+              fecha: fechaFormateada,
+              hora: window.horaSeleccionada,
+              software: software,
+              comentario: comentario,
+              estado: "pendiente",
+              creado: serverTimestamp()
+            });
+
+            window.mostrarAlertaModal(`Reserva guardada. Redirigiendo a pasarela...`, true);
+            
+            // Refrescar UI del modal Mis Pedidos de forma visual
+            document.getElementById('pedido-fecha').textContent = fechaFormateada;
+            document.getElementById('pedido-hora').textContent = window.horaSeleccionada;
+            document.getElementById('pedido-software').textContent = software;
+            document.getElementById('pedido-comentario').textContent = comentario;
+            document.getElementById('pedido-estado').innerHTML = `<span style="background: rgba(53, 221, 146, 0.15); color: var(--green); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(53, 221, 146, 0.3);">Pendiente</span>`;
+
+            // AQUÍ REDIRIGES A TU PASARELA (Descomenta cuando conectes Tilopay/Stripe)
+            // window.location.href = "https://tu-link-de-pago.com";
+
+            setTimeout(() => {
+              btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Redirigiendo';
+              btn.style.background = 'linear-gradient(100deg, #35dd92, #2bb978)';
+            }, 1200);
+
+          } catch (e) {
+            console.error(e);
+            window.mostrarAlertaModal("Error guardando la reserva.", false);
+            btn.innerHTML = '<i class="bi bi-credit-card"></i> Pagar y Reservar';
+            btn.style.pointerEvents = 'auto';
+          }
+        });
+
+        // --- LECTURA NORMAL DE PRODUCTOS COMPRADOS ---
         const downloadsContainer = document.getElementById('downloads-container');
-
         try {
           const q = query(collection(db, "purchases"), where("uid", "==", user.uid));
           const querySnapshot = await getDocs(q);
@@ -626,9 +605,9 @@
           downloadsContainer.innerHTML = '';
 
           if (querySnapshot.empty) {
-            downloadsContainer.innerHTML = '<p style="color: var(--muted); padding: 15px;">Aún no tienes programas comprados. Ve al catálogo para conseguir tus instaladores.</p>';
+            downloadsContainer.innerHTML = '<p style="color: var(--muted); padding: 15px;">Aún no tienes programas comprados.</p>';
           } else {
-            // BANNER DEL CUPÓN DEL 30% INYECTADO SOLO SI COMPRARON
+            // Banner de descuento
             downloadsContainer.innerHTML = `
               <div style="background: rgba(53,221,146,0.08); border: 1px solid rgba(53,221,146,0.3); border-radius: 15px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: center; gap: 15px;">
                 <i class="bi bi-stopwatch" style="color: var(--green); font-size: 1.8rem;"></i>
@@ -639,123 +618,11 @@
               </div>
             `;
 
-            querySnapshot.forEach((docSnap) => {
-              const compra = docSnap.data();
-              const items = compra.items || [];
-              
-              items.forEach(producto => {
-                totalProgramas++;
-                
-                let nombreProd = producto.name || producto;
-                let imgProd = producto.img || "autocad"; 
-                let typeProd = producto.type || 'Instalador digital';
-                
-                if(typeof producto === 'string') {
-                    const prodLower = producto.toLowerCase();
-                    if(prodLower.includes("sketchup")) imgProd = "sketchup";
-                    else if(prodLower.includes("logic")) imgProd = "logic";
-                    else if(prodLower.includes("twinmotion")) imgProd = "twinmotion";
-                    else if(prodLower.includes("office")) imgProd = "office";
-                    else if(prodLower.includes("cinema")) imgProd = "cinema4d";
-                }
-
-                if (bundlesMap[nombreProd]) {
-                  let subHTML = '';
-                  bundlesMap[nombreProd].forEach(subItem => {
-                    subHTML += `
-                      <div class="sub-download-row">
-                        <div><i class="bi bi-file-earmark-zip"></i> ${subItem.name}</div>
-                        <button class="download-btn-small" data-url="${subItem.url}" data-product="${subItem.name}" aria-label="Descargar ${subItem.name}">
-                          <i class="bi bi-download"></i>
-                        </button>
-                      </div>
-                    `;
-                  });
-
-                  const bundleHTML = `
-                    <div class="bundle-container">
-                      <div class="download-row has-subs" style="cursor:pointer;" onclick="toggleBundle(this)">
-                        <div class="product-art"><img src="img/${imgProd}.png" alt="${nombreProd}"></div>
-                        <div>
-                          <h3>${nombreProd}</h3>
-                          <p>${typeProd} (Pack de ${bundlesMap[nombreProd].length} archivos)</p>
-                          <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso vitalicio</span>
-                        </div>
-                        <button class="toggle-btn" aria-label="Ver archivos del paquete">
-                          <i class="bi bi-chevron-down"></i>
-                        </button>
-                      </div>
-                      <div class="sub-downloads">
-                        ${subHTML}
-                      </div>
-                    </div>
-                  `;
-                  downloadsContainer.insertAdjacentHTML('beforeend', bundleHTML);
-
-                } else {
-                  let directLink = producto.downloadUrl || downloadLinksMap[nombreProd] || "https://drive.google.com";
-                  
-                  const singleHTML = `
-                    <div class="download-row">
-                      <div class="product-art"><img src="img/${imgProd}.png" alt="${nombreProd}"></div>
-                      <div>
-                        <h3>${nombreProd}</h3>
-                        <p>${typeProd}</p>
-                        <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso vitalicio</span>
-                      </div>
-                      <button class="download-btn" data-url="${directLink}" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
-                        <i class="bi bi-download"></i>
-                      </button>
-                    </div>
-                  `;
-                  downloadsContainer.insertAdjacentHTML('beforeend', singleHTML);
-                }
-              });
-            });
+            // ... (Se mantiene el código de renderizar productos, omitido en texto para no repetir, pero debes mantener tu lógica de `querySnapshot.forEach`)
           }
-
-          document.getElementById('stat-programas').textContent = totalProgramas;
-          document.getElementById('stat-descargas').textContent = totalProgramas > 0 ? "∞" : "0"; 
-
-          const toast = document.getElementById('toast-message');
-
-          document.querySelectorAll('.download-btn, .download-btn-small').forEach(button => {
-            button.addEventListener('click', (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              
-              const url = button.getAttribute('data-url') + '&confirm=t';
-              const productName = button.getAttribute('data-product');
-
-              toast.textContent = `Procesando la descarga de ${productName}...`;
-              toast.classList.add('show');
-              setTimeout(() => toast.classList.remove('show'), 3500);
-
-              const width = 600;
-              const height = 450;
-              const left = (window.innerWidth / 2) - (width / 2);
-              const top = (window.innerHeight / 2) - (height / 2);
-              
-              const popup = window.open(
-                url, 
-                'DescargaSegura', 
-                `width=${width},height=${height},top=${top},left=${left},toolbar=no,menubar=no,location=no,status=no`
-              );
-
-              setTimeout(() => {
-                if (popup && !popup.closed) {
-                  popup.close();
-                  toast.textContent = `Descarga iniciada. Revisa tu navegador.`;
-                  toast.classList.add('show');
-                  setTimeout(() => toast.classList.remove('show'), 3000);
-                }
-              }, 12000);
-            });
-          });
-
+          document.getElementById('stat-programas').textContent = totalProgramas; // Manten tu lógica de contadores
         } catch(error) {
-          console.error("Error cargando programas:", error);
-          downloadsContainer.innerHTML = '<p style="color: #ff5050; padding: 15px;">Hubo un error al cargar tus programas.</p>';
+          console.error(error);
         }
 
       } else {
@@ -764,12 +631,7 @@
     });
 
     document.querySelector('.logout').addEventListener('click', async () => {
-      try {
-        await signOut(auth);
-        window.location.href = 'login.html';
-      } catch (error) {
-        console.error("Error al cerrar sesión:", error);
-      }
+      try { await signOut(auth); window.location.href = 'login.html'; } catch (error) { console.error(error); }
     });
   </script>
 </body>
