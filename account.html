@@ -73,7 +73,6 @@
     .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
 
-    /* WIDGET VENTANAS ANIMADAS */
     .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 8, 15, 0.85); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .liquid-modal-overlay.active { opacity: 1; pointer-events: auto; }
     
@@ -149,7 +148,6 @@
         <a class="active" href="#descargas"><i class="bi bi-download"></i><span>Descargas</span></a>
         <a href="#" onclick="openReservasModal(); return false;"><i class="bi bi-calendar2-check"></i><span>Mis Reservas</span></a>
         
-        <!-- BOTÓN SECRETO ADMIN -->
         <a href="admin.html" id="btn-admin" style="display: none; color: #ff5050; margin-top: 15px; border: 1px solid rgba(255,80,80,0.3); background: rgba(255,80,80,0.05);"><i class="bi bi-incognito"></i><span>Panel Admin</span></a>
       </nav>
       <div class="profile">
@@ -255,7 +253,6 @@
           <strong style="color: white; font-size: 0.85rem;"><i class="bi bi-display"></i> <span id="pedido-software">Esperando selección...</span></strong>
         </div>
 
-        <!-- SECCIÓN DE CÓDIGO DE ACCESO (DESBLOQUEO AUTOMÁTICO) -->
         <div id="seccion-acceso-remoto" style="margin-top: 18px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); text-align: center;">
           <p style="font-size: 0.8rem; color: var(--muted); margin: 0;" id="texto-espera-codigo">
             <i class="bi bi-clock-history"></i> El campo para ingresar tu código de acceso se habilitará automáticamente 5 minutos antes de tu sesión.
@@ -456,11 +453,26 @@
 
     window.aplicarCupon = function() {
       const codigo = document.getElementById('cuponInput').value.trim().toUpperCase();
-      const cuponesValidos = { "DINGLOFT5": 5.00, "VIP": 10.00, "INSTALA30": 3.00 };
+      let cuponesValidos = { "DINGLOFT5": 5.00, "VIP": 10.00, "INSTALA30": 3.00 };
+      
+      // CUPÓN DE PRUEBA GRATIS - VÁLIDO SÓLO HOY (4 de agosto de 2026)
+      const hoyString = new Date().toISOString().split('T')[0];
+      if (hoyString === "2026-08-04" && codigo === "PRUEBAGRATIS") {
+          cuponesValidos["PRUEBAGRATIS"] = 10.00;
+      }
+
       if (cuponesValidos[codigo] !== undefined) {
         let descuento = cuponesValidos[codigo];
         let totalFinal = Math.max(0, precioBase - descuento);
         document.getElementById('precio-total').textContent = `$${totalFinal.toFixed(2)} USD`;
+        
+        // Actualizar el texto del botón si el total es cero
+        if (totalFinal === 0) {
+           document.getElementById('btn-pagar').innerHTML = `<i class="bi bi-check2-circle"></i> Reservar Gratis`;
+        } else {
+           document.getElementById('btn-pagar').innerHTML = `<i class="bi bi-credit-card"></i> Pagar y Reservar ($${totalFinal.toFixed(2)} USD)`;
+        }
+
         mostrarAlertaModal("¡Cupón aplicado con éxito!", true);
       } else {
         mostrarAlertaModal("Cupón inválido o expirado.", false);
@@ -603,7 +615,6 @@
         document.getElementById('sidebar-avatar').innerHTML = avatarHtml;
         document.getElementById('top-avatar').innerHTML = avatarHtml;
 
-        // --- SISTEMA DE RESERVAS Y RELOJ 5 MIN ---
         let miReservaData = null;
         let miReservaId = null;
 
@@ -618,11 +629,9 @@
             const formCodigo = document.getElementById('formulario-codigo');
 
             if (faltanMinutos <= 5 && faltanMinutos >= -60) {
-                // Habilitar acceso
                 textoEspera.style.display = 'none';
                 formCodigo.style.display = 'block';
             } else if (faltanMinutos > 5) {
-                // Mostrar conteo regresivo aprox.
                 textoEspera.innerHTML = `<i class="bi bi-clock-history"></i> El campo para ingresar tu código se habilitará 5 minutos antes de tu sesión (Faltan aprox. ${Math.ceil(faltanMinutos)} min).`;
                 textoEspera.style.display = 'block';
                 formCodigo.style.display = 'none';
@@ -639,15 +648,12 @@
           if (!reservasSnap.empty) {
             let reservasArray = [];
             reservasSnap.forEach(d => reservasArray.push({ id: d.id, ...d.data() }));
-            
-            // Tomamos la última reserva
             miReservaData = reservasArray[reservasArray.length - 1];
             miReservaId = miReservaData.id;
             
             document.getElementById('pedido-fecha').textContent = miReservaData.fecha;
             document.getElementById('pedido-hora').textContent = miReservaData.hora;
             document.getElementById('pedido-software').textContent = miReservaData.software;
-            document.getElementById('pedido-comentario').textContent = miReservaData.comentario || 'Sin comentarios.';
 
             const estadoEl = document.getElementById('pedido-estado');
             if (miReservaData.estado === "completado") {
@@ -665,7 +671,7 @@
                 document.getElementById('mensaje-codigo-enviado').style.display = 'block';
               } else {
                 verificarDesbloqueo();
-                setInterval(verificarDesbloqueo, 30000); // Revisa cada 30 segundos
+                setInterval(verificarDesbloqueo, 30000); 
               }
             }
           } else {
@@ -675,7 +681,6 @@
           console.error("Error leyendo reservas:", error);
         }
 
-        // --- ENVIAR CÓDIGO A FIREBASE ---
         document.getElementById('btn-enviar-codigo').addEventListener('click', async () => {
             const codigo = document.getElementById('input-codigo-acceso').value;
             if(!codigo) return;
@@ -701,7 +706,6 @@
             }
         });
 
-        // --- CREAR NUEVA RESERVA ---
         document.getElementById('btn-pagar').addEventListener('click', async () => {
           const comentario = document.getElementById('reservaComentario').value;
 
@@ -719,8 +723,8 @@
           btn.style.pointerEvents = 'none';
 
           const fechaFormateada = window.diaSeleccionado.toLocaleDateString('es-ES', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+          const esGratis = document.getElementById('precio-total').textContent.includes('$0.00');
 
-          // Calcular Timestamp para Madrid (CEST = UTC+2 / CET = UTC+1). Asumimos +02:00 por defecto para evitar desfases gigantes.
           let matches = window.horaSeleccionada.match(/(\d+):(\d+)\s(AM|PM)/);
           let hour = parseInt(matches[1]);
           if (matches[3] === 'PM' && hour < 12) hour += 12;
@@ -746,13 +750,22 @@
               creado: serverTimestamp()
             });
 
-            window.mostrarAlertaModal(`Reserva guardada. Redirigiendo a pasarela...`, true);
-            
-            setTimeout(() => {
-              // Redirige a pasarela de pago aquí
-              // window.location.href = "https://tu-link-de-pago.com";
-              window.location.reload(); // Recarga para actualizar panel temporalmente
-            }, 1500);
+            if (esGratis) {
+               window.mostrarAlertaModal(`Reserva de prueba guardada exitosamente.`, true);
+               setTimeout(() => {
+                 window.location.reload(); 
+               }, 1500);
+            } else {
+               window.mostrarAlertaModal(`Reserva guardada. Redirigiendo a pasarela...`, true);
+               setTimeout(() => {
+                 btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Redirigiendo';
+                 btn.style.background = 'linear-gradient(100deg, #35dd92, #2bb978)';
+                 // REDIRIGE A TU PASARELA AQUÍ:
+                 // window.location.href = "https://tu-link-de-pago.com";
+                 
+                 setTimeout(() => window.location.reload(), 1000); // Borrar si usas href
+               }, 1200);
+            }
 
           } catch (e) {
             console.error(e);
@@ -762,7 +775,6 @@
           }
         });
 
-        // --- RENDERIZAR PRODUCTOS COMPRADOS ---
         const downloadsContainer = document.getElementById('downloads-container');
         try {
           const q = query(collection(db, "purchases"), where("uid", "==", user.uid));
