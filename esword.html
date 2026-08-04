@@ -370,17 +370,12 @@
     .success-icon-ring { width: 70px; height: 70px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: #00ff88; font-size: 1.8rem; }
     .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(50,221,145,.5); border-radius: 12px; color: #eafff3; background: #0c251d; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
     .toast.show { transform: translateY(0); }
-    
-    /* UTILIDAD PARA REELS (SHORTS) VERTICALES */
-    .ratio-9x16 {
-      --bs-aspect-ratio: 177.77%;
-    }
   </style>
 </head>
 <body>
 
   <!-- ========================================== -->
-  <!-- MENÚ LATERAL "PUSH" -->
+  <!-- MENÚ LATERAL "PUSH" (OCULTO A LA IZQUIERDA)-->
   <!-- ========================================== -->
   <div class="side-menu-drawer" id="side-menu">
     <div class="text-center mb-4 mt-2">
@@ -401,13 +396,14 @@
   <div class="side-menu-overlay" id="side-menu-overlay"></div>
 
   <!-- ========================================== -->
-  <!-- PAGE WRAPPER (EL QUE SE MUEVE AL ABRIR MENU) -->
+  <!-- ENVOLTORIO PRINCIPAL QUE SE EMPUJA AL LADO -->
   <!-- ========================================== -->
   <div class="page-wrapper" id="page-wrapper">
     <div class="bg-orb orb-1"></div>
     <div class="bg-orb orb-2"></div>
     <div class="bg-orb orb-3"></div>
 
+    <!-- MODAL DE ÉXITO -->
     <div class="success-modal-overlay" id="success-modal">
       <div class="success-modal-box">
         <img src="img/dingloft.png" alt="Dingloft" style="width: 110px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
@@ -418,12 +414,14 @@
       </div>
     </div>
 
+    <!-- TOAST FLOTANTE -->
     <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
     <!-- ====== NAVBAR PRINCIPAL CENTRADA ====== -->
     <nav class="navbar navbar-glass fixed-top" id="main-navbar">
       <div class="container position-relative d-flex align-items-center">
         
+        <!-- IZQUIERDA (MÓVIL Y PC) -->
         <div class="d-flex align-items-center gap-2" style="flex: 1; z-index: 2;">
           <button class="mobile-liquid-btn d-md-none" id="btn-open-sidebar" title="Menú">
             <i class="bi bi-list"></i>
@@ -439,19 +437,25 @@
           </div>
         </div>
 
+        <!-- CENTRO (LOGO CENTRADO A LA PERFECCIÓN) -->
         <div class="d-flex justify-content-center" style="z-index: 1;">
           <a class="navbar-brand position-absolute top-50 start-50 translate-middle m-0 p-0 d-flex align-items-center" href="index.html">
             <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
           </a>
         </div>
         
+        <!-- DERECHA (MÓVIL Y PC) -->
         <div class="d-flex align-items-center justify-content-end gap-2 gap-md-3" style="flex: 1; z-index: 2;">
           <button class="mobile-liquid-btn d-none d-md-flex" id="btn-open-search-desktop" title="Buscar">
             <i class="bi bi-search"></i>
           </button>
 
-          <div id="auth-container-global"></div>
+          <!-- Avatar / Login de Usuario -->
+          <div id="auth-container-global">
+            <!-- El JS inyecta el Avatar Liquid Glass aquí -->
+          </div>
 
+          <!-- BOTÓN CARRITO TEXTO (Solo PC) -->
           <button id="main-cart-btn" class="btn-outline-custom d-none d-md-flex align-items-center gap-2 cart-btn-global" style="padding: 6px 15px; font-size: 0.9rem;">
             <i class="bi bi-cart3"></i> CARRITO (<span class="cart-badge-count-global">0</span>)
           </button>
@@ -641,18 +645,33 @@
           </div>
         </div>
 
-        <!-- SECCIÓN DE VIDEO PRINCIPAL CON EFECTO LIQUID GLASS -->
+        <!-- SECCIÓN DE VIDEOS PRINCIPALES CON EFECTO LIQUID GLASS -->
         <section class="pb-5 mt-4">
           <div class="container">
             <div class="row justify-content-center">
-              <div class="col-lg-10">
-                <div class="text-center mb-3">
-                  <span class="text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 2px; color: #00ff88;">Guía Práctica</span>
-                  <h3 class="fw-bold text-white mt-1 fs-5">Cómo instalar módulos en Mac e iPad</h3>
+              <div class="col-lg-12">
+                <div class="text-center mb-4">
+                  <span class="text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 2px; color: #00ff88;">Guías de Instalación</span>
+                  <h3 class="fw-bold text-white mt-1 fs-5">Aprende a instalar los módulos paso a paso</h3>
                 </div>
-                <div class="liquid-glass-container">
-                  <div class="ratio ratio-16x9 rounded-3 overflow-hidden" style="box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
-                    <iframe src="https://www.youtube.com/embed/Ns6ntMsTkc4" title="Demostración y Guía" allowfullscreen style="border:0;"></iframe>
+                <div class="row g-4 justify-content-center">
+                  <!-- Video 1: Mac -->
+                  <div class="col-12 col-md-6">
+                    <h6 class="text-white text-center mb-2 fw-bold" style="font-size: 0.9rem;"><i class="bi bi-apple"></i> Instalación en iPad usando Mac</h6>
+                    <div class="liquid-glass-container">
+                      <div class="ratio ratio-16x9 rounded-3 overflow-hidden" style="box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+                        <iframe src="https://www.youtube.com/embed/ELDHAQod1iw" title="Instalar en iPad con Mac" allowfullscreen style="border:0;"></iframe>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Video 2: Windows -->
+                  <div class="col-12 col-md-6">
+                    <h6 class="text-white text-center mb-2 fw-bold" style="font-size: 0.9rem;"><i class="bi bi-windows" style="color: #00e5ff;"></i> Instalación en iPad usando Windows</h6>
+                    <div class="liquid-glass-container">
+                      <div class="ratio ratio-16x9 rounded-3 overflow-hidden" style="box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+                        <iframe src="https://www.youtube.com/embed/XFniFbceKyQ" title="Instalar en iPad con Windows" allowfullscreen style="border:0;"></iframe>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1493,15 +1512,19 @@
           const code = couponInput.value.trim().toUpperCase();
           if (code === 'ADMIN_EVOLUTION') {
             couponApplied = true;
-            couponMsg.style.display = 'block';
-            couponMsg.style.color = '#00ff88';
-            couponMsg.innerHTML = '<i class="bi bi-check-circle-fill"></i> ¡Cupón ADMIN_EVOLUTION aplicado!';
+            if(couponMsg) {
+              couponMsg.style.display = 'block';
+              couponMsg.style.color = '#00ff88';
+              couponMsg.innerHTML = '<i class="bi bi-check-circle-fill"></i> ¡Cupón ADMIN_EVOLUTION aplicado!';
+            }
             updateCartUI();
           } else {
             couponApplied = false;
-            couponMsg.style.display = 'block';
-            couponMsg.style.color = '#ff4444';
-            couponMsg.innerHTML = '<i class="bi bi-x-circle-fill"></i> Código de cupón inválido.';
+            if(couponMsg) {
+              couponMsg.style.display = 'block';
+              couponMsg.style.color = '#ff4444';
+              couponMsg.innerHTML = '<i class="bi bi-x-circle-fill"></i> Código de cupón inválido.';
+            }
             updateCartUI();
           }
         });
