@@ -73,16 +73,19 @@
     .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
 
-    .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 9, 17, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    /* WIDGET VENTANAS (ANIMADAS, SIN BLUR) */
+    .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 8, 15, 0.85); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .liquid-modal-overlay.active { opacity: 1; pointer-events: auto; }
     
-    .liquid-modal-card { width: 95%; max-width: 960px; padding: 28px; border-radius: 28px; background: linear-gradient(145deg, rgba(16, 27, 45, 0.88), rgba(8, 14, 25, 0.82)); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: var(--text); position: relative; max-height: 95vh; overflow-y: auto;}
+    .liquid-modal-card { width: 95%; max-width: 960px; padding: 28px; border-radius: 28px; background: linear-gradient(145deg, rgba(16, 27, 45, 0.96), rgba(8, 14, 25, 0.98)); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.03); color: var(--text); position: relative; max-height: 95vh; overflow-y: auto; transform: scale(0.92) translateY(20px); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .liquid-modal-overlay.active .liquid-modal-card { transform: scale(1) translateY(0); }
+    
     .liquid-close { position: absolute; top: 22px; right: 22px; background: transparent; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; transition: .2s; z-index: 10;}
     .liquid-close:hover { color: white; }
 
     .booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 15px; }
     
-    .calendar-box { background: rgba(6, 12, 22, 0.5); border: 1px solid var(--line); border-radius: 20px; padding: 18px; }
+    .calendar-box { background: rgba(6, 12, 22, 0.6); border: 1px solid var(--line); border-radius: 20px; padding: 18px; }
     .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
     .calendar-header h4 { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--text); }
     .calendar-nav-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); color: var(--muted); border-radius: 8px; width: 32px; height: 32px; display: grid; place-items: center; transition: .2s; cursor: pointer; }
@@ -98,11 +101,11 @@
     .day-cell.available:hover { background: rgba(18, 215, 246, 0.15); border-color: var(--cyan); color: var(--cyan); }
     .day-cell.selected { background: var(--cyan) !important; color: #04111a !important; font-weight: 800; box-shadow: 0 0 12px rgba(18, 215, 246, 0.5); }
 
-    .times-box { background: rgba(6, 12, 22, 0.5); border: 1px solid var(--line); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; }
+    .times-box { background: rgba(6, 12, 22, 0.6); border: 1px solid var(--line); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; }
     .times-header { font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 8px; }
     .time-slots-container { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; padding-right: 4px; }
     
-    .time-slot { width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.03); color: var(--text); font-size: 0.82rem; font-weight: 600; text-align: center; cursor: pointer; transition: .2s ease; }
+    .time-slot { width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.04); color: var(--text); font-size: 0.82rem; font-weight: 600; text-align: center; cursor: pointer; transition: .2s ease; }
     .time-slot:hover { background: rgba(18, 215, 246, 0.12); border-color: var(--cyan); color: var(--cyan); transform: translateY(-1px); }
     .time-slot.selected { background: linear-gradient(90deg, var(--cyan), #1cbeeb); color: #03111a; font-weight: 800; border-color: var(--cyan); box-shadow: 0 4px 12px rgba(18, 215, 246, 0.3); }
     
@@ -110,7 +113,7 @@
     .time-slot.sold-out:hover { transform: none; color: var(--text); }
 
     .software-options { display: flex; gap: 12px; margin-bottom: 15px; }
-    .software-btn { flex: 1; padding: 14px 12px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--muted); cursor: pointer; text-align: center; font-size: 0.85rem; font-weight: 600; transition: .2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .software-btn { flex: 1; padding: 14px 12px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,0.04); color: var(--muted); cursor: pointer; text-align: center; font-size: 0.85rem; font-weight: 600; transition: .2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .software-btn:hover { background: rgba(18, 215, 246, 0.05); border-color: rgba(18, 215, 246, 0.3); color: white; }
     .software-btn.selected { background: rgba(18, 215, 246, 0.12); border-color: var(--cyan); color: var(--cyan); box-shadow: inset 0 0 12px rgba(18,215,246,0.15); }
     
@@ -130,7 +133,7 @@
     #modal-notif { display: none; padding: 10px; border-radius: 10px; font-size: 0.82rem; margin-bottom: 12px; text-align: center; font-weight: 600; grid-column: span 2; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    #pedidosModal .liquid-modal-card { max-width: 500px; }
+    #reservasModal .liquid-modal-card { max-width: 500px; }
 
     @media(max-width:768px){ .booking-grid { grid-template-columns: 1fr; } .booking-footer { grid-template-columns: 1fr; } #modal-notif { grid-column: span 1; } .software-options { flex-direction: column; } }
     @media(max-width:1080px){.app{grid-template-columns:78px 1fr}.sidebar{padding:25px 10px}.brand{margin:0 auto 42px;font-size:0}.brand span{font-size:1.8rem}.nav a{justify-content:center;padding:15px}.nav a span,.profile strong,.profile small,.logout span{display:none}.profile{padding:12px;display:grid;place-items:center}.logout{justify-content:center}.stats{grid-template-columns:1fr}.dashboard{grid-template-columns:1fr}.right{grid-template-columns:1fr}}
@@ -144,7 +147,7 @@
       <nav class="nav" aria-label="Navegación de cuenta">
         <a href="index.html"><i class="bi bi-house-door"></i><span>Home</span></a>
         <a class="active" href="#descargas"><i class="bi bi-download"></i><span>Descargas</span></a>
-        <a href="#" onclick="openPedidosModal(); return false;"><i class="bi bi-box-seam"></i><span>Mis Pedidos</span></a>
+        <a href="#" onclick="openReservasModal(); return false;"><i class="bi bi-calendar2-check"></i><span>Mis Reservas</span></a>
         
         <a href="admin.html" id="btn-admin" style="display: none; color: #ff5050; margin-top: 15px; border: 1px solid rgba(255,80,80,0.3); background: rgba(255,80,80,0.05);"><i class="bi bi-incognito"></i><span>Panel Admin</span></a>
       </nav>
@@ -205,7 +208,7 @@
               </ul>
               
               <button class="liquid-btn" onclick="openReservaModal()" style="margin-top: 8px;">
-                <i class="bi bi-calendar2-check"></i> Agendar Instalación
+                <i class="bi bi-calendar2-check"></i> Agendar Sesión
               </button>
             </div>
           </article>
@@ -220,10 +223,11 @@
     </main>
   </div>
   
-  <div class="liquid-modal-overlay" id="pedidosModal">
+  <!-- MODAL MIS RESERVAS -->
+  <div class="liquid-modal-overlay" id="reservasModal">
     <div class="liquid-modal-card">
-      <button class="liquid-close" onclick="closePedidosModal()"><i class="bi bi-x-lg"></i></button>
-      <h3 style="margin: 0 0 4px; font-size: 1.3rem;">Mis Pedidos y Reservas</h3>
+      <button class="liquid-close" onclick="closeReservasModal()"><i class="bi bi-x-lg"></i></button>
+      <h3 style="margin: 0 0 4px; font-size: 1.3rem;">Mis Reservas</h3>
       <p style="color: var(--muted); font-size: 0.83rem; margin: 0 0 15px;">Estado actual de tus instalaciones programadas.</p>
 
       <div style="background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 16px; padding: 18px;">
@@ -259,6 +263,7 @@
     </div>
   </div>
 
+  <!-- MODAL DE AGENDAR SESIÓN -->
   <div class="liquid-modal-overlay" id="reservaModal">
     <div class="liquid-modal-card">
       <button class="liquid-close" onclick="closeReservaModal()"><i class="bi bi-x-lg"></i></button>
@@ -322,12 +327,12 @@
   <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
   <script>
-    window.openPedidosModal = function() {
-      document.getElementById('pedidosModal').classList.add('active');
+    window.openReservasModal = function() {
+      document.getElementById('reservasModal').classList.add('active');
     };
 
-    window.closePedidosModal = function() {
-      document.getElementById('pedidosModal').classList.remove('active');
+    window.closeReservasModal = function() {
+      document.getElementById('reservasModal').classList.remove('active');
     };
 
     let fechaActual = new Date();
@@ -480,6 +485,7 @@
     };
   </script>
 
+  <!-- FIREBASE Y LÓGICA DE PROGRAMAS / RESERVAS -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
