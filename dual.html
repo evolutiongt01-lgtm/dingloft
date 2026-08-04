@@ -289,11 +289,7 @@
     .cart-brand-watermark { position: fixed; top: 50%; left: 30%; transform: translate(-50%, -50%) scale(0.9); text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none; }
     .cart-overlay.active ~ .cart-brand-watermark { opacity: 0.85; visibility: visible; transform: translate(-50%, -50%) scale(1); }
     .cart-brand-watermark::after { content: ''; position: absolute; top: 50%; left: 50%; width: 260px; height: 260px; background: radial-gradient(circle, rgba(0, 229, 255, 0.5) 0%, rgba(162, 0, 255, 0.3) 40%, transparent 70%); transform: translate(-50%, -50%); filter: blur(30px); z-index: -1; animation: lightGlow 3s infinite alternate ease-in-out; }
-    @keyframes logoPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 20px rgba(0,229,255,0.5)); } 50% { transform: translate(-50%, -50%) scale(1.05); filter: drop-shadow(0 0 40px rgba(0,229,255,0.8)); } }
-    @keyframes lightGlow { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } 100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; } }
-    .animated-watermark-logo { width: 240px; max-width: 80vw; animation: logoPulse 4s infinite ease-in-out; position: relative; }
-
-    /* EL PANEL DEL CARRITO */
+    
     .cart-drawer { 
       position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh; 
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.5)); 
@@ -530,7 +526,7 @@
                 </button>
               </div>
 
-              <button class="btn-outline-cyan w-100 d-flex align-items-center justify-content-center gap-2" id="btn-free-trial" data-url="https://drive.google.com/uc?export=download&id=1zoVl-fS-D_ex1EUmLGXfEytU2Q00nQYE">
+              <button class="btn-outline-cyan w-100 d-flex align-items-center justify-content-center gap-2" id="btn-free-trial" data-url="https://drive.google.com/file/d/1zoVl-fS-D_ex1EUmLGXfEytU2Q00nQYE/view?usp=sharing">
                 <i class="bi bi-gift fs-5"></i> PRUEBA GRATIS (531.5 MB)
               </button>
             </div>
@@ -552,17 +548,24 @@
           <div class="col-12 col-sm-6 col-md-4">
             <div class="liquid-glass-container p-2" style="max-width: 320px; margin: 0 auto;">
               <div class="ratio ratio-9x16 rounded-3 overflow-hidden">
-                <!-- Se cambió youtube.com/shorts/ por youtube.com/embed/ -->
                 <iframe src="https://www.youtube.com/embed/qn7SCd9K2PE" title="Reel Testimonio 1" allowfullscreen style="border:0;"></iframe>
               </div>
             </div>
           </div>
           
+          <!-- REEL 3 (NUEVO AL MEDIO) -->
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="liquid-glass-container p-2" style="max-width: 320px; margin: 0 auto;">
+              <div class="ratio ratio-9x16 rounded-3 overflow-hidden">
+                <iframe src="https://www.youtube.com/embed/HtgO6DWNems" title="Reel Testimonio 3" allowfullscreen style="border:0;"></iframe>
+              </div>
+            </div>
+          </div>
+
           <!-- REEL 2 -->
           <div class="col-12 col-sm-6 col-md-4">
             <div class="liquid-glass-container p-2" style="max-width: 320px; margin: 0 auto;">
               <div class="ratio ratio-9x16 rounded-3 overflow-hidden">
-                <!-- Se cambió youtube.com/shorts/ por youtube.com/embed/ -->
                 <iframe src="https://www.youtube.com/embed/YXwpRTl4_qQ" title="Reel Testimonio 2" allowfullscreen style="border:0;"></iframe>
               </div>
             </div>
@@ -692,7 +695,7 @@
           </div>
         </div>
 
-        <!-- SECCIÓN DE PRODUCTOS SIMILARES (LÓGICA CORREGIDA: SÓLO PRODUCTOS RELACIONADOS) -->
+        <!-- SECCIÓN DE PRODUCTOS SIMILARES -->
         <div class="row justify-content-center my-4">
           <div class="col-lg-10">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -703,7 +706,7 @@
             <div class="similar-carousel-wrapper">
               <div class="similar-card">
                 <div>
-                  <div class="similar-img-box"><img src="img/cosmos.png" alt="Cosmos Collection" onerror="this.src='https://ui-avatars.com/api/?name=Co&background=00e5ff&color=000'"></div>
+                  <div class="similar-img-box"><img src="img/cosmos.png" alt="Cosmos Collection"></div>
                   <h6 class="text-white fw-bold fs-6 mb-1">Cosmos Collection</h6>
                   <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Pads y texturas espaciales.</p>
                 </div>
@@ -715,7 +718,7 @@
 
               <div class="similar-card">
                 <div>
-                  <div class="similar-img-box"><img src="img/yamahakeys.png" alt="Yamaha Premium Keys" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'"></div>
+                  <div class="similar-img-box"><img src="img/yamahakeys.png" alt="Yamaha Premium Keys"></div>
                   <h6 class="text-white fw-bold fs-6 mb-1">Yamaha Premium Keys</h6>
                   <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Pianos acústicos y eléctricos.</p>
                 </div>
@@ -727,7 +730,7 @@
 
               <div class="similar-card">
                 <div>
-                  <div class="similar-img-box"><img src="img/rhodes.png" alt="Rhodes Affair 2" onerror="this.src='https://ui-avatars.com/api/?name=Rh&background=00e5ff&color=000'"></div>
+                  <div class="similar-img-box"><img src="img/rhodes.png" alt="Rhodes Affair 2"></div>
                   <h6 class="text-white fw-bold fs-6 mb-1">Rhodes Affair 2</h6>
                   <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Sonidos de piano eléctrico cálidos.</p>
                 </div>
@@ -826,50 +829,6 @@
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
           </div>
         </a>
-
-        <!-- RESULTADOS SOFTWARE ARQUITECTURA / INGENIERÍA -->
-        <a href="#" class="search-result-item" data-title="sketchup 2026 autocad 2026 duo bundle arquitectura combo" style="display: none;">
-          <img src="img/sketchup.png" alt="Duo" onerror="this.src='https://ui-avatars.com/api/?name=Du&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">SketchUp 2026 & AutoCAD 2026</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$50.00</span>
-          </div>
-        </a>
-        <a href="#" class="search-result-item" data-title="autocad 2026 arquitectura ingenieria" style="display: none;">
-          <img src="img/autocad.png" alt="AutoCAD" onerror="this.src='https://ui-avatars.com/api/?name=AC&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">AutoCAD 2026</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$35.00</span>
-          </div>
-        </a>
-        <a href="sketchup.html" class="search-result-item" data-title="sketchup pro 2026 3d arquitectura diseño" style="display: none;">
-          <img src="img/sketchup.png" alt="SketchUp" onerror="this.src='https://ui-avatars.com/api/?name=Sk&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">SketchUp Pro 2026</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$27.00</span>
-          </div>
-        </a>
-        <a href="office.html" class="search-result-item" data-title="office home business word excel powerpoint" style="display: none;">
-          <img src="img/office.png" alt="Office" onerror="this.src='https://ui-avatars.com/api/?name=Of&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Office Home & Business</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$40.00</span>
-          </div>
-        </a>
-        <a href="esword.html" class="search-result-item" data-title="biblias y diccionarios para e-sword" style="display: none;">
-          <img src="img/esword.png" alt="e-Sword" onerror="this.src='https://ui-avatars.com/api/?name=eS&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Biblias y Diccionarios para E-Sword</h6>
-            <span class="text-accent small fw-bold" style="color: #00ff88;">GRATIS</span>
-          </div>
-        </a>
-        <a href="#" class="search-result-item" data-title="cinema 4d render" style="display: none;">
-          <img src="img/cinema4d.png" alt="Cinema 4D" onerror="this.src='https://ui-avatars.com/api/?name=C4&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Cinema 4D</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$35.00</span>
-          </div>
-        </a>
       </div>
     </div>
   </div>
@@ -933,7 +892,6 @@
   <!-- ====== LÓGICA DEL MENÚ PUSH Y BUSCADOR ====== -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Lógica del Menú Push
       const btnOpenSidebar = document.getElementById('btn-open-sidebar');
       const sideMenu = document.getElementById('side-menu');
       const sideMenuOverlay = document.getElementById('side-menu-overlay');
@@ -951,7 +909,6 @@
       if(btnOpenSidebar) btnOpenSidebar.addEventListener('click', toggleSidebar);
       if(sideMenuOverlay) sideMenuOverlay.addEventListener('click', toggleSidebar);
 
-      // 2. Lógica del Buscador
       const searchOverlayFullscreen = document.getElementById('search-overlay-fullscreen');
       const btnOpenSearchMobile = document.getElementById('btn-open-search-mobile');
       const btnOpenSearchDesktop = document.getElementById('btn-open-search-desktop');
@@ -1064,12 +1021,7 @@
       { name: "Pastor Esteban Gómez", rating: 5, text: "Los pads para la administración y las guitarras eléctricas le dieron otra atmósfera a nuestras reuniones. ¡Una bendición tener este nivel de audio en una tablet!", likes: 31, likedBy: [] },
       { name: "Marco Tulio (Tecladista)", rating: 5, text: "Tenía dudas de cómo correría en mi celular con Audio Evolution, pero con la prueba comprobé la fluidez. ¡Va perfecto y cero latencia!", likes: 19, likedBy: [] },
       { name: "Daniel Siquiej", rating: 5, text: "El Motif XF8 incluido en la colección suena brutal. Valió cada centavo, la descarga llegó rapidísimo a mi panel de cuenta.", likes: 27, likedBy: [] },
-      { name: "David Cifuentes", rating: 5, text: "Excelente calidad de sampleo. Es la mejor inversión que hemos hecho para nuestro equipo de alabanza en la iglesia local.", likes: 40, likedBy: [] },
-      { name: "Samuel Pineda", rating: 5, text: "¡Muy recomendado! Lo instalé en BS-16i para mi iPad y la respuesta al tacto es increíble. Se nota el trabajo de sampleo profesional.", likes: 22, likedBy: [] },
-      { name: "Emanuel Vásquez", rating: 4, text: "Los pianos suenan súper limpios en las mezclas de en vivo. El único detalle es que tardé un poco en configurar los canales, pero soporte ayudó rápido.", likes: 16, likedBy: [] },
-      { name: "Joel Hernández", rating: 5, text: "Tremendo aporte para los músicos cristianos. Tener los sonidos del Motif y Nord en la palma de la mano no tiene precio.", likes: 33, likedBy: [] },
-      { name: "Jonathan Orellana", rating: 5, text: "El bonus PAD de regalo está excelente para las transiciones. 10/10 en calidad de audio y atención al cliente de Dingloft.", likes: 29, likedBy: [] },
-      { name: "Misael Castillo", rating: 5, text: "¡Impresionante! Lo probé con FL Studio Mobile y corrió de maravilla. Gracias Cesar por compartir esta tremenda herramienta.", likes: 21, likedBy: [] }
+      { name: "David Cifuentes", rating: 5, text: "Excelente calidad de sampleo. Es la mejor inversión que hemos hecho para nuestro equipo de alabanza en la iglesia local.", likes: 40, likedBy: [] }
     ];
 
     function renderCommentsUI(commentsData) {
@@ -1103,7 +1055,7 @@
     async function loadComments() {
       const container = document.getElementById('comments-container');
       try {
-        const commentsRef = collection(db, "product_comments_pianos_clean2"); 
+        const commentsRef = collection(db, "product_comments_pianos_v3"); 
         const q = query(commentsRef, orderBy("createdAt", "desc"));
         let snapshot;
         
@@ -1221,7 +1173,7 @@
       submitBtn.textContent = "Publicando...";
 
       try {
-        await addDoc(collection(db, "product_comments_pianos_clean2"), {
+        await addDoc(collection(db, "product_comments_pianos_v3"), {
           name: name,
           rating: rating,
           text: text,
@@ -1274,7 +1226,7 @@
       }
 
       try {
-        const commentRef = doc(db, "product_comments_pianos_clean2", docId);
+        const commentRef = doc(db, "product_comments_pianos_v3", docId);
         if (isLiking) {
           await updateDoc(commentRef, {
              likes: increment(1),
@@ -1599,32 +1551,12 @@
           const toast = document.getElementById('toast-message');
 
           if(toast){
-            toast.textContent = `Preparando la prueba gratis (531.5 MB)...`;
+            toast.textContent = `Abriendo la prueba gratis (531.5 MB)...`;
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3500);
           }
 
-          const width = 600;
-          const height = 450;
-          const left = (window.innerWidth / 2) - (width / 2);
-          const top = (window.innerHeight / 2) - (height / 2);
-          
-          const popup = window.open(
-            url, 
-            'PruebaGratisDingloft', 
-            `width=${width},height=${height},top=${top},left=${left},toolbar=no,menubar=no,location=no,status=no`
-          );
-
-          setTimeout(() => {
-            if (popup && !popup.closed) {
-              popup.close();
-              if(toast) {
-                toast.textContent = `Descarga iniciada. ¡Disfruta tus samples!`;
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 3000);
-              }
-            }
-          }, 12000);
+          window.open(url, '_blank');
         });
       }
     });
