@@ -81,7 +81,6 @@
     .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
 
-    /* WIDGET VENTANAS ANIMADAS */
     .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 8, 15, 0.85); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .liquid-modal-overlay.active { opacity: 1; pointer-events: auto; }
     
@@ -157,7 +156,6 @@
         <a class="active" href="#descargas"><i class="bi bi-download"></i><span>Descargas</span></a>
         <a href="#" onclick="openReservasModal(); return false;"><i class="bi bi-calendar2-check"></i><span>Mis Reservas</span></a>
         
-        <!-- BOTÓN SECRETO ADMIN -->
         <a href="admin.html" id="btn-admin" style="display: none; color: #ff5050; margin-top: 15px; border: 1px solid rgba(255,80,80,0.3); background: rgba(255,80,80,0.05);"><i class="bi bi-incognito"></i><span>Panel Admin</span></a>
       </nav>
       <div class="profile">
@@ -196,7 +194,7 @@
 
       <section class="dashboard">
         <article class="card" id="descargas">
-          <!-- DOBLE PESTAÑA (TABS) EN EL DASHBOARD -->
+          <!-- DOBLE PESTAÑA (TABS) -->
           <div class="tabs-header">
             <button class="tab-btn active" id="btn-tab-programas" onclick="switchTab('programas')"><i class="bi bi-grid"></i> Mis Programas</button>
             <button class="tab-btn" id="btn-tab-reserva" onclick="switchTab('reserva')"><i class="bi bi-calendar-check"></i> Mi Reserva</button>
@@ -210,7 +208,6 @@
 
           <div id="tab-reserva" class="tab-content">
              <div id="dashboard-reserva-info">
-                <!-- Se inyecta la info de Firebase aquí -->
                 <p style="color: var(--muted); padding: 15px;">Buscando estado de tu reserva...</p>
              </div>
           </div>
@@ -219,7 +216,7 @@
         <aside class="right">
           <article class="card support-card">
             <div class="card-title"><h2>Instalación Remota</h2></div>
-            <div class="remote-install-content" style="padding-top:0;">
+            <div class="remote-install-content">
               <div class="icon-wrapper"><i class="bi bi-shield-check"></i></div>
               <h3>Soporte Técnico Especializado</h3>
               <p>Deja la configuración en manos de expertos. Nos conectamos a tu equipo mediante <strong>Google Chrome Remote Desktop</strong> para asegurar una experiencia transparente, encriptada y totalmente privada.</p>
@@ -248,12 +245,11 @@
   
   <!-- MODAL MIS RESERVAS (POPUP) -->
   <div class="liquid-modal-overlay" id="reservasModal">
-    <div class="liquid-modal-card" id="modal-reservas-content">
+    <div class="liquid-modal-card">
       <button class="liquid-close" onclick="closeReservasModal()"><i class="bi bi-x-lg"></i></button>
       <h3 style="margin: 0 0 4px; font-size: 1.3rem;">Mis Reservas</h3>
       <p style="color: var(--muted); font-size: 0.83rem; margin: 0 0 15px;">Estado actual de tus instalaciones programadas.</p>
       
-      <!-- Contenido se sincroniza con la pestaña mediante JS -->
       <div id="modal-reserva-info"></div>
     </div>
   </div>
@@ -322,7 +318,6 @@
   <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
   <script>
-    // LÓGICA DE PESTAÑAS (TABS) EN DASHBOARD
     window.switchTab = function(tab) {
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -352,8 +347,6 @@
     const anoReal = fechaReal.getFullYear();
 
     const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    
-    // HORARIOS PARA MIAMI (EST/EDT) - Equivalentes a 11pm a 5am en Guate
     const horariosDisponibles = ["01:00 AM (Miami/EST)", "02:00 AM (Miami/EST)", "03:00 AM (Miami/EST)", "04:00 AM (Miami/EST)", "05:00 AM (Miami/EST)", "06:00 AM (Miami/EST)", "07:00 AM (Miami/EST)"];
 
     function pseudoRandom(seed) {
@@ -361,20 +354,18 @@
         return x - Math.floor(x);
     }
 
-    // VERIFICA SI EL HORARIO DE MIAMI YA PASÓ EN TIEMPO REAL
     window.horaYaPaso = function(horaStr, fechaElegida) {
-        let ahora = new Date(); // Hora local (Guate)
+        let ahora = new Date();
         let match = horaStr.match(/(\d+):(\d+)\s(AM|PM)/);
         let hMiami = parseInt(match[1]);
         if (match[3] === 'PM' && hMiami < 12) hMiami += 12;
         if (match[3] === 'AM' && hMiami === 12) hMiami = 0;
         
-        // Miami (EDT) va 2 horas adelante de Guate. Entonces hora Guate = hora Miami - 2
         let hGuate = hMiami - 2;
         let diaAjuste = 0;
         if (hGuate < 0) {
             hGuate += 24;
-            diaAjuste = -1; // Fue el día anterior
+            diaAjuste = -1;
         }
         
         let fechaSlot = new Date(fechaElegida);
@@ -644,7 +635,6 @@
         let miReservaData = null;
         let miReservaId = null;
 
-        // Función para inyectar la vista de reserva en Tabs y Modals
         function pintarReservaUI(htmlData) {
             document.getElementById('dashboard-reserva-info').innerHTML = htmlData;
             document.getElementById('modal-reserva-info').innerHTML = htmlData;
@@ -663,7 +653,6 @@
                     el.style.display = 'none';
                     formCodigo.style.display = 'block';
                 } else if (faltanMinutos > 5) {
-                    // CONVERSIÓN A HORAS Y MINUTOS
                     let hrs = Math.floor(faltanMinutos / 60);
                     let mns = Math.floor(faltanMinutos % 60);
                     let tiempoTxt = hrs > 0 ? `${hrs} hrs y ${mns} min` : `${mns} min`;
@@ -678,7 +667,6 @@
             });
         }
 
-        // LECTURA DE RESERVA
         try {
           const qReservas = query(collection(db, "reservas"), where("uid", "==", user.uid));
           const reservasSnap = await getDocs(qReservas);
@@ -693,7 +681,6 @@
                 ? `<span style="background: rgba(18, 215, 246, 0.15); color: var(--cyan); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(18, 215, 246, 0.3);">Completado <i class="bi bi-check-all"></i></span>`
                 : `<span style="background: rgba(53, 221, 146, 0.15); color: var(--green); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(53, 221, 146, 0.3);">Pendiente</span>`;
 
-            // Botón de eliminar (SOLO ADMIN)
             let btnEliminar = isAdmin ? `<button onclick="eliminarReserva('${miReservaId}')" style="margin-top: 15px; width: 100%; padding: 10px; background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.4); color: #ff5050; border-radius: 8px; cursor: pointer; font-weight: 600;"><i class="bi bi-trash"></i> Cancelar / Eliminar Reserva (Solo Admin)</button>` : '';
 
             let baseHTML = `
@@ -765,7 +752,6 @@
           console.error("Error leyendo reservas:", error);
         }
 
-        // --- ENVIAR CÓDIGO A FIREBASE ---
         window.enviarCodigo = async function(id) {
             const input = document.getElementById('input-cod-' + id);
             if(!input.value) return;
@@ -779,7 +765,6 @@
             }
         };
 
-        // --- ELIMINAR RESERVA ADMIN ---
         window.eliminarReserva = async function(id) {
             if(!confirm("¿Estás seguro de eliminar esta reserva permanentemente?")) return;
             try {
@@ -792,7 +777,7 @@
             }
         }
 
-        // --- CREAR NUEVA RESERVA ---
+        // --- CREAR RESERVA E IR DIRECTO A LA PESTAÑA DE RESERVA ---
         document.getElementById('btn-pagar').addEventListener('click', async () => {
           const comentario = document.getElementById('reservaComentario').value;
 
@@ -806,7 +791,7 @@
           }
 
           const btn = document.getElementById('btn-pagar');
-          btn.innerHTML = '<i class="bi bi-arrow-repeat" style="animation: spin 1s linear infinite;"></i> Procesando...';
+          btn.innerHTML = '<i class="bi bi-arrow-repeat" style="animation: spin 1s linear infinite;"></i> Guardando...';
           btn.style.pointerEvents = 'none';
 
           const fechaFormateada = window.diaSeleccionado.toLocaleDateString('es-ES', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
@@ -821,7 +806,6 @@
           let dayStr = String(window.diaSeleccionado.getDate()).padStart(2, '0');
           let yearStr = window.diaSeleccionado.getFullYear();
           let hourStr = String(hour).padStart(2, '0');
-          // EST: -05:00, EDT: -04:00. Usamos -04:00 por estar en Agosto.
           let isoString = `${yearStr}-${monthStr}-${dayStr}T${hourStr}:00:00-04:00`;
           let timestampCalculado = new Date(isoString).getTime();
 
@@ -838,29 +822,23 @@
               creado: serverTimestamp()
             });
 
-            if (esGratis) {
-               window.mostrarAlertaModal(`Reserva guardada exitosamente.`, true);
-               setTimeout(() => { window.location.reload(); }, 1500);
-            } else {
-               window.mostrarAlertaModal(`Reserva guardada. Redirigiendo a pasarela...`, true);
-               setTimeout(() => {
-                 btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Redirigiendo';
-                 btn.style.background = 'linear-gradient(100deg, #35dd92, #2bb978)';
-                 // REDIRIGE A TU PASARELA AQUÍ:
-                 // window.location.href = "https://tu-link-de-pago.com";
-                 setTimeout(() => window.location.reload(), 1000); 
-               }, 1200);
-            }
+            window.closeReservaModal();
+            window.mostrarAlertaModal("¡Reserva creada con éxito!", true);
+
+            // REDIRECCIÓN AUTOMÁTICA A LA PESTAÑA DE RESERVA PARA QUE EL CLIENTE VEA SU ESTADO
+            setTimeout(() => {
+                window.switchTab('reserva');
+                window.location.reload();
+            }, 1000);
 
           } catch (e) {
             console.error(e);
-            window.mostrarAlertaModal("Error en base de datos.", false);
+            window.mostrarAlertaModal("Error en base de datos. Verifica permisos.", false);
             btn.innerHTML = `<i class="bi bi-credit-card"></i> Pagar y Reservar ($${window.precioFinal.toFixed(2)} USD)`;
             btn.style.pointerEvents = 'auto';
           }
         });
 
-        // --- RENDERIZAR PRODUCTOS COMPRADOS ---
         const downloadsContainer = document.getElementById('downloads-container');
         try {
           const q = query(collection(db, "purchases"), where("uid", "==", user.uid));
