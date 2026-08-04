@@ -67,13 +67,23 @@
     /* ESTILOS LIQUID GLASS PARA MODAL DE RESERVA */
     .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 9, 17, 0.65); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .liquid-modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .liquid-modal-card { width: 90%; max-width: 450px; padding: 30px; border-radius: 24px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: var(--text); }
+    .liquid-modal-card { width: 90%; max-width: 450px; padding: 30px; border-radius: 24px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: var(--text); position: relative;}
     .liquid-modal-card h3 { margin-top: 0; font-size: 1.4rem; letter-spacing: -.03em; }
-    .liquid-input { width: 100%; padding: 12px 16px; margin-top: 8px; margin-bottom: 14px; background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 12px; color: white; font-family: inherit; }
+    .liquid-input { width: 100%; padding: 12px 16px; margin-top: 8px; margin-bottom: 14px; background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 12px; color: white; font-family: inherit; appearance: none; }
     .liquid-input:focus { border-color: var(--cyan); outline: none; box-shadow: 0 0 10px rgba(0, 213, 255, 0.2); }
-    .liquid-btn { width: 100%; border: 0; border-radius: 12px; padding: 14px; background: linear-gradient(100deg, #0bd8f4, #1cbeeb); color: #03111a; font-weight: 800; cursor: pointer; margin-top: 10px; transition: .2s ease; }
+    /* Para que el desplegable se vea bien */
+    select.liquid-input { cursor: pointer; }
+    select.liquid-input option { background: #0c1421; color: white; }
+    
+    .liquid-btn { width: 100%; border: 0; border-radius: 12px; padding: 14px; background: linear-gradient(100deg, #0bd8f4, #1cbeeb); color: #03111a; font-weight: 800; cursor: pointer; margin-top: 10px; transition: .2s ease; display: flex; justify-content: center; align-items: center; gap: 8px;}
     .liquid-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(11, 216, 244, 0.4); }
-    .liquid-close { background: transparent; border: none; color: var(--muted); font-size: 1rem; cursor: pointer; float: right; }
+    .liquid-close { position: absolute; top: 25px; right: 25px; background: transparent; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; transition: .2s; }
+    .liquid-close:hover { color: white; }
+
+    /* Alerta interior de la ventana Modal */
+    #modal-notif { display: none; padding: 12px; border-radius: 10px; font-size: 0.85rem; margin-bottom: 15px; text-align: center; font-weight: 500; animation: fadein 0.3s ease; }
+    @keyframes fadein { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
 
     @media(max-width:1080px){.app{grid-template-columns:78px 1fr}.sidebar{padding:25px 10px}.brand{margin:0 auto 42px;font-size:0}.brand span{font-size:1.8rem}.nav a{justify-content:center;padding:15px}.nav a span,.profile strong,.profile small,.logout span{display:none}.profile{padding:12px;display:grid;place-items:center}.logout{justify-content:center}.stats{grid-template-columns:1fr}.dashboard{grid-template-columns:1fr}.right{grid-template-columns:1fr}}
     @media(max-width:700px){.app{display:block}.sidebar{position:static;height:auto;padding:16px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:1.5rem;margin:0 8px 13px}.brand span{font-size:inherit}.nav{display:flex;overflow:auto}.nav a{min-width:55px;padding:12px}.nav a span{display:none}.profile{display:none}.content{padding:28px 16px}.top{align-items:flex-start}.top p{font-size:.86rem}.stats{margin:25px 0}.stat{min-height:93px}.right{grid-template-columns:1fr}.download-row{grid-template-columns:55px minmax(110px,1fr) auto}.product-art{width:52px;height:62px}.trust{justify-content:flex-start;gap:12px}.top-avatar{display:none}}
@@ -155,25 +165,54 @@
       <h3>Reserva tu Instalación</h3>
       <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 15px;">Selecciona fecha, hora y aplica tu cupón. Total: <strong id="precio-total" style="color: var(--cyan);">$10.00 USD</strong></p>
       
+      <!-- NOTIFICACIÓN INTERNA DE LA VENTANA -->
+      <div id="modal-notif"></div>
+
       <label style="font-size: 0.85rem; color: var(--muted);">Fecha de reserva:</label>
       <input type="date" id="reservaFecha" class="liquid-input">
 
-      <label style="font-size: 0.85rem; color: var(--muted);">Hora preferida:</label>
-      <input type="time" id="reservaHora" class="liquid-input">
+      <label style="font-size: 0.85rem; color: var(--muted);">Hora preferida (Horarios Disponibles):</label>
+      <select id="reservaHora" class="liquid-input">
+        <option value="" disabled selected>Elige una hora...</option>
+        <option value="09:00 AM">09:00 a.m.</option>
+        <option value="10:30 AM">10:30 a.m.</option>
+        <option value="12:00 PM">12:00 p.m. (Mediodía)</option>
+        <option value="02:00 PM">02:00 p.m.</option>
+        <option value="03:30 PM">03:30 p.m.</option>
+        <option value="05:00 PM">05:00 p.m.</option>
+      </select>
 
       <label style="font-size: 0.85rem; color: var(--muted);">Código de Cupón:</label>
       <div style="display: flex; gap: 8px;">
-        <input type="text" id="cuponInput" placeholder="Ej. DINGLOFT5" class="liquid-input" style="margin-bottom:0;">
-        <button type="button" onclick="aplicarCupon()" style="padding: 0 15px; background: rgba(0,213,255,0.1); border: 1px solid var(--cyan); color: var(--cyan); border-radius: 12px; font-weight: 750; cursor: pointer;">Aplicar</button>
+        <input type="text" id="cuponInput" placeholder="Ej. DINGLOFT5" class="liquid-input" style="margin-bottom:0; text-transform: uppercase;">
+        <button type="button" onclick="aplicarCupon()" style="padding: 0 15px; background: rgba(0,213,255,0.1); border: 1px solid var(--cyan); color: var(--cyan); border-radius: 12px; font-weight: 750; cursor: pointer; transition:.2s ease;">Aplicar</button>
       </div>
 
-      <button class="liquid-btn" onclick="procesarPagoReserva()"><i class="bi bi-credit-card"></i> Pagar y Reservar ($10)</button>
+      <button id="btn-pagar" class="liquid-btn" onclick="procesarPagoReserva()"><i class="bi bi-credit-card"></i> Pagar y Reservar ($10)</button>
     </div>
   </div>
 
   <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
   <script>
+    // ESTABLECER FECHA MÍNIMA HOY PARA BLOQUEAR DÍAS ANTERIORES
+    document.addEventListener("DOMContentLoaded", () => {
+      const hoy = new Date().toISOString().split('T')[0];
+      document.getElementById("reservaFecha").setAttribute("min", hoy);
+    });
+
+    // SISTEMA DE NOTIFICACIONES INTERNAS DEL MODAL (REEMPLAZA AL ALERT FEA)
+    function mostrarAlertaModal(mensaje, esExito) {
+      const notif = document.getElementById('modal-notif');
+      notif.style.display = 'block';
+      notif.style.background = esExito ? 'rgba(53,221,146,.15)' : 'rgba(255,80,80,.15)';
+      notif.style.color = esExito ? 'var(--green)' : '#ff5050';
+      notif.style.border = `1px solid ${esExito ? 'rgba(53,221,146,.4)' : 'rgba(255,80,80,.4)'}`;
+      notif.innerHTML = esExito ? `<i class="bi bi-check-circle-fill"></i> ${mensaje}` : `<i class="bi bi-exclamation-triangle-fill"></i> ${mensaje}`;
+      
+      setTimeout(() => { notif.style.display = 'none'; }, 4000);
+    }
+
     // FUNCIONES GLOBALES DE MODAL Y BUNDLES
     window.toggleBundle = function(element) {
       const container = element.parentElement;
@@ -187,6 +226,12 @@
 
     window.openReservaModal = function() {
       document.getElementById('reservaModal').classList.add('active');
+      // Resetear estado por si lo abren varias veces
+      document.getElementById('modal-notif').style.display = 'none';
+      const btn = document.getElementById('btn-pagar');
+      btn.innerHTML = '<i class="bi bi-credit-card"></i> Pagar y Reservar';
+      btn.style.pointerEvents = 'auto';
+      btn.style.background = 'linear-gradient(100deg, #0bd8f4, #1cbeeb)';
     };
 
     window.closeReservaModal = function() {
@@ -197,25 +242,45 @@
     window.aplicarCupon = function() {
       const codigo = document.getElementById('cuponInput').value.trim().toUpperCase();
       const cuponesValidos = { "DINGLOFT5": 5.00, "VIP": 10.00 };
+      
       if (cuponesValidos[codigo] !== undefined) {
         let descuento = cuponesValidos[codigo];
         let totalFinal = Math.max(0, precioBase - descuento);
         document.getElementById('precio-total').textContent = `$${totalFinal.toFixed(2)} USD`;
-        alert("¡Cupón aplicado con éxito!");
+        document.getElementById('btn-pagar').innerHTML = `<i class="bi bi-credit-card"></i> Pagar y Reservar ($${totalFinal.toFixed(2)})`;
+        mostrarAlertaModal("¡Cupón aplicado con éxito!", true);
       } else {
-        alert("Cupón inválido o expirado.");
+        mostrarAlertaModal("Cupón inválido o expirado.", false);
       }
     };
 
     window.procesarPagoReserva = function() {
       const fecha = document.getElementById('reservaFecha').value;
       const hora = document.getElementById('reservaHora').value;
+      
       if(!fecha || !hora) {
-        alert("Por favor selecciona una fecha y una hora.");
+        mostrarAlertaModal("Por favor selecciona una fecha y una hora.", false);
         return;
       }
-      alert(`Reserva agendada para el ${fecha} a las ${hora}. Redirigiendo a pasarela de pago...`);
-      closeReservaModal();
+
+      const btn = document.getElementById('btn-pagar');
+      // Efecto de carga
+      btn.innerHTML = '<i class="bi bi-arrow-repeat" style="animation: spin 1s linear infinite; display: inline-block;"></i> Procesando...';
+      btn.style.pointerEvents = 'none';
+
+      // SIMULACIÓN DE REDIRECCIÓN Y PAGO EN LA MISMA PESTAÑA
+      setTimeout(() => {
+        mostrarAlertaModal(`¡Listo! Redirigiendo al pago seguro...`, true);
+        
+        // AQUÍ ES DONDE PONES TU LINK DE PAGO DE STRIPE, TILOPAY O PAYPAL
+        // window.location.href = "https://link-de-tu-pasarela.com/pago";
+        
+        // Simulación visual de éxito por ahora
+        setTimeout(() => {
+            btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Reserva Confirmada';
+            btn.style.background = 'linear-gradient(100deg, #35dd92, #2bb978)';
+        }, 1000);
+      }, 1500);
     };
   </script>
 
@@ -239,7 +304,6 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // MAPA DE ENLACES INDIVIDUALES
     const downloadLinksMap = {
       "AutoCAD 2026": "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase",
       "Microsoft Office 2024": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
@@ -251,7 +315,6 @@
       "Biblias y Diccionarios para E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo"
     };
 
-    // MAPA DE PAQUETES (BUNDLES) CON EL NUEVO "Dual Legend" (Yamaha Legacy + Nord Essential + Bonus PAD)
     const bundlesMap = {
       "Dual Legend": [
         { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
