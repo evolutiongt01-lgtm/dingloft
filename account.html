@@ -11,6 +11,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- PAYPAL SDK INTEGRADOR -->
+  <script src="https://www.paypal.com/sdk/js?client-id=BAA88hYhrlAVHUFkzsqrlDE1atrFHrCZe7j0XOYtbB4YlxcxBASouD2NAU2J_BV1fp9-jGGYK2Mh4bHN20&currency=USD"></script>
+
   <style>
     :root { --bg:#060911; --panel:#0c1421; --line:rgba(173,201,232,.14); --text:#f4f8ff; --muted:#9eacc0; --cyan:#12d7f6; --violet:#9a5cff; --green:#35dd92; }
     * { box-sizing:border-box; }
@@ -155,7 +159,6 @@
         <a class="active" href="#descargas"><i class="bi bi-download"></i><span>Descargas</span></a>
         <a href="#" onclick="openReservasModal(); return false;"><i class="bi bi-calendar2-check"></i><span>Mis Reservas</span></a>
         
-        <!-- BOTÓN SECRETO ADMIN -->
         <a href="admin.html" id="btn-admin" style="display: none; color: #ff5050; margin-top: 15px; border: 1px solid rgba(255,80,80,0.3); background: rgba(255,80,80,0.05);"><i class="bi bi-incognito"></i><span>Panel Admin</span></a>
       </nav>
       <div class="profile">
@@ -194,7 +197,6 @@
 
       <section class="dashboard">
         <article class="card" id="descargas">
-          <!-- DOBLE PESTAÑA (TABS) -->
           <div class="tabs-header">
             <button class="tab-btn active" id="btn-tab-programas" onclick="switchTab('programas')"><i class="bi bi-grid"></i> Mis Programas</button>
             <button class="tab-btn" id="btn-tab-reserva" onclick="switchTab('reserva')"><i class="bi bi-calendar-check"></i> Estado de mi Reserva</button>
@@ -243,7 +245,6 @@
     </main>
   </div>
   
-  <!-- MODAL MIS RESERVAS (POPUP LATERAL Opcional) -->
   <div class="liquid-modal-overlay" id="reservasModal">
     <div class="liquid-modal-card" id="modal-reservas-content">
       <button class="liquid-close" onclick="closeReservasModal()"><i class="bi bi-x-lg"></i></button>
@@ -254,7 +255,6 @@
     </div>
   </div>
 
-  <!-- MODAL DE AGENDAR SESIÓN -->
   <div class="liquid-modal-overlay" id="reservaModal">
     <div class="liquid-modal-card">
       <button class="liquid-close" onclick="closeReservaModal()"><i class="bi bi-x-lg"></i></button>
@@ -306,10 +306,12 @@
           <button type="button" class="liquid-btn-cupon" onclick="aplicarCupon()">Aplicar</button>
         </div>
 
-        <div>
-          <button id="btn-pagar" class="liquid-btn" onclick="procesarPagoReserva()">
-            <i class="bi bi-credit-card"></i> Pagar y Reservar (<span id="precio-total">$10.00 USD</span>)
+        <!-- CONTENEDOR DINÁMICO DE PAGO (PAYPAL O GRATIS) -->
+        <div id="payment-buttons-container" style="width: 100%; min-height: 45px;">
+          <button id="btn-pagar-gratis" class="liquid-btn" style="display: none;" onclick="procesarReservaGratis()">
+            <i class="bi bi-check2-circle"></i> Reservar Gratis
           </button>
+          <div id="paypal-button-container" class="w-100"></div>
         </div>
       </div>
     </div>
@@ -330,7 +332,6 @@
     window.softwareSeleccionado = "Google Chrome Remote Desktop";
     window.precioBase = 10.00;
     window.precioFinal = 10.00;
-    window.misReservasData = [];
 
     window.openReservasModal = function() {
       document.getElementById('reservasModal').classList.add('active');
@@ -362,7 +363,6 @@
         if (match[3] === 'PM' && hMiami < 12) hMiami += 12;
         if (match[3] === 'AM' && hMiami === 12) hMiami = 0;
         
-        // Miami va 2 horas adelante de Guate. hGuate = hMiami - 2
         let hGuate = hMiami - 2;
         let diaAjuste = 0;
         if (hGuate < 0) {
@@ -483,11 +483,16 @@
         let descuento = cuponesValidos[codigo];
         window.precioFinal = Math.max(0, window.precioBase - descuento);
         
-        const btnPagar = document.getElementById('btn-pagar');
+        const btnGratis = document.getElementById('btn-pagar-gratis');
+        const btnPaypal = document.getElementById('paypal-button-container');
+
         if (window.precioFinal === 0) {
-           btnPagar.innerHTML = `<i class="bi bi-check2-circle"></i> Reservar Gratis`;
+           btnPaypal.style.display = 'none';
+           btnGratis.style.display = 'flex';
         } else {
-           btnPagar.innerHTML = `<i class="bi bi-credit-card"></i> Pagar y Reservar ($${window.precioFinal.toFixed(2)} USD)`;
+           btnGratis.style.display = 'none';
+           btnPaypal.style.display = 'block';
+           if(typeof window.renderPayPalReserva === 'function') window.renderPayPalReserva();
         }
 
         window.mostrarAlertaModal("¡Cupón aplicado con éxito!", true);
@@ -509,6 +514,9 @@
     window.openReservaModal = function() {
       document.getElementById('reservaModal').classList.add('active');
       renderizarCalendario();
+      if(typeof window.renderPayPalReserva === 'function' && window.precioFinal > 0) {
+          window.renderPayPalReserva();
+      }
     };
 
     window.closeReservaModal = function() {
@@ -641,6 +649,7 @@
 
         function verificarDesbloqueo() {
             let ahora = Date.now();
+            if(!window.misReservasData) return;
             window.misReservasData.forEach(reserva => {
                 if(reserva.estado === 'completado' || reserva.codigoAcceso) return;
 
@@ -677,7 +686,6 @@
               let reservasArray = [];
               reservasSnap.forEach(d => reservasArray.push({ id: d.id, ...d.data() }));
               
-              // Ordenamos para que las más recientes salgan arriba
               reservasArray.sort((a, b) => b.timestampReserva - a.timestampReserva);
               window.misReservasData = reservasArray;
               
@@ -761,11 +769,9 @@
           }
         }
 
-        // CARGAMOS RESERVAS AL INICIAR
         await cargarMisReservas();
 
         window.enviarCodigo = async function(id) {
-            // Buscamos todos los inputs que tengan la clase con este ID (por si está en dashboard y modal a la vez)
             const inputs = document.querySelectorAll('.codigo-input-' + id);
             let codigo = '';
             inputs.forEach(input => { if(input.value) codigo = input.value; });
@@ -794,26 +800,12 @@
             }
         }
 
-        // --- CREAR NUEVA RESERVA Y REDIRIGIR AUTOMÁTICAMENTE ---
-        document.getElementById('btn-pagar').addEventListener('click', async () => {
+        // --- SISTEMA DE PAGO Y RESERVAS A FIREBASE ---
+        
+        window.procesarReservaFirebase = async function(paypalOrderId = null, payerName = null) {
           const comentario = document.getElementById('reservaComentario').value;
-
-          if(!window.diaSeleccionado || !window.horaSeleccionada) {
-            window.mostrarAlertaModal("Selecciona un día y un horario libre primero.", false);
-            return;
-          }
-          if(comentario.trim() === "") {
-            window.mostrarAlertaModal("Por favor cuéntanos brevemente en qué te ayudamos.", false);
-            return;
-          }
-
-          const btn = document.getElementById('btn-pagar');
-          btn.innerHTML = '<i class="bi bi-arrow-repeat" style="animation: spin 1s linear infinite;"></i> Guardando...';
-          btn.style.pointerEvents = 'none';
-
           const fechaFormateada = window.diaSeleccionado.toLocaleDateString('es-ES', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-          const esGratis = window.precioFinal === 0;
-
+          
           let matches = window.horaSeleccionada.match(/(\d+):(\d+)\s(AM|PM)/);
           let hour = parseInt(matches[1]);
           if (matches[3] === 'PM' && hour < 12) hour += 12;
@@ -836,38 +828,89 @@
               comentario: comentario,
               estado: "pendiente",
               timestampReserva: timestampCalculado,
+              montoPagado: window.precioFinal,
+              paypalOrderId: paypalOrderId || "GRATIS",
               creado: serverTimestamp()
             });
 
-            if (esGratis) {
-               window.closeReservaModal();
-               window.mostrarAlertaModal(`Reserva guardada exitosamente.`, true);
-               
-               // REDIRECCIÓN DINÁMICA A LA PESTAÑA RESERVA SIN RECARGAR
-               setTimeout(async () => {
-                 window.switchTab('reserva'); 
-                 await cargarMisReservas();   
-                 
-                 btn.innerHTML = `<i class="bi bi-credit-card"></i> Pagar y Reservar ($${window.precioFinal.toFixed(2)} USD)`;
-                 btn.style.pointerEvents = 'auto';
-               }, 1000);
-            } else {
-               window.mostrarAlertaModal(`Reserva guardada. Redirigiendo a pasarela...`, true);
-               setTimeout(() => {
-                 btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Redirigiendo';
-                 btn.style.background = 'linear-gradient(100deg, #35dd92, #2bb978)';
-                 // REDIRIGE A TU PASARELA AQUÍ:
-                 // window.location.href = "https://tu-link-de-pago.com";
-               }, 1200);
-            }
+            window.closeReservaModal();
+            window.mostrarAlertaModal(`¡Reserva creada con éxito!`, true);
+
+            setTimeout(async () => {
+              window.switchTab('reserva'); 
+              await cargarMisReservas();   
+            }, 500);
 
           } catch (e) {
             console.error(e);
-            window.mostrarAlertaModal("Error en base de datos. Verifica permisos.", false);
-            btn.innerHTML = `<i class="bi bi-credit-card"></i> Pagar y Reservar ($${window.precioFinal.toFixed(2)} USD)`;
-            btn.style.pointerEvents = 'auto';
+            window.mostrarAlertaModal("Error en base de datos al guardar reserva.", false);
           }
-        });
+        };
+
+        // INTEGRACIÓN PAYPAL PARA EL MODAL DE RESERVA
+        window.renderPayPalReserva = function() {
+            const container = document.getElementById('paypal-button-container');
+            if (!container) return;
+            container.innerHTML = ''; 
+
+            if (typeof paypal === 'undefined') return;
+
+            paypal.Buttons({
+                style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
+                onClick: function(data, actions) {
+                    const comentario = document.getElementById('reservaComentario').value;
+                    if(!window.diaSeleccionado || !window.horaSeleccionada) {
+                        window.mostrarAlertaModal("Selecciona un día y un horario libre primero.", false);
+                        return actions.reject();
+                    }
+                    if(comentario.trim() === "") {
+                        window.mostrarAlertaModal("Por favor cuéntanos brevemente en qué te ayudamos.", false);
+                        return actions.reject();
+                    }
+                    return actions.resolve();
+                },
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{ amount: { value: window.precioFinal.toFixed(2) } }]
+                    });
+                },
+                onApprove: async function(data, actions) {
+                    return actions.order.capture().then(async function(details) {
+                        // Una vez aprobado el pago, guardamos en firebase
+                        window.procesarReservaFirebase(details.id, details.payer.name.given_name);
+                    });
+                },
+                onError: function(err) {
+                    console.error("Error con PayPal:", err);
+                    window.mostrarAlertaModal("Ocurrió un error al procesar el pago con PayPal.", false);
+                }
+            }).render('#paypal-button-container');
+        };
+
+        // Procesar reserva si es de $0.00 (Botón Celeste)
+        window.procesarReservaGratis = function() {
+            const comentario = document.getElementById('reservaComentario').value;
+            if(!window.diaSeleccionado || !window.horaSeleccionada) {
+                window.mostrarAlertaModal("Selecciona un día y un horario libre primero.", false);
+                return;
+            }
+            if(comentario.trim() === "") {
+                window.mostrarAlertaModal("Por favor cuéntanos brevemente en qué te ayudamos.", false);
+                return;
+            }
+            
+            const btnGratis = document.getElementById('btn-pagar-gratis');
+            btnGratis.innerHTML = '<i class="bi bi-arrow-repeat" style="animation: spin 1s linear infinite;"></i> Procesando...';
+            btnGratis.style.pointerEvents = 'none';
+
+            window.procesarReservaFirebase();
+            
+            setTimeout(() => {
+                btnGratis.innerHTML = `<i class="bi bi-check2-circle"></i> Reservar Gratis`;
+                btnGratis.style.pointerEvents = 'auto';
+            }, 2000);
+        };
+
 
         const downloadsContainer = document.getElementById('downloads-container');
         try {
