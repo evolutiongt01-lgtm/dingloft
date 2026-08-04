@@ -255,7 +255,7 @@
     .software-badge-box i { font-size: 1.5rem; color: var(--accent-color); }
     .liquid-glass-container { background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); padding: 12px; }
 
-    /* ====== ESTILOS DE ETIQUETA TECH (TECH TAG) ====== */
+    /* ETIQUETA TECH */
     .tech-tag {
       display: inline-flex;
       align-items: center;
@@ -284,7 +284,7 @@
     .similar-img-box { width: 100%; height: 150px; background: rgba(0,0,0,0.4); border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 8px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; }
     .similar-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.6)); }
 
-    /* ====== COMENTARIOS ====== */
+    /* COMENTARIOS */
     .comments-section { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 30px; }
     .comment-card { background: rgba(12, 17, 26, 0.85); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 12px; }
     .comment-card:hover { border-color: rgba(0,229,255,0.4); }
@@ -298,16 +298,9 @@
     .btn-like:hover { background: rgba(255, 0, 85, 0.1); color: #ff0055; border-color: rgba(255, 0, 85, 0.3); }
     .btn-like.liked { background: rgba(255, 0, 85, 0.15); color: #ff0055; border-color: #ff0055; }
 
-    /* ====== CARRITO LATERAL (LIQUID GLASS) CON ANTI-SCROLL ====== */
+    /* CARRITO LATERAL */
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; touch-action: none; }
     .cart-overlay.active { opacity: 1; visibility: visible; }
-    .cart-brand-watermark { position: fixed; top: 50%; left: 30%; transform: translate(-50%, -50%) scale(0.9); text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none; }
-    .cart-overlay.active ~ .cart-brand-watermark { opacity: 0.85; visibility: visible; transform: translate(-50%, -50%) scale(1); }
-    .cart-brand-watermark::after { content: ''; position: absolute; top: 50%; left: 50%; width: 260px; height: 260px; background: radial-gradient(circle, rgba(0, 229, 255, 0.5) 0%, rgba(162, 0, 255, 0.3) 40%, transparent 70%); transform: translate(-50%, -50%); filter: blur(30px); z-index: -1; animation: lightGlow 3s infinite alternate ease-in-out; }
-    @keyframes logoPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 20px rgba(0,229,255,0.5)); } 50% { transform: translate(-50%, -50%) scale(1.05); filter: drop-shadow(0 0 40px rgba(0,229,255,0.8)); } }
-    @keyframes lightGlow { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } 100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; } }
-    .animated-watermark-logo { width: 240px; max-width: 80vw; animation: logoPulse 4s infinite ease-in-out; position: relative; }
-
     .cart-drawer { 
       position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh; 
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.5)); 
@@ -319,10 +312,8 @@
     .cart-header { padding: 20px 25px; border-bottom: 1px solid rgba(255, 255, 255, 0.15); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
     .btn-close-cart { background: transparent; border: none; color: #ffffff; font-size: 1.3rem; line-height: 1; transition: color 0.3s; cursor: pointer; }
     .btn-close-cart:hover { color: var(--accent-color); }
-    
     .cart-items-container { flex: 1; overflow-y: auto; padding: 20px 25px; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
     .cart-footer { padding: 20px 25px; background: rgba(0, 0, 0, 0.3); border-top: 1px solid rgba(255, 255, 255, 0.15); flex-shrink: 0; max-height: 55vh; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
-    
     .cart-item { display: flex; gap: 15px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); position: relative; }
     .cart-item-img { width: 60px; height: 80px; background: rgba(0,0,0,0.3); border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; padding: 5px; }
     .cart-item-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
@@ -335,7 +326,6 @@
     .qty-value { padding: 0 10px; font-size: 0.85rem; font-weight: 600; color: #ffffff; }
     .cart-item-remove { position: absolute; top: 0; right: 0; background: transparent; border: none; color: #ffffff; font-size: 1rem; cursor: pointer; }
     .cart-item-remove:hover { color: #ff4444; }
-
     .cart-empty-msg { text-align: center; color: #ffffff; margin-top: 50px; }
     .coupon-box { display: flex; gap: 8px; margin-bottom: 15px; }
     .coupon-input { flex: 1; background: rgba(4, 9, 18, 0.7); border: 1px solid rgba(153, 185, 216, 0.25); border-radius: 8px; color: #fff; padding: 8px 12px; font-size: 0.85rem; text-transform: uppercase; }
@@ -344,32 +334,27 @@
     .btn-apply-coupon { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0 15px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
     .btn-apply-coupon:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
     .coupon-msg { font-size: 0.78rem; margin-bottom: 12px; font-weight: 500; }
-
     .paypal-white-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.4); padding: 15px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); margin-top: 10px; }
     .btn-free-checkout { background: #00ff88; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 14px; width: 100%; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,255,136,0.2); cursor: pointer; }
     .btn-free-checkout:hover { background: #00e67a; transform: translateY(-2px); }
 
-    /* ====== MODAL DE ÉXITO Y CREACIÓN EXPRESS DE CONTRASEÑA ====== */
+    /* MODAL DE ÉXITO */
     .success-modal-overlay { position: fixed; inset: 0; background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: grid; place-items: center; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     .success-modal-overlay.active { opacity: 1; visibility: visible; }
     .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 30px 20px; width: min(420px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); max-height: 90vh; overflow-y: auto; }
     .success-modal-overlay.active .success-modal-box { transform: scale(1) translateY(0); }
     .success-icon-ring { width: 70px; height: 70px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: #00ff88; font-size: 1.8rem; }
-    
     .express-signup-box { background: rgba(0, 229, 255, 0.05); border: 1px dashed rgba(0, 229, 255, 0.4); border-radius: 14px; padding: 20px; margin-bottom: 20px; text-align: left; }
     .express-signup-box label { font-size: 0.82rem; font-weight: 600; color: var(--accent-color); margin-bottom: 6px; display: block; }
     .express-input { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; padding: 10px 14px; font-size: 0.9rem; margin-bottom: 12px; }
     .express-input:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
-
     .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(50,221,145,.5); border-radius: 12px; color: #eafff3; background: #0c251d; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
     .toast.show { transform: translateY(0); }
   </style>
 </head>
 <body>
 
-  <!-- ========================================== -->
-  <!-- MENÚ LATERAL "PUSH" (INCLUYE ESPACIO PARA ADMIN GLOBAL) -->
-  <!-- ========================================== -->
+  <!-- MENÚ LATERAL -->
   <div class="side-menu-drawer" id="side-menu">
     <div class="text-center mb-4 mt-2">
       <img src="img/dingloft.png" alt="Dingloft" style="width: 120px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
@@ -385,12 +370,9 @@
       <p class="text-muted small" style="font-size: 0.75rem;">&copy; 2026 Dingloft</p>
     </div>
   </div>
-  
   <div class="side-menu-overlay" id="side-menu-overlay"></div>
 
-  <!-- ========================================== -->
-  <!-- ENVOLTORIO PRINCIPAL -->
-  <!-- ========================================== -->
+  <!-- PAGE WRAPPER -->
   <div class="page-wrapper" id="page-wrapper">
     <div class="bg-orb orb-1"></div>
     <div class="bg-orb orb-2"></div>
@@ -404,7 +386,6 @@
         <h3 style="color:#fff; font-weight:800; margin-bottom:10px; font-size: 1.4rem;">¡Compra Exitosa!</h3>
         <p id="success-modal-text" style="color:#9ba9bd; margin-bottom:20px; font-size: 0.95rem;">Tu pedido se ha procesado correctamente.</p>
         
-        <!-- CAJA EXPRESS PARA INVITADOS -->
         <div class="express-signup-box" id="express-signup-container" style="display: none;">
           <p style="font-size: 0.82rem; color: #fff; margin-bottom: 10px; font-weight: 500;">
             <i class="bi bi-shield-lock-fill" style="color: var(--accent-color);"></i> Protege tu cuenta: Crea una contraseña para acceder a tus descargas después.
@@ -420,46 +401,35 @@
       </div>
     </div>
 
-    <!-- TOAST FLOTANTE -->
     <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
-    <!-- ====== NAVBAR PRINCIPAL ====== -->
+    <!-- NAVBAR -->
     <nav class="navbar navbar-glass fixed-top" id="main-navbar">
       <div class="container position-relative d-flex align-items-center">
-        
         <div class="d-flex align-items-center gap-2" style="flex: 1; z-index: 2;">
-          <button class="mobile-liquid-btn d-md-none" id="btn-open-sidebar" title="Menú">
-            <i class="bi bi-list"></i>
-          </button>
-          <button class="mobile-liquid-btn d-md-none" id="btn-open-search-mobile" title="Buscar">
-            <i class="bi bi-search"></i>
-          </button>
+          <button class="mobile-liquid-btn d-md-none" id="btn-open-sidebar" title="Menú"><i class="bi bi-list"></i></button>
+          <button class="mobile-liquid-btn d-md-none" id="btn-open-search-mobile" title="Buscar"><i class="bi bi-search"></i></button>
           <div class="d-none d-md-flex gap-3">
             <a class="nav-link" href="index.html">Inicio</a>
             <a class="nav-link" href="index.html">Catálogo</a>
           </div>
         </div>
-
         <div class="d-flex justify-content-center" style="z-index: 1;">
           <a class="navbar-brand position-absolute top-50 start-50 translate-middle m-0 p-0 d-flex align-items-center" href="index.html">
             <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
           </a>
         </div>
-        
         <div class="d-flex align-items-center justify-content-end gap-2 gap-md-3" style="flex: 1; z-index: 2;">
-          <button class="mobile-liquid-btn d-none d-md-flex" id="btn-open-search-desktop" title="Buscar">
-            <i class="bi bi-search"></i>
-          </button>
+          <button class="mobile-liquid-btn d-none d-md-flex" id="btn-open-search-desktop" title="Buscar"><i class="bi bi-search"></i></button>
           <div id="auth-container-global"></div>
           <button id="main-cart-btn" class="btn-outline-custom d-none d-md-flex align-items-center gap-2 cart-btn-global" style="padding: 6px 15px; font-size: 0.9rem;">
             <i class="bi bi-cart3"></i> CARRITO (<span class="cart-badge-count-global">0</span>)
           </button>
         </div>
-
       </div>
     </nav>
 
-    <!-- SECCIÓN DE PRODUCTO (AUTOCAD) -->
+    <!-- DETALLES DE AUTOCAD (CONTENIDO ORIGINAL COMPLETO) -->
     <section class="product-detail-section">
       <div class="container">
         <div class="row align-items-center g-4">
@@ -486,24 +456,9 @@
             </div>
 
             <div class="row g-2 mb-3 pt-2 border-top border-bottom border-secondary border-opacity-25 py-2">
-              <div class="col-4">
-                <div class="feature-box">
-                  <div class="feature-icon-circle"><i class="bi bi-shield-check"></i></div>
-                  <p class="feature-title text-white">Garantizado</p>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="feature-box">
-                  <div class="feature-icon-circle"><i class="bi bi-infinity"></i></div>
-                  <p class="feature-title text-white">Vitalicio</p>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="feature-box">
-                  <div class="feature-icon-circle"><i class="bi bi-download"></i></div>
-                  <p class="feature-title text-white">Inmediato</p>
-                </div>
-              </div>
+              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-shield-check"></i></div><p class="feature-title text-white">Garantizado</p></div></div>
+              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-infinity"></i></div><p class="feature-title text-white">Vitalicio</p></div></div>
+              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-download"></i></div><p class="feature-title text-white">Inmediato</p></div></div>
             </div>
 
             <div class="mb-3 d-flex align-items-end gap-3">
@@ -545,6 +500,88 @@
       </div>
     </section>
 
+    <!-- COMPATIBILIDAD Y NOTA DEL CREADOR -->
+    <section class="compatible-section">
+      <div class="container">
+        <div class="compatible-title">Plataformas y Arquitectura Compatible</div>
+        
+        <div class="row g-3 justify-content-center mb-4">
+          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: var(--accent-color); display: block;"></i><h5>MAC (INTEL)</h5></div></div>
+          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: #ffffff; display: block;"></i><h5>MAC (M1/M2/M3)</h5></div></div>
+          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: #a200ff; display: block;"></i><h5>MAC (M4/M5 MAX)</h5></div></div>
+        </div>
+
+        <div class="row justify-content-center mb-4">
+          <div class="col-lg-10">
+            <div class="creator-note-box">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <div class="creator-avatar">E</div>
+                <div>
+                  <h6 class="text-white mb-0 fw-bold">Nota del Creador</h6>
+                  <small class="text-info" style="font-size: 0.75rem;">Evolution Group — Desarrolladores</small>
+                </div>
+              </div>
+              <p class="text-white mb-2" style="font-size: 0.9rem; line-height: 1.6; color: #f1f5f9;">
+                "Como ingeniero civil, sé de primera mano lo que es estar en obra cuadrando planos para una escalera de caracol, calculando cortes de tubería o ajustando detalles de herrería estructural. Adaptamos y preconfiguramos esta versión de AutoCAD 2026 pensando exactamente en esas necesidades del día a día.<br><br>
+                Desarrollé esto específicamente para <b>no pagar mensualidades y obtener todo en un solo programa</b> de forma vitalicia... Esta versión está blindada para funcionar exclusivamente en entornos Mac, desde procesadores Intel hasta el M5 Max, corriendo sin lag para que te enfoques en diseñar."
+              </p>
+              <div class="text-end text-info small fw-semibold" style="font-size: 0.75rem;"><i class="bi bi-patch-check-fill"></i> Software sin límites.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCTOS SIMILARES -->
+        <div class="row justify-content-center my-4">
+          <div class="col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-collection-play text-accent" style="color:var(--accent-color)"></i> Productos Recomendados</h5>
+              <span class="text-white small" style="color: #f1f5f9; font-size: 0.75rem;">Desliza <i class="bi bi-arrow-right"></i></span>
+            </div>
+            <div class="similar-carousel-wrapper">
+              <div class="similar-card">
+                <div>
+                  <div class="similar-img-box"><img src="img/sketchup.png" alt="SketchUp" onerror="this.src='https://ui-avatars.com/api/?name=Sk&background=00e5ff&color=000'"></div>
+                  <h6 class="text-white fw-bold fs-6 mb-1">SketchUp Pro 2026</h6>
+                  <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac</div>
+                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Modelado 3D profesional y renderizado avanzado.</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$27.00</span>
+                  <a href="sketchup.html" class="btn-outline-custom py-1 px-2">Ver más</a>
+                </div>
+              </div>
+              <div class="similar-card">
+                <div>
+                  <div class="similar-img-box"><img src="img/office.png" alt="Office" onerror="this.src='https://ui-avatars.com/api/?name=Of&background=00e5ff&color=000'"></div>
+                  <h6 class="text-white fw-bold fs-6 mb-1">Office Home & Business</h6>
+                  <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac</div>
+                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Productividad diaria total: Word, Excel, Powerpoint.</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$40.00</span>
+                  <a href="office.html" class="btn-outline-custom py-1 px-2">Ver más</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMENTARIOS -->
+        <div class="row justify-content-center comments-section">
+          <div class="col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-chat-square-text text-accent" style="color:var(--accent-color)"></i> Opiniones de la Comunidad</h5>
+            </div>
+            <div id="comment-section-wrapper" class="mb-4"></div>
+            <div id="comments-container">
+              <div class="text-center text-white py-3 small">Cargando opiniones de la comunidad...</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- Footer -->
     <footer class="py-4 mt-5 border-top" style="border-color: var(--border-color) !important;">
       <div class="container text-center">
@@ -562,6 +599,24 @@
     <span class="badge-floating cart-badge-count-global">0</span>
   </button>
 
+  <!-- MODAL BUSCADOR -->
+  <div class="search-overlay-fullscreen" id="search-overlay-fullscreen">
+    <div class="search-modal-box">
+      <div class="search-input-liquid mb-4">
+        <i class="bi bi-search text-accent" style="font-size: 1.4rem;"></i>
+        <input type="text" id="live-search-input" placeholder="Buscar productos..." autocomplete="off">
+        <button class="btn-close-search" id="btn-close-search" style="background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div id="live-search-results" class="search-results-container">
+        <p class="text-center" style="color: rgba(255,255,255,0.7); font-size: 0.9rem;" id="search-empty-state">Escribe el nombre del producto para buscar...</p>
+        <a href="autocad.html" class="search-result-item" data-title="autocad 2026 arquitectura ingenieria">
+          <img src="img/autocad.png" alt="AutoCAD" onerror="this.src='https://ui-avatars.com/api/?name=AC&background=00e5ff&color=000'">
+          <div><h6 class="mb-0 text-white fw-bold">AutoCAD 2026</h6><span class="text-accent small fw-bold" style="color: var(--accent-color);">$35.00</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <!-- CARRITO LATERAL -->
   <div class="cart-overlay" id="cart-overlay"></div>
   <div class="cart-drawer" id="cart-drawer">
@@ -572,50 +627,33 @@
       </div>
       <button class="btn-close-cart" id="close-cart-btn"><i class="bi bi-x-lg"></i></button>
     </div>
-    
     <div class="cart-items-container" id="cart-items-container">
-      <div class="cart-empty-msg" id="empty-cart-msg">
-        <p>Tu carrito está vacío.</p>
-      </div>
+      <div class="cart-empty-msg" id="empty-cart-msg"><p>Tu carrito está vacío.</p></div>
     </div>
-    
     <div class="cart-footer">
       <div class="coupon-box" id="coupon-section" style="display: none;">
         <input type="text" id="coupon-input" class="coupon-input" placeholder="Código de descuento">
         <button type="button" id="apply-coupon-btn" class="btn-apply-coupon">Aplicar</button>
       </div>
       <div id="coupon-msg" class="coupon-msg" style="display: none;"></div>
-
-      <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;">
-        <span class="text-white">Subtotal</span>
-        <span id="cart-subtotal" class="text-white">$0.00</span>
-      </div>
-      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;">
-        <span class="fs-5 fw-bold text-white">Total</span>
-        <span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span>
-      </div>
-      
-      <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;">
-        <div id="paypal-button-container" class="w-100"></div>
-      </div>
-
-      <button id="free-checkout-btn" class="btn-free-checkout mb-3" style="display: none;">
-        Obtener gratis <i class="bi bi-download ms-1"></i>
-      </button>
+      <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;"><span class="text-white">Subtotal</span><span id="cart-subtotal" class="text-white">$0.00</span></div>
+      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;"><span class="fs-5 fw-bold text-white">Total</span><span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span></div>
+      <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;"><div id="paypal-button-container" class="w-100"></div></div>
+      <button id="free-checkout-btn" class="btn-free-checkout mb-3" style="display: none;">Obtener gratis <i class="bi bi-download ms-1"></i></button>
     </div>
   </div>
 
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- ====== SCRIPT GLOBAL EXTERNO PARA AUTENTICACIÓN Y MODO ADMIN ====== -->
+  <!-- SCRIPT GLOBAL EXTERNO PARA AUTENTICACIÓN Y MODO ADMIN -->
   <script type="module" src="auth-global.js"></script>
 
-  <!-- Lógica local de carrito y pasarela de pago express para invitados -->
+  <!-- LÓGICA LOCAL (MENÚ PUSH, BUSCADOR, COMENTARIOS Y PASARELA EXPRESS) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, orderBy, serverTimestamp, increment, arrayUnion, arrayRemove, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
@@ -631,16 +669,160 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    window.globalCurrentUser = null;
+    let currentUser = null;
     window.globalEmailRecienComprado = "";
+
+    async function checkUserPurchases(uid) {
+      try {
+        const q = query(collection(db, "purchases"), where("uid", "==", uid));
+        const snapshot = await getDocs(q);
+        let purchasedNames = [];
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          if (data.items && Array.isArray(data.items)) {
+            data.items.forEach(item => purchasedNames.push(item.name));
+          }
+        });
+        const buyButtons = document.querySelectorAll('.btn-add-cart');
+        buyButtons.forEach(btn => {
+          const prodName = btn.getAttribute('data-name');
+          if (purchasedNames.includes(prodName)) {
+            btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> OBTENIDO';
+            btn.classList.remove('btn-cyan', 'btn-outline-custom');
+            btn.classList.add('btn-obtained-glass');
+            btn.disabled = true;
+          }
+        });
+      } catch (err) { console.error("Error verificando compras:", err); }
+    }
+
+    const initialDefaultComments = [
+      { name: "Arq. Fernando Ríos", rating: 5, text: "Instalado en mi Mac M3 Pro y corre súper fluido. Adiós a las suscripciones de Autodesk.", likes: 38, likedBy: [] },
+      { name: "Estructuras Metálicas G.", rating: 5, text: "Hacemos mucha herrería y poder revisar los planos DWG sin pagar mensualidad es un alivio. ¡Recomendado!", likes: 24, likedBy: [] },
+      { name: "Ing. Valeria Gómez", rating: 5, text: "Excelente paquete. La descarga fue rapidísima y el tutorial de instalación para Mac está clarísimo.", likes: 31, likedBy: [] }
+    ];
+
+    function renderCommentsUI(commentsData) {
+      const container = document.getElementById('comments-container');
+      container.innerHTML = '';
+      commentsData.forEach((com) => {
+        const docId = com.id;
+        let stars = '★★★★★'.substring(0, com.rating || 5) + '☆☆☆☆☆'.substring(0, 5 - (com.rating || 5));
+        let likedByArray = com.likedBy || [];
+        let isLiked = currentUser && likedByArray.includes(currentUser.uid);
+        let btnClass = isLiked ? "btn-like liked" : "btn-like";
+        let iconClass = isLiked ? "bi bi-heart-fill" : "bi bi-heart";
+
+        container.insertAdjacentHTML('beforeend', `
+          <div class="comment-card" id="comment-${docId}">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> ${com.name}</h6>
+              <span class="text-warning small" style="font-size: 0.75rem;">${stars}</span>
+            </div>
+            <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">${com.text}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Opinión verificada</small>
+              <button class="${btnClass}" onclick="toggleLikeFirestore('${docId}', this)"><i class="${iconClass}"></i> <span class="like-count">${com.likes || 0}</span></button>
+            </div>
+          </div>
+        `);
+      });
+    }
+
+    async function loadComments() {
+      try {
+        const commentsRef = collection(db, "autocad_comments_final");
+        const q = query(commentsRef, orderBy("createdAt", "desc"));
+        let snapshot = await getDocs(q);
+        let dbComments = [];
+        snapshot.forEach(docSnap => dbComments.push({ id: docSnap.id, ...docSnap.data() }));
+        const allComments = [...dbComments, ...initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c }))];
+        renderCommentsUI(allComments);
+      } catch (err) {
+        renderCommentsUI(initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c })));
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => { loadComments(); });
+
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      window.globalCurrentUser = user;
+      const commentWrapper = document.getElementById('comment-section-wrapper');
+
+      if (user) {
+        checkUserPurchases(user.uid);
+        let displayName = user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : "Usuario");
+
+        commentWrapper.innerHTML = `
+          <div class="comment-form-box">
+            <h6 class="text-white mb-2 fw-semibold" style="font-size: 0.9rem;">Deja tu reseña o comentario</h6>
+            <form id="comment-form">
+              <div class="row g-2">
+                <div class="col-12 col-md-6"><input type="text" id="comment-name" class="form-control form-control-custom" value="${displayName}" required></div>
+                <div class="col-12 col-md-6">
+                  <select id="comment-rating" class="form-control form-control-custom">
+                    <option value="5">★★★★★ (5/5 - Excelente)</option>
+                    <option value="4">★★★★☆ (4/5 - Muy bueno)</option>
+                  </select>
+                </div>
+                <div class="col-12"><textarea id="comment-text" class="form-control form-control-custom" rows="2" placeholder="Escribe tu experiencia..." required></textarea></div>
+                <div class="col-12 text-end"><button type="submit" class="btn-cyan px-3 py-1" style="font-size: 0.85rem;" id="btn-submit-comment">Publicar Comentario</button></div>
+              </div>
+            </form>
+          </div>
+        `;
+        document.getElementById('comment-form').addEventListener('submit', handleCommentSubmit);
+      } else {
+        commentWrapper.innerHTML = `
+          <div class="login-prompt-box">
+            <div class="login-prompt-icon"><i class="bi bi-lock-fill"></i></div>
+            <h5 class="text-white fw-bold mb-2 fs-6">Inicia sesión para dejar tu reseña</h5>
+            <a href="login.html" class="btn-cyan d-inline-block px-4 py-2 text-decoration-none" style="font-size: 0.9rem;">Iniciar Sesión / Registrarse</a>
+          </div>
+        `;
+      }
+      loadComments();
+    });
+
+    async function handleCommentSubmit(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const name = document.getElementById('comment-name').value.trim();
+      const rating = parseInt(document.getElementById('comment-rating').value);
+      const text = document.getElementById('comment-text').value.trim();
+      if (!name || !text) return;
+
+      try {
+        await addDoc(collection(db, "autocad_comments_final"), { name, rating, text, likes: 0, likedBy: [], createdAt: serverTimestamp() });
+        document.getElementById('comment-form').reset();
+        loadComments();
+      } catch (err) { alert("Error al publicar."); }
+    }
+
+    window.toggleLikeFirestore = async function(docId, btn) {
+      if (!currentUser) { window.location.href = 'login.html'; return; }
+      if (docId.startsWith('local-')) return;
+      const countSpan = btn.querySelector('.like-count');
+      let currentLikes = parseInt(countSpan.textContent);
+      let isLiking = !btn.classList.contains('liked');
+
+      if (isLiking) { btn.classList.add('liked'); btn.querySelector('i').className = 'bi bi-heart-fill'; countSpan.textContent = currentLikes + 1; }
+      else { btn.classList.remove('liked'); btn.querySelector('i').className = 'bi bi-heart'; countSpan.textContent = currentLikes - 1; }
+
+      try {
+        const commentRef = doc(db, "autocad_comments_final", docId);
+        await updateDoc(commentRef, { likes: increment(isLiking ? 1 : -1), likedBy: isLiking ? arrayUnion(currentUser.uid) : arrayRemove(currentUser.uid) });
+      } catch (err) { console.error(err); }
+    };
 
     function mostrarModalExito(mensaje, esInvitado = false, emailInvitado = "") {
       const modal = document.getElementById('success-modal');
       const text = document.getElementById('success-modal-text');
       const expressBox = document.getElementById('express-signup-container');
       const btnGoAccount = document.getElementById('btn-go-to-account');
-
       if (text && mensaje) text.textContent = mensaje;
-
       if (esInvitado && emailInvitado) {
         window.globalEmailRecienComprado = emailInvitado;
         document.getElementById('express-email').value = emailInvitado;
@@ -650,38 +832,20 @@
         expressBox.style.display = 'none';
         btnGoAccount.style.display = 'block';
       }
-
       if (modal) modal.classList.add('active');
     }
 
     window.crearCuentaExpress = async function() {
       const passInput = document.getElementById('express-password').value.trim();
       const email = window.globalEmailRecienComprado;
-      const btn = document.getElementById('btn-save-express-account');
-
-      if (passInput.length < 6) {
-        alert("La contraseña debe tener al menos 6 caracteres.");
-        return;
-      }
-
+      if (passInput.length < 6) { alert("Mínimo 6 caracteres."); return; }
       try {
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 8px;"></span> Creando cuenta...';
-        btn.disabled = true;
-
         await createUserWithEmailAndPassword(auth, email, passInput);
-        alert("¡Cuenta creada con éxito! Ya puedes acceder a tus descargas.");
         window.location.href = 'account.html';
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
-          try {
-            await signInWithEmailAndPassword(auth, email, passInput);
-            window.location.href = 'account.html';
-            return;
-          } catch(innerErr) {
-            alert("Este correo ya tiene contraseña. Inicia sesión normalmente.");
-            window.location.href = 'login.html';
-            return;
-          }
+          try { await signInWithEmailAndPassword(auth, email, passInput); window.location.href = 'account.html'; return; }
+          catch(innerErr) { window.location.href = 'login.html'; return; }
         }
         window.location.href = 'account.html';
       }
@@ -695,9 +859,7 @@
 
       paypal.Buttons({
         style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
-        createOrder: function(data, actions) {
-          return actions.order.create({ purchase_units: [{ amount: { value: monto.toFixed(2) } }] });
-        },
+        createOrder: function(data, actions) { return actions.order.create({ purchase_units: [{ amount: { value: monto.toFixed(2) } }] }); },
         onApprove: async function(data, actions) {
           return actions.order.capture().then(async function(details) {
             let user = auth.currentUser;
@@ -707,29 +869,68 @@
 
             try {
               const itemsComprados = window.cartItemsList || [];
-              await addDoc(collection(db, "purchases"), {
-                uid: userId, userEmail: userEmail, paypalOrderId: details.id,
-                payerName: payerName, items: itemsComprados, createdAt: serverTimestamp()
-              });
-              
+              await addDoc(collection(db, "purchases"), { uid: userId, userEmail, paypalOrderId: details.id, payerName, items: itemsComprados, createdAt: serverTimestamp() });
               if (typeof window.clearCart === 'function') window.clearCart();
-              
-              if (!user) {
-                mostrarModalExito(`¡Pago exitoso, ${payerName}! Compra guardada en ${userEmail}.`, true, userEmail);
-              } else {
-                mostrarModalExito(`¡Pago exitoso, ${payerName}! Redirigiendo a tu cuenta...`, false, "");
-                setTimeout(() => { window.location.href = 'account.html'; }, 2200);
-              }
-            } catch (error) { console.error("Error guardando compra:", error); }
+              if (!user) { mostrarModalExito(`¡Pago exitoso, ${payerName}!`, true, userEmail); }
+              else { mostrarModalExito(`¡Pago exitoso! Redirigiendo...`, false, ""); setTimeout(() => { window.location.href = 'account.html'; }, 2200); }
+            } catch (error) { console.error(error); }
           });
         }
       }).render('#paypal-button-container');
     };
   </script>
 
-  <!-- Carrito local -->
+  <!-- LÓGICA LOCAL DEL CARRITO Y NAVEGACIÓN -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const btnOpenSidebar = document.getElementById('btn-open-sidebar');
+      const sideMenu = document.getElementById('side-menu');
+      const sideMenuOverlay = document.getElementById('side-menu-overlay');
+      const pageWrapper = document.getElementById('page-wrapper');
+      const mainNavbar = document.getElementById('main-navbar');
+
+      function toggleSidebar() {
+        sideMenu.classList.toggle('active');
+        sideMenuOverlay.classList.toggle('active');
+        pageWrapper.classList.toggle('menu-pushed');
+        mainNavbar.classList.toggle('menu-pushed');
+        document.body.classList.toggle('no-scroll');
+      }
+      if(btnOpenSidebar) btnOpenSidebar.addEventListener('click', toggleSidebar);
+      if(sideMenuOverlay) sideMenuOverlay.addEventListener('click', toggleSidebar);
+
+      const searchOverlayFullscreen = document.getElementById('search-overlay-fullscreen');
+      const btnOpenSearchMobile = document.getElementById('btn-open-search-mobile');
+      const btnOpenSearchDesktop = document.getElementById('btn-open-search-desktop');
+      const btnCloseSearch = document.getElementById('btn-close-search');
+      const liveSearchInput = document.getElementById('live-search-input');
+      const searchItems = document.querySelectorAll('.search-result-item');
+      const searchEmptyState = document.getElementById('search-empty-state');
+
+      function openSearch() { searchOverlayFullscreen.classList.add('active'); document.body.classList.add('no-scroll'); setTimeout(() => liveSearchInput.focus(), 100); }
+      function closeSearch() { searchOverlayFullscreen.classList.remove('active'); document.body.classList.remove('no-scroll'); }
+
+      if(btnOpenSearchMobile) btnOpenSearchMobile.addEventListener('click', openSearch);
+      if(btnOpenSearchDesktop) btnOpenSearchDesktop.addEventListener('click', openSearch);
+      if(btnCloseSearch) btnCloseSearch.addEventListener('click', closeSearch);
+
+      liveSearchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        let found = false;
+        if (query.length > 1) {
+          searchEmptyState.style.display = 'none';
+          searchItems.forEach(item => {
+            if (item.getAttribute('data-title').includes(query)) { item.style.display = 'flex'; found = true; }
+            else { item.style.display = 'none'; }
+          });
+          if (!found) { searchEmptyState.textContent = 'No se encontraron resultados.'; searchEmptyState.style.display = 'block'; }
+        } else {
+          searchItems.forEach(item => item.style.display = 'none');
+          searchEmptyState.textContent = 'Escribe el nombre del producto para buscar...';
+          searchEmptyState.style.display = 'block';
+        }
+      });
+
       let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
       const cartBtns = document.querySelectorAll('.cart-btn-global, #main-cart-btn');
       const cartDrawer = document.getElementById('cart-drawer');
@@ -742,11 +943,6 @@
       const cartSubtotalText = document.getElementById('cart-subtotal');
       const cartTotalText = document.getElementById('cart-total');
       const paypalWrapper = document.getElementById('paypal-container-wrapper');
-      const freeCheckoutBtn = document.getElementById('free-checkout-btn');
-      const securityBadge = document.getElementById('security-badge-box');
-      const couponSection = document.getElementById('coupon-section');
-      const subtotalRow = document.getElementById('subtotal-row');
-      const totalRow = document.getElementById('total-row');
       const addButtons = document.querySelectorAll('.btn-add-cart');
 
       const openCart = (e) => { if(e) e.preventDefault(); cartDrawer.classList.add('active'); cartOverlay.classList.add('active'); document.body.classList.add('no-scroll'); updateCartUI(); };
@@ -767,18 +963,13 @@
           if(paypalWrapper) paypalWrapper.style.display = 'none';
         } else {
           emptyCartMsg.style.display = 'none';
-          if(couponSection) couponSection.style.display = 'flex';
-          if(subtotalRow) subtotalRow.style.display = 'flex';
-          if(totalRow) totalRow.style.display = 'flex';
-          
           cart.forEach((item, index) => {
             totalItems += item.qty;
             totalPrice += (item.price * item.qty);
             for(let i=0; i<item.qty; i++) {
               window.cartItemsList.push({ name: item.name, img: item.img, type: item.type, price: item.price });
             }
-
-            const itemHTML = `
+            cartItemsContainer.insertAdjacentHTML('beforeend', `
               <div class="cart-item">
                 <div class="cart-item-img"><img src="img/${item.img}.png" alt="${item.name}"></div>
                 <div class="cart-item-info">
@@ -795,10 +986,8 @@
                 </div>
                 <button class="cart-item-remove" onclick="removeItem(${index})"><i class="bi bi-trash"></i></button>
               </div>
-            `;
-            cartItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
+            `);
           });
-
           if(paypalWrapper) paypalWrapper.style.display = 'block';
           setTimeout(() => { if (typeof window.renderPayPalStable === 'function') window.renderPayPalStable(totalPrice); }, 100);
         }
@@ -810,12 +999,7 @@
         localStorage.setItem('dingloft_cart', JSON.stringify(cart));
       };
 
-      window.changeQty = (index, delta) => {
-        if (cart[index].qty + delta > 0) cart[index].qty += delta;
-        else cart.splice(index, 1);
-        updateCartUI();
-      };
-
+      window.changeQty = (index, delta) => { if (cart[index].qty + delta > 0) cart[index].qty += delta; else cart.splice(index, 1); updateCartUI(); };
       window.removeItem = (index) => { cart.splice(index, 1); updateCartUI(); };
 
       addButtons.forEach(button => {
