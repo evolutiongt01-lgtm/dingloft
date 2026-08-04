@@ -38,7 +38,6 @@
     .stat span { display:block; color:#cad5e3; font-size:.89rem; } .stat strong { display:block; margin-top:4px; font-size:2rem; line-height:1; color:var(--cyan); } .stat:nth-child(2) strong{color:var(--violet)}
     .dashboard { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(320px,.9fr); gap:23px; } .card { border:1px solid var(--line); border-radius:20px; background:linear-gradient(145deg,rgba(16,27,45,.82),rgba(8,14,25,.78)); box-shadow:0 18px 35px rgba(0,0,0,.15); overflow: hidden; }
     
-    /* PESTAÑAS (TABS) DENTRO DE DESCARGAS */
     .tabs-header { display: flex; border-bottom: 1px solid var(--line); background: rgba(8, 14, 25, 0.4); }
     .tab-btn { flex: 1; background: transparent; border: none; padding: 18px 0; color: var(--muted); font-size: 0.95rem; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; transition: .2s ease; }
     .tab-btn:hover { color: white; background: rgba(255,255,255,0.02); }
@@ -81,7 +80,6 @@
     .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
 
-    /* WIDGET VENTANAS ANIMADAS */
     .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 8, 15, 0.85); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .liquid-modal-overlay.active { opacity: 1; pointer-events: auto; }
     
@@ -210,7 +208,7 @@
 
           <div id="tab-reserva" class="tab-content">
              <div id="dashboard-reserva-info">
-                <p style="color: var(--muted); padding: 15px;">Buscando estado de tu reserva...</p>
+                <p style="color: var(--muted); padding: 15px;">Buscando tus reservas...</p>
              </div>
           </div>
         </article>
@@ -218,7 +216,7 @@
         <aside class="right">
           <article class="card support-card">
             <div class="card-title"><h2>Instalación Remota</h2></div>
-            <div class="remote-install-content">
+            <div class="remote-install-content" style="padding-top:0;">
               <div class="icon-wrapper"><i class="bi bi-shield-check"></i></div>
               <h3>Soporte Técnico Especializado</h3>
               <p>Deja la configuración en manos de expertos. Nos conectamos a tu equipo mediante <strong>Google Chrome Remote Desktop</strong> para asegurar una experiencia transparente, encriptada y totalmente privada.</p>
@@ -309,7 +307,7 @@
         </div>
 
         <div>
-          <button id="btn-pagar" class="liquid-btn">
+          <button id="btn-pagar" class="liquid-btn" onclick="procesarPagoReserva()">
             <i class="bi bi-credit-card"></i> Pagar y Reservar (<span id="precio-total">$10.00 USD</span>)
           </button>
         </div>
@@ -332,6 +330,7 @@
     window.softwareSeleccionado = "Google Chrome Remote Desktop";
     window.precioBase = 10.00;
     window.precioFinal = 10.00;
+    window.misReservasData = [];
 
     window.openReservasModal = function() {
       document.getElementById('reservasModal').classList.add('active');
@@ -635,39 +634,37 @@
         document.getElementById('sidebar-avatar').innerHTML = avatarHtml;
         document.getElementById('top-avatar').innerHTML = avatarHtml;
 
-        let miReservaData = null;
-        let miReservaId = null;
-
-        // Función para inyectar la vista de reserva en Tabs y Modals
         function pintarReservaUI(htmlData) {
             document.getElementById('dashboard-reserva-info').innerHTML = htmlData;
             document.getElementById('modal-reserva-info').innerHTML = htmlData;
         }
 
         function verificarDesbloqueo() {
-            if(!miReservaData || miReservaData.estado === 'completado' || miReservaData.codigoAcceso) return;
-
             let ahora = Date.now();
-            let faltanMs = miReservaData.timestampReserva - ahora;
-            let faltanMinutos = faltanMs / 1000 / 60;
+            window.misReservasData.forEach(reserva => {
+                if(reserva.estado === 'completado' || reserva.codigoAcceso) return;
 
-            document.querySelectorAll('.texto-espera-codigo').forEach(el => {
-                const formCodigo = el.nextElementSibling;
-                if (faltanMinutos <= 5 && faltanMinutos >= -60) {
-                    el.style.display = 'none';
-                    formCodigo.style.display = 'block';
-                } else if (faltanMinutos > 5) {
-                    let hrs = Math.floor(faltanMinutos / 60);
-                    let mns = Math.floor(faltanMinutos % 60);
-                    let tiempoTxt = hrs > 0 ? `${hrs} hrs y ${mns} min` : `${mns} min`;
-                    
-                    el.innerHTML = `<i class="bi bi-clock-history"></i> El campo para ingresar tu código se habilitará 5 minutos antes de tu sesión (Faltan aprox. ${tiempoTxt}).`;
-                    el.style.display = 'block';
-                    formCodigo.style.display = 'none';
-                } else {
-                     el.innerHTML = `<i class="bi bi-x-circle"></i> Tu tiempo de sesión ha expirado o finalizado.`;
-                     formCodigo.style.display = 'none';
-                }
+                let faltanMs = reserva.timestampReserva - ahora;
+                let faltanMinutos = faltanMs / 1000 / 60;
+
+                document.querySelectorAll(`.texto-espera-codigo[data-id="${reserva.id}"]`).forEach(el => {
+                    const formCodigo = el.nextElementSibling;
+                    if (faltanMinutos <= 5 && faltanMinutos >= -60) {
+                        el.style.display = 'none';
+                        formCodigo.style.display = 'block';
+                    } else if (faltanMinutos > 5) {
+                        let hrs = Math.floor(faltanMinutos / 60);
+                        let mns = Math.floor(faltanMinutos % 60);
+                        let tiempoTxt = hrs > 0 ? `${hrs} hrs y ${mns} min` : `${mns} min`;
+                        
+                        el.innerHTML = `<i class="bi bi-clock-history"></i> El campo para ingresar tu código se habilitará 5 minutos antes de tu sesión (Faltan aprox. ${tiempoTxt}).`;
+                        el.style.display = 'block';
+                        formCodigo.style.display = 'none';
+                    } else {
+                         el.innerHTML = `<i class="bi bi-x-circle"></i> Tu tiempo de sesión ha expirado o finalizado.`;
+                         formCodigo.style.display = 'none';
+                    }
+                });
             });
         }
 
@@ -679,76 +676,82 @@
             if (!reservasSnap.empty) {
               let reservasArray = [];
               reservasSnap.forEach(d => reservasArray.push({ id: d.id, ...d.data() }));
-              miReservaData = reservasArray[reservasArray.length - 1];
-              miReservaId = miReservaData.id;
               
-              let estadoHTML = miReservaData.estado === "completado" 
-                  ? `<span style="background: rgba(18, 215, 246, 0.15); color: var(--cyan); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(18, 215, 246, 0.3);">Completado <i class="bi bi-check-all"></i></span>`
-                  : `<span style="background: rgba(53, 221, 146, 0.15); color: var(--green); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(53, 221, 146, 0.3);">Pendiente</span>`;
+              // Ordenamos para que las más recientes salgan arriba
+              reservasArray.sort((a, b) => b.timestampReserva - a.timestampReserva);
+              window.misReservasData = reservasArray;
+              
+              let htmlTotal = '';
 
-              let btnEliminar = isAdmin ? `<button onclick="eliminarReserva('${miReservaId}')" style="margin-top: 15px; width: 100%; padding: 10px; background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.4); color: #ff5050; border-radius: 8px; cursor: pointer; font-weight: 600;"><i class="bi bi-trash"></i> Cancelar / Eliminar Reserva (Solo Admin)</button>` : '';
+              reservasArray.forEach(miReservaData => {
+                  let miReservaId = miReservaData.id;
+                  let estadoHTML = miReservaData.estado === "completado" 
+                      ? `<span style="background: rgba(18, 215, 246, 0.15); color: var(--cyan); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(18, 215, 246, 0.3);">Completado <i class="bi bi-check-all"></i></span>`
+                      : `<span style="background: rgba(53, 221, 146, 0.15); color: var(--green); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(53, 221, 146, 0.3);">Pendiente</span>`;
 
-              let baseHTML = `
-                <div style="background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 16px; padding: 18px;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 12px;">
-                    <strong style="color: var(--cyan);"><i class="bi bi-calendar-check"></i> Instalación Remota</strong>
-                    <div>${estadoHTML}</div>
-                  </div>
-                  
-                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.85rem; color: #c4d0df;">
-                    <div>
-                      <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Fecha programada</span>
-                      <strong style="color: white;">${miReservaData.fecha}</strong>
-                    </div>
-                    <div>
-                      <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Hora (EST/Miami)</span>
-                      <strong style="color: white;">${miReservaData.hora}</strong>
-                    </div>
-                  </div>
+                  let btnEliminar = isAdmin ? `<button onclick="eliminarReserva('${miReservaId}')" style="margin-top: 15px; width: 100%; padding: 10px; background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.4); color: #ff5050; border-radius: 8px; cursor: pointer; font-weight: 600;"><i class="bi bi-trash"></i> Cancelar / Eliminar Reserva (Solo Admin)</button>` : '';
 
-                  <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);">
-                    <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Vía de conexión seleccionada</span>
-                    <strong style="color: white; font-size: 0.85rem;"><i class="bi bi-display"></i> ${miReservaData.software}</strong>
-                  </div>
-
-                  <div style="margin-top: 10px;">
-                    <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Comentarios de la sesión</span>
-                    <p style="color: #c4d0df; font-size: 0.82rem; margin: 0; line-height: 1.5; background: rgba(0,0,0,0.2); padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03);">${miReservaData.comentario || 'Sin comentarios.'}</p>
-                  </div>
-              `;
-
-              if (miReservaData.estado !== "completado") {
-                  if (miReservaData.codigoAcceso) {
-                      baseHTML += `
-                        <div style="margin-top: 18px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); text-align: center;">
-                          <p style="color: var(--green); font-size: 0.8rem; margin: 0;"><i class="bi bi-check-circle-fill"></i> Código enviado exitosamente: <b>${miReservaData.codigoAcceso}</b></p>
+                  let baseHTML = `
+                    <div style="background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin-bottom: 18px;">
+                      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 12px;">
+                        <strong style="color: var(--cyan);"><i class="bi bi-calendar-check"></i> Instalación Remota</strong>
+                        <div>${estadoHTML}</div>
+                      </div>
+                      
+                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.85rem; color: #c4d0df;">
+                        <div>
+                          <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Fecha programada</span>
+                          <strong style="color: white;">${miReservaData.fecha}</strong>
                         </div>
-                      `;
-                  } else {
-                      baseHTML += `
-                        <div style="margin-top: 18px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); text-align: center;">
-                          <p style="font-size: 0.8rem; color: var(--muted); margin: 0;" class="texto-espera-codigo">
-                            Calculando tiempo...
-                          </p>
-                          <div class="formulario-codigo" style="display: none; background: rgba(18, 215, 246, 0.05); border: 1px solid rgba(18, 215, 246, 0.2); padding: 14px; border-radius: 12px;">
-                            <label style="font-size: 0.82rem; color: var(--cyan); display: block; margin-bottom: 8px; font-weight: 600; text-align: left;">¡Es hora! Pega tu Código / Enlace aquí:</label>
-                            <div style="display: flex; gap: 8px;">
-                              <input type="text" id="input-cod-${miReservaId}" class="liquid-input" placeholder="Ej. 123 456 789" style="margin-bottom: 0;">
-                              <button class="liquid-btn-cupon" onclick="enviarCodigo('${miReservaId}')" style="padding: 0 18px; font-weight: 800;">Enviar</button>
+                        <div>
+                          <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Hora (EST/Miami)</span>
+                          <strong style="color: white;">${miReservaData.hora}</strong>
+                        </div>
+                      </div>
+
+                      <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Vía de conexión seleccionada</span>
+                        <strong style="color: white; font-size: 0.85rem;"><i class="bi bi-display"></i> ${miReservaData.software}</strong>
+                      </div>
+
+                      <div style="margin-top: 10px;">
+                        <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Comentarios de la sesión</span>
+                        <p style="color: #c4d0df; font-size: 0.82rem; margin: 0; line-height: 1.5; background: rgba(0,0,0,0.2); padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03);">${miReservaData.comentario || 'Sin comentarios.'}</p>
+                      </div>
+                  `;
+
+                  if (miReservaData.estado !== "completado") {
+                      if (miReservaData.codigoAcceso) {
+                          baseHTML += `
+                            <div style="margin-top: 18px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); text-align: center;">
+                              <p style="color: var(--green); font-size: 0.8rem; margin: 0;"><i class="bi bi-check-circle-fill"></i> Código enviado exitosamente: <b>${miReservaData.codigoAcceso}</b></p>
                             </div>
-                          </div>
-                        </div>
-                      `;
+                          `;
+                      } else {
+                          baseHTML += `
+                            <div style="margin-top: 18px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); text-align: center;">
+                              <p style="font-size: 0.8rem; color: var(--muted); margin: 0;" class="texto-espera-codigo" data-id="${miReservaId}">
+                                Calculando tiempo...
+                              </p>
+                              <div class="formulario-codigo" style="display: none; background: rgba(18, 215, 246, 0.05); border: 1px solid rgba(18, 215, 246, 0.2); padding: 14px; border-radius: 12px;">
+                                <label style="font-size: 0.82rem; color: var(--cyan); display: block; margin-bottom: 8px; font-weight: 600; text-align: left;">¡Es hora! Pega tu Código / Enlace aquí:</label>
+                                <div style="display: flex; gap: 8px;">
+                                  <input type="text" class="liquid-input codigo-input-${miReservaId}" placeholder="Ej. 123 456 789" style="margin-bottom: 0;">
+                                  <button class="liquid-btn-cupon" onclick="enviarCodigo('${miReservaId}')" style="padding: 0 18px; font-weight: 800;">Enviar</button>
+                                </div>
+                              </div>
+                            </div>
+                          `;
+                      }
                   }
-              }
 
-              baseHTML += `${btnEliminar}</div>`;
-              pintarReservaUI(baseHTML);
+                  baseHTML += `${btnEliminar}</div>`;
+                  htmlTotal += baseHTML;
+              });
 
-              if (miReservaData.estado !== "completado" && !miReservaData.codigoAcceso) {
-                 verificarDesbloqueo();
-                 setInterval(verificarDesbloqueo, 30000); 
-              }
+              pintarReservaUI(htmlTotal);
+              verificarDesbloqueo();
+              setInterval(verificarDesbloqueo, 30000); 
 
             } else {
                pintarReservaUI('<div style="padding: 20px; text-align: center;"><i class="bi bi-calendar-x" style="font-size: 2rem; color: var(--muted);"></i><p style="color: var(--muted); margin-top: 10px;">Aún no tienes reservas activas. Utiliza el botón Agendar Sesión.</p></div>');
@@ -762,12 +765,17 @@
         await cargarMisReservas();
 
         window.enviarCodigo = async function(id) {
-            const input = document.getElementById('input-cod-' + id);
-            if(!input.value) return;
+            // Buscamos todos los inputs que tengan la clase con este ID (por si está en dashboard y modal a la vez)
+            const inputs = document.querySelectorAll('.codigo-input-' + id);
+            let codigo = '';
+            inputs.forEach(input => { if(input.value) codigo = input.value; });
+            
+            if(!codigo) return;
+            
             try {
-                await updateDoc(doc(db, "reservas", id), { codigoAcceso: input.value });
+                await updateDoc(doc(db, "reservas", id), { codigoAcceso: codigo });
                 window.mostrarAlertaModal("Código enviado correctamente al administrador", true);
-                await cargarMisReservas(); // Recarga dinámica sin parpadear
+                await cargarMisReservas(); 
             } catch(e) {
                 console.error(e);
                 window.mostrarAlertaModal("Error enviando el código", false);
@@ -779,7 +787,6 @@
             try {
                 await deleteDoc(doc(db, "reservas", id));
                 window.mostrarAlertaModal("Reserva eliminada exitosamente.", true);
-                miReservaData = null; 
                 await cargarMisReservas();
             } catch(e) {
                 console.error(e);
@@ -787,7 +794,7 @@
             }
         }
 
-        // --- CREAR NUEVA RESERVA SIN RECARGAR LA PÁGINA ---
+        // --- CREAR NUEVA RESERVA Y REDIRIGIR AUTOMÁTICAMENTE ---
         document.getElementById('btn-pagar').addEventListener('click', async () => {
           const comentario = document.getElementById('reservaComentario').value;
 
@@ -801,7 +808,7 @@
           }
 
           const btn = document.getElementById('btn-pagar');
-          btn.innerHTML = '<i class="bi bi-arrow-repeat" style="animation: spin 1s linear infinite;"></i> Procesando...';
+          btn.innerHTML = '<i class="bi bi-arrow-repeat" style="animation: spin 1s linear infinite;"></i> Guardando...';
           btn.style.pointerEvents = 'none';
 
           const fechaFormateada = window.diaSeleccionado.toLocaleDateString('es-ES', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
@@ -833,16 +840,17 @@
             });
 
             if (esGratis) {
+               window.closeReservaModal();
                window.mostrarAlertaModal(`Reserva guardada exitosamente.`, true);
+               
+               // REDIRECCIÓN DINÁMICA A LA PESTAÑA RESERVA SIN RECARGAR
                setTimeout(async () => {
-                 window.closeReservaModal();
-                 window.switchTab('reserva'); // Cambia a la pestaña reserva
-                 await cargarMisReservas();   // Actualiza visualmente todo
+                 window.switchTab('reserva'); 
+                 await cargarMisReservas();   
                  
-                 // Restaura el botón para futuras reservas
                  btn.innerHTML = `<i class="bi bi-credit-card"></i> Pagar y Reservar ($${window.precioFinal.toFixed(2)} USD)`;
                  btn.style.pointerEvents = 'auto';
-               }, 1500);
+               }, 1000);
             } else {
                window.mostrarAlertaModal(`Reserva guardada. Redirigiendo a pasarela...`, true);
                setTimeout(() => {
@@ -855,7 +863,7 @@
 
           } catch (e) {
             console.error(e);
-            window.mostrarAlertaModal("Error en base de datos. Asegúrate de tener permisos.", false);
+            window.mostrarAlertaModal("Error en base de datos. Verifica permisos.", false);
             btn.innerHTML = `<i class="bi bi-credit-card"></i> Pagar y Reservar ($${window.precioFinal.toFixed(2)} USD)`;
             btn.style.pointerEvents = 'auto';
           }
