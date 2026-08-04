@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoCAD 2026 | Dingloft</title>
+  
+  <!-- FAVICON -->
+  <link rel="icon" href="img/favicon.png" type="image/png">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+
+  <!-- PAYPAL SDK -->
+  <script src="https://www.paypal.com/sdk/js?client-id=BAA88hYhrlAVHUFkzsqrlDE1atrFHrCZe7j0XOYtbB4YlxcxBASouD2NAU2J_BV1fp9-jGGYK2Mh4bHN20&currency=USD"></script>
+  
+  <style>
+    :root {
+      --bg-color: #05070a;
+      --accent-color: #00e5ff;
+      --accent-hover: #00b5cc;
+      --text-main: #ffffff;
+      --text-muted: #f1f5f9;
+      --border-color: rgba(255, 255, 255, 0.15);
+      --glass-bg: rgba(17, 21, 31, 0.4);
+    }
+    
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    body.no-scroll { overflow: hidden !important; height: 100vh; touch-action: none; }
+
+    /* ====== EFECTO PUSH MENU ULTRA FLUIDO ====== */
+    .page-wrapper {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--bg-color);
+      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      will-change: transform;
+      z-index: 1;
+    }
+
+    .side-menu-drawer {
+      position: fixed;
+      top: 0;
+      left: -280px; 
+      width: 280px;
+      height: 100vh;
+      background: linear-gradient(145deg, rgba(10, 14, 20, 0.98), rgba(5, 7, 10, 1));
+      border-right: 1px solid var(--border-color);
+      z-index: 1040;
+      padding: 25px 20px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      will-change: transform;
+      overscroll-behavior: none;
+    }
+
+    .side-menu-drawer.active, 
+    .page-wrapper.menu-pushed, 
+    .navbar-glass.menu-pushed {
+      transform: translateX(280px);
+    }
+
+    .side-menu-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1035;
+      opacity: 0; visibility: hidden; transition: opacity 0.4s; cursor: pointer;
+      touch-action: none;
+    }
+    .side-menu-overlay.active { opacity: 1; visibility: visible; }
+
+    .side-menu-link {
+      color: rgba(255,255,255,0.85); font-size: 1.1rem; font-weight: 600; text-decoration: none;
+      display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 12px; transition: all 0.2s;
+    }
+    .side-menu-link:hover { background: rgba(0, 229, 255, 0.1); color: var(--accent-color); }
+    .side-menu-link i { font-size: 1.3rem; }
+
+    /* ====== BUSCADOR LIQUID GLASS ====== */
+    .search-overlay-fullscreen {
+      position: fixed; inset: 0; background: rgba(5, 7, 10, 0.95);
+      backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+      z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.4s ease;
+      display: flex; flex-direction: column; padding: 50px 20px 20px;
+    }
+    .search-overlay-fullscreen.active { opacity: 1; visibility: visible; }
+    
+    .search-modal-box { width: min(600px, 100%); margin: 0 auto; transform: translateY(-30px); transition: transform 0.4s ease; }
+    .search-overlay-fullscreen.active .search-modal-box { transform: translateY(0); }
+
+    .search-input-liquid {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 15px rgba(255,255,255,0.05);
+      display: flex; align-items: center; padding: 15px 20px; gap: 15px;
+    }
+    .search-input-liquid:focus-within { border-color: var(--accent-color); box-shadow: 0 10px 40px rgba(0,229,255,0.2); }
+    .search-input-liquid input { background: transparent; border: none; color: #fff; width: 100%; font-size: 1.2rem; outline: none; font-weight: 500; }
+    .search-input-liquid input::placeholder { color: rgba(255, 255, 255, 0.7); }
+    
+    .search-results-container {
+      max-height: 60vh; overflow-y: auto; padding-right: 5px; overscroll-behavior: contain;
+    }
+    .search-results-container::-webkit-scrollbar { width: 5px; }
+    .search-results-container::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
+
+    .search-result-item {
+      display: flex; align-items: center; gap: 15px; padding: 15px; background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; text-decoration: none;
+      transition: all 0.2s; margin-bottom: 10px;
+    }
+    .search-result-item:hover { background: rgba(0,229,255,0.05); border-color: rgba(0,229,255,0.3); transform: translateY(-2px); }
+    .search-result-item img { width: 55px; height: 55px; object-fit: contain; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 5px; }
+
+    /* ====== ANIMACIONES DE ORBES ====== */
+    @keyframes orbFloat1 { 0% { transform: translate(0px, 0px) scale(1); background: #00e5ff; } 50% { transform: translate(150px, 200px) scale(1.2); background: #a200ff; } 100% { transform: translate(0px, 0px) scale(1); background: #00e5ff; } }
+    @keyframes orbFloat2 { 0% { transform: translate(0px, 0px) scale(1); background: #a200ff; } 50% { transform: translate(-200px, -150px) scale(1.3); background: #00ff88; } 100% { transform: translate(0px, 0px) scale(1); background: #a200ff; } }
+    .bg-orb { position: absolute; border-radius: 50%; filter: blur(140px); z-index: -1; opacity: 0.35; pointer-events: none; }
+    .orb-1 { width: 450px; height: 450px; top: -100px; left: -100px; animation: orbFloat1 18s infinite alternate ease-in-out; }
+    .orb-2 { width: 550px; height: 550px; bottom: -150px; right: -150px; animation: orbFloat2 22s infinite alternate ease-in-out; }
+
+    .glass-effect { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border-color); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
+
+    /* ====== NAVBAR Y BOTONES LIQUID ====== */
+    .navbar-glass {
+      background: rgba(5, 7, 10, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color); padding: 12px 0; z-index: 1040; 
+      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      will-change: transform;
+    }
+    
+    .btn-liquid-glass {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.05); color: #fff !important;
+      border-radius: 50px; padding: 6px 16px; display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+      font-size: 0.85rem; text-decoration: none; transition: all 0.3s ease;
+    }
+    .btn-liquid-glass:hover { background: rgba(255, 255, 255, 0.15); border-color: var(--accent-color); box-shadow: 0 8px 25px rgba(0, 229, 255, 0.35); transform: translateY(-2px); }
+
+    .mobile-liquid-btn, .mobile-nav-avatar {
+      width: 40px; height: 40px; border-radius: 50%; 
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02));
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3), inset 0 0 10px rgba(255, 255, 255, 0.1); 
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease; text-decoration: none; color: #fff; padding: 0; cursor: pointer; flex-shrink: 0;
+    }
+    .mobile-liquid-btn i { font-size: 1.15rem; margin: 0; padding: 0; line-height: 1; }
+    .mobile-liquid-btn:hover, .mobile-nav-avatar:hover { transform: scale(1.05); border-color: var(--accent-color); color: var(--accent-color); box-shadow: 0 4px 20px rgba(0, 229, 255, 0.4); }
+    .mobile-nav-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+    .mobile-nav-avatar .avatar-fallback { background: var(--accent-color); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; width: 100%; height: 100%; border-radius: 50%; margin: 0; }
+
+    /* ====== BOTÓN FLOTANTE DEL CARRITO ====== */
+    .btn-floating-cart {
+      position: fixed;
+      bottom: max(30px, env(safe-area-inset-bottom));
+      right: 25px;
+      z-index: 9999; 
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.9), rgba(0, 181, 204, 0.95));
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(0, 229, 255, 0.4), inset 0 0 10px rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .btn-floating-cart:hover {
+      transform: scale(1.1) translateY(-3px);
+      box-shadow: 0 15px 35px rgba(0, 229, 255, 0.6);
+      color: #000;
+    }
+    .badge-floating {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background: #ff0055;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.75rem;
+      border-radius: 50%;
+      padding: 2px 7px;
+      border: 2px solid var(--bg-color);
+    }
+    
+    @media (max-width: 768px) {
+      .btn-floating-cart {
+        bottom: 90px;
+        right: 20px;
+      }
+    }
+
+    .nav-link { color: var(--text-main) !important; font-size: 0.95rem; font-weight: 500; margin: 0 10px; transition: color 0.3s; }
+    .nav-link:hover { color: var(--accent-color) !important; }
+
+    .btn-cyan { background: var(--accent-color); color: #000; font-weight: 600; border: none; border-radius: 8px; padding: 10px 24px; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(0, 229, 255, 0.3); }
+    .btn-cyan:hover { background: var(--accent-hover); color: #000; transform: translateY(-2px); box-shadow: 0 5px 25px rgba(0, 229, 255, 0.5); }
+    
+    .btn-outline-custom { background: rgba(255,255,255,0.05); color: var(--text-main); font-weight: 600; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; padding: 6px 15px; transition: all 0.3s ease; backdrop-filter: blur(5px); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-outline-custom:hover { border-color: var(--accent-color); color: var(--accent-color); background: rgba(0, 229, 255, 0.05); }
+    
+    .btn-outline-cyan { background: rgba(0, 229, 255, 0.08); color: var(--accent-color); font-weight: 700; border: 1px solid var(--accent-color); border-radius: 8px; padding: 10px 24px; transition: all 0.3s ease; font-size: 0.95rem; cursor: pointer; }
+    .btn-outline-cyan:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 25px rgba(0,229,255,0.5); }
+
+    /* ====== BOTÓN PRODUCTO OBTENIDO ====== */
+    .btn-obtained-glass {
+      background: rgba(0, 255, 136, 0.1) !important;
+      color: #00ff88 !important;
+      border: 1px solid rgba(0, 255, 136, 0.4) !important;
+      pointer-events: none;
+      font-weight: 700;
+      border-radius: 8px;
+      padding: 10px 24px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* SECCIÓN DE PRODUCTO */
+    .product-detail-section { padding: 120px 0 30px; }
+    .product-boxes-display { width: 100%; border-radius: 16px; padding: 10px; }
+    .product-boxes-display img { width: 100%; height: auto; object-fit: contain; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.7)); }
+
+    .feature-box { text-align: center; padding: 5px; }
+    .feature-icon-circle { width: 40px; height: 40px; border: 1px solid rgba(0, 229, 255, 0.3); background: rgba(0, 229, 255, 0.05); border-radius: 50%; display: grid; place-items: center; margin: 0 auto 8px; color: var(--accent-color); font-size: 1rem; }
+    .feature-title { font-size: 0.75rem; color: rgba(255,255,255,0.85); font-weight: 500; line-height: 1.2; margin: 0; }
+
+    .package-card { border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-color); }
+    .package-card:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.08) !important; border-color: rgba(255,255,255,0.3); }
+
+    .compatible-section { padding: 20px 0 50px; }
+    .compatible-title { text-align: center; letter-spacing: 1px; font-size: 0.85rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; margin-bottom: 25px; padding: 0 10px; line-height: 1.5; }
+    
+    .keyboard-card { background: linear-gradient(145deg, rgba(12, 17, 26, 0.9), rgba(6, 9, 15, 0.98)); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px 15px; text-align: center; transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+    .keyboard-card i { font-size: 3rem; margin-bottom: 10px; color: var(--accent-color); filter: drop-shadow(0 0 10px rgba(0,229,255,0.3)); }
+    .keyboard-card h5 { font-size: 0.85rem; font-weight: 800; letter-spacing: 0.5px; margin: 0; color: #fff; }
+
+    .creator-note-box { background: linear-gradient(135deg, rgba(0, 229, 255, 0.07), rgba(122, 0, 255, 0.04)); border: 1px solid rgba(0, 229, 255, 0.25); border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    .creator-avatar { width: 48px; height: 48px; min-width: 48px; min-height: 48px; border-radius: 50%; background: linear-gradient(135deg, #00e5ff, #7a00ff); display: grid; place-items: center; font-weight: 800; font-size: 1.1rem; color: #000; flex-shrink: 0; }
+
+    .software-badge-box { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 15px; display: flex; align-items: center; gap: 12px; }
+    .software-badge-box i { font-size: 1.5rem; color: var(--accent-color); }
+    .liquid-glass-container { background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); padding: 12px; }
+
+    /* ====== ESTILOS DE ETIQUETA TECH (TECH TAG) ====== */
+    .tech-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      color: var(--accent-color);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .tech-tag-mac {
+      color: #00e5ff;
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+    }
+
+    .similar-carousel-wrapper { display: flex; gap: 15px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 10px 5px 20px 5px; scrollbar-width: thin; scrollbar-color: var(--accent-color) rgba(255,255,255,0.05); }
+    .similar-carousel-wrapper::-webkit-scrollbar { height: 5px; }
+    .similar-carousel-wrapper::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
+    .similar-card { min-width: 260px; max-width: 260px; flex: 0 0 auto; scroll-snap-align: start; background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    .similar-img-box { width: 100%; height: 150px; background: rgba(0,0,0,0.4); border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 8px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; }
+    .similar-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.6)); }
+
+    /* ====== COMENTARIOS ====== */
+    .comments-section { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 30px; }
+    .comment-card { background: rgba(12, 17, 26, 0.85); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 12px; }
+    .comment-card:hover { border-color: rgba(0,229,255,0.4); }
+    .login-prompt-box { background: linear-gradient(135deg, rgba(0, 229, 255, 0.06), rgba(17, 21, 31, 0.95)); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 16px; padding: 30px 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .login-prompt-icon { width: 60px; height: 60px; background: rgba(0, 229, 255, 0.1); border: 2px solid var(--accent-color); border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: var(--accent-color); font-size: 1.5rem; }
+    .comment-form-box { background: rgba(12, 17, 26, 0.95); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+    .form-control-custom { background: rgba(5, 7, 10, 0.9); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 8px; padding: 10px; font-size: 0.9rem; }
+    .form-control-custom:focus { background: rgba(5, 7, 10, 1); border-color: var(--accent-color); color: #fff; box-shadow: 0 0 10px rgba(0,229,255,0.3); outline: none; }
+    .form-control-custom::placeholder { color: rgba(255,255,255,0.7); }
+    .btn-like { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: rgba(255,255,255,0.85); border-radius: 20px; padding: 3px 10px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s ease; }
+    .btn-like:hover { background: rgba(255, 0, 85, 0.1); color: #ff0055; border-color: rgba(255, 0, 85, 0.3); }
+    .btn-like.liked { background: rgba(255, 0, 85, 0.15); color: #ff0055; border-color: #ff0055; }
+
+    /* ====== CARRITO LATERAL (LIQUID GLASS) CON ANTI-SCROLL ====== */
+    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; touch-action: none; }
+    .cart-overlay.active { opacity: 1; visibility: visible; }
+    .cart-brand-watermark { position: fixed; top: 50%; left: 30%; transform: translate(-50%, -50%) scale(0.9); text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none; }
+    .cart-overlay.active ~ .cart-brand-watermark { opacity: 0.85; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+    .cart-brand-watermark::after { content: ''; position: absolute; top: 50%; left: 50%; width: 260px; height: 260px; background: radial-gradient(circle, rgba(0, 229, 255, 0.5) 0%, rgba(162, 0, 255, 0.3) 40%, transparent 70%); transform: translate(-50%, -50%); filter: blur(30px); z-index: -1; animation: lightGlow 3s infinite alternate ease-in-out; }
+    @keyframes logoPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 20px rgba(0,229,255,0.5)); } 50% { transform: translate(-50%, -50%) scale(1.05); filter: drop-shadow(0 0 40px rgba(0,229,255,0.8)); } }
+    @keyframes lightGlow { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } 100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; } }
+    .animated-watermark-logo { width: 240px; max-width: 80vw; animation: logoPulse 4s infinite ease-in-out; position: relative; }
+
+    .cart-drawer { 
+      position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh; 
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.5)); 
+      backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); 
+      border-left: 1px solid rgba(255, 255, 255, 0.2); box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8), inset 2px 0 15px rgba(255, 255, 255, 0.05); 
+      z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; overscroll-behavior: none;
+    }
+    .cart-drawer.active { right: 0; }
+    .cart-header { padding: 20px 25px; border-bottom: 1px solid rgba(255, 255, 255, 0.15); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    .btn-close-cart { background: transparent; border: none; color: #ffffff; font-size: 1.3rem; line-height: 1; transition: color 0.3s; cursor: pointer; }
+    .btn-close-cart:hover { color: var(--accent-color); }
+    
+    .cart-items-container { flex: 1; overflow-y: auto; padding: 20px 25px; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+    .cart-footer { padding: 20px 25px; background: rgba(0, 0, 0, 0.3); border-top: 1px solid rgba(255, 255, 255, 0.15); flex-shrink: 0; max-height: 55vh; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+    
+    .cart-item { display: flex; gap: 15px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); position: relative; }
+    .cart-item-img { width: 60px; height: 80px; background: rgba(0,0,0,0.3); border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; padding: 5px; }
+    .cart-item-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .cart-item-info { flex: 1; }
+    .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; color: #ffffff; }
+    .cart-item-desc { font-size: 0.75rem; color: #ffffff; opacity: 0.85; margin-bottom: 10px; }
+    .qty-controls { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; background: rgba(0,0,0,0.3); }
+    .qty-btn { background: transparent; border: none; color: #fff; padding: 2px 10px; font-size: 0.9rem; cursor: pointer; }
+    .qty-btn:hover { background: rgba(255,255,255,0.1); }
+    .qty-value { padding: 0 10px; font-size: 0.85rem; font-weight: 600; color: #ffffff; }
+    .cart-item-remove { position: absolute; top: 0; right: 0; background: transparent; border: none; color: #ffffff; font-size: 1rem; cursor: pointer; }
+    .cart-item-remove:hover { color: #ff4444; }
+
+    .cart-empty-msg { text-align: center; color: #ffffff; margin-top: 50px; }
+    .coupon-box { display: flex; gap: 8px; margin-bottom: 15px; }
+    .coupon-input { flex: 1; background: rgba(4, 9, 18, 0.7); border: 1px solid rgba(153, 185, 216, 0.25); border-radius: 8px; color: #fff; padding: 8px 12px; font-size: 0.85rem; text-transform: uppercase; }
+    .coupon-input::placeholder { color: rgba(255,255,255,0.7); text-transform: none; }
+    .coupon-input:focus { border-color: var(--accent-color); outline: none; background: rgba(4, 9, 18, 0.9); }
+    .btn-apply-coupon { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0 15px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-apply-coupon:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
+    .coupon-msg { font-size: 0.78rem; margin-bottom: 12px; font-weight: 500; }
+
+    .paypal-white-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.4); padding: 15px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); margin-top: 10px; }
+    .btn-free-checkout { background: #00ff88; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 14px; width: 100%; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,255,136,0.2); cursor: pointer; }
+    .btn-free-checkout:hover { background: #00e67a; transform: translateY(-2px); }
+
+    /* ====== MODAL DE ÉXITO PROFESIONAL ====== */
+    .success-modal-overlay { position: fixed; inset: 0; background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: grid; place-items: center; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .success-modal-overlay.active { opacity: 1; visibility: visible; }
+    .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 30px 20px; width: min(420px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .success-modal-overlay.active .success-modal-box { transform: scale(1) translateY(0); }
+    .success-icon-ring { width: 70px; height: 70px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: #00ff88; font-size: 1.8rem; }
+    .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(50,221,145,.5); border-radius: 12px; color: #eafff3; background: #0c251d; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
+    .toast.show { transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================== -->
+  <!-- MENÚ LATERAL "PUSH" (OCULTO A LA IZQUIERDA)-->
+  <!-- ========================================== -->
+  <div class="side-menu-drawer" id="side-menu">
+    <div class="text-center mb-4 mt-2">
+      <img src="img/dingloft.png" alt="Dingloft" style="width: 120px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
+    </div>
+    <div class="d-flex flex-column gap-2">
+      <a href="index.html" class="side-menu-link"><i class="bi bi-house-door"></i> Inicio</a>
+      <a href="index.html" class="side-menu-link"><i class="bi bi-collection-play"></i> Catálogo</a>
+      <a href="account.html" class="side-menu-link" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 15px;">
+        <i class="bi bi-person-circle text-accent" style="color: var(--accent-color);"></i> Mi Cuenta
+      </a>
+    </div>
+    <div class="mt-auto text-center pb-3">
+      <p class="text-muted small" style="font-size: 0.75rem;">&copy; 2026 Dingloft</p>
+    </div>
+  </div>
+  
+  <div class="side-menu-overlay" id="side-menu-overlay"></div>
+
+  <!-- ========================================== -->
+  <!-- ENVOLTORIO PRINCIPAL QUE SE EMPUJA AL LADO -->
+  <!-- ========================================== -->
+  <div class="page-wrapper" id="page-wrapper">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <!-- MODAL DE ÉXITO -->
+    <div class="success-modal-overlay" id="success-modal">
+      <div class="success-modal-box">
+        <img src="img/dingloft.png" alt="Dingloft" style="width: 110px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
+        <div class="success-icon-ring"><i class="bi bi-check-lg"></i></div>
+        <h3 style="color:#fff; font-weight:800; margin-bottom:10px; font-size: 1.4rem;">¡Compra Exitosa!</h3>
+        <p id="success-modal-text" style="color:#9ba9bd; margin-bottom:25px; font-size: 0.95rem;">Tu pedido se ha procesado correctamente.</p>
+        <button class="btn-cyan w-100 py-2" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
+      </div>
+    </div>
+
+    <!-- TOAST FLOTANTE -->
+    <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
+
+    <!-- ====== NAVBAR PRINCIPAL CENTRADA ====== -->
+    <nav class="navbar navbar-glass fixed-top" id="main-navbar">
+      <div class="container position-relative d-flex align-items-center">
+        
+        <!-- IZQUIERDA (MÓVIL Y PC) -->
+        <div class="d-flex align-items-center gap-2" style="flex: 1; z-index: 2;">
+          <button class="mobile-liquid-btn d-md-none" id="btn-open-sidebar" title="Menú">
+            <i class="bi bi-list"></i>
+          </button>
+          
+          <button class="mobile-liquid-btn d-md-none" id="btn-open-search-mobile" title="Buscar">
+            <i class="bi bi-search"></i>
+          </button>
+
+          <div class="d-none d-md-flex gap-3">
+            <a class="nav-link" href="index.html">Inicio</a>
+            <a class="nav-link" href="index.html">Catálogo</a>
+          </div>
+        </div>
+
+        <!-- CENTRO (LOGO CENTRADO A LA PERFECCIÓN) -->
+        <div class="d-flex justify-content-center" style="z-index: 1;">
+          <a class="navbar-brand position-absolute top-50 start-50 translate-middle m-0 p-0 d-flex align-items-center" href="index.html">
+            <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
+          </a>
+        </div>
+        
+        <!-- DERECHA (MÓVIL Y PC) -->
+        <div class="d-flex align-items-center justify-content-end gap-2 gap-md-3" style="flex: 1; z-index: 2;">
+          <button class="mobile-liquid-btn d-none d-md-flex" id="btn-open-search-desktop" title="Buscar">
+            <i class="bi bi-search"></i>
+          </button>
+
+          <!-- Avatar / Login de Usuario -->
+          <div id="auth-container-global"></div>
+
+          <!-- BOTÓN CARRITO TEXTO (Solo PC) -->
+          <button id="main-cart-btn" class="btn-outline-custom d-none d-md-flex align-items-center gap-2 cart-btn-global" style="padding: 6px 15px; font-size: 0.9rem;">
+            <i class="bi bi-cart3"></i> CARRITO (<span class="cart-badge-count-global">0</span>)
+          </button>
+        </div>
+
+      </div>
+    </nav>
+
+    <!-- SECCIÓN SUPERIOR: CAJAS 3D Y DETALLES -->
+    <section class="product-detail-section">
+      <div class="container">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-6">
+            <div class="product-boxes-display glass-effect">
+              <!-- Reemplaza esto con tu imagen principal de AutoCAD -->
+              <img src="img/autocad.png" alt="AutoCAD 2026" onerror="this.src='https://ui-avatars.com/api/?name=AutoCAD&background=00e5ff&color=000&size=400'">
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <span class="text-uppercase text-info fw-bold" style="font-size: 0.7rem; letter-spacing: 2px;">Software de Diseño Asistido</span>
+            <h1 class="fw-bold my-2 text-white" style="font-size: 2.5rem; letter-spacing: -1px;">AutoCAD 2026</h1>
+            
+            <p class="text-white mb-3" style="font-size: 0.98rem; line-height: 1.6; color: #f1f5f9;">
+              El estándar de la industria para diseño y dibujo técnico 2D y 3D. Crea, visualiza y documenta tus ideas con total precisión y sin ataduras de suscripciones mensuales.
+            </p>
+
+            <div class="mb-3 p-3 rounded-3" style="background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.2);">
+              <div class="d-flex justify-content-between text-white small mb-1">
+                <span><i class="bi bi-box-seam text-info"></i> AutoCAD 2026:</span> <b class="text-white">INCLUIDO</b>
+              </div>
+              <div class="d-flex justify-content-between text-success small fw-bold">
+                <span><i class="bi bi-gift-fill"></i> Librería de Bloques CAD:</span> <b class="text-success">INCLUIDO GRATIS</b>
+              </div>
+            </div>
+
+            <div class="row g-2 mb-3 pt-2 border-top border-bottom border-secondary border-opacity-25 py-2">
+              <div class="col-4">
+                <div class="feature-box">
+                  <div class="feature-icon-circle"><i class="bi bi-shield-check"></i></div>
+                  <p class="feature-title text-white">Garantizado</p>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="feature-box">
+                  <div class="feature-icon-circle"><i class="bi bi-infinity"></i></div>
+                  <p class="feature-title text-white">Vitalicio</p>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="feature-box">
+                  <div class="feature-icon-circle"><i class="bi bi-download"></i></div>
+                  <p class="feature-title text-white">Inmediato</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- PRECIO CON DESCUENTO Y EFECTO DE OFERTA -->
+            <div class="mb-3 d-flex align-items-end gap-3">
+              <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--accent-color) !important; line-height: 1;">$35.00</span>
+              <div class="d-flex flex-column pb-1">
+                <span class="text-decoration-line-through" style="color: rgba(255,255,255,0.75); font-size: 1.1rem; line-height: 1;">$100.00 USD</span>
+                <span class="badge bg-danger mt-1" style="font-size: 0.75rem; letter-spacing: 1px; padding: 4px 8px;">AHORRAS $65</span>
+              </div>
+            </div>
+
+            <!-- ====== SECCIÓN DE OPCIONES DE COMPRA ====== -->
+            <div class="purchase-options mt-4">
+              <p class="text-info fw-bold mb-2" style="font-size: 0.8rem; letter-spacing: 1px;"><i class="bi bi-cart-check"></i> ELIGE TU LICENCIA:</p>
+              
+              <!-- EL COMBO -->
+              <div class="package-card glass-effect p-3 mb-2" style="border-color: var(--accent-color); background: rgba(0, 229, 255, 0.05); position: relative; overflow: hidden;">
+                <div class="position-absolute top-0 end-0 px-2 py-1 fw-bold" style="font-size: 0.65rem; border-bottom-left-radius: 8px; background: var(--accent-color); color: #000;">MÁS POPULAR</div>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="fw-bold text-white">Combo: SketchUp + AutoCAD 2026</span>
+                  <span class="fw-bold text-accent">$50.00</span>
+                </div>
+                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Las dos herramientas esenciales para tu flujo de trabajo de diseño y arquitectura.</p>
+                <button class="btn-cyan w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="16" data-name="SketchUp 2026 & AutoCAD 2026" data-price="50" data-img="combo" data-type="Licencia vitalicia">
+                  <i class="bi bi-cart3"></i> AGREGAR COMBO
+                </button>
+              </div>
+
+              <!-- SOLO AUTOCAD -->
+              <div class="package-card glass-effect p-3 mb-2">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="fw-bold text-white">Solo AutoCAD 2026</span>
+                  <span class="fw-bold text-white">$35.00</span>
+                </div>
+                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">El estándar de la industria para diseño y dibujo técnico.</p>
+                <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="14" data-name="AutoCAD 2026" data-price="35" data-img="autocad" data-type="Licencia vitalicia">
+                  <i class="bi bi-cart-plus"></i> AGREGAR AUTOCAD
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN INFERIOR: COMPATIBILIDAD (MAC ONLY) -->
+    <section class="compatible-section">
+      <div class="container">
+        <div class="compatible-title">Plataformas y Arquitectura Compatible</div>
+        
+        <div class="row g-3 justify-content-center mb-4">
+          <div class="col-4">
+            <div class="keyboard-card" style="padding-top: 25px;">
+              <i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: var(--accent-color); filter: drop-shadow(0 0 10px rgba(0,229,255,0.3)); display: block;"></i>
+              <h5>MAC (INTEL)</h5>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="keyboard-card" style="padding-top: 25px;">
+              <i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: #ffffff; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); display: block;"></i>
+              <h5>MAC (M1/M2/M3)</h5>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="keyboard-card" style="padding-top: 25px;">
+              <i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: #a200ff; filter: drop-shadow(0 0 10px rgba(162,0,255,0.3)); display: block;"></i>
+              <h5>MAC (M4/M5 MAX)</h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center mb-4">
+          <div class="col-lg-10">
+            <div class="creator-note-box">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <div class="creator-avatar">E</div>
+                <div>
+                  <h6 class="text-white mb-0 fw-bold">Nota del Creador</h6>
+                  <small class="text-info" style="font-size: 0.75rem;">Evolution Group — Desarrolladores</small>
+                </div>
+              </div>
+              <p class="text-white mb-2" style="font-size: 0.9rem; line-height: 1.6; color: #f1f5f9;">
+                "Como ingeniero civil, sé de primera mano lo que es estar en obra cuadrando planos para una escalera de caracol, calculando cortes de tubería o ajustando detalles de herrería estructural. Adaptamos y preconfiguramos esta versión de AutoCAD 2026 pensando exactamente en esas necesidades del día a día.<br><br>
+                Desarrollé esto específicamente para <b>no pagar mensualidades y obtener todo en un solo programa</b> de forma vitalicia. Las licencias tradicionales consumen demasiado presupuesto que mejor se invierte en material. <br><br>
+                Esta versión está blindada para funcionar exclusivamente en entornos Mac, desde procesadores Intel hasta el M5 Max, corriendo sin lag para que te enfoques en diseñar y no en configuraciones molestas."
+              </p>
+              <div class="text-end text-info small fw-semibold" style="font-size: 0.75rem;"><i class="bi bi-patch-check-fill"></i> Software sin límites.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center mb-4">
+          <div class="col-lg-10">
+            <div class="text-center mb-3">
+              <h4 class="fw-bold text-white fs-5">Herramientas y Formatos Compatibles</h4>
+              <p class="text-white small" style="color: #f1f5f9; font-size: 0.8rem;">El paquete está optimizado para funcionar sin problemas con los formatos estándar.</p>
+            </div>
+            <div class="row g-2">
+              <div class="col-6 col-md-4">
+                <div class="software-badge-box">
+                  <i class="bi bi-filetype-dwg"></i>
+                  <div>
+                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Soporte DWG</h6>
+                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Lectura y Escritura</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-md-4">
+                <div class="software-badge-box">
+                  <i class="bi bi-filetype-pdf"></i>
+                  <div>
+                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Exportación PDF</h6>
+                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Alta resolución</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-md-4">
+                <div class="software-badge-box">
+                  <i class="bi bi-boxes"></i>
+                  <div>
+                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Bloques Dinámicos</h6>
+                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Miles incluidos gratis</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-md-6">
+                <div class="software-badge-box">
+                  <i class="bi bi-box"></i>
+                  <div>
+                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Modelado 3D</h6>
+                    <small class="text-white" style="color: rgba(255,255,255,0.85);">Visualización avanzada</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="software-badge-box">
+                  <i class="bi bi-cloud-arrow-up-fill"></i>
+                  <div>
+                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Autodesk Cloud</h6>
+                    <small class="text-white" style="color: rgba(255,255,255,0.85);">Guardado seguro</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECCIÓN DE PRODUCTOS SIMILARES -->
+        <div class="row justify-content-center my-4">
+          <div class="col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-collection-play text-accent" style="color:var(--accent-color)"></i> Productos Recomendados</h5>
+              <span class="text-white small" style="color: #f1f5f9; font-size: 0.75rem;">Desliza <i class="bi bi-arrow-right"></i></span>
+            </div>
+
+            <div class="similar-carousel-wrapper">
+              
+              <div class="similar-card">
+                <div>
+                  <div class="similar-img-box"><img src="img/sketchup.png" alt="SketchUp" onerror="this.src='https://ui-avatars.com/api/?name=Sk&background=00e5ff&color=000'"></div>
+                  <h6 class="text-white fw-bold fs-6 mb-1">SketchUp Pro 2026</h6>
+                  <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac (Intel a M5 Max)</div>
+                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Modelado 3D profesional y renderizado avanzado.</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$27.00</span>
+                  <a href="sketchup.html" class="btn-outline-custom py-1 px-2">Ver más</a>
+                </div>
+              </div>
+
+              <div class="similar-card">
+                <div>
+                  <div class="similar-img-box"><img src="img/office.png" alt="Office" onerror="this.src='https://ui-avatars.com/api/?name=Of&background=00e5ff&color=000'"></div>
+                  <h6 class="text-white fw-bold fs-6 mb-1">Office Home & Business</h6>
+                  <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac (Intel a M5 Max)</div>
+                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Productividad diaria total: Word, Excel, Powerpoint.</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$40.00</span>
+                  <a href="office.html" class="btn-outline-custom py-1 px-2">Ver más</a>
+                </div>
+              </div>
+
+              <div class="similar-card">
+                <div>
+                  <div class="similar-img-box"><img src="img/cinema4d.png" alt="Cinema 4D" onerror="this.src='https://ui-avatars.com/api/?name=C4&background=00e5ff&color=000'"></div>
+                  <h6 class="text-white fw-bold fs-6 mb-1">Cinema 4D</h6>
+                  <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac (Intel a M5 Max)</div>
+                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Renderizado avanzado 3D y animación profesional.</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$35.00</span>
+                  <a href="cinema4d.html" class="btn-outline-custom py-1 px-2">Ver más</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ====== SECCIÓN DE COMENTARIOS ====== -->
+        <div class="row justify-content-center comments-section">
+          <div class="col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-chat-square-text text-accent" style="color:var(--accent-color)"></i> Opiniones de la Comunidad</h5>
+              <span class="text-white small" style="color: #f1f5f9; font-size: 0.7rem;">Comunidad Dinámica</span>
+            </div>
+
+            <div id="comment-section-wrapper" class="mb-4"></div>
+
+            <div id="comments-container">
+              <div class="text-center text-white py-3 small">Cargando opiniones de la comunidad...</div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 mt-5 border-top" style="border-color: var(--border-color) !important;">
+      <div class="container text-center">
+        <p class="mb-0 text-white font-weight-bold" style="font-size: 0.9rem;">
+          &copy; 2026 Dingloft - Evolution Group. Todos los derechos reservados.
+        </p>
+      </div>
+    </footer>
+
+  </div><!-- FIN DE PAGE WRAPPER -->
+
+  <!-- ====== BOTÓN FLOTANTE UNIVERSAL DEL CARRITO EN PANTALLA ====== -->
+  <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
+    <i class="bi bi-cart3 fs-4"></i>
+    <span class="badge-floating cart-badge-count-global">0</span>
+  </button>
+
+  <!-- ====== MODAL DE BUSCADOR A PANTALLA COMPLETA ====== -->
+  <div class="search-overlay-fullscreen" id="search-overlay-fullscreen">
+    <div class="search-modal-box">
+      <div class="search-input-liquid mb-4">
+        <i class="bi bi-search text-accent" style="font-size: 1.4rem;"></i>
+        <input type="text" id="live-search-input" placeholder="Buscar productos..." autocomplete="off">
+        <button class="btn-close-search" id="btn-close-search" style="background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;"><i class="bi bi-x-lg"></i></button>
+      </div>
+      
+      <div id="live-search-results" class="search-results-container">
+        <p class="text-center" style="color: rgba(255,255,255,0.7); font-size: 0.9rem;" id="search-empty-state">Escribe el nombre del producto para buscar...</p>
+        
+        <a href="combo.html" class="search-result-item" data-title="sketchup 2026 autocad 2026 duo bundle arquitectura combo" style="display: none;">
+          <img src="img/combo.png" alt="Duo" onerror="this.src='https://ui-avatars.com/api/?name=Du&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">SketchUp 2026 & AutoCAD 2026</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$50.00</span>
+          </div>
+        </a>
+        <a href="autocad.html" class="search-result-item" data-title="autocad 2026 arquitectura ingenieria" style="display: none;">
+          <img src="img/autocad.png" alt="AutoCAD" onerror="this.src='https://ui-avatars.com/api/?name=AC&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">AutoCAD 2026</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$35.00</span>
+          </div>
+        </a>
+        <a href="sketchup.html" class="search-result-item" data-title="sketchup pro 2026 3d arquitectura diseño" style="display: none;">
+          <img src="img/sketchup.png" alt="SketchUp" onerror="this.src='https://ui-avatars.com/api/?name=Sk&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">SketchUp Pro 2026</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$27.00</span>
+          </div>
+        </a>
+        <a href="office.html" class="search-result-item" data-title="office home business word excel powerpoint" style="display: none;">
+          <img src="img/office.png" alt="Office" onerror="this.src='https://ui-avatars.com/api/?name=Of&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">Office Home & Business</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$40.00</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== ESTRUCTURA DEL CARRITO LATERAL ====== -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <div>
+        <h4 class="mb-1 text-white" style="font-weight: 600;"><i class="bi bi-cart4"></i> Tu carrito</h4>
+        <span class="text-white" style="font-size: 0.85rem;" id="cart-item-count-text">0 productos</span>
+      </div>
+      <button class="btn-close-cart" id="close-cart-btn"><i class="bi bi-x-lg"></i></button>
+    </div>
+    
+    <div class="cart-items-container" id="cart-items-container">
+      <div class="cart-empty-msg" id="empty-cart-msg">
+        <p>Tu carrito está vacío.</p>
+      </div>
+    </div>
+    
+    <div class="cart-footer">
+      <div class="coupon-box" id="coupon-section" style="display: none;">
+        <input type="text" id="coupon-input" class="coupon-input" placeholder="Código de descuento">
+        <button type="button" id="apply-coupon-btn" class="btn-apply-coupon">Aplicar</button>
+      </div>
+      <div id="coupon-msg" class="coupon-msg" style="display: none;"></div>
+
+      <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;">
+        <span class="text-white">Subtotal</span>
+        <span id="cart-subtotal" class="text-white">$0.00</span>
+      </div>
+      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;">
+        <span class="fs-5 fw-bold text-white">Total</span>
+        <span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span>
+      </div>
+      
+      <div class="text-center mb-3 text-white" style="font-size: 0.85rem; font-weight: 500; display: none;" id="security-badge-box">
+        <i class="bi bi-shield-lock"></i> Pago 100% seguro con PayPal
+      </div>
+      
+      <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;">
+        <div id="paypal-button-container" class="w-100"></div>
+      </div>
+
+      <button id="free-checkout-btn" class="btn-free-checkout mb-3" style="display: none;">
+        Obtener gratis <i class="bi bi-download ms-1"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ====== LÓGICA DEL MENÚ PUSH Y BUSCADOR ====== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnOpenSidebar = document.getElementById('btn-open-sidebar');
+      const sideMenu = document.getElementById('side-menu');
+      const sideMenuOverlay = document.getElementById('side-menu-overlay');
+      const pageWrapper = document.getElementById('page-wrapper');
+      const mainNavbar = document.getElementById('main-navbar');
+
+      function toggleSidebar() {
+        sideMenu.classList.toggle('active');
+        sideMenuOverlay.classList.toggle('active');
+        pageWrapper.classList.toggle('menu-pushed');
+        mainNavbar.classList.toggle('menu-pushed');
+        document.body.classList.toggle('no-scroll');
+      }
+
+      if(btnOpenSidebar) btnOpenSidebar.addEventListener('click', toggleSidebar);
+      if(sideMenuOverlay) sideMenuOverlay.addEventListener('click', toggleSidebar);
+
+      const searchOverlayFullscreen = document.getElementById('search-overlay-fullscreen');
+      const btnOpenSearchMobile = document.getElementById('btn-open-search-mobile');
+      const btnOpenSearchDesktop = document.getElementById('btn-open-search-desktop');
+      const btnCloseSearch = document.getElementById('btn-close-search');
+      const liveSearchInput = document.getElementById('live-search-input');
+      const searchItems = document.querySelectorAll('.search-result-item');
+      const searchEmptyState = document.getElementById('search-empty-state');
+
+      function openSearch() {
+        searchOverlayFullscreen.classList.add('active');
+        document.body.classList.add('no-scroll');
+        setTimeout(() => liveSearchInput.focus(), 100);
+      }
+      function closeSearch() {
+        searchOverlayFullscreen.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+        liveSearchInput.value = '';
+        searchItems.forEach(item => item.style.display = 'none');
+        searchEmptyState.style.display = 'block';
+        searchEmptyState.textContent = 'Escribe el nombre del producto para buscar...';
+      }
+
+      if(btnOpenSearchMobile) btnOpenSearchMobile.addEventListener('click', openSearch);
+      if(btnOpenSearchDesktop) btnOpenSearchDesktop.addEventListener('click', openSearch);
+      if(btnCloseSearch) btnCloseSearch.addEventListener('click', closeSearch);
+
+      liveSearchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        let found = false;
+
+        if (query.length > 1) {
+          searchEmptyState.style.display = 'none';
+          searchItems.forEach(item => {
+            const title = item.getAttribute('data-title');
+            if (title.includes(query)) {
+              item.style.display = 'flex';
+              found = true;
+            } else {
+              item.style.display = 'none';
+            }
+          });
+
+          if (!found) {
+            searchEmptyState.textContent = 'No se encontraron resultados.';
+            searchEmptyState.style.display = 'block';
+          }
+        } else {
+          searchItems.forEach(item => item.style.display = 'none');
+          searchEmptyState.textContent = 'Escribe el nombre del producto para buscar...';
+          searchEmptyState.style.display = 'block';
+        }
+      });
+    });
+  </script>
+
+  <!-- Lógica de Firebase Auth, Comentarios y Sistema Anti-Recompras -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, orderBy, serverTimestamp, increment, arrayUnion, arrayRemove, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
+      authDomain: "login-dingloft.firebaseapp.com",
+      projectId: "login-dingloft",
+      storageBucket: "login-dingloft.firebasestorage.app",
+      messagingSenderId: "549466738202",
+      appId: "1:549466738202:web:8bf305fe2c753e9d76cba3",
+      measurementId: "G-R9SGZCDN13"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window.globalCurrentUser = null;
+    let currentUser = null;
+
+    async function checkUserPurchases(uid) {
+      try {
+        const q = query(collection(db, "purchases"), where("uid", "==", uid));
+        const snapshot = await getDocs(q);
+        let purchasedNames = [];
+        
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          if (data.items && Array.isArray(data.items)) {
+            data.items.forEach(item => purchasedNames.push(item.name));
+          }
+        });
+
+        const buyButtons = document.querySelectorAll('.btn-add-cart, #btn-buy-now');
+        buyButtons.forEach(btn => {
+          const prodName = btn.getAttribute('data-name');
+          if (purchasedNames.includes(prodName)) {
+            btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> OBTENIDO';
+            btn.classList.remove('btn-cyan', 'btn-outline-cyan', 'btn-outline-custom');
+            btn.classList.add('btn-obtained-glass');
+            btn.disabled = true;
+          }
+        });
+      } catch (err) {
+        console.error("Error al verificar compras previas:", err);
+      }
+    }
+
+    // COMENTARIOS ADAPTADOS A AUTOCAD
+    const initialDefaultComments = [
+      { name: "Arq. Fernando Ríos", rating: 5, text: "Instalado en mi Mac M3 Pro y corre súper fluido. Adiós a las suscripciones de Autodesk.", likes: 38, likedBy: [] },
+      { name: "Estructuras Metálicas G.", rating: 5, text: "Hacemos mucha herrería estructural y poder revisar los planos DWG sin pagar mensualidad es un alivio inmenso. ¡Recomendado!", likes: 24, likedBy: [] },
+      { name: "Ing. Valeria Gómez", rating: 5, text: "Excelente paquete. La descarga fue rapidísima y el tutorial de instalación para Mac está clarísimo.", likes: 31, likedBy: [] },
+      { name: "Constructora Sur", rating: 5, text: "Compramos el combo con SketchUp y es la mejor inversión para el despacho. Trabajamos desde Panajachel y todo se descargó sin problemas de red.", likes: 27, likedBy: [] },
+      { name: "Carlos T.", rating: 5, text: "Tenía dudas sobre la compatibilidad con mi Mac Intel vieja, pero va perfecto. Gracias Evolution Group.", likes: 40, likedBy: [] }
+    ];
+
+    function renderCommentsUI(commentsData) {
+        const container = document.getElementById('comments-container');
+        container.innerHTML = '';
+        commentsData.forEach((com) => {
+            const docId = com.id;
+            let stars = '★★★★★'.substring(0, com.rating || 5) + '☆☆☆☆☆'.substring(0, 5 - (com.rating || 5));
+            
+            let likedByArray = com.likedBy || [];
+            let isLiked = currentUser && likedByArray.includes(currentUser.uid);
+            let btnClass = isLiked ? "btn-like liked" : "btn-like";
+            let iconClass = isLiked ? "bi bi-heart-fill" : "bi bi-heart";
+
+            container.insertAdjacentHTML('beforeend', `
+              <div class="comment-card" id="comment-${docId}">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> ${com.name}</h6>
+                  <span class="text-warning small" style="font-size: 0.75rem;">${stars}</span>
+                </div>
+                <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">${com.text}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Opinión verificada</small>
+                  <button class="${btnClass}" onclick="toggleLikeFirestore('${docId}', this)"><i class="${iconClass}"></i> <span class="like-count">${com.likes || 0}</span></button>
+                </div>
+              </div>
+            `);
+        });
+    }
+
+    async function loadComments() {
+      const container = document.getElementById('comments-container');
+      try {
+        const commentsRef = collection(db, "autocad_comments_final"); // CARPETA LIMPIA PARA AUTOCAD
+        const q = query(commentsRef, orderBy("createdAt", "desc"));
+        let snapshot;
+        
+        try {
+            snapshot = await getDocs(q);
+        } catch(readErr) {
+            renderCommentsUI(initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c })));
+            return;
+        }
+
+        let dbComments = [];
+        snapshot.forEach(docSnap => dbComments.push({ id: docSnap.id, ...docSnap.data() }));
+
+        const allComments = [...dbComments, ...initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c }))];
+
+        renderCommentsUI(allComments);
+
+      } catch (err) {
+        console.error("Error crítico cargando comentarios:", err);
+        renderCommentsUI(initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c })));
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadComments();
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      window.globalCurrentUser = user; 
+      const authContainerGlobal = document.getElementById('auth-container-global');
+      const commentWrapper = document.getElementById('comment-section-wrapper');
+
+      if (user) {
+        checkUserPurchases(user.uid);
+
+        let displayName = "Usuario";
+        if (user.displayName) displayName = user.displayName.split(' ')[0];
+        else if (user.email) displayName = user.email.split('@')[0];
+
+        if (authContainerGlobal) {
+          let mobileContent = user.photoURL 
+            ? `<img src="${user.photoURL}" alt="Perfil">`
+            : `<div class="avatar-fallback">${displayName.charAt(0).toUpperCase()}</div>`;
+            
+          authContainerGlobal.innerHTML = `
+            <a href="account.html" class="mobile-nav-avatar" title="Ir a Mi Cuenta">
+              ${mobileContent}
+            </a>
+          `;
+        }
+
+        commentWrapper.innerHTML = `
+          <div class="comment-form-box">
+            <h6 class="text-white mb-2 fw-semibold" style="font-size: 0.9rem;">Deja tu reseña o comentario</h6>
+            <form id="comment-form">
+              <div class="row g-2">
+                <div class="col-12 col-md-6">
+                  <input type="text" id="comment-name" class="form-control form-control-custom" value="${displayName}" placeholder="Tu Nombre o Estudio" required>
+                </div>
+                <div class="col-12 col-md-6">
+                  <select id="comment-rating" class="form-control form-control-custom">
+                    <option value="5">★★★★★ (5/5 - Excelente)</option>
+                    <option value="4">★★★★☆ (4/5 - Muy bueno)</option>
+                    <option value="3">★★★☆☆ (3/5 - Bueno)</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <textarea id="comment-text" class="form-control form-control-custom" rows="2" placeholder="Escribe tu experiencia..." required></textarea>
+                </div>
+                <div class="col-12 text-end">
+                  <button type="submit" class="btn-cyan px-3 py-1" style="font-size: 0.85rem;" id="btn-submit-comment">Publicar Comentario</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        `;
+        document.getElementById('comment-form').addEventListener('submit', handleCommentSubmit);
+
+      } else {
+        if (authContainerGlobal) {
+          authContainerGlobal.innerHTML = `
+            <a href="login.html" class="mobile-liquid-btn" title="Iniciar Sesión">
+              <i class="bi bi-person-fill"></i>
+            </a>
+          `;
+        }
+
+        commentWrapper.innerHTML = `
+          <div class="login-prompt-box">
+            <div class="login-prompt-icon"><i class="bi bi-lock-fill"></i></div>
+            <h5 class="text-white fw-bold mb-2 fs-6">Inicia sesión para dejar tu reseña</h5>
+            <p class="text-white small mb-3" style="color: rgba(255,255,255,0.85); font-size: 0.85rem;">Únete a nuestra comunidad, comparte tu opinión y apoya con un like.</p>
+            <a href="login.html" class="btn-cyan d-inline-block px-4 py-2 text-decoration-none" style="font-size: 0.9rem;">
+              <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión / Registrarse
+            </a>
+          </div>
+        `;
+      }
+      
+      loadComments();
+    });
+
+    async function handleCommentSubmit(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+
+      const name = document.getElementById('comment-name').value.trim();
+      const rating = parseInt(document.getElementById('comment-rating').value);
+      const text = document.getElementById('comment-text').value.trim();
+      const submitBtn = document.getElementById('btn-submit-comment');
+
+      if (!name || !text) return;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Publicando...";
+
+      try {
+        await addDoc(collection(db, "autocad_comments_final"), {
+          name: name,
+          rating: rating,
+          text: text,
+          likes: 0,
+          likedBy: [],
+          createdAt: serverTimestamp()
+        });
+
+        document.getElementById('comment-form').reset();
+        loadComments();
+
+        const toast = document.getElementById('toast-message');
+        toast.textContent = `¡Comentario publicado con éxito!`;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+
+      } catch (err) {
+        console.error("Error al guardar comentario:", err);
+        alert("Ocurrió un error al publicar.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Publicar Comentario";
+      }
+    }
+
+    window.toggleLikeFirestore = async function(docId, btn) {
+      if (!currentUser) {
+        alert("Debes iniciar sesión para dar like.");
+        window.location.href = 'login.html';
+        return;
+      }
+
+      if(docId.startsWith('local-')) {
+          alert("Esta opinión es local, Firebase no permite escritura por tus reglas de seguridad actuales.");
+          return;
+      }
+
+      const countSpan = btn.querySelector('.like-count');
+      let currentLikes = parseInt(countSpan.textContent);
+      let isLiking = !btn.classList.contains('liked');
+
+      if (isLiking) {
+        btn.classList.add('liked');
+        btn.querySelector('i').className = 'bi bi-heart-fill';
+        countSpan.textContent = currentLikes + 1;
+      } else {
+        btn.classList.remove('liked');
+        btn.querySelector('i').className = 'bi bi-heart';
+        countSpan.textContent = currentLikes - 1;
+      }
+
+      try {
+        const commentRef = doc(db, "autocad_comments_final", docId);
+        if (isLiking) {
+          await updateDoc(commentRef, {
+             likes: increment(1),
+             likedBy: arrayUnion(currentUser.uid)
+          });
+        } else {
+          await updateDoc(commentRef, {
+             likes: increment(-1),
+             likedBy: arrayRemove(currentUser.uid)
+          });
+        }
+      } catch (err) {
+        console.error("Error al actualizar like:", err);
+        if (isLiking) {
+          btn.classList.remove('liked');
+          btn.querySelector('i').className = 'bi bi-heart';
+          countSpan.textContent = currentLikes;
+        } else {
+          btn.classList.add('liked');
+          btn.querySelector('i').className = 'bi bi-heart-fill';
+          countSpan.textContent = currentLikes;
+        }
+      }
+    };
+
+    function mostrarModalExito(mensaje) {
+      const modal = document.getElementById('success-modal');
+      const text = document.getElementById('success-modal-text');
+      if (text && mensaje) text.textContent = mensaje;
+      if (modal) modal.classList.add('active');
+    }
+
+    window.renderPayPalStable = function(monto) {
+      const container = document.getElementById('paypal-button-container');
+      if (!container) return;
+      container.innerHTML = '';
+      if (typeof paypal === 'undefined') return;
+
+      paypal.Buttons({
+        style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
+        createOrder: function(data, actions) {
+          return actions.order.create({ purchase_units: [{ amount: { value: monto.toFixed(2) } }] });
+        },
+        onApprove: async function(data, actions) {
+          return actions.order.capture().then(async function(details) {
+            const user = auth.currentUser;
+            if (!user) { window.location.href = 'login.html'; return; }
+            try {
+              const itemsComprados = window.cartItemsList || [];
+              await addDoc(collection(db, "purchases"), {
+                uid: user.uid, userEmail: user.email, paypalOrderId: details.id,
+                payerName: details.payer.name.given_name, items: itemsComprados, createdAt: serverTimestamp()
+              });
+              
+              if (typeof window.clearCart === 'function') window.clearCart();
+              
+              mostrarModalExito(`¡Pago exitoso, ${details.payer.name.given_name}! Redirigiendo a tu cuenta...`);
+              setTimeout(() => { window.location.href = 'account.html'; }, 2200);
+            } catch (error) { console.error("Error:", error); }
+          });
+        }
+      }).render('#paypal-button-container');
+    };
+  </script>
+
+  <!-- Lógica del Carrito (LocalStorage) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
+      let couponApplied = false;
+
+      const cartBtns = document.querySelectorAll('.cart-btn-global, #main-cart-btn');
+      const cartDrawer = document.getElementById('cart-drawer');
+      const cartOverlay = document.getElementById('cart-overlay');
+      const closeCartBtn = document.getElementById('close-cart-btn');
+      
+      const cartBadges = document.querySelectorAll('.cart-badge-count-global');
+      const cartItemCountText = document.getElementById('cart-item-count-text');
+      const cartItemsContainer = document.getElementById('cart-items-container');
+      const emptyCartMsg = document.getElementById('empty-cart-msg');
+      const cartSubtotalText = document.getElementById('cart-subtotal');
+      const cartTotalText = document.getElementById('cart-total');
+      const paypalWrapper = document.getElementById('paypal-container-wrapper');
+      const freeCheckoutBtn = document.getElementById('free-checkout-btn');
+      const securityBadge = document.getElementById('security-badge-box');
+      const couponSection = document.getElementById('coupon-section');
+      const subtotalRow = document.getElementById('subtotal-row');
+      const totalRow = document.getElementById('total-row');
+
+      const couponInput = document.getElementById('coupon-input');
+      const applyCouponBtn = document.getElementById('apply-coupon-btn');
+      const couponMsg = document.getElementById('coupon-msg');
+
+      const addButtons = document.querySelectorAll('.btn-add-cart, #btn-buy-now');
+
+      const openCart = (e) => { 
+        if(e) e.preventDefault(); 
+        cartDrawer.classList.add('active'); 
+        cartOverlay.classList.add('active');
+        document.body.classList.add('no-scroll');
+        updateCartUI();
+      };
+
+      const closeCart = (e) => { 
+        if(e) e.preventDefault(); 
+        cartDrawer.classList.remove('active'); 
+        cartOverlay.classList.remove('active'); 
+        document.body.classList.remove('no-scroll');
+      };
+
+      cartBtns.forEach(btn => { if(btn) btn.addEventListener('click', openCart); });
+      if(closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
+      if(cartOverlay) cartOverlay.addEventListener('click', closeCart);
+
+      const updateCartUI = () => {
+        cartItemsContainer.innerHTML = '';
+        
+        let totalItems = 0;
+        let totalPrice = 0;
+
+        window.cartItemsList = [];
+        window.cartTotalPrice = 0;
+
+        if (cart.length === 0) {
+          cartItemsContainer.appendChild(emptyCartMsg);
+          emptyCartMsg.style.display = 'block';
+          if(paypalWrapper) paypalWrapper.style.display = 'none';
+          if(freeCheckoutBtn) freeCheckoutBtn.style.display = 'none';
+          if(securityBadge) securityBadge.style.display = 'none';
+          if(couponSection) couponSection.style.display = 'none';
+          if(subtotalRow) subtotalRow.style.display = 'none';
+          if(totalRow) totalRow.style.display = 'none';
+          couponApplied = false;
+          if(couponMsg) couponMsg.style.display = 'none';
+          if(couponInput) couponInput.value = '';
+        } else {
+          emptyCartMsg.style.display = 'none';
+          if(couponSection) couponSection.style.display = 'flex';
+          if(subtotalRow) subtotalRow.style.display = 'flex';
+          if(totalRow) totalRow.style.display = 'flex';
+          
+          cart.forEach((item, index) => {
+            totalItems += item.qty;
+            totalPrice += (item.price * item.qty);
+
+            for(let i=0; i<item.qty; i++) {
+              window.cartItemsList.push({ name: item.name, img: item.img, type: item.type, price: couponApplied ? 0 : item.price });
+            }
+
+            const itemHTML = `
+              <div class="cart-item">
+                <div class="cart-item-img">
+                  <img src="img/${item.img}.png" alt="${item.name}">
+                </div>
+                <div class="cart-item-info">
+                  <h4 class="cart-item-title">${item.name}</h4>
+                  <p class="cart-item-desc">${item.type}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-bold text-accent">$${(couponApplied ? 0 : item.price).toFixed(2)}</span>
+                    <div class="qty-controls">
+                      <button class="qty-btn" onclick="changeQty(${index}, -1)"><i class="bi bi-dash"></i></button>
+                      <span class="qty-value">${item.qty}</span>
+                      <button class="qty-btn" onclick="changeQty(${index}, 1)"><i class="bi bi-plus"></i></button>
+                    </div>
+                  </div>
+                </div>
+                <button class="cart-item-remove" onclick="removeItem(${index})"><i class="bi bi-trash"></i></button>
+              </div>
+            `;
+            cartItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
+          });
+
+          let finalTotal = totalPrice;
+          if (couponApplied) { finalTotal = 0; }
+
+          window.cartTotalPrice = totalPrice;
+          window.cartFinalTotal = finalTotal;
+
+          if (finalTotal === 0) {
+            if(paypalWrapper) paypalWrapper.style.display = 'none';
+            if(securityBadge) securityBadge.style.display = 'none';
+            if(freeCheckoutBtn) freeCheckoutBtn.style.display = 'block';
+          } else {
+            if(paypalWrapper) paypalWrapper.style.display = 'block';
+            if(securityBadge) securityBadge.style.display = 'block';
+            if(freeCheckoutBtn) freeCheckoutBtn.style.display = 'none';
+            
+            setTimeout(() => {
+                if (typeof window.renderPayPalStable === 'function') {
+                    window.renderPayPalStable(finalTotal);
+                }
+            }, 100);
+          }
+        }
+
+        cartBadges.forEach(badge => { if(badge) badge.textContent = totalItems; });
+        if(cartItemCountText) cartItemCountText.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
+        
+        if(cartSubtotalText) cartSubtotalText.textContent = `$${totalPrice.toFixed(2)}`;
+        if(cartTotalText) cartTotalText.textContent = `$${(couponApplied ? 0 : totalPrice).toFixed(2)}`;
+        
+        localStorage.setItem('dingloft_cart', JSON.stringify(cart));
+      };
+
+      window.clearCart = () => {
+        cart = [];
+        localStorage.removeItem('dingloft_cart');
+        updateCartUI();
+      };
+
+      updateCartUI();
+
+      if(applyCouponBtn) {
+        applyCouponBtn.addEventListener('click', () => {
+          const code = couponInput.value.trim().toUpperCase();
+          if (code === 'ADMIN_EVOLUTION') {
+            couponApplied = true;
+            couponMsg.style.display = 'block';
+            couponMsg.style.color = '#00ff88';
+            couponMsg.innerHTML = '<i class="bi bi-check-circle-fill"></i> ¡Cupón ADMIN_EVOLUTION aplicado!';
+            updateCartUI();
+          } else {
+            couponApplied = false;
+            couponMsg.style.display = 'block';
+            couponMsg.style.color = '#ff4444';
+            couponMsg.innerHTML = '<i class="bi bi-x-circle-fill"></i> Código de cupón inválido.';
+            updateCartUI();
+          }
+        });
+      }
+
+      window.changeQty = (index, delta) => {
+        if (cart[index].qty + delta > 0) {
+          cart[index].qty += delta;
+        } else {
+          cart.splice(index, 1);
+        }
+        updateCartUI();
+      };
+
+      window.removeItem = (index) => {
+        cart.splice(index, 1);
+        updateCartUI();
+      };
+
+      addButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.preventDefault(); 
+          if(this.disabled) return;
+          
+          const id = this.getAttribute('data-id');
+          const name = this.getAttribute('data-name');
+          const price = parseFloat(this.getAttribute('data-price'));
+          const img = this.getAttribute('data-img');
+          const type = this.getAttribute('data-type');
+          
+          const existingItem = cart.find(item => item.id === id);
+          if (existingItem) {
+            existingItem.qty += 1;
+          } else {
+            cart.push({ id, name, price, img, type, qty: 1 });
+          }
+          
+          updateCartUI(); 
+          
+          const originalHTML = this.innerHTML;
+          const originalBg = this.style.background;
+          const originalColor = this.style.color;
+          
+          this.innerHTML = 'Agregado <i class="bi bi-check2"></i>';
+          this.style.background = '#00ff88';
+          this.style.color = '#000';
+          
+          setTimeout(() => {
+            if(!this.disabled) {
+              this.innerHTML = originalHTML;
+              this.style.background = originalBg;
+              this.style.color = originalColor || '';
+            }
+            openCart(); 
+          }, 800);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
