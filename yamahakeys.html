@@ -339,7 +339,7 @@
     .cart-empty-msg { text-align: center; color: #ffffff; margin-top: 50px; }
     .coupon-box { display: flex; gap: 8px; margin-bottom: 15px; }
     .coupon-input { flex: 1; background: rgba(4, 9, 18, 0.7); border: 1px solid rgba(153, 185, 216, 0.25); border-radius: 8px; color: #fff; padding: 8px 12px; font-size: 0.85rem; text-transform: uppercase; }
-    .coupon-input::placeholder { color: rgba(255, 255, 255, 0.7); text-transform: none; }
+    .coupon-input::placeholder { color: rgba(255,255,255,0.7); text-transform: none; }
     .coupon-input:focus { border-color: var(--accent-color); outline: none; background: rgba(4, 9, 18, 0.9); }
     .btn-apply-coupon { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0 15px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
     .btn-apply-coupon:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
@@ -349,425 +349,19 @@
     .btn-free-checkout { background: #00ff88; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 14px; width: 100%; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,255,136,0.2); cursor: pointer; }
     .btn-free-checkout:hover { background: #00e67a; transform: translateY(-2px); }
 
-    /* ====== MODAL DE ÉXITO PROFESIONAL ====== */
+    /* ====== MODAL DE ÉXITO ====== */
     .success-modal-overlay { position: fixed; inset: 0; background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: grid; place-items: center; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     .success-modal-overlay.active { opacity: 1; visibility: visible; }
-    .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(255, 166, 0, 0.3); border-radius: 24px; padding: 30px 20px; width: min(420px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(255, 166, 0, 0.3); border-radius: 24px; padding: 30px 20px; width: min(420px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); max-height: 90vh; overflow-y: auto; }
     .success-modal-overlay.active .success-modal-box { transform: scale(1) translateY(0); }
     .success-icon-ring { width: 70px; height: 70px; background: rgba(255, 166, 0, 0.1); border: 2px solid var(--orange-btn); border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: var(--orange-btn); font-size: 1.8rem; }
     .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(255,166,0,.5); border-radius: 12px; color: #fff; background: #1a1000; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
     .toast.show { transform: translateY(0); }
-
-    .ratio-9x16 {
-      --bs-aspect-ratio: 177.77%;
-    }
-
-    /* =========================================================
-       EVOSOUND / M8 — CAPA VISUAL
-       Solo presentación: no modifica carrito, pagos ni lógica JS.
-       ========================================================= */
-    :root {
-      --bg-color: #020304;
-      --accent-color: #00b8e6;
-      --accent-hover: #35d6ff;
-      --text-main: #f7f9fc;
-      --text-muted: #a5adb7;
-      --border-color: rgba(255, 255, 255, 0.10);
-      --glass-bg: rgba(4, 7, 10, 0.76);
-      --orange-btn: #ff2037;
-      --orange-btn-hover: #ff4a5e;
-      --evo-blue: #00b8e6;
-      --evo-red: #ff2037;
-      --evo-panel: rgba(5, 8, 12, 0.82);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background:
-        radial-gradient(circle at 12% 30%, rgba(0, 184, 230, .10), transparent 31%),
-        radial-gradient(circle at 88% 24%, rgba(255, 32, 55, .10), transparent 30%),
-        linear-gradient(180deg, #010203 0%, #05080b 48%, #020304 100%);
-      color: var(--text-main);
-      font-weight: 400;
-      letter-spacing: .01em;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      pointer-events: none;
-      opacity: .18;
-      background-image:
-        linear-gradient(rgba(0, 184, 230, .08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 32, 55, .06) 1px, transparent 1px);
-      background-size: 72px 72px;
-      mask-image: linear-gradient(to bottom, transparent 0%, #000 28%, #000 82%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 28%, #000 82%, transparent 100%);
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      background: linear-gradient(90deg, rgba(0, 184, 230, .025), transparent 43%, transparent 57%, rgba(255, 32, 55, .025));
-    }
-
-    .page-wrapper { overflow: hidden; }
-    .bg-orb { display: none; }
-
-    .container { max-width: 1180px; }
-
-    .navbar-glass {
-      padding: 15px 0;
-      background: rgba(1, 2, 3, .90);
-      border-bottom: 1px solid rgba(255, 255, 255, .08);
-      box-shadow: 0 12px 35px rgba(0, 0, 0, .38);
-    }
-
-    .navbar-glass::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      bottom: -1px;
-      width: min(540px, 64vw);
-      height: 1px;
-      transform: translateX(-50%);
-      background: linear-gradient(90deg, transparent, var(--evo-blue), var(--evo-red), transparent);
-      opacity: .55;
-    }
-
-    .navbar-brand img {
-      filter: brightness(0) invert(1) drop-shadow(0 0 16px rgba(255,255,255,.12));
-    }
-
-    .nav-link {
-      font-size: .76rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.72) !important;
-    }
-
-    .nav-link:hover { color: #fff !important; }
-
-    .mobile-liquid-btn,
-    .mobile-nav-avatar,
-    .btn-outline-custom {
-      border-radius: 4px;
-      background: rgba(255,255,255,.025);
-      border-color: rgba(255,255,255,.18);
-      box-shadow: none;
-    }
-
-    .btn-outline-custom:hover {
-      color: var(--evo-blue);
-      border-color: var(--evo-blue);
-      background: rgba(0,184,230,.06);
-      box-shadow: 0 0 22px rgba(0,184,230,.12);
-    }
-
-    .side-menu-drawer {
-      background: linear-gradient(160deg, rgba(5,9,13,.995), rgba(1,2,3,.995));
-      border-right-color: rgba(0,184,230,.25);
-    }
-
-    .side-menu-link { border-radius: 4px; letter-spacing: .04em; }
-    .side-menu-link:hover { background: rgba(0,184,230,.07); }
-
-    .product-detail-section {
-      position: relative;
-      min-height: 96vh;
-      padding: 148px 0 76px;
-      display: flex;
-      align-items: center;
-      isolation: isolate;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-
-    .product-detail-section::before {
-      content: "M8";
-      position: absolute;
-      right: clamp(-30px, 1vw, 24px);
-      bottom: -7vh;
-      z-index: -1;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(255, 32, 55, .13);
-      font-size: clamp(12rem, 25vw, 28rem);
-      font-weight: 300;
-      line-height: .8;
-      letter-spacing: -.08em;
-      user-select: none;
-    }
-
-    .product-detail-section::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -2;
-      background:
-        radial-gradient(ellipse at 22% 53%, rgba(0, 184, 230, .12), transparent 37%),
-        radial-gradient(ellipse at 78% 48%, rgba(255, 32, 55, .09), transparent 38%),
-        linear-gradient(110deg, rgba(0, 184, 230, .025) 0 49.8%, rgba(255, 32, 55, .025) 50.2% 100%);
-    }
-
-    .product-detail-section .row { position: relative; }
-
-    .product-boxes-display {
-      position: relative;
-      min-height: 530px;
-      display: grid;
-      place-items: center;
-      padding: clamp(24px, 4vw, 56px);
-      border-radius: 0;
-      background:
-        linear-gradient(145deg, rgba(0,184,230,.035), transparent 45%),
-        rgba(2, 4, 6, .72);
-      border: 1px solid rgba(255,255,255,.10);
-      border-left-color: rgba(0,184,230,.34);
-      border-bottom-color: rgba(255,32,55,.31);
-      box-shadow: 0 35px 80px rgba(0,0,0,.55), inset 0 0 70px rgba(0,0,0,.42);
-      overflow: hidden;
-    }
-
-    .product-boxes-display::before,
-    .product-boxes-display::after {
-      content: "";
-      position: absolute;
-      width: 42%;
-      height: 1px;
-      bottom: 0;
-    }
-
-    .product-boxes-display::before {
-      left: 0;
-      background: linear-gradient(90deg, var(--evo-blue), transparent);
-    }
-
-    .product-boxes-display::after {
-      right: 0;
-      background: linear-gradient(270deg, var(--evo-red), transparent);
-    }
-
-    .product-boxes-display img {
-      position: relative;
-      z-index: 1;
-      max-height: 475px;
-      filter: drop-shadow(-24px 28px 34px rgba(0,0,0,.78)) drop-shadow(12px 0 35px rgba(255,32,55,.10));
-      transition: transform .55s cubic-bezier(.2,.75,.25,1);
-    }
-
-    .product-boxes-display:hover img { transform: translateY(-8px) scale(1.018); }
-
-    .product-detail-section .col-lg-6:last-child {
-      padding-left: clamp(26px, 5vw, 68px);
-    }
-
-    .product-detail-section h1 {
-      margin: 15px 0 21px !important;
-      font-size: clamp(2.5rem, 4.4vw, 4.7rem) !important;
-      font-weight: 300 !important;
-      line-height: .98;
-      letter-spacing: .035em !important;
-      text-transform: uppercase;
-      text-wrap: balance;
-    }
-
-    .product-detail-section h1::after {
-      content: "";
-      display: block;
-      width: 90px;
-      height: 1px;
-      margin-top: 24px;
-      background: linear-gradient(90deg, var(--evo-blue), var(--evo-red));
-    }
-
-    .product-detail-section > .container > .row > .col-lg-6:last-child > span:first-child {
-      color: var(--evo-red) !important;
-      font-size: .68rem !important;
-      letter-spacing: .32em !important;
-    }
-
-    .product-detail-section p { color: rgba(232,238,244,.72) !important; }
-
-    .glass-effect,
-    .package-card,
-    .creator-note-box,
-    .software-badge-box,
-    .liquid-glass-container,
-    .similar-card,
-    .comment-card,
-    .comment-form-box,
-    .login-prompt-box {
-      border-radius: 2px;
-      background: linear-gradient(135deg, rgba(9,14,19,.82), rgba(2,4,6,.90));
-      border-color: rgba(255,255,255,.105);
-      box-shadow: 0 18px 48px rgba(0,0,0,.34);
-    }
-
-    .tech-tag,
-    .tech-tag-kontakt {
-      border-radius: 2px;
-      color: var(--evo-blue);
-      border-color: rgba(0,184,230,.30);
-      background: rgba(0,184,230,.06);
-      letter-spacing: .12em;
-    }
-
-    .feature-icon-circle {
-      width: 43px;
-      height: 43px;
-      border-radius: 50%;
-      color: #ffcad0;
-      border-color: rgba(255,32,55,.40);
-      background: rgba(255,32,55,.06);
-      box-shadow: 0 0 25px rgba(255,32,55,.07);
-    }
-
-    .feature-title { letter-spacing: .08em; text-transform: uppercase; font-size: .66rem; }
-
-    .package-card {
-      border-color: rgba(255,32,55,.38) !important;
-      background: linear-gradient(105deg, rgba(255,32,55,.075), rgba(0,184,230,.025)) !important;
-    }
-
-    .btn-orange-custom {
-      border-radius: 2px;
-      min-height: 48px;
-      color: #fff;
-      background: linear-gradient(90deg, #bd0f24, #ff2037);
-      border: 1px solid rgba(255,106,123,.48);
-      box-shadow: 0 12px 30px rgba(255,32,55,.18);
-      letter-spacing: .11em;
-      text-transform: uppercase;
-      font-size: .76rem;
-    }
-
-    .btn-orange-custom:hover {
-      color: #fff;
-      background: linear-gradient(90deg, #e11931, #ff4a5e);
-      box-shadow: 0 15px 36px rgba(255,32,55,.30);
-    }
-
-    .compatible-section {
-      position: relative;
-      padding: 76px 0 82px;
-      background:
-        linear-gradient(180deg, rgba(2,4,6,.15), rgba(1,2,3,.92)),
-        radial-gradient(circle at 8% 65%, rgba(0,184,230,.07), transparent 28%),
-        radial-gradient(circle at 91% 45%, rgba(255,32,55,.065), transparent 30%);
-    }
-
-    .compatible-title,
-    .compatible-section h3,
-    .compatible-section h4,
-    .compatible-section h5 {
-      text-transform: uppercase;
-      letter-spacing: .13em;
-      font-weight: 500 !important;
-    }
-
-    .compatible-title {
-      color: var(--evo-blue) !important;
-      font-size: .72rem;
-      letter-spacing: .34em;
-    }
-
-    .keyboard-card {
-      border-radius: 2px;
-      background: rgba(4,7,10,.78);
-      border-color: rgba(255,255,255,.10);
-      box-shadow: none;
-      padding: 28px 15px !important;
-    }
-
-    .keyboard-card:nth-child(odd) { border-bottom-color: rgba(0,184,230,.45); }
-    .keyboard-card:hover { transform: translateY(-5px); border-color: rgba(255,32,55,.35); }
-    .keyboard-card h5 { letter-spacing: .12em; font-weight: 500; }
-
-    .creator-note-box { border-left: 2px solid var(--evo-red) !important; }
-    .creator-avatar { background: linear-gradient(135deg, var(--evo-blue), var(--evo-red)) !important; color: #fff; }
-
-    .software-badge-box { min-height: 78px; }
-    .software-badge-box i { color: var(--evo-red) !important; }
-
-    .liquid-glass-container {
-      padding: 10px;
-      border-top-color: rgba(0,184,230,.25);
-      border-bottom-color: rgba(255,32,55,.24);
-    }
-
-    .similar-carousel-wrapper { scrollbar-color: var(--evo-red) rgba(255,255,255,.04); }
-    .similar-carousel-wrapper::-webkit-scrollbar-thumb { background: var(--evo-red); }
-    .similar-card:hover { transform: translateY(-6px); border-color: rgba(0,184,230,.25); }
-    .similar-img-box { border-radius: 1px; background: rgba(0,0,0,.48); }
-
-    .comments-section { border-top-color: rgba(255,255,255,.08); }
-    .comment-card:hover { border-color: rgba(255,32,55,.32); }
-    .form-control-custom:focus { border-color: var(--evo-blue); box-shadow: 0 0 0 3px rgba(0,184,230,.08); }
-
-    .btn-floating-cart {
-      border-radius: 3px;
-      color: #fff;
-      background: linear-gradient(135deg, #0a819e, var(--evo-blue));
-      border-color: rgba(99,224,255,.48);
-      box-shadow: 0 14px 40px rgba(0,184,230,.25);
-    }
-
-    .btn-floating-cart:hover { color: #fff; box-shadow: 0 18px 46px rgba(0,184,230,.38); }
-    .badge-floating { background: var(--evo-red); }
-
-    .cart-drawer {
-      background: linear-gradient(145deg, rgba(7,11,16,.985), rgba(1,3,5,.995));
-      border-left-color: rgba(0,184,230,.24);
-    }
-
-    .cart-header { border-bottom-color: rgba(255,32,55,.22); }
-    .cart-footer { border-top-color: rgba(0,184,230,.18); }
-    .btn-apply-coupon:hover { background: var(--evo-blue); border-color: var(--evo-blue); }
-
-    .search-overlay-fullscreen { background: rgba(1,3,5,.965); }
-    .search-input-liquid { border-radius: 2px; }
-    .search-input-liquid:focus-within { border-color: var(--evo-blue); box-shadow: 0 15px 45px rgba(0,184,230,.10); }
-    .search-result-item { border-radius: 2px; }
-
-    footer {
-      background: #010203;
-      border-top-color: rgba(255,255,255,.08) !important;
-      letter-spacing: .08em;
-    }
-
-    @media (max-width: 991.98px) {
-      .product-detail-section { padding: 118px 0 54px; min-height: auto; }
-      .product-boxes-display { min-height: 440px; }
-      .product-detail-section .col-lg-6:last-child { padding: 30px 14px 0; }
-      .product-detail-section h1 { font-size: clamp(2.3rem, 8vw, 4rem) !important; }
-      .product-detail-section::before { bottom: 3%; font-size: 14rem; }
-    }
-
-    @media (max-width: 575.98px) {
-      body::before { background-size: 44px 44px; }
-      .navbar-glass { padding: 11px 0; }
-      .product-detail-section { padding-top: 92px; }
-      .product-boxes-display { min-height: 330px; padding: 18px; }
-      .product-boxes-display img { max-height: 300px; }
-      .product-detail-section h1 { font-size: 2.2rem !important; letter-spacing: .02em !important; }
-      .product-detail-section h1::after { margin-top: 18px; }
-      .compatible-section { padding: 58px 0 60px; }
-      .keyboard-card { padding: 21px 8px !important; }
-      .keyboard-card i { font-size: 2.2rem !important; }
-      .keyboard-card h5 { font-size: .69rem; }
-    }
   </style>
 </head>
 <body>
 
-  <!-- ========================================== -->
-  <!-- MENÚ LATERAL "PUSH" -->
-  <!-- ========================================== -->
+  <!-- MENÚ LATERAL -->
   <div class="side-menu-drawer" id="side-menu">
     <div class="text-center mb-4 mt-2">
       <img src="img/dingloft.png" alt="Dingloft" style="width: 120px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
@@ -783,76 +377,71 @@
       <p class="text-muted small" style="font-size: 0.75rem;">&copy; 2026 Dingloft</p>
     </div>
   </div>
-  
   <div class="side-menu-overlay" id="side-menu-overlay"></div>
 
-  <!-- ========================================== -->
   <!-- PAGE WRAPPER -->
-  <!-- ========================================== -->
   <div class="page-wrapper" id="page-wrapper">
     <div class="bg-orb orb-1"></div>
     <div class="bg-orb orb-2"></div>
-    <div class="bg-orb orb-3"></div>
 
+    <!-- MODAL DE ÉXITO Y CREACIÓN EXPRESS DE CONTRASEÑA -->
     <div class="success-modal-overlay" id="success-modal">
       <div class="success-modal-box">
         <img src="img/dingloft.png" alt="Dingloft" style="width: 110px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
         <div class="success-icon-ring"><i class="bi bi-check-lg"></i></div>
         <h3 style="color:#fff; font-weight:800; margin-bottom:10px; font-size: 1.4rem;">¡Compra Exitosa!</h3>
-        <p id="success-modal-text" style="color:#9ba9bd; margin-bottom:25px; font-size: 0.95rem;">Tu pedido se ha procesado correctamente.</p>
-        <button class="btn-orange-custom w-100 py-2" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
+        <p id="success-modal-text" style="color:#9ba9bd; margin-bottom:20px; font-size: 0.95rem;">Tu pedido se ha procesado correctamente.</p>
+        
+        <div class="express-signup-box" id="express-signup-container" style="display: none;">
+          <p style="font-size: 0.82rem; color: #fff; margin-bottom: 10px; font-weight: 500;">
+            <i class="bi bi-shield-lock-fill" style="color: var(--accent-color);"></i> Protege tu cuenta: Crea una contraseña para acceder a tus descargas después.
+          </p>
+          <label>Correo asociado:</label>
+          <input type="text" id="express-email" class="express-input" readonly style="opacity: 0.7;">
+          <label>Nueva contraseña:</label>
+          <input type="password" id="express-password" class="express-input" placeholder="Mínimo 6 caracteres">
+          <button class="btn-orange-custom w-100 py-2" id="btn-save-express-account" onclick="crearCuentaExpress()">Crear Contraseña y Entrar</button>
+        </div>
+
+        <button class="btn-orange-custom w-100 py-2" id="btn-go-to-account" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
       </div>
     </div>
 
     <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
-    <!-- ====== NAVBAR PRINCIPAL ====== -->
+    <!-- NAVBAR -->
     <nav class="navbar navbar-glass fixed-top" id="main-navbar">
       <div class="container position-relative d-flex align-items-center">
-        
         <div class="d-flex align-items-center gap-2" style="flex: 1; z-index: 2;">
-          <button class="mobile-liquid-btn d-md-none" id="btn-open-sidebar" title="Menú">
-            <i class="bi bi-list"></i>
-          </button>
-          
-          <button class="mobile-liquid-btn d-md-none" id="btn-open-search-mobile" title="Buscar">
-            <i class="bi bi-search"></i>
-          </button>
-
+          <button class="mobile-liquid-btn d-md-none" id="btn-open-sidebar" title="Menú"><i class="bi bi-list"></i></button>
+          <button class="mobile-liquid-btn d-md-none" id="btn-open-search-mobile" title="Buscar"><i class="bi bi-search"></i></button>
           <div class="d-none d-md-flex gap-3">
             <a class="nav-link" href="index.html">Inicio</a>
             <a class="nav-link" href="index.html">Catálogo</a>
           </div>
         </div>
-
         <div class="d-flex justify-content-center" style="z-index: 1;">
           <a class="navbar-brand position-absolute top-50 start-50 translate-middle m-0 p-0 d-flex align-items-center" href="index.html">
             <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
           </a>
         </div>
-        
         <div class="d-flex align-items-center justify-content-end gap-2 gap-md-3" style="flex: 1; z-index: 2;">
-          <button class="mobile-liquid-btn d-none d-md-flex" id="btn-open-search-desktop" title="Buscar">
-            <i class="bi bi-search"></i>
-          </button>
-
+          <button class="mobile-liquid-btn d-none d-md-flex" id="btn-open-search-desktop" title="Buscar"><i class="bi bi-search"></i></button>
           <div id="auth-container-global"></div>
-
           <button id="main-cart-btn" class="btn-outline-custom d-none d-md-flex align-items-center gap-2 cart-btn-global" style="padding: 6px 15px; font-size: 0.9rem;">
             <i class="bi bi-cart3"></i> CARRITO (<span class="cart-badge-count-global">0</span>)
           </button>
         </div>
-
       </div>
     </nav>
 
-    <!-- ====== SECCIÓN DE PRODUCTO ====== -->
+    <!-- DETALLES DE YAMAHA PREMIUM KEYS -->
     <section class="product-detail-section">
       <div class="container">
         <div class="row align-items-center g-4">
           <div class="col-lg-6">
             <div class="product-boxes-display glass-effect">
-              <img src="img/yamahakeys.png" alt="Yamaha Premium Keys">
+              <img src="img/yamahakeys.png" alt="Yamaha Premium Keys" onerror="this.src='https://ui-avatars.com/api/?name=Yamaha+Keys&background=00e5ff&color=000&size=400'">
             </div>
           </div>
           <div class="col-lg-6">
@@ -875,27 +464,11 @@
             </div>
 
             <div class="row g-2 mb-3 pt-2 border-top border-bottom border-secondary border-opacity-25 py-2">
-              <div class="col-4">
-                <div class="feature-box">
-                  <div class="feature-icon-circle"><i class="bi bi-shield-check"></i></div>
-                  <p class="feature-title text-white">Garantizado</p>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="feature-box">
-                  <div class="feature-icon-circle"><i class="bi bi-infinity"></i></div>
-                  <p class="feature-title text-white">Vitalicio</p>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="feature-box">
-                  <div class="feature-icon-circle"><i class="bi bi-download"></i></div>
-                  <p class="feature-title text-white">Inmediato</p>
-                </div>
-              </div>
+              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-shield-check"></i></div><p class="feature-title text-white">Garantizado</p></div></div>
+              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-infinity"></i></div><p class="feature-title text-white">Vitalicio</p></div></div>
+              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-download"></i></div><p class="feature-title text-white">Inmediato</p></div></div>
             </div>
 
-            <!-- PRECIO CON DESCUENTO Y EFECTO DE OFERTA -->
             <div class="mb-3 d-flex align-items-end gap-3">
               <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--orange-btn) !important; line-height: 1;">$30.00</span>
               <div class="d-flex flex-column pb-1">
@@ -904,7 +477,6 @@
               </div>
             </div>
 
-            <!-- ====== SECCIÓN DE OPCIONES DE COMPRA ====== -->
             <div class="purchase-options mt-4">
               <p class="fw-bold mb-2" style="font-size: 0.8rem; letter-spacing: 1px; color: var(--orange-btn);"><i class="bi bi-cart-check"></i> ELIGE TU PAQUETE:</p>
               
@@ -919,37 +491,21 @@
                   <i class="bi bi-cart3"></i> AGREGAR LIBRERÍA
                 </button>
               </div>
-
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SECCIÓN INFERIOR: COMPATIBILIDAD -->
+    <!-- COMPATIBILIDAD Y NOTA DEL CREADOR -->
     <section class="compatible-section">
       <div class="container">
         <div class="compatible-title" style="color: var(--orange-btn);">Plataformas Compatibles</div>
         
         <div class="row g-3 justify-content-center mb-4">
-          <div class="col-4">
-            <div class="keyboard-card" style="padding-top: 25px;">
-              <i class="bi bi-windows" style="font-size: 3rem; margin-bottom: 15px; color: var(--orange-btn); filter: drop-shadow(0 0 10px rgba(255,166,0,0.3)); display: block;"></i>
-              <h5>WINDOWS 10/11</h5>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="keyboard-card" style="padding-top: 25px;">
-              <i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: #ffffff; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); display: block;"></i>
-              <h5>MAC (INTEL/M-SERIES)</h5>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="keyboard-card" style="padding-top: 25px;">
-              <i class="bi bi-disc" style="font-size: 3rem; margin-bottom: 15px; color: #00e5ff; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3)); display: block;"></i>
-              <h5>KONTAKT 7</h5>
-            </div>
-          </div>
+          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-windows" style="font-size: 3rem; margin-bottom: 15px; color: var(--orange-btn); display: block;"></i><h5>WINDOWS 10/11</h5></div></div>
+          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: #ffffff; display: block;"></i><h5>MAC (INTEL/M-SERIES)</h5></div></div>
+          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-disc" style="font-size: 3rem; margin-bottom: 15px; color: #00e5ff; display: block;"></i><h5>KONTAKT 7</h5></div></div>
         </div>
 
         <div class="row justify-content-center mb-4">
@@ -972,6 +528,7 @@
           </div>
         </div>
 
+        <!-- ESPECIFICACIONES -->
         <div class="row justify-content-center mb-4">
           <div class="col-lg-10">
             <div class="text-center mb-3">
@@ -979,88 +536,16 @@
               <p class="text-white small" style="color: #f1f5f9; font-size: 0.8rem;">Muestras de audio puras sin compresión excesiva para máxima fidelidad.</p>
             </div>
             <div class="row g-2">
-              <div class="col-6 col-md-4">
-                <div class="software-badge-box">
-                  <i class="bi bi-file-earmark-music" style="color: var(--orange-btn);"></i>
-                  <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Samples HD 24-bit</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Máxima fidelidad</small>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6 col-md-4">
-                <div class="software-badge-box">
-                  <i class="bi bi-layers" style="color: var(--orange-btn);"></i>
-                  <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Capas Dinámicas</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Múltiples velocity layers</small>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6 col-md-4">
-                <div class="software-badge-box">
-                  <i class="bi bi-disc" style="color: var(--orange-btn);"></i>
-                  <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Kontakt 7 Ready</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Incluido en el pack</small>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6 col-md-6">
-                <div class="software-badge-box">
-                  <i class="bi bi-laptop" style="color: var(--orange-btn);"></i>
-                  <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Multiplataforma</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85);">Mac y Windows compatibles</small>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-md-6">
-                <div class="software-badge-box">
-                  <i class="bi bi-lightning-charge" style="color: var(--orange-btn);"></i>
-                  <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Cero Latencia</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85);">Ideal para estudio y directos</small>
-                  </div>
-                </div>
-              </div>
+              <div class="col-6 col-md-4"><div class="software-badge-box"><i class="bi bi-file-earmark-music" style="color: var(--orange-btn);"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Samples HD 24-bit</h6><small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Máxima fidelidad</small></div></div></div>
+              <div class="col-6 col-md-4"><div class="software-badge-box"><i class="bi bi-layers" style="color: var(--orange-btn);"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Capas Dinámicas</h6><small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Múltiples velocity layers</small></div></div></div>
+              <div class="col-6 col-md-4"><div class="software-badge-box"><i class="bi bi-disc" style="color: var(--orange-btn);"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Kontakt 7 Ready</h6><small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Incluido en el pack</small></div></div></div>
+              <div class="col-6 col-md-6"><div class="software-badge-box"><i class="bi bi-laptop" style="color: var(--orange-btn);"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Multiplataforma</h6><small class="text-white" style="color: rgba(255,255,255,0.85);">Mac y Windows compatibles</small></div></div></div>
+              <div class="col-12 col-md-6"><div class="software-badge-box"><i class="bi bi-lightning-charge" style="color: var(--orange-btn);"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Cero Latencia</h6><small class="text-white" style="color: rgba(255,255,255,0.85);">Ideal para estudio y directos</small></div></div></div>
             </div>
           </div>
         </div>
 
-        <!-- ====== SECCIÓN DE REELS / DEMOS VERTICALES ====== -->
-        <section class="py-5">
-          <div class="container">
-            <div class="text-center mb-4">
-              <span class="text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 2px; color: var(--orange-btn);">Demostraciones en vivo</span>
-              <h3 class="fw-bold text-white mt-1 fs-5">Músicos probando Yamaha Premium Keys</h3>
-            </div>
-            
-            <div class="row g-4 justify-content-center">
-              <!-- Reel 1 -->
-              <div class="col-12 col-sm-6 col-md-4">
-                <h6 class="text-white text-center mb-2 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-play-circle" style="color:var(--orange-btn);"></i> Demo Corta 1</h6>
-                <div class="liquid-glass-container p-2" style="max-width: 320px; margin: 0 auto;">
-                  <div class="ratio ratio-9x16 rounded-3 overflow-hidden">
-                    <iframe src="https://www.youtube.com/embed/qhlIa9HNcNg" title="Demo Corta 1" allowfullscreen style="border:0;"></iframe>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Reel 2 -->
-              <div class="col-12 col-sm-6 col-md-4">
-                <h6 class="text-white text-center mb-2 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-play-circle" style="color:var(--orange-btn);"></i> Demo Corta 2</h6>
-                <div class="liquid-glass-container p-2" style="max-width: 320px; margin: 0 auto;">
-                  <div class="ratio ratio-9x16 rounded-3 overflow-hidden">
-                    <iframe src="https://www.youtube.com/embed/NqGyMUM9Juo" title="Demo Corta 2" allowfullscreen style="border:0;"></iframe>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- SECCIÓN DE VIDEO DE DEMOSTRACIÓN PRINCIPAL -->
+        <!-- VIDEO DEMOSTRACIÓN -->
         <section class="pb-5 mt-4">
           <div class="container">
             <div class="row justify-content-center">
@@ -1079,16 +564,14 @@
           </div>
         </section>
 
-        <!-- SECCIÓN DE PRODUCTOS SIMILARES -->
+        <!-- PRODUCTOS SIMILARES -->
         <div class="row justify-content-center my-4">
           <div class="col-lg-10">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-collection-play" style="color: var(--orange-btn);"></i> Librerías Relacionadas</h5>
               <span class="text-white small" style="color: #f1f5f9; font-size: 0.75rem;">Desliza <i class="bi bi-arrow-right"></i></span>
             </div>
-
             <div class="similar-carousel-wrapper">
-              
               <div class="similar-card">
                 <div>
                   <div class="similar-img-box"><img src="img/nord.png" alt="Nord Stage 4 Ultimate" onerror="this.src='https://ui-avatars.com/api/?name=NS&background=00e5ff&color=000'"></div>
@@ -1101,7 +584,6 @@
                   <a href="nord.html" class="btn-outline-custom py-1 px-2">Ver más</a>
                 </div>
               </div>
-
               <div class="similar-card">
                 <div>
                   <div class="similar-img-box"><img src="img/rhodes.png" alt="Rhodes Affair 2" onerror="this.src='https://ui-avatars.com/api/?name=Rh&background=00e5ff&color=000'"></div>
@@ -1114,7 +596,6 @@
                   <a href="rhodes.html" class="btn-outline-custom py-1 px-2">Ver más</a>
                 </div>
               </div>
-
               <div class="similar-card">
                 <div>
                   <div class="similar-img-box"><img src="img/cosmos.png" alt="Cosmos Collection" onerror="this.src='https://ui-avatars.com/api/?name=Co&background=00e5ff&color=000'"></div>
@@ -1127,25 +608,20 @@
                   <a href="cosmos.html" class="btn-outline-custom py-1 px-2">Ver más</a>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
 
-        <!-- ====== SECCIÓN DE COMENTARIOS ====== -->
+        <!-- COMENTARIOS -->
         <div class="row justify-content-center comments-section">
           <div class="col-lg-10">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-chat-square-text" style="color: var(--orange-btn);"></i> Opiniones de la Comunidad</h5>
-              <span class="text-white small" style="color: #f1f5f9; font-size: 0.7rem;">Comunidad Dinámica</span>
             </div>
-
             <div id="comment-section-wrapper" class="mb-4"></div>
-
             <div id="comments-container">
               <div class="text-center text-white py-3 small">Cargando opiniones de la comunidad...</div>
             </div>
-
           </div>
         </div>
 
@@ -1163,13 +639,13 @@
 
   </div><!-- FIN DE PAGE WRAPPER -->
 
-  <!-- ====== BOTÓN FLOTANTE UNIVERSAL DEL CARRITO EN PANTALLA ====== -->
+  <!-- BOTÓN FLOTANTE CARRITO -->
   <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
     <i class="bi bi-cart3 fs-4"></i>
     <span class="badge-floating cart-badge-count-global">0</span>
   </button>
 
-  <!-- ====== MODAL DE BUSCADOR A PANTALLA COMPLETA ====== -->
+  <!-- MODAL BUSCADOR -->
   <div class="search-overlay-fullscreen" id="search-overlay-fullscreen">
     <div class="search-modal-box">
       <div class="search-input-liquid mb-4">
@@ -1177,100 +653,17 @@
         <input type="text" id="live-search-input" placeholder="Buscar productos..." autocomplete="off">
         <button class="btn-close-search" id="btn-close-search" style="background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;"><i class="bi bi-x-lg"></i></button>
       </div>
-      
-      <!-- Contenedor de Resultados Visuales -->
       <div id="live-search-results" class="search-results-container">
         <p class="text-center" style="color: rgba(255,255,255,0.7); font-size: 0.9rem;" id="search-empty-state">Escribe el nombre del producto para buscar...</p>
-        
-        <a href="dual.html" class="search-result-item" data-title="pianos legendarios sf2 bundle completo">
-          <img src="img/dual.png" alt="Bundle" onerror="this.src='https://ui-avatars.com/api/?name=Pi&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Pianos Legendarios Bundle</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$60.00</span>
-          </div>
-        </a>
-        <a href="nord.html" class="search-result-item" data-title="nord stage 4 ultimate library kontakt">
-          <img src="img/nord.png" alt="Nord Stage 4" onerror="this.src='https://ui-avatars.com/api/?name=NS&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Nord Stage 4 Ultimate</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$40.00</span>
-          </div>
-        </a>
         <a href="yamahakeys.html" class="search-result-item" data-title="yamaha premium keys pianos acusticos kontakt">
-          <img src="img/yamahakeys.png" alt="Yamaha Keys" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Yamaha Premium Keys</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
-          </div>
-        </a>
-        <a href="cosmos.html" class="search-result-item" data-title="cosmos collection pads texturas">
-          <img src="img/cosmos.png" alt="Cosmos" onerror="this.src='https://ui-avatars.com/api/?name=Co&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Cosmos Collection</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$70.00</span>
-          </div>
-        </a>
-        <a href="rhodes.html" class="search-result-item" data-title="rhodes affair 2 piano electrico">
-          <img src="img/rhodes.png" alt="Rhodes" onerror="this.src='https://ui-avatars.com/api/?name=Rh&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Rhodes Affair 2</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
-          </div>
-        </a>
-        <a href="combo.html" class="search-result-item" data-title="sketchup 2026 autocad 2026 duo bundle arquitectura combo">
-          <img src="img/combo.png" alt="Duo" onerror="this.src='https://ui-avatars.com/api/?name=Du&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">SketchUp 2026 & AutoCAD 2026</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$50.00</span>
-          </div>
-        </a>
-        <a href="autocad.html" class="search-result-item" data-title="autocad 2026 arquitectura ingenieria">
-          <img src="img/autocad.png" alt="AutoCAD" onerror="this.src='https://ui-avatars.com/api/?name=AC&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">AutoCAD 2026</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$35.00</span>
-          </div>
-        </a>
-        <a href="sketchup.html" class="search-result-item" data-title="sketchup pro 2026 3d arquitectura diseño">
-          <img src="img/sketchup.png" alt="SketchUp" onerror="this.src='https://ui-avatars.com/api/?name=Sk&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">SketchUp Pro 2026</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$27.00</span>
-          </div>
-        </a>
-        <a href="office.html" class="search-result-item" data-title="office home business word excel powerpoint">
-          <img src="img/office.png" alt="Office" onerror="this.src='https://ui-avatars.com/api/?name=Of&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Office Home & Business</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$40.00</span>
-          </div>
-        </a>
-        <a href="cinema4d.html" class="search-result-item" data-title="cinema 4d render">
-          <img src="img/cinema4d.png" alt="Cinema 4D" onerror="this.src='https://ui-avatars.com/api/?name=C4&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Cinema 4D</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$35.00</span>
-          </div>
-        </a>
-        <a href="logic.html" class="search-result-item" data-title="logic pro audio">
-          <img src="img/logic.png" alt="Logic Pro" onerror="this.src='https://ui-avatars.com/api/?name=Lo&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Logic Pro</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$25.00</span>
-          </div>
-        </a>
-        <a href="mainstage.html" class="search-result-item" data-title="montage 8 nord stage 3">
-          <img src="img/mainstage.png" alt="Montage 8 & Nord Stage 3" onerror="this.src='https://ui-avatars.com/api/?name=Mo&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Montage 8 & Nord Stage 3</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$27.00</span>
-          </div>
+          <img src="img/yamahakeys.png" alt="Yamaha Premium Keys" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
+          <div><h6 class="mb-0 text-white fw-bold">Yamaha Premium Keys</h6><span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span></div>
         </a>
       </div>
     </div>
   </div>
 
-  <!-- ====== ESTRUCTURA DEL CARRITO LATERAL ====== -->
+  <!-- CARRITO LATERAL -->
   <div class="cart-overlay" id="cart-overlay"></div>
   <div class="cart-drawer" id="cart-drawer">
     <div class="cart-header">
@@ -1280,125 +673,32 @@
       </div>
       <button class="btn-close-cart" id="close-cart-btn"><i class="bi bi-x-lg"></i></button>
     </div>
-    
     <div class="cart-items-container" id="cart-items-container">
-      <div class="cart-empty-msg" id="empty-cart-msg">
-        <p>Tu carrito está vacío.</p>
-      </div>
+      <div class="cart-empty-msg" id="empty-cart-msg"><p>Tu carrito está vacío.</p></div>
     </div>
-    
     <div class="cart-footer">
       <div class="coupon-box" id="coupon-section" style="display: none;">
         <input type="text" id="coupon-input" class="coupon-input" placeholder="Código de descuento">
         <button type="button" id="apply-coupon-btn" class="btn-apply-coupon">Aplicar</button>
       </div>
       <div id="coupon-msg" class="coupon-msg" style="display: none;"></div>
-
-      <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;">
-        <span class="text-white">Subtotal</span>
-        <span id="cart-subtotal" class="text-white">$0.00</span>
-      </div>
-      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;">
-        <span class="fs-5 fw-bold text-white">Total</span>
-        <span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span>
-      </div>
-      
-      <div class="text-center mb-3 text-white" style="font-size: 0.85rem; font-weight: 500; display: none;" id="security-badge-box">
-        <i class="bi bi-shield-lock"></i> Pago 100% seguro con PayPal
-      </div>
-      
-      <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;">
-        <div id="paypal-button-container" class="w-100"></div>
-      </div>
-
-      <button id="free-checkout-btn" class="btn-orange-custom mb-3 w-100" style="display: none;">
-        Obtener gratis <i class="bi bi-download ms-1"></i>
-      </button>
+      <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;"><span class="text-white">Subtotal</span><span id="cart-subtotal" class="text-white">$0.00</span></div>
+      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;"><span class="fs-5 fw-bold text-white">Total</span><span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span></div>
+      <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;"><div id="paypal-button-container" class="w-100"></div></div>
+      <button id="free-checkout-btn" class="btn-orange-custom mb-3 w-100" style="display: none;">Obtener gratis <i class="bi bi-download ms-1"></i></button>
     </div>
   </div>
 
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- ====== LÓGICA DEL MENÚ PUSH Y BUSCADOR ====== -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const btnOpenSidebar = document.getElementById('btn-open-sidebar');
-      const sideMenu = document.getElementById('side-menu');
-      const sideMenuOverlay = document.getElementById('side-menu-overlay');
-      const pageWrapper = document.getElementById('page-wrapper');
-      const mainNavbar = document.getElementById('main-navbar');
+  <!-- SCRIPT GLOBAL EXTERNO PARA AUTENTICACIÓN Y MODO ADMIN -->
+  <script type="module" src="auth-global.js"></script>
 
-      function toggleSidebar() {
-        sideMenu.classList.toggle('active');
-        sideMenuOverlay.classList.toggle('active');
-        pageWrapper.classList.toggle('menu-pushed');
-        mainNavbar.classList.toggle('menu-pushed');
-        document.body.classList.toggle('no-scroll');
-      }
-
-      if(btnOpenSidebar) btnOpenSidebar.addEventListener('click', toggleSidebar);
-      if(sideMenuOverlay) sideMenuOverlay.addEventListener('click', toggleSidebar);
-
-      const searchOverlayFullscreen = document.getElementById('search-overlay-fullscreen');
-      const btnOpenSearchMobile = document.getElementById('btn-open-search-mobile');
-      const btnOpenSearchDesktop = document.getElementById('btn-open-search-desktop');
-      const btnCloseSearch = document.getElementById('btn-close-search');
-      const liveSearchInput = document.getElementById('live-search-input');
-      const searchItems = document.querySelectorAll('.search-result-item');
-      const searchEmptyState = document.getElementById('search-empty-state');
-
-      function openSearch() {
-        searchOverlayFullscreen.classList.add('active');
-        document.body.classList.add('no-scroll');
-        setTimeout(() => liveSearchInput.focus(), 100);
-      }
-      function closeSearch() {
-        searchOverlayFullscreen.classList.remove('active');
-        document.body.classList.remove('no-scroll');
-        liveSearchInput.value = '';
-        searchItems.forEach(item => item.style.display = 'none');
-        searchEmptyState.style.display = 'block';
-        searchEmptyState.textContent = 'Escribe el nombre del producto para buscar...';
-      }
-
-      if(btnOpenSearchMobile) btnOpenSearchMobile.addEventListener('click', openSearch);
-      if(btnOpenSearchDesktop) btnOpenSearchDesktop.addEventListener('click', openSearch);
-      if(btnCloseSearch) btnCloseSearch.addEventListener('click', closeSearch);
-
-      liveSearchInput.addEventListener('input', function() {
-        const query = this.value.toLowerCase().trim();
-        let found = false;
-
-        if (query.length > 1) {
-          searchEmptyState.style.display = 'none';
-          searchItems.forEach(item => {
-            const title = item.getAttribute('data-title');
-            if (title.includes(query)) {
-              item.style.display = 'flex';
-              found = true;
-            } else {
-              item.style.display = 'none';
-            }
-          });
-
-          if (!found) {
-            searchEmptyState.textContent = 'No se encontraron resultados.';
-            searchEmptyState.style.display = 'block';
-          }
-        } else {
-          searchItems.forEach(item => item.style.display = 'none');
-          searchEmptyState.textContent = 'Escribe el nombre del producto para buscar...';
-          searchEmptyState.style.display = 'block';
-        }
-      });
-    });
-  </script>
-
-  <!-- Lógica de Firebase Auth, Comentarios y Sistema Anti-Recompras -->
+  <!-- LÓGICA LOCAL (FIREBASE, COMENTARIOS Y PASARELA EXPRESS) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, orderBy, serverTimestamp, increment, arrayUnion, arrayRemove, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -1417,33 +717,30 @@
 
     window.globalCurrentUser = null;
     let currentUser = null;
+    window.globalEmailRecienComprado = "";
 
     async function checkUserPurchases(uid) {
       try {
         const q = query(collection(db, "purchases"), where("uid", "==", uid));
         const snapshot = await getDocs(q);
         let purchasedNames = [];
-        
         snapshot.forEach(docSnap => {
           const data = docSnap.data();
           if (data.items && Array.isArray(data.items)) {
             data.items.forEach(item => purchasedNames.push(item.name));
           }
         });
-
-        const buyButtons = document.querySelectorAll('.btn-add-cart, #btn-buy-now');
+        const buyButtons = document.querySelectorAll('.btn-add-cart');
         buyButtons.forEach(btn => {
           const prodName = btn.getAttribute('data-name');
           if (purchasedNames.includes(prodName)) {
             btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> OBTENIDO';
-            btn.classList.remove('btn-cyan', 'btn-outline-cyan', 'btn-outline-custom', 'btn-orange-custom');
+            btn.classList.remove('btn-cyan', 'btn-outline-custom', 'btn-orange-custom');
             btn.classList.add('btn-obtained-glass');
             btn.disabled = true;
           }
         });
-      } catch (err) {
-        console.error("Error al verificar compras previas:", err);
-      }
+      } catch (err) { console.error("Error verificando compras:", err); }
     }
 
     const initialDefaultComments = [
@@ -1455,97 +752,63 @@
     ];
 
     function renderCommentsUI(commentsData) {
-        const container = document.getElementById('comments-container');
-        container.innerHTML = '';
-        commentsData.forEach((com) => {
-            const docId = com.id;
-            let stars = '★★★★★'.substring(0, com.rating || 5) + '☆☆☆☆☆'.substring(0, 5 - (com.rating || 5));
-            
-            let likedByArray = com.likedBy || [];
-            let isLiked = currentUser && likedByArray.includes(currentUser.uid);
-            let btnClass = isLiked ? "btn-like liked" : "btn-like";
-            let iconClass = isLiked ? "bi bi-heart-fill" : "bi bi-heart";
+      const container = document.getElementById('comments-container');
+      container.innerHTML = '';
+      commentsData.forEach((com) => {
+        const docId = com.id;
+        let stars = '★★★★★'.substring(0, com.rating || 5) + '☆☆☆☆☆'.substring(0, 5 - (com.rating || 5));
+        let likedByArray = com.likedBy || [];
+        let isLiked = currentUser && likedByArray.includes(currentUser.uid);
+        let btnClass = isLiked ? "btn-like liked" : "btn-like";
+        let iconClass = isLiked ? "bi bi-heart-fill" : "bi bi-heart";
 
-            container.insertAdjacentHTML('beforeend', `
-              <div class="comment-card" id="comment-${docId}">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                  <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle" style="color:var(--orange-btn);"></i> ${com.name}</h6>
-                  <span class="text-warning small" style="font-size: 0.75rem;">${stars}</span>
-                </div>
-                <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">${com.text}</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Opinión verificada</small>
-                  <button class="${btnClass}" onclick="toggleLikeFirestore('${docId}', this)"><i class="${iconClass}"></i> <span class="like-count">${com.likes || 0}</span></button>
-                </div>
-              </div>
-            `);
-        });
+        container.insertAdjacentHTML('beforeend', `
+          <div class="comment-card" id="comment-${docId}">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle" style="color:var(--orange-btn);"></i> ${com.name}</h6>
+              <span class="text-warning small" style="font-size: 0.75rem;">${stars}</span>
+            </div>
+            <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">${com.text}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Opinión verificada</small>
+              <button class="${btnClass}" onclick="toggleLikeFirestore('${docId}', this)"><i class="${iconClass}"></i> <span class="like-count">${com.likes || 0}</span></button>
+            </div>
+          </div>
+        `);
+      });
     }
 
     async function loadComments() {
-      const container = document.getElementById('comments-container');
       try {
-        const commentsRef = collection(db, "yamahakeys_comments_final"); 
+        const commentsRef = collection(db, "yamahakeys_comments_final");
         const q = query(commentsRef, orderBy("createdAt", "desc"));
-        let snapshot;
-        
-        try {
-            snapshot = await getDocs(q);
-        } catch(readErr) {
-            renderCommentsUI(initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c })));
-            return;
-        }
-
+        let snapshot = await getDocs(q);
         let dbComments = [];
         snapshot.forEach(docSnap => dbComments.push({ id: docSnap.id, ...docSnap.data() }));
-
         const allComments = [...dbComments, ...initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c }))];
-
         renderCommentsUI(allComments);
-
       } catch (err) {
-        console.error("Error crítico cargando comentarios:", err);
         renderCommentsUI(initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c })));
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      loadComments();
-    });
+    document.addEventListener('DOMContentLoaded', () => { loadComments(); });
 
     onAuthStateChanged(auth, (user) => {
       currentUser = user;
-      window.globalCurrentUser = user; 
-      const authContainerGlobal = document.getElementById('auth-container-global');
+      window.globalCurrentUser = user;
       const commentWrapper = document.getElementById('comment-section-wrapper');
 
       if (user) {
         checkUserPurchases(user.uid);
-
-        let displayName = "Usuario";
-        if (user.displayName) displayName = user.displayName.split(' ')[0];
-        else if (user.email) displayName = user.email.split('@')[0];
-
-        if (authContainerGlobal) {
-          let mobileContent = user.photoURL 
-            ? `<img src="${user.photoURL}" alt="Perfil">`
-            : `<div class="avatar-fallback">${displayName.charAt(0).toUpperCase()}</div>`;
-            
-          authContainerGlobal.innerHTML = `
-            <a href="account.html" class="mobile-nav-avatar" title="Ir a Mi Cuenta">
-              ${mobileContent}
-            </a>
-          `;
-        }
+        let displayName = user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : "Usuario");
 
         commentWrapper.innerHTML = `
           <div class="comment-form-box">
             <h6 class="text-white mb-2 fw-semibold" style="font-size: 0.9rem;">Deja tu reseña o comentario</h6>
             <form id="comment-form">
               <div class="row g-2">
-                <div class="col-12 col-md-6">
-                  <input type="text" id="comment-name" class="form-control form-control-custom" value="${displayName}" placeholder="Tu Nombre o Iglesia" required>
-                </div>
+                <div class="col-12 col-md-6"><input type="text" id="comment-name" class="form-control form-control-custom" value="${displayName}" placeholder="Tu Nombre o Iglesia" required></div>
                 <div class="col-12 col-md-6">
                   <select id="comment-rating" class="form-control form-control-custom">
                     <option value="5">★★★★★ (5/5 - Excelente)</option>
@@ -1553,27 +816,14 @@
                     <option value="3">★★★☆☆ (3/5 - Bueno)</option>
                   </select>
                 </div>
-                <div class="col-12">
-                  <textarea id="comment-text" class="form-control form-control-custom" rows="2" placeholder="Escribe tu experiencia..." required></textarea>
-                </div>
-                <div class="col-12 text-end">
-                  <button type="submit" class="btn-orange-custom px-3 py-1" style="font-size: 0.85rem; padding: 6px 15px;" id="btn-submit-comment">Publicar Comentario</button>
-                </div>
+                <div class="col-12"><textarea id="comment-text" class="form-control form-control-custom" rows="2" placeholder="Escribe tu experiencia..." required></textarea></div>
+                <div class="col-12 text-end"><button type="submit" class="btn-orange-custom px-3 py-1" style="font-size: 0.85rem; padding: 6px 15px;" id="btn-submit-comment">Publicar Comentario</button></div>
               </div>
             </form>
           </div>
         `;
         document.getElementById('comment-form').addEventListener('submit', handleCommentSubmit);
-
       } else {
-        if (authContainerGlobal) {
-          authContainerGlobal.innerHTML = `
-            <a href="login.html" class="mobile-liquid-btn" title="Iniciar Sesión">
-              <i class="bi bi-person-fill"></i>
-            </a>
-          `;
-        }
-
         commentWrapper.innerHTML = `
           <div class="login-prompt-box">
             <div class="login-prompt-icon"><i class="bi bi-lock-fill"></i></div>
@@ -1585,109 +835,73 @@
           </div>
         `;
       }
-      
       loadComments();
     });
 
     async function handleCommentSubmit(e) {
       e.preventDefault();
       if (!currentUser) return;
-
       const name = document.getElementById('comment-name').value.trim();
       const rating = parseInt(document.getElementById('comment-rating').value);
       const text = document.getElementById('comment-text').value.trim();
-      const submitBtn = document.getElementById('btn-submit-comment');
-
       if (!name || !text) return;
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Publicando...";
 
       try {
-        await addDoc(collection(db, "yamahakeys_comments_final"), {
-          name: name,
-          rating: rating,
-          text: text,
-          likes: 0,
-          likedBy: [],
-          createdAt: serverTimestamp()
-        });
-
+        await addDoc(collection(db, "yamahakeys_comments_final"), { name, rating, text, likes: 0, likedBy: [], createdAt: serverTimestamp() });
         document.getElementById('comment-form').reset();
         loadComments();
-
-        const toast = document.getElementById('toast-message');
-        toast.textContent = `¡Comentario publicado con éxito!`;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
-
-      } catch (err) {
-        console.error("Error al guardar comentario:", err);
-        alert("Ocurrió un error al publicar.");
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Publicar Comentario";
-      }
+      } catch (err) { alert("Error al publicar."); }
     }
 
     window.toggleLikeFirestore = async function(docId, btn) {
-      if (!currentUser) {
-        alert("Debes iniciar sesión para dar like.");
-        window.location.href = 'login.html';
-        return;
-      }
-
-      if(docId.startsWith('local-')) {
-          alert("Esta opinión es local, Firebase no permite escritura por tus reglas de seguridad actuales.");
-          return;
-      }
-
+      if (!currentUser) { window.location.href = 'login.html'; return; }
+      if (docId.startsWith('local-')) return;
       const countSpan = btn.querySelector('.like-count');
       let currentLikes = parseInt(countSpan.textContent);
       let isLiking = !btn.classList.contains('liked');
 
-      if (isLiking) {
-        btn.classList.add('liked');
-        btn.querySelector('i').className = 'bi bi-heart-fill';
-        countSpan.textContent = currentLikes + 1;
-      } else {
-        btn.classList.remove('liked');
-        btn.querySelector('i').className = 'bi bi-heart';
-        countSpan.textContent = currentLikes - 1;
-      }
+      if (isLiking) { btn.classList.add('liked'); btn.querySelector('i').className = 'bi bi-heart-fill'; countSpan.textContent = currentLikes + 1; }
+      else { btn.classList.remove('liked'); btn.querySelector('i').className = 'bi bi-heart'; countSpan.textContent = currentLikes - 1; }
 
       try {
         const commentRef = doc(db, "yamahakeys_comments_final", docId);
-        if (isLiking) {
-          await updateDoc(commentRef, {
-             likes: increment(1),
-             likedBy: arrayUnion(currentUser.uid)
-          });
-        } else {
-          await updateDoc(commentRef, {
-             likes: increment(-1),
-             likedBy: arrayRemove(currentUser.uid)
-          });
-        }
-      } catch (err) {
-        console.error("Error al actualizar like:", err);
-        if (isLiking) {
-          btn.classList.remove('liked');
-          btn.querySelector('i').className = 'bi bi-heart';
-          countSpan.textContent = currentLikes;
-        } else {
-          btn.classList.add('liked');
-          btn.querySelector('i').className = 'bi bi-heart-fill';
-          countSpan.textContent = currentLikes;
-        }
-      }
+        await updateDoc(commentRef, { likes: increment(isLiking ? 1 : -1), likedBy: isLiking ? arrayUnion(currentUser.uid) : arrayRemove(currentUser.uid) });
+      } catch (err) { console.error(err); }
     };
 
-    function mostrarModalExito(mensaje) {
+    function mostrarModalExito(mensaje, esInvitado = false, emailInvitado = "") {
       const modal = document.getElementById('success-modal');
       const text = document.getElementById('success-modal-text');
+      const expressBox = document.getElementById('express-signup-container');
+      const btnGoAccount = document.getElementById('btn-go-to-account');
       if (text && mensaje) text.textContent = mensaje;
+      if (esInvitado && emailInvitado) {
+        window.globalEmailRecienComprado = emailInvitado;
+        document.getElementById('express-email').value = emailInvitado;
+        expressBox.style.display = 'block';
+        btnGoAccount.style.display = 'none';
+      } else {
+        expressBox.style.display = 'none';
+        btnGoAccount.style.display = 'block';
+      }
       if (modal) modal.classList.add('active');
     }
+
+    window.crearCuentaExpress = async function() {
+      const passInput = document.getElementById('express-password').value.trim();
+      const email = window.globalEmailRecienComprado;
+      if (passInput.length < 6) { alert("Mínimo 6 caracteres."); return; }
+      try {
+        await createUserWithEmailAndPassword(auth, email, passInput);
+        window.location.href = 'account.html';
+      } catch (error) {
+        if (error.code === 'auth/email-already-in-use') {
+          try { await signInWithEmailAndPassword(auth, email, passInput); window.location.href = 'account.html'; return; }
+          catch(innerErr) { window.location.href = 'login.html'; return; }
+        }
+        window.location.href = 'account.html';
+      }
+    };
 
     window.renderPayPalStable = function(monto) {
       const container = document.getElementById('paypal-button-container');
@@ -1697,42 +911,84 @@
 
       paypal.Buttons({
         style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
-        createOrder: function(data, actions) {
-          return actions.order.create({ purchase_units: [{ amount: { value: monto.toFixed(2) } }] });
-        },
+        createOrder: function(data, actions) { return actions.order.create({ purchase_units: [{ amount: { value: monto.toFixed(2) } }] }); },
         onApprove: async function(data, actions) {
           return actions.order.capture().then(async function(details) {
-            const user = auth.currentUser;
-            if (!user) { window.location.href = 'login.html'; return; }
+            let user = auth.currentUser;
+            let userId = user ? user.uid : "GUEST-" + Date.now();
+            let userEmail = details.payer.email_address || (user ? user.email : "invitado@dingloft.com");
+            let payerName = details.payer.name.given_name || "Cliente";
+
             try {
               const itemsComprados = window.cartItemsList || [];
-              await addDoc(collection(db, "purchases"), {
-                uid: user.uid, userEmail: user.email, paypalOrderId: details.id,
-                payerName: details.payer.name.given_name, items: itemsComprados, createdAt: serverTimestamp()
-              });
-              
+              await addDoc(collection(db, "purchases"), { uid: userId, userEmail, paypalOrderId: details.id, payerName, items: itemsComprados, createdAt: serverTimestamp() });
               if (typeof window.clearCart === 'function') window.clearCart();
-              
-              mostrarModalExito(`¡Pago exitoso, ${details.payer.name.given_name}! Redirigiendo a tu cuenta...`);
-              setTimeout(() => { window.location.href = 'account.html'; }, 2200);
-            } catch (error) { console.error("Error:", error); }
+              if (!user) { mostrarModalExito(`¡Pago exitoso, ${payerName}!`, true, userEmail); }
+              else { mostrarModalExito(`¡Pago exitoso! Redirigiendo...`, false, ""); setTimeout(() => { window.location.href = 'account.html'; }, 2200); }
+            } catch (error) { console.error(error); }
           });
         }
       }).render('#paypal-button-container');
     };
   </script>
 
-  <!-- Lógica del Carrito (LocalStorage) -->
+  <!-- LÓGICA LOCAL DEL CARRITO Y NAVEGACIÓN -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const btnOpenSidebar = document.getElementById('btn-open-sidebar');
+      const sideMenu = document.getElementById('side-menu');
+      const sideMenuOverlay = document.getElementById('side-menu-overlay');
+      const pageWrapper = document.getElementById('page-wrapper');
+      const mainNavbar = document.getElementById('main-navbar');
+
+      function toggleSidebar() {
+        sideMenu.classList.toggle('active');
+        sideMenuOverlay.classList.toggle('active');
+        pageWrapper.classList.toggle('menu-pushed');
+        mainNavbar.classList.toggle('menu-pushed');
+        document.body.classList.toggle('no-scroll');
+      }
+      if(btnOpenSidebar) btnOpenSidebar.addEventListener('click', toggleSidebar);
+      if(sideMenuOverlay) sideMenuOverlay.addEventListener('click', toggleSidebar);
+
+      const searchOverlayFullscreen = document.getElementById('search-overlay-fullscreen');
+      const btnOpenSearchMobile = document.getElementById('btn-open-search-mobile');
+      const btnOpenSearchDesktop = document.getElementById('btn-open-search-desktop');
+      const btnCloseSearch = document.getElementById('btn-close-search');
+      const liveSearchInput = document.getElementById('live-search-input');
+      const searchItems = document.querySelectorAll('.search-result-item');
+      const searchEmptyState = document.getElementById('search-empty-state');
+
+      function openSearch() { searchOverlayFullscreen.classList.add('active'); document.body.classList.add('no-scroll'); setTimeout(() => liveSearchInput.focus(), 100); }
+      function closeSearch() { searchOverlayFullscreen.classList.remove('active'); document.body.classList.remove('no-scroll'); }
+
+      if(btnOpenSearchMobile) btnOpenSearchMobile.addEventListener('click', openSearch);
+      if(btnOpenSearchDesktop) btnOpenSearchDesktop.addEventListener('click', openSearch);
+      if(btnCloseSearch) btnCloseSearch.addEventListener('click', closeSearch);
+
+      liveSearchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        let found = false;
+        if (query.length > 1) {
+          searchEmptyState.style.display = 'none';
+          searchItems.forEach(item => {
+            if (item.getAttribute('data-title').includes(query)) { item.style.display = 'flex'; found = true; }
+            else { item.style.display = 'none'; }
+          });
+          if (!found) { searchEmptyState.textContent = 'No se encontraron resultados.'; searchEmptyState.style.display = 'block'; }
+        } else {
+          searchItems.forEach(item => item.style.display = 'none');
+          searchEmptyState.textContent = 'Escribe el nombre del producto para buscar...';
+          searchEmptyState.style.display = 'block';
+        }
+      });
+
       let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
       let couponApplied = false;
-
       const cartBtns = document.querySelectorAll('.cart-btn-global, #main-cart-btn');
       const cartDrawer = document.getElementById('cart-drawer');
       const cartOverlay = document.getElementById('cart-overlay');
       const closeCartBtn = document.getElementById('close-cart-btn');
-      
       const cartBadges = document.querySelectorAll('.cart-badge-count-global');
       const cartItemCountText = document.getElementById('cart-item-count-text');
       const cartItemsContainer = document.getElementById('cart-items-container');
@@ -1745,27 +1001,13 @@
       const couponSection = document.getElementById('coupon-section');
       const subtotalRow = document.getElementById('subtotal-row');
       const totalRow = document.getElementById('total-row');
-
       const couponInput = document.getElementById('coupon-input');
       const applyCouponBtn = document.getElementById('apply-coupon-btn');
       const couponMsg = document.getElementById('coupon-msg');
+      const addButtons = document.querySelectorAll('.btn-add-cart');
 
-      const addButtons = document.querySelectorAll('.btn-add-cart, #btn-buy-now');
-
-      const openCart = (e) => { 
-        if(e) e.preventDefault(); 
-        cartDrawer.classList.add('active'); 
-        cartOverlay.classList.add('active');
-        document.body.classList.add('no-scroll');
-        updateCartUI();
-      };
-
-      const closeCart = (e) => { 
-        if(e) e.preventDefault(); 
-        cartDrawer.classList.remove('active'); 
-        cartOverlay.classList.remove('active'); 
-        document.body.classList.remove('no-scroll');
-      };
+      const openCart = (e) => { if(e) e.preventDefault(); cartDrawer.classList.add('active'); cartOverlay.classList.add('active'); document.body.classList.add('no-scroll'); updateCartUI(); };
+      const closeCart = (e) => { if(e) e.preventDefault(); cartDrawer.classList.remove('active'); cartOverlay.classList.remove('active'); document.body.classList.remove('no-scroll'); };
 
       cartBtns.forEach(btn => { if(btn) btn.addEventListener('click', openCart); });
       if(closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
@@ -1773,12 +1015,8 @@
 
       const updateCartUI = () => {
         cartItemsContainer.innerHTML = '';
-        
-        let totalItems = 0;
-        let totalPrice = 0;
-
+        let totalItems = 0; let totalPrice = 0;
         window.cartItemsList = [];
-        window.cartTotalPrice = 0;
 
         if (cart.length === 0) {
           cartItemsContainer.appendChild(emptyCartMsg);
@@ -1791,7 +1029,6 @@
           if(totalRow) totalRow.style.display = 'none';
           couponApplied = false;
           if(couponMsg) couponMsg.style.display = 'none';
-          if(couponInput) couponInput.value = '';
         } else {
           emptyCartMsg.style.display = 'none';
           if(couponSection) couponSection.style.display = 'flex';
@@ -1801,16 +1038,12 @@
           cart.forEach((item, index) => {
             totalItems += item.qty;
             totalPrice += (item.price * item.qty);
-
             for(let i=0; i<item.qty; i++) {
               window.cartItemsList.push({ name: item.name, img: item.img, type: item.type, price: couponApplied ? 0 : item.price });
             }
-
-            const itemHTML = `
+            cartItemsContainer.insertAdjacentHTML('beforeend', `
               <div class="cart-item">
-                <div class="cart-item-img">
-                  <img src="img/${item.img}.png" alt="${item.name}">
-                </div>
+                <div class="cart-item-img"><img src="img/${item.img}.png" alt="${item.name}"></div>
                 <div class="cart-item-info">
                   <h4 class="cart-item-title">${item.name}</h4>
                   <p class="cart-item-desc">${item.type}</p>
@@ -1825,15 +1058,10 @@
                 </div>
                 <button class="cart-item-remove" onclick="removeItem(${index})"><i class="bi bi-trash"></i></button>
               </div>
-            `;
-            cartItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
+            `);
           });
 
-          let finalTotal = totalPrice;
-          if (couponApplied) { finalTotal = 0; }
-
-          window.cartTotalPrice = totalPrice;
-          window.cartFinalTotal = finalTotal;
+          let finalTotal = couponApplied ? 0 : totalPrice;
 
           if (finalTotal === 0) {
             if(paypalWrapper) paypalWrapper.style.display = 'none';
@@ -1843,12 +1071,7 @@
             if(paypalWrapper) paypalWrapper.style.display = 'block';
             if(securityBadge) securityBadge.style.display = 'block';
             if(freeCheckoutBtn) freeCheckoutBtn.style.display = 'none';
-            
-            setTimeout(() => {
-                if (typeof window.renderPayPalStable === 'function') {
-                    window.renderPayPalStable(finalTotal);
-                }
-            }, 100);
+            setTimeout(() => { if (typeof window.renderPayPalStable === 'function') window.renderPayPalStable(finalTotal); }, 100);
           }
         }
 
@@ -1860,14 +1083,6 @@
         
         localStorage.setItem('dingloft_cart', JSON.stringify(cart));
       };
-
-      window.clearCart = () => {
-        cart = [];
-        localStorage.removeItem('dingloft_cart');
-        updateCartUI();
-      };
-
-      updateCartUI();
 
       if(applyCouponBtn) {
         applyCouponBtn.addEventListener('click', () => {
@@ -1934,24 +1149,13 @@
             if(!this.disabled) {
               this.innerHTML = originalHTML;
               this.style.background = originalBg;
-              this.style.color = originalColor;
+              this.style.color = originalColor || '';
             }
             openCart(); 
           }, 800);
         });
       });
-      
-      const freeTrialBtn = document.getElementById('btn-free-trial');
-      if (freeTrialBtn) {
-        freeTrialBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          const url = this.getAttribute('data-url');
-          if (url.startsWith('#')) {
-             window.location.hash = url;
-             return;
-          }
-        });
-      }
+      updateCartUI();
     });
   </script>
 </body>
