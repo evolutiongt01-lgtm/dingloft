@@ -73,7 +73,7 @@
     .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
 
-    /* WIDGET VENTANAS (ANIMADAS, SIN BLUR) */
+    /* WIDGET VENTANAS ANIMADAS */
     .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 8, 15, 0.85); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .liquid-modal-overlay.active { opacity: 1; pointer-events: auto; }
     
@@ -149,6 +149,7 @@
         <a class="active" href="#descargas"><i class="bi bi-download"></i><span>Descargas</span></a>
         <a href="#" onclick="openReservasModal(); return false;"><i class="bi bi-calendar2-check"></i><span>Mis Reservas</span></a>
         
+        <!-- BOTÓN SECRETO ADMIN -->
         <a href="admin.html" id="btn-admin" style="display: none; color: #ff5050; margin-top: 15px; border: 1px solid rgba(255,80,80,0.3); background: rgba(255,80,80,0.05);"><i class="bi bi-incognito"></i><span>Panel Admin</span></a>
       </nav>
       <div class="profile">
@@ -223,7 +224,7 @@
     </main>
   </div>
   
-  <!-- MODAL MIS RESERVAS -->
+  <!-- MODAL MIS RESERVAS (CON DESBLOQUEO 5 MIN ANTES) -->
   <div class="liquid-modal-overlay" id="reservasModal">
     <div class="liquid-modal-card">
       <button class="liquid-close" onclick="closeReservasModal()"><i class="bi bi-x-lg"></i></button>
@@ -250,15 +251,25 @@
         </div>
 
         <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);">
-          <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Vía de conexión</span>
+          <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Vía de conexión seleccionada</span>
           <strong style="color: white; font-size: 0.85rem;"><i class="bi bi-display"></i> <span id="pedido-software">Esperando selección...</span></strong>
         </div>
-        <div style="margin-top: 10px;">
-          <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Comentarios de la sesión</span>
-          <p style="color: #c4d0df; font-size: 0.82rem; margin: 0; line-height: 1.5; background: rgba(0,0,0,0.2); padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03);" id="pedido-comentario">No hay comentarios.</p>
-        </div>
 
-        <p style="margin: 15px 0 0; font-size: 0.8rem; color: var(--muted); text-align: center;">Te enviaremos el enlace de conexión 15 minutos antes de tu hora agendada.</p>
+        <!-- SECCIÓN DE CÓDIGO DE ACCESO (DESBLOQUEO AUTOMÁTICO) -->
+        <div id="seccion-acceso-remoto" style="margin-top: 18px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); text-align: center;">
+          <p style="font-size: 0.8rem; color: var(--muted); margin: 0;" id="texto-espera-codigo">
+            <i class="bi bi-clock-history"></i> El campo para ingresar tu código de acceso se habilitará automáticamente 5 minutos antes de tu sesión.
+          </p>
+          
+          <div id="formulario-codigo" style="display: none; background: rgba(18, 215, 246, 0.05); border: 1px solid rgba(18, 215, 246, 0.2); padding: 14px; border-radius: 12px;">
+            <label style="font-size: 0.82rem; color: var(--cyan); display: block; margin-bottom: 8px; font-weight: 600; text-align: left;">¡Es hora! Pega tu Código / Enlace de acceso aquí:</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" id="input-codigo-acceso" class="liquid-input" placeholder="Ej. 123 456 789" style="margin-bottom: 0;">
+              <button class="liquid-btn-cupon" id="btn-enviar-codigo" style="padding: 0 18px; font-weight: 800;">Enviar</button>
+            </div>
+            <p id="mensaje-codigo-enviado" style="display:none; color: var(--green); font-size: 0.8rem; margin: 10px 0 0; text-align: left;"><i class="bi bi-check-circle-fill"></i> Código enviado exitosamente. En breve nos conectamos.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -485,11 +496,10 @@
     };
   </script>
 
-  <!-- FIREBASE Y LÓGICA DE PROGRAMAS / RESERVAS -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, query, where, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, collection, query, where, getDocs, addDoc, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
@@ -593,31 +603,105 @@
         document.getElementById('sidebar-avatar').innerHTML = avatarHtml;
         document.getElementById('top-avatar').innerHTML = avatarHtml;
 
+        // --- SISTEMA DE RESERVAS Y RELOJ 5 MIN ---
+        let miReservaData = null;
+        let miReservaId = null;
+
+        function verificarDesbloqueo() {
+            if(!miReservaData || miReservaData.estado === 'completado' || miReservaData.codigoAcceso) return;
+
+            let ahora = Date.now();
+            let faltanMs = miReservaData.timestampReserva - ahora;
+            let faltanMinutos = faltanMs / 1000 / 60;
+
+            const textoEspera = document.getElementById('texto-espera-codigo');
+            const formCodigo = document.getElementById('formulario-codigo');
+
+            if (faltanMinutos <= 5 && faltanMinutos >= -60) {
+                // Habilitar acceso
+                textoEspera.style.display = 'none';
+                formCodigo.style.display = 'block';
+            } else if (faltanMinutos > 5) {
+                // Mostrar conteo regresivo aprox.
+                textoEspera.innerHTML = `<i class="bi bi-clock-history"></i> El campo para ingresar tu código se habilitará 5 minutos antes de tu sesión (Faltan aprox. ${Math.ceil(faltanMinutos)} min).`;
+                textoEspera.style.display = 'block';
+                formCodigo.style.display = 'none';
+            } else {
+                 textoEspera.innerHTML = `<i class="bi bi-x-circle"></i> Tu tiempo de sesión ha expirado o finalizado.`;
+                 formCodigo.style.display = 'none';
+            }
+        }
+
         try {
           const qReservas = query(collection(db, "reservas"), where("uid", "==", user.uid));
           const reservasSnap = await getDocs(qReservas);
           
           if (!reservasSnap.empty) {
             let reservasArray = [];
-            reservasSnap.forEach(doc => reservasArray.push(doc.data()));
-            const miReserva = reservasArray[reservasArray.length - 1];
+            reservasSnap.forEach(d => reservasArray.push({ id: d.id, ...d.data() }));
             
-            document.getElementById('pedido-fecha').textContent = miReserva.fecha;
-            document.getElementById('pedido-hora').textContent = miReserva.hora;
-            document.getElementById('pedido-software').textContent = miReserva.software;
-            document.getElementById('pedido-comentario').textContent = miReserva.comentario;
+            // Tomamos la última reserva
+            miReservaData = reservasArray[reservasArray.length - 1];
+            miReservaId = miReservaData.id;
+            
+            document.getElementById('pedido-fecha').textContent = miReservaData.fecha;
+            document.getElementById('pedido-hora').textContent = miReservaData.hora;
+            document.getElementById('pedido-software').textContent = miReservaData.software;
+            document.getElementById('pedido-comentario').textContent = miReservaData.comentario || 'Sin comentarios.';
 
             const estadoEl = document.getElementById('pedido-estado');
-            if (miReserva.estado === "completado") {
+            if (miReservaData.estado === "completado") {
               estadoEl.innerHTML = `<span style="background: rgba(18, 215, 246, 0.15); color: var(--cyan); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(18, 215, 246, 0.3);">Completado <i class="bi bi-check-all"></i></span>`;
+              document.getElementById('seccion-acceso-remoto').style.display = 'none';
             } else {
               estadoEl.innerHTML = `<span style="background: rgba(53, 221, 146, 0.15); color: var(--green); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(53, 221, 146, 0.3);">Pendiente</span>`;
+              
+              if(miReservaData.codigoAcceso) {
+                document.getElementById('texto-espera-codigo').style.display = 'none';
+                document.getElementById('formulario-codigo').style.display = 'block';
+                document.getElementById('input-codigo-acceso').value = miReservaData.codigoAcceso;
+                document.getElementById('input-codigo-acceso').disabled = true;
+                document.getElementById('btn-enviar-codigo').style.display = 'none';
+                document.getElementById('mensaje-codigo-enviado').style.display = 'block';
+              } else {
+                verificarDesbloqueo();
+                setInterval(verificarDesbloqueo, 30000); // Revisa cada 30 segundos
+              }
             }
+          } else {
+             document.getElementById('seccion-acceso-remoto').style.display = 'none';
           }
         } catch (error) {
           console.error("Error leyendo reservas:", error);
         }
 
+        // --- ENVIAR CÓDIGO A FIREBASE ---
+        document.getElementById('btn-enviar-codigo').addEventListener('click', async () => {
+            const codigo = document.getElementById('input-codigo-acceso').value;
+            if(!codigo) return;
+            
+            const btn = document.getElementById('btn-enviar-codigo');
+            btn.innerHTML = 'Enviando...';
+            btn.disabled = true;
+
+            try {
+                const reservaRef = doc(db, "reservas", miReservaId);
+                await updateDoc(reservaRef, {
+                    codigoAcceso: codigo
+                });
+                document.getElementById('input-codigo-acceso').disabled = true;
+                btn.style.display = 'none';
+                document.getElementById('mensaje-codigo-enviado').style.display = 'block';
+                window.mostrarAlertaModal("Código enviado correctamente al administrador", true);
+            } catch(e) {
+                console.error(e);
+                btn.innerHTML = 'Enviar';
+                btn.disabled = false;
+                window.mostrarAlertaModal("Error enviando el código", false);
+            }
+        });
+
+        // --- CREAR NUEVA RESERVA ---
         document.getElementById('btn-pagar').addEventListener('click', async () => {
           const comentario = document.getElementById('reservaComentario').value;
 
@@ -636,6 +720,19 @@
 
           const fechaFormateada = window.diaSeleccionado.toLocaleDateString('es-ES', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
 
+          // Calcular Timestamp para Madrid (CEST = UTC+2 / CET = UTC+1). Asumimos +02:00 por defecto para evitar desfases gigantes.
+          let matches = window.horaSeleccionada.match(/(\d+):(\d+)\s(AM|PM)/);
+          let hour = parseInt(matches[1]);
+          if (matches[3] === 'PM' && hour < 12) hour += 12;
+          if (matches[3] === 'AM' && hour === 12) hour = 0;
+          
+          let monthStr = String(window.diaSeleccionado.getMonth() + 1).padStart(2, '0');
+          let dayStr = String(window.diaSeleccionado.getDate()).padStart(2, '0');
+          let yearStr = window.diaSeleccionado.getFullYear();
+          let hourStr = String(hour).padStart(2, '0');
+          let isoString = `${yearStr}-${monthStr}-${dayStr}T${hourStr}:00:00+02:00`;
+          let timestampCalculado = new Date(isoString).getTime();
+
           try {
             await addDoc(collection(db, "reservas"), {
               uid: user.uid,
@@ -645,21 +742,17 @@
               software: window.softwareSeleccionado,
               comentario: comentario,
               estado: "pendiente",
+              timestampReserva: timestampCalculado,
               creado: serverTimestamp()
             });
 
             window.mostrarAlertaModal(`Reserva guardada. Redirigiendo a pasarela...`, true);
             
-            document.getElementById('pedido-fecha').textContent = fechaFormateada;
-            document.getElementById('pedido-hora').textContent = window.horaSeleccionada;
-            document.getElementById('pedido-software').textContent = window.softwareSeleccionado;
-            document.getElementById('pedido-comentario').textContent = comentario;
-            document.getElementById('pedido-estado').innerHTML = `<span style="background: rgba(53, 221, 146, 0.15); color: var(--green); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(53, 221, 146, 0.3);">Pendiente</span>`;
-
             setTimeout(() => {
-              btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Redirigiendo';
-              btn.style.background = 'linear-gradient(100deg, #35dd92, #2bb978)';
-            }, 1200);
+              // Redirige a pasarela de pago aquí
+              // window.location.href = "https://tu-link-de-pago.com";
+              window.location.reload(); // Recarga para actualizar panel temporalmente
+            }, 1500);
 
           } catch (e) {
             console.error(e);
@@ -669,6 +762,7 @@
           }
         });
 
+        // --- RENDERIZAR PRODUCTOS COMPRADOS ---
         const downloadsContainer = document.getElementById('downloads-container');
         try {
           const q = query(collection(db, "purchases"), where("uid", "==", user.uid));
