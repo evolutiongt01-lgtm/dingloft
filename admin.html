@@ -30,10 +30,13 @@
     .btn-unlock { width: 100%; padding: 14px; background: linear-gradient(90deg, #ff5050, #ff2a2a); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem; transition: .2s; text-transform: uppercase; letter-spacing: 1px; }
     .btn-unlock:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,80,80,0.3); }
 
-    /* REPRODUCTOR DE YOUTUBE MUSIC FLOTANTE (ESTILO LIQUID GLASS) */
-    .music-player-pill { position: fixed; bottom: 25px; right: 25px; background: rgba(16, 27, 45, 0.85); border: 1px solid rgba(53, 221, 146, 0.3); padding: 12px 20px; border-radius: 50px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 15px 35px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 12px; z-index: 9999; }
-    .music-btn-play { background: linear-gradient(135deg, #35dd92, #12d7f6); color: #04111a; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; cursor: pointer; transition: .2s; }
-    .music-btn-play:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(53, 221, 146, 0.4); }
+    /* REPRODUCTOR FLOTANTE LIQUID GLASS */
+    .music-player-pill { position: fixed; bottom: 25px; right: 25px; background: rgba(16, 27, 45, 0.85); border: 1px solid rgba(53, 221, 146, 0.3); padding: 12px 20px; border-radius: 50px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 15px 35px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 14px; z-index: 9999; }
+    .music-icon-box { width: 36px; height: 36px; background: rgba(53, 221, 146, 0.15); border: 1px solid rgba(53, 221, 146, 0.4); border-radius: 50%; display: grid; place-items: center; color: var(--green); font-size: 1rem; }
+    .music-title { font-size: 0.8rem; font-weight: 700; color: white; margin: 0; max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .music-controls { display: flex; align-items: center; gap: 8px; }
+    .music-btn { background: rgba(255,255,255,0.08); border: 1px solid var(--line); color: white; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 0.85rem; transition: .2s; cursor: pointer; }
+    .music-btn:hover { background: var(--green); color: #04111a; border-color: var(--green); }
 
     /* MODAL INTERACTIVO LIQUID GLASS */
     .custom-modal-overlay { position: fixed; inset: 0; background: rgba(4, 8, 15, 0.85); backdrop-filter: blur(12px); z-index: 999999; display: grid; place-items: center; opacity: 0; pointer-events: none; transition: .3s ease; }
@@ -145,14 +148,20 @@
     </div>
   </div>
 
-  <!-- WIDGET DE YOUTUBE MUSIC FLOTANTE (CON TUS 6 LINKS) -->
+  <!-- REPRODUCTOR DE YOUTUBE INTEGRADO (INVISIBLE PERO FUNCIONAL EN SEGUNDO PLANO) -->
+  <div id="youtube-player-hidden" style="display:none;"></div>
+
+  <!-- WIDGET FLOTANTE DE ADORACIÓN CON TUS 6 LINKS -->
   <div class="music-player-pill" id="music-player-container" style="display: none;">
-    <div style="display:flex; align-items:center; gap:8px; color:var(--green); font-size:0.85rem; font-weight:700;">
-      <i class="bi bi-headphones"></i> Adoración
+    <div class="music-icon-box"><i class="bi bi-headphones"></i></div>
+    <div>
+      <p style="font-size:0.7rem; color:var(--muted); margin:0;">Música de Adoración</p>
+      <p class="music-title" id="current-song-title">Aleatoria en vivo</p>
     </div>
-    <button class="music-btn-play" onclick="abrirAdoracionAleatoria()">
-      <i class="bi bi-play-fill fs-6"></i> Escuchar Alabanza
-    </button>
+    <div class="music-controls">
+      <button class="music-btn" onclick="reproducirAlabanzaAleatoria()" title="Siguiente Alabanza"><i class="bi bi-skip-forward-fill"></i></button>
+      <button class="music-btn" id="play-pause-audio-btn" onclick="togglePlayYouTube()" title="Play/Pause"><i class="bi bi-play-fill"></i></button>
+    </div>
   </div>
 
   <!-- MODAL INTERACTIVO LIQUID GLASS -->
@@ -324,23 +333,59 @@
   
   <div class="toast" id="toast-message">Actualizado correctamente.</div>
 
+  <!-- SCRIPT OFICIAL DE YOUTUBE IFRAME API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
   <script>
     window.adminEmailActual = "";
+    let ytPlayer;
 
-    // TUS 6 ENLACES EXACTOS DE YOUTUBE MUSIC
-    const listaLinksYouTube = [
-        "https://music.youtube.com/watch?v=_nj2dJEZ9Do&si=lL_tfQNMTZ4H08Bn",
-        "https://music.youtube.com/watch?v=3xtr8zO4zJc&list=RDAMVMXXwiSOwmgMk",
-        "https://music.youtube.com/watch?v=q3c5K4CqMCE&list=PLzxuOnpa-L54xP3_GBiL4G5A2TmaExdF4",
-        "https://music.youtube.com/watch?v=f-SToYzJKVs&list=PLzxuOnpa-L54xP3_GBiL4G5A2TmaExdF4",
-        "https://music.youtube.com/watch?v=Mef_6iw3IVU&list=RDAMPLPLzxuOnpa-L54xP3_GBiL4G5A2TmaExdF4",
-        "https://music.youtube.com/watch?v=RlJYKCdI0RQ&list=PLzxuOnpa-L54xP3_GBiL4G5A2TmaExdF4"
+    // TUS 6 LINKS EXACTOS DE YOUTUBE MUSIC CONVERTIDOS A IDs
+    const listaIDsYouTube = [
+        "_nj2dJEZ9Do", // Link 1
+        "3xtr8zO4zJc", // Link 2
+        "q3c5K4CqMCE", // Link 3
+        "f-SToYzJKVs", // Link 4
+        "Mef_6iw3IVU", // Link 5
+        "RlJYKCdI0RQ"  // Link 6
     ];
 
-    window.abrirAdoracionAleatoria = function() {
-        // Escoger un link completamente al azar de tus 6 canciones
-        const linkAleatorio = listaLinksYouTube[Math.floor(Math.random() * listaLinksYouTube.length)];
-        window.open(linkAleatorio, '_blank');
+    function onYouTubeIframeAPIReady() {
+        let idAleatorio = listaIDsYouTube[Math.floor(Math.random() * listaIDsYouTube.length)];
+        ytPlayer = new YT.Player('youtube-player-hidden', {
+            height: '0',
+            width: '0',
+            videoId: idAleatorio,
+            playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': idAleatorio },
+            events: {
+                'onReady': (event) => {
+                    // Listo para reproducir
+                }
+            }
+        });
+    }
+
+    window.reproducirAlabanzaAleatoria = function() {
+        if (!ytPlayer) return;
+        let idAleatorio = listaIDsYouTube[Math.floor(Math.random() * listaIDsYouTube.length)];
+        ytPlayer.loadVideoById(idAleatorio);
+        ytPlayer.setVolume(100);
+        ytPlayer.playVideo();
+        document.getElementById('play-pause-audio-btn').innerHTML = '<i class="bi bi-pause-fill"></i>';
+    }
+
+    window.togglePlayYouTube = function() {
+        if (!ytPlayer) return;
+        const btn = document.getElementById('play-pause-audio-btn');
+        let state = ytPlayer.getPlayerState();
+        if (state === YT.PlayerState.PLAYING) {
+            ytPlayer.pauseVideo();
+            btn.innerHTML = '<i class="bi bi-play-fill"></i>';
+        } else {
+            ytPlayer.setVolume(100);
+            ytPlayer.playVideo();
+            btn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+        }
     }
 
     // RELOJ MUNDIAL DINÁMICO
@@ -376,7 +421,7 @@
 
     window.adminNombreReal = "Jefe";
 
-    // FRASES EVANGÉLICAS PROFUNDAS + APERTURA DE WIDGET MUSICAL
+    // FRASES EVANGÉLICAS PROFUNDAS + APERTURA DE MÚSICA EN SEGUNDO PLANO
     function hablarBienvenida(nombre) {
         if ('speechSynthesis' in window) {
             const frasesEvangelicasLargas = [
@@ -389,8 +434,15 @@
             const pTop = document.getElementById('welcome-msg-p');
             if(pTop) pTop.textContent = fraseElegida;
 
-            // MOSTRAR EL BOTÓN FLOTANTE DE MÚSICA
+            // MOSTRAR WIDGET DE MÚSICA
             document.getElementById('music-player-container').style.display = 'flex';
+
+            // INICIAR MÚSICA EN VOLUMEN BAJO (DUCKING)
+            if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+                ytPlayer.setVolume(20);
+                ytPlayer.playVideo();
+                document.getElementById('play-pause-audio-btn').innerHTML = '<i class="bi bi-pause-fill"></i>';
+            }
 
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(fraseElegida);
@@ -401,6 +453,13 @@
             const voces = window.speechSynthesis.getVoices();
             const vozEspanol = voces.find(v => v.lang.includes('es') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Microsoft')));
             if (vozEspanol) utterance.voice = vozEspanol;
+
+            // CUANDO TERMINE EL BOT, SUBIR VOLUMEN AL 100%
+            utterance.onend = function() {
+                if (ytPlayer && typeof ytPlayer.setVolume === 'function') {
+                    ytPlayer.setVolume(100);
+                }
+            };
 
             window.speechSynthesis.speak(utterance);
         }
