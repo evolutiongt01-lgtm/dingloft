@@ -26,9 +26,11 @@
     .logout { width:100%; display:flex; gap:12px; align-items:center; margin-top:17px; padding:12px 0 0; border:0; border-top:1px solid var(--line); color:#c7d3e1; background:transparent; text-align:left; font-size:.86rem; }
     .content { min-width:0; padding:42px clamp(25px,5vw,78px) 37px; } .top { display:flex; align-items:center; justify-content:space-between; gap:20px; }
     .top h1 { margin:0; letter-spacing:-.06em; font-size:clamp(2rem,3vw,3.2rem); } .top p { margin:.7rem 0 0; color:var(--muted); } .top-actions { display:flex; gap:13px; align-items:center; }
-    .icon-button { position:relative; display:grid; place-items:center; width:45px; height:45px; border:1px solid var(--line); border-radius:13px; color:#dbe9f6; background:rgba(14,23,38,.65); } .icon-button::after { content:''; position:absolute; top:8px; right:8px; width:7px; height:7px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan); }
+    
+    /* El botón de agenda fue eliminado, solo queda el avatar arriba a la derecha */
     .top-avatar { width:45px; height:45px; border:1px solid var(--cyan); border-radius:50%; display:grid; place-items:center; color:#07131e; background:linear-gradient(135deg,#f5b36e,#a56bff); font-weight:800; overflow:hidden; }
     .top-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    
     .stats { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; margin:34px 0 26px; } .stat { display:flex; align-items:center; gap:19px; min-height:118px; padding:23px 26px; border:1px solid var(--line); border-radius:18px; background:linear-gradient(145deg,rgba(18,29,47,.84),rgba(8,14,25,.71)); }
     .stat i { width:57px; height:57px; display:grid; place-items:center; border-radius:16px; font-size:1.75rem; color:var(--cyan); border:1px solid rgba(0,217,255,.55); background:rgba(0,210,255,.08); } .stat:nth-child(2) i{color:var(--violet);border-color:rgba(154,92,255,.6);background:rgba(154,92,255,.08)}
     .stat span { display:block; color:#cad5e3; font-size:.89rem; } .stat strong { display:block; margin-top:4px; font-size:2rem; line-height:1; color:var(--cyan); } .stat:nth-child(2) strong{color:var(--violet)}
@@ -78,21 +80,26 @@
     .liquid-close { position: absolute; top: 22px; right: 22px; background: transparent; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; transition: .2s; z-index: 10;}
     .liquid-close:hover { color: white; }
 
-    /* LAYOUT DE DOS COLUMNAS COMO EN TU IMAGEN */
+    /* LAYOUT DE DOS COLUMNAS */
     .booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 15px; }
     
     /* COLUMNA IZQUIERDA: CALENDARIO */
     .calendar-box { background: rgba(6, 12, 22, 0.5); border: 1px solid var(--line); border-radius: 20px; padding: 18px; }
     .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
     .calendar-header h4 { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--text); }
-    .calendar-nav-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); color: var(--muted); border-radius: 8px; width: 32px; height: 32px; display: grid; place-items: center; transition: .2s; }
+    .calendar-nav-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); color: var(--muted); border-radius: 8px; width: 32px; height: 32px; display: grid; place-items: center; transition: .2s; cursor: pointer; }
     .calendar-nav-btn:hover { background: var(--cyan); color: #04111a; }
+    .calendar-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
     
     .calendar-days-head { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-bottom: 10px; }
     .calendar-days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
     .day-cell { aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: .2s ease; color: var(--text); }
     .day-cell.empty { cursor: default; }
     .day-cell.disabled { color: rgba(158, 172, 192, 0.25); cursor: not-allowed; text-decoration: line-through; }
+    
+    /* Estilo para los días falsos ocupados */
+    .day-cell.full { color: #ff5050; opacity: 0.6; cursor: not-allowed; text-decoration: line-through; font-weight: 400; }
+    
     .day-cell.available:hover { background: rgba(18, 215, 246, 0.15); border-color: var(--cyan); color: var(--cyan); }
     .day-cell.selected { background: var(--cyan) !important; color: #04111a !important; font-weight: 800; box-shadow: 0 0 12px rgba(18, 215, 246, 0.5); }
 
@@ -130,7 +137,7 @@
       <nav class="nav" aria-label="Navegación de cuenta">
         <a href="index.html"><i class="bi bi-house-door"></i><span>Home</span></a>
         <a class="active" href="#descargas"><i class="bi bi-download"></i><span>Descargas</span></a>
-        <!-- NUEVO BOTÓN EN LA BARRA LATERAL -->
+        <!-- BOTÓN EN LA BARRA LATERAL -->
         <a href="#" onclick="openReservaModal(); return false;"><i class="bi bi-headset"></i><span>Instalación Remota</span></a>
       </nav>
       <div class="profile">
@@ -152,7 +159,7 @@
           <p>Aquí tienes el control de tus programas y descargas.</p>
         </div>
         <div class="top-actions">
-          <button class="icon-button" onclick="openReservaModal()" title="Reservar fecha y hora"><i class="bi bi-calendar-event"></i></button>
+          <!-- SOLO EL AVATAR, ICONO DE AGENDA ELIMINADO -->
           <div class="top-avatar" id="top-avatar"></div>
         </div>
       </div>
@@ -177,7 +184,7 @@
         </article>
         
         <aside class="right">
-          <!-- NUEVA TARJETA PROFESIONAL DE INSTALACIÓN REMOTA -->
+          <!-- TARJETA PROFESIONAL DE INSTALACIÓN REMOTA -->
           <article class="card support-card">
             <div class="card-title"><h2>Instalación Remota</h2></div>
             <div class="remote-install-content">
@@ -218,7 +225,7 @@
         <!-- COLUMNA IZQUIERDA: CALENDARIO INTERACTIVO -->
         <div class="calendar-box">
           <div class="calendar-header">
-            <button class="calendar-nav-btn" onclick="cambiarMes(-1)"><i class="bi bi-chevron-left"></i></button>
+            <button id="btn-prev-month" class="calendar-nav-btn" onclick="cambiarMes(-1)"><i class="bi bi-chevron-left"></i></button>
             <h4 id="calendar-month-year">Cargando...</h4>
             <button class="calendar-nav-btn" onclick="cambiarMes(1)"><i class="bi bi-chevron-right"></i></button>
           </div>
@@ -228,7 +235,7 @@
           <div class="calendar-days-grid" id="calendar-days"></div>
         </div>
 
-        <!-- COLUMNA DERECHA: SELECCIÓN DE HORAS -->
+        <!-- COLUMNA DERECHA: SELECCIÓN DE HORAS (MADRID TIME) -->
         <div class="times-box">
           <div class="times-header" id="selected-date-text">Selecciona un día</div>
           <div class="time-slots-container" id="time-slots-list">
@@ -262,13 +269,54 @@
     let fechaActual = new Date();
     let mesActual = fechaActual.getMonth();
     let anoActual = fechaActual.getFullYear();
+    
+    // Guardamos la fecha real actual para bloquear el retroceso en meses
+    const fechaReal = new Date();
+    const mesReal = fechaReal.getMonth();
+    const anoReal = fechaReal.getFullYear();
 
     let diaSeleccionado = null;
     let horaSeleccionada = null;
     let precioBase = 10.00;
 
     const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    const horariosDisponibles = ["09:00 AM", "10:30 AM", "12:00 PM", "02:00 PM", "03:30 PM", "05:00 PM"];
+    
+    // HORARIOS TRADUCIDOS A ESPAÑA (11 PM a 5 AM en Guate = 7 AM a 1 PM en España CEST)
+    const horariosDisponibles = [
+      "07:00 AM (CET/Madrid)",
+      "08:00 AM (CET/Madrid)",
+      "09:00 AM (CET/Madrid)",
+      "10:00 AM (CET/Madrid)",
+      "11:00 AM (CET/Madrid)",
+      "12:00 PM (CET/Madrid)",
+      "01:00 PM (CET/Madrid)"
+    ];
+
+    // SISTEMA PARA GENERAR 10 DÍAS "LLENOS" AL AZAR POR MES (MANTIENE CONSISTENCIA MIENTRAS NAVEGAS)
+    const fakeReservedCache = {};
+    function isFakeReserved(ano, mes, dia) {
+        let key = `${ano}-${mes}`;
+        if (!fakeReservedCache[key]) {
+            let reserved = new Set();
+            let totalDias = new Date(ano, mes + 1, 0).getDate();
+            // Elegir 10 días aleatorios
+            while(reserved.size < 10) {
+                reserved.add(Math.floor(Math.random() * totalDias) + 1);
+            }
+            fakeReservedCache[key] = reserved;
+        }
+        return fakeReservedCache[key].has(dia);
+    }
+
+    function actualizarBotonRetroceso() {
+      const btnPrev = document.getElementById('btn-prev-month');
+      // Si el año y el mes mostrado es igual o menor al actual, deshabilitar retroceso
+      if (anoActual < anoReal || (anoActual === anoReal && mesActual <= mesReal)) {
+        btnPrev.classList.add('disabled');
+      } else {
+        btnPrev.classList.remove('disabled');
+      }
+    }
 
     function renderizarCalendario() {
       const headerTitle = document.getElementById('calendar-month-year');
@@ -293,28 +341,43 @@
         fechaEvaluar.setHours(0,0,0,0);
 
         let esPasado = fechaEvaluar < hoy;
+        let esReservado = isFakeReserved(anoActual, mesActual, dia);
         let esSeleccionado = diaSeleccionado && 
                              diaSeleccionado.getDate() === dia && 
                              diaSeleccionado.getMonth() === mesActual && 
                              diaSeleccionado.getFullYear() === anoActual;
 
         if (esPasado) {
-          grid.innerHTML += `<div class="day-cell disabled">${dia}</div>`;
+          grid.innerHTML += `<div class="day-cell disabled" title="Día pasado">${dia}</div>`;
+        } else if (esReservado) {
+          grid.innerHTML += `<div class="day-cell full" title="Agenda llena">${dia}</div>`;
         } else {
           grid.innerHTML += `<div class="day-cell available ${esSeleccionado ? 'selected' : ''}" onclick="seleccionarDia(${dia})">${dia}</div>`;
         }
       }
+      
+      actualizarBotonRetroceso();
     }
 
     function cambiarMes(delta) {
-      mesActual += delta;
-      if (mesActual < 0) {
-        mesActual = 11;
-        anoActual--;
-      } else if (mesActual > 11) {
-        mesActual = 0;
-        anoActual++;
+      let nuevoMes = mesActual + delta;
+      let nuevoAno = anoActual;
+
+      if (nuevoMes < 0) {
+        nuevoMes = 11;
+        nuevoAno--;
+      } else if (nuevoMes > 11) {
+        nuevoMes = 0;
+        nuevoAno++;
       }
+
+      // VALIDACIÓN FINAL: Bloquear navegación hacia el pasado
+      if (nuevoAno < anoReal || (nuevoAno === anoReal && nuevoMes < mesReal)) {
+        return; 
+      }
+
+      mesActual = nuevoMes;
+      anoActual = nuevoAno;
       renderizarCalendario();
     }
 
