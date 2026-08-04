@@ -295,7 +295,7 @@
     .btn-like:hover { background: rgba(255, 0, 85, 0.1); color: #ff0055; border-color: rgba(255, 0, 85, 0.3); }
     .btn-like.liked { background: rgba(255, 0, 85, 0.15); color: #ff0055; border-color: #ff0055; }
 
-    /* ====== CARRITO LATERAL (LIQUID GLASS) ====== */
+    /* ====== CARRITO LATERAL ====== */
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; touch-action: none; }
     .cart-overlay.active { opacity: 1; visibility: visible; }
     .cart-brand-watermark { position: fixed; top: 50%; left: 30%; transform: translate(-50%, -50%) scale(0.9); text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none; }
@@ -354,12 +354,16 @@
     .success-icon-ring { width: 70px; height: 70px; background: rgba(255, 166, 0, 0.1); border: 2px solid var(--orange-btn); border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: var(--orange-btn); font-size: 1.8rem; }
     .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(255,166,0,.5); border-radius: 12px; color: #fff; background: #1a1000; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
     .toast.show { transform: translateY(0); }
+
+    .ratio-9x16 {
+      --bs-aspect-ratio: 177.77%;
+    }
   </style>
 </head>
 <body>
 
   <!-- ========================================== -->
-  <!-- MENÚ LATERAL "PUSH" (OCULTO A LA IZQUIERDA)-->
+  <!-- MENÚ LATERAL "PUSH" -->
   <!-- ========================================== -->
   <div class="side-menu-drawer" id="side-menu">
     <div class="text-center mb-4 mt-2">
@@ -380,14 +384,13 @@
   <div class="side-menu-overlay" id="side-menu-overlay"></div>
 
   <!-- ========================================== -->
-  <!-- ENVOLTORIO PRINCIPAL QUE SE EMPUJA AL LADO -->
+  <!-- PAGE WRAPPER -->
   <!-- ========================================== -->
   <div class="page-wrapper" id="page-wrapper">
     <div class="bg-orb orb-1"></div>
     <div class="bg-orb orb-2"></div>
     <div class="bg-orb orb-3"></div>
 
-    <!-- MODAL DE ÉXITO -->
     <div class="success-modal-overlay" id="success-modal">
       <div class="success-modal-box">
         <img src="img/dingloft.png" alt="Dingloft" style="width: 110px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
@@ -398,14 +401,12 @@
       </div>
     </div>
 
-    <!-- TOAST FLOTANTE -->
     <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
-    <!-- ====== NAVBAR PRINCIPAL CENTRADA ====== -->
+    <!-- ====== NAVBAR PRINCIPAL ====== -->
     <nav class="navbar navbar-glass fixed-top" id="main-navbar">
       <div class="container position-relative d-flex align-items-center">
         
-        <!-- IZQUIERDA (MÓVIL Y PC) -->
         <div class="d-flex align-items-center gap-2" style="flex: 1; z-index: 2;">
           <button class="mobile-liquid-btn d-md-none" id="btn-open-sidebar" title="Menú">
             <i class="bi bi-list"></i>
@@ -421,25 +422,19 @@
           </div>
         </div>
 
-        <!-- CENTRO (LOGO CENTRADO A LA PERFECCIÓN) -->
         <div class="d-flex justify-content-center" style="z-index: 1;">
           <a class="navbar-brand position-absolute top-50 start-50 translate-middle m-0 p-0 d-flex align-items-center" href="index.html">
             <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
           </a>
         </div>
         
-        <!-- DERECHA (MÓVIL Y PC) -->
         <div class="d-flex align-items-center justify-content-end gap-2 gap-md-3" style="flex: 1; z-index: 2;">
           <button class="mobile-liquid-btn d-none d-md-flex" id="btn-open-search-desktop" title="Buscar">
             <i class="bi bi-search"></i>
           </button>
 
-          <!-- Avatar / Login de Usuario -->
-          <div id="auth-container-global">
-            <!-- El JS inyecta el Avatar Liquid Glass aquí -->
-          </div>
+          <div id="auth-container-global"></div>
 
-          <!-- BOTÓN CARRITO TEXTO (Solo PC) -->
           <button id="main-cart-btn" class="btn-outline-custom d-none d-md-flex align-items-center gap-2 cart-btn-global" style="padding: 6px 15px; font-size: 0.9rem;">
             <i class="bi bi-cart3"></i> CARRITO (<span class="cart-badge-count-global">0</span>)
           </button>
@@ -454,7 +449,7 @@
         <div class="row align-items-center g-4">
           <div class="col-lg-6">
             <div class="product-boxes-display glass-effect">
-              <img src="img/yamahakeys.png" alt="Yamaha Premium Keys" onerror="this.src='https://ui-avatars.com/api/?name=Yamaha+Keys&background=00e5ff&color=000&size=400'">
+              <img src="img/yamahakeys.png" alt="Yamaha Premium Keys">
             </div>
           </div>
           <div class="col-lg-6">
@@ -629,6 +624,57 @@
             </div>
           </div>
         </div>
+
+        <!-- ====== SECCIÓN DE REELS / DEMOS VERTICALES ====== -->
+        <section class="py-5">
+          <div class="container">
+            <div class="text-center mb-4">
+              <span class="text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 2px; color: var(--orange-btn);">Demostraciones en vivo</span>
+              <h3 class="fw-bold text-white mt-1 fs-5">Músicos probando Yamaha Premium Keys</h3>
+            </div>
+            
+            <div class="row g-4 justify-content-center">
+              <!-- Reel 1 (Demo 1) -->
+              <div class="col-12 col-sm-6 col-md-4">
+                <h6 class="text-white text-center mb-2 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-play-circle" style="color:var(--orange-btn);"></i> Demo Corta 1</h6>
+                <div class="liquid-glass-container p-2" style="max-width: 320px; margin: 0 auto;">
+                  <div class="ratio ratio-9x16 rounded-3 overflow-hidden">
+                    <iframe src="https://www.youtube.com/embed/qhlIa9HNcNg" title="Demo Corta 1" allowfullscreen style="border:0;"></iframe>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Reel 2 (Demo 2) -->
+              <div class="col-12 col-sm-6 col-md-4">
+                <h6 class="text-white text-center mb-2 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-play-circle" style="color:var(--orange-btn);"></i> Demo Corta 2</h6>
+                <div class="liquid-glass-container p-2" style="max-width: 320px; margin: 0 auto;">
+                  <div class="ratio ratio-9x16 rounded-3 overflow-hidden">
+                    <iframe src="https://www.youtube.com/embed/NqGyMUM9Juo" title="Demo Corta 2" allowfullscreen style="border:0;"></iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECCIÓN DE VIDEO DE DEMOSTRACIÓN PRINCIPAL -->
+        <section class="pb-5 mt-4">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-lg-10">
+                <div class="text-center mb-3">
+                  <span class="text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 2px; color: var(--orange-btn);">Demostración en Directo</span>
+                  <h3 class="fw-bold text-white mt-1 fs-5">Escucha la calidad de los pianos acústicos y eléctricos</h3>
+                </div>
+                <div class="liquid-glass-container">
+                  <div class="ratio ratio-16x9 rounded-3 overflow-hidden" style="box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+                    <iframe src="https://www.youtube.com/embed/QpaDQHlz8yE" title="Demostración Yamaha Premium Keys" allowfullscreen style="border:0;"></iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <!-- SECCIÓN DE PRODUCTOS SIMILARES -->
         <div class="row justify-content-center my-4">
@@ -1296,7 +1342,6 @@
       const couponSection = document.getElementById('coupon-section');
       const subtotalRow = document.getElementById('subtotal-row');
       const totalRow = document.getElementById('total-row');
-      const continueShoppingBox = document.getElementById('continue-shopping-box');
 
       const couponInput = document.getElementById('coupon-input');
       const applyCouponBtn = document.getElementById('apply-coupon-btn');
@@ -1322,9 +1367,6 @@
       cartBtns.forEach(btn => { if(btn) btn.addEventListener('click', openCart); });
       if(closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
       if(cartOverlay) cartOverlay.addEventListener('click', closeCart);
-      if(document.getElementById('continue-shopping')) {
-          document.getElementById('continue-shopping').addEventListener('click', closeCart);
-      }
 
       const updateCartUI = () => {
         cartItemsContainer.innerHTML = '';
@@ -1344,7 +1386,6 @@
           if(couponSection) couponSection.style.display = 'none';
           if(subtotalRow) subtotalRow.style.display = 'none';
           if(totalRow) totalRow.style.display = 'none';
-          if(continueShoppingBox) continueShoppingBox.style.display = 'none';
           couponApplied = false;
           if(couponMsg) couponMsg.style.display = 'none';
           if(couponInput) couponInput.value = '';
@@ -1353,7 +1394,6 @@
           if(couponSection) couponSection.style.display = 'flex';
           if(subtotalRow) subtotalRow.style.display = 'flex';
           if(totalRow) totalRow.style.display = 'flex';
-          if(continueShoppingBox) continueShoppingBox.style.display = 'block';
           
           cart.forEach((item, index) => {
             totalItems += item.qty;
@@ -1366,7 +1406,7 @@
             const itemHTML = `
               <div class="cart-item">
                 <div class="cart-item-img">
-                  <img src="img/${item.img}.png" alt="${item.name}" onerror="this.src='https://ui-avatars.com/api/?name=${item.name.charAt(0)}&background=00e5ff&color=000'">
+                  <img src="img/${item.img}.png" alt="${item.name}">
                 </div>
                 <div class="cart-item-info">
                   <h4 class="cart-item-title">${item.name}</h4>
@@ -1479,14 +1519,6 @@
           
           updateCartUI(); 
           
-          cartBtns.forEach(btn => {
-            if(btn && btn.classList) {
-              btn.classList.remove('cart-bounce');
-              void btn.offsetWidth; 
-              btn.classList.add('cart-bounce');
-            }
-          });
-          
           const originalHTML = this.innerHTML;
           const originalBg = this.style.background;
           const originalColor = this.style.color;
@@ -1499,7 +1531,7 @@
             if(!this.disabled) {
               this.innerHTML = originalHTML;
               this.style.background = originalBg;
-              this.style.color = originalColor || '';
+              this.style.color = originalColor;
             }
             openCart(); 
           }, 800);
