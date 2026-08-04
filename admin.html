@@ -30,6 +30,17 @@
     .btn-unlock { width: 100%; padding: 14px; background: linear-gradient(90deg, #ff5050, #ff2a2a); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem; transition: .2s; text-transform: uppercase; letter-spacing: 1px; }
     .btn-unlock:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,80,80,0.3); }
 
+    /* REPRODUCTOR DE MÚSICA FLOTANTE LIQUID GLASS */
+    .music-player-pill { position: fixed; bottom: 25px; right: 25px; background: rgba(16, 27, 45, 0.75); border: 1px solid rgba(255, 255, 255, 0.15); padding: 12px 18px; border-radius: 50px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 15px 35px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 14px; z-index: 9999; max-width: 340px; width: 100%; }
+    .music-icon-box { width: 40px; height: 40px; background: rgba(53, 221, 146, 0.15); border: 1px solid rgba(53, 221, 146, 0.4); border-radius: 50%; display: grid; place-items: center; color: var(--green); font-size: 1.1rem; flex-shrink: 0; animation: pulseMusic 2s infinite ease-in-out; }
+    @keyframes pulseMusic { 0%, 100% { box-shadow: 0 0 5px rgba(53,221,146,0.2); } 50% { box-shadow: 0 0 15px rgba(53,221,146,0.6); } }
+    .music-info { overflow: hidden; flex: 1; }
+    .music-title { font-size: 0.82rem; font-weight: 700; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; }
+    .music-artist { font-size: 0.72rem; color: var(--muted); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .music-controls { display: flex; align-items: center; gap: 8px; }
+    .music-btn { background: rgba(255,255,255,0.06); border: 1px solid var(--line); color: white; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 0.85rem; transition: .2s; cursor: pointer; }
+    .music-btn:hover { background: var(--green); color: #04111a; border-color: var(--green); }
+
     /* MODAL INTERACTIVO LIQUID GLASS */
     .custom-modal-overlay { position: fixed; inset: 0; background: rgba(4, 8, 15, 0.85); backdrop-filter: blur(12px); z-index: 999999; display: grid; place-items: center; opacity: 0; pointer-events: none; transition: .3s ease; }
     .custom-modal-overlay.active { opacity: 1; pointer-events: auto; }
@@ -43,7 +54,7 @@
     .app { min-height:100vh; display:grid; grid-template-columns:292px 1fr; filter: blur(10px); transition: filter 0.5s ease; }
     body.unlocked .app { filter: blur(0); }
 
-    /* WIDGET LIQUID GLASS (RELOJ MUNDIAL PERSONALIZADO) */
+    /* WIDGET LIQUID GLASS (RELOJ DINÁMICO) */
     .world-clock-pill { display: inline-flex; align-items: center; gap: 20px; background: rgba(16, 27, 45, 0.45); border: 1px solid rgba(255, 255, 255, 0.12); padding: 10px 22px; border-radius: 50px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 0 12px rgba(255,255,255,0.03); margin-top: 15px; flex-wrap: wrap; }
     .clock-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 600; color: #c4d0df; }
     .clock-item i { color: var(--cyan); font-size: 1rem; }
@@ -140,6 +151,21 @@
     </div>
   </div>
 
+  <!-- REPRODUCTOR DE MÚSICA FLOTANTE (ALABANZAS) -->
+  <div class="music-player-pill" id="music-player-container" style="display: none;">
+    <div class="music-icon-box"><i class="bi bi-headphones"></i></div>
+    <div class="music-info">
+      <p class="music-title" id="track-title">Cargando alabanza...</p>
+      <p class="music-artist" id="track-artist">Ministerio de Alabanza</p>
+    </div>
+    <div class="music-controls">
+      <button class="music-btn" onclick="cambiarPista(-1)" title="Anterior"><i class="bi bi-skip-backward-fill"></i></button>
+      <button class="music-btn" id="play-pause-btn" onclick="togglePlayMusic()" title="Play/Pause"><i class="bi bi-play-fill"></i></button>
+      <button class="music-btn" onclick="cambiarPista(1)" title="Siguiente"><i class="bi bi-skip-forward-fill"></i></button>
+    </div>
+    <audio id="audio-player" onended="cambiarPista(1)"></audio>
+  </div>
+
   <!-- MODAL INTERACTIVO LIQUID GLASS -->
   <div class="custom-modal-overlay" id="customConfirmModal">
     <div class="custom-modal-box">
@@ -179,10 +205,9 @@
           <p id="welcome-msg-p">¡Hola, bienvenido jefe! Dios bendiga tu trabajo y tu negocio hoy. 🙏🚀</p>
         </div>
         
-        <!-- WIDGET LIQUID GLASS (RELOJ DINÁMICO SEGÚN QUIÉN ENTRE) -->
         <div>
           <div class="world-clock-pill" id="widget-reloj-dinamico">
-            <!-- Se inyecta por JS según sea César o Antonio -->
+            <!-- Reloj dinámico por usuario -->
           </div>
         </div>
       </div>
@@ -313,7 +338,52 @@
   <script>
     window.adminEmailActual = "";
 
-    // RELOJ MUNDIAL DINÁMICO (GUATE + MIAMI O TEXAS + MIAMI)
+    // PLAYLIST DE ALABANZAS (Miel San Marcos, Ebenezer, Julio Melgar, etc.)
+    const playlistAlabanzas = [
+        { title: "Derramo mi Corazón", artist: "Julio Melgar", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+        { title: "No A Mí, Oh Dios", artist: "Ministerios Ebenezer", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+        { title: "Gracia Sublime", artist: "Miel San Marcos", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+        { title: "Cerca de Tí", artist: "Julio Melgar", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" }
+    ];
+    let currentTrackIndex = 0;
+
+    function inicializarReproductor() {
+        const audio = document.getElementById('audio-player');
+        if (!audio) return;
+        cargarPista(currentTrackIndex);
+    }
+
+    function cargarPista(index) {
+        const audio = document.getElementById('audio-player');
+        const titleEl = document.getElementById('track-title');
+        const artistEl = document.getElementById('track-artist');
+        
+        audio.src = playlistAlabanzas[index].url;
+        titleEl.textContent = playlistAlabanzas[index].title;
+        artistEl.textContent = playlistAlabanzas[index].artist;
+    }
+
+    window.togglePlayMusic = function() {
+        const audio = document.getElementById('audio-player');
+        const btn = document.getElementById('play-pause-btn');
+        if (audio.paused) {
+            audio.play();
+            btn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+        } else {
+            audio.pause();
+            btn.innerHTML = '<i class="bi bi-play-fill"></i>';
+        }
+    }
+
+    window.cambiarPista = function(dir) {
+        currentTrackIndex = (currentTrackIndex + dir + playlistAlabanzas.length) % playlistAlabanzas.length;
+        cargarPista(currentTrackIndex);
+        const audio = document.getElementById('audio-player');
+        audio.play();
+        document.getElementById('play-pause-btn').innerHTML = '<i class="bi bi-pause-fill"></i>';
+    }
+
+    // RELOJ MUNDIAL DINÁMICO (CÉSAR: GUATE+MIAMI / ANTONIO: TEXAS+MIAMI)
     function actualizarRelojes() {
         const opcionesMiami = { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
         const opcionesGuate = { timeZone: 'America/Guatemala', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
@@ -328,14 +398,12 @@
         if (!widgetEl) return;
 
         if (window.adminEmailActual === 'tepaz2025@gmail.com') {
-            // Reloj para Antonio (Texas + Miami)
             widgetEl.innerHTML = `
                 <div class="clock-item"><i class="bi bi-clock"></i> Miami: <span id="clock-miami">${horaMiami}</span></div>
                 <div class="clock-divider"></div>
                 <div class="clock-item"><i class="bi bi-clock"></i> Texas: <span id="clock-texas">${horaTexas}</span></div>
             `;
         } else {
-            // Reloj para César (Guatemala + Miami)
             widgetEl.innerHTML = `
                 <div class="clock-item"><i class="bi bi-clock"></i> Miami: <span id="clock-miami">${horaMiami}</span></div>
                 <div class="clock-divider"></div>
@@ -388,6 +456,11 @@
             document.getElementById('security-lock').classList.add('unlocked');
             document.body.classList.add('unlocked');
             hablarBienvenida(window.adminNombreReal);
+            
+            // Mostrar y activar reproductor de música al entrar
+            document.getElementById('music-player-container').style.display = 'flex';
+            inicializarReproductor();
+
             if (window.iniciarCargaDeDatos) window.iniciarCargaDeDatos();
         } else {
             errorMsg.style.display = 'block';
@@ -412,7 +485,6 @@
       setTimeout(() => toast.classList.remove('show'), 3500);
     }
 
-    // MODAL DE CONFIRMACIÓN LIQUID GLASS
     window.mostrarModalConfirm = function(titulo, descripcion, callbackSi) {
         document.getElementById('modalConfirmTitle').textContent = titulo;
         document.getElementById('modalConfirmDesc').textContent = descripcion;
@@ -432,7 +504,6 @@
         document.getElementById('customConfirmModal').classList.remove('active');
     }
 
-    // BUSCADORES EN TIEMPO REAL
     window.filtrarTabla = function(containerId, cardSelector, query) {
         const container = document.getElementById(containerId);
         const cards = container.querySelectorAll(cardSelector);
@@ -453,7 +524,6 @@
         });
     }
 
-    // EXPORTAR A CSV (EXCEL)
     window.exportarExcel = function(tableId, filename) {
         let csv = [];
         let rows = document.querySelectorAll(`#${tableId} tr`);
@@ -527,12 +597,10 @@
         const gananciasTbody = document.getElementById('ganancias-tbody');
         
         try {
-            // NOTAS
             const notasSnap = await getDocs(collection(db, "admin_notes"));
             let notasMap = {};
             notasSnap.forEach(d => { notasMap[d.id] = d.data().note || ''; });
 
-            // RESERVAS
             const reservasSnap = await getDocs(collection(db, "reservas"));
             let reservas = [];
             reservasSnap.forEach(d => reservas.push({ id: d.id, ...d.data() }));
@@ -578,7 +646,7 @@
                             <span class="status-badge ${estadoClass}">${estadoTexto}</span>
                         </div>
                         <div class="reserva-body">
-                            <div class="data-group"><span>Fecha y Hora (Miami / Guatemala)</span><strong>${r.fecha} - ${r.hora}</strong></div>
+                            <div class="data-group"><span>Fecha y Hora (Miami / Tu Hora Local)</span><strong>${r.fecha} - ${r.hora}</strong></div>
                             <div class="data-group"><span>Software</span><strong>${r.software}</strong></div>
                             <div class="data-group"><span>Comentario / Problema</span><strong>${r.comentario}</strong></div>
                             <div class="data-group"><span>Código de Acceso Cliente</span>${codAcceso}</div>
@@ -593,7 +661,6 @@
             }
             document.getElementById('stat-reservas').textContent = activasCount;
 
-            // COMPRAS Y CLIENTES
             const comprasSnap = await getDocs(collection(db, "purchases"));
             let totalCompras = 0;
             let clientesMap = {};
@@ -651,7 +718,6 @@
                 gananciasTbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No hay registros de ingresos todavía.</td></tr>';
             }
 
-            // Clientes (Con Notas y Botón de Eliminar Cliente)
             clientesTbody.innerHTML = '';
             if(clientesArr.length === 0) {
                 clientesTbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay clientes aún.</td></tr>';
@@ -677,7 +743,6 @@
                 });
             }
 
-            // Historial Compras
             comprasArr.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
             comprasTbody.innerHTML = '';
             
