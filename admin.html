@@ -151,12 +151,12 @@
     </div>
   </div>
 
-  <!-- REPRODUCTOR DE MÚSICA FLOTANTE (ALABANZAS) -->
+  <!-- REPRODUCTOR DE MÚSICA FLOTANTE (ALABANZAS REALES) -->
   <div class="music-player-pill" id="music-player-container" style="display: none;">
     <div class="music-icon-box"><i class="bi bi-headphones"></i></div>
     <div class="music-info">
       <p class="music-title" id="track-title">Cargando alabanza...</p>
-      <p class="music-artist" id="track-artist">Ministerio de Alabanza</p>
+      <p class="music-artist" id="track-artist">Ministerio de Adoración</p>
     </div>
     <div class="music-controls">
       <button class="music-btn" onclick="cambiarPista(-1)" title="Anterior"><i class="bi bi-skip-backward-fill"></i></button>
@@ -338,12 +338,11 @@
   <script>
     window.adminEmailActual = "";
 
-    // PLAYLIST DE ALABANZAS (Miel San Marcos, Ebenezer, Julio Melgar, etc.)
+    // PLAYLIST DE ADORACIÓN Y ALABANZA REAL (Miel San Marcos, Julio Melgar, Ebenezer)
     const playlistAlabanzas = [
-        { title: "Derramo mi Corazón", artist: "Julio Melgar", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-        { title: "No A Mí, Oh Dios", artist: "Ministerios Ebenezer", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-        { title: "Gracia Sublime", artist: "Miel San Marcos", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-        { title: "Cerca de Tí", artist: "Julio Melgar", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" }
+        { title: "Cerca de Tí", artist: "Julio Melgar", url: "https://ia800304.us.archive.org/34/items/JulioMelgarCercaDeTi/Julio%20Melgar%20-%20Cerca%20De%20Ti.mp3" },
+        { title: "Gracia Sublime", artist: "Miel San Marcos", url: "https://ia801905.us.archive.org/11/items/MielSanMarcosGraciaSublime/Miel%20San%20Marcos%20-%20Gracia%20Sublime.mp3" },
+        { title: "Jehová es mi Pastor", artist: "Ministerios Ebenezer", url: "https://ia801601.us.archive.org/29/items/JehovaEsMiPastorEbenezer/Jehova%20es%20mi%20pastor.mp3" }
     ];
     let currentTrackIndex = 0;
 
@@ -383,7 +382,7 @@
         document.getElementById('play-pause-btn').innerHTML = '<i class="bi bi-pause-fill"></i>';
     }
 
-    // RELOJ MUNDIAL DINÁMICO (CÉSAR: GUATE+MIAMI / ANTONIO: TEXAS+MIAMI)
+    // RELOJ MUNDIAL DINÁMICO
     function actualizarRelojes() {
         const opcionesMiami = { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
         const opcionesGuate = { timeZone: 'America/Guatemala', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
@@ -416,29 +415,38 @@
 
     window.adminNombreReal = "Jefe";
 
-    // FRASES EVANGÉLICAS Y CORPORATIVAS MOTIVACIONALES (RANDOM)
+    // FRASES EVANGÉLICAS LARGAS Y PROFUNDAS + SECUENCIA PARA ACTIVAR MÚSICA AL TERMINAR
     function hablarBienvenida(nombre) {
         if ('speechSynthesis' in window) {
-            const frasesEvangelicas = [
-                `Sistema Dingloft en línea. Hola ${nombre}, encomienda tu camino al Señor, confía en Él y Él obrará. ¡A facturar con bendición hoy!`,
-                `Bienvenido jefe ${nombre}. Todo lo puedes en Cristo que te fortalece. Que Dios prospere cada venta y cada proyecto en este día.`,
-                `Atención ${nombre}. Esfuérzate y sé valiente. El Señor va delante de ti abriendo caminos en Dingloft. ¡A romperla con fe!`,
-                `Hola ${nombre}. Dios ha puesto gracia en tus manos. Que la sabiduría divina guíe cada decisión en tu negocio hoy.`,
-                `Conexión establecida, jefe ${nombre}. Fija tus ojos en el Creador y permite que su bendición multiplique tu esfuerzo corporativo.`
+            const frasesEvangelicasLargas = [
+                `Sistema Dingloft en línea. Hola ${nombre}, bendiciones en este día. Recuerda que la palabra del Señor nos enseña en Josué uno nueve: Esfuérzate y sé valiente, no temas ni desmayes, porque Jehová tu Dios estará contigo en dondequiera que vayas. Hoy encomendamos cada proyecto, cada cliente y cada meta de Dingloft en las manos del Creador para que su favor nos rodee como un escudo. ¡Que tengas una jornada de absoluta victoria y prosperidad celestial!`,
+                `Bienvenido al centro de mando, jefe ${nombre.toUpperCase()}. Dice el libro de Proverbios: Confía en Jehová con todo tu corazón, y no te apoyes en tu propia prudencia; reconócelo en todos tus caminos, y Él enderezará tus veredas. Hoy declaramos que las puertas de la gracia se abren delante de este negocio. Que cada venta, cada soporte y cada esfuerzo esté cubierto por la bendición de Dios. ¡A facturar y dar honra al Altísimo hoy!`,
+                `Conexión establecida con éxito, estimado ${nombre}. En este momento abrimos las puertas de la administración de Dingloft bajo la cobertura del Todopoderoso. Como dice el Salmo treinta y siete: Deléitate asimismo en Jehová, y Él te concederá las peticiones de tu corazón. Encomienda a Jehová tu camino, confía en Él, y Él hará resplandecer tu justicia como la luz. ¡Adelante con fe y con la convicción de que el éxito ya ha sido preparado para ti hoy!`
             ];
 
-            const fraseElegida = frasesEvangelicas[Math.floor(Math.random() * frasesEvangelicas.length)];
+            const fraseElegida = frasesEvangelicasLargas[Math.floor(Math.random() * frasesEvangelicasLargas.length)];
             const pTop = document.getElementById('welcome-msg-p');
             if(pTop) pTop.textContent = fraseElegida;
 
             const utterance = new SpeechSynthesisUtterance(fraseElegida);
             utterance.lang = 'es-ES';
-            utterance.rate = 1.05; 
+            utterance.rate = 1.0; 
             utterance.pitch = 0.95; 
 
             const voces = window.speechSynthesis.getVoices();
             const vozEspanol = voces.find(v => v.lang.includes('es') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Microsoft')));
             if (vozEspanol) utterance.voice = vozEspanol;
+
+            // CUANDO TERMINE DE HABLAR LA VOZ, SE ACTIVA AUTOMÁTICAMENTE LA MÚSICA DE ADORACIÓN
+            utterance.onend = function() {
+                const audioPlayer = document.getElementById('audio-player');
+                const playBtn = document.getElementById('play-pause-btn');
+                if (audioPlayer && audioPlayer.paused) {
+                    audioPlayer.play().then(() => {
+                        playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+                    }).catch(e => console.log("Audio autoplay bloqueado por el navegador:", e));
+                }
+            };
 
             window.speechSynthesis.speak(utterance);
         }
@@ -455,11 +463,12 @@
         if(pass === "Lanuevaera1") {
             document.getElementById('security-lock').classList.add('unlocked');
             document.body.classList.add('unlocked');
-            hablarBienvenida(window.adminNombreReal);
             
-            // Mostrar y activar reproductor de música al entrar
+            // Mostrar reproductor y empezar la voz de bendición
             document.getElementById('music-player-container').style.display = 'flex';
             inicializarReproductor();
+            
+            hablarBienvenida(window.adminNombreReal);
 
             if (window.iniciarCargaDeDatos) window.iniciarCargaDeDatos();
         } else {
