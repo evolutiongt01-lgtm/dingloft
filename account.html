@@ -38,7 +38,6 @@
     .download-row { display:grid; grid-template-columns:68px minmax(120px,1fr) auto; gap:17px; align-items:center; padding:11px; border:1px solid transparent; border-radius:15px; transition:.2s ease; } 
     .download-row:hover{border-color:var(--line);background:rgba(54,77,108,.13)}
     
-    /* ESTILOS PARA BUNDLES DESPLEGABLES */
     .bundle-container { display: flex; flex-direction: column; gap: 0; }
     .download-row.has-subs.active { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-color: var(--line); background: rgba(54,77,108,.13); }
     .sub-downloads { display: none; padding: 12px 15px 12px 25px; margin-left: 35px; margin-bottom: 12px; border-left: 2px solid var(--line); flex-direction: column; gap: 8px; background: rgba(8, 14, 25, 0.4); border-radius: 0 0 15px 15px; }
@@ -64,27 +63,55 @@
     .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
 
-    /* ESTILOS LIQUID GLASS PARA MODAL DE RESERVA */
-    .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 9, 17, 0.65); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    /* ESTILOS WIDGET CALENDARIO ESTILO KOALENDAR / LIQUID GLASS */
+    .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 9, 17, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .liquid-modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .liquid-modal-card { width: 90%; max-width: 450px; padding: 30px; border-radius: 24px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: var(--text); position: relative;}
-    .liquid-modal-card h3 { margin-top: 0; font-size: 1.4rem; letter-spacing: -.03em; }
-    .liquid-input { width: 100%; padding: 12px 16px; margin-top: 8px; margin-bottom: 14px; background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 12px; color: white; font-family: inherit; appearance: none; }
-    .liquid-input:focus { border-color: var(--cyan); outline: none; box-shadow: 0 0 10px rgba(0, 213, 255, 0.2); }
-    /* Para que el desplegable se vea bien */
-    select.liquid-input { cursor: pointer; }
-    select.liquid-input option { background: #0c1421; color: white; }
     
-    .liquid-btn { width: 100%; border: 0; border-radius: 12px; padding: 14px; background: linear-gradient(100deg, #0bd8f4, #1cbeeb); color: #03111a; font-weight: 800; cursor: pointer; margin-top: 10px; transition: .2s ease; display: flex; justify-content: center; align-items: center; gap: 8px;}
-    .liquid-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(11, 216, 244, 0.4); }
-    .liquid-close { position: absolute; top: 25px; right: 25px; background: transparent; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; transition: .2s; }
+    .liquid-modal-card { width: 95%; max-width: 820px; padding: 28px; border-radius: 28px; background: linear-gradient(145deg, rgba(16, 27, 45, 0.88), rgba(8, 14, 25, 0.82)); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: var(--text); position: relative; }
+    .liquid-close { position: absolute; top: 22px; right: 22px; background: transparent; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; transition: .2s; z-index: 10;}
     .liquid-close:hover { color: white; }
 
-    /* Alerta interior de la ventana Modal */
-    #modal-notif { display: none; padding: 12px; border-radius: 10px; font-size: 0.85rem; margin-bottom: 15px; text-align: center; font-weight: 500; animation: fadein 0.3s ease; }
-    @keyframes fadein { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+    /* LAYOUT DE DOS COLUMNAS COMO EN TU IMAGEN */
+    .booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 15px; }
+    
+    /* COLUMNA IZQUIERDA: CALENDARIO */
+    .calendar-box { background: rgba(6, 12, 22, 0.5); border: 1px solid var(--line); border-radius: 20px; padding: 18px; }
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .calendar-header h4 { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--text); }
+    .calendar-nav-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); color: var(--muted); border-radius: 8px; width: 32px; height: 32px; display: grid; place-items: center; transition: .2s; }
+    .calendar-nav-btn:hover { background: var(--cyan); color: #04111a; }
+    
+    .calendar-days-head { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-bottom: 10px; }
+    .calendar-days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .day-cell { aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: .2s ease; color: var(--text); }
+    .day-cell.empty { cursor: default; }
+    .day-cell.disabled { color: rgba(158, 172, 192, 0.25); cursor: not-allowed; text-decoration: line-through; }
+    .day-cell.available:hover { background: rgba(18, 215, 246, 0.15); border-color: var(--cyan); color: var(--cyan); }
+    .day-cell.selected { background: var(--cyan) !important; color: #04111a !important; font-weight: 800; box-shadow: 0 0 12px rgba(18, 215, 246, 0.5); }
+
+    /* COLUMNA DERECHA: HORARIOS Y SELECCIÓN */
+    .times-box { background: rgba(6, 12, 22, 0.5); border: 1px solid var(--line); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; }
+    .times-header { font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    .time-slots-container { display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto; padding-right: 4px; }
+    .time-slot { width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.03); color: var(--text); font-size: 0.88rem; font-weight: 600; text-align: center; cursor: pointer; transition: .2s ease; }
+    .time-slot:hover { background: rgba(18, 215, 246, 0.12); border-color: var(--cyan); color: var(--cyan); transform: translateY(-1px); }
+    .time-slot.selected { background: linear-gradient(90deg, var(--cyan), #1cbeeb); color: #03111a; font-weight: 800; border-color: var(--cyan); box-shadow: 0 4px 12px rgba(18, 215, 246, 0.3); }
+
+    /* FOOTER DEL MODAL: CUPÓN Y BOTÓN DE PAGO */
+    .booking-footer { margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: center; }
+    .cupon-group { display: flex; gap: 8px; }
+    .liquid-input { width: 100%; padding: 10px 14px; background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 12px; color: white; font-family: inherit; font-size: 0.85rem; text-transform: uppercase; }
+    .liquid-input:focus { border-color: var(--cyan); outline: none; box-shadow: 0 0 10px rgba(0, 213, 255, 0.2); }
+    .liquid-btn-cupon { padding: 0 14px; background: rgba(0,213,255,0.1); border: 1px solid var(--cyan); color: var(--cyan); border-radius: 12px; font-weight: 750; cursor: pointer; transition:.2s ease; font-size: 0.82rem; }
+    .liquid-btn-cupon:hover { background: var(--cyan); color: #03111a; }
+    
+    .liquid-btn { width: 100%; border: 0; border-radius: 12px; padding: 12px; background: linear-gradient(100deg, #0bd8f4, #1cbeeb); color: #03111a; font-weight: 800; cursor: pointer; transition: .2s ease; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 0.92rem; }
+    .liquid-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(11, 216, 244, 0.4); }
+
+    #modal-notif { display: none; padding: 10px; border-radius: 10px; font-size: 0.82rem; margin-bottom: 12px; text-align: center; font-weight: 600; grid-column: span 2; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
+    @media(max-width:768px){ .booking-grid { grid-template-columns: 1fr; } .booking-footer { grid-template-columns: 1fr; } #modal-notif { grid-column: span 1; } }
     @media(max-width:1080px){.app{grid-template-columns:78px 1fr}.sidebar{padding:25px 10px}.brand{margin:0 auto 42px;font-size:0}.brand span{font-size:1.8rem}.nav a{justify-content:center;padding:15px}.nav a span,.profile strong,.profile small,.logout span{display:none}.profile{padding:12px;display:grid;place-items:center}.logout{justify-content:center}.stats{grid-template-columns:1fr}.dashboard{grid-template-columns:1fr}.right{grid-template-columns:1fr}}
     @media(max-width:700px){.app{display:block}.sidebar{position:static;height:auto;padding:16px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:1.5rem;margin:0 8px 13px}.brand span{font-size:inherit}.nav{display:flex;overflow:auto}.nav a{min-width:55px;padding:12px}.nav a span{display:none}.profile{display:none}.content{padding:28px 16px}.top{align-items:flex-start}.top p{font-size:.86rem}.stats{margin:25px 0}.stat{min-height:93px}.right{grid-template-columns:1fr}.download-row{grid-template-columns:55px minmax(110px,1fr) auto}.product-art{width:52px;height:62px}.trust{justify-content:flex-start;gap:12px}.top-avatar{display:none}}
   </style>
@@ -158,50 +185,159 @@
     </main>
   </div>
   
-  <!-- VENTANA MODAL LIQUID GLASS PARA RESERVAS Y PAGOS ($10 + CUPÓN) -->
+  <!-- MODAL CALENDARIO ESTILO KOALENDAR / DINGLOFT -->
   <div class="liquid-modal-overlay" id="reservaModal">
     <div class="liquid-modal-card">
       <button class="liquid-close" onclick="closeReservaModal()"><i class="bi bi-x-lg"></i></button>
-      <h3>Reserva tu Instalación</h3>
-      <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 15px;">Selecciona fecha, hora y aplica tu cupón. Total: <strong id="precio-total" style="color: var(--cyan);">$10.00 USD</strong></p>
-      
-      <!-- NOTIFICACIÓN INTERNA DE LA VENTANA -->
-      <div id="modal-notif"></div>
+      <h3 style="margin: 0 0 4px; font-size: 1.3rem;">Reserva tu Sesión de Instalación</h3>
+      <p style="color: var(--muted); font-size: 0.83rem; margin: 0 0 15px;">Selecciona el día y horario que mejor te convenga.</p>
 
-      <label style="font-size: 0.85rem; color: var(--muted);">Fecha de reserva:</label>
-      <input type="date" id="reservaFecha" class="liquid-input">
+      <div class="booking-grid">
+        <!-- COLUMNA IZQUIERDA: CALENDARIO INTERACTIVO -->
+        <div class="calendar-box">
+          <div class="calendar-header">
+            <button class="calendar-nav-btn" onclick="cambiarMes(-1)"><i class="bi bi-chevron-left"></i></button>
+            <h4 id="calendar-month-year">Cargando...</h4>
+            <button class="calendar-nav-btn" onclick="cambiarMes(1)"><i class="bi bi-chevron-right"></i></button>
+          </div>
+          <div class="calendar-days-head">
+            <span>Do</span><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span>
+          </div>
+          <div class="calendar-days-grid" id="calendar-days"></div>
+        </div>
 
-      <label style="font-size: 0.85rem; color: var(--muted);">Hora preferida (Horarios Disponibles):</label>
-      <select id="reservaHora" class="liquid-input">
-        <option value="" disabled selected>Elige una hora...</option>
-        <option value="09:00 AM">09:00 a.m.</option>
-        <option value="10:30 AM">10:30 a.m.</option>
-        <option value="12:00 PM">12:00 p.m. (Mediodía)</option>
-        <option value="02:00 PM">02:00 p.m.</option>
-        <option value="03:30 PM">03:30 p.m.</option>
-        <option value="05:00 PM">05:00 p.m.</option>
-      </select>
-
-      <label style="font-size: 0.85rem; color: var(--muted);">Código de Cupón:</label>
-      <div style="display: flex; gap: 8px;">
-        <input type="text" id="cuponInput" placeholder="Ej. DINGLOFT5" class="liquid-input" style="margin-bottom:0; text-transform: uppercase;">
-        <button type="button" onclick="aplicarCupon()" style="padding: 0 15px; background: rgba(0,213,255,0.1); border: 1px solid var(--cyan); color: var(--cyan); border-radius: 12px; font-weight: 750; cursor: pointer; transition:.2s ease;">Aplicar</button>
+        <!-- COLUMNA DERECHA: SELECCIÓN DE HORAS -->
+        <div class="times-box">
+          <div class="times-header" id="selected-date-text">Selecciona un día</div>
+          <div class="time-slots-container" id="time-slots-list">
+            <p style="color: var(--muted); font-size: 0.8rem; text-align: center; margin-top: 30px;">Toca un día disponible del calendario para ver las horas.</p>
+          </div>
+        </div>
       </div>
 
-      <button id="btn-pagar" class="liquid-btn" onclick="procesarPagoReserva()"><i class="bi bi-credit-card"></i> Pagar y Reservar ($10)</button>
+      <!-- FOOTER CON NOTIFICACIÓN, CUPÓN Y PAGO -->
+      <div class="booking-footer">
+        <div id="modal-notif"></div>
+
+        <div class="cupon-group">
+          <input type="text" id="cuponInput" placeholder="CÓDIGO DE CUPÓN" class="liquid-input">
+          <button type="button" class="liquid-btn-cupon" onclick="aplicarCupon()">Aplicar</button>
+        </div>
+
+        <div>
+          <button id="btn-pagar" class="liquid-btn" onclick="procesarPagoReserva()">
+            <i class="bi bi-credit-card"></i> Pagar y Reservar (<span id="precio-total">$10.00 USD</span>)
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
   <script>
-    // ESTABLECER FECHA MÍNIMA HOY PARA BLOQUEAR DÍAS ANTERIORES
-    document.addEventListener("DOMContentLoaded", () => {
-      const hoy = new Date().toISOString().split('T')[0];
-      document.getElementById("reservaFecha").setAttribute("min", hoy);
-    });
+    // ESTADO DEL CALENDARIO Y RESERVAS
+    let fechaActual = new Date();
+    let mesActual = fechaActual.getMonth();
+    let anoActual = fechaActual.getFullYear();
 
-    // SISTEMA DE NOTIFICACIONES INTERNAS DEL MODAL (REEMPLAZA AL ALERT FEA)
+    let diaSeleccionado = null;
+    let horaSeleccionada = null;
+    let precioBase = 10.00;
+
+    const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    const horariosDisponibles = ["09:00 AM", "10:30 AM", "12:00 PM", "02:00 PM", "03:30 PM", "05:00 PM"];
+
+    function renderizarCalendario() {
+      const headerTitle = document.getElementById('calendar-month-year');
+      const grid = document.getElementById('calendar-days');
+      
+      headerTitle.textContent = `${nombresMeses[mesActual]} ${anoActual}`;
+      grid.innerHTML = '';
+
+      const primerDiaMes = new Date(anoActual, mesActual, 1).getDay();
+      const totalDiasMes = new Date(anoActual, mesActual + 1, 0).getDate();
+      const hoy = new Date();
+      hoy.setHours(0,0,0,0);
+
+      // Espacios en blanco previo al primer día
+      for(let i = 0; i < primerDiaMes; i++) {
+        grid.innerHTML += `<div class="day-cell empty"></div>`;
+      }
+
+      // Render de los días del mes
+      for(let dia = 1; dia <= totalDiasMes; dia++) {
+        const fechaEvaluar = new Date(anoActual, mesActual, dia);
+        fechaEvaluar.setHours(0,0,0,0);
+
+        let esPasado = fechaEvaluar < hoy;
+        let esSeleccionado = diaSeleccionado && 
+                             diaSeleccionado.getDate() === dia && 
+                             diaSeleccionado.getMonth() === mesActual && 
+                             diaSeleccionado.getFullYear() === anoActual;
+
+        if (esPasado) {
+          grid.innerHTML += `<div class="day-cell disabled">${dia}</div>`;
+        } else {
+          grid.innerHTML += `<div class="day-cell available ${esSeleccionado ? 'selected' : ''}" onclick="seleccionarDia(${dia})">${dia}</div>`;
+        }
+      }
+    }
+
+    function cambiarMes(delta) {
+      mesActual += delta;
+      if (mesActual < 0) {
+        mesActual = 11;
+        anoActual--;
+      } else if (mesActual > 11) {
+        mesActual = 0;
+        anoActual++;
+      }
+      renderizarCalendario();
+    }
+
+    function seleccionarDia(dia) {
+      diaSeleccionado = new Date(anoActual, mesActual, dia);
+      horaSeleccionada = null; // reset hora al cambiar día
+      renderizarCalendario();
+      
+      const headerText = document.getElementById('selected-date-text');
+      const slotsContainer = document.getElementById('time-slots-list');
+      
+      const opcionesFecha = { weekday: 'short', month: 'short', day: 'numeric' };
+      headerText.textContent = diaSeleccionado.toLocaleDateString('es-ES', opcionesFecha);
+
+      slotsContainer.innerHTML = '';
+      horariosDisponibles.forEach(hora => {
+        slotsContainer.innerHTML += `
+          <div class="time-slot" onclick="seleccionarHora('${hora}', this)">
+            ${hora}
+          </div>
+        `;
+      });
+    }
+
+    function seleccionarHora(hora, elemento) {
+      horaSeleccionada = hora;
+      document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
+      elemento.classList.add('selected');
+    }
+
+    // APLICAR CUPÓN
+    window.aplicarCupon = function() {
+      const codigo = document.getElementById('cuponInput').value.trim().toUpperCase();
+      const cuponesValidos = { "DINGLOFT5": 5.00, "VIP": 10.00 };
+      
+      if (cuponesValidos[codigo] !== undefined) {
+        let descuento = cuponesValidos[codigo];
+        let totalFinal = Math.max(0, precioBase - descuento);
+        document.getElementById('precio-total').textContent = `$${totalFinal.toFixed(2)} USD`;
+        mostrarAlertaModal("¡Cupón aplicado con éxito!", true);
+      } else {
+        mostrarAlertaModal("Cupón inválido o expirado.", false);
+      }
+    };
+
     function mostrarAlertaModal(mensaje, esExito) {
       const notif = document.getElementById('modal-notif');
       notif.style.display = 'block';
@@ -213,7 +349,38 @@
       setTimeout(() => { notif.style.display = 'none'; }, 4000);
     }
 
-    // FUNCIONES GLOBALES DE MODAL Y BUNDLES
+    window.openReservaModal = function() {
+      document.getElementById('reservaModal').classList.add('active');
+      renderizarCalendario();
+    };
+
+    window.closeReservaModal = function() {
+      document.getElementById('reservaModal').classList.remove('active');
+    };
+
+    window.procesarPagoReserva = function() {
+      if(!diaSeleccionado || !horaSeleccionada) {
+        mostrarAlertaModal("Selecciona un día y un horario primero.", false);
+        return;
+      }
+
+      const btn = document.getElementById('btn-pagar');
+      btn.innerHTML = '<i class="bi bi-arrow-repeat" style="animation: spin 1s linear infinite;"></i> Procesando...';
+      btn.style.pointerEvents = 'none';
+
+      setTimeout(() => {
+        mostrarAlertaModal(`Redirigiendo a pasarela de pago...`, true);
+        
+        // AQUÍ COLOCAS TU URL DE PAGO (STRIPE / TILOPAY) EN LA MISMA PESTAÑA:
+        // window.location.href = "https://tu-link-de-pago.com";
+
+        setTimeout(() => {
+          btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Redirigiendo';
+          btn.style.background = 'linear-gradient(100deg, #35dd92, #2bb978)';
+        }, 1200);
+      }, 1500);
+    };
+
     window.toggleBundle = function(element) {
       const container = element.parentElement;
       const subs = container.querySelector('.sub-downloads');
@@ -223,68 +390,9 @@
       btn.classList.toggle('active');
       element.classList.toggle('active');
     };
-
-    window.openReservaModal = function() {
-      document.getElementById('reservaModal').classList.add('active');
-      // Resetear estado por si lo abren varias veces
-      document.getElementById('modal-notif').style.display = 'none';
-      const btn = document.getElementById('btn-pagar');
-      btn.innerHTML = '<i class="bi bi-credit-card"></i> Pagar y Reservar';
-      btn.style.pointerEvents = 'auto';
-      btn.style.background = 'linear-gradient(100deg, #0bd8f4, #1cbeeb)';
-    };
-
-    window.closeReservaModal = function() {
-      document.getElementById('reservaModal').classList.remove('active');
-    };
-
-    let precioBase = 10.00;
-    window.aplicarCupon = function() {
-      const codigo = document.getElementById('cuponInput').value.trim().toUpperCase();
-      const cuponesValidos = { "DINGLOFT5": 5.00, "VIP": 10.00 };
-      
-      if (cuponesValidos[codigo] !== undefined) {
-        let descuento = cuponesValidos[codigo];
-        let totalFinal = Math.max(0, precioBase - descuento);
-        document.getElementById('precio-total').textContent = `$${totalFinal.toFixed(2)} USD`;
-        document.getElementById('btn-pagar').innerHTML = `<i class="bi bi-credit-card"></i> Pagar y Reservar ($${totalFinal.toFixed(2)})`;
-        mostrarAlertaModal("¡Cupón aplicado con éxito!", true);
-      } else {
-        mostrarAlertaModal("Cupón inválido o expirado.", false);
-      }
-    };
-
-    window.procesarPagoReserva = function() {
-      const fecha = document.getElementById('reservaFecha').value;
-      const hora = document.getElementById('reservaHora').value;
-      
-      if(!fecha || !hora) {
-        mostrarAlertaModal("Por favor selecciona una fecha y una hora.", false);
-        return;
-      }
-
-      const btn = document.getElementById('btn-pagar');
-      // Efecto de carga
-      btn.innerHTML = '<i class="bi bi-arrow-repeat" style="animation: spin 1s linear infinite; display: inline-block;"></i> Procesando...';
-      btn.style.pointerEvents = 'none';
-
-      // SIMULACIÓN DE REDIRECCIÓN Y PAGO EN LA MISMA PESTAÑA
-      setTimeout(() => {
-        mostrarAlertaModal(`¡Listo! Redirigiendo al pago seguro...`, true);
-        
-        // AQUÍ ES DONDE PONES TU LINK DE PAGO DE STRIPE, TILOPAY O PAYPAL
-        // window.location.href = "https://link-de-tu-pasarela.com/pago";
-        
-        // Simulación visual de éxito por ahora
-        setTimeout(() => {
-            btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Reserva Confirmada';
-            btn.style.background = 'linear-gradient(100deg, #35dd92, #2bb978)';
-        }, 1000);
-      }, 1500);
-    };
   </script>
 
-  <!-- LÓGICA DE FIREBASE Y DESCARGA CON POPUP -->
+  <!-- FIREBASE Y LÓGICA DE PROGRAMAS -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
