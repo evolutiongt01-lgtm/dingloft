@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dingloft | Software Vitalicio y Librerías de Audio</title>
   
+  <!-- FAVICON -->
+  <link rel="icon" href="img/favicon.png" type="image/png">
+
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   
@@ -23,8 +26,8 @@
       --accent-color: #00e5ff;
       --accent-hover: #00b5cc;
       --text-main: #ffffff;
-      --text-muted: #d1d5db;
-      --border-color: rgba(255, 255, 255, 0.1);
+      --text-muted: #f1f5f9; /* Cambiado a un blanco suave ultra visible */
+      --border-color: rgba(255, 255, 255, 0.15);
       --glass-bg: rgba(17, 21, 31, 0.4);
     }
     
@@ -36,10 +39,11 @@
       position: relative;
     }
 
-    /* Clase para bloquear el scroll de la página fondo / izquierda cuando el carrito está abierto */
-    body.cart-open {
+    /* Clase para bloquear el scroll de la página fondo cuando el carrito está abierto */
+    body.no-scroll {
       overflow: hidden !important;
       height: 100vh;
+      touch-action: none;
     }
 
     /* Animación de movimiento y cambio de colores para los orbes */
@@ -94,7 +98,7 @@
       padding: 15px 0;
       z-index: 1040;
     }
-    .nav-link { color: var(--text-main) !important; font-size: 0.9rem; font-weight: 500; margin: 0 10px; }
+    .nav-link { color: var(--text-main) !important; font-size: 0.95rem; font-weight: 500; margin: 0 10px; transition: color 0.3s; }
     .nav-link:hover { color: var(--accent-color) !important; }
 
     /* Botones Globales */
@@ -114,7 +118,7 @@
       background: rgba(255,255,255,0.05);
       color: var(--text-main);
       font-weight: 600;
-      border: 1px solid var(--text-muted);
+      border: 1px solid rgba(255,255,255,0.3);
       border-radius: 8px;
       padding: 10px 24px;
       transition: all 0.3s ease;
@@ -122,12 +126,49 @@
     }
     .btn-outline-custom:hover { border-color: var(--accent-color); color: var(--accent-color); background: rgba(0, 229, 255, 0.05); }
 
+    /* Botón Flotante Carrito */
+    .btn-floating-cart {
+      position: fixed;
+      bottom: max(30px, env(safe-area-inset-bottom));
+      right: 25px;
+      z-index: 9999;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.9), rgba(0, 181, 204, 0.95));
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(0, 229, 255, 0.4), inset 0 0 10px rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .btn-floating-cart:hover {
+      transform: scale(1.1) translateY(-3px);
+      box-shadow: 0 15px 35px rgba(0, 229, 255, 0.6);
+      color: #000;
+    }
+    .badge-floating {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background: #ff0055;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.75rem;
+      border-radius: 50%;
+      padding: 2px 7px;
+      border: 2px solid var(--bg-color);
+    }
+
     /* Hero Section */
     .hero-section { padding: 140px 0 60px; }
     .hero-title { font-weight: 800; font-size: 4rem; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
     .text-accent { color: var(--accent-color); text-shadow: 0 0 20px rgba(0,229,255,0.3); }
     
-    .feature-item h6 { font-size: 0.9rem; font-weight: 600; margin: 0; }
+    .feature-item h6 { font-size: 0.9rem; font-weight: 600; margin: 0; color: #fff; }
     .feature-item p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
 
     .hero-img-box {
@@ -157,6 +198,7 @@
       gap: 30px;
       font-size: 0.9rem;
       font-weight: 500;
+      color: #fff;
     }
 
     /* Categorías */
@@ -174,8 +216,22 @@
       overflow: hidden;
     }
     .category-card:hover { border-color: var(--accent-color); transform: translateY(-5px); background: rgba(255,255,255,0.05); }
-    .category-title { font-weight: 600; font-size: 1.1rem; z-index: 2; position: relative; }
+    .category-title { font-weight: 600; font-size: 1.1rem; z-index: 2; position: relative; color: #fff; }
     .category-link { color: var(--accent-color); font-size: 0.85rem; text-decoration: none; font-weight: 500; z-index: 2; position: relative; }
+
+    /* Estilos de Sección de Productos */
+    .category-header {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      margin-top: 3rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
     /* Productos Horizontales */
     .product-horizontal {
@@ -184,19 +240,20 @@
       display: flex;
       gap: 20px;
       transition: all 0.3s ease;
+      height: 100%;
     }
     .product-horizontal:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); transform: translateY(-3px); }
     
     .prod-img-box {
       width: 120px;
       height: 150px;
-      background: rgba(0,0,0,0.2);
+      background: rgba(0,0,0,0.4);
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      border: 1px solid rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
       padding: 15px;
       text-decoration: none;
       transition: transform 0.3s;
@@ -215,11 +272,11 @@
       justify-content: space-between;
       width: 100%;
     }
-    .prod-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; color: #fff; text-decoration: none; transition: color 0.3s; display: inline-block; }
+    .prod-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 5px; color: #ffffff; text-decoration: none; transition: color 0.3s; display: inline-block; }
     .prod-title:hover { color: var(--accent-color); }
-    .prod-desc { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .prod-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .prod-price { font-size: 1.2rem; font-weight: 800; color: var(--accent-color); }
-    .old-price { font-size: 0.9rem; color: #adb5bd; text-decoration: line-through; margin-right: 5px; font-weight: 400; }
+    .old-price { font-size: 0.9rem; color: rgba(255,255,255,0.6); text-decoration: line-through; margin-right: 5px; font-weight: 500; }
     
     .btn-add-cart {
       background: var(--accent-color);
@@ -232,326 +289,75 @@
       width: fit-content;
       transition: all 0.3s;
     }
-    .btn-add-cart:hover { background: #fff; transform: scale(1.05); box-shadow: 0 0 15px rgba(255,255,255,0.5); }
+    .btn-add-cart:hover { background: #fff; transform: scale(1.05); box-shadow: 0 0 15px rgba(255,255,255,0.5); color: #000; }
 
-    /* ====== ESTILOS DEL CARRITO LATERAL CON SCROLL Y BLOQUEO IZQUIERDO ====== */
-    .cart-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      z-index: 1050;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
+    /* ====== CARRITO LATERAL ====== */
+    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; touch-action: none; }
     .cart-overlay.active { opacity: 1; visibility: visible; }
+    
+    .cart-brand-watermark { position: fixed; top: 50%; left: 30%; transform: translate(-50%, -50%) scale(0.9); text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none; }
+    .cart-overlay.active ~ .cart-brand-watermark { opacity: 0.85; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+    .cart-brand-watermark::after { content: ''; position: absolute; top: 50%; left: 50%; width: 260px; height: 260px; background: radial-gradient(circle, rgba(0, 229, 255, 0.5) 0%, rgba(162, 0, 255, 0.3) 40%, transparent 70%); transform: translate(-50%, -50%); filter: blur(30px); z-index: -1; animation: lightGlow 3s infinite alternate ease-in-out; }
+    @keyframes logoPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 20px rgba(0,229,255,0.5)); } 50% { transform: translate(-50%, -50%) scale(1.05); filter: drop-shadow(0 0 40px rgba(0,229,255,0.8)); } }
+    @keyframes lightGlow { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } 100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; } }
+    .animated-watermark-logo { width: 240px; max-width: 80vw; animation: logoPulse 4s infinite ease-in-out; position: relative; }
 
-    /* LOGO ANIMADO FLOTANTE CON EFECTO DE LUCES DE NEÓN */
-    .cart-brand-watermark {
-      position: fixed;
-      top: 50%;
-      left: 30%;
-      transform: translate(-50%, -50%) scale(0.9);
-      text-align: center;
-      z-index: 1055;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.4s ease;
-      pointer-events: none;
-    }
-    .cart-overlay.active ~ .cart-brand-watermark {
-      opacity: 0.85;
-      visibility: visible;
-      transform: translate(-50%, -50%) scale(1);
-    }
-    
-    .cart-brand-watermark::after {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 260px; height: 260px;
-      background: radial-gradient(circle, rgba(0, 229, 255, 0.5) 0%, rgba(162, 0, 255, 0.3) 40%, transparent 70%);
-      transform: translate(-50%, -50%);
-      filter: blur(30px);
-      z-index: -1;
-      animation: lightGlow 3s infinite alternate ease-in-out;
-    }
-    
-    @keyframes logoPulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 20px rgba(0,229,255,0.5)); }
-      50% { transform: translate(-50%, -50%) scale(1.05); filter: drop-shadow(0 0 40px rgba(0,229,255,0.8)); }
-    }
-    @keyframes lightGlow {
-      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-      100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
-    }
-    
-    .animated-watermark-logo {
-      width: 240px;
-      max-width: 80vw;
-      animation: logoPulse 4s infinite ease-in-out;
-      position: relative;
-    }
-
-    .cart-drawer {
-      position: fixed;
-      top: 0; right: -480px;
-      width: 450px;
-      max-width: 100%;
-      height: 100vh;
-      background: rgba(10, 14, 20, 0.95);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border-left: 1px solid var(--border-color);
-      box-shadow: -15px 0 40px rgba(0, 0, 0, 0.9);
-      z-index: 1060;
-      transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      display: flex;
-      flex-direction: column;
-    }
+    .cart-drawer { position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh; background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.5)); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); border-left: 1px solid rgba(255, 255, 255, 0.2); box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8), inset 2px 0 15px rgba(255, 255, 255, 0.05); z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; overscroll-behavior: none; }
     .cart-drawer.active { right: 0; }
-
-    .cart-header {
-      padding: 20px 25px;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-shrink: 0;
-    }
-    .btn-close-cart {
-      background: transparent;
-      border: none;
-      color: #ffffff;
-      font-size: 1.3rem;
-      line-height: 1;
-      transition: color 0.3s;
-      text-shadow: 0 0 10px rgba(255,255,255,0.5);
-    }
+    
+    .cart-header { padding: 20px 25px; border-bottom: 1px solid rgba(255, 255, 255, 0.15); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    .btn-close-cart { background: transparent; border: none; color: #ffffff; font-size: 1.3rem; line-height: 1; transition: color 0.3s; cursor: pointer; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
     .btn-close-cart:hover { color: var(--accent-color); transform: scale(1.1); }
 
-    .cart-items-container {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px 25px;
-    }
-
-    .cart-item {
-      display: flex;
-      gap: 15px;
-      padding-bottom: 20px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      position: relative;
-    }
-    .cart-item-img {
-      width: 60px;
-      height: 80px;
-      background: rgba(0,0,0,0.3);
-      border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.05);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 5px;
-    }
-    .cart-item-img img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
+    .cart-items-container { flex: 1; overflow-y: auto; padding: 20px 25px; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+    .cart-item { display: flex; gap: 15px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); position: relative; }
+    .cart-item-img { width: 60px; height: 80px; background: rgba(0,0,0,0.3); border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; padding: 5px; }
+    .cart-item-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
     .cart-item-info { flex: 1; }
     .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; color: #ffffff; }
     .cart-item-desc { font-size: 0.75rem; color: #ffffff; opacity: 0.85; margin-bottom: 10px; }
     
-    .qty-controls {
-      display: inline-flex;
-      align-items: center;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 4px;
-      overflow: hidden;
-      background: rgba(0,0,0,0.2);
-    }
-    .qty-btn {
-      background: transparent;
-      border: none;
-      color: #fff;
-      padding: 2px 10px;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
+    .qty-controls { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; background: rgba(0,0,0,0.3); }
+    .qty-btn { background: transparent; border: none; color: #fff; padding: 2px 10px; font-size: 0.9rem; cursor: pointer; }
     .qty-btn:hover { background: rgba(255,255,255,0.1); }
     .qty-value { padding: 0 10px; font-size: 0.85rem; font-weight: 600; color: #ffffff; }
 
-    .cart-item-remove {
-      position: absolute;
-      top: 0; right: 0;
-      background: transparent;
-      border: none;
-      color: #ffffff;
-      font-size: 1rem;
-    }
+    .cart-item-remove { position: absolute; top: 0; right: 0; background: transparent; border: none; color: #ffffff; font-size: 1rem; cursor: pointer; }
     .cart-item-remove:hover { color: #ff4444; }
 
-    /* FOOTER DEL CARRITO CON SCROLL COMPLETO Y MÁXIMA ALTURA */
-    .cart-footer {
-      padding: 20px 25px;
-      background: rgba(0, 0, 0, 0.6);
-      border-top: 1px solid var(--border-color);
-      flex-shrink: 0;
-      max-height: 60vh;
-      overflow-y: auto;
-    }
-    .cart-empty-msg {
-      text-align: center;
-      color: #ffffff;
-      margin-top: 50px;
-    }
+    .cart-footer { padding: 20px 25px; background: rgba(0, 0, 0, 0.3); border-top: 1px solid rgba(255, 255, 255, 0.15); flex-shrink: 0; max-height: 55vh; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+    .cart-empty-msg { text-align: center; color: #ffffff; margin-top: 50px; }
 
-    @keyframes cartBounce {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.15); box-shadow: 0 0 20px rgba(0, 229, 255, 0.4); }
-      100% { transform: scale(1); }
-    }
-    .cart-bounce { animation: cartBounce 0.3s ease-in-out; }
-    .btn-added { background-color: #00ff88 !important; color: #000 !important; box-shadow: 0 0 15px rgba(0,255,136,0.5) !important; }
-
-    /* CUPÓN DE DESCUENTO */
-    .coupon-box {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 15px;
-    }
-    .coupon-input {
-      flex: 1;
-      background: rgba(4, 9, 18, 0.7);
-      border: 1px solid rgba(153, 185, 216, 0.25);
-      border-radius: 8px;
-      color: #fff;
-      padding: 8px 12px;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-    }
-    .coupon-input::placeholder { color: #6f7d91; text-transform: none; }
+    /* CUPÓN Y PAYPAL */
+    .coupon-box { display: flex; gap: 8px; margin-bottom: 15px; }
+    .coupon-input { flex: 1; background: rgba(4, 9, 18, 0.7); border: 1px solid rgba(153, 185, 216, 0.25); border-radius: 8px; color: #fff; padding: 8px 12px; font-size: 0.85rem; text-transform: uppercase; }
+    .coupon-input::placeholder { color: rgba(255,255,255,0.7); text-transform: none; }
     .coupon-input:focus { border-color: var(--accent-color); outline: none; background: rgba(4, 9, 18, 0.9); }
-    .btn-apply-coupon {
-      background: rgba(255,255,255,0.1);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 8px;
-      padding: 0 15px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
+    .btn-apply-coupon { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0 15px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
     .btn-apply-coupon:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
     .coupon-msg { font-size: 0.78rem; margin-bottom: 12px; font-weight: 500; }
 
-    /* Contenedor blanco idéntico al de Evolution Design para PayPal */
-    .paypal-white-card {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      padding: 15px;
-      border-radius: 16px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-      margin-top: 10px;
-    }
+    .paypal-white-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.4); padding: 15px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); margin-top: 10px; }
+    
+    .btn-free-checkout { background: #00ff88; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 14px; width: 100%; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,255,136,0.2); cursor: pointer; }
+    .btn-free-checkout:hover { background: #00e67a; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,255,136,0.4); }
 
-    /* Botón especial para pedidos $0.00 */
-    .btn-free-checkout {
-      background: #00ff88;
-      color: #000;
-      font-weight: 700;
-      border: none;
-      border-radius: 12px;
-      padding: 14px;
-      width: 100%;
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 10px 25px rgba(0,255,136,0.2);
-    }
-    .btn-free-checkout:hover {
-      background: #00e67a;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(0,255,136,0.4);
-    }
+    @keyframes cartBounce { 0% { transform: scale(1); } 50% { transform: scale(1.15); box-shadow: 0 0 20px rgba(0, 229, 255, 0.4); } 100% { transform: scale(1); } }
+    .cart-bounce { animation: cartBounce 0.3s ease-in-out; }
+    .btn-added { background-color: #00ff88 !important; color: #000 !important; box-shadow: 0 0 15px rgba(0,255,136,0.5) !important; }
 
-    /* ====== MODAL DE ÉXITO PROFESIONAL (CUSTOM POPUP) ====== */
-    .success-modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(3, 5, 8, 0.85);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      z-index: 2000;
-      display: grid;
-      place-items: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .success-modal-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    .success-modal-box {
-      background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98));
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      box-shadow: 0 25px 70px rgba(0,0,0,0.7), 0 0 30px rgba(0,229,255,0.15);
-      border-radius: 24px;
-      padding: 40px 30px;
-      width: min(440px, 90%);
-      text-align: center;
-      transform: scale(0.85) translateY(20px);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .success-modal-overlay.active .success-modal-box {
-      transform: scale(1) translateY(0);
-    }
-    .success-icon-ring {
-      width: 80px; height: 80px;
-      background: rgba(0, 255, 136, 0.1);
-      border: 2px solid #00ff88;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 20px;
-      color: #00ff88;
-      font-size: 2.2rem;
-      box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
-      animation: pulseSuccess 2s infinite ease-in-out;
-    }
-    @keyframes pulseSuccess {
-      0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
-      50% { box-shadow: 0 0 30px rgba(0, 255, 136, 0.6); }
-    }
-    .success-modal-title {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 10px;
-      letter-spacing: -0.03em;
-    }
-    .success-modal-desc {
-      color: #9ba9bd;
-      font-size: 0.95rem;
-      line-height: 1.6;
-      margin-bottom: 30px;
-    }
-    .success-modal-logo {
-      width: 130px;
-      margin-bottom: 20px;
-      filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));
-    }
+    /* ====== MODAL ÉXITO ====== */
+    .success-modal-overlay { position: fixed; inset: 0; background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: grid; place-items: center; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .success-modal-overlay.active { opacity: 1; visibility: visible; }
+    .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(0, 229, 255, 0.3); box-shadow: 0 25px 70px rgba(0,0,0,0.7), 0 0 30px rgba(0,229,255,0.15); border-radius: 24px; padding: 40px 30px; width: min(440px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .success-modal-overlay.active .success-modal-box { transform: scale(1) translateY(0); }
+    .success-icon-ring { width: 80px; height: 80px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 20px; color: #00ff88; font-size: 2.2rem; box-shadow: 0 0 25px rgba(0, 255, 136, 0.3); animation: pulseSuccess 2s infinite ease-in-out; }
+    @keyframes pulseSuccess { 0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); } 50% { box-shadow: 0 0 30px rgba(0, 255, 136, 0.6); } }
+    .success-modal-title { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 10px; letter-spacing: -0.03em; }
+    .success-modal-desc { color: #f1f5f9; font-size: 0.95rem; line-height: 1.6; margin-bottom: 30px; }
+    .success-modal-logo { width: 130px; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3)); }
 
-    /* =========================================
-        REGLAS PARA MÓVIL (Responsividad)
-        ========================================= */
+    /* ====== MÓVIL ====== */
     @media (max-width: 991px) {
       .hero-section { padding: 100px 0 40px; text-align: center; }
       .hero-title { font-size: 2.8rem; }
@@ -559,14 +365,7 @@
       .hero-buttons { justify-content: center; }
       .feature-container { flex-direction: column; align-items: center; gap: 1rem !important; }
       
-      .trust-bar { 
-        flex-direction: column; 
-        gap: 15px; 
-        padding: 20px; 
-        border-radius: 20px; 
-        width: 90%; 
-        margin: 0 auto;
-      }
+      .trust-bar { flex-direction: column; gap: 15px; padding: 20px; border-radius: 20px; width: 90%; margin: 0 auto; }
       .trust-bar .bullet-point { display: none; }
       
       .product-horizontal { flex-direction: column; align-items: center; text-align: center; }
@@ -579,6 +378,10 @@
       .cart-brand-watermark { display: none; } 
     }
     
+    @media (max-width: 768px) {
+      .btn-floating-cart { bottom: 90px; right: 20px; }
+    }
+    
     @media (max-width: 500px) {
       .cart-drawer { width: 100%; }
     }
@@ -586,18 +389,16 @@
 </head>
 <body>
 
-  <!-- Orbes de luz dinámicos en movimiento y cambio de color -->
+  <!-- Orbes de luz -->
   <div class="bg-orb orb-1"></div>
   <div class="bg-orb orb-2"></div>
   <div class="bg-orb orb-3"></div>
 
-  <!-- MODAL DE ÉXITO PROFESIONAL -->
+  <!-- MODAL DE ÉXITO -->
   <div class="success-modal-overlay" id="success-modal">
     <div class="success-modal-box">
       <img src="img/dingloft.png" alt="Dingloft" class="success-modal-logo">
-      <div class="success-icon-ring">
-        <i class="bi bi-check-lg"></i>
-      </div>
+      <div class="success-icon-ring"><i class="bi bi-check-lg"></i></div>
       <h3 class="success-modal-title">¡Compra Exitosa!</h3>
       <p class="success-modal-desc" id="success-modal-text">Tu pedido se ha procesado correctamente. Redirigiendo a tu panel de descargas...</p>
       <button class="btn-cyan w-100" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
@@ -607,7 +408,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
     <div class="container">
-      <a class="navbar-brand fw-bold fs-4 text-white" href="#">
+      <a class="navbar-brand fw-bold fs-4 text-white" href="index.html">
         <span class="text-accent">D</span>ingloft
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="filter: invert(1);">
@@ -615,38 +416,41 @@
       </button>
       <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
         <ul class="navbar-nav align-items-center">
-          <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Catálogo</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#catalogo">Catálogo</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Preguntas</a></li>
           
-          <!-- Botón de Iniciar Sesión en Menú Móvil -->
           <li class="nav-item d-lg-none mt-3 w-100" id="mobile-auth-container">
             <a href="login.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none">
               <i class="bi bi-person-circle"></i> Iniciar Sesión
             </a>
           </li>
-          <!-- Botón de carrito en menú móvil -->
           <li class="nav-item d-lg-none mt-2 w-100">
-            <button class="btn-cyan w-100 mobile-cart-btn">
-              <i class="bi bi-cart3"></i> Ver Carrito (<span class="mobile-cart-count">0</span>)
+            <button class="btn-cyan w-100 cart-btn-global">
+              <i class="bi bi-cart3"></i> Ver Carrito (<span class="cart-badge-count-global">0</span>)
             </button>
           </li>
         </ul>
       </div>
       <div class="d-none d-lg-flex align-items-center gap-3">
-        <!-- Botón de Iniciar Sesión en PC -->
         <div id="desktop-auth-container">
           <a href="login.html" class="text-white text-decoration-none small fw-semibold d-flex align-items-center gap-2" style="transition: color 0.3s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#fff'">
             <i class="bi bi-person-circle fs-5"></i> Iniciar Sesión
           </a>
         </div>
-        <button id="main-cart-btn" class="btn-outline-custom" style="padding: 6px 15px; font-size: 0.9rem;">
-          <i class="bi bi-cart3"></i> CARRITO (<span id="cart-count">0</span>)
+        <button id="main-cart-btn" class="btn-outline-custom cart-btn-global" style="padding: 6px 15px; font-size: 0.9rem;">
+          <i class="bi bi-cart3"></i> CARRITO (<span class="cart-badge-count-global">0</span>)
         </button>
       </div>
     </div>
   </nav>
+
+  <!-- Botón Flotante Universal (Móvil y PC) -->
+  <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
+    <i class="bi bi-cart3 fs-4"></i>
+    <span class="badge-floating cart-badge-count-global">0</span>
+  </button>
 
   <!-- Hero Section -->
   <section class="hero-section">
@@ -661,7 +465,7 @@
           </div>
           
           <div class="hero-buttons d-flex gap-3 mb-5 flex-wrap">
-            <button class="btn-cyan">Ver catálogo <i class="bi bi-arrow-right"></i></button>
+            <a href="#catalogo" class="btn-cyan text-decoration-none">Ver catálogo <i class="bi bi-arrow-right"></i></a>
             <button class="btn-outline-custom">Cómo funciona <i class="bi bi-play-circle"></i></button>
           </div>
 
@@ -686,7 +490,7 @@
         <!-- Columna Derecha -->
         <div class="col-lg-6 text-center">
           <div class="hero-img-box glass-effect">
-            <img src="img/dashboard.png" alt="Workspace Dashboard">
+            <img src="img/dashboard.png" alt="Workspace Dashboard" onerror="this.src='https://ui-avatars.com/api/?name=Workspace&background=00e5ff&color=000&size=400'">
           </div>
         </div>
       </div>
@@ -697,9 +501,9 @@
   <div class="container text-center" style="margin-top: -30px; position: relative; z-index: 10;">
     <div class="trust-bar glass-effect">
       <span><i class="bi bi-patch-check text-success"></i> Licencias vitalicias</span>
-      <span class="text-muted bullet-point">•</span>
+      <span class="text-muted bullet-point" style="color: rgba(255,255,255,0.3) !important;">•</span>
       <span><i class="bi bi-pc-display text-info"></i> Instalación remota</span>
-      <span class="text-muted bullet-point">•</span>
+      <span class="text-muted bullet-point" style="color: rgba(255,255,255,0.3) !important;">•</span>
       <span><i class="bi bi-headset text-warning"></i> Soporte especializado</span>
     </div>
   </div>
@@ -709,399 +513,411 @@
     <h3 class="section-title text-center text-lg-start">Encuentra la herramienta ideal</h3>
     <div class="row g-4">
       <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card glass-effect">
+        <div class="category-card glass-effect" onclick="window.location.href='#arquitectura'" style="cursor: pointer;">
           <h4 class="category-title">Diseño y<br>Arquitectura</h4>
-          <a href="#" class="category-link mt-3 mt-lg-0">Ver categoría <i class="bi bi-arrow-right"></i></a>
+          <a href="#arquitectura" class="category-link mt-3 mt-lg-0">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
       <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card glass-effect">
+        <div class="category-card glass-effect" onclick="window.location.href='#oficina'" style="cursor: pointer;">
           <h4 class="category-title">Oficina y<br>Productividad</h4>
-          <a href="#" class="category-link mt-3 mt-lg-0" style="color: #00ff88;">Ver categoría <i class="bi bi-arrow-right"></i></a>
+          <a href="#oficina" class="category-link mt-3 mt-lg-0" style="color: #00ff88;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
       <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card glass-effect">
+        <div class="category-card glass-effect" onclick="window.location.href='#arquitectura'" style="cursor: pointer;">
           <h4 class="category-title">Edición<br>y Video</h4>
-          <a href="#" class="category-link mt-3 mt-lg-0" style="color: #a200ff;">Ver categoría <i class="bi bi-arrow-right"></i></a>
+          <a href="#arquitectura" class="category-link mt-3 mt-lg-0" style="color: #a200ff;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
       <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card glass-effect">
+        <div class="category-card glass-effect" onclick="window.location.href='#audio'" style="cursor: pointer;">
           <h4 class="category-title">Audio y<br>Música</h4>
-          <a href="#" class="category-link mt-3 mt-lg-0" style="color: #ffa600;">Ver categoría <i class="bi bi-arrow-right"></i></a>
+          <a href="#audio" class="category-link mt-3 mt-lg-0" style="color: #ffa600;">Ver categoría <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Catálogo Completo -->
-  <section class="container mt-5 pt-4 pb-5">
+  <!-- Catálogo Completo Ordenado -->
+  <section id="catalogo" class="container mt-5 pt-4 pb-5">
     <div class="d-flex justify-content-between align-items-end mb-4">
-      <h3 class="section-title mb-0">Catálogo Completo</h3>
-      <a href="#" class="text-accent text-decoration-none" style="font-weight: 500; font-size: 0.9rem;">Ver todo <i class="bi bi-arrow-right"></i></a>
+      <h3 class="section-title mb-0" style="font-size: 2rem;">Catálogo Completo</h3>
     </div>
 
-    <div class="row g-4">
-      <!-- 1. E-Sword -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="esword.html" class="prod-img-box"><img src="img/esword.png" alt="E-Sword"></a>
-          <div class="prod-info">
-            <div>
-              <a href="esword.html" class="prod-title">Biblias y Diccionarios para E-Sword</a>
-              <p class="prod-desc">Colección completa de módulos bíblicos en español. Descarga gratuita.</p>
-              <div class="mb-2">
-                <span class="text-success" style="font-size: 0.8rem; font-weight: 600;">GRATIS</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
+    <!-- SECCIÓN: DISEÑO Y ARQUITECTURA -->
+    <div id="arquitectura" class="category-section mb-5">
+      <h4 class="category-header">
+        <i class="bi bi-vector-pen"></i> Diseño, Arquitectura y Video
+      </h4>
+      <div class="row g-4">
+        
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="combo.html" class="prod-img-box"><img src="img/combo.png" alt="SketchUp & AutoCAD" onerror="this.src='https://ui-avatars.com/api/?name=Du&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
               <div>
-                <span class="prod-price" style="color: #00ff88;">$0.00</span>
+                <a href="combo.html" class="prod-title">SketchUp 2026 & AutoCAD 2026</a>
+                <p class="prod-desc">Combo profesional esencial para flujos de trabajo de ingeniería y construcción.</p>
+                <div class="mb-2">
+                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
+                  <span style="font-size: 0.8rem; color: #f1f5f9;">5.0 (420)</span>
+                </div>
               </div>
-              <button class="btn-add-cart" style="background: #00ff88;" data-id="1" data-name="Biblias E-Sword" data-price="0" data-img="esword" data-type="Descarga gratuita">Obtener <i class="bi bi-download"></i></button>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="old-price">$400.00</span>
+                  <span class="prod-price">$50.00</span>
+                </div>
+                <button class="btn-add-cart" data-id="3" data-name="SketchUp & AutoCAD Combo" data-price="50" data-img="combo" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- 2. SketchUp Pro 2026 -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="sketchup.html" class="prod-img-box"><img src="img/sketchup.png" alt="SketchUp 2026"></a>
-          <div class="prod-info">
-            <div>
-              <a href="sketchup.html" class="prod-title">SketchUp Pro 2026</a>
-              <p class="prod-desc">Modelado 3D profesional y avanzado, ideal para arquitectura y proyectos BIM.</p>
-              <div class="mb-2">
-                <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                <span class="text-muted" style="font-size: 0.8rem;">4.9 (312)</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="sketchup.html" class="prod-img-box"><img src="img/sketchup.png" alt="SketchUp 2026" onerror="this.src='https://ui-avatars.com/api/?name=Sk&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
               <div>
-                <span class="old-price">$60.00</span>
-                <span class="prod-price">$27.00</span>
+                <a href="sketchup.html" class="prod-title">SketchUp Pro 2026</a>
+                <p class="prod-desc">Modelado 3D profesional y avanzado, ideal para arquitectura y proyectos BIM.</p>
+                <div class="mb-2">
+                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
+                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.9 (312)</span>
+                </div>
               </div>
-              <button class="btn-add-cart" data-id="2" data-name="SketchUp Pro 2026" data-price="27" data-img="sketchup" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="old-price">$60.00</span>
+                  <span class="prod-price">$27.00</span>
+                </div>
+                <button class="btn-add-cart" data-id="2" data-name="SketchUp Pro 2026" data-price="27" data-img="sketchup" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- 3. SketchUp & AutoCAD Combo -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="combo.html" class="prod-img-box"><img src="img/combo.png" alt="SketchUp & AutoCAD"></a>
-          <div class="prod-info">
-            <div>
-              <a href="combo.html" class="prod-title">SketchUp 2026 & AutoCAD 2026</a>
-              <p class="prod-desc">Combo profesional esencial para flujos de trabajo de ingeniería y construcción.</p>
-              <div class="mb-2">
-                <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                <span class="text-muted" style="font-size: 0.8rem;">5.0 (420)</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="autocad.html" class="prod-img-box"><img src="img/autocad.png" alt="AutoCAD 2026" onerror="this.src='https://ui-avatars.com/api/?name=AC&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
               <div>
-                <span class="old-price">$400.00</span>
-                <span class="prod-price">$50.00</span>
+                <a href="autocad.html" class="prod-title">AutoCAD 2026</a>
+                <p class="prod-desc">El estándar de la industria para diseño y dibujo técnico asistido por computadora.</p>
+                <div class="mb-2">
+                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
+                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.9 (641)</span>
+                </div>
               </div>
-              <button class="btn-add-cart" data-id="3" data-name="SketchUp & AutoCAD Combo" data-price="50" data-img="combo" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="old-price">$100.00</span>
+                  <span class="prod-price">$35.00</span>
+                </div>
+                <button class="btn-add-cart" data-id="5" data-name="AutoCAD 2026" data-price="35" data-img="autocad" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- 4. Office -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="office.html" class="prod-img-box"><img src="img/office.png" alt="Office Suite"></a>
-          <div class="prod-info">
-            <div>
-              <a href="office.html" class="prod-title">Office Home & Business</a>
-              <p class="prod-desc">Productividad completa para todos los días: Word, Excel, PowerPoint y más.</p>
-              <div class="mb-2">
-                <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                <span class="text-muted" style="font-size: 0.8rem;">4.8 (278)</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="cinema4d.html" class="prod-img-box"><img src="img/cinema4d.png" alt="Cinema 4D" onerror="this.src='https://ui-avatars.com/api/?name=C4&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
               <div>
-                <span class="old-price">$100.00</span>
-                <span class="prod-price" style="color: #00ff88;">$40.00</span>
+                <a href="cinema4d.html" class="prod-title">Cinema 4D</a>
+                <p class="prod-desc">Software profesional de gráficos 3D, animación y renderizado avanzado.</p>
+                <div class="mb-2">
+                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
+                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.8 (190)</span>
+                </div>
               </div>
-              <button class="btn-add-cart" style="background: #00ff88;" data-id="4" data-name="Office Home & Business" data-price="40" data-img="office" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="old-price">$300.00</span>
+                  <span class="prod-price">$35.00</span>
+                </div>
+                <button class="btn-add-cart" data-id="6" data-name="Cinema 4D" data-price="35" data-img="cinema4d" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- 5. AutoCAD -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="autocad.html" class="prod-img-box"><img src="img/autocad.png" alt="AutoCAD 2026"></a>
-          <div class="prod-info">
-            <div>
-              <a href="autocad.html" class="prod-title">AutoCAD 2026</a>
-              <p class="prod-desc">El estándar de la industria para diseño y dibujo técnico asistido por computadora.</p>
-              <div class="mb-2">
-                <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                <span class="text-muted" style="font-size: 0.8rem;">4.9 (641)</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="old-price">$100.00</span>
-                <span class="prod-price">$35.00</span>
-              </div>
-              <button class="btn-add-cart" data-id="5" data-name="AutoCAD 2026" data-price="35" data-img="autocad" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-            </div>
-          </div>
-        </div>
       </div>
-
-      <!-- 6. Cinema 4D -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="cinema4d.html" class="prod-img-box"><img src="img/cinema4d.png" alt="Cinema 4D"></a>
-          <div class="prod-info">
-            <div>
-              <a href="cinema4d.html" class="prod-title">Cinema 4D</a>
-              <p class="prod-desc">Software profesional de gráficos 3D, animación y renderizado avanzado.</p>
-              <div class="mb-2">
-                <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                <span class="text-muted" style="font-size: 0.8rem;">4.8 (190)</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="old-price">$300.00</span>
-                <span class="prod-price">$35.00</span>
-              </div>
-              <button class="btn-add-cart" data-id="6" data-name="Cinema 4D" data-price="35" data-img="cinema4d" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 7. Logic Pro -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="logic.html" class="prod-img-box"><img src="img/logic.png" alt="Logic Pro"></a>
-          <div class="prod-info">
-            <div>
-              <a href="logic.html" class="prod-title">Logic Pro</a>
-              <p class="prod-desc">Estación de trabajo de audio digital avanzada para producción, mezcla y masterización.</p>
-              <div class="mb-2">
-                <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                <span class="text-muted" style="font-size: 0.8rem;">4.9 (412)</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="old-price">$200.00</span>
-                <span class="prod-price">$25.00</span>
-              </div>
-              <button class="btn-add-cart" data-id="7" data-name="Logic Pro" data-price="25" data-img="logic" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 8. Nord Stage 4 Library -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="nord.html" class="prod-img-box"><img src="img/nord.png" alt="Nord Stage 4"></a>
-          <div class="prod-info">
-            <div>
-              <a href="nord.html" class="prod-title">Nord Stage 4 Ultimate Library</a>
-              <p class="prod-desc">Librería definitiva optimizada para Kontakt con samples de alta fidelidad.</p>
-              <div class="mb-2">
-                <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                <span class="text-muted" style="font-size: 0.8rem;">5.0 (193)</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="old-price">$200.00</span>
-                <span class="prod-price" style="color: #ffa600;">$40.00</span>
-              </div>
-              <button class="btn-add-cart" style="background: #ffa600;" data-id="8" data-name="Nord Stage 4 Ultimate Library" data-price="40" data-img="nord" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 9. Dual Legends SF2 -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="dual.html" class="prod-img-box"><img src="img/dual.png" alt="Dual Legends"></a>
-          <div class="prod-info">
-            <div>
-              <a href="dual.html" class="prod-title">Dual Legends SF2</a>
-              <p class="prod-desc">Sample library en formato SF2 para workstations y módulos de sonido.</p>
-              <div class="mb-2">
-                <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                <span class="text-muted" style="font-size: 0.8rem;">4.7 (108)</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="old-price">$100.00</span>
-                <span class="prod-price" style="color: #00e5ff;">$60.00</span>
-              </div>
-              <button class="btn-add-cart" data-id="9" data-name="Dual Legends SF2" data-price="60" data-img="dual" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 10. Nord Essentials -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="nordessentials.html" class="prod-img-box"><img src="img/nordessentials.png" alt="Nord Essentials"></a>
-          <div class="prod-info">
-            <div>
-              <a href="nordessentials.html" class="prod-title">Nord Essentials SF2 Collection</a>
-              <p class="prod-desc">Edición especial EvoSound con los mejores patches clásicos.</p>
-              <div class="mb-2">
-                <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                <span class="text-muted" style="font-size: 0.8rem;">4.8 (85)</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="old-price">$90.00</span>
-                <span class="prod-price" style="color: #ffa600;">$33.00</span>
-              </div>
-              <button class="btn-add-cart" style="background: #ffa600;" data-id="10" data-name="Nord Essentials SF2 Collection" data-price="33" data-img="nordessentials" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 11. Rhodes Affair 2 -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="rhodes.html" class="prod-img-box"><img src="img/rhodes.png" alt="Rhodes Affair 2"></a>
-          <div class="prod-info">
-            <div>
-              <a href="rhodes.html" class="prod-title">Rhodes Affair 2</a>
-              <p class="prod-desc">Sonidos de piano eléctrico cálidos y profesionales para tus directos.</p>
-              <div class="mb-2">
-                <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                <span class="text-muted" style="font-size: 0.8rem;">4.9 (142)</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="old-price">$100.00</span>
-                <span class="prod-price" style="color: #ffa600;">$30.00</span>
-              </div>
-              <button class="btn-add-cart" style="background: #ffa600;" data-id="11" data-name="Rhodes Affair 2" data-price="30" data-img="rhodes" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 12. Cosmos Collection -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="cosmos.html" class="prod-img-box"><img src="img/cosmos.png" alt="Cosmos Collection"></a>
-          <div class="prod-info">
-            <div>
-              <a href="cosmos.html" class="prod-title">Cosmos Collection</a>
-              <p class="prod-desc">Pack de expansión con pads y texturas espaciales de alta calidad.</p>
-              <div class="mb-2">
-                <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                <span class="text-muted" style="font-size: 0.8rem;">5.0 (96)</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="old-price">$100.00</span>
-                <span class="prod-price" style="color: #ffa600;">$70.00</span>
-              </div>
-              <button class="btn-add-cart" style="background: #ffa600;" data-id="12" data-name="Cosmos Collection" data-price="70" data-img="cosmos" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 13. Yamaha Legacy -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="yamahalegacy.html" class="prod-img-box"><img src="img/yamahalegacy.png" alt="Yamaha Legacy"></a>
-          <div class="prod-info">
-            <div>
-              <a href="yamahalegacy.html" class="prod-title">Yamaha Legacy Collection SF2</a>
-              <p class="prod-desc">Compatible con series XS, XF, ES y S90 para máxima versatilidad.</p>
-              <div class="mb-2">
-                <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                <span class="text-muted" style="font-size: 0.8rem;">4.8 (115)</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="old-price">$90.00</span>
-                <span class="prod-price" style="color: #ffa600;">$29.00</span>
-              </div>
-              <button class="btn-add-cart" style="background: #ffa600;" data-id="13" data-name="Yamaha Legacy Collection SF2" data-price="29" data-img="yamahalegacy" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 14. Yamaha Premium Keys -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="yamahakeys.html" class="prod-img-box"><img src="img/yamahakeys.png" alt="Yamaha Premium Keys"></a>
-          <div class="prod-info">
-            <div>
-              <a href="yamahakeys.html" class="prod-title">Yamaha Premium Keys</a>
-              <p class="prod-desc">Librería Kontakt enfocada en pianos acústicos y eléctricos de gama alta.</p>
-              <div class="mb-2">
-                <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                <span class="text-muted" style="font-size: 0.8rem;">4.9 (160)</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="old-price">$100.00</span>
-                <span class="prod-price" style="color: #ffa600;">$30.00</span>
-              </div>
-              <button class="btn-add-cart" style="background: #ffa600;" data-id="14" data-name="Yamaha Premium Keys" data-price="30" data-img="yamahakeys" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 15. Montage & Nord MainStage -->
-      <div class="col-12 col-lg-6">
-        <div class="product-horizontal glass-effect">
-          <a href="mainstage.html" class="prod-img-box"><img src="img/mainstage.png" alt="Montage & Nord"></a>
-          <div class="prod-info">
-            <div>
-              <a href="mainstage.html" class="prod-title">Montage 8 & Nord Stage 3</a>
-              <p class="prod-desc">Conciertos configurados y listos para usar en Apple MainStage.</p>
-              <div class="mb-2">
-                <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                <span class="text-muted" style="font-size: 0.8rem;">5.0 (210)</span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="old-price">$65.00</span>
-                <span class="prod-price" style="color: #ffa600;">$27.00</span>
-              </div>
-              <button class="btn-add-cart" style="background: #ffa600;" data-id="15" data-name="Montage 8 & Nord Stage 3" data-price="27" data-img="mainstage" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
+
+    <!-- SECCIÓN: AUDIO Y MÚSICA -->
+    <div id="audio" class="category-section mb-5">
+      <h4 class="category-header" style="color: #ffa600; border-color: rgba(255,166,0,0.2);">
+        <i class="bi bi-music-note-list"></i> Audio y Música
+      </h4>
+      <div class="row g-4">
+        
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="dual.html" class="prod-img-box"><img src="img/dual.png" alt="Dual Legends" onerror="this.src='https://ui-avatars.com/api/?name=Du&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
+              <div>
+                <a href="dual.html" class="prod-title">Pianos Legendarios SF2 Bundle</a>
+                <p class="prod-desc">Sample library de Nord + Yamaha en formato SF2 para workstations y móviles.</p>
+                <div class="mb-2">
+                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
+                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.9 (108)</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="old-price">$150.00</span>
+                  <span class="prod-price" style="color: #ffa600;">$60.00</span>
+                </div>
+                <button class="btn-add-cart" style="background: #ffa600;" data-id="9" data-name="Pianos Legendarios SF2 Bundle" data-price="60" data-img="dual" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="nord.html" class="prod-img-box"><img src="img/nord.png" alt="Nord Stage 4" onerror="this.src='https://ui-avatars.com/api/?name=NS&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
+              <div>
+                <a href="nord.html" class="prod-title">Nord Stage 4 Ultimate Library</a>
+                <p class="prod-desc">Librería definitiva optimizada para Kontakt con samples de alta fidelidad.</p>
+                <div class="mb-2">
+                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
+                  <span style="font-size: 0.8rem; color: #f1f5f9;">5.0 (193)</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="old-price">$200.00</span>
+                  <span class="prod-price" style="color: #ffa600;">$40.00</span>
+                </div>
+                <button class="btn-add-cart" style="background: #ffa600;" data-id="8" data-name="Nord Stage 4 Ultimate Library" data-price="40" data-img="nord" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="nordessentials.html" class="prod-img-box"><img src="img/nordessentials.png" alt="Nord Essentials" onerror="this.src='https://ui-avatars.com/api/?name=No&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
+              <div>
+                <a href="nordessentials.html" class="prod-title">Nord Essentials SF2 Collection</a>
+                <p class="prod-desc">Edición especial con los mejores patches clásicos Stage 3/4.</p>
+                <div class="mb-2">
+                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
+                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.8 (85)</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="old-price">$90.00</span>
+                  <span class="prod-price" style="color: #ffa600;">$33.00</span>
+                </div>
+                <button class="btn-add-cart" style="background: #ffa600;" data-id="10" data-name="Nord Essentials SF2 Collection" data-price="33" data-img="nordessentials" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="yamahalegacy.html" class="prod-img-box"><img src="img/yamahalegacy.png" alt="Yamaha Legacy" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
+              <div>
+                <a href="yamahalegacy.html" class="prod-title">Yamaha Legacy Collection SF2</a>
+                <p class="prod-desc">Compatible con series Motif XS, XF, ES y Montage para máxima versatilidad.</p>
+                <div class="mb-2">
+                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
+                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.8 (115)</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="old-price">$90.00</span>
+                  <span class="prod-price" style="color: #ffa600;">$33.00</span>
+                </div>
+                <button class="btn-add-cart" style="background: #ffa600;" data-id="13" data-name="Yamaha Legacy Collection SF2" data-price="33" data-img="yamahalegacy" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="yamahakeys.html" class="prod-img-box"><img src="img/yamahakeys.png" alt="Yamaha Premium Keys" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
+              <div>
+                <a href="yamahakeys.html" class="prod-title">Yamaha Premium Keys</a>
+                <p class="prod-desc">Librería Kontakt enfocada en pianos acústicos y eléctricos de gama alta.</p>
+                <div class="mb-2">
+                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
+                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.9 (160)</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="old-price">$100.00</span>
+                  <span class="prod-price" style="color: #ffa600;">$30.00</span>
+                </div>
+                <button class="btn-add-cart" style="background: #ffa600;" data-id="14" data-name="Yamaha Premium Keys" data-price="30" data-img="yamahakeys" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="cosmos.html" class="prod-img-box"><img src="img/cosmos.png" alt="Cosmos Collection" onerror="this.src='https://ui-avatars.com/api/?name=Co&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
+              <div>
+                <a href="cosmos.html" class="prod-title">Cosmos Collection</a>
+                <p class="prod-desc">Pack de expansión con pads y texturas espaciales de alta calidad.</p>
+                <div class="mb-2">
+                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
+                  <span style="font-size: 0.8rem; color: #f1f5f9;">5.0 (96)</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="old-price">$100.00</span>
+                  <span class="prod-price" style="color: #ffa600;">$70.00</span>
+                </div>
+                <button class="btn-add-cart" style="background: #ffa600;" data-id="12" data-name="Cosmos Collection" data-price="70" data-img="cosmos" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="rhodes.html" class="prod-img-box"><img src="img/rhodes.png" alt="Rhodes Affair 2" onerror="this.src='https://ui-avatars.com/api/?name=Rh&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
+              <div>
+                <a href="rhodes.html" class="prod-title">Rhodes Affair 2</a>
+                <p class="prod-desc">Sonidos de piano eléctrico cálidos y profesionales para tus directos.</p>
+                <div class="mb-2">
+                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
+                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.9 (142)</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="old-price">$100.00</span>
+                  <span class="prod-price" style="color: #ffa600;">$30.00</span>
+                </div>
+                <button class="btn-add-cart" style="background: #ffa600;" data-id="11" data-name="Rhodes Affair 2" data-price="30" data-img="rhodes" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="mainstage.html" class="prod-img-box"><img src="img/mainstage.png" alt="Montage & Nord" onerror="this.src='https://ui-avatars.com/api/?name=Mo&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
+              <div>
+                <a href="mainstage.html" class="prod-title">Montage 8 & Nord Stage 3</a>
+                <p class="prod-desc">Conciertos configurados y listos para usar en Apple MainStage.</p>
+                <div class="mb-2">
+                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
+                  <span style="font-size: 0.8rem; color: #f1f5f9;">5.0 (210)</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="old-price">$65.00</span>
+                  <span class="prod-price" style="color: #ffa600;">$27.00</span>
+                </div>
+                <button class="btn-add-cart" style="background: #ffa600;" data-id="15" data-name="Montage 8 & Nord Stage 3" data-price="27" data-img="mainstage" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="logic.html" class="prod-img-box"><img src="img/logic.png" alt="Logic Pro" onerror="this.src='https://ui-avatars.com/api/?name=Lo&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
+              <div>
+                <a href="logic.html" class="prod-title">Logic Pro</a>
+                <p class="prod-desc">Estación de trabajo de audio digital avanzada para producción, mezcla y masterización.</p>
+                <div class="mb-2">
+                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
+                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.9 (412)</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="old-price">$200.00</span>
+                  <span class="prod-price" style="color: #ffa600;">$25.00</span>
+                </div>
+                <button class="btn-add-cart" style="background: #ffa600;" data-id="7" data-name="Logic Pro" data-price="25" data-img="logic" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECCIÓN: OFICINA Y PRODUCTIVIDAD -->
+    <div id="oficina" class="category-section mb-5">
+      <h4 class="category-header" style="color: #00ff88; border-color: rgba(0,255,136,0.2);">
+        <i class="bi bi-pc-display-horizontal"></i> Oficina y Productividad
+      </h4>
+      <div class="row g-4">
+        
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="office.html" class="prod-img-box"><img src="img/office.png" alt="Office Suite" onerror="this.src='https://ui-avatars.com/api/?name=Of&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
+              <div>
+                <a href="office.html" class="prod-title">Office Home & Business</a>
+                <p class="prod-desc">Productividad completa para todos los días: Word, Excel, PowerPoint y más.</p>
+                <div class="mb-2">
+                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
+                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.8 (278)</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="old-price">$100.00</span>
+                  <span class="prod-price" style="color: #00ff88;">$40.00</span>
+                </div>
+                <button class="btn-add-cart" style="background: #00ff88;" data-id="4" data-name="Office Home & Business" data-price="40" data-img="office" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="product-horizontal glass-effect">
+            <a href="esword.html" class="prod-img-box"><img src="img/esword.png" alt="E-Sword" onerror="this.src='https://ui-avatars.com/api/?name=eS&background=00e5ff&color=000'"></a>
+            <div class="prod-info">
+              <div>
+                <a href="esword.html" class="prod-title">Biblias y Diccionarios para E-Sword</a>
+                <p class="prod-desc">Colección completa de módulos bíblicos en español. Descarga gratuita.</p>
+                <div class="mb-2">
+                  <span class="text-success" style="font-size: 0.8rem; font-weight: 600;">GRATIS</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <span class="prod-price" style="color: #00ff88;">$0.00</span>
+                </div>
+                <button class="btn-add-cart" style="background: #00ff88;" data-id="1" data-name="Biblias E-Sword" data-price="0" data-img="esword" data-type="Descarga gratuita">Obtener <i class="bi bi-download"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </section>
 
   <!-- Footer -->
@@ -1116,9 +932,8 @@
   <!-- ====== ESTRUCTURA DEL CARRITO LATERAL Y BLOQUEO IZQUIERDO ====== -->
   <div class="cart-overlay" id="cart-overlay"></div>
   
-  <!-- Logo animado flotando en la zona izquierda bloqueada con efecto de luces -->
   <div class="cart-brand-watermark">
-    <img src="img/dingloft.png" alt="Dingloft Logo" class="animated-watermark-logo">
+    <img src="img/dingloft.png" alt="Dingloft Logo" class="animated-watermark-logo" onerror="this.src='https://ui-avatars.com/api/?name=Dingloft&background=00e5ff&color=000'">
   </div>
 
   <div class="cart-drawer" id="cart-drawer">
@@ -1137,7 +952,6 @@
     </div>
     
     <div class="cart-footer">
-      <!-- INPUT DE CUPÓN DE DESCUENTO -->
       <div class="coupon-box" id="coupon-section" style="display: none;">
         <input type="text" id="coupon-input" class="coupon-input" placeholder="Código de descuento">
         <button type="button" id="apply-coupon-btn" class="btn-apply-coupon">Aplicar</button>
@@ -1153,17 +967,14 @@
         <span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span>
       </div>
       
-      <!-- Texto e icono en blanco puro -->
       <div class="text-center mb-3 text-white" style="font-size: 0.85rem; font-weight: 500; display: none;" id="security-badge-box">
         <i class="bi bi-shield-lock"></i> Pago 100% seguro con PayPal
       </div>
       
-      <!-- CONTENEDOR ESTILO EVOLUTION DESIGN CON TARJETA BLANCA -->
       <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;">
         <div id="paypal-button-container" class="w-100"></div>
       </div>
 
-      <!-- BOTÓN PARA PEDIDOS GRATUITOS / CUPÓN -->
       <button id="free-checkout-btn" class="btn-free-checkout mb-3" style="display: none;">
         Obtener gratis <i class="bi bi-download ms-1"></i>
       </button>
@@ -1177,11 +988,11 @@
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Lógica de Firebase Auth y renderizado exacto de PayPal -->
+  <!-- Lógica de Firebase Auth y renderizado de PayPal -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
@@ -1204,7 +1015,7 @@
       if (modal) modal.classList.add('active');
     }
 
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       const desktopAuthContainer = document.getElementById('desktop-auth-container');
       const mobileAuthContainer = document.getElementById('mobile-auth-container');
 
@@ -1239,17 +1050,40 @@
             </a>
           `;
         }
+
+        // Check purchases
+        try {
+          const q = query(collection(db, "purchases"), where("uid", "==", user.uid));
+          const snapshot = await getDocs(q);
+          let purchasedNames = [];
+          snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            if (data.items && Array.isArray(data.items)) {
+              data.items.forEach(item => purchasedNames.push(item.name));
+            }
+          });
+
+          const buyButtons = document.querySelectorAll('.btn-add-cart');
+          buyButtons.forEach(btn => {
+            const prodName = btn.getAttribute('data-name');
+            if (purchasedNames.includes(prodName)) {
+              btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> OBTENIDO';
+              btn.style.background = 'rgba(0, 255, 136, 0.1)';
+              btn.style.color = '#00ff88';
+              btn.style.border = '1px solid rgba(0, 255, 136, 0.4)';
+              btn.disabled = true;
+            }
+          });
+        } catch (err) {
+          console.error("Error al verificar compras previas:", err);
+        }
       }
     });
-
-    // RENDERIZAR PAYPAL IDÉNTICO AL SISTEMA ESTABLE DE EVOLUTION DESIGN
-    let paypalRenderedInstance = null;
 
     window.renderPayPalStable = function(monto) {
         const container = document.getElementById('paypal-button-container');
         if (!container) return;
-        
-        container.innerHTML = ''; // Limpiar previo
+        container.innerHTML = ''; 
 
         if (typeof paypal === 'undefined') return;
 
@@ -1257,17 +1091,12 @@
           style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
           createOrder: function(data, actions) {
             return actions.order.create({
-              purchase_units: [{
-                amount: {
-                  value: monto.toFixed(2)
-                }
-              }]
+              purchase_units: [{ amount: { value: monto.toFixed(2) } }]
             });
           },
           onApprove: async function(data, actions) {
             return actions.order.capture().then(async function(details) {
               const user = auth.currentUser;
-
               if (!user) {
                 alert("Debes iniciar sesión para registrar tus programas en tu cuenta.");
                 window.location.href = 'login.html';
@@ -1276,7 +1105,6 @@
 
               try {
                 const itemsComprados = window.cartItemsList || [];
-
                 await addDoc(collection(db, "purchases"), {
                   uid: user.uid,
                   userEmail: user.email,
@@ -1286,73 +1114,70 @@
                   createdAt: serverTimestamp()
                 });
 
+                if (typeof window.clearCart === 'function') window.clearCart();
                 mostrarModalExito(`¡Pago exitoso, ${details.payer.name.given_name}! Redirigiendo a tu cuenta...`);
                 setTimeout(() => { window.location.href = 'account.html'; }, 2200);
 
               } catch (error) {
-                console.error("Error guardando la compra en Firestore:", error);
-                alert("El pago en PayPal se realizó, pero ocurrió un error al guardar tus programas. Contacta a soporte.");
+                console.error("Error guardando la compra:", error);
+                alert("Pago en PayPal exitoso, pero ocurrió un error guardando los datos. Contacta a soporte.");
               }
             });
-          },
-          onError: function(err) {
-            console.error("Error con PayPal:", err);
-            alert("Ocurrió un error al procesar el pago con PayPal.");
           }
         }).render('#paypal-button-container');
     };
 
-    // LÓGICA PARA PEDIDOS GRATUITOS / CUPÓN ($0.00)
     const freeCheckoutBtn = document.getElementById('free-checkout-btn');
-    freeCheckoutBtn.addEventListener('click', async () => {
-      const user = auth.currentUser;
+    if(freeCheckoutBtn){
+        freeCheckoutBtn.addEventListener('click', async () => {
+          const user = auth.currentUser;
+          if (!user) {
+            alert("Debes iniciar sesión para descargar este programa.");
+            window.location.href = 'login.html';
+            return;
+          }
 
-      if (!user) {
-        alert("Debes iniciar sesión para descargar este programa.");
-        window.location.href = 'login.html';
-        return;
-      }
+          try {
+            const itemsComprados = window.cartItemsList || [];
+            freeCheckoutBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 8px;"></span> Procesando...';
+            freeCheckoutBtn.disabled = true;
 
-      try {
-        const itemsComprados = window.cartItemsList || [];
-        
-        freeCheckoutBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 8px;"></span> Procesando...';
-        freeCheckoutBtn.disabled = true;
+            await addDoc(collection(db, "purchases"), {
+              uid: user.uid,
+              userEmail: user.email,
+              paypalOrderId: "PEDIDO-GRATUITO-" + Date.now(),
+              payerName: user.displayName || "Usuario",
+              items: itemsComprados,
+              createdAt: serverTimestamp()
+            });
 
-        await addDoc(collection(db, "purchases"), {
-          uid: user.uid,
-          userEmail: user.email,
-          paypalOrderId: "PEDIDO-GRATUITO-" + Date.now(),
-          payerName: user.displayName || "Usuario",
-          items: itemsComprados,
-          createdAt: serverTimestamp()
+            if (typeof window.clearCart === 'function') window.clearCart();
+            mostrarModalExito("¡Pedido procesado con éxito! Redirigiendo a tus descargas...");
+            setTimeout(() => { window.location.href = 'account.html'; }, 2200);
+
+          } catch (error) {
+            console.error("Error guardando pedido gratuito:", error);
+            alert("Ocurrió un error al procesar tu pedido. Contacta a soporte.");
+            freeCheckoutBtn.innerHTML = 'Obtener gratis <i class="bi bi-download ms-1"></i>';
+            freeCheckoutBtn.disabled = false;
+          }
         });
-
-        mostrarModalExito("¡Pedido procesado con éxito! Redirigiendo a tus descargas...");
-        setTimeout(() => { window.location.href = 'account.html'; }, 2200);
-
-      } catch (error) {
-        console.error("Error guardando pedido gratuito en Firestore:", error);
-        alert("Ocurrió un error al procesar tu pedido. Contacta a soporte.");
-        freeCheckoutBtn.innerHTML = 'Obtener gratis <i class="bi bi-download ms-1"></i>';
-        freeCheckoutBtn.disabled = false;
-      }
-    });
+    }
   </script>
 
   <!-- LÓGICA FUNCIONAL DEL CARRITO Y CUPONES -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      let cart = [];
+      let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
       let couponApplied = false;
 
-      const cartBtns = [document.getElementById('main-cart-btn'), document.querySelector('.mobile-cart-btn')];
+      const cartBtns = document.querySelectorAll('.cart-btn-global');
       const cartDrawer = document.getElementById('cart-drawer');
       const cartOverlay = document.getElementById('cart-overlay');
       const closeCartBtn = document.getElementById('close-cart-btn');
       const continueShoppingBtn = document.getElementById('continue-shopping');
       
-      const cartCountBadges = [document.getElementById('cart-count'), document.querySelector('.mobile-cart-count')];
+      const cartCountBadges = document.querySelectorAll('.cart-badge-count-global');
       const cartItemCountText = document.getElementById('cart-item-count-text');
       const cartItemsContainer = document.getElementById('cart-items-container');
       const emptyCartMsg = document.getElementById('empty-cart-msg');
@@ -1376,12 +1201,12 @@
         if(e) e.preventDefault(); 
         cartDrawer.classList.add('active'); 
         cartOverlay.classList.add('active');
-        document.body.classList.add('cart-open'); // BLOQUEAR SCROLL DE LA PÁGINA FONDO/IZQUIERDA
+        document.body.classList.add('no-scroll'); 
         
         updateCartUI();
 
         const navbarCollapse = document.getElementById('navbarNav');
-        if(navbarCollapse.classList.contains('show')) {
+        if(navbarCollapse && navbarCollapse.classList.contains('show')) {
           const bsCollapse = new bootstrap.Collapse(navbarCollapse, {toggle: false});
           bsCollapse.hide();
         }
@@ -1391,13 +1216,13 @@
         if(e) e.preventDefault(); 
         cartDrawer.classList.remove('active'); 
         cartOverlay.classList.remove('active'); 
-        document.body.classList.remove('cart-open'); // RESTAURAR SCROLL
+        document.body.classList.remove('no-scroll'); 
       };
 
       cartBtns.forEach(btn => { if(btn) btn.addEventListener('click', openCart); });
-      closeCartBtn.addEventListener('click', closeCart);
-      cartOverlay.addEventListener('click', closeCart);
-      continueShoppingBtn.addEventListener('click', closeCart);
+      if(closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
+      if(cartOverlay) cartOverlay.addEventListener('click', closeCart);
+      if(continueShoppingBtn) continueShoppingBtn.addEventListener('click', closeCart);
 
       const updateCartUI = () => {
         cartItemsContainer.innerHTML = '';
@@ -1420,7 +1245,7 @@
           continueShoppingBox.style.display = 'none';
           couponApplied = false;
           couponMsg.style.display = 'none';
-          couponInput.value = '';
+          if(couponInput) couponInput.value = '';
         } else {
           emptyCartMsg.style.display = 'none';
           couponSection.style.display = 'flex';
@@ -1444,7 +1269,7 @@
             const itemHTML = `
               <div class="cart-item">
                 <div class="cart-item-img">
-                  <img src="img/${item.img}.png" alt="${item.name}">
+                  <img src="img/${item.img}.png" alt="${item.name}" onerror="this.src='https://ui-avatars.com/api/?name=${item.name.charAt(0)}&background=00e5ff&color=000'">
                 </div>
                 <div class="cart-item-info">
                   <h4 class="cart-item-title">${item.name}</h4>
@@ -1481,7 +1306,6 @@
             securityBadge.style.display = 'block';
             freeCheckoutBtn.style.display = 'none';
             
-            // Renderizar de forma idéntica a Evolution Design
             setTimeout(() => {
                 if (typeof window.renderPayPalStable === 'function') {
                     window.renderPayPalStable(finalTotal);
@@ -1491,28 +1315,41 @@
         }
 
         cartCountBadges.forEach(badge => { if(badge) badge.textContent = totalItems; });
-        cartItemCountText.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
+        if(cartItemCountText) cartItemCountText.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
         
-        cartSubtotalText.textContent = `$${totalPrice.toFixed(2)}`;
-        cartTotalText.textContent = `$${(couponApplied ? 0 : totalPrice).toFixed(2)}`;
+        if(cartSubtotalText) cartSubtotalText.textContent = `$${totalPrice.toFixed(2)}`;
+        if(cartTotalText) cartTotalText.textContent = `$${(couponApplied ? 0 : totalPrice).toFixed(2)}`;
+        
+        localStorage.setItem('dingloft_cart', JSON.stringify(cart));
       };
 
-      applyCouponBtn.addEventListener('click', () => {
-        const code = couponInput.value.trim().toUpperCase();
-        if (code === 'ADMIN_EVOLUTION') {
-          couponApplied = true;
-          couponMsg.style.display = 'block';
-          couponMsg.style.color = '#00ff88';
-          couponMsg.innerHTML = '<i class="bi bi-check-circle-fill"></i> ¡Cupón ADMIN_EVOLUTION aplicado!';
-          updateCartUI();
-        } else {
-          couponApplied = false;
-          couponMsg.style.display = 'block';
-          couponMsg.style.color = '#ff4444';
-          couponMsg.innerHTML = '<i class="bi bi-x-circle-fill"></i> Código de cupón inválido.';
-          updateCartUI();
-        }
-      });
+      window.clearCart = () => {
+        cart = [];
+        localStorage.removeItem('dingloft_cart');
+        updateCartUI();
+      };
+
+      // Inicializar UI al cargar
+      updateCartUI();
+
+      if(applyCouponBtn) {
+        applyCouponBtn.addEventListener('click', () => {
+          const code = couponInput.value.trim().toUpperCase();
+          if (code === 'ADMIN_EVOLUTION') {
+            couponApplied = true;
+            couponMsg.style.display = 'block';
+            couponMsg.style.color = '#00ff88';
+            couponMsg.innerHTML = '<i class="bi bi-check-circle-fill"></i> ¡Cupón ADMIN_EVOLUTION aplicado!';
+            updateCartUI();
+          } else {
+            couponApplied = false;
+            couponMsg.style.display = 'block';
+            couponMsg.style.color = '#ff4444';
+            couponMsg.innerHTML = '<i class="bi bi-x-circle-fill"></i> Código de cupón inválido.';
+            updateCartUI();
+          }
+        });
+      }
 
       window.changeQty = (index, delta) => {
         if (cart[index].qty + delta > 0) {
@@ -1531,6 +1368,7 @@
       addButtons.forEach(button => {
         button.addEventListener('click', function(e) {
           e.preventDefault(); 
+          if(this.disabled) return;
           
           const id = this.getAttribute('data-id');
           const name = this.getAttribute('data-name');
@@ -1557,14 +1395,18 @@
           
           const originalHTML = this.innerHTML;
           const originalBg = this.style.background;
+          const originalColor = this.style.color;
           
           this.innerHTML = 'Agregado <i class="bi bi-check2"></i>';
-          this.classList.add('btn-added');
+          this.style.background = '#00ff88';
+          this.style.color = '#000';
           
           setTimeout(() => {
-            this.innerHTML = originalHTML;
-            this.classList.remove('btn-added');
-            this.style.background = originalBg;
+            if(!this.disabled) {
+              this.innerHTML = originalHTML;
+              this.style.background = originalBg;
+              this.style.color = originalColor;
+            }
             openCart(); 
           }, 800);
         });
