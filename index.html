@@ -993,7 +993,7 @@
   <!-- Lógica de Firebase Auth y renderizado de PayPal -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -1024,7 +1024,6 @@
       const mobileAdminContainer = document.getElementById('mobile-admin-btn-container');
 
       if (user) {
-        // VALIDACIÓN EXCLUSIVA PARA MOSTRAR MODO ADMIN SÓLO A CESAR Y ANTONIO
         if (user.email === 'evolutiongt01@gmail.com' || user.email === 'tepaz2025@gmail.com') {
           if (desktopAdminContainer) desktopAdminContainer.style.display = 'block';
           if (mobileAdminContainer) mobileAdminContainer.style.display = 'block';
@@ -1035,6 +1034,8 @@
           displayName = user.displayName.split(' ')[0];
         } else if (user.email) {
           displayName = user.email.split('@')[0];
+        } else {
+          displayName = "Invitado";
         }
 
         let avatarHtml = '';
@@ -1106,26 +1107,25 @@
           },
           onApprove: async function(data, actions) {
             return actions.order.capture().then(async function(details) {
-              const user = auth.currentUser;
-              if (!user) {
-                alert("Debes iniciar sesión para registrar tus programas en tu cuenta.");
-                window.location.href = 'login.html';
-                return;
-              }
+              let user = auth.currentUser;
+              let userId = user ? user.uid : "GUEST-" + Date.now();
+              let userEmail = details.payer.email_address || (user ? user.email : "invitado@dingloft.com");
+              let payerName = details.payer.name.given_name || "Cliente";
 
               try {
                 const itemsComprados = window.cartItemsList || [];
+                // Guarda la compra asociada al correo que el cliente utilizó en PayPal
                 await addDoc(collection(db, "purchases"), {
-                  uid: user.uid,
-                  userEmail: user.email,
+                  uid: userId,
+                  userEmail: userEmail,
                   paypalOrderId: details.id,
-                  payerName: details.payer.name.given_name,
+                  payerName: payerName,
                   items: itemsComprados,
                   createdAt: serverTimestamp()
                 });
 
                 if (typeof window.clearCart === 'function') window.clearCart();
-                mostrarModalExito(`¡Pago exitoso, ${details.payer.name.given_name}! Redirigiendo a tu cuenta...`);
+                mostrarModalExito(`¡Pago exitoso, ${payerName}! Tu compra ha sido guardada.`);
                 setTimeout(() => { window.location.href = 'account.html'; }, 2200);
 
               } catch (error) {
@@ -1144,12 +1144,10 @@
     const freeCheckoutBtn = document.getElementById('free-checkout-btn');
     if(freeCheckoutBtn){
       freeCheckoutBtn.addEventListener('click', async () => {
-        const user = auth.currentUser;
-        if (!user) {
-          alert("Debes iniciar sesión para descargar este programa.");
-          window.location.href = 'login.html';
-          return;
-        }
+        let user = auth.currentUser;
+        let userId = user ? user.uid : "GUEST-FREE-" + Date.now();
+        let userEmail = user ? user.email : "invitado@dingloft.com";
+        let payerName = user ? (user.displayName || "Usuario") : "Cliente Invitado";
 
         try {
           const itemsComprados = window.cartItemsList || [];
@@ -1157,16 +1155,16 @@
           freeCheckoutBtn.disabled = true;
 
           await addDoc(collection(db, "purchases"), {
-            uid: user.uid,
-            userEmail: user.email,
+            uid: userId,
+            userEmail: userEmail,
             paypalOrderId: "PEDIDO-GRATUITO-" + Date.now(),
-            payerName: user.displayName || "Usuario",
+            payerName: payerName,
             items: itemsComprados,
             createdAt: serverTimestamp()
           });
 
           if (typeof window.clearCart === 'function') window.clearCart();
-          mostrarModalExito("¡Pedido procesado con éxito! Redirigiendo a tus descargas...");
+          mostrarModalExito("¡Pedido procesado con éxito! Redirigiendo...");
           setTimeout(() => { window.location.href = 'account.html'; }, 2200);
 
         } catch (error) {
@@ -1411,7 +1409,7 @@
             }
           });
           
-          const originalHTML = this.innerHTML;
+          theOriginalHTML = this.innerHTML;
           const originalBg = this.style.background;
           const originalColor = this.style.color;
           
