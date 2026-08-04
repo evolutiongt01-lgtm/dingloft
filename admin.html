@@ -30,7 +30,7 @@
     .btn-unlock { width: 100%; padding: 14px; background: linear-gradient(90deg, #ff5050, #ff2a2a); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem; transition: .2s; text-transform: uppercase; letter-spacing: 1px; }
     .btn-unlock:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,80,80,0.3); }
 
-    /* MODAL INTERACTIVO LIQUID GLASS (PERSONALIZADO) */
+    /* MODAL INTERACTIVO LIQUID GLASS */
     .custom-modal-overlay { position: fixed; inset: 0; background: rgba(4, 8, 15, 0.85); backdrop-filter: blur(12px); z-index: 999999; display: grid; place-items: center; opacity: 0; pointer-events: none; transition: .3s ease; }
     .custom-modal-overlay.active { opacity: 1; pointer-events: auto; }
     .custom-modal-box { width: 90%; max-width: 420px; background: linear-gradient(145deg, rgba(16,27,45,0.95), rgba(8,14,25,0.98)); border: 1px solid rgba(255,255,255,0.15); border-radius: 24px; padding: 30px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.6); transform: scale(0.9); transition: .3s cubic-bezier(0.2, 0.8, 0.2, 1); }
@@ -43,7 +43,7 @@
     .app { min-height:100vh; display:grid; grid-template-columns:292px 1fr; filter: blur(10px); transition: filter 0.5s ease; }
     body.unlocked .app { filter: blur(0); }
 
-    /* WIDGET LIQUID GLASS (RELOJ MUNDIAL) */
+    /* WIDGET LIQUID GLASS (RELOJ MUNDIAL PERSONALIZADO) */
     .world-clock-pill { display: inline-flex; align-items: center; gap: 20px; background: rgba(16, 27, 45, 0.45); border: 1px solid rgba(255, 255, 255, 0.12); padding: 10px 22px; border-radius: 50px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 0 12px rgba(255,255,255,0.03); margin-top: 15px; flex-wrap: wrap; }
     .clock-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 600; color: #c4d0df; }
     .clock-item i { color: var(--cyan); font-size: 1rem; }
@@ -72,7 +72,6 @@
     .stat:nth-child(4) i{color:var(--green);border-color:rgba(53,221,146,.55);background:rgba(53,221,146,.08)}
     .stat span { display:block; color:#cad5e3; font-size:.89rem; } .stat strong { display:block; margin-top:4px; font-size:2rem; line-height:1; color:var(--text); } 
 
-    /* CONTROLES DE BUSCADOR Y EXPORTACIÓN */
     .table-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
     .search-input { flex: 1; min-width: 240px; padding: 12px 16px; background: rgba(16, 27, 45, 0.6); border: 1px solid var(--line); border-radius: 12px; color: white; font-family: inherit; font-size: 0.9rem; }
     .search-input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 10px rgba(18,215,246,0.2); }
@@ -141,7 +140,7 @@
     </div>
   </div>
 
-  <!-- MODAL INTERACTIVO LIQUID GLASS PARA CONFIRMACIONES -->
+  <!-- MODAL INTERACTIVO LIQUID GLASS -->
   <div class="custom-modal-overlay" id="customConfirmModal">
     <div class="custom-modal-box">
       <div class="custom-modal-icon"><i class="bi bi-exclamation-triangle"></i></div>
@@ -177,22 +176,13 @@
       <div class="top">
         <div>
           <h1>Panel de <span style="color: var(--red);">Control</span></h1>
-          <p id="welcome-msg-p">¡Hola, bienvenido jefe! Es hora de facturar y romperla hoy. 🚀</p>
+          <p id="welcome-msg-p">¡Hola, bienvenido jefe! Dios bendiga tu trabajo y tu negocio hoy. 🙏🚀</p>
         </div>
         
+        <!-- WIDGET LIQUID GLASS (RELOJ DINÁMICO SEGÚN QUIÉN ENTRE) -->
         <div>
-          <div class="world-clock-pill">
-            <div class="clock-item">
-              <i class="bi bi-clock"></i> Miami: <span id="clock-miami">--:--:--</span>
-            </div>
-            <div class="clock-divider"></div>
-            <div class="clock-item">
-              <i class="bi bi-clock"></i> Guatemala: <span id="clock-guate">--:--:--</span>
-            </div>
-            <div class="clock-divider"></div>
-            <div class="clock-item">
-              <i class="bi bi-clock"></i> Texas: <span id="clock-texas">--:--:--</span>
-            </div>
+          <div class="world-clock-pill" id="widget-reloj-dinamico">
+            <!-- Se inyecta por JS según sea César o Antonio -->
           </div>
         </div>
       </div>
@@ -248,10 +238,11 @@
                 <th>Reservas</th>
                 <th>Notas Privadas</th>
                 <th>Estado</th>
+                <th>Acción</th>
               </tr>
             </thead>
             <tbody id="clientes-tbody">
-              <tr><td colspan="5" style="text-align: center;">Escaneando base de datos...</td></tr>
+              <tr><td colspan="6" style="text-align: center;">Escaneando base de datos...</td></tr>
             </tbody>
           </table>
         </div>
@@ -320,33 +311,55 @@
   <div class="toast" id="toast-message">Actualizado correctamente.</div>
 
   <script>
-    // RELOJ MUNDIAL
+    window.adminEmailActual = "";
+
+    // RELOJ MUNDIAL DINÁMICO (GUATE + MIAMI O TEXAS + MIAMI)
     function actualizarRelojes() {
-        const opciones = { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+        const opcionesMiami = { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
         const opcionesGuate = { timeZone: 'America/Guatemala', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
         const opcionesTexas = { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
 
         const ahora = new Date();
-        document.getElementById('clock-miami').textContent = ahora.toLocaleTimeString('en-US', opciones);
-        document.getElementById('clock-guate').textContent = ahora.toLocaleTimeString('en-US', opcionesGuate);
-        document.getElementById('clock-texas').textContent = ahora.toLocaleTimeString('en-US', opcionesTexas);
+        const horaMiami = ahora.toLocaleTimeString('en-US', opcionesMiami);
+        const horaGuate = ahora.toLocaleTimeString('en-US', opcionesGuate);
+        const horaTexas = ahora.toLocaleTimeString('en-US', opcionesTexas);
+
+        const widgetEl = document.getElementById('widget-reloj-dinamico');
+        if (!widgetEl) return;
+
+        if (window.adminEmailActual === 'tepaz2025@gmail.com') {
+            // Reloj para Antonio (Texas + Miami)
+            widgetEl.innerHTML = `
+                <div class="clock-item"><i class="bi bi-clock"></i> Miami: <span id="clock-miami">${horaMiami}</span></div>
+                <div class="clock-divider"></div>
+                <div class="clock-item"><i class="bi bi-clock"></i> Texas: <span id="clock-texas">${horaTexas}</span></div>
+            `;
+        } else {
+            // Reloj para César (Guatemala + Miami)
+            widgetEl.innerHTML = `
+                <div class="clock-item"><i class="bi bi-clock"></i> Miami: <span id="clock-miami">${horaMiami}</span></div>
+                <div class="clock-divider"></div>
+                <div class="clock-item"><i class="bi bi-clock"></i> Guatemala: <span id="clock-guate">${horaGuate}</span></div>
+            `;
+        }
     }
     setInterval(actualizarRelojes, 1000);
     actualizarRelojes();
 
     window.adminNombreReal = "Jefe";
 
-    // VOZ DE BIENVENIDA
+    // FRASES EVANGÉLICAS Y CORPORATIVAS MOTIVACIONALES (RANDOM)
     function hablarBienvenida(nombre) {
         if ('speechSynthesis' in window) {
-            const frasesRandom = [
-                `Sistema Dingloft en línea. Hola ${nombre}, es hora de facturar, romperla y dominar el mercado hoy.`,
-                `Bienvenido jefe ${nombre}. Los servidores están listos, las ventas fluyen y el éxito está asegurado.`,
-                `Atención ${nombre}. Las métricas de Dingloft están a tope. Vamos a conquistar nuevas metas hoy.`,
-                `Hola ${nombre}. La empresa te saluda. Hoy es un gran día para escalar el negocio al siguiente nivel.`,
-                `Conexión establecida con éxito, jefe ${nombre}. A facturar y hacer grande a Dingloft se ha dicho.`
+            const frasesEvangelicas = [
+                `Sistema Dingloft en línea. Hola ${nombre}, encomienda tu camino al Señor, confía en Él y Él obrará. ¡A facturar con bendición hoy!`,
+                `Bienvenido jefe ${nombre}. Todo lo puedes en Cristo que te fortalece. Que Dios prospere cada venta y cada proyecto en este día.`,
+                `Atención ${nombre}. Esfuérzate y sé valiente. El Señor va delante de ti abriendo caminos en Dingloft. ¡A romperla con fe!`,
+                `Hola ${nombre}. Dios ha puesto gracia en tus manos. Que la sabiduría divina guíe cada decisión en tu negocio hoy.`,
+                `Conexión establecida, jefe ${nombre}. Fija tus ojos en el Creador y permite que su bendición multiplique tu esfuerzo corporativo.`
             ];
-            const fraseElegida = frasesRandom[Math.floor(Math.random() * frasesRandom.length)];
+
+            const fraseElegida = frasesEvangelicas[Math.floor(Math.random() * frasesEvangelicas.length)];
             const pTop = document.getElementById('welcome-msg-p');
             if(pTop) pTop.textContent = fraseElegida;
 
@@ -354,81 +367,17 @@
             utterance.lang = 'es-ES';
             utterance.rate = 1.05; 
             utterance.pitch = 0.95; 
+
+            const voces = window.speechSynthesis.getVoices();
+            const vozEspanol = voces.find(v => v.lang.includes('es') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Microsoft')));
+            if (vozEspanol) utterance.voice = vozEspanol;
+
             window.speechSynthesis.speak(utterance);
         }
     }
 
-    // MODAL INTERACTIVO DE CONFIRMACIÓN (Reemplaza los alerts feos)
-    window.mostrarModalConfirm = function(titulo, descripcion, callbackSi) {
-        document.getElementById('modalConfirmTitle').textContent = titulo;
-        document.getElementById('modalConfirmDesc').textContent = descripcion;
-        const btnSi = document.getElementById('modalConfirmBtnYes');
-        
-        // Limpiamos eventos anteriores
-        let nuevoBtn = btnSi.cloneNode(true);
-        btnSi.parentNode.replaceChild(nuevoBtn, btnSi);
-        
-        document.getElementById('customConfirmModal').classList.add('active');
-        
-        nuevoBtn.addEventListener('click', () => {
-            cerrarModalConfirm();
-            if(callbackSi) callbackSi();
-        });
-    }
-
-    window.cerrarModalConfirm = function() {
-        document.getElementById('customConfirmModal').classList.remove('active');
-    }
-
-    // BUSCADORES EN TIEMPO REAL
-    window.filtrarTabla = function(containerId, cardSelector, query) {
-        const container = document.getElementById(containerId);
-        const cards = container.querySelectorAll(cardSelector);
-        const filtro = query.toLowerCase();
-        
-        cards.forEach(card => {
-            const texto = card.textContent.toLowerCase();
-            card.style.display = texto.includes(filtro) ? 'flex' : 'none';
-        });
-    }
-
-    window.filtrarTablaGenerica = function(tbodyId, query) {
-        const tbody = document.getElementById(tbodyId);
-        const rows = tbody.querySelectorAll('tr');
-        const filtro = query.toLowerCase();
-
-        rows.forEach(row => {
-            const texto = row.textContent.toLowerCase();
-            row.style.display = texto.includes(filtro) ? '' : 'none';
-        });
-    }
-
-    // EXPORTAR A CSV (EXCEL)
-    window.exportarExcel = function(tableId, filename) {
-        let csv = [];
-        let rows = document.querySelectorAll(`#${tableId} tr`);
-        
-        rows.forEach(row => {
-            let cols = row.querySelectorAll('td, th');
-            let data = [];
-            cols.forEach(col => {
-                // Evitamos capturar inputs de notas en la exportación
-                let input = col.querySelector('input');
-                let text = input ? input.value : col.innerText;
-                data.push('"' + text.replace(/"/g, '""') + '"');
-            });
-            csv.push(data.join(','));
-        });
-
-        let csvFile = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
-        let downloadLink = document.createElement('a');
-        downloadLink.download = filename;
-        downloadLink.href = window.URL.createObjectURL(csvFile);
-        downloadLink.style.display = 'none';
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-        mostrarToast("Reporte exportado con éxito.", "var(--green)");
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
     }
 
     window.unlockPanel = function() {
@@ -462,6 +411,73 @@
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 3500);
     }
+
+    // MODAL DE CONFIRMACIÓN LIQUID GLASS
+    window.mostrarModalConfirm = function(titulo, descripcion, callbackSi) {
+        document.getElementById('modalConfirmTitle').textContent = titulo;
+        document.getElementById('modalConfirmDesc').textContent = descripcion;
+        const btnSi = document.getElementById('modalConfirmBtnYes');
+        
+        let nuevoBtn = btnSi.cloneNode(true);
+        btnSi.parentNode.replaceChild(nuevoBtn, btnSi);
+        document.getElementById('customConfirmModal').classList.add('active');
+        
+        nuevoBtn.addEventListener('click', () => {
+            cerrarModalConfirm();
+            if(callbackSi) callbackSi();
+        });
+    }
+
+    window.cerrarModalConfirm = function() {
+        document.getElementById('customConfirmModal').classList.remove('active');
+    }
+
+    // BUSCADORES EN TIEMPO REAL
+    window.filtrarTabla = function(containerId, cardSelector, query) {
+        const container = document.getElementById(containerId);
+        const cards = container.querySelectorAll(cardSelector);
+        const filtro = query.toLowerCase();
+        cards.forEach(card => {
+            const texto = card.textContent.toLowerCase();
+            card.style.display = texto.includes(filtro) ? 'flex' : 'none';
+        });
+    }
+
+    window.filtrarTablaGenerica = function(tbodyId, query) {
+        const tbody = document.getElementById(tbodyId);
+        const rows = tbody.querySelectorAll('tr');
+        const filtro = query.toLowerCase();
+        rows.forEach(row => {
+            const texto = row.textContent.toLowerCase();
+            row.style.display = texto.includes(filtro) ? '' : 'none';
+        });
+    }
+
+    // EXPORTAR A CSV (EXCEL)
+    window.exportarExcel = function(tableId, filename) {
+        let csv = [];
+        let rows = document.querySelectorAll(`#${tableId} tr`);
+        rows.forEach(row => {
+            let cols = row.querySelectorAll('td, th');
+            let data = [];
+            cols.forEach(col => {
+                let input = col.querySelector('input');
+                let text = input ? input.value : col.innerText;
+                data.push('"' + text.replace(/"/g, '""') + '"');
+            });
+            csv.push(data.join(','));
+        });
+
+        let csvFile = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+        let downloadLink = document.createElement('a');
+        downloadLink.download = filename;
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        downloadLink.style.display = 'none';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        mostrarToast("Reporte exportado con éxito.", "var(--green)");
+    }
   </script>
 
   <script type="module">
@@ -490,6 +506,7 @@
           return;
         }
 
+        window.adminEmailActual = user.email;
         window.adminNombreReal = (user.email === 'tepaz2025@gmail.com') ? "Antonio" : "César";
         document.getElementById('sidebar-name').textContent = `${window.adminNombreReal} (Admin)`;
         document.getElementById('sidebar-email').textContent = user.email;
@@ -510,12 +527,12 @@
         const gananciasTbody = document.getElementById('ganancias-tbody');
         
         try {
-            // 1. CARGAR NOTAS DE CLIENTES
+            // NOTAS
             const notasSnap = await getDocs(collection(db, "admin_notes"));
             let notasMap = {};
             notasSnap.forEach(d => { notasMap[d.id] = d.data().note || ''; });
 
-            // 2. CARGAR RESERVAS
+            // RESERVAS
             const reservasSnap = await getDocs(collection(db, "reservas"));
             let reservas = [];
             reservasSnap.forEach(d => reservas.push({ id: d.id, ...d.data() }));
@@ -561,7 +578,7 @@
                             <span class="status-badge ${estadoClass}">${estadoTexto}</span>
                         </div>
                         <div class="reserva-body">
-                            <div class="data-group"><span>Fecha y Hora (Miami)</span><strong>${r.fecha} - ${r.hora}</strong></div>
+                            <div class="data-group"><span>Fecha y Hora (Miami / Guatemala)</span><strong>${r.fecha} - ${r.hora}</strong></div>
                             <div class="data-group"><span>Software</span><strong>${r.software}</strong></div>
                             <div class="data-group"><span>Comentario / Problema</span><strong>${r.comentario}</strong></div>
                             <div class="data-group"><span>Código de Acceso Cliente</span>${codAcceso}</div>
@@ -576,7 +593,7 @@
             }
             document.getElementById('stat-reservas').textContent = activasCount;
 
-            // 3. CARGAR COMPRAS Y CLIENTES
+            // COMPRAS Y CLIENTES
             const comprasSnap = await getDocs(collection(db, "purchases"));
             let totalCompras = 0;
             let clientesMap = {};
@@ -585,7 +602,7 @@
             let ingresosSoftwareHTML = '';
 
             reservas.forEach(r => {
-                if(!clientesMap[r.email]) clientesMap[r.email] = { email: r.email, reservas: 0, compras: 0, uid: r.uid };
+                if(!clientesMap[r.email]) clientesMap[r.email] = { email: r.email, reservas: 0, compras: 0 };
                 clientesMap[r.email].reservas++;
             });
 
@@ -595,7 +612,7 @@
                 comprasArr.push({ id: c.id, ...data });
 
                 let email = data.userEmail || data.payerName || "Desconocido";
-                if(!clientesMap[email]) clientesMap[email] = { email: email, reservas: 0, compras: 0, uid: data.uid };
+                if(!clientesMap[email]) clientesMap[email] = { email: email, reservas: 0, compras: 0 };
                 
                 let subTotalCompra = 0;
                 if (data.items && Array.isArray(data.items)) {
@@ -634,10 +651,10 @@
                 gananciasTbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No hay registros de ingresos todavía.</td></tr>';
             }
 
-            // Rellenar Clientes con Notas Editables
+            // Clientes (Con Notas y Botón de Eliminar Cliente)
             clientesTbody.innerHTML = '';
             if(clientesArr.length === 0) {
-                clientesTbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No hay clientes aún.</td></tr>';
+                clientesTbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay clientes aún.</td></tr>';
             } else {
                 clientesArr.forEach(c => {
                     let estado = c.compras > 0 ? '<span style="color:var(--green);"><i class="bi bi-circle-fill" style="font-size:0.6rem;"></i> Activo</span>' : '<span style="color:var(--cyan);"><i class="bi bi-circle-fill" style="font-size:0.6rem;"></i> Interesado</span>';
@@ -650,12 +667,17 @@
                         <td>${c.reservas} sesiones</td>
                         <td><input type="text" class="admin-note-input" value="${notaActual}" placeholder="Escribe una nota..." onchange="guardarNotaCliente('${safeEmailKey}', this.value)"></td>
                         <td>${estado}</td>
+                        <td>
+                           <button class="admin-btn btn-eliminar" onclick="confirmarEliminarCliente('${c.email}')" style="padding: 6px 12px; font-size: 0.78rem;">
+                              <i class="bi bi-trash"></i> Borrar
+                           </button>
+                        </td>
                     </tr>`;
                     clientesTbody.insertAdjacentHTML('beforeend', tr);
                 });
             }
 
-            // Rellenar Historial Compras
+            // Historial Compras
             comprasArr.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
             comprasTbody.innerHTML = '';
             
@@ -690,7 +712,6 @@
         }
     }
 
-    // GUARDAR NOTAS DE CLIENTES EN FIREBASE
     window.guardarNotaCliente = async function(emailKey, notaTexto) {
         try {
             await setDoc(doc(db, "admin_notes", emailKey), { note: notaTexto }, { merge: true });
@@ -712,7 +733,6 @@
         }
     }
 
-    // DISPARADORES DE MODALES INTERACTIVOS
     window.confirmarEliminarReserva = function(id) {
         mostrarModalConfirm("¿Eliminar Reserva?", "Esta acción borrará la reserva del sistema permanentemente.", async () => {
             try {
@@ -733,6 +753,19 @@
                 await loadAdminData();
             } catch(e) {
                 window.mostrarToast("Error eliminando pedido.", "var(--red)");
+            }
+        });
+    }
+
+    window.confirmarEliminarCliente = function(emailCliente) {
+        mostrarModalConfirm("¿Eliminar Cliente?", `Esto borrará las notas y referencias de ${emailCliente}.`, async () => {
+            try {
+                let safeKey = emailCliente.replace(/[@\.]/g, '_');
+                await deleteDoc(doc(db, "admin_notes", safeKey));
+                window.mostrarToast("Cliente eliminado de la lista.", "var(--red)");
+                await loadAdminData();
+            } catch(e) {
+                window.mostrarToast("Error eliminando cliente.", "var(--red)");
             }
         });
     }
