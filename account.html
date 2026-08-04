@@ -73,6 +73,7 @@
     .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
 
+    /* WIDGET VENTANAS ANIMADAS */
     .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 8, 15, 0.85); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .liquid-modal-overlay.active { opacity: 1; pointer-events: auto; }
     
@@ -148,6 +149,7 @@
         <a class="active" href="#descargas"><i class="bi bi-download"></i><span>Descargas</span></a>
         <a href="#" onclick="openReservasModal(); return false;"><i class="bi bi-calendar2-check"></i><span>Mis Reservas</span></a>
         
+        <!-- BOTÓN SECRETO ADMIN -->
         <a href="admin.html" id="btn-admin" style="display: none; color: #ff5050; margin-top: 15px; border: 1px solid rgba(255,80,80,0.3); background: rgba(255,80,80,0.05);"><i class="bi bi-incognito"></i><span>Panel Admin</span></a>
       </nav>
       <div class="profile">
@@ -335,6 +337,12 @@
   <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
   <script>
+    // ASIGNAR A WINDOW PARA EVITAR ERRORES DE LECTURA EN FIREBASE
+    window.diaSeleccionado = null;
+    window.horaSeleccionada = null;
+    window.softwareSeleccionado = "Google Chrome Remote Desktop";
+    window.precioBase = 10.00;
+
     window.openReservasModal = function() {
       document.getElementById('reservasModal').classList.add('active');
     };
@@ -350,11 +358,6 @@
     const mesReal = fechaReal.getMonth();
     const anoReal = fechaReal.getFullYear();
 
-    let diaSeleccionado = null;
-    let horaSeleccionada = null;
-    let softwareSeleccionado = "Google Chrome Remote Desktop";
-    let precioBase = 10.00;
-
     const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     const horariosDisponibles = ["07:00 AM (CET/Madrid)","08:00 AM (CET/Madrid)","09:00 AM (CET/Madrid)","10:00 AM (CET/Madrid)","11:00 AM (CET/Madrid)","12:00 PM (CET/Madrid)","01:00 PM (CET/Madrid)"];
 
@@ -362,6 +365,28 @@
         let x = Math.sin(seed++) * 10000;
         return x - Math.floor(x);
     }
+
+    // VALIDAR SI LA HORA SELECCIONADA EN MADRID YA PASÓ EN GUATEMALA
+    window.horaYaPaso = function(horaStr, fechaElegida) {
+        let ahora = new Date();
+        let match = horaStr.match(/(\d+):(\d+)\s(AM|PM)/);
+        let hMadrid = parseInt(match[1]);
+        if (match[3] === 'PM' && hMadrid < 12) hMadrid += 12;
+        if (match[3] === 'AM' && hMadrid === 12) hMadrid = 0;
+        
+        let hGuate = hMadrid - 8;
+        let diaAjuste = 0;
+        if (hGuate < 0) {
+            hGuate += 24;
+            diaAjuste = -1;
+        }
+        
+        let fechaSlot = new Date(fechaElegida);
+        fechaSlot.setDate(fechaSlot.getDate() + diaAjuste);
+        fechaSlot.setHours(hGuate, 0, 0, 0);
+        
+        return fechaSlot <= ahora;
+    };
 
     function actualizarBotonRetroceso() {
       const btnPrev = document.getElementById('btn-prev-month');
@@ -395,7 +420,7 @@
         let esPasado = fechaEvaluar < hoy;
         let diaSemana = fechaEvaluar.getDay();
         let esFinDeSemana = (diaSemana === 0 || diaSemana === 6); 
-        let esSeleccionado = diaSeleccionado && diaSeleccionado.getDate() === dia && diaSeleccionado.getMonth() === mesActual && diaSeleccionado.getFullYear() === anoActual;
+        let esSeleccionado = window.diaSeleccionado && window.diaSeleccionado.getDate() === dia && window.diaSeleccionado.getMonth() === mesActual && window.diaSeleccionado.getFullYear() === anoActual;
 
         if (esPasado) {
           grid.innerHTML += `<div class="day-cell disabled" title="Día pasado">${dia}</div>`;
@@ -418,20 +443,25 @@
     }
 
     window.seleccionarDia = function(dia) {
-      diaSeleccionado = new Date(anoActual, mesActual, dia);
-      horaSeleccionada = null;
+      window.diaSeleccionado = new Date(anoActual, mesActual, dia);
+      window.horaSeleccionada = null;
       renderizarCalendario();
       
       const headerText = document.getElementById('selected-date-text');
       const slotsContainer = document.getElementById('time-slots-list');
       const opcionesFecha = { weekday: 'short', month: 'short', day: 'numeric' };
-      headerText.textContent = diaSeleccionado.toLocaleDateString('es-ES', opcionesFecha);
+      headerText.textContent = window.diaSeleccionado.toLocaleDateString('es-ES', opcionesFecha);
 
       slotsContainer.innerHTML = '';
       let seed = anoActual * 10000 + mesActual * 100 + dia;
 
       horariosDisponibles.forEach((hora, index) => {
-        if (pseudoRandom(seed + index) < 0.40) {
+        let yaPaso = window.horaYaPaso(hora, window.diaSeleccionado);
+        let ocupado = pseudoRandom(seed + index) < 0.40;
+
+        if (yaPaso) {
+          slotsContainer.innerHTML += `<div class="time-slot sold-out" title="Horario finalizado">${hora} - Finalizado</div>`;
+        } else if (ocupado) {
           slotsContainer.innerHTML += `<div class="time-slot sold-out" title="Horario ocupado">${hora} - Agotado</div>`;
         } else {
           slotsContainer.innerHTML += `<div class="time-slot" onclick="seleccionarHora('${hora}', this)">${hora}</div>`;
@@ -440,13 +470,13 @@
     }
 
     window.seleccionarHora = function(hora, elemento) {
-      horaSeleccionada = hora;
+      window.horaSeleccionada = hora;
       document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
       elemento.classList.add('selected');
     }
 
     window.seleccionarSoftware = function(software, elemento) {
-      softwareSeleccionado = software;
+      window.softwareSeleccionado = software;
       document.querySelectorAll('.software-btn').forEach(btn => btn.classList.remove('selected'));
       elemento.classList.add('selected');
     }
@@ -455,7 +485,6 @@
       const codigo = document.getElementById('cuponInput').value.trim().toUpperCase();
       let cuponesValidos = { "DINGLOFT5": 5.00, "VIP": 10.00, "INSTALA30": 3.00 };
       
-      // CUPÓN DE PRUEBA GRATIS - VÁLIDO SÓLO HOY (4 de agosto de 2026)
       const hoyString = new Date().toISOString().split('T')[0];
       if (hoyString === "2026-08-04" && codigo === "PRUEBAGRATIS") {
           cuponesValidos["PRUEBAGRATIS"] = 10.00;
@@ -463,19 +492,18 @@
 
       if (cuponesValidos[codigo] !== undefined) {
         let descuento = cuponesValidos[codigo];
-        let totalFinal = Math.max(0, precioBase - descuento);
+        let totalFinal = Math.max(0, window.precioBase - descuento);
         document.getElementById('precio-total').textContent = `$${totalFinal.toFixed(2)} USD`;
         
-        // Actualizar el texto del botón si el total es cero
         if (totalFinal === 0) {
            document.getElementById('btn-pagar').innerHTML = `<i class="bi bi-check2-circle"></i> Reservar Gratis`;
         } else {
            document.getElementById('btn-pagar').innerHTML = `<i class="bi bi-credit-card"></i> Pagar y Reservar ($${totalFinal.toFixed(2)} USD)`;
         }
 
-        mostrarAlertaModal("¡Cupón aplicado con éxito!", true);
+        window.mostrarAlertaModal("¡Cupón aplicado con éxito!", true);
       } else {
-        mostrarAlertaModal("Cupón inválido o expirado.", false);
+        window.mostrarAlertaModal("Cupón inválido o expirado.", false);
       }
     };
 
