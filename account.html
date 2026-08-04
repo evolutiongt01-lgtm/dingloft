@@ -73,7 +73,6 @@
     .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
 
-    /* WIDGET VENTANAS ANIMADAS */
     .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 8, 15, 0.85); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .liquid-modal-overlay.active { opacity: 1; pointer-events: auto; }
     
@@ -326,7 +325,8 @@
         </div>
 
         <div>
-          <button id="btn-pagar" class="liquid-btn" onclick="procesarPagoReserva()">
+          <!-- BOTÓN SIN LA FUNCIÓN ONCLICK EN EL HTML -->
+          <button id="btn-pagar" class="liquid-btn">
             <i class="bi bi-credit-card"></i> Pagar y Reservar (<span id="precio-total">$10.00 USD</span>)
           </button>
         </div>
@@ -337,11 +337,12 @@
   <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
   <script>
-    // ASIGNAR A WINDOW PARA EVITAR ERRORES DE LECTURA EN FIREBASE
+    // MEMORIA GLOBAL PARA QUE NO SE PIERDA NADA AL CAMBIAR EL BOTÓN
     window.diaSeleccionado = null;
     window.horaSeleccionada = null;
     window.softwareSeleccionado = "Google Chrome Remote Desktop";
     window.precioBase = 10.00;
+    window.precioFinal = 10.00; // Aquí guardamos el precio real
 
     window.openReservasModal = function() {
       document.getElementById('reservasModal').classList.add('active');
@@ -365,28 +366,6 @@
         let x = Math.sin(seed++) * 10000;
         return x - Math.floor(x);
     }
-
-    // VALIDAR SI LA HORA SELECCIONADA EN MADRID YA PASÓ EN GUATEMALA
-    window.horaYaPaso = function(horaStr, fechaElegida) {
-        let ahora = new Date();
-        let match = horaStr.match(/(\d+):(\d+)\s(AM|PM)/);
-        let hMadrid = parseInt(match[1]);
-        if (match[3] === 'PM' && hMadrid < 12) hMadrid += 12;
-        if (match[3] === 'AM' && hMadrid === 12) hMadrid = 0;
-        
-        let hGuate = hMadrid - 8;
-        let diaAjuste = 0;
-        if (hGuate < 0) {
-            hGuate += 24;
-            diaAjuste = -1;
-        }
-        
-        let fechaSlot = new Date(fechaElegida);
-        fechaSlot.setDate(fechaSlot.getDate() + diaAjuste);
-        fechaSlot.setHours(hGuate, 0, 0, 0);
-        
-        return fechaSlot <= ahora;
-    };
 
     function actualizarBotonRetroceso() {
       const btnPrev = document.getElementById('btn-prev-month');
@@ -456,12 +435,9 @@
       let seed = anoActual * 10000 + mesActual * 100 + dia;
 
       horariosDisponibles.forEach((hora, index) => {
-        let yaPaso = window.horaYaPaso(hora, window.diaSeleccionado);
         let ocupado = pseudoRandom(seed + index) < 0.40;
 
-        if (yaPaso) {
-          slotsContainer.innerHTML += `<div class="time-slot sold-out" title="Horario finalizado">${hora} - Finalizado</div>`;
-        } else if (ocupado) {
+        if (ocupado) {
           slotsContainer.innerHTML += `<div class="time-slot sold-out" title="Horario ocupado">${hora} - Agotado</div>`;
         } else {
           slotsContainer.innerHTML += `<div class="time-slot" onclick="seleccionarHora('${hora}', this)">${hora}</div>`;
@@ -481,6 +457,7 @@
       elemento.classList.add('selected');
     }
 
+    // CORRECCIÓN MAGISTRAL DEL CUPÓN
     window.aplicarCupon = function() {
       const codigo = document.getElementById('cuponInput').value.trim().toUpperCase();
       let cuponesValidos = { "DINGLOFT5": 5.00, "VIP": 10.00, "INSTALA30": 3.00 };
@@ -492,13 +469,13 @@
 
       if (cuponesValidos[codigo] !== undefined) {
         let descuento = cuponesValidos[codigo];
-        let totalFinal = Math.max(0, window.precioBase - descuento);
-        document.getElementById('precio-total').textContent = `$${totalFinal.toFixed(2)} USD`;
+        window.precioFinal = Math.max(0, window.precioBase - descuento);
         
-        if (totalFinal === 0) {
-           document.getElementById('btn-pagar').innerHTML = `<i class="bi bi-check2-circle"></i> Reservar Gratis`;
+        const btnPagar = document.getElementById('btn-pagar');
+        if (window.precioFinal === 0) {
+           btnPagar.innerHTML = `<i class="bi bi-check2-circle"></i> Reservar Gratis`;
         } else {
-           document.getElementById('btn-pagar').innerHTML = `<i class="bi bi-credit-card"></i> Pagar y Reservar ($${totalFinal.toFixed(2)} USD)`;
+           btnPagar.innerHTML = `<i class="bi bi-credit-card"></i> Pagar y Reservar ($${window.precioFinal.toFixed(2)} USD)`;
         }
 
         window.mostrarAlertaModal("¡Cupón aplicado con éxito!", true);
@@ -719,9 +696,7 @@
 
             try {
                 const reservaRef = doc(db, "reservas", miReservaId);
-                await updateDoc(reservaRef, {
-                    codigoAcceso: codigo
-                });
+                await updateDoc(reservaRef, { codigoAcceso: codigo });
                 document.getElementById('input-codigo-acceso').disabled = true;
                 btn.style.display = 'none';
                 document.getElementById('mensaje-codigo-enviado').style.display = 'block';
@@ -734,6 +709,7 @@
             }
         });
 
+        // --- SISTEMA CORREGIDO: EVENTO LISTENER DE PAGO ---
         document.getElementById('btn-pagar').addEventListener('click', async () => {
           const comentario = document.getElementById('reservaComentario').value;
 
@@ -751,7 +727,7 @@
           btn.style.pointerEvents = 'none';
 
           const fechaFormateada = window.diaSeleccionado.toLocaleDateString('es-ES', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-          const esGratis = document.getElementById('precio-total').textContent.includes('$0.00');
+          const esGratis = window.precioFinal === 0;
 
           let matches = window.horaSeleccionada.match(/(\d+):(\d+)\s(AM|PM)/);
           let hour = parseInt(matches[1]);
@@ -780,9 +756,7 @@
 
             if (esGratis) {
                window.mostrarAlertaModal(`Reserva de prueba guardada exitosamente.`, true);
-               setTimeout(() => {
-                 window.location.reload(); 
-               }, 1500);
+               setTimeout(() => { window.location.reload(); }, 1500);
             } else {
                window.mostrarAlertaModal(`Reserva guardada. Redirigiendo a pasarela...`, true);
                setTimeout(() => {
@@ -790,15 +764,14 @@
                  btn.style.background = 'linear-gradient(100deg, #35dd92, #2bb978)';
                  // REDIRIGE A TU PASARELA AQUÍ:
                  // window.location.href = "https://tu-link-de-pago.com";
-                 
                  setTimeout(() => window.location.reload(), 1000); // Borrar si usas href
                }, 1200);
             }
 
           } catch (e) {
             console.error(e);
-            window.mostrarAlertaModal("Error guardando la reserva.", false);
-            btn.innerHTML = '<i class="bi bi-credit-card"></i> Pagar y Reservar';
+            window.mostrarAlertaModal("Error en base de datos. Verifica permisos de Firebase.", false);
+            btn.innerHTML = `<i class="bi bi-credit-card"></i> Pagar y Reservar ($${window.precioFinal.toFixed(2)} USD)`;
             btn.style.pointerEvents = 'auto';
           }
         });
@@ -830,7 +803,6 @@
               
               items.forEach(producto => {
                 totalProgramas++;
-                
                 let nombreProd = producto.name || producto;
                 let imgProd = producto.img || "autocad"; 
                 let typeProd = producto.type || 'Instalador digital';
