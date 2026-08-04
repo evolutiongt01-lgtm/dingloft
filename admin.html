@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin | Dingloft</title>
+  
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <style>
+    :root { --bg:#060911; --panel:#0c1421; --line:rgba(173,201,232,.14); --text:#f4f8ff; --muted:#9eacc0; --cyan:#12d7f6; --violet:#9a5cff; --green:#35dd92; --red:#ff5050; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; color:var(--text); font-family:Inter,system-ui,sans-serif; background:radial-gradient(circle at 70% 14%,rgba(255,80,80,.05),transparent 28%),radial-gradient(circle at 15% 80%,rgba(0,202,255,.08),transparent 28%),var(--bg); }
+    button,a { font:inherit; } button { cursor:pointer; }
+    .app { min-height:100vh; display:grid; grid-template-columns:292px 1fr; }
+    .sidebar { position:sticky; top:0; height:100vh; display:flex; flex-direction:column; padding:33px 17px 20px; border-right:1px solid var(--line); background:rgba(4,8,15,.77); backdrop-filter:blur(18px); }
+    .brand { margin:0 36px 50px; text-decoration:none; color:white; font-weight:800; font-size:1.75rem; letter-spacing:-.07em; } .brand span { color:var(--red); }
+    .nav { display:grid; gap:7px; } .nav a { display:flex; gap:16px; align-items:center; padding:15px 19px; border-radius:13px; text-decoration:none; color:#c4d0df; font-size:.96rem; transition:.2s ease; }
+    .nav a i { width:21px; font-size:1.3rem; text-align:center; } .nav a:hover { background:rgba(255,255,255,.05); color:white; }
+    .nav a.active { color:var(--red); font-weight:700; background:linear-gradient(90deg,rgba(255,80,80,.1),rgba(41,71,112,.05)); box-shadow:inset 2px 0 var(--red); }
+    .profile { margin-top:auto; padding:18px; border:1px solid var(--line); border-radius:17px; background:rgba(10,16,28,.68); } .profile-top { display:flex; align-items:center; gap:12px; }
+    .avatar { width:42px; height:42px; display:grid; place-items:center; border-radius:50%; color:#07131e; font-weight:800; background:linear-gradient(135deg,#ff8a8a,#ff5050); box-shadow:0 0 0 2px rgba(255,80,80,.42); overflow:hidden; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile strong { display:block; font-size:.87rem; } .profile small { display:block; margin-top:4px; color:var(--muted); font-size:.72rem; overflow:hidden; text-overflow:ellipsis; }
+    .logout { width:100%; display:flex; gap:12px; align-items:center; margin-top:17px; padding:12px 0 0; border:0; border-top:1px solid var(--line); color:#c7d3e1; background:transparent; text-align:left; font-size:.86rem; }
+    .content { min-width:0; padding:42px clamp(25px,5vw,78px) 37px; } .top { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    .top h1 { margin:0; letter-spacing:-.06em; font-size:clamp(2rem,3vw,3.2rem); } .top p { margin:.7rem 0 0; color:var(--muted); } 
+    
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin:34px 0 26px; } .stat { display:flex; align-items:center; gap:19px; min-height:118px; padding:23px 26px; border:1px solid var(--line); border-radius:18px; background:linear-gradient(145deg,rgba(18,29,47,.84),rgba(8,14,25,.71)); }
+    .stat i { width:57px; height:57px; display:grid; place-items:center; border-radius:16px; font-size:1.75rem; color:var(--red); border:1px solid rgba(255,80,80,.55); background:rgba(255,80,80,.08); } 
+    .stat:nth-child(2) i{color:var(--cyan);border-color:rgba(0,217,255,.55);background:rgba(0,210,255,.08)}
+    .stat:nth-child(3) i{color:var(--violet);border-color:rgba(154,92,255,.55);background:rgba(154,92,255,.08)}
+    .stat span { display:block; color:#cad5e3; font-size:.89rem; } .stat strong { display:block; margin-top:4px; font-size:2rem; line-height:1; color:var(--text); } 
+
+    .tabs-header { display: flex; border-bottom: 1px solid var(--line); margin-bottom: 25px; }
+    .tab-btn { flex: 1; max-width: 250px; background: transparent; border: none; padding: 15px 0; color: var(--muted); font-size: 1rem; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; transition: .2s ease; }
+    .tab-btn:hover { color: white; }
+    .tab-btn.active { color: var(--red); border-bottom-color: var(--red); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* TARJETAS DE RESERVA */
+    .reserva-card { background: rgba(16, 27, 45, 0.4); border: 1px solid var(--line); border-radius: 16px; padding: 20px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 20px; transition: .2s ease; }
+    .reserva-card:hover { border-color: rgba(255,255,255,0.2); background: rgba(16, 27, 45, 0.6); }
+    .reserva-header { width: 100%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 12px; }
+    .reserva-header strong { font-size: 1.1rem; color: white; display: flex; align-items: center; gap: 8px; }
+    .status-badge { padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid; }
+    .status-pendiente { color: var(--green); background: rgba(53, 221, 146, 0.15); border-color: rgba(53, 221, 146, 0.3); }
+    .status-completado { color: var(--cyan); background: rgba(18, 215, 246, 0.15); border-color: rgba(18, 215, 246, 0.3); }
+    
+    .reserva-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; width: 100%; }
+    .data-group span { display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 4px; }
+    .data-group strong { display: block; font-size: 0.9rem; color: #fff; }
+    .code-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(18, 215, 246, 0.3); color: var(--cyan); padding: 8px 12px; border-radius: 8px; font-family: monospace; font-size: 1.1rem; letter-spacing: 1px; display: inline-block; }
+    
+    .reserva-actions { width: 100%; display: flex; justify-content: flex-end; gap: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px; margin-top: 5px; }
+    .admin-btn { padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; border: none; transition: .2s; display: flex; align-items: center; gap: 6px; }
+    .btn-marcar { background: rgba(18, 215, 246, 0.1); color: var(--cyan); border: 1px solid var(--cyan); }
+    .btn-marcar:hover { background: var(--cyan); color: #000; }
+    .btn-eliminar { background: rgba(255, 80, 80, 0.1); color: var(--red); border: 1px solid var(--red); }
+    .btn-eliminar:hover { background: var(--red); color: #fff; }
+
+    /* TABLA CLIENTES */
+    .table-responsive { overflow-x: auto; background: rgba(16, 27, 45, 0.4); border: 1px solid var(--line); border-radius: 16px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th { padding: 15px 20px; font-size: 0.85rem; color: var(--muted); border-bottom: 1px solid var(--line); font-weight: 600; text-transform: uppercase; }
+    td { padding: 15px 20px; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.05); color: #c4d0df; }
+    tr:hover td { background: rgba(255,255,255,0.02); color: white; }
+
+    .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(18,215,246,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
+
+    @media(max-width:1080px){.app{grid-template-columns:78px 1fr}.sidebar{padding:25px 10px}.brand{margin:0 auto 42px;font-size:0}.brand span{font-size:1.8rem}.nav a{justify-content:center;padding:15px}.nav a span,.profile strong,.profile small,.logout span{display:none}.profile{padding:12px;display:grid;place-items:center}.logout{justify-content:center}.stats{grid-template-columns:1fr; gap:10px;}}
+    @media(max-width:700px){.app{display:block}.sidebar{position:static;height:auto;padding:16px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:1.5rem;margin:0 8px 13px}.brand span{font-size:inherit}.nav{display:flex;overflow:auto}.nav a{min-width:55px;padding:12px}.nav a span{display:none}.profile{display:none}.content{padding:28px 16px}.top{align-items:flex-start}.reserva-actions{flex-direction: column;}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <a href="index.html" class="brand"><span>D</span>ingloft</a>
+      <nav class="nav">
+        <a href="account.html" style="color: var(--muted);"><i class="bi bi-arrow-left-circle"></i><span>Volver a mi Cuenta</span></a>
+        <a href="#" class="active"><i class="bi bi-shield-lock"></i><span>Modo Admin</span></a>
+      </nav>
+      <div class="profile">
+        <div class="profile-top">
+          <div class="avatar" id="sidebar-avatar"><i class="bi bi-incognito"></i></div>
+          <div>
+            <strong id="sidebar-name">Cargando...</strong>
+            <small id="sidebar-email">...</small>
+          </div>
+        </div>
+        <button class="logout"><i class="bi bi-box-arrow-right"></i><span>Cerrar sesión</span></button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="top">
+        <div>
+          <h1>Panel de <span style="color: var(--red);">Control</span></h1>
+          <p>Bienvenido, Centro de comando de Dingloft.</p>
+        </div>
+      </div>
+      
+      <section class="stats">
+        <article class="stat">
+          <i class="bi bi-calendar-event"></i>
+          <div><span>Reservas Activas</span><strong id="stat-reservas">0</strong></div>
+        </article>
+        <article class="stat">
+          <i class="bi bi-people"></i>
+          <div><span>Clientes Registrados</span><strong id="stat-clientes">0</strong></div>
+        </article>
+        <article class="stat">
+          <i class="bi bi-bag-check"></i>
+          <div><span>Total Compras</span><strong id="stat-compras">0</strong></div>
+        </article>
+      </section>
+
+      <div class="tabs-header">
+        <button class="tab-btn active" onclick="switchAdminTab('reservas', this)">Gestión de Reservas</button>
+        <button class="tab-btn" onclick="switchAdminTab('clientes', this)">Directorio de Clientes</button>
+      </div>
+
+      <!-- TAB: RESERVAS -->
+      <div id="tab-reservas" class="tab-content active">
+        <div id="reservas-container">
+          <p style="color: var(--muted);">Cargando panel de reservas...</p>
+        </div>
+      </div>
+
+      <!-- TAB: CLIENTES -->
+      <div id="tab-clientes" class="tab-content">
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Email del Cliente</th>
+                <th>Compras</th>
+                <th>Reservas</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="clientes-tbody">
+              <tr><td colspan="4" style="text-align: center;">Escaneando base de datos...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+  
+  <div class="toast" id="toast-message">Actualizado correctamente.</div>
+
+  <script>
+    function switchAdminTab(tabId, element) {
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      element.classList.add('active');
+    }
+
+    window.mostrarToast = function(mensaje, color) {
+      const toast = document.getElementById('toast-message');
+      toast.textContent = mensaje;
+      toast.style.borderColor = color;
+      toast.style.background = `rgba(${color === 'var(--cyan)' ? '18,215,246' : '255,80,80'}, 0.1)`;
+      toast.style.color = color;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
+      authDomain: "login-dingloft.firebaseapp.com",
+      projectId: "login-dingloft",
+      storageBucket: "login-dingloft.firebasestorage.app",
+      messagingSenderId: "549466738202",
+      appId: "1:549466738202:web:8bf305fe2c753e9d76cba3",
+      measurementId: "G-R9SGZCDN13"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // SEGURIDAD: Expulsar si no es admin
+        if (user.email !== 'evolutiongt01@gmail.com' && user.email !== 'tepaz2025@gmail.com') {
+          window.location.href = 'account.html';
+          return;
+        }
+
+        document.getElementById('sidebar-name').textContent = "César (Admin)";
+        document.getElementById('sidebar-email').textContent = user.email;
+
+        await loadAdminData();
+
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+
+    async function loadAdminData() {
+        const reservasContainer = document.getElementById('reservas-container');
+        const clientesTbody = document.getElementById('clientes-tbody');
+        
+        try {
+            // 1. CARGAR RESERVAS
+            const reservasSnap = await getDocs(collection(db, "reservas"));
+            let reservas = [];
+            reservasSnap.forEach(d => reservas.push({ id: d.id, ...d.data() }));
+            
+            // Ordenar: Pendientes arriba, más recientes primero
+            reservas.sort((a, b) => {
+                if (a.estado === 'pendiente' && b.estado !== 'pendiente') return -1;
+                if (a.estado !== 'pendiente' && b.estado === 'pendiente') return 1;
+                return b.timestampReserva - a.timestampReserva;
+            });
+
+            let activasCount = 0;
+            reservasContainer.innerHTML = '';
+
+            if (reservas.length === 0) {
+                reservasContainer.innerHTML = '<p style="color: var(--muted);">No hay reservas en el sistema.</p>';
+            } else {
+                reservas.forEach(r => {
+                    if (r.estado === 'pendiente') activasCount++;
+                    
+                    let estadoClass = r.estado === 'completado' ? 'status-completado' : 'status-pendiente';
+                    let estadoTexto = r.estado === 'completado' ? '<i class="bi bi-check-all"></i> Completado' : '<i class="bi bi-clock"></i> Pendiente';
+                    
+                    let codAcceso = r.codigoAcceso 
+                        ? `<div class="code-box">${r.codigoAcceso}</div>` 
+                        : `<span style="color: var(--muted); font-style: italic;">Aún no proporcionado</span>`;
+
+                    let html = `
+                    <div class="reserva-card">
+                        <div class="reserva-header">
+                            <strong><i class="bi bi-person-circle"></i> ${r.email}</strong>
+                            <span class="status-badge ${estadoClass}">${estadoTexto}</span>
+                        </div>
+                        <div class="reserva-body">
+                            <div class="data-group"><span>Fecha y Hora (Miami)</span><strong>${r.fecha} - ${r.hora}</strong></div>
+                            <div class="data-group"><span>Software</span><strong>${r.software}</strong></div>
+                            <div class="data-group"><span>Comentario / Problema</span><strong>${r.comentario}</strong></div>
+                            <div class="data-group"><span>Código de Acceso Cliente</span>${codAcceso}</div>
+                        </div>
+                        <div class="reserva-actions">
+                            ${r.estado === 'pendiente' ? `<button class="admin-btn btn-marcar" onclick="marcarCompletado('${r.id}')"><i class="bi bi-check-lg"></i> Marcar Completada</button>` : ''}
+                            <button class="admin-btn btn-eliminar" onclick="eliminarReservaAdmin('${r.id}')"><i class="bi bi-trash"></i> Eliminar</button>
+                        </div>
+                    </div>`;
+                    reservasContainer.insertAdjacentHTML('beforeend', html);
+                });
+            }
+            document.getElementById('stat-reservas').textContent = activasCount;
+
+            // 2. CARGAR CLIENTES (Escaneando compras y reservas)
+            const comprasSnap = await getDocs(collection(db, "purchases"));
+            let totalCompras = 0;
+            let clientesMap = {};
+
+            // Mapear reservas al directorio
+            reservas.forEach(r => {
+                if(!clientesMap[r.email]) clientesMap[r.email] = { email: r.email, reservas: 0, compras: 0 };
+                clientesMap[r.email].reservas++;
+            });
+
+            // Mapear compras al directorio
+            comprasSnap.forEach(c => {
+                totalCompras++;
+                let data = c.data();
+                let email = data.userEmail || data.payerName || "Desconocido";
+                if(!clientesMap[email]) clientesMap[email] = { email: email, reservas: 0, compras: 0 };
+                clientesMap[email].compras += (data.items ? data.items.length : 1);
+            });
+
+            document.getElementById('stat-compras').textContent = totalCompras;
+            
+            let clientesArr = Object.values(clientesMap);
+            document.getElementById('stat-clientes').textContent = clientesArr.length;
+
+            clientesTbody.innerHTML = '';
+            if(clientesArr.length === 0) {
+                clientesTbody.innerHTML = '<tr><td colspan="4">No hay clientes aún.</td></tr>';
+            } else {
+                clientesArr.forEach(c => {
+                    let estado = c.compras > 0 ? '<span style="color:var(--green);"><i class="bi bi-circle-fill" style="font-size:0.6rem;"></i> Activo / Comprador</span>' : '<span style="color:var(--cyan);"><i class="bi bi-circle-fill" style="font-size:0.6rem;"></i> Interesado</span>';
+                    let tr = `<tr>
+                        <td><strong>${c.email}</strong></td>
+                        <td>${c.compras} items</td>
+                        <td>${c.reservas} sesiones</td>
+                        <td>${estado}</td>
+                    </tr>`;
+                    clientesTbody.insertAdjacentHTML('beforeend', tr);
+                });
+            }
+
+        } catch(e) {
+            console.error(e);
+            reservasContainer.innerHTML = `<p style="color: var(--red);">Error leyendo la base de datos.</p>`;
+        }
+    }
+
+    // ACCIONES ADMINISTRATIVAS GLOBALES
+    window.marcarCompletado = async function(id) {
+        try {
+            await updateDoc(doc(db, "reservas", id), { estado: "completado" });
+            window.mostrarToast("Reserva marcada como completada.", "var(--cyan)");
+            await loadAdminData();
+        } catch(e) {
+            console.error(e);
+            window.mostrarToast("Error actualizando reserva.", "var(--red)");
+        }
+    }
+
+    window.eliminarReservaAdmin = async function(id) {
+        if(!confirm("¿Borrar esta reserva del sistema definitivamente?")) return;
+        try {
+            await deleteDoc(doc(db, "reservas", id));
+            window.mostrarToast("Reserva eliminada del historial.", "var(--red)");
+            await loadAdminData();
+        } catch(e) {
+            console.error(e);
+            window.mostrarToast("Error eliminando reserva.", "var(--red)");
+        }
+    }
+
+    document.querySelector('.logout').addEventListener('click', async () => {
+      try { await signOut(auth); window.location.href = 'login.html'; } catch (error) { console.error(error); }
+    });
+  </script>
+</body>
+</html>
