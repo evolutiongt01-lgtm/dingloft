@@ -18,7 +18,7 @@
     body { margin:0; min-height:100vh; color:var(--text); font-family:Inter,system-ui,sans-serif; background:radial-gradient(circle at 70% 14%,rgba(255,80,80,.05),transparent 28%),radial-gradient(circle at 15% 80%,rgba(0,202,255,.08),transparent 28%),var(--bg); overflow-x: hidden; }
     button,a { font:inherit; } button { cursor:pointer; }
     
-    /* BLOQUEO DE SEGURIDAD (PANTALLA NEGRA) */
+    /* BLOQUEO DE SEGURIDAD */
     #security-lock { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #04070a; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
     #security-lock.unlocked { opacity: 0; visibility: hidden; pointer-events: none; }
     .lock-box { background: rgba(16, 27, 45, 0.6); border: 1px solid rgba(255, 80, 80, 0.3); border-radius: 20px; padding: 40px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,80,80,0.05); backdrop-filter: blur(10px); }
@@ -33,6 +33,13 @@
     .app { min-height:100vh; display:grid; grid-template-columns:292px 1fr; filter: blur(10px); transition: filter 0.5s ease; }
     body.unlocked .app { filter: blur(0); }
 
+    /* WIDGET LIQUID GLASS (RELOJ MUNDIAL) */
+    .world-clock-pill { display: inline-flex; align-items: center; gap: 20px; background: rgba(16, 27, 45, 0.45); border: 1px solid rgba(255, 255, 255, 0.12); padding: 10px 22px; border-radius: 50px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 0 12px rgba(255,255,255,0.03); margin-top: 15px; flex-wrap: wrap; }
+    .clock-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 600; color: #c4d0df; }
+    .clock-item i { color: var(--cyan); font-size: 1rem; }
+    .clock-item span { color: white; font-family: monospace; font-size: 0.9rem; }
+    .clock-divider { width: 1px; height: 16px; background: var(--line); }
+
     .sidebar { position:sticky; top:0; height:100vh; display:flex; flex-direction:column; padding:33px 17px 20px; border-right:1px solid var(--line); background:rgba(4,8,15,.77); backdrop-filter:blur(18px); }
     .brand { margin:0 36px 50px; text-decoration:none; color:white; font-weight:800; font-size:1.75rem; letter-spacing:-.07em; } .brand span { color:var(--red); }
     .nav { display:grid; gap:7px; } .nav a { display:flex; gap:16px; align-items:center; padding:15px 19px; border-radius:13px; text-decoration:none; color:#c4d0df; font-size:.96rem; transition:.2s ease; }
@@ -45,8 +52,8 @@
     .logout { width:100%; display:flex; gap:12px; align-items:center; margin-top:17px; padding:12px 0 0; border:0; border-top:1px solid var(--line); color:#c7d3e1; background:transparent; text-align:left; font-size:.86rem; }
     
     .content { min-width:0; padding:42px clamp(25px,5vw,78px) 37px; } 
-    .top { display:flex; align-items:center; justify-content:space-between; gap:20px; }
-    .top h1 { margin:0; letter-spacing:-.06em; font-size:clamp(2rem,3vw,3.2rem); } .top p { margin:.7rem 0 0; color:var(--cyan); font-size: 1.1rem; font-weight: 500; } 
+    .top { display:flex; flex-direction: column; gap: 15px; }
+    .top h1 { margin:0; letter-spacing:-.06em; font-size:clamp(2rem,3vw,3.2rem); } 
     
     .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin:34px 0 26px; } .stat { display:flex; align-items:center; gap:19px; min-height:118px; padding:23px 26px; border:1px solid var(--line); border-radius:18px; background:linear-gradient(145deg,rgba(18,29,47,.84),rgba(8,14,25,.71)); }
     .stat i { width:57px; height:57px; display:grid; place-items:center; border-radius:16px; font-size:1.75rem; color:var(--red); border:1px solid rgba(255,80,80,.55); background:rgba(255,80,80,.08); } 
@@ -96,12 +103,12 @@
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(18,215,246,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 999999; } .toast.show{transform:translateY(0)}
 
     @media(max-width:1080px){.app{grid-template-columns:78px 1fr}.sidebar{padding:25px 10px}.brand{margin:0 auto 42px;font-size:0}.brand span{font-size:1.8rem}.nav a{justify-content:center;padding:15px}.nav a span,.profile strong,.profile small,.logout span{display:none}.profile{padding:12px;display:grid;place-items:center}.logout{justify-content:center}.stats{grid-template-columns:1fr; gap:10px;}}
-    @media(max-width:700px){.app{display:block}.sidebar{position:static;height:auto;padding:16px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:1.5rem;margin:0 8px 13px}.brand span{font-size:inherit}.nav{display:flex;overflow:auto}.nav a{min-width:55px;padding:12px}.nav a span{display:none}.profile{display:none}.content{padding:28px 16px}.top{align-items:flex-start; flex-direction: column;}.top p{font-size: 0.95rem;} .reserva-actions{flex-direction: column;}}
+    @media(max-width:700px){.app{display:block}.sidebar{position:static;height:auto;padding:16px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:1.5rem;margin:0 8px 13px}.brand span{font-size:inherit}.nav{display:flex;overflow:auto}.nav a{min-width:55px;padding:12px}.nav a span{display:none}.profile{display:none}.content{padding:28px 16px}.top{align-items:flex-start;}.reserva-actions{flex-direction: column;}}
   </style>
 </head>
 <body>
 
-  <!-- PANTALLA DE BLOQUEO NIVEL DIOS -->
+  <!-- PANTALLA DE BLOQUEO CON CONTRASEÑA -->
   <div id="security-lock">
     <div class="lock-box">
       <i class="bi bi-shield-lock-fill"></i>
@@ -136,7 +143,24 @@
       <div class="top">
         <div>
           <h1>Panel de <span style="color: var(--red);">Control</span></h1>
-          <p>¡Hola, bienvenido Jefe! Centro de comando activo.</p>
+          <p>¡Hola, bienvenido jefe! Es hora de facturar y romperla hoy. 🚀</p>
+        </div>
+        
+        <!-- WIDGET LIQUID GLASS (RELOJ MUNDIAL) -->
+        <div>
+          <div class="world-clock-pill">
+            <div class="clock-item">
+              <i class="bi bi-clock"></i> Miami: <span id="clock-miami">--:--:--</span>
+            </div>
+            <div class="clock-divider"></div>
+            <div class="clock-item">
+              <i class="bi bi-clock"></i> Guatemala: <span id="clock-guate">--:--:--</span>
+            </div>
+            <div class="clock-divider"></div>
+            <div class="clock-item">
+              <i class="bi bi-clock"></i> Texas: <span id="clock-texas">--:--:--</span>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -212,7 +236,34 @@
   <div class="toast" id="toast-message">Actualizado correctamente.</div>
 
   <script>
-    // LÓGICA DE DESBLOQUEO DE PANTALLA
+    // RELOJ MUNDIAL EN TIEMPO REAL
+    function actualizarRelojes() {
+        const opciones = { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+        const opcionesGuate = { timeZone: 'America/Guatemala', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+        const opcionesTexas = { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+
+        const ahora = new Date();
+        document.getElementById('clock-miami').textContent = ahora.toLocaleTimeString('en-US', opciones);
+        document.getElementById('clock-guate').textContent = ahora.toLocaleTimeString('en-US', opcionesGuate);
+        document.getElementById('clock-texas').textContent = ahora.toLocaleTimeString('en-US', opcionesTexas);
+    }
+    setInterval(actualizarRelojes, 1000);
+    actualizarRelojes();
+
+    // ASISTENTE DE VOZ DE BIENVENIDA (SIRI STYLE - UNA SOLA VEZ)
+    function hablarBienvenida(nombre) {
+        if ('speechSynthesis' in window && !localStorage.getItem('dingloft_welcomed')) {
+            const mensaje = `Hola ${nombre}, bienvenido jefe. Es hora de facturar y romperla hoy.`;
+            const utterance = new SpeechSynthesisUtterance(mensaje);
+            utterance.lang = 'es-ES';
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            window.speechSynthesis.speak(utterance);
+            localStorage.setItem('dingloft_welcomed', 'true');
+        }
+    }
+
+    // DESBLOQUEO CON CONTRASEÑA
     window.unlockPanel = function() {
         const pass = document.getElementById('admin-pass').value;
         const errorMsg = document.getElementById('pass-error');
@@ -220,7 +271,10 @@
         if(pass === "Lanuevaera1") {
             document.getElementById('security-lock').classList.add('unlocked');
             document.body.classList.add('unlocked');
-            // Al desbloquear, cargamos los datos (esto ahorra recursos)
+            
+            // Disparar voz de bienvenida al desbloquear
+            hablarBienvenida("César");
+
             if (window.iniciarCargaDeDatos) {
                 window.iniciarCargaDeDatos();
             }
@@ -269,7 +323,6 @@
 
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // EXPULSAR SI NO ES EL JEFE
         if (user.email !== 'evolutiongt01@gmail.com' && user.email !== 'tepaz2025@gmail.com') {
           window.location.href = 'account.html';
           return;
@@ -278,7 +331,6 @@
         document.getElementById('sidebar-name').textContent = "Jefe (Admin)";
         document.getElementById('sidebar-email').textContent = user.email;
 
-        // Guardamos la función global para dispararla al quitar el candado
         window.iniciarCargaDeDatos = async function() {
            await loadAdminData();
         };
@@ -294,12 +346,10 @@
         const comprasTbody = document.getElementById('compras-tbody');
         
         try {
-            // 1. CARGAR RESERVAS
             const reservasSnap = await getDocs(collection(db, "reservas"));
             let reservas = [];
             reservasSnap.forEach(d => reservas.push({ id: d.id, ...d.data() }));
             
-            // Ordenar: Pendientes arriba, luego más recientes
             reservas.sort((a, b) => {
                 if (a.estado === 'pendiente' && b.estado !== 'pendiente') return -1;
                 if (a.estado !== 'pendiente' && b.estado === 'pendiente') return 1;
@@ -344,19 +394,16 @@
             }
             document.getElementById('stat-reservas').textContent = activasCount;
 
-            // 2. CARGAR COMPRAS Y CLIENTES (Escaneando la DB)
             const comprasSnap = await getDocs(collection(db, "purchases"));
             let totalCompras = 0;
             let clientesMap = {};
             let comprasArr = [];
 
-            // Mapear reservas al directorio de clientes
             reservas.forEach(r => {
                 if(!clientesMap[r.email]) clientesMap[r.email] = { email: r.email, reservas: 0, compras: 0 };
                 clientesMap[r.email].reservas++;
             });
 
-            // Extraer las compras individuales y Mapear a Clientes
             comprasSnap.forEach(c => {
                 totalCompras++;
                 let data = c.data();
@@ -367,12 +414,10 @@
                 clientesMap[email].compras += (data.items ? data.items.length : 1);
             });
 
-            // Actualizar contadores
             document.getElementById('stat-compras').textContent = totalCompras;
             let clientesArr = Object.values(clientesMap);
             document.getElementById('stat-clientes').textContent = clientesArr.length;
 
-            // Rellenar Tabla de Clientes
             clientesTbody.innerHTML = '';
             if(clientesArr.length === 0) {
                 clientesTbody.innerHTML = '<tr><td colspan="4">No hay clientes aún.</td></tr>';
@@ -389,8 +434,7 @@
                 });
             }
 
-            // Rellenar Pestaña Nueva: Historial de Compras
-            comprasArr.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0)); // Más recientes primero
+            comprasArr.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
             comprasTbody.innerHTML = '';
             
             if(comprasArr.length === 0) {
@@ -419,7 +463,6 @@
         }
     }
 
-    // ACCIONES ADMINISTRATIVAS GLOBALES
     window.marcarCompletado = async function(id) {
         try {
             await updateDoc(doc(db, "reservas", id), { estado: "completado" });
