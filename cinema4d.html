@@ -143,15 +143,6 @@
       will-change: transform;
     }
     
-    .btn-liquid-glass {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.05); color: #fff !important;
-      border-radius: 50px; padding: 6px 16px; display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
-      font-size: 0.85rem; text-decoration: none; transition: all 0.3s ease;
-    }
-    .btn-liquid-glass:hover { background: rgba(255, 255, 255, 0.15); border-color: var(--accent-color); box-shadow: 0 8px 25px rgba(0, 229, 255, 0.35); transform: translateY(-2px); }
-
     .mobile-liquid-btn, .mobile-nav-avatar {
       width: 40px; height: 40px; border-radius: 50%; 
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02));
@@ -264,7 +255,7 @@
     .software-badge-box i { font-size: 1.5rem; color: var(--accent-color); }
     .liquid-glass-container { background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); padding: 12px; }
 
-    /* ====== ESTILOS DE ETIQUETA TECH (TECH TAG) ====== */
+    /* ETIQUETA TECH */
     .tech-tag {
       display: inline-flex;
       align-items: center;
@@ -293,7 +284,7 @@
     .similar-img-box { width: 100%; height: 150px; background: rgba(0,0,0,0.4); border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 8px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; }
     .similar-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.6)); }
 
-    /* ====== COMENTARIOS ====== */
+    /* COMENTARIOS */
     .comments-section { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 30px; }
     .comment-card { background: rgba(12, 17, 26, 0.85); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 12px; }
     .comment-card:hover { border-color: rgba(0,229,255,0.4); }
@@ -307,16 +298,9 @@
     .btn-like:hover { background: rgba(255, 0, 85, 0.1); color: #ff0055; border-color: rgba(255, 0, 85, 0.3); }
     .btn-like.liked { background: rgba(255, 0, 85, 0.15); color: #ff0055; border-color: #ff0055; }
 
-    /* ====== CARRITO LATERAL (LIQUID GLASS) CON ANTI-SCROLL ====== */
+    /* CARRITO LATERAL */
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; touch-action: none; }
     .cart-overlay.active { opacity: 1; visibility: visible; }
-    .cart-brand-watermark { position: fixed; top: 50%; left: 30%; transform: translate(-50%, -50%) scale(0.9); text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none; }
-    .cart-overlay.active ~ .cart-brand-watermark { opacity: 0.85; visibility: visible; transform: translate(-50%, -50%) scale(1); }
-    .cart-brand-watermark::after { content: ''; position: absolute; top: 50%; left: 50%; width: 260px; height: 260px; background: radial-gradient(circle, rgba(0, 229, 255, 0.5) 0%, rgba(162, 0, 255, 0.3) 40%, transparent 70%); transform: translate(-50%, -50%); filter: blur(30px); z-index: -1; animation: lightGlow 3s infinite alternate ease-in-out; }
-    @keyframes logoPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 20px rgba(0,229,255,0.5)); } 50% { transform: translate(-50%, -50%) scale(1.05); filter: drop-shadow(0 0 40px rgba(0,229,255,0.8)); } }
-    @keyframes lightGlow { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } 100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; } }
-    .animated-watermark-logo { width: 240px; max-width: 80vw; animation: logoPulse 4s infinite ease-in-out; position: relative; }
-
     .cart-drawer { 
       position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh; 
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.5)); 
@@ -328,10 +312,8 @@
     .cart-header { padding: 20px 25px; border-bottom: 1px solid rgba(255, 255, 255, 0.15); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
     .btn-close-cart { background: transparent; border: none; color: #ffffff; font-size: 1.3rem; line-height: 1; transition: color 0.3s; cursor: pointer; }
     .btn-close-cart:hover { color: var(--accent-color); }
-    
     .cart-items-container { flex: 1; overflow-y: auto; padding: 20px 25px; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
     .cart-footer { padding: 20px 25px; background: rgba(0, 0, 0, 0.3); border-top: 1px solid rgba(255, 255, 255, 0.15); flex-shrink: 0; max-height: 55vh; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
-    
     .cart-item { display: flex; gap: 15px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); position: relative; }
     .cart-item-img { width: 60px; height: 80px; background: rgba(0,0,0,0.3); border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; padding: 5px; }
     .cart-item-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
@@ -358,21 +340,23 @@
     .btn-free-checkout { background: #00ff88; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 14px; width: 100%; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,255,136,0.2); cursor: pointer; }
     .btn-free-checkout:hover { background: #00e67a; transform: translateY(-2px); }
 
-    /* ====== MODAL DE ÉXITO PROFESIONAL ====== */
+    /* MODAL DE ÉXITO */
     .success-modal-overlay { position: fixed; inset: 0; background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: grid; place-items: center; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     .success-modal-overlay.active { opacity: 1; visibility: visible; }
-    .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 30px 20px; width: min(420px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 30px 20px; width: min(420px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); max-height: 90vh; overflow-y: auto; }
     .success-modal-overlay.active .success-modal-box { transform: scale(1) translateY(0); }
     .success-icon-ring { width: 70px; height: 70px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: #00ff88; font-size: 1.8rem; }
+    .express-signup-box { background: rgba(0, 229, 255, 0.05); border: 1px dashed rgba(0, 229, 255, 0.4); border-radius: 14px; padding: 20px; margin-bottom: 20px; text-align: left; }
+    .express-signup-box label { font-size: 0.82rem; font-weight: 600; color: var(--accent-color); margin-bottom: 6px; display: block; }
+    .express-input { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; padding: 10px 14px; font-size: 0.9rem; margin-bottom: 12px; }
+    .express-input:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
     .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(50,221,145,.5); border-radius: 12px; color: #eafff3; background: #0c251d; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
     .toast.show { transform: translateY(0); }
   </style>
 </head>
 <body>
 
-  <!-- ========================================== -->
-  <!-- MENÚ LATERAL "PUSH" (OCULTO A LA IZQUIERDA)-->
-  <!-- ========================================== -->
+  <!-- MENÚ LATERAL -->
   <div class="side-menu-drawer" id="side-menu">
     <div class="text-center mb-4 mt-2">
       <img src="img/dingloft.png" alt="Dingloft" style="width: 120px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
@@ -388,79 +372,66 @@
       <p class="text-muted small" style="font-size: 0.75rem;">&copy; 2026 Dingloft</p>
     </div>
   </div>
-  
   <div class="side-menu-overlay" id="side-menu-overlay"></div>
 
-  <!-- ========================================== -->
-  <!-- ENVOLTORIO PRINCIPAL QUE SE EMPUJA AL LADO -->
-  <!-- ========================================== -->
+  <!-- PAGE WRAPPER -->
   <div class="page-wrapper" id="page-wrapper">
     <div class="bg-orb orb-1"></div>
     <div class="bg-orb orb-2"></div>
     <div class="bg-orb orb-3"></div>
 
-    <!-- MODAL DE ÉXITO -->
+    <!-- MODAL DE ÉXITO Y CREACIÓN EXPRESS DE CONTRASEÑA -->
     <div class="success-modal-overlay" id="success-modal">
       <div class="success-modal-box">
         <img src="img/dingloft.png" alt="Dingloft" style="width: 110px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
         <div class="success-icon-ring"><i class="bi bi-check-lg"></i></div>
         <h3 style="color:#fff; font-weight:800; margin-bottom:10px; font-size: 1.4rem;">¡Compra Exitosa!</h3>
-        <p id="success-modal-text" style="color:#9ba9bd; margin-bottom:25px; font-size: 0.95rem;">Tu pedido se ha procesado correctamente.</p>
-        <button class="btn-cyan w-100 py-2" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
+        <p id="success-modal-text" style="color:#9ba9bd; margin-bottom:20px; font-size: 0.95rem;">Tu pedido se ha procesado correctamente.</p>
+        
+        <div class="express-signup-box" id="express-signup-container" style="display: none;">
+          <p style="font-size: 0.82rem; color: #fff; margin-bottom: 10px; font-weight: 500;">
+            <i class="bi bi-shield-lock-fill" style="color: var(--accent-color);"></i> Protege tu cuenta: Crea una contraseña para acceder a tus descargas después.
+          </p>
+          <label>Correo asociado:</label>
+          <input type="text" id="express-email" class="express-input" readonly style="opacity: 0.7;">
+          <label>Nueva contraseña:</label>
+          <input type="password" id="express-password" class="express-input" placeholder="Mínimo 6 caracteres">
+          <button class="btn-cyan w-100 py-2" id="btn-save-express-account" onclick="crearCuentaExpress()">Crear Contraseña y Entrar</button>
+        </div>
+
+        <button class="btn-cyan w-100 py-2" id="btn-go-to-account" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
       </div>
     </div>
 
-    <!-- TOAST FLOTANTE -->
     <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
-    <!-- ====== NAVBAR PRINCIPAL CENTRADA ====== -->
+    <!-- NAVBAR -->
     <nav class="navbar navbar-glass fixed-top" id="main-navbar">
       <div class="container position-relative d-flex align-items-center">
-        
-        <!-- IZQUIERDA (MÓVIL Y PC) -->
         <div class="d-flex align-items-center gap-2" style="flex: 1; z-index: 2;">
-          <button class="mobile-liquid-btn d-md-none" id="btn-open-sidebar" title="Menú">
-            <i class="bi bi-list"></i>
-          </button>
-          
-          <button class="mobile-liquid-btn d-md-none" id="btn-open-search-mobile" title="Buscar">
-            <i class="bi bi-search"></i>
-          </button>
-
+          <button class="mobile-liquid-btn d-md-none" id="btn-open-sidebar" title="Menú"><i class="bi bi-list"></i></button>
+          <button class="mobile-liquid-btn d-md-none" id="btn-open-search-mobile" title="Buscar"><i class="bi bi-search"></i></button>
           <div class="d-none d-md-flex gap-3">
             <a class="nav-link" href="index.html">Inicio</a>
             <a class="nav-link" href="index.html">Catálogo</a>
           </div>
         </div>
-
-        <!-- CENTRO (LOGO CENTRADO A LA PERFECCIÓN) -->
         <div class="d-flex justify-content-center" style="z-index: 1;">
           <a class="navbar-brand position-absolute top-50 start-50 translate-middle m-0 p-0 d-flex align-items-center" href="index.html">
             <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
           </a>
         </div>
-        
-        <!-- DERECHA (MÓVIL Y PC) -->
         <div class="d-flex align-items-center justify-content-end gap-2 gap-md-3" style="flex: 1; z-index: 2;">
-          <button class="mobile-liquid-btn d-none d-md-flex" id="btn-open-search-desktop" title="Buscar">
-            <i class="bi bi-search"></i>
-          </button>
-
-          <!-- Avatar / Login de Usuario -->
-          <div id="auth-container-global">
-            <!-- El JS inyecta el Avatar Liquid Glass aquí -->
-          </div>
-
-          <!-- BOTÓN CARRITO TEXTO (Solo PC) -->
+          <button class="mobile-liquid-btn d-none d-md-flex" id="btn-open-search-desktop" title="Buscar"><i class="bi bi-search"></i></button>
+          <div id="auth-container-global"></div>
           <button id="main-cart-btn" class="btn-outline-custom d-none d-md-flex align-items-center gap-2 cart-btn-global" style="padding: 6px 15px; font-size: 0.9rem;">
             <i class="bi bi-cart3"></i> CARRITO (<span class="cart-badge-count-global">0</span>)
           </button>
         </div>
-
       </div>
     </nav>
 
-    <!-- SECCIÓN SUPERIOR: CAJAS 3D Y DETALLES -->
+    <!-- DETALLES DE CINEMA 4D -->
     <section class="product-detail-section">
       <div class="container">
         <div class="row align-items-center g-4">
@@ -484,27 +455,11 @@
             </div>
 
             <div class="row g-2 mb-3 pt-2 border-top border-bottom border-secondary border-opacity-25 py-2">
-              <div class="col-4">
-                <div class="feature-box">
-                  <div class="feature-icon-circle"><i class="bi bi-shield-check"></i></div>
-                  <p class="feature-title text-white">Garantizado</p>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="feature-box">
-                  <div class="feature-icon-circle"><i class="bi bi-infinity"></i></div>
-                  <p class="feature-title text-white">Vitalicio</p>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="feature-box">
-                  <div class="feature-icon-circle"><i class="bi bi-download"></i></div>
-                  <p class="feature-title text-white">Inmediato</p>
-                </div>
-              </div>
+              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-shield-check"></i></div><p class="feature-title text-white">Garantizado</p></div></div>
+              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-infinity"></i></div><p class="feature-title text-white">Vitalicio</p></div></div>
+              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-download"></i></div><p class="feature-title text-white">Inmediato</p></div></div>
             </div>
 
-            <!-- PRECIO CON DESCUENTO Y EFECTO DE OFERTA -->
             <div class="mb-3 d-flex align-items-end gap-3">
               <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--accent-color) !important; line-height: 1;">$35.00</span>
               <div class="d-flex flex-column pb-1">
@@ -513,7 +468,6 @@
               </div>
             </div>
 
-            <!-- ====== SECCIÓN DE OPCIONES DE COMPRA ====== -->
             <div class="purchase-options mt-4">
               <p class="text-info fw-bold mb-2" style="font-size: 0.8rem; letter-spacing: 1px;"><i class="bi bi-cart-check"></i> ELIGE TU LICENCIA:</p>
               
@@ -528,37 +482,21 @@
                   <i class="bi bi-cart3"></i> AGREGAR CINEMA 4D
                 </button>
               </div>
-
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SECCIÓN INFERIOR: COMPATIBILIDAD (MAC ONLY) -->
+    <!-- COMPATIBILIDAD Y NOTA DEL CREADOR -->
     <section class="compatible-section">
       <div class="container">
         <div class="compatible-title">Plataformas y Arquitectura Compatible</div>
         
         <div class="row g-3 justify-content-center mb-4">
-          <div class="col-4">
-            <div class="keyboard-card" style="padding-top: 25px;">
-              <i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: var(--accent-color); filter: drop-shadow(0 0 10px rgba(0,229,255,0.3)); display: block;"></i>
-              <h5>MAC (INTEL)</h5>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="keyboard-card" style="padding-top: 25px;">
-              <i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: #ffffff; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); display: block;"></i>
-              <h5>MAC (M1/M2/M3)</h5>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="keyboard-card" style="padding-top: 25px;">
-              <i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: #a200ff; filter: drop-shadow(0 0 10px rgba(162,0,255,0.3)); display: block;"></i>
-              <h5>MAC (M4/M5 MAX)</h5>
-            </div>
-          </div>
+          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: var(--accent-color); display: block;"></i><h5>MAC (INTEL)</h5></div></div>
+          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: #ffffff; display: block;"></i><h5>MAC (M1/M2/M3)</h5></div></div>
+          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: #a200ff; display: block;"></i><h5>MAC (M4/M5 MAX)</h5></div></div>
         </div>
 
         <div class="row justify-content-center mb-4">
@@ -573,85 +511,26 @@
               </div>
               <p class="text-white mb-2" style="font-size: 0.9rem; line-height: 1.6; color: #f1f5f9;">
                 "Como creativo digital, sé lo pesado que es lidiar con las suscripciones mensuales que se comen el presupuesto del estudio. Adaptamos y preconfiguramos esta versión de Cinema 4D pensando exactamente en los animadores y artistas 3D.<br><br>
-                Desarrollé esto específicamente para <b>no pagar mensualidades y obtener todo en un solo programa</b> de forma vitalicia. Las licencias tradicionales consumen demasiado presupuesto que mejor se invierte en hardware o plugins. <br><br>
-                Esta versión está blindada para funcionar exclusivamente en entornos Mac, desde procesadores Intel hasta el brutal M5 Max. Tu software correrá sin lag para que te enfoques en diseñar motion graphics y no en problemas de licencia."
+                Desarrollé esto específicamente para <b>no pagar mensualidades y obtener todo en un solo programa</b> de forma vitalicia... Esta versión está blindada para funcionar exclusivamente en entornos Mac, desde procesadores Intel hasta el brutal M5 Max."
               </p>
               <div class="text-end text-info small fw-semibold" style="font-size: 0.75rem;"><i class="bi bi-patch-check-fill"></i> Software sin límites.</div>
             </div>
           </div>
         </div>
 
-        <div class="row justify-content-center mb-4">
-          <div class="col-lg-10">
-            <div class="text-center mb-3">
-              <h4 class="fw-bold text-white fs-5">Herramientas y Formatos Compatibles</h4>
-              <p class="text-white small" style="color: #f1f5f9; font-size: 0.8rem;">El paquete está optimizado para funcionar sin problemas con las herramientas estándar de la industria.</p>
-            </div>
-            <div class="row g-2">
-              <div class="col-6 col-md-4">
-                <div class="software-badge-box">
-                  <i class="bi bi-box"></i>
-                  <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Modelado 3D</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Poligonal y Splines</small>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6 col-md-4">
-                <div class="software-badge-box">
-                  <i class="bi bi-camera-reels"></i>
-                  <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Motion Graphics</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">MoGraph incluido</small>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6 col-md-4">
-                <div class="software-badge-box">
-                  <i class="bi bi-camera-video-fill"></i>
-                  <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Render Avanzado</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Redshift / V-Ray</small>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6 col-md-6">
-                <div class="software-badge-box">
-                  <i class="bi bi-person-walking"></i>
-                  <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Animación</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85);">Rigging y dinámicas</small>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-md-6">
-                <div class="software-badge-box">
-                  <i class="bi bi-filetype-obj"></i>
-                  <div>
-                    <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Formatos Universales</h6>
-                    <small class="text-white" style="color: rgba(255,255,255,0.85);">OBJ, FBX, Alembic</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SECCIÓN DE PRODUCTOS SIMILARES -->
+        <!-- PRODUCTOS SIMILARES -->
         <div class="row justify-content-center my-4">
           <div class="col-lg-10">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-collection-play text-accent" style="color:var(--accent-color)"></i> Productos Recomendados</h5>
               <span class="text-white small" style="color: #f1f5f9; font-size: 0.75rem;">Desliza <i class="bi bi-arrow-right"></i></span>
             </div>
-
             <div class="similar-carousel-wrapper">
-              
               <div class="similar-card">
                 <div>
                   <div class="similar-img-box"><img src="img/sketchup.png" alt="SketchUp" onerror="this.src='https://ui-avatars.com/api/?name=Sk&background=00e5ff&color=000'"></div>
                   <h6 class="text-white fw-bold fs-6 mb-1">SketchUp Pro 2026</h6>
-                  <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac (Intel a M5 Max)</div>
+                  <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac</div>
                   <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Modelado 3D profesional y renderizado avanzado.</p>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-2">
@@ -659,12 +538,11 @@
                   <a href="sketchup.html" class="btn-outline-custom py-1 px-2">Ver más</a>
                 </div>
               </div>
-
               <div class="similar-card">
                 <div>
                   <div class="similar-img-box"><img src="img/autocad.png" alt="AutoCAD" onerror="this.src='https://ui-avatars.com/api/?name=AC&background=00e5ff&color=000'"></div>
                   <h6 class="text-white fw-bold fs-6 mb-1">AutoCAD 2026</h6>
-                  <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac (Intel a M5 Max)</div>
+                  <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac</div>
                   <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Diseño y dibujo técnico asistido por computadora.</p>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-2">
@@ -672,38 +550,20 @@
                   <a href="autocad.html" class="btn-outline-custom py-1 px-2">Ver más</a>
                 </div>
               </div>
-
-              <div class="similar-card">
-                <div>
-                  <div class="similar-img-box"><img src="img/logic.png" alt="Logic Pro" onerror="this.src='https://ui-avatars.com/api/?name=Lo&background=00e5ff&color=000'"></div>
-                  <h6 class="text-white fw-bold fs-6 mb-1">Logic Pro</h6>
-                  <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac (Intel a M5 Max)</div>
-                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Estación de trabajo para producción y audio.</p>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$25.00</span>
-                  <a href="logic.html" class="btn-outline-custom py-1 px-2">Ver más</a>
-                </div>
-              </div>
-
             </div>
           </div>
         </div>
 
-        <!-- ====== SECCIÓN DE COMENTARIOS ====== -->
+        <!-- COMENTARIOS -->
         <div class="row justify-content-center comments-section">
           <div class="col-lg-10">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-chat-square-text text-accent" style="color:var(--accent-color)"></i> Opiniones de la Comunidad</h5>
-              <span class="text-white small" style="color: #f1f5f9; font-size: 0.7rem;">Comunidad Dinámica</span>
             </div>
-
             <div id="comment-section-wrapper" class="mb-4"></div>
-
             <div id="comments-container">
               <div class="text-center text-white py-3 small">Cargando opiniones de la comunidad...</div>
             </div>
-
           </div>
         </div>
 
@@ -721,13 +581,13 @@
 
   </div><!-- FIN DE PAGE WRAPPER -->
 
-  <!-- ====== BOTÓN FLOTANTE UNIVERSAL DEL CARRITO EN PANTALLA ====== -->
+  <!-- BOTÓN FLOTANTE CARRITO -->
   <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
     <i class="bi bi-cart3 fs-4"></i>
     <span class="badge-floating cart-badge-count-global">0</span>
   </button>
 
-  <!-- ====== MODAL DE BUSCADOR A PANTALLA COMPLETA ====== -->
+  <!-- MODAL BUSCADOR -->
   <div class="search-overlay-fullscreen" id="search-overlay-fullscreen">
     <div class="search-modal-box">
       <div class="search-input-liquid mb-4">
@@ -735,123 +595,17 @@
         <input type="text" id="live-search-input" placeholder="Buscar productos..." autocomplete="off">
         <button class="btn-close-search" id="btn-close-search" style="background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;"><i class="bi bi-x-lg"></i></button>
       </div>
-      
-      <!-- Contenedor de Resultados Visuales -->
       <div id="live-search-results" class="search-results-container">
         <p class="text-center" style="color: rgba(255,255,255,0.7); font-size: 0.9rem;" id="search-empty-state">Escribe el nombre del producto para buscar...</p>
-        
-        <a href="dual.html" class="search-result-item" data-title="pianos legendarios sf2 bundle completo">
-          <img src="img/dual.png" alt="Bundle" onerror="this.src='https://ui-avatars.com/api/?name=Pi&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Pianos Legendarios Bundle</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$60.00</span>
-          </div>
-        </a>
-        <a href="nordessentials.html" class="search-result-item" data-title="nord essentials sf2 pianos" style="display: none;">
-          <img src="img/nordessentials.png" alt="Nord" onerror="this.src='https://ui-avatars.com/api/?name=No&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Nord Essentials SF2</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$33.00</span>
-          </div>
-        </a>
-        <a href="yamahalegacy.html" class="search-result-item" data-title="yamaha legacy collection sf2 motif montage" style="display: none;">
-          <img src="img/yamahalegacy.png" alt="Yamaha" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Yamaha Legacy SF2</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$33.00</span>
-          </div>
-        </a>
-        <a href="cosmos.html" class="search-result-item" data-title="cosmos collection pads texturas" style="display: none;">
-          <img src="img/cosmos.png" alt="Cosmos" onerror="this.src='https://ui-avatars.com/api/?name=Co&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Cosmos Collection</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$70.00</span>
-          </div>
-        </a>
-        <a href="yamahakeys.html" class="search-result-item" data-title="yamaha premium keys pianos acusticos" style="display: none;">
-          <img src="img/yamahakeys.png" alt="Yamaha Keys" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Yamaha Premium Keys</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
-          </div>
-        </a>
-        <a href="rhodes.html" class="search-result-item" data-title="rhodes affair 2 piano electrico" style="display: none;">
-          <img src="img/rhodes.png" alt="Rhodes" onerror="this.src='https://ui-avatars.com/api/?name=Rh&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Rhodes Affair 2</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
-          </div>
-        </a>
-        <a href="nord.html" class="search-result-item" data-title="nord stage 4 ultimate library kontakt" style="display: none;">
-          <img src="img/nord.png" alt="Nord Stage 4" onerror="this.src='https://ui-avatars.com/api/?name=NS&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Nord Stage 4 Ultimate</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$40.00</span>
-          </div>
-        </a>
-
-        <!-- RESULTADOS SOFTWARE ARQUITECTURA / INGENIERÍA -->
-        <a href="combo.html" class="search-result-item" data-title="sketchup 2026 autocad 2026 duo bundle arquitectura combo" style="display: none;">
-          <img src="img/combo.png" alt="Duo" onerror="this.src='https://ui-avatars.com/api/?name=Du&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">SketchUp 2026 & AutoCAD 2026</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$50.00</span>
-          </div>
-        </a>
-        <a href="autocad.html" class="search-result-item" data-title="autocad 2026 arquitectura ingenieria" style="display: none;">
-          <img src="img/autocad.png" alt="AutoCAD" onerror="this.src='https://ui-avatars.com/api/?name=AC&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">AutoCAD 2026</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$35.00</span>
-          </div>
-        </a>
-        <a href="sketchup.html" class="search-result-item" data-title="sketchup pro 2026 3d arquitectura diseño" style="display: none;">
-          <img src="img/sketchup.png" alt="SketchUp" onerror="this.src='https://ui-avatars.com/api/?name=Sk&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">SketchUp Pro 2026</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$27.00</span>
-          </div>
-        </a>
-        <a href="office.html" class="search-result-item" data-title="office home business word excel powerpoint" style="display: none;">
-          <img src="img/office.png" alt="Office" onerror="this.src='https://ui-avatars.com/api/?name=Of&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Office Home & Business</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$40.00</span>
-          </div>
-        </a>
-        <a href="esword.html" class="search-result-item" data-title="biblias y diccionarios para e-sword" style="display: none;">
-          <img src="img/esword.png" alt="e-Sword" onerror="this.src='https://ui-avatars.com/api/?name=eS&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Biblias y Diccionarios para E-Sword</h6>
-            <span class="text-accent small fw-bold" style="color: #00ff88;">GRATIS</span>
-          </div>
-        </a>
-        <a href="cinema4d.html" class="search-result-item" data-title="cinema 4d render" style="display: none;">
+        <a href="cinema4d.html" class="search-result-item" data-title="cinema 4d render">
           <img src="img/cinema4d.png" alt="Cinema 4D" onerror="this.src='https://ui-avatars.com/api/?name=C4&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Cinema 4D</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$35.00</span>
-          </div>
-        </a>
-        <a href="logic.html" class="search-result-item" data-title="logic pro audio" style="display: none;">
-          <img src="img/logic.png" alt="Logic Pro" onerror="this.src='https://ui-avatars.com/api/?name=Lo&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Logic Pro</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$25.00</span>
-          </div>
-        </a>
-        <a href="mainstage.html" class="search-result-item" data-title="montage 8 nord stage 3" style="display: none;">
-          <img src="img/mainstage.png" alt="Montage 8 & Nord Stage 3" onerror="this.src='https://ui-avatars.com/api/?name=Mo&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Montage 8 & Nord Stage 3</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$27.00</span>
-          </div>
+          <div><h6 class="mb-0 text-white fw-bold">Cinema 4D</h6><span class="text-accent small fw-bold" style="color: var(--accent-color);">$35.00</span></div>
         </a>
       </div>
     </div>
   </div>
 
-  <!-- ====== ESTRUCTURA DEL CARRITO LATERAL ====== -->
+  <!-- CARRITO LATERAL -->
   <div class="cart-overlay" id="cart-overlay"></div>
   <div class="cart-drawer" id="cart-drawer">
     <div class="cart-header">
@@ -861,125 +615,32 @@
       </div>
       <button class="btn-close-cart" id="close-cart-btn"><i class="bi bi-x-lg"></i></button>
     </div>
-    
     <div class="cart-items-container" id="cart-items-container">
-      <div class="cart-empty-msg" id="empty-cart-msg">
-        <p>Tu carrito está vacío.</p>
-      </div>
+      <div class="cart-empty-msg" id="empty-cart-msg"><p>Tu carrito está vacío.</p></div>
     </div>
-    
     <div class="cart-footer">
       <div class="coupon-box" id="coupon-section" style="display: none;">
         <input type="text" id="coupon-input" class="coupon-input" placeholder="Código de descuento">
         <button type="button" id="apply-coupon-btn" class="btn-apply-coupon">Aplicar</button>
       </div>
       <div id="coupon-msg" class="coupon-msg" style="display: none;"></div>
-
-      <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;">
-        <span class="text-white">Subtotal</span>
-        <span id="cart-subtotal" class="text-white">$0.00</span>
-      </div>
-      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;">
-        <span class="fs-5 fw-bold text-white">Total</span>
-        <span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span>
-      </div>
-      
-      <div class="text-center mb-3 text-white" style="font-size: 0.85rem; font-weight: 500; display: none;" id="security-badge-box">
-        <i class="bi bi-shield-lock"></i> Pago 100% seguro con PayPal
-      </div>
-      
-      <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;">
-        <div id="paypal-button-container" class="w-100"></div>
-      </div>
-
-      <button id="free-checkout-btn" class="btn-free-checkout mb-3" style="display: none;">
-        Obtener gratis <i class="bi bi-download ms-1"></i>
-      </button>
+      <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;"><span class="text-white">Subtotal</span><span id="cart-subtotal" class="text-white">$0.00</span></div>
+      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;"><span class="fs-5 fw-bold text-white">Total</span><span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span></div>
+      <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;"><div id="paypal-button-container" class="w-100"></div></div>
+      <button id="free-checkout-btn" class="btn-free-checkout mb-3" style="display: none;">Obtener gratis <i class="bi bi-download ms-1"></i></button>
     </div>
   </div>
 
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- ====== LÓGICA DEL MENÚ PUSH Y BUSCADOR ====== -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const btnOpenSidebar = document.getElementById('btn-open-sidebar');
-      const sideMenu = document.getElementById('side-menu');
-      const sideMenuOverlay = document.getElementById('side-menu-overlay');
-      const pageWrapper = document.getElementById('page-wrapper');
-      const mainNavbar = document.getElementById('main-navbar');
+  <!-- SCRIPT GLOBAL EXTERNO PARA AUTENTICACIÓN Y MODO ADMIN -->
+  <script type="module" src="auth-global.js"></script>
 
-      function toggleSidebar() {
-        sideMenu.classList.toggle('active');
-        sideMenuOverlay.classList.toggle('active');
-        pageWrapper.classList.toggle('menu-pushed');
-        mainNavbar.classList.toggle('menu-pushed');
-        document.body.classList.toggle('no-scroll');
-      }
-
-      if(btnOpenSidebar) btnOpenSidebar.addEventListener('click', toggleSidebar);
-      if(sideMenuOverlay) sideMenuOverlay.addEventListener('click', toggleSidebar);
-
-      const searchOverlayFullscreen = document.getElementById('search-overlay-fullscreen');
-      const btnOpenSearchMobile = document.getElementById('btn-open-search-mobile');
-      const btnOpenSearchDesktop = document.getElementById('btn-open-search-desktop');
-      const btnCloseSearch = document.getElementById('btn-close-search');
-      const liveSearchInput = document.getElementById('live-search-input');
-      const searchItems = document.querySelectorAll('.search-result-item');
-      const searchEmptyState = document.getElementById('search-empty-state');
-
-      function openSearch() {
-        searchOverlayFullscreen.classList.add('active');
-        document.body.classList.add('no-scroll');
-        setTimeout(() => liveSearchInput.focus(), 100);
-      }
-      function closeSearch() {
-        searchOverlayFullscreen.classList.remove('active');
-        document.body.classList.remove('no-scroll');
-        liveSearchInput.value = '';
-        searchItems.forEach(item => item.style.display = 'none');
-        searchEmptyState.style.display = 'block';
-        searchEmptyState.textContent = 'Escribe el nombre del producto para buscar...';
-      }
-
-      if(btnOpenSearchMobile) btnOpenSearchMobile.addEventListener('click', openSearch);
-      if(btnOpenSearchDesktop) btnOpenSearchDesktop.addEventListener('click', openSearch);
-      if(btnCloseSearch) btnCloseSearch.addEventListener('click', closeSearch);
-
-      liveSearchInput.addEventListener('input', function() {
-        const query = this.value.toLowerCase().trim();
-        let found = false;
-
-        if (query.length > 1) {
-          searchEmptyState.style.display = 'none';
-          searchItems.forEach(item => {
-            const title = item.getAttribute('data-title');
-            if (title.includes(query)) {
-              item.style.display = 'flex';
-              found = true;
-            } else {
-              item.style.display = 'none';
-            }
-          });
-
-          if (!found) {
-            searchEmptyState.textContent = 'No se encontraron resultados.';
-            searchEmptyState.style.display = 'block';
-          }
-        } else {
-          searchItems.forEach(item => item.style.display = 'none');
-          searchEmptyState.textContent = 'Escribe el nombre del producto para buscar...';
-          searchEmptyState.style.display = 'block';
-        }
-      });
-    });
-  </script>
-
-  <!-- Lógica de Firebase Auth, Comentarios y Sistema Anti-Recompras -->
+  <!-- LÓGICA LOCAL (FIREBASE, COMENTARIOS Y PASARELA EXPRESS) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, orderBy, serverTimestamp, increment, arrayUnion, arrayRemove, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -998,278 +659,185 @@
 
     window.globalCurrentUser = null;
     let currentUser = null;
+    window.globalEmailRecienComprado = "";
 
     async function checkUserPurchases(uid) {
       try {
         const q = query(collection(db, "purchases"), where("uid", "==", uid));
         const snapshot = await getDocs(q);
         let purchasedNames = [];
-        
         snapshot.forEach(docSnap => {
           const data = docSnap.data();
           if (data.items && Array.isArray(data.items)) {
             data.items.forEach(item => purchasedNames.push(item.name));
           }
         });
-
-        const buyButtons = document.querySelectorAll('.btn-add-cart, #btn-buy-now');
+        const buyButtons = document.querySelectorAll('.btn-add-cart');
         buyButtons.forEach(btn => {
           const prodName = btn.getAttribute('data-name');
           if (purchasedNames.includes(prodName)) {
             btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> OBTENIDO';
-            btn.classList.remove('btn-cyan', 'btn-outline-cyan', 'btn-outline-custom');
+            btn.classList.remove('btn-cyan', 'btn-outline-custom');
             btn.classList.add('btn-obtained-glass');
             btn.disabled = true;
           }
         });
-      } catch (err) {
-        console.error("Error al verificar compras previas:", err);
-      }
+      } catch (err) { console.error("Error verificando compras:", err); }
     }
 
-    // COMENTARIOS ADAPTADOS A CINEMA 4D
     const initialDefaultComments = [
-      { name: "Motion Graphics Studio", rating: 5, text: "Instalado en una Mac Studio M2 Max y Cinema 4D vuela. Hacer renders es una delicia y nos ahorramos las suscripciones. ¡10/10!", likes: 38, likedBy: [] },
-      { name: "Daniel Siquiej", rating: 5, text: "La estabilidad del programa es increíble. Lo uso para mis animaciones publicitarias y nunca se me ha crasheado. Gracias Evolution Group.", likes: 24, likedBy: [] },
-      { name: "Arq. Sofia M.", rating: 5, text: "Excelente complemento para mis renders de arquitectura. La descarga fue rápida y las instrucciones para Mac muy claras.", likes: 31, likedBy: [] },
-      { name: "Estudio Creativo 5", rating: 5, text: "Poder tener esta herramienta vitalicia cambia el juego para agencias pequeñas. Funciona impecable.", likes: 27, likedBy: [] },
-      { name: "Carlos T.", rating: 5, text: "Lo instalé en mi vieja Mac Intel y corre súper bien. Soporte técnico me ayudó rápido con una duda de instalación.", likes: 40, likedBy: [] }
+      { name: "Motion Graphics Studio", rating: 5, text: "Instalado en una Mac Studio M2 Max y Cinema 4D vuela. Hacer renders es una delicia.", likes: 38, likedBy: [] },
+      { name: "Daniel Siquiej", rating: 5, text: "La estabilidad del programa es increíble. Lo uso para mis animaciones publicitarias.", likes: 24, likedBy: [] },
+      { name: "Arq. Sofia M.", rating: 5, text: "Excelente complemento para mis renders de arquitectura. La descarga fue rápida.", likes: 31, likedBy: [] }
     ];
 
     function renderCommentsUI(commentsData) {
-        const container = document.getElementById('comments-container');
-        container.innerHTML = '';
-        commentsData.forEach((com) => {
-            const docId = com.id;
-            let stars = '★★★★★'.substring(0, com.rating || 5) + '☆☆☆☆☆'.substring(0, 5 - (com.rating || 5));
-            
-            let likedByArray = com.likedBy || [];
-            let isLiked = currentUser && likedByArray.includes(currentUser.uid);
-            let btnClass = isLiked ? "btn-like liked" : "btn-like";
-            let iconClass = isLiked ? "bi bi-heart-fill" : "bi bi-heart";
+      const container = document.getElementById('comments-container');
+      container.innerHTML = '';
+      commentsData.forEach((com) => {
+        const docId = com.id;
+        let stars = '★★★★★'.substring(0, com.rating || 5) + '☆☆☆☆☆'.substring(0, 5 - (com.rating || 5));
+        let likedByArray = com.likedBy || [];
+        let isLiked = currentUser && likedByArray.includes(currentUser.uid);
+        let btnClass = isLiked ? "btn-like liked" : "btn-like";
+        let iconClass = isLiked ? "bi bi-heart-fill" : "bi bi-heart";
 
-            container.insertAdjacentHTML('beforeend', `
-              <div class="comment-card" id="comment-${docId}">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                  <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> ${com.name}</h6>
-                  <span class="text-warning small" style="font-size: 0.75rem;">${stars}</span>
-                </div>
-                <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">${com.text}</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Opinión verificada</small>
-                  <button class="${btnClass}" onclick="toggleLikeFirestore('${docId}', this)"><i class="${iconClass}"></i> <span class="like-count">${com.likes || 0}</span></button>
-                </div>
-              </div>
-            `);
-        });
+        container.insertAdjacentHTML('beforeend', `
+          <div class="comment-card" id="comment-${docId}">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle text-accent" style="color:var(--accent-color)"></i> ${com.name}</h6>
+              <span class="text-warning small" style="font-size: 0.75rem;">${stars}</span>
+            </div>
+            <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">${com.text}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Opinión verificada</small>
+              <button class="${btnClass}" onclick="toggleLikeFirestore('${docId}', this)"><i class="${iconClass}"></i> <span class="like-count">${com.likes || 0}</span></button>
+            </div>
+          </div>
+        `);
+      });
     }
 
     async function loadComments() {
-      const container = document.getElementById('comments-container');
       try {
-        const commentsRef = collection(db, "cinema4d_comments_final"); 
+        const commentsRef = collection(db, "cinema4d_comments_final");
         const q = query(commentsRef, orderBy("createdAt", "desc"));
-        let snapshot;
-        
-        try {
-            snapshot = await getDocs(q);
-        } catch(readErr) {
-            renderCommentsUI(initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c })));
-            return;
-        }
-
+        let snapshot = await getDocs(q);
         let dbComments = [];
         snapshot.forEach(docSnap => dbComments.push({ id: docSnap.id, ...docSnap.data() }));
-
         const allComments = [...dbComments, ...initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c }))];
-
         renderCommentsUI(allComments);
-
       } catch (err) {
-        console.error("Error crítico cargando comentarios:", err);
         renderCommentsUI(initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c })));
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      loadComments();
-    });
+    document.addEventListener('DOMContentLoaded', () => { loadComments(); });
 
     onAuthStateChanged(auth, (user) => {
       currentUser = user;
-      window.globalCurrentUser = user; 
-      const authContainerGlobal = document.getElementById('auth-container-global');
+      window.globalCurrentUser = user;
       const commentWrapper = document.getElementById('comment-section-wrapper');
 
       if (user) {
         checkUserPurchases(user.uid);
-
-        let displayName = "Usuario";
-        if (user.displayName) displayName = user.displayName.split(' ')[0];
-        else if (user.email) displayName = user.email.split('@')[0];
-
-        if (authContainerGlobal) {
-          let mobileContent = user.photoURL 
-            ? `<img src="${user.photoURL}" alt="Perfil">`
-            : `<div class="avatar-fallback">${displayName.charAt(0).toUpperCase()}</div>`;
-            
-          authContainerGlobal.innerHTML = `
-            <a href="account.html" class="mobile-nav-avatar" title="Ir a Mi Cuenta">
-              ${mobileContent}
-            </a>
-          `;
-        }
+        let displayName = user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : "Usuario");
 
         commentWrapper.innerHTML = `
           <div class="comment-form-box">
             <h6 class="text-white mb-2 fw-semibold" style="font-size: 0.9rem;">Deja tu reseña o comentario</h6>
             <form id="comment-form">
               <div class="row g-2">
-                <div class="col-12 col-md-6">
-                  <input type="text" id="comment-name" class="form-control form-control-custom" value="${displayName}" placeholder="Tu Nombre o Estudio" required>
-                </div>
+                <div class="col-12 col-md-6"><input type="text" id="comment-name" class="form-control form-control-custom" value="${displayName}" required></div>
                 <div class="col-12 col-md-6">
                   <select id="comment-rating" class="form-control form-control-custom">
                     <option value="5">★★★★★ (5/5 - Excelente)</option>
                     <option value="4">★★★★☆ (4/5 - Muy bueno)</option>
-                    <option value="3">★★★☆☆ (3/5 - Bueno)</option>
                   </select>
                 </div>
-                <div class="col-12">
-                  <textarea id="comment-text" class="form-control form-control-custom" rows="2" placeholder="Escribe tu experiencia..." required></textarea>
-                </div>
-                <div class="col-12 text-end">
-                  <button type="submit" class="btn-cyan px-3 py-1" style="font-size: 0.85rem;" id="btn-submit-comment">Publicar Comentario</button>
-                </div>
+                <div class="col-12"><textarea id="comment-text" class="form-control form-control-custom" rows="2" placeholder="Escribe tu experiencia..." required></textarea></div>
+                <div class="col-12 text-end"><button type="submit" class="btn-cyan px-3 py-1" style="font-size: 0.85rem;" id="btn-submit-comment">Publicar Comentario</button></div>
               </div>
             </form>
           </div>
         `;
         document.getElementById('comment-form').addEventListener('submit', handleCommentSubmit);
-
       } else {
-        if (authContainerGlobal) {
-          authContainerGlobal.innerHTML = `
-            <a href="login.html" class="mobile-liquid-btn" title="Iniciar Sesión">
-              <i class="bi bi-person-fill"></i>
-            </a>
-          `;
-        }
-
         commentWrapper.innerHTML = `
           <div class="login-prompt-box">
             <div class="login-prompt-icon"><i class="bi bi-lock-fill"></i></div>
             <h5 class="text-white fw-bold mb-2 fs-6">Inicia sesión para dejar tu reseña</h5>
-            <p class="text-white small mb-3" style="color: rgba(255,255,255,0.85); font-size: 0.85rem;">Únete a nuestra comunidad, comparte tu opinión y apoya con un like.</p>
-            <a href="login.html" class="btn-cyan d-inline-block px-4 py-2 text-decoration-none" style="font-size: 0.9rem;">
-              <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión / Registrarse
-            </a>
+            <a href="login.html" class="btn-cyan d-inline-block px-4 py-2 text-decoration-none" style="font-size: 0.9rem;">Iniciar Sesión / Registrarse</a>
           </div>
         `;
       }
-      
       loadComments();
     });
 
     async function handleCommentSubmit(e) {
       e.preventDefault();
       if (!currentUser) return;
-
       const name = document.getElementById('comment-name').value.trim();
       const rating = parseInt(document.getElementById('comment-rating').value);
       const text = document.getElementById('comment-text').value.trim();
-      const submitBtn = document.getElementById('btn-submit-comment');
-
       if (!name || !text) return;
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Publicando...";
 
       try {
-        await addDoc(collection(db, "cinema4d_comments_final"), {
-          name: name,
-          rating: rating,
-          text: text,
-          likes: 0,
-          likedBy: [],
-          createdAt: serverTimestamp()
-        });
-
+        await addDoc(collection(db, "cinema4d_comments_final"), { name, rating, text, likes: 0, likedBy: [], createdAt: serverTimestamp() });
         document.getElementById('comment-form').reset();
         loadComments();
-
-        const toast = document.getElementById('toast-message');
-        toast.textContent = `¡Comentario publicado con éxito!`;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
-
-      } catch (err) {
-        console.error("Error al guardar comentario:", err);
-        alert("Ocurrió un error al publicar.");
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Publicar Comentario";
-      }
+      } catch (err) { alert("Error al publicar."); }
     }
 
     window.toggleLikeFirestore = async function(docId, btn) {
-      if (!currentUser) {
-        alert("Debes iniciar sesión para dar like.");
-        window.location.href = 'login.html';
-        return;
-      }
-
-      if(docId.startsWith('local-')) {
-          alert("Esta opinión es local, Firebase no permite escritura por tus reglas de seguridad actuales.");
-          return;
-      }
-
+      if (!currentUser) { window.location.href = 'login.html'; return; }
+      if (docId.startsWith('local-')) return;
       const countSpan = btn.querySelector('.like-count');
       let currentLikes = parseInt(countSpan.textContent);
       let isLiking = !btn.classList.contains('liked');
 
-      if (isLiking) {
-        btn.classList.add('liked');
-        btn.querySelector('i').className = 'bi bi-heart-fill';
-        countSpan.textContent = currentLikes + 1;
-      } else {
-        btn.classList.remove('liked');
-        btn.querySelector('i').className = 'bi bi-heart';
-        countSpan.textContent = currentLikes - 1;
-      }
+      if (isLiking) { btn.classList.add('liked'); btn.querySelector('i').className = 'bi bi-heart-fill'; countSpan.textContent = currentLikes + 1; }
+      else { btn.classList.remove('liked'); btn.querySelector('i').className = 'bi bi-heart'; countSpan.textContent = currentLikes - 1; }
 
       try {
         const commentRef = doc(db, "cinema4d_comments_final", docId);
-        if (isLiking) {
-          await updateDoc(commentRef, {
-             likes: increment(1),
-             likedBy: arrayUnion(currentUser.uid)
-          });
-        } else {
-          await updateDoc(commentRef, {
-             likes: increment(-1),
-             likedBy: arrayRemove(currentUser.uid)
-          });
-        }
-      } catch (err) {
-        console.error("Error al actualizar like:", err);
-        if (isLiking) {
-          btn.classList.remove('liked');
-          btn.querySelector('i').className = 'bi bi-heart';
-          countSpan.textContent = currentLikes;
-        } else {
-          btn.classList.add('liked');
-          btn.querySelector('i').className = 'bi bi-heart-fill';
-          countSpan.textContent = currentLikes;
-        }
-      }
+        await updateDoc(commentRef, { likes: increment(isLiking ? 1 : -1), likedBy: isLiking ? arrayUnion(currentUser.uid) : arrayRemove(currentUser.uid) });
+      } catch (err) { console.error(err); }
     };
 
-    function mostrarModalExito(mensaje) {
+    function mostrarModalExito(mensaje, esInvitado = false, emailInvitado = "") {
       const modal = document.getElementById('success-modal');
       const text = document.getElementById('success-modal-text');
+      const expressBox = document.getElementById('express-signup-container');
+      const btnGoAccount = document.getElementById('btn-go-to-account');
       if (text && mensaje) text.textContent = mensaje;
+      if (esInvitado && emailInvitado) {
+        window.globalEmailRecienComprado = emailInvitado;
+        document.getElementById('express-email').value = emailInvitado;
+        expressBox.style.display = 'block';
+        btnGoAccount.style.display = 'none';
+      } else {
+        expressBox.style.display = 'none';
+        btnGoAccount.style.display = 'block';
+      }
       if (modal) modal.classList.add('active');
     }
+
+    window.crearCuentaExpress = async function() {
+      const passInput = document.getElementById('express-password').value.trim();
+      const email = window.globalEmailRecienComprado;
+      if (passInput.length < 6) { alert("Mínimo 6 caracteres."); return; }
+      try {
+        await createUserWithEmailAndPassword(auth, email, passInput);
+        window.location.href = 'account.html';
+      } catch (error) {
+        if (error.code === 'auth/email-already-in-use') {
+          try { await signInWithEmailAndPassword(auth, email, passInput); window.location.href = 'account.html'; return; }
+          catch(innerErr) { window.location.href = 'login.html'; return; }
+        }
+        window.location.href = 'account.html';
+      }
+    };
 
     window.renderPayPalStable = function(monto) {
       const container = document.getElementById('paypal-button-container');
@@ -1279,42 +847,83 @@
 
       paypal.Buttons({
         style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
-        createOrder: function(data, actions) {
-          return actions.order.create({ purchase_units: [{ amount: { value: monto.toFixed(2) } }] });
-        },
+        createOrder: function(data, actions) { return actions.order.create({ purchase_units: [{ amount: { value: monto.toFixed(2) } }] }); },
         onApprove: async function(data, actions) {
           return actions.order.capture().then(async function(details) {
-            const user = auth.currentUser;
-            if (!user) { window.location.href = 'login.html'; return; }
+            let user = auth.currentUser;
+            let userId = user ? user.uid : "GUEST-" + Date.now();
+            let userEmail = details.payer.email_address || (user ? user.email : "invitado@dingloft.com");
+            let payerName = details.payer.name.given_name || "Cliente";
+
             try {
               const itemsComprados = window.cartItemsList || [];
-              await addDoc(collection(db, "purchases"), {
-                uid: user.uid, userEmail: user.email, paypalOrderId: details.id,
-                payerName: details.payer.name.given_name, items: itemsComprados, createdAt: serverTimestamp()
-              });
-              
+              await addDoc(collection(db, "purchases"), { uid: userId, userEmail, paypalOrderId: details.id, payerName, items: itemsComprados, createdAt: serverTimestamp() });
               if (typeof window.clearCart === 'function') window.clearCart();
-              
-              mostrarModalExito(`¡Pago exitoso, ${details.payer.name.given_name}! Redirigiendo a tu cuenta...`);
-              setTimeout(() => { window.location.href = 'account.html'; }, 2200);
-            } catch (error) { console.error("Error:", error); }
+              if (!user) { mostrarModalExito(`¡Pago exitoso, ${payerName}!`, true, userEmail); }
+              else { mostrarModalExito(`¡Pago exitoso! Redirigiendo...`, false, ""); setTimeout(() => { window.location.href = 'account.html'; }, 2200); }
+            } catch (error) { console.error(error); }
           });
         }
       }).render('#paypal-button-container');
     };
   </script>
 
-  <!-- Lógica del Carrito (LocalStorage) -->
+  <!-- LÓGICA LOCAL DEL CARRITO Y NAVEGACIÓN -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
-      let couponApplied = false;
+      const btnOpenSidebar = document.getElementById('btn-open-sidebar');
+      const sideMenu = document.getElementById('side-menu');
+      const sideMenuOverlay = document.getElementById('side-menu-overlay');
+      const pageWrapper = document.getElementById('page-wrapper');
+      const mainNavbar = document.getElementById('main-navbar');
 
+      function toggleSidebar() {
+        sideMenu.classList.toggle('active');
+        sideMenuOverlay.classList.toggle('active');
+        pageWrapper.classList.toggle('menu-pushed');
+        mainNavbar.classList.toggle('menu-pushed');
+        document.body.classList.toggle('no-scroll');
+      }
+      if(btnOpenSidebar) btnOpenSidebar.addEventListener('click', toggleSidebar);
+      if(sideMenuOverlay) sideMenuOverlay.addEventListener('click', toggleSidebar);
+
+      const searchOverlayFullscreen = document.getElementById('search-overlay-fullscreen');
+      const btnOpenSearchMobile = document.getElementById('btn-open-search-mobile');
+      const btnOpenSearchDesktop = document.getElementById('btn-open-search-desktop');
+      const btnCloseSearch = document.getElementById('btn-close-search');
+      const liveSearchInput = document.getElementById('live-search-input');
+      const searchItems = document.querySelectorAll('.search-result-item');
+      const searchEmptyState = document.getElementById('search-empty-state');
+
+      function openSearch() { searchOverlayFullscreen.classList.add('active'); document.body.classList.add('no-scroll'); setTimeout(() => liveSearchInput.focus(), 100); }
+      function closeSearch() { searchOverlayFullscreen.classList.remove('active'); document.body.classList.remove('no-scroll'); }
+
+      if(btnOpenSearchMobile) btnOpenSearchMobile.addEventListener('click', openSearch);
+      if(btnOpenSearchDesktop) btnOpenSearchDesktop.addEventListener('click', openSearch);
+      if(btnCloseSearch) btnCloseSearch.addEventListener('click', closeSearch);
+
+      liveSearchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        let found = false;
+        if (query.length > 1) {
+          searchEmptyState.style.display = 'none';
+          searchItems.forEach(item => {
+            if (item.getAttribute('data-title').includes(query)) { item.style.display = 'flex'; found = true; }
+            else { item.style.display = 'none'; }
+          });
+          if (!found) { searchEmptyState.textContent = 'No se encontraron resultados.'; searchEmptyState.style.display = 'block'; }
+        } else {
+          searchItems.forEach(item => item.style.display = 'none');
+          searchEmptyState.textContent = 'Escribe el nombre del producto para buscar...';
+          searchEmptyState.style.display = 'block';
+        }
+      });
+
+      let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
       const cartBtns = document.querySelectorAll('.cart-btn-global, #main-cart-btn');
       const cartDrawer = document.getElementById('cart-drawer');
       const cartOverlay = document.getElementById('cart-overlay');
       const closeCartBtn = document.getElementById('close-cart-btn');
-      
       const cartBadges = document.querySelectorAll('.cart-badge-count-global');
       const cartItemCountText = document.getElementById('cart-item-count-text');
       const cartItemsContainer = document.getElementById('cart-items-container');
@@ -1322,32 +931,10 @@
       const cartSubtotalText = document.getElementById('cart-subtotal');
       const cartTotalText = document.getElementById('cart-total');
       const paypalWrapper = document.getElementById('paypal-container-wrapper');
-      const freeCheckoutBtn = document.getElementById('free-checkout-btn');
-      const securityBadge = document.getElementById('security-badge-box');
-      const couponSection = document.getElementById('coupon-section');
-      const subtotalRow = document.getElementById('subtotal-row');
-      const totalRow = document.getElementById('total-row');
+      const addButtons = document.querySelectorAll('.btn-add-cart');
 
-      const couponInput = document.getElementById('coupon-input');
-      const applyCouponBtn = document.getElementById('apply-coupon-btn');
-      const couponMsg = document.getElementById('coupon-msg');
-
-      const addButtons = document.querySelectorAll('.btn-add-cart, #btn-buy-now');
-
-      const openCart = (e) => { 
-        if(e) e.preventDefault(); 
-        cartDrawer.classList.add('active'); 
-        cartOverlay.classList.add('active');
-        document.body.classList.add('no-scroll');
-        updateCartUI();
-      };
-
-      const closeCart = (e) => { 
-        if(e) e.preventDefault(); 
-        cartDrawer.classList.remove('active'); 
-        cartOverlay.classList.remove('active'); 
-        document.body.classList.remove('no-scroll');
-      };
+      const openCart = (e) => { if(e) e.preventDefault(); cartDrawer.classList.add('active'); cartOverlay.classList.add('active'); document.body.classList.add('no-scroll'); updateCartUI(); };
+      const closeCart = (e) => { if(e) e.preventDefault(); cartDrawer.classList.remove('active'); cartOverlay.classList.remove('active'); document.body.classList.remove('no-scroll'); };
 
       cartBtns.forEach(btn => { if(btn) btn.addEventListener('click', openCart); });
       if(closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
@@ -1355,49 +942,29 @@
 
       const updateCartUI = () => {
         cartItemsContainer.innerHTML = '';
-        
-        let totalItems = 0;
-        let totalPrice = 0;
-
+        let totalItems = 0; let totalPrice = 0;
         window.cartItemsList = [];
-        window.cartTotalPrice = 0;
 
         if (cart.length === 0) {
           cartItemsContainer.appendChild(emptyCartMsg);
           emptyCartMsg.style.display = 'block';
           if(paypalWrapper) paypalWrapper.style.display = 'none';
-          if(freeCheckoutBtn) freeCheckoutBtn.style.display = 'none';
-          if(securityBadge) securityBadge.style.display = 'none';
-          if(couponSection) couponSection.style.display = 'none';
-          if(subtotalRow) subtotalRow.style.display = 'none';
-          if(totalRow) totalRow.style.display = 'none';
-          couponApplied = false;
-          if(couponMsg) couponMsg.style.display = 'none';
-          if(couponInput) couponInput.value = '';
         } else {
           emptyCartMsg.style.display = 'none';
-          if(couponSection) couponSection.style.display = 'flex';
-          if(subtotalRow) subtotalRow.style.display = 'flex';
-          if(totalRow) totalRow.style.display = 'flex';
-          
           cart.forEach((item, index) => {
             totalItems += item.qty;
             totalPrice += (item.price * item.qty);
-
             for(let i=0; i<item.qty; i++) {
-              window.cartItemsList.push({ name: item.name, img: item.img, type: item.type, price: couponApplied ? 0 : item.price });
+              window.cartItemsList.push({ name: item.name, img: item.img, type: item.type, price: item.price });
             }
-
-            const itemHTML = `
+            cartItemsContainer.insertAdjacentHTML('beforeend', `
               <div class="cart-item">
-                <div class="cart-item-img">
-                  <img src="img/${item.img}.png" alt="${item.name}" onerror="this.src='https://ui-avatars.com/api/?name=${item.name.charAt(0)}&background=00e5ff&color=000'">
-                </div>
+                <div class="cart-item-img"><img src="img/${item.img}.png" alt="${item.name}"></div>
                 <div class="cart-item-info">
                   <h4 class="cart-item-title">${item.name}</h4>
                   <p class="cart-item-desc">${item.type}</p>
                   <div class="d-flex justify-content-between align-items-center">
-                    <span class="fw-bold text-accent">$${(couponApplied ? 0 : item.price).toFixed(2)}</span>
+                    <span class="fw-bold text-accent">$${item.price.toFixed(2)}</span>
                     <div class="qty-controls">
                       <button class="qty-btn" onclick="changeQty(${index}, -1)"><i class="bi bi-dash"></i></button>
                       <span class="qty-value">${item.qty}</span>
@@ -1407,88 +974,26 @@
                 </div>
                 <button class="cart-item-remove" onclick="removeItem(${index})"><i class="bi bi-trash"></i></button>
               </div>
-            `;
-            cartItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
+            `);
           });
-
-          let finalTotal = totalPrice;
-          if (couponApplied) { finalTotal = 0; }
-
-          window.cartTotalPrice = totalPrice;
-          window.cartFinalTotal = finalTotal;
-
-          if (finalTotal === 0) {
-            if(paypalWrapper) paypalWrapper.style.display = 'none';
-            if(securityBadge) securityBadge.style.display = 'none';
-            if(freeCheckoutBtn) freeCheckoutBtn.style.display = 'block';
-          } else {
-            if(paypalWrapper) paypalWrapper.style.display = 'block';
-            if(securityBadge) securityBadge.style.display = 'block';
-            if(freeCheckoutBtn) freeCheckoutBtn.style.display = 'none';
-            
-            setTimeout(() => {
-                if (typeof window.renderPayPalStable === 'function') {
-                    window.renderPayPalStable(finalTotal);
-                }
-            }, 100);
-          }
+          if(paypalWrapper) paypalWrapper.style.display = 'block';
+          setTimeout(() => { if (typeof window.renderPayPalStable === 'function') window.renderPayPalStable(totalPrice); }, 100);
         }
 
         cartBadges.forEach(badge => { if(badge) badge.textContent = totalItems; });
         if(cartItemCountText) cartItemCountText.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
-        
         if(cartSubtotalText) cartSubtotalText.textContent = `$${totalPrice.toFixed(2)}`;
-        if(cartTotalText) cartTotalText.textContent = `$${(couponApplied ? 0 : totalPrice).toFixed(2)}`;
-        
+        if(cartTotalText) cartTotalText.textContent = `$${totalPrice.toFixed(2)}`;
         localStorage.setItem('dingloft_cart', JSON.stringify(cart));
       };
 
-      window.clearCart = () => {
-        cart = [];
-        localStorage.removeItem('dingloft_cart');
-        updateCartUI();
-      };
-
-      updateCartUI();
-
-      if(applyCouponBtn) {
-        applyCouponBtn.addEventListener('click', () => {
-          const code = couponInput.value.trim().toUpperCase();
-          if (code === 'ADMIN_EVOLUTION') {
-            couponApplied = true;
-            couponMsg.style.display = 'block';
-            couponMsg.style.color = '#00ff88';
-            couponMsg.innerHTML = '<i class="bi bi-check-circle-fill"></i> ¡Cupón ADMIN_EVOLUTION aplicado!';
-            updateCartUI();
-          } else {
-            couponApplied = false;
-            couponMsg.style.display = 'block';
-            couponMsg.style.color = '#ff4444';
-            couponMsg.innerHTML = '<i class="bi bi-x-circle-fill"></i> Código de cupón inválido.';
-            updateCartUI();
-          }
-        });
-      }
-
-      window.changeQty = (index, delta) => {
-        if (cart[index].qty + delta > 0) {
-          cart[index].qty += delta;
-        } else {
-          cart.splice(index, 1);
-        }
-        updateCartUI();
-      };
-
-      window.removeItem = (index) => {
-        cart.splice(index, 1);
-        updateCartUI();
-      };
+      window.changeQty = (index, delta) => { if (cart[index].qty + delta > 0) cart[index].qty += delta; else cart.splice(index, 1); updateCartUI(); };
+      window.removeItem = (index) => { cart.splice(index, 1); updateCartUI(); };
 
       addButtons.forEach(button => {
         button.addEventListener('click', function(e) {
-          e.preventDefault(); 
+          e.preventDefault();
           if(this.disabled) return;
-          
           const id = this.getAttribute('data-id');
           const name = this.getAttribute('data-name');
           const price = parseFloat(this.getAttribute('data-price'));
@@ -1496,40 +1001,14 @@
           const type = this.getAttribute('data-type');
           
           const existingItem = cart.find(item => item.id === id);
-          if (existingItem) {
-            existingItem.qty += 1;
-          } else {
-            cart.push({ id, name, price, img, type, qty: 1 });
-          }
+          if (existingItem) existingItem.qty += 1;
+          else cart.push({ id, name, price, img, type, qty: 1 });
           
-          updateCartUI(); 
-          
-          cartBtns.forEach(btn => {
-            if(btn && btn.classList) {
-              btn.classList.remove('cart-bounce');
-              void btn.offsetWidth; 
-              btn.classList.add('cart-bounce');
-            }
-          });
-          
-          const originalHTML = this.innerHTML;
-          const originalBg = this.style.background;
-          const originalColor = this.style.color;
-          
-          this.innerHTML = 'Agregado <i class="bi bi-check2"></i>';
-          this.style.background = '#00ff88';
-          this.style.color = '#000';
-          
-          setTimeout(() => {
-            if(!this.disabled) {
-              this.innerHTML = originalHTML;
-              this.style.background = originalBg;
-              this.style.color = originalColor || '';
-            }
-            openCart(); 
-          }, 800);
+          updateCartUI();
+          openCart();
         });
       });
+      updateCartUI();
     });
   </script>
 </body>
