@@ -466,6 +466,13 @@
           <li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Preguntas</a></li>
           
+          <!-- BOTÓN DE MODO ADMIN DINÁMICO (MÓVIL) -->
+          <li class="nav-item d-lg-none mt-2 w-100" id="mobile-admin-btn-container" style="display: none !important;">
+            <a href="admin.html" class="btn w-100 text-center text-white text-decoration-none" style="background: rgba(255,80,80,0.15); border: 1px solid var(--red); font-weight: 700;">
+              <i class="bi bi-shield-lock-fill" style="color: var(--red);"></i> Modo Admin
+            </a>
+          </li>
+
           <li class="nav-item d-lg-none mt-3 w-100" id="mobile-auth-container">
             <a href="login.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none">
               <i class="bi bi-person-circle"></i> Iniciar Sesión
@@ -479,6 +486,13 @@
         </ul>
       </div>
       <div class="d-none d-lg-flex align-items-center gap-3">
+        <!-- BOTÓN DE MODO ADMIN DINÁMICO (PC) -->
+        <div id="desktop-admin-btn-container" style="display: none;">
+          <a href="admin.html" class="text-decoration-none small fw-semibold d-flex align-items-center gap-2 px-3 py-2" style="background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.4); border-radius: 8px; color: var(--red); transition: 0.3s;" onmouseover="this.style.background='rgba(255,80,80,0.2)'" onmouseout="this.style.background='rgba(255,80,80,0.1)'">
+            <i class="bi bi-shield-lock-fill fs-5"></i> Modo Admin
+          </a>
+        </div>
+
         <div id="desktop-auth-container">
           <a href="login.html" class="text-white text-decoration-none small fw-semibold d-flex align-items-center gap-2" style="transition: color 0.3s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#fff'">
             <i class="bi bi-person-circle fs-5"></i> Iniciar Sesión
@@ -1006,8 +1020,16 @@
     onAuthStateChanged(auth, async (user) => {
       const desktopAuthContainer = document.getElementById('desktop-auth-container');
       const mobileAuthContainer = document.getElementById('mobile-auth-container');
+      const desktopAdminContainer = document.getElementById('desktop-admin-btn-container');
+      const mobileAdminContainer = document.getElementById('mobile-admin-btn-container');
 
       if (user) {
+        // VALIDACIÓN EXCLUSIVA PARA MOSTRAR MODO ADMIN SÓLO A CESAR Y ANTONIO
+        if (user.email === 'evolutiongt01@gmail.com' || user.email === 'tepaz2025@gmail.com') {
+          if (desktopAdminContainer) desktopAdminContainer.style.display = 'block';
+          if (mobileAdminContainer) mobileAdminContainer.style.display = 'block';
+        }
+
         let displayName = "Usuario";
         if (user.displayName) {
           displayName = user.displayName.split(' ')[0];
