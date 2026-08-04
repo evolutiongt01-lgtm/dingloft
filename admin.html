@@ -30,6 +30,16 @@
     .btn-unlock { width: 100%; padding: 14px; background: linear-gradient(90deg, #ff5050, #ff2a2a); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem; transition: .2s; text-transform: uppercase; letter-spacing: 1px; }
     .btn-unlock:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,80,80,0.3); }
 
+    /* MODAL INTERACTIVO LIQUID GLASS (PERSONALIZADO) */
+    .custom-modal-overlay { position: fixed; inset: 0; background: rgba(4, 8, 15, 0.85); backdrop-filter: blur(12px); z-index: 999999; display: grid; place-items: center; opacity: 0; pointer-events: none; transition: .3s ease; }
+    .custom-modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .custom-modal-box { width: 90%; max-width: 420px; background: linear-gradient(145deg, rgba(16,27,45,0.95), rgba(8,14,25,0.98)); border: 1px solid rgba(255,255,255,0.15); border-radius: 24px; padding: 30px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.6); transform: scale(0.9); transition: .3s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .custom-modal-overlay.active .custom-modal-box { transform: scale(1); }
+    .custom-modal-icon { width: 60px; height: 60px; background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.3); border-radius: 50%; display: grid; place-items: center; color: var(--red); font-size: 1.5rem; margin: 0 auto 15px; }
+    .custom-modal-title { font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 8px; }
+    .custom-modal-desc { font-size: 0.88rem; color: var(--muted); margin-bottom: 25px; line-height: 1.5; }
+    .custom-modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
     .app { min-height:100vh; display:grid; grid-template-columns:292px 1fr; filter: blur(10px); transition: filter 0.5s ease; }
     body.unlocked .app { filter: blur(0); }
 
@@ -62,6 +72,13 @@
     .stat:nth-child(4) i{color:var(--green);border-color:rgba(53,221,146,.55);background:rgba(53,221,146,.08)}
     .stat span { display:block; color:#cad5e3; font-size:.89rem; } .stat strong { display:block; margin-top:4px; font-size:2rem; line-height:1; color:var(--text); } 
 
+    /* CONTROLES DE BUSCADOR Y EXPORTACIÓN */
+    .table-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+    .search-input { flex: 1; min-width: 240px; padding: 12px 16px; background: rgba(16, 27, 45, 0.6); border: 1px solid var(--line); border-radius: 12px; color: white; font-family: inherit; font-size: 0.9rem; }
+    .search-input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 10px rgba(18,215,246,0.2); }
+    .btn-export { background: rgba(53,221,146,0.1); border: 1px solid var(--green); color: var(--green); padding: 12px 20px; border-radius: 12px; font-weight: 700; font-size: 0.88rem; display: flex; align-items: center; gap: 8px; transition: .2s; }
+    .btn-export:hover { background: var(--green); color: #04111a; box-shadow: 0 5px 15px rgba(53,221,146,0.3); }
+
     .tabs-header { display: flex; border-bottom: 1px solid var(--line); margin-bottom: 25px; overflow-x: auto; white-space: nowrap; }
     .tab-btn { flex: 1; min-width: 150px; max-width: 220px; background: transparent; border: none; padding: 15px 10px; color: var(--muted); font-size: 0.95rem; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; transition: .2s ease; }
     .tab-btn:hover { color: white; }
@@ -92,14 +109,16 @@
     .btn-eliminar { background: rgba(255, 80, 80, 0.1); color: var(--red); border: 1px solid var(--red); }
     .btn-eliminar:hover { background: var(--red); color: #fff; }
 
-    /* TABLAS */
-    .table-responsive { overflow-x: auto; background: rgba(16, 27, 45, 0.4); border: 1px solid var(--line); border-radius: 16px; }
+    /* TABLAS Y NOTAS */
+    .table-responsive { overflow-x: auto; background: rgba(16, 27, 45, 0.4); border: 1px solid var(--line); border-radius: 16px; padding: 5px; }
     table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
     th { padding: 15px 20px; font-size: 0.85rem; color: var(--muted); border-bottom: 1px solid var(--line); font-weight: 600; text-transform: uppercase; }
     td { padding: 15px 20px; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.05); color: #c4d0df; vertical-align: middle; }
     tr:hover td { background: rgba(255,255,255,0.02); color: white; }
     
     .compra-item { display: block; font-size: 0.85rem; color: var(--cyan); background: rgba(0,213,255,0.05); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0,213,255,0.1); margin-bottom: 4px; width: fit-content; }
+    .admin-note-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: 8px; color: white; padding: 8px 10px; font-size: 0.85rem; }
+    .admin-note-input:focus { outline: none; border-color: var(--cyan); }
 
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(18,215,246,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 999999; } .toast.show{transform:translateY(0)}
 
@@ -119,6 +138,19 @@
       <input type="password" id="admin-pass" class="pass-input" placeholder="•••••••••" onkeypress="if(event.key === 'Enter') unlockPanel()">
       <button class="btn-unlock" onclick="unlockPanel()">Desbloquear Panel</button>
       <p id="pass-error" style="color: var(--red); font-size: 0.8rem; margin-top: 15px; display: none; margin-bottom: 0;">Contraseña incorrecta. Intenta de nuevo.</p>
+    </div>
+  </div>
+
+  <!-- MODAL INTERACTIVO LIQUID GLASS PARA CONFIRMACIONES -->
+  <div class="custom-modal-overlay" id="customConfirmModal">
+    <div class="custom-modal-box">
+      <div class="custom-modal-icon"><i class="bi bi-exclamation-triangle"></i></div>
+      <div class="custom-modal-title" id="modalConfirmTitle">¿Estás seguro?</div>
+      <div class="custom-modal-desc" id="modalConfirmDesc">Esta acción eliminará el registro permanentemente de la base de datos.</div>
+      <div class="custom-modal-btns">
+        <button class="admin-btn" style="background: rgba(255,255,255,0.08); color: white; justify-content: center;" onclick="cerrarModalConfirm()">Cancelar</button>
+        <button class="admin-btn btn-eliminar" style="justify-content: center;" id="modalConfirmBtnYes">Sí, eliminar</button>
+      </div>
     </div>
   </div>
 
@@ -148,7 +180,6 @@
           <p id="welcome-msg-p">¡Hola, bienvenido jefe! Es hora de facturar y romperla hoy. 🚀</p>
         </div>
         
-        <!-- WIDGET LIQUID GLASS (RELOJ MUNDIAL) -->
         <div>
           <div class="world-clock-pill">
             <div class="clock-item">
@@ -194,6 +225,9 @@
 
       <!-- TAB: RESERVAS -->
       <div id="tab-reservas" class="tab-content active">
+        <div class="table-toolbar">
+          <input type="text" id="search-reservas" class="search-input" placeholder="🔍 Buscar por correo o software..." onkeyup="filtrarTabla('reservas-container', '.reserva-card', this.value)">
+        </div>
         <div id="reservas-container">
           <p style="color: var(--muted);">Cargando panel de reservas...</p>
         </div>
@@ -201,18 +235,23 @@
 
       <!-- TAB: CLIENTES -->
       <div id="tab-clientes" class="tab-content">
+        <div class="table-toolbar">
+          <input type="text" id="search-clientes" class="search-input" placeholder="🔍 Buscar cliente por correo..." onkeyup="filtrarTablaGenerica('clientes-tbody', this.value)">
+          <button class="btn-export" onclick="exportarExcel('tabla-clientes', 'clientes_dingloft.csv')"><i class="bi bi-file-earmark-excel"></i> Exportar CSV</button>
+        </div>
         <div class="table-responsive">
-          <table>
+          <table id="tabla-clientes">
             <thead>
               <tr>
                 <th>Email del Cliente</th>
                 <th>Compras</th>
                 <th>Reservas</th>
+                <th>Notas Privadas</th>
                 <th>Estado</th>
               </tr>
             </thead>
             <tbody id="clientes-tbody">
-              <tr><td colspan="4" style="text-align: center;">Escaneando base de datos...</td></tr>
+              <tr><td colspan="5" style="text-align: center;">Escaneando base de datos...</td></tr>
             </tbody>
           </table>
         </div>
@@ -220,8 +259,12 @@
 
       <!-- TAB: HISTORIAL DE COMPRAS -->
       <div id="tab-compras" class="tab-content">
+        <div class="table-toolbar">
+          <input type="text" id="search-compras" class="search-input" placeholder="🔍 Buscar compra por cliente o ID..." onkeyup="filtrarTablaGenerica('compras-tbody', this.value)">
+          <button class="btn-export" onclick="exportarExcel('tabla-compras', 'compras_dingloft.csv')"><i class="bi bi-file-earmark-excel"></i> Exportar CSV</button>
+        </div>
         <div class="table-responsive">
-          <table>
+          <table id="tabla-compras">
             <thead>
               <tr>
                 <th>Cliente</th>
@@ -251,8 +294,11 @@
            </div>
         </div>
 
+        <div class="table-toolbar">
+          <button class="btn-export" onclick="exportarExcel('tabla-ganancias', 'ganancias_dingloft.csv')"><i class="bi bi-file-earmark-excel"></i> Exportar CSV</button>
+        </div>
         <div class="table-responsive">
-          <table>
+          <table id="tabla-ganancias">
             <thead>
               <tr>
                 <th>Concepto / Origen</th>
@@ -274,6 +320,7 @@
   <div class="toast" id="toast-message">Actualizado correctamente.</div>
 
   <script>
+    // RELOJ MUNDIAL
     function actualizarRelojes() {
         const opciones = { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
         const opcionesGuate = { timeZone: 'America/Guatemala', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
@@ -289,6 +336,7 @@
 
     window.adminNombreReal = "Jefe";
 
+    // VOZ DE BIENVENIDA
     function hablarBienvenida(nombre) {
         if ('speechSynthesis' in window) {
             const frasesRandom = [
@@ -298,7 +346,6 @@
                 `Hola ${nombre}. La empresa te saluda. Hoy es un gran día para escalar el negocio al siguiente nivel.`,
                 `Conexión establecida con éxito, jefe ${nombre}. A facturar y hacer grande a Dingloft se ha dicho.`
             ];
-
             const fraseElegida = frasesRandom[Math.floor(Math.random() * frasesRandom.length)];
             const pTop = document.getElementById('welcome-msg-p');
             if(pTop) pTop.textContent = fraseElegida;
@@ -307,17 +354,81 @@
             utterance.lang = 'es-ES';
             utterance.rate = 1.05; 
             utterance.pitch = 0.95; 
-
-            const voces = window.speechSynthesis.getVoices();
-            const vozEspanol = voces.find(v => v.lang.includes('es') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Microsoft')));
-            if (vozEspanol) utterance.voice = vozEspanol;
-
             window.speechSynthesis.speak(utterance);
         }
     }
 
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+    // MODAL INTERACTIVO DE CONFIRMACIÓN (Reemplaza los alerts feos)
+    window.mostrarModalConfirm = function(titulo, descripcion, callbackSi) {
+        document.getElementById('modalConfirmTitle').textContent = titulo;
+        document.getElementById('modalConfirmDesc').textContent = descripcion;
+        const btnSi = document.getElementById('modalConfirmBtnYes');
+        
+        // Limpiamos eventos anteriores
+        let nuevoBtn = btnSi.cloneNode(true);
+        btnSi.parentNode.replaceChild(nuevoBtn, btnSi);
+        
+        document.getElementById('customConfirmModal').classList.add('active');
+        
+        nuevoBtn.addEventListener('click', () => {
+            cerrarModalConfirm();
+            if(callbackSi) callbackSi();
+        });
+    }
+
+    window.cerrarModalConfirm = function() {
+        document.getElementById('customConfirmModal').classList.remove('active');
+    }
+
+    // BUSCADORES EN TIEMPO REAL
+    window.filtrarTabla = function(containerId, cardSelector, query) {
+        const container = document.getElementById(containerId);
+        const cards = container.querySelectorAll(cardSelector);
+        const filtro = query.toLowerCase();
+        
+        cards.forEach(card => {
+            const texto = card.textContent.toLowerCase();
+            card.style.display = texto.includes(filtro) ? 'flex' : 'none';
+        });
+    }
+
+    window.filtrarTablaGenerica = function(tbodyId, query) {
+        const tbody = document.getElementById(tbodyId);
+        const rows = tbody.querySelectorAll('tr');
+        const filtro = query.toLowerCase();
+
+        rows.forEach(row => {
+            const texto = row.textContent.toLowerCase();
+            row.style.display = texto.includes(filtro) ? '' : 'none';
+        });
+    }
+
+    // EXPORTAR A CSV (EXCEL)
+    window.exportarExcel = function(tableId, filename) {
+        let csv = [];
+        let rows = document.querySelectorAll(`#${tableId} tr`);
+        
+        rows.forEach(row => {
+            let cols = row.querySelectorAll('td, th');
+            let data = [];
+            cols.forEach(col => {
+                // Evitamos capturar inputs de notas en la exportación
+                let input = col.querySelector('input');
+                let text = input ? input.value : col.innerText;
+                data.push('"' + text.replace(/"/g, '""') + '"');
+            });
+            csv.push(data.join(','));
+        });
+
+        let csvFile = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+        let downloadLink = document.createElement('a');
+        downloadLink.download = filename;
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        downloadLink.style.display = 'none';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        mostrarToast("Reporte exportado con éxito.", "var(--green)");
     }
 
     window.unlockPanel = function() {
@@ -346,7 +457,7 @@
       const toast = document.getElementById('toast-message');
       toast.textContent = mensaje;
       toast.style.borderColor = color;
-      toast.style.background = `rgba(${color === 'var(--cyan)' ? '18,215,246' : '255,80,80'}, 0.1)`;
+      toast.style.background = `rgba(${color === 'var(--green)' ? '53,221,146' : '255,80,80'}, 0.1)`;
       toast.style.color = color;
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 3500);
@@ -356,7 +467,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
@@ -399,7 +510,12 @@
         const gananciasTbody = document.getElementById('ganancias-tbody');
         
         try {
-            // 1. CARGAR RESERVAS
+            // 1. CARGAR NOTAS DE CLIENTES
+            const notasSnap = await getDocs(collection(db, "admin_notes"));
+            let notasMap = {};
+            notasSnap.forEach(d => { notasMap[d.id] = d.data().note || ''; });
+
+            // 2. CARGAR RESERVAS
             const reservasSnap = await getDocs(collection(db, "reservas"));
             let reservas = [];
             reservasSnap.forEach(d => reservas.push({ id: d.id, ...d.data() }));
@@ -452,7 +568,7 @@
                         </div>
                         <div class="reserva-actions">
                             ${r.estado === 'pendiente' ? `<button class="admin-btn btn-marcar" onclick="marcarCompletado('${r.id}')"><i class="bi bi-check-lg"></i> Marcar Completada</button>` : ''}
-                            <button class="admin-btn btn-eliminar" onclick="eliminarReservaAdmin('${r.id}')"><i class="bi bi-trash"></i> Eliminar</button>
+                            <button class="admin-btn btn-eliminar" onclick="confirmarEliminarReserva('${r.id}')"><i class="bi bi-trash"></i> Eliminar</button>
                         </div>
                     </div>`;
                     reservasContainer.insertAdjacentHTML('beforeend', html);
@@ -460,7 +576,7 @@
             }
             document.getElementById('stat-reservas').textContent = activasCount;
 
-            // 2. CARGAR COMPRAS Y CLIENTES
+            // 3. CARGAR COMPRAS Y CLIENTES
             const comprasSnap = await getDocs(collection(db, "purchases"));
             let totalCompras = 0;
             let clientesMap = {};
@@ -469,7 +585,7 @@
             let ingresosSoftwareHTML = '';
 
             reservas.forEach(r => {
-                if(!clientesMap[r.email]) clientesMap[r.email] = { email: r.email, reservas: 0, compras: 0 };
+                if(!clientesMap[r.email]) clientesMap[r.email] = { email: r.email, reservas: 0, compras: 0, uid: r.uid };
                 clientesMap[r.email].reservas++;
             });
 
@@ -479,7 +595,7 @@
                 comprasArr.push({ id: c.id, ...data });
 
                 let email = data.userEmail || data.payerName || "Desconocido";
-                if(!clientesMap[email]) clientesMap[email] = { email: email, reservas: 0, compras: 0 };
+                if(!clientesMap[email]) clientesMap[email] = { email: email, reservas: 0, compras: 0, uid: data.uid };
                 
                 let subTotalCompra = 0;
                 if (data.items && Array.isArray(data.items)) {
@@ -504,7 +620,6 @@
                 `;
             });
 
-            // Actualizar Estadísticas Totales
             document.getElementById('stat-compras').textContent = totalCompras;
             let clientesArr = Object.values(clientesMap);
             document.getElementById('stat-clientes').textContent = clientesArr.length;
@@ -514,30 +629,33 @@
             document.getElementById('ganancias-reservas').textContent = `$${totalGananciasReservas.toFixed(2)} USD`;
             document.getElementById('ganancias-software').textContent = `$${totalGananciasSoftware.toFixed(2)} USD`;
 
-            // Rellenar Tabla de Ganancias
             gananciasTbody.innerHTML = ingresosGananciasHTML + ingresosSoftwareHTML;
             if(gananciasTbody.innerHTML.trim() === "") {
                 gananciasTbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No hay registros de ingresos todavía.</td></tr>';
             }
 
-            // Rellenar Clientes
+            // Rellenar Clientes con Notas Editables
             clientesTbody.innerHTML = '';
             if(clientesArr.length === 0) {
-                clientesTbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No hay clientes aún.</td></tr>';
+                clientesTbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No hay clientes aún.</td></tr>';
             } else {
                 clientesArr.forEach(c => {
-                    let estado = c.compras > 0 ? '<span style="color:var(--green);"><i class="bi bi-circle-fill" style="font-size:0.6rem;"></i> Activo / Comprador</span>' : '<span style="color:var(--cyan);"><i class="bi bi-circle-fill" style="font-size:0.6rem;"></i> Interesado</span>';
+                    let estado = c.compras > 0 ? '<span style="color:var(--green);"><i class="bi bi-circle-fill" style="font-size:0.6rem;"></i> Activo</span>' : '<span style="color:var(--cyan);"><i class="bi bi-circle-fill" style="font-size:0.6rem;"></i> Interesado</span>';
+                    let safeEmailKey = c.email.replace(/[@\.]/g, '_');
+                    let notaActual = notasMap[safeEmailKey] || '';
+
                     let tr = `<tr>
                         <td><strong>${c.email}</strong></td>
                         <td>${c.compras} items</td>
                         <td>${c.reservas} sesiones</td>
+                        <td><input type="text" class="admin-note-input" value="${notaActual}" placeholder="Escribe una nota..." onchange="guardarNotaCliente('${safeEmailKey}', this.value)"></td>
                         <td>${estado}</td>
                     </tr>`;
                     clientesTbody.insertAdjacentHTML('beforeend', tr);
                 });
             }
 
-            // Rellenar Historial Compras (Con opción a eliminar pedido)
+            // Rellenar Historial Compras
             comprasArr.sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
             comprasTbody.innerHTML = '';
             
@@ -557,7 +675,7 @@
                         <td><span class="code-box" style="font-size:0.8rem; padding: 4px 8px;">${idTransaccion}</span></td>
                         <td>${fecha}</td>
                         <td>
-                           <button class="admin-btn btn-eliminar" onclick="eliminarCompraAdmin('${comp.id}')" style="padding: 6px 12px; font-size: 0.78rem;">
+                           <button class="admin-btn btn-eliminar" onclick="confirmarEliminarCompra('${comp.id}')" style="padding: 6px 12px; font-size: 0.78rem;">
                               <i class="bi bi-trash"></i> Borrar
                            </button>
                         </td>
@@ -572,6 +690,17 @@
         }
     }
 
+    // GUARDAR NOTAS DE CLIENTES EN FIREBASE
+    window.guardarNotaCliente = async function(emailKey, notaTexto) {
+        try {
+            await setDoc(doc(db, "admin_notes", emailKey), { note: notaTexto }, { merge: true });
+            window.mostrarToast("Nota guardada correctamente.", "var(--green)");
+        } catch(e) {
+            console.error(e);
+            window.mostrarToast("Error guardando nota.", "var(--red)");
+        }
+    }
+
     window.marcarCompletado = async function(id) {
         try {
             await updateDoc(doc(db, "reservas", id), { estado: "completado" });
@@ -583,28 +712,29 @@
         }
     }
 
-    window.eliminarReservaAdmin = async function(id) {
-        if(!confirm("¿Borrar esta reserva del sistema definitivamente? Esta acción no se puede deshacer.")) return;
-        try {
-            await deleteDoc(doc(db, "reservas", id));
-            window.mostrarToast("Reserva eliminada del historial.", "var(--red)");
-            await loadAdminData();
-        } catch(e) {
-            console.error(e);
-            window.mostrarToast("Error eliminando reserva.", "var(--red)");
-        }
+    // DISPARADORES DE MODALES INTERACTIVOS
+    window.confirmarEliminarReserva = function(id) {
+        mostrarModalConfirm("¿Eliminar Reserva?", "Esta acción borrará la reserva del sistema permanentemente.", async () => {
+            try {
+                await deleteDoc(doc(db, "reservas", id));
+                window.mostrarToast("Reserva eliminada del historial.", "var(--red)");
+                await loadAdminData();
+            } catch(e) {
+                window.mostrarToast("Error eliminando reserva.", "var(--red)");
+            }
+        });
     }
 
-    window.eliminarCompraAdmin = async function(id) {
-        if(!confirm("¿Estás seguro de eliminar este pedido/compra permanentemente?")) return;
-        try {
-            await deleteDoc(doc(db, "purchases", id));
-            window.mostrarToast("Pedido eliminado del historial.", "var(--red)");
-            await loadAdminData();
-        } catch(e) {
-            console.error(e);
-            window.mostrarToast("Error eliminando pedido.", "var(--red)");
-        }
+    window.confirmarEliminarCompra = function(id) {
+        mostrarModalConfirm("¿Eliminar Pedido?", "Esto borrará el registro de compra y ajustará las ganancias totales.", async () => {
+            try {
+                await deleteDoc(doc(db, "purchases", id));
+                window.mostrarToast("Pedido eliminado del historial.", "var(--red)");
+                await loadAdminData();
+            } catch(e) {
+                window.mostrarToast("Error eliminando pedido.", "var(--red)");
+            }
+        });
     }
 
     document.querySelector('.logout').addEventListener('click', async () => {
