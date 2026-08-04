@@ -39,7 +39,7 @@
       padding: 0;
     }
 
-    body.no-scroll { overflow: hidden !important; height: 100vh; }
+    body.no-scroll { overflow: hidden !important; height: 100vh; touch-action: none; }
 
     /* ====== EFECTO PUSH MENU ULTRA FLUIDO ====== */
     .page-wrapper {
@@ -66,6 +66,7 @@
       flex-direction: column;
       transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       will-change: transform;
+      overscroll-behavior: none;
     }
 
     .side-menu-drawer.active, 
@@ -77,6 +78,7 @@
     .side-menu-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1035;
       opacity: 0; visibility: hidden; transition: opacity 0.4s; cursor: pointer;
+      touch-action: none;
     }
     .side-menu-overlay.active { opacity: 1; visibility: visible; }
 
@@ -110,9 +112,7 @@
     .search-input-liquid input::placeholder { color: rgba(255, 255, 255, 0.7); }
     
     .search-results-container {
-      max-height: 60vh;
-      overflow-y: auto;
-      padding-right: 5px;
+      max-height: 60vh; overflow-y: auto; padding-right: 5px; overscroll-behavior: contain;
     }
     .search-results-container::-webkit-scrollbar { width: 5px; }
     .search-results-container::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
@@ -165,12 +165,12 @@
     .mobile-nav-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
     .mobile-nav-avatar .avatar-fallback { background: var(--accent-color); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; width: 100%; height: 100%; border-radius: 50%; margin: 0; }
 
-    /* ====== BOTÓN FLOTANTE DEL CARRITO (ARREGLADO FUERA DEL PAGE-WRAPPER) ====== */
+    /* ====== BOTÓN FLOTANTE DEL CARRITO ====== */
     .btn-floating-cart {
       position: fixed;
       bottom: max(30px, env(safe-area-inset-bottom));
       right: 25px;
-      z-index: 9999; /* Z-INDEX DIOS */
+      z-index: 9999;
       width: 60px;
       height: 60px;
       border-radius: 50%;
@@ -200,6 +200,13 @@
       border-radius: 50%;
       padding: 2px 7px;
       border: 2px solid var(--bg-color);
+    }
+    
+    @media (max-width: 768px) {
+      .btn-floating-cart {
+        bottom: 90px;
+        right: 20px;
+      }
     }
 
     .nav-link { color: var(--text-main) !important; font-size: 0.95rem; font-weight: 500; margin: 0 10px; transition: color 0.3s; }
@@ -276,7 +283,7 @@
     .btn-like:hover { background: rgba(255, 0, 85, 0.1); color: #ff0055; border-color: rgba(255, 0, 85, 0.3); }
     .btn-like.liked { background: rgba(255, 0, 85, 0.15); color: #ff0055; border-color: #ff0055; }
 
-    /* ====== CARRITO LATERAL (LIQUID GLASS) ====== */
+    /* ====== CARRITO LATERAL ====== */
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; touch-action: none; }
     .cart-overlay.active { opacity: 1; visibility: visible; }
     .cart-brand-watermark { position: fixed; top: 50%; left: 30%; transform: translate(-50%, -50%) scale(0.9); text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none; }
@@ -328,7 +335,7 @@
     .btn-free-checkout { background: #00ff88; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 14px; width: 100%; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,255,136,0.2); cursor: pointer; }
     .btn-free-checkout:hover { background: #00e67a; transform: translateY(-2px); }
 
-    /* ====== MODAL DE ÉXITO PROFESIONAL ====== */
+    /* ====== MODAL DE ÉXITO ====== */
     .success-modal-overlay { position: fixed; inset: 0; background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: grid; place-items: center; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     .success-modal-overlay.active { opacity: 1; visibility: visible; }
     .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 30px 20px; width: min(420px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -336,12 +343,17 @@
     .success-icon-ring { width: 70px; height: 70px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: #00ff88; font-size: 1.8rem; }
     .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(50,221,145,.5); border-radius: 12px; color: #eafff3; background: #0c251d; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
     .toast.show { transform: translateY(0); }
+
+    /* UTILIDAD PARA REELS (SHORTS) VERTICALES */
+    .ratio-9x16 {
+      --bs-aspect-ratio: 177.77%;
+    }
   </style>
 </head>
 <body>
 
   <!-- ========================================== -->
-  <!-- MENÚ LATERAL "PUSH" (OCULTO A LA IZQUIERDA)-->
+  <!-- MENÚ LATERAL "PUSH" -->
   <!-- ========================================== -->
   <div class="side-menu-drawer" id="side-menu">
     <div class="text-center mb-4 mt-2">
@@ -362,14 +374,13 @@
   <div class="side-menu-overlay" id="side-menu-overlay"></div>
 
   <!-- ========================================== -->
-  <!-- ENVOLTORIO PRINCIPAL QUE SE EMPUJA AL LADO -->
+  <!-- PAGE WRAPPER (EL QUE SE MUEVE AL ABRIR MENU) -->
   <!-- ========================================== -->
   <div class="page-wrapper" id="page-wrapper">
     <div class="bg-orb orb-1"></div>
     <div class="bg-orb orb-2"></div>
     <div class="bg-orb orb-3"></div>
 
-    <!-- MODAL DE ÉXITO -->
     <div class="success-modal-overlay" id="success-modal">
       <div class="success-modal-box">
         <img src="img/dingloft.png" alt="Dingloft" style="width: 110px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
@@ -380,53 +391,40 @@
       </div>
     </div>
 
-    <!-- TOAST FLOTANTE -->
     <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
     <!-- ====== NAVBAR PRINCIPAL CENTRADA ====== -->
     <nav class="navbar navbar-glass fixed-top" id="main-navbar">
       <div class="container position-relative d-flex align-items-center">
         
-        <!-- IZQUIERDA (MÓVIL Y PC) -->
         <div class="d-flex align-items-center gap-2" style="flex: 1; z-index: 2;">
-          <!-- Hamburguesa (Móvil) -->
           <button class="mobile-liquid-btn d-md-none" id="btn-open-sidebar" title="Menú">
             <i class="bi bi-list"></i>
           </button>
           
-          <!-- Lupa a la par del sándwich (Móvil) -->
           <button class="mobile-liquid-btn d-md-none" id="btn-open-search-mobile" title="Buscar">
             <i class="bi bi-search"></i>
           </button>
 
-          <!-- Enlaces PC -->
           <div class="d-none d-md-flex gap-3">
             <a class="nav-link" href="index.html">Inicio</a>
             <a class="nav-link" href="index.html">Catálogo</a>
           </div>
         </div>
 
-        <!-- CENTRO (LOGO CENTRADO A LA PERFECCIÓN) -->
         <div class="d-flex justify-content-center" style="z-index: 1;">
           <a class="navbar-brand position-absolute top-50 start-50 translate-middle m-0 p-0 d-flex align-items-center" href="index.html">
             <img src="img/dingloft.png" alt="Dingloft Logo" style="height: 35px; object-fit: contain;">
           </a>
         </div>
         
-        <!-- DERECHA (MÓVIL Y PC) -->
         <div class="d-flex align-items-center justify-content-end gap-2 gap-md-3" style="flex: 1; z-index: 2;">
-          
-          <!-- Lupa PC -->
           <button class="mobile-liquid-btn d-none d-md-flex" id="btn-open-search-desktop" title="Buscar">
             <i class="bi bi-search"></i>
           </button>
 
-          <!-- Avatar / Login de Usuario -->
-          <div id="auth-container-global">
-            <!-- El JS inyecta el Avatar Liquid Glass aquí -->
-          </div>
+          <div id="auth-container-global"></div>
 
-          <!-- BOTÓN CARRITO TEXTO (Solo PC) -->
           <button id="main-cart-btn" class="btn-outline-custom d-none d-md-flex align-items-center gap-2 cart-btn-global" style="padding: 6px 15px; font-size: 0.9rem;">
             <i class="bi bi-cart3"></i> CARRITO (<span class="cart-badge-count-global">0</span>)
           </button>
@@ -435,7 +433,7 @@
       </div>
     </nav>
 
-    <!-- SECCIÓN SUPERIOR: CAJAS 3D Y DETALLES -->
+    <!-- ====== SECCIÓN DE PRODUCTO ====== -->
     <section class="product-detail-section">
       <div class="container">
         <div class="row align-items-center g-4">
@@ -505,7 +503,7 @@
                   <span class="fw-bold text-accent">$60.00</span>
                 </div>
                 <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Nord + Yamaha + Bonus PAD</p>
-                <button class="btn-cyan w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="9" data-name="Pianos Legendarios SF2 Bundle" data-price="60" data-img="pianos_bundle_boxes" data-type="Librería vitalicia">
+                <button class="btn-cyan w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="9" data-name="Pianos Legendarios SF2 Bundle completo" data-price="60" data-img="pianos_bundle_boxes" data-type="Librería vitalicia">
                   <i class="bi bi-cart3"></i> AGREGAR BUNDLE
                 </button>
               </div>
@@ -535,6 +533,57 @@
               <button class="btn-outline-cyan w-100 d-flex align-items-center justify-content-center gap-2" id="btn-free-trial" data-url="https://drive.google.com/uc?export=download&id=1zoVl-fS-D_ex1EUmLGXfEytU2Q00nQYE">
                 <i class="bi bi-gift fs-5"></i> PRUEBA GRATIS (531.5 MB)
               </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SECCIÓN DE REELS / TESTIMONIOS VERTICALES ====== -->
+    <section class="py-5">
+      <div class="container">
+        <div class="text-center mb-4">
+          <span class="text-uppercase text-info fw-bold" style="font-size: 0.65rem; letter-spacing: 2px;">Testimonios de la Comunidad</span>
+          <h3 class="fw-bold text-white mt-1 fs-5">Músicos probando el Pack Full</h3>
+        </div>
+        
+        <div class="row g-4 justify-content-center">
+          <!-- REEL 1 -->
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="liquid-glass-container p-2" style="max-width: 320px; margin: 0 auto;">
+              <div class="ratio ratio-9x16 rounded-3 overflow-hidden">
+                <!-- Se cambió youtube.com/shorts/ por youtube.com/embed/ -->
+                <iframe src="https://www.youtube.com/embed/qn7SCd9K2PE" title="Reel Testimonio 1" allowfullscreen style="border:0;"></iframe>
+              </div>
+            </div>
+          </div>
+          
+          <!-- REEL 2 -->
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="liquid-glass-container p-2" style="max-width: 320px; margin: 0 auto;">
+              <div class="ratio ratio-9x16 rounded-3 overflow-hidden">
+                <!-- Se cambió youtube.com/shorts/ por youtube.com/embed/ -->
+                <iframe src="https://www.youtube.com/embed/YXwpRTl4_qQ" title="Reel Testimonio 2" allowfullscreen style="border:0;"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE VIDEO PRINCIPAL CON EFECTO LIQUID GLASS -->
+    <section class="pb-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="text-center mb-3">
+              <span class="text-uppercase text-info fw-bold" style="font-size: 0.65rem; letter-spacing: 2px;">Demostración en vivo</span>
+              <h3 class="fw-bold text-white mt-1 fs-5">Escucha cómo suena este arsenal en acción</h3>
+            </div>
+            <div class="liquid-glass-container">
+              <div class="ratio ratio-16x9 rounded-3 overflow-hidden" style="box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+                <iframe src="https://www.youtube.com/embed/_fnfuhxFwFw" title="Demostración de Pianos SF2 Dingloft" allowfullscreen style="border:0;"></iframe>
+              </div>
             </div>
           </div>
         </div>
@@ -643,22 +692,7 @@
           </div>
         </div>
 
-        <!-- SECCIÓN DE VIDEO CON EFECTO LIQUID GLASS -->
-        <div class="row justify-content-center mb-4">
-          <div class="col-lg-10">
-            <div class="text-center mb-3">
-              <span class="text-uppercase text-info fw-bold" style="font-size: 0.65rem; letter-spacing: 2px;">Demostración en vivo</span>
-              <h3 class="fw-bold text-white mt-1 fs-5">Escucha cómo suena este arsenal en acción</h3>
-            </div>
-            <div class="liquid-glass-container">
-              <div class="ratio ratio-16x9 rounded-3 overflow-hidden" style="box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
-                <iframe src="https://www.youtube.com/embed/_fnfuhxFwFw" title="Demostración de Pianos SF2 Dingloft" allowfullscreen style="border:0;"></iframe>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SECCIÓN DE PRODUCTOS SIMILARES -->
+        <!-- SECCIÓN DE PRODUCTOS SIMILARES (LÓGICA CORREGIDA: SÓLO PRODUCTOS RELACIONADOS) -->
         <div class="row justify-content-center my-4">
           <div class="col-lg-10">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -669,7 +703,7 @@
             <div class="similar-carousel-wrapper">
               <div class="similar-card">
                 <div>
-                  <div class="similar-img-box"><img src="img/cosmos.png" alt="Cosmos Collection"></div>
+                  <div class="similar-img-box"><img src="img/cosmos.png" alt="Cosmos Collection" onerror="this.src='https://ui-avatars.com/api/?name=Co&background=00e5ff&color=000'"></div>
                   <h6 class="text-white fw-bold fs-6 mb-1">Cosmos Collection</h6>
                   <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Pads y texturas espaciales.</p>
                 </div>
@@ -681,7 +715,7 @@
 
               <div class="similar-card">
                 <div>
-                  <div class="similar-img-box"><img src="img/yamahakeys.png" alt="Yamaha Premium Keys"></div>
+                  <div class="similar-img-box"><img src="img/yamahakeys.png" alt="Yamaha Premium Keys" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'"></div>
                   <h6 class="text-white fw-bold fs-6 mb-1">Yamaha Premium Keys</h6>
                   <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Pianos acústicos y eléctricos.</p>
                 </div>
@@ -693,7 +727,7 @@
 
               <div class="similar-card">
                 <div>
-                  <div class="similar-img-box"><img src="img/rhodes.png" alt="Rhodes Affair 2"></div>
+                  <div class="similar-img-box"><img src="img/rhodes.png" alt="Rhodes Affair 2" onerror="this.src='https://ui-avatars.com/api/?name=Rh&background=00e5ff&color=000'"></div>
                   <h6 class="text-white fw-bold fs-6 mb-1">Rhodes Affair 2</h6>
                   <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Sonidos de piano eléctrico cálidos.</p>
                 </div>
@@ -737,17 +771,6 @@
 
   </div><!-- FIN DE PAGE WRAPPER -->
 
-  <!-- ========================================================================= -->
-  <!-- MODALES Y ELEMENTOS FIJOS (FUERA DEL PAGE-WRAPPER PARA EVITAR BUGS DE CSS)-->
-  <!-- ========================================================================= -->
-
-  <!-- ====== BOTÓN FLOTANTE UNIVERSAL DEL CARRITO EN PANTALLA ====== -->
-  <!-- (Colocado aquí para que el transform del page-wrapper no rompa el position: fixed) -->
-  <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
-    <i class="bi bi-cart3 fs-4"></i>
-    <span class="badge-floating cart-badge-count-global">0</span>
-  </button>
-
   <!-- ====== MODAL DE BUSCADOR A PANTALLA COMPLETA ====== -->
   <div class="search-overlay-fullscreen" id="search-overlay-fullscreen">
     <div class="search-modal-box">
@@ -761,60 +784,24 @@
       <div id="live-search-results" class="search-results-container">
         <p class="text-center" style="color: rgba(255,255,255,0.7); font-size: 0.9rem;" id="search-empty-state">Escribe el nombre del producto para buscar...</p>
         
-        <!-- PRODUCTOS EXACTOS DEL CATÁLOGO -->
-        <a href="#" class="search-result-item" data-title="yamaha legacy collection sf2 motif montage" style="display: none;">
-          <img src="img/yamahakeys.png" alt="Yamaha Legacy" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
+        <a href="#" class="search-result-item" data-title="pianos legendarios sf2 bundle completo" style="display: none;">
+          <img src="img/pianos_bundle_boxes.png" alt="Bundle" onerror="this.src='https://ui-avatars.com/api/?name=Pi&background=00e5ff&color=000'">
           <div>
-            <h6 class="mb-0 text-white fw-bold">Yamaha Legacy Collection SF2</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$33.00</span>
-          </div>
-        </a>
-        <a href="#" class="search-result-item" data-title="montage 8 nord stage 3" style="display: none;">
-          <img src="img/nordessentials.png" alt="Montage 8" onerror="this.src='https://ui-avatars.com/api/?name=Mo&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Montage 8 & Nord Stage 3</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$27.00</span>
-          </div>
-        </a>
-        <a href="yamahakeys.html" class="search-result-item" data-title="yamaha premium keys pianos acusticos" style="display: none;">
-          <img src="img/yamahakeys.png" alt="Yamaha Premium" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Yamaha Premium Keys</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
-          </div>
-        </a>
-        <a href="#" class="search-result-item" data-title="logic pro" style="display: none;">
-          <img src="img/logicpro.png" alt="Logic Pro" onerror="this.src='https://ui-avatars.com/api/?name=Lo&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Logic Pro</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$25.00</span>
-          </div>
-        </a>
-        <a href="#" class="search-result-item" data-title="dual legends sf2" style="display: none;">
-          <img src="img/duallegends.png" alt="Dual Legends" onerror="this.src='https://ui-avatars.com/api/?name=Du&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Dual Legends SF2</h6>
+            <h6 class="mb-0 text-white fw-bold">Pianos Legendarios Bundle</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$60.00</span>
           </div>
         </a>
-        <a href="rhodes.html" class="search-result-item" data-title="rhodes affair 2 piano electrico" style="display: none;">
-          <img src="img/rhodes.png" alt="Rhodes" onerror="this.src='https://ui-avatars.com/api/?name=Rh&background=00e5ff&color=000'">
+        <a href="nordessentials.html" class="search-result-item" data-title="nord essentials sf2 pianos" style="display: none;">
+          <img src="img/nordessentials.png" alt="Nord" onerror="this.src='https://ui-avatars.com/api/?name=No&background=00e5ff&color=000'">
           <div>
-            <h6 class="mb-0 text-white fw-bold">Rhodes Affair 2</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
+            <h6 class="mb-0 text-white fw-bold">Nord Essentials SF2</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$33.00</span>
           </div>
         </a>
-        <a href="#" class="search-result-item" data-title="nord stage 4 ultimate library" style="display: none;">
-          <img src="img/nord4.png" alt="Nord Stage 4" onerror="this.src='https://ui-avatars.com/api/?name=No&background=00e5ff&color=000'">
+        <a href="yamahakeys.html" class="search-result-item" data-title="yamaha legacy collection sf2 motif montage" style="display: none;">
+          <img src="img/yamahakeys.png" alt="Yamaha" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
           <div>
-            <h6 class="mb-0 text-white fw-bold">Nord Stage 4 Ultimate Library</h6>
-            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$40.00</span>
-          </div>
-        </a>
-        <a href="nordessentials.html" class="search-result-item" data-title="nord essentials sf2 collection" style="display: none;">
-          <img src="img/nordessentials.png" alt="Nord Essentials" onerror="this.src='https://ui-avatars.com/api/?name=No&background=00e5ff&color=000'">
-          <div>
-            <h6 class="mb-0 text-white fw-bold">Nord Essentials SF2 Collection</h6>
+            <h6 class="mb-0 text-white fw-bold">Yamaha Legacy SF2</h6>
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$33.00</span>
           </div>
         </a>
@@ -825,14 +812,23 @@
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$70.00</span>
           </div>
         </a>
-        <a href="esword.html" class="search-result-item" data-title="biblias y diccionarios para e-sword" style="display: none;">
-          <img src="img/esword.png" alt="e-Sword" onerror="this.src='https://ui-avatars.com/api/?name=eS&background=00e5ff&color=000'">
+        <a href="yamahakeys.html" class="search-result-item" data-title="yamaha premium keys pianos acusticos" style="display: none;">
+          <img src="img/yamahakeys.png" alt="Yamaha Keys" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'">
           <div>
-            <h6 class="mb-0 text-white fw-bold">Biblias y Diccionarios para E-Sword</h6>
-            <span class="text-accent small fw-bold" style="color: #00ff88;">GRATIS</span>
+            <h6 class="mb-0 text-white fw-bold">Yamaha Premium Keys</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
           </div>
         </a>
-        <a href="#" class="search-result-item" data-title="sketchup 2026 autocad 2026 duo bundle arquitectura" style="display: none;">
+        <a href="rhodes.html" class="search-result-item" data-title="rhodes affair 2 piano electrico" style="display: none;">
+          <img src="img/rhodes.png" alt="Rhodes" onerror="this.src='https://ui-avatars.com/api/?name=Rh&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">Rhodes Affair 2</h6>
+            <span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span>
+          </div>
+        </a>
+
+        <!-- RESULTADOS SOFTWARE ARQUITECTURA / INGENIERÍA -->
+        <a href="#" class="search-result-item" data-title="sketchup 2026 autocad 2026 duo bundle arquitectura combo" style="display: none;">
           <img src="img/sketchup.png" alt="Duo" onerror="this.src='https://ui-avatars.com/api/?name=Du&background=00e5ff&color=000'">
           <div>
             <h6 class="mb-0 text-white fw-bold">SketchUp 2026 & AutoCAD 2026</h6>
@@ -860,6 +856,13 @@
             <span class="text-accent small fw-bold" style="color: var(--accent-color);">$40.00</span>
           </div>
         </a>
+        <a href="esword.html" class="search-result-item" data-title="biblias y diccionarios para e-sword" style="display: none;">
+          <img src="img/esword.png" alt="e-Sword" onerror="this.src='https://ui-avatars.com/api/?name=eS&background=00e5ff&color=000'">
+          <div>
+            <h6 class="mb-0 text-white fw-bold">Biblias y Diccionarios para E-Sword</h6>
+            <span class="text-accent small fw-bold" style="color: #00ff88;">GRATIS</span>
+          </div>
+        </a>
         <a href="#" class="search-result-item" data-title="cinema 4d render" style="display: none;">
           <img src="img/cinema4d.png" alt="Cinema 4D" onerror="this.src='https://ui-avatars.com/api/?name=C4&background=00e5ff&color=000'">
           <div>
@@ -870,6 +873,12 @@
       </div>
     </div>
   </div>
+
+  <!-- ====== BOTÓN FLOTANTE UNIVERSAL DEL CARRITO EN PANTALLA ====== -->
+  <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
+    <i class="bi bi-cart3 fs-4"></i>
+    <span class="badge-floating cart-badge-count-global">0</span>
+  </button>
 
   <!-- ====== ESTRUCTURA DEL CARRITO LATERAL ====== -->
   <div class="cart-overlay" id="cart-overlay"></div>
@@ -1021,7 +1030,6 @@
     window.globalCurrentUser = null;
     let currentUser = null;
 
-    // COMPROBADOR DE COMPRAS PREVIAS
     async function checkUserPurchases(uid) {
       try {
         const q = query(collection(db, "purchases"), where("uid", "==", uid));
@@ -1035,7 +1043,6 @@
           }
         });
 
-        // Buscar los botones de compra y bloquear si ya lo tiene
         const buyButtons = document.querySelectorAll('.btn-add-cart, #btn-buy-now');
         buyButtons.forEach(btn => {
           const prodName = btn.getAttribute('data-name');
@@ -1096,7 +1103,7 @@
     async function loadComments() {
       const container = document.getElementById('comments-container');
       try {
-        const commentsRef = collection(db, "product_comments");
+        const commentsRef = collection(db, "product_comments_pianos_clean2"); 
         const q = query(commentsRef, orderBy("createdAt", "desc"));
         let snapshot;
         
@@ -1107,25 +1114,16 @@
             return;
         }
 
-        if (snapshot.empty) {
-          try {
-            for (let com of initialDefaultComments) {
-              await addDoc(commentsRef, { ...com, createdAt: serverTimestamp() });
-            }
-            snapshot = await getDocs(q);
-          } catch(writeErr) {
-            renderCommentsUI(initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c })));
-            return;
-          }
-        }
+        let dbComments = [];
+        snapshot.forEach(docSnap => dbComments.push({ id: docSnap.id, ...docSnap.data() }));
 
-        let commentsData = [];
-        snapshot.forEach(docSnap => commentsData.push({ id: docSnap.id, ...docSnap.data() }));
-        renderCommentsUI(commentsData);
+        const allComments = [...dbComments, ...initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c }))];
+
+        renderCommentsUI(allComments);
 
       } catch (err) {
         console.error("Error crítico cargando comentarios:", err);
-        container.innerHTML = '<div class="text-center text-white py-3">Error al cargar opiniones. Revisa tu conexión.</div>';
+        renderCommentsUI(initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c })));
       }
     }
 
@@ -1140,7 +1138,6 @@
       const commentWrapper = document.getElementById('comment-section-wrapper');
 
       if (user) {
-        // Ejecutar sistema anti-recompras si el usuario está logueado
         checkUserPurchases(user.uid);
 
         let displayName = "Usuario";
@@ -1224,7 +1221,7 @@
       submitBtn.textContent = "Publicando...";
 
       try {
-        await addDoc(collection(db, "product_comments"), {
+        await addDoc(collection(db, "product_comments_pianos_clean2"), {
           name: name,
           rating: rating,
           text: text,
@@ -1277,7 +1274,7 @@
       }
 
       try {
-        const commentRef = doc(db, "product_comments", docId);
+        const commentRef = doc(db, "product_comments_pianos_clean2", docId);
         if (isLiking) {
           await updateDoc(commentRef, {
              likes: increment(1),
@@ -1593,7 +1590,12 @@
         freeTrialBtn.addEventListener('click', function(e) {
           e.preventDefault();
           
-          const url = this.getAttribute('data-url') + '&confirm=t';
+          const url = this.getAttribute('data-url');
+          if (url && url.startsWith('#')) {
+             window.location.hash = url;
+             return;
+          }
+          
           const toast = document.getElementById('toast-message');
 
           if(toast){
