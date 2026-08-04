@@ -16,18 +16,10 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 onAuthStateChanged(auth, (user) => {
-  const desktopAuthContainer = document.getElementById('desktop-auth-container');
-  const mobileAuthContainer = document.getElementById('mobile-auth-container');
-  const desktopAdminContainer = document.getElementById('desktop-admin-btn-container');
-  const mobileAdminContainer = document.getElementById('mobile-admin-btn-container');
+  const authContainerGlobal = document.getElementById('auth-container-global');
+  const sideMenuLinks = document.querySelector('.side-menu-drawer .d-flex.flex-column');
 
   if (user) {
-    // Validar si es César o Antonio para mostrar el Modo Admin
-    if (user.email === 'evolutiongt01@gmail.com' || user.email === 'tepaz2025@gmail.com') {
-      if (desktopAdminContainer) desktopAdminContainer.style.display = 'block';
-      if (mobileAdminContainer) mobileAdminContainer.style.display = 'block';
-    }
-
     let displayName = "Usuario";
     if (user.displayName) {
       displayName = user.displayName.split(' ')[0];
@@ -35,31 +27,41 @@ onAuthStateChanged(auth, (user) => {
       displayName = user.email.split('@')[0];
     }
 
-    let avatarHtml = '';
-    if (user.photoURL) {
-      avatarHtml = `<img src="${user.photoURL}" alt="Perfil" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">`;
-    } else {
-      const initial = displayName.charAt(0).toUpperCase();
-      avatarHtml = `<div style="width: 28px; height: 28px; border-radius: 50%; background: #00e5ff; color: #000; display: grid; place-items: center; font-weight: bold; font-size: 14px;">${initial}</div>`;
-    }
+    let avatarHtml = user.photoURL 
+      ? `<img src="${user.photoURL}" alt="Perfil">`
+      : `<div class="avatar-fallback">${displayName.charAt(0).toUpperCase()}</div>`;
 
-    if (desktopAuthContainer) {
-      desktopAuthContainer.innerHTML = `
-        <a href="account.html" class="text-white text-decoration-none small fw-semibold d-flex align-items-center gap-2" style="transition: color 0.3s;" onmouseover="this.style.color='#00e5ff'" onmouseout="this.style.color='#fff'">
-          ${avatarHtml} Hola, ${displayName}
+    // Actualizar avatar en la Navbar principal de tus páginas de producto
+    if (authContainerGlobal) {
+      authContainerGlobal.innerHTML = `
+        <a href="account.html" class="mobile-nav-avatar" title="Ir a Mi Cuenta">
+          ${avatarHtml}
         </a>
       `;
     }
 
-    if (mobileAuthContainer) {
-      mobileAuthContainer.innerHTML = `
-        <a href="account.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none d-flex align-items-center justify-content-center gap-2">
-          ${avatarHtml} Mi Cuenta
-        </a>
-      `;
+    // VALIDACIÓN ESTRICTA: Si es César o Antonio, inyectar el botón de Modo Admin automáticamente en el menú lateral
+    if (user.email === 'evolutiongt01@gmail.com' || user.email === 'tepaz2025@gmail.com') {
+      if (sideMenuLinks && !document.getElementById('admin-sidebar-link')) {
+        const adminLinkHTML = `
+          <a href="admin.html" id="admin-sidebar-link" class="side-menu-link" style="background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.3); margin-top: 5px;">
+            <i class="bi bi-shield-lock-fill" style="color: #ff5050;"></i> <span style="color: #ff5050;">Modo Admin</span>
+          </a>
+        `;
+        sideMenuLinks.insertAdjacentHTML('beforeend', adminLinkHTML);
+      }
     }
+
   } else {
-    if (desktopAdminContainer) desktopAdminContainer.style.display = 'none';
-    if (mobileAdminContainer) mobileAdminContainer.style.display = 'none';
+    if (authContainerGlobal) {
+      authContainerGlobal.innerHTML = `
+        <a href="login.html" class="mobile-liquid-btn" title="Iniciar Sesión">
+          <i class="bi bi-person-fill"></i>
+        </a>
+      `;
+    }
+    // Remover link de admin si cierra sesión
+    const existingAdminLink = document.getElementById('admin-sidebar-link');
+    if (existingAdminLink) existingAdminLink.remove();
   }
 });
