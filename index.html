@@ -391,16 +391,20 @@
     .btn-free-checkout { background: #00ff88; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 14px; width: 100%; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,255,136,0.2); }
     .btn-free-checkout:hover { background: #00e67a; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,255,136,0.4); }
 
-    /* ====== MODAL ÉXITO ====== */
+    /* ====== MODAL ÉXITO Y CREACIÓN EXPRESS DE CONTRASEÑA ====== */
     .success-modal-overlay { position: fixed; inset: 0; background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: grid; place-items: center; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     .success-modal-overlay.active { opacity: 1; visibility: visible; }
-    .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(0, 229, 255, 0.3); box-shadow: 0 25px 70px rgba(0,0,0,0.7), 0 0 30px rgba(0,229,255,0.15); border-radius: 24px; padding: 40px 30px; width: min(440px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(0, 229, 255, 0.3); box-shadow: 0 25px 70px rgba(0,0,0,0.7), 0 0 30px rgba(0,229,255,0.15); border-radius: 24px; padding: 40px 30px; width: min(440px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); max-height: 90vh; overflow-y: auto; }
     .success-modal-overlay.active .success-modal-box { transform: scale(1) translateY(0); }
-    .success-icon-ring { width: 80px; height: 80px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 20px; color: #00ff88; font-size: 2.2rem; box-shadow: 0 0 25px rgba(0, 255, 136, 0.3); animation: pulseSuccess 2s infinite ease-in-out; }
-    @keyframes pulseSuccess { 0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); } 50% { box-shadow: 0 0 30px rgba(0, 255, 136, 0.6); } }
-    .success-modal-title { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 10px; letter-spacing: -0.03em; }
-    .success-modal-desc { color: #f1f5f9; font-size: 0.95rem; line-height: 1.6; margin-bottom: 30px; }
-    .success-modal-logo { width: 130px; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3)); }
+    .success-icon-ring { width: 70px; height: 70px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: #00ff88; font-size: 2rem; box-shadow: 0 0 25px rgba(0, 255, 136, 0.3); }
+    .success-modal-title { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .success-modal-desc { color: #f1f5f9; font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px; }
+    .success-modal-logo { width: 110px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3)); }
+    
+    .express-signup-box { background: rgba(0, 229, 255, 0.05); border: 1px dashed rgba(0, 229, 255, 0.4); border-radius: 14px; padding: 20px; margin-bottom: 20px; text-align: left; }
+    .express-signup-box label { font-size: 0.82rem; font-weight: 600; color: var(--accent-color); margin-bottom: 6px; display: block; }
+    .express-input { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; padding: 10px 14px; font-size: 0.9rem; margin-bottom: 12px; }
+    .express-input:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
 
     /* MÓVIL */
     @media (max-width: 991px) {
@@ -439,14 +443,27 @@
   <div class="bg-orb orb-2"></div>
   <div class="bg-orb orb-3"></div>
 
-  <!-- MODAL DE ÉXITO -->
+  <!-- MODAL DE ÉXITO Y CREACIÓN EXPRESS DE CONTRASEÑA -->
   <div class="success-modal-overlay" id="success-modal">
     <div class="success-modal-box">
       <img src="img/dingloft.png" alt="Dingloft" class="success-modal-logo">
       <div class="success-icon-ring"><i class="bi bi-check-lg"></i></div>
       <h3 class="success-modal-title">¡Compra Exitosa!</h3>
-      <p class="success-modal-desc" id="success-modal-text">Tu pedido se ha procesado correctamente. Redirigiendo a tu panel de descargas...</p>
-      <button class="btn-cyan w-100" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
+      <p class="success-modal-desc" id="success-modal-text">Tu pedido se ha procesado correctamente y tus descargas están seguras.</p>
+      
+      <!-- CAJA EXPRESS PARA CREAR CONTRASEÑA SI COMPRÓ COMO INVITADO -->
+      <div class="express-signup-box" id="express-signup-container" style="display: none;">
+        <p style="font-size: 0.85rem; color: #fff; margin-bottom: 12px; font-weight: 500;">
+          <i class="bi bi-shield-lock-fill" style="color: var(--accent-color);"></i> Protege tu cuenta: Crea una contraseña para acceder a tus descargas en cualquier momento.
+        </p>
+        <label>Correo asociado:</label>
+        <input type="text" id="express-email" class="express-input" readonly style="opacity: 0.7;">
+        <label>Nueva contraseña:</label>
+        <input type="password" id="express-password" class="express-input" placeholder="Mínimo 6 caracteres">
+        <button class="btn-cyan w-100" id="btn-save-express-account" onclick="crearCuentaExpress()">Crear Contraseña y Entrar</button>
+      </div>
+
+      <button class="btn-cyan w-100" id="btn-go-to-account" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
     </div>
   </div>
 
@@ -993,7 +1010,7 @@
   <!-- Lógica de Firebase Auth y renderizado de PayPal -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -1010,12 +1027,66 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    function mostrarModalExito(mensaje) {
+    window.globalEmailRecienComprado = "";
+
+    function mostrarModalExito(mensaje, esInvitado = false, emailInvitado = "") {
       const modal = document.getElementById('success-modal');
       const text = document.getElementById('success-modal-text');
+      const expressBox = document.getElementById('express-signup-container');
+      const btnGoAccount = document.getElementById('btn-go-to-account');
+
       if (text && mensaje) text.textContent = mensaje;
+
+      if (esInvitado && emailInvitado) {
+        window.globalEmailRecienComprado = emailInvitado;
+        document.getElementById('express-email').value = emailInvitado;
+        expressBox.style.display = 'block';
+        btnGoAccount.style.display = 'none'; // Ocultar hasta que cree su contraseña o decida saltar
+      } else {
+        expressBox.style.display = 'none';
+        btnGoAccount.style.display = 'block';
+      }
+
       if (modal) modal.classList.add('active');
     }
+
+    window.crearCuentaExpress = async function() {
+      const passInput = document.getElementById('express-password').value.trim();
+      const email = window.globalEmailRecienComprado;
+      const btn = document.getElementById('btn-save-express-account');
+
+      if (passInput.length < 6) {
+        alert("La contraseña debe tener al menos 6 caracteres.");
+        return;
+      }
+
+      try {
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 8px;"></span> Creando cuenta...';
+        btn.disabled = true;
+
+        // Crear la cuenta en Firebase Auth con el correo de PayPal y la pass nueva
+        await createUserWithEmailAndPassword(auth, email, passInput);
+
+        alert("¡Cuenta creada con éxito! Ya puedes acceder a tus descargas.");
+        window.location.href = 'account.html';
+      } catch (error) {
+        console.error("Error creando cuenta express:", error);
+        if (error.code === 'auth/email-already-in-use') {
+          // Si el correo ya existía, intentamos iniciar sesión por ellos para enlazarlos
+          try {
+            await signInWithEmailAndPassword(auth, email, passInput);
+            window.location.href = 'account.html';
+            return;
+          } catch(innerErr) {
+            alert("Este correo ya tiene una contraseña registrada. Por favor inicia sesión normalmente.");
+            window.location.href = 'login.html';
+            return;
+          }
+        }
+        alert("No se pudo crear la cuenta automáticamente. Puedes iniciar sesión después con tu correo.");
+        window.location.href = 'account.html';
+      }
+    };
 
     onAuthStateChanged(auth, async (user) => {
       const desktopAuthContainer = document.getElementById('desktop-auth-container');
@@ -1034,8 +1105,6 @@
           displayName = user.displayName.split(' ')[0];
         } else if (user.email) {
           displayName = user.email.split('@')[0];
-        } else {
-          displayName = "Invitado";
         }
 
         let avatarHtml = '';
@@ -1114,7 +1183,6 @@
 
               try {
                 const itemsComprados = window.cartItemsList || [];
-                // Guarda la compra asociada al correo que el cliente utilizó en PayPal
                 await addDoc(collection(db, "purchases"), {
                   uid: userId,
                   userEmail: userEmail,
@@ -1125,8 +1193,14 @@
                 });
 
                 if (typeof window.clearCart === 'function') window.clearCart();
-                mostrarModalExito(`¡Pago exitoso, ${payerName}! Tu compra ha sido guardada.`);
-                setTimeout(() => { window.location.href = 'account.html'; }, 2200);
+
+                // Si compró como invitado (no tenía sesión), mostrar cajita para crear contraseña
+                if (!user) {
+                  mostrarModalExito(`¡Pago exitoso, ${payerName}! Tu compra ha sido guardada en ${userEmail}.`, true, userEmail);
+                } else {
+                  mostrarModalExito(`¡Pago exitoso, ${payerName}! Redirigiendo a tu cuenta...`, false, "");
+                  setTimeout(() => { window.location.href = 'account.html'; }, 2200);
+                }
 
               } catch (error) {
                 console.error("Error guardando la compra en Firestore:", error);
@@ -1164,8 +1238,15 @@
           });
 
           if (typeof window.clearCart === 'function') window.clearCart();
-          mostrarModalExito("¡Pedido procesado con éxito! Redirigiendo...");
-          setTimeout(() => { window.location.href = 'account.html'; }, 2200);
+          
+          if (!user) {
+            // Pedir correo o pass express si es necesario, o mandar directo
+            mostrarModalExito("¡Pedido procesado con éxito!", false, "");
+            setTimeout(() => { window.location.href = 'account.html'; }, 2200);
+          } else {
+            mostrarModalExito("¡Pedido procesado con éxito! Redirigiendo a tus descargas...", false, "");
+            setTimeout(() => { window.location.href = 'account.html'; }, 2200);
+          }
 
         } catch (error) {
           console.error("Error guardando pedido gratuito en Firestore:", error);
@@ -1409,7 +1490,7 @@
             }
           });
           
-          theOriginalHTML = this.innerHTML;
+          const originalHTML = this.innerHTML;
           const originalBg = this.style.background;
           const originalColor = this.style.color;
           
