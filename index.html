@@ -3,984 +3,540 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dingloft | Software Vitalicio y Librerías de Audio</title>
+  <title>Mi cuenta | Dingloft</title>
   
-  <!-- GOOGLE SEARCH CONSOLE VERIFICATION -->
-  <meta name="google-site-verification" content="QlWPQ8VOzWISKjvNjrcWH8NNs4gu6pIalL_nHCu7Nq8" />
-
-  <!-- FAVICON -->
-  <link rel="icon" href="img/favicon.png" type="image/png">
-
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
   
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   
-  <!-- Google Fonts: Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
-
-  <!-- PAYPAL SDK -->
+  <!-- PAYPAL SDK INTEGRADOR -->
   <script src="https://www.paypal.com/sdk/js?client-id=BAA88hYhrlAVHUFkzsqrlDE1atrFHrCZe7j0XOYtbB4YlxcxBASouD2NAU2J_BV1fp9-jGGYK2Mh4bHN20&currency=USD"></script>
-  
+
   <style>
-    :root {
-      --bg-color: #05070a;
-      --accent-color: #00e5ff;
-      --accent-hover: #00b5cc;
-      --text-main: #ffffff;
-      --text-muted: #f1f5f9;
-      --border-color: rgba(255, 255, 255, 0.15);
-      --glass-bg: rgba(17, 21, 31, 0.4);
-    }
+    :root { --bg:#060911; --panel:#0c1421; --line:rgba(173,201,232,.14); --text:#f4f8ff; --muted:#9eacc0; --cyan:#12d7f6; --violet:#9a5cff; --green:#35dd92; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; color:var(--text); font-family:Inter,system-ui,sans-serif; background:radial-gradient(circle at 70% 14%,rgba(0,202,255,.10),transparent 28%),radial-gradient(circle at 15% 80%,rgba(121,77,255,.11),transparent 28%),var(--bg); }
+    button,a { font:inherit; } button { cursor:pointer; }
+    .app { min-height:100vh; display:grid; grid-template-columns:292px 1fr; }
+    .sidebar { position:sticky; top:0; height:100vh; display:flex; flex-direction:column; padding:33px 17px 20px; border-right:1px solid var(--line); background:rgba(4,8,15,.77); backdrop-filter:blur(18px); }
+    .brand { margin:0 36px 50px; text-decoration:none; color:white; font-weight:800; font-size:1.75rem; letter-spacing:-.07em; } .brand span { color:var(--cyan); }
+    .nav { display:grid; gap:7px; } .nav a { display:flex; gap:16px; align-items:center; padding:15px 19px; border-radius:13px; text-decoration:none; color:#c4d0df; font-size:.96rem; transition:.2s ease; }
+    .nav a i { width:21px; font-size:1.3rem; text-align:center; } .nav a:hover { background:rgba(64,93,126,.15); color:white; }
+    .nav a.active { color:var(--cyan); font-weight:700; background:linear-gradient(90deg,rgba(0,220,255,.13),rgba(41,71,112,.18)); box-shadow:inset 2px 0 var(--cyan); }
+    .profile { margin-top:auto; padding:18px; border:1px solid var(--line); border-radius:17px; background:rgba(10,16,28,.68); } .profile-top { display:flex; align-items:center; gap:12px; }
+    .avatar { width:42px; height:42px; display:grid; place-items:center; border-radius:50%; color:#07131e; font-weight:800; background:linear-gradient(135deg,#4ce7ff,#8b5bff); box-shadow:0 0 0 2px rgba(37,214,247,.42); overflow:hidden; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile strong { display:block; font-size:.87rem; } .profile small { display:block; margin-top:4px; color:var(--muted); font-size:.72rem; overflow:hidden; text-overflow:ellipsis; }
+    .logout { width:100%; display:flex; gap:12px; align-items:center; margin-top:17px; padding:12px 0 0; border:0; border-top:1px solid var(--line); color:#c7d3e1; background:transparent; text-align:left; font-size:.86rem; }
+    .content { min-width:0; padding:42px clamp(25px,5vw,78px) 37px; } .top { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    .top h1 { margin:0; letter-spacing:-.06em; font-size:clamp(2rem,3vw,3.2rem); } .top p { margin:.7rem 0 0; color:var(--muted); } .top-actions { display:flex; gap:13px; align-items:center; }
     
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    body.cart-open {
-      overflow: hidden !important;
-      height: 100vh;
-    }
-
-    /* Animación de orbes */
-    @keyframes orbFloat1 {
-      0% { transform: translate(0px, 0px) scale(1); background: #00e5ff; }
-      33% { transform: translate(150px, 200px) scale(1.2); background: #a200ff; }
-      66% { transform: translate(-100px, 150px) scale(0.9); background: #00ff88; }
-      100% { transform: translate(0px, 0px) scale(1); background: #00e5ff; }
-    }
-    @keyframes orbFloat2 {
-      0% { transform: translate(0px, 0px) scale(1); background: #a200ff; }
-      33% { transform: translate(-200px, -150px) scale(1.3); background: #00ff88; }
-      66% { transform: translate(150px, -100px) scale(0.8); background: #00e5ff; }
-      100% { transform: translate(0px, 0px) scale(1); background: #a200ff; }
-    }
-    @keyframes orbFloat3 {
-      0% { transform: translate(0px, 0px) scale(1); background: #00ff88; }
-      33% { transform: translate(100px, -200px) scale(1.1); background: #00e5ff; }
-      66% { transform: translate(-150px, 100px) scale(1.2); background: #a200ff; }
-      100% { transform: translate(0px, 0px) scale(1); background: #00ff88; }
-    }
-
-    .bg-orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(140px);
-      z-index: -1;
-      opacity: 0.35;
-      pointer-events: none;
-    }
-    .orb-1 { width: 450px; height: 450px; top: -100px; left: -100px; animation: orbFloat1 18s infinite alternate ease-in-out; }
-    .orb-2 { width: 550px; height: 550px; bottom: -150px; right: -150px; animation: orbFloat2 22s infinite alternate ease-in-out; }
-    .orb-3 { width: 350px; height: 350px; top: 40%; left: 35%; animation: orbFloat3 15s infinite alternate ease-in-out; opacity: 0.2; }
-
-    .glass-effect {
-      background: var(--glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-color);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-    }
-
-    /* Navbar */
-    .navbar-glass {
-      background: rgba(5, 7, 10, 0.6);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border-color);
-      padding: 15px 0;
-      z-index: 1040;
-    }
-    .nav-link { color: var(--text-main) !important; font-size: 0.95rem; font-weight: 500; margin: 0 10px; transition: color 0.3s; }
-    .nav-link:hover { color: var(--accent-color) !important; }
-
-    /* Botones Globales */
-    .btn-cyan {
-      background: var(--accent-color);
-      color: #000;
-      font-weight: 600;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 24px;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
-    }
-    .btn-cyan:hover { background: var(--accent-hover); color: #000; transform: translateY(-2px); box-shadow: 0 5px 25px rgba(0, 229, 255, 0.5); }
+    .top-avatar { width:45px; height:45px; border:1px solid var(--cyan); border-radius:50%; display:grid; place-items:center; color:#07131e; background:linear-gradient(135deg,#f5b36e,#a56bff); font-weight:800; overflow:hidden; }
+    .top-avatar img { width: 100%; height: 100%; object-fit: cover; }
     
-    .btn-outline-custom {
-      background: rgba(255,255,255,0.05);
-      color: var(--text-main);
-      font-weight: 600;
-      border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 8px;
-      padding: 10px 24px;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(5px);
-    }
-    .btn-outline-custom:hover { border-color: var(--accent-color); color: var(--accent-color); background: rgba(0, 229, 255, 0.05); }
-
-    /* Botón Flotante Carrito */
-    .btn-floating-cart {
-      position: fixed;
-      bottom: max(30px, env(safe-area-inset-bottom));
-      right: 25px;
-      z-index: 9999;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, rgba(0, 229, 255, 0.9), rgba(0, 181, 204, 0.95));
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      color: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 10px 30px rgba(0, 229, 255, 0.4), inset 0 0 10px rgba(255,255,255,0.3);
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .btn-floating-cart:hover {
-      transform: scale(1.1) translateY(-3px);
-      box-shadow: 0 15px 35px rgba(0, 229, 255, 0.6);
-      color: #000;
-    }
-    .badge-floating {
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      background: #ff0055;
-      color: #fff;
-      font-weight: 800;
-      font-size: 0.75rem;
-      border-radius: 50%;
-      padding: 2px 7px;
-      border: 2px solid var(--bg-color);
-    }
-
-    /* Hero Section */
-    .hero-section { padding: 140px 0 60px; }
-    .hero-title { font-weight: 800; font-size: 4rem; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
-    .text-accent { color: var(--accent-color); text-shadow: 0 0 20px rgba(0,229,255,0.3); }
+    .stats { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; margin:34px 0 26px; } .stat { display:flex; align-items:center; gap:19px; min-height:118px; padding:23px 26px; border:1px solid var(--line); border-radius:18px; background:linear-gradient(145deg,rgba(18,29,47,.84),rgba(8,14,25,.71)); }
+    .stat i { width:57px; height:57px; display:grid; place-items:center; border-radius:16px; font-size:1.75rem; color:var(--cyan); border:1px solid rgba(0,217,255,.55); background:rgba(0,210,255,.08); } .stat:nth-child(2) i{color:var(--violet);border-color:rgba(154,92,255,.6);background:rgba(154,92,255,.08)}
+    .stat span { display:block; color:#cad5e3; font-size:.89rem; } .stat strong { display:block; margin-top:4px; font-size:2rem; line-height:1; color:var(--cyan); } .stat:nth-child(2) strong{color:var(--violet)}
+    .dashboard { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(320px,.9fr); gap:23px; } .card { border:1px solid var(--line); border-radius:20px; background:linear-gradient(145deg,rgba(16,27,45,.82),rgba(8,14,25,.78)); box-shadow:0 18px 35px rgba(0,0,0,.15); overflow: hidden; }
     
-    .feature-item h6 { font-size: 0.9rem; font-weight: 600; margin: 0; color: #fff; }
-    .feature-item p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+    .tabs-header { display: flex; border-bottom: 1px solid var(--line); background: rgba(8, 14, 25, 0.4); }
+    .tab-btn { flex: 1; background: transparent; border: none; padding: 18px 0; color: var(--muted); font-size: 0.95rem; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; transition: .2s ease; }
+    .tab-btn:hover { color: white; background: rgba(255,255,255,0.02); }
+    .tab-btn.active { color: var(--cyan); border-bottom-color: var(--cyan); background: rgba(18, 215, 246, 0.05); }
+    .tab-content { display: none; padding: 25px 29px; }
+    .tab-content.active { display: block; }
 
-    .hero-img-box {
-      width: 100%;
-      height: 400px;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    .hero-img-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.4));
-      transition: transform 0.3s;
-    }
-    .hero-img-box:hover img { transform: scale(1.02); }
-
-    /* Trust Bar */
-    .trust-bar {
-      border-radius: 50px;
-      padding: 15px 30px;
-      display: inline-flex;
-      align-items: center;
-      gap: 30px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: #fff;
-    }
-
-    /* Categorías Superiores */
-    .section-title { font-weight: 700; font-size: 1.5rem; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+    .downloads { padding: 0; } 
+    .download-row { display:grid; grid-template-columns:68px minmax(120px,1fr) auto; gap:17px; align-items:center; padding:11px; border:1px solid transparent; border-radius:15px; transition:.2s ease; } 
+    .download-row:hover{border-color:var(--line);background:rgba(54,77,108,.13)}
     
-    .category-card {
-      border-radius: 12px;
-      padding: 25px;
-      height: 140px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    .category-card:hover { border-color: var(--accent-color); transform: translateY(-5px); background: rgba(255,255,255,0.05); }
-    .category-title { font-weight: 600; font-size: 1.1rem; z-index: 2; position: relative; color: #fff; }
-    .category-link { color: var(--accent-color); font-size: 0.85rem; text-decoration: none; font-weight: 500; z-index: 2; position: relative; }
+    .bundle-container { display: flex; flex-direction: column; gap: 0; }
+    .download-row.has-subs.active { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-color: var(--line); background: rgba(54,77,108,.13); }
+    .sub-downloads { display: none; padding: 12px 15px 12px 25px; margin-left: 35px; margin-bottom: 12px; border-left: 2px solid var(--line); flex-direction: column; gap: 8px; background: rgba(8, 14, 25, 0.4); border-radius: 0 0 15px 15px; }
+    .sub-downloads.active { display: flex; }
+    .sub-download-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(255,255,255,0.03); border-radius: 10px; font-size: 0.9rem; border: 1px solid var(--line); transition: .2s ease; }
+    .sub-download-row:hover { background: rgba(54,77,108,.13); border-color: rgba(18, 215, 246, 0.3); }
+    .sub-download-row i.bi-file-earmark-zip { color: var(--cyan); margin-right: 8px; font-size: 1.1rem; }
+    .download-btn-small { width: 36px; height: 36px; border: 1px solid rgba(0,217,255,.5); border-radius: 9px; color: var(--cyan); background: rgba(0,213,255,.08); font-size: 1.1rem; display: grid; place-items: center; transition: .2s ease; cursor: pointer; }
+    .download-btn-small:hover { background: var(--cyan); color: #04111a; transform: translateY(-2px); }
+    .toggle-btn { width:43px; height:43px; background:transparent; border:none; color:var(--muted); font-size:1.4rem; transition:.3s ease; cursor:pointer; display: grid; place-items: center;}
+    .toggle-btn.active { transform: rotate(180deg); color: var(--cyan); }
 
-    /* ETIQUETAS TECNOLÓGICAS */
-    .tech-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 0.65rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 5px;
-      margin-top: 5px;
-    }
-    .tech-tag-mac {
-      color: #00e5ff;
-      background: rgba(0, 229, 255, 0.1);
-      border: 1px solid rgba(0, 229, 255, 0.3);
-    }
-    .tech-tag-lib {
-      color: #ffa600;
-      background: rgba(255, 166, 0, 0.1);
-      border: 1px solid rgba(255, 166, 0, 0.3);
-    }
-
-    .category-header {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--accent-color);
-      margin-top: 3rem;
-      margin-bottom: 1.5rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .product-horizontal {
-      border-radius: 12px;
-      padding: 15px;
-      display: flex;
-      gap: 20px;
-      transition: all 0.3s ease;
-      height: 100%;
-    }
-    .product-horizontal:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); transform: translateY(-3px); }
+    .product-art { width:62px; height:72px; border:1px solid rgba(158,203,255,.35); border-radius:10px; background:#071119; overflow:hidden; display:flex; justify-content:center; align-items:center; }
+    .product-art img { width:100%; height:100%; object-fit:contain; padding:5px; }
     
-    .prod-img-box {
-      width: 120px;
-      height: 150px;
-      background: rgba(0,0,0,0.4);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 15px;
-      text-decoration: none;
-      transition: transform 0.3s;
-    }
-    .prod-img-box:hover { transform: scale(1.03); }
-    .prod-img-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4));
-    }
-
-    .prod-info {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      width: 100%;
-    }
-    .prod-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 2px; color: #ffffff; text-decoration: none; transition: color 0.3s; display: inline-block; }
-    .prod-title:hover { color: var(--accent-color); }
-    .prod-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .prod-price { font-size: 1.2rem; font-weight: 800; color: var(--accent-color); }
-    .old-price { font-size: 0.9rem; color: rgba(255,255,255,0.6); text-decoration: line-through; margin-right: 5px; font-weight: 500; }
+    .download-row h3 { margin:0 0 7px; font-size:1rem; letter-spacing:-.025em; } .download-row p { margin:0; color:var(--muted); font-size:.78rem; } .badge { display:inline-flex; align-items:center; gap:6px; margin-top:7px; color:var(--green); font-size:.72rem; font-weight:700; } .download-btn { width:43px; height:43px; border:1px solid rgba(0,217,255,.5); border-radius:11px; color:var(--cyan); background:rgba(0,213,255,.08); font-size:1.2rem; display:grid; place-items:center; text-decoration:none; transition:.2s ease; cursor:pointer;} .download-btn:hover{background:var(--cyan);color:#04111a;transform:translateY(-2px)}
+    .right { display:grid; gap:23px; align-content:start; } 
     
-    .btn-add-cart {
-      background: var(--accent-color);
-      color: #000;
-      border: none;
-      border-radius: 6px;
-      padding: 8px 15px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      width: fit-content;
-      transition: all 0.3s;
-    }
-    .btn-add-cart:hover { background: #fff; transform: scale(1.05); box-shadow: 0 0 15px rgba(255,255,255,0.5); color: #000; }
+    .support-card { display: flex; flex-direction: column; }
+    .remote-install-content { padding: 25px; display: flex; flex-direction: column; gap: 14px; }
+    .remote-install-content .icon-wrapper { width: 54px; height: 54px; background: rgba(53, 221, 146, 0.1); border: 1px solid rgba(53, 221, 146, 0.3); border-radius: 14px; display: grid; place-items: center; font-size: 1.5rem; color: var(--green); margin-bottom: 4px; }
+    .remote-install-content h3 { margin: 0; font-size: 1.15rem; letter-spacing: -0.02em; color: white; }
+    .remote-install-content p { margin: 0; color: var(--muted); font-size: 0.86rem; line-height: 1.55; }
+    .remote-install-content strong { color: #f4f8ff; font-weight: 700; }
+    .benefits { list-style: none; padding: 0; margin: 8px 0 12px; display: grid; gap: 10px; }
+    .benefits li { display: flex; align-items: center; gap: 10px; font-size: 0.84rem; color: #c4d0df; font-weight: 500; }
+    .benefits li i { color: var(--cyan); font-size: 1.1rem; }
 
-    /* ====== CARRITO LATERAL ====== */
-    .cart-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      z-index: 1050;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-    .cart-overlay.active { opacity: 1; visibility: visible; }
+    .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
+    .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
 
-    .cart-brand-watermark {
-      position: fixed; top: 50%; left: 30%;
-      transform: translate(-50%, -50%) scale(0.9);
-      text-align: center; z-index: 1055; opacity: 0; visibility: hidden; transition: all 0.4s ease; pointer-events: none;
-    }
-    .cart-overlay.active ~ .cart-brand-watermark { opacity: 0.85; visibility: visible; transform: translate(-50%, -50%) scale(1); }
-    .cart-brand-watermark::after {
-      content: ''; position: absolute; top: 50%; left: 50%; width: 260px; height: 260px;
-      background: radial-gradient(circle, rgba(0, 229, 255, 0.5) 0%, rgba(162, 0, 255, 0.3) 40%, transparent 70%);
-      transform: translate(-50%, -50%); filter: blur(30px); z-index: -1; animation: lightGlow 3s infinite alternate ease-in-out;
-    }
-    @keyframes logoPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 20px rgba(0,229,255,0.5)); } 50% { transform: translate(-50%, -50%) scale(1.05); filter: drop-shadow(0 0 40px rgba(0,229,255,0.8)); } }
-    @keyframes lightGlow { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } 100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; } }
-    .animated-watermark-logo { width: 240px; max-width: 80vw; animation: logoPulse 4s infinite ease-in-out; position: relative; }
-
-    .cart-drawer {
-      position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.5));
-      backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%);
-      border-left: 1px solid var(--border-color); box-shadow: -15px 0 40px rgba(0, 0, 0, 0.9);
-      z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column;
-    }
-    .cart-drawer.active { right: 0; }
-
-    .cart-header { padding: 20px 25px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
-    .btn-close-cart { background: transparent; border: none; color: #ffffff; font-size: 1.3rem; line-height: 1; transition: color 0.3s; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-    .btn-close-cart:hover { color: var(--accent-color); transform: scale(1.1); }
-
-    .cart-items-container { flex: 1; overflow-y: auto; padding: 20px 25px; }
-
-    .cart-item { display: flex; gap: 15px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; }
-    .cart-item-img { width: 60px; height: 80px; background: rgba(0,0,0,0.3); border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; padding: 5px; }
-    .cart-item-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
-    .cart-item-info { flex: 1; }
-    .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; color: #ffffff; }
-    .cart-item-desc { font-size: 0.75rem; color: #ffffff; opacity: 0.85; margin-bottom: 10px; }
+    .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 8, 15, 0.85); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .liquid-modal-overlay.active { opacity: 1; pointer-events: auto; }
     
-    .qty-controls { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; background: rgba(0,0,0,0.2); }
-    .qty-btn { background: transparent; border: none; color: #fff; padding: 2px 10px; font-size: 0.9rem; cursor: pointer; }
-    .qty-btn:hover { background: rgba(255,255,255,0.1); }
-    .qty-value { padding: 0 10px; font-size: 0.85rem; font-weight: 600; color: #ffffff; }
-
-    .cart-item-remove { position: absolute; top: 0; right: 0; background: transparent; border: none; color: #ffffff; font-size: 1rem; }
-    .cart-item-remove:hover { color: #ff4444; }
-
-    .cart-footer { padding: 20px 25px; background: rgba(0, 0, 0, 0.6); border-top: 1px solid var(--border-color); flex-shrink: 0; max-height: 60vh; overflow-y: auto; }
-    .cart-empty-msg { text-align: center; color: #ffffff; margin-top: 50px; }
-
-    @keyframes cartBounce { 0% { transform: scale(1); } 50% { transform: scale(1.15); box-shadow: 0 0 20px rgba(0, 229, 255, 0.4); } 100% { transform: scale(1); } }
-    .cart-bounce { animation: cartBounce 0.3s ease-in-out; }
-    .btn-added { background-color: #00ff88 !important; color: #000 !important; box-shadow: 0 0 15px rgba(0,255,136,0.5) !important; }
-
-    .coupon-box { display: flex; gap: 8px; margin-bottom: 15px; }
-    .coupon-input { flex: 1; background: rgba(4, 9, 18, 0.7); border: 1px solid rgba(153, 185, 216, 0.25); border-radius: 8px; color: #fff; padding: 8px 12px; font-size: 0.85rem; text-transform: uppercase; }
-    .coupon-input::placeholder { color: #6f7d91; text-transform: none; }
-    .coupon-input:focus { border-color: var(--accent-color); outline: none; background: rgba(4, 9, 18, 0.9); }
-    .btn-apply-coupon { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0 15px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-    .btn-apply-coupon:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
-    .coupon-msg { font-size: 0.78rem; margin-bottom: 12px; font-weight: 500; }
-
-    .paypal-white-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.4); padding: 15px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); margin-top: 10px; }
+    .liquid-modal-card { width: 95%; max-width: 960px; padding: 28px; border-radius: 28px; background: linear-gradient(145deg, rgba(16, 27, 45, 0.96), rgba(8, 14, 25, 0.98)); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.03); color: var(--text); position: relative; max-height: 95vh; overflow-y: auto; transform: scale(0.92) translateY(20px); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .liquid-modal-overlay.active .liquid-modal-card { transform: scale(1) translateY(0); }
     
-    .btn-free-checkout { background: #00ff88; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 14px; width: 100%; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,255,136,0.2); }
-    .btn-free-checkout:hover { background: #00e67a; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,255,136,0.4); }
+    .liquid-close { position: absolute; top: 22px; right: 22px; background: transparent; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; transition: .2s; z-index: 10;}
+    .liquid-close:hover { color: white; }
 
-    /* ====== MODAL ÉXITO ====== */
-    .success-modal-overlay { position: fixed; inset: 0; background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: grid; place-items: center; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-    .success-modal-overlay.active { opacity: 1; visibility: visible; }
-    .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(0, 229, 255, 0.3); box-shadow: 0 25px 70px rgba(0,0,0,0.7), 0 0 30px rgba(0,229,255,0.15); border-radius: 24px; padding: 40px 30px; width: min(440px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-    .success-modal-overlay.active .success-modal-box { transform: scale(1) translateY(0); }
-    .success-icon-ring { width: 80px; height: 80px; background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 20px; color: #00ff88; font-size: 2.2rem; box-shadow: 0 0 25px rgba(0, 255, 136, 0.3); animation: pulseSuccess 2s infinite ease-in-out; }
-    @keyframes pulseSuccess { 0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); } 50% { box-shadow: 0 0 30px rgba(0, 255, 136, 0.6); } }
-    .success-modal-title { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 10px; letter-spacing: -0.03em; }
-    .success-modal-desc { color: #f1f5f9; font-size: 0.95rem; line-height: 1.6; margin-bottom: 30px; }
-    .success-modal-logo { width: 130px; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3)); }
+    .booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 15px; }
+    
+    .calendar-box { background: rgba(6, 12, 22, 0.6); border: 1px solid var(--line); border-radius: 20px; padding: 18px; }
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .calendar-header h4 { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--text); }
+    .calendar-nav-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); color: var(--muted); border-radius: 8px; width: 32px; height: 32px; display: grid; place-items: center; transition: .2s; cursor: pointer; }
+    .calendar-nav-btn:hover:not(.disabled) { background: var(--cyan); color: #04111a; }
+    .calendar-nav-btn.disabled { opacity: 0.2; cursor: not-allowed; }
+    
+    .calendar-days-head { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-bottom: 10px; }
+    .calendar-days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .day-cell { aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: .2s ease; color: var(--text); }
+    .day-cell.empty { cursor: default; }
+    
+    .day-cell.disabled { color: rgba(158, 172, 192, 0.25); cursor: not-allowed; text-decoration: line-through; }
+    .day-cell.available:hover { background: rgba(18, 215, 246, 0.15); border-color: var(--cyan); color: var(--cyan); }
+    .day-cell.selected { background: var(--cyan) !important; color: #04111a !important; font-weight: 800; box-shadow: 0 0 12px rgba(18, 215, 246, 0.5); }
 
-    /* MÓVIL */
-    @media (max-width: 991px) {
-      .hero-section { padding: 100px 0 40px; text-align: center; }
-      .hero-title { font-size: 2.8rem; }
-      .hero-paragraph-container { display: flex; justify-content: center; }
-      .hero-buttons { justify-content: center; }
-      .feature-container { flex-direction: column; align-items: center; gap: 1rem !important; }
-      
-      .trust-bar { flex-direction: column; gap: 15px; padding: 20px; border-radius: 20px; width: 90%; margin: 0 auto; }
-      .trust-bar .bullet-point { display: none; }
-      
-      .product-horizontal { flex-direction: column; align-items: center; text-align: center; }
-      .prod-img-box { width: 100%; height: 180px; margin-bottom: 15px; }
-      .prod-info { align-items: center; }
-      .prod-info .d-flex { flex-direction: column; gap: 15px; width: 100%; }
-      .btn-add-cart { width: 100%; justify-content: center; }
-      
-      .category-card { height: auto; text-align: center; }
-      .cart-brand-watermark { display: none; } 
-    }
+    .times-box { background: rgba(6, 12, 22, 0.6); border: 1px solid var(--line); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; }
+    .times-header { font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    .time-slots-container { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; padding-right: 4px; }
     
-    @media (max-width: 768px) {
-      .btn-floating-cart { bottom: 90px; right: 20px; }
-    }
+    .time-slot { width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.04); color: var(--text); font-size: 0.82rem; font-weight: 600; text-align: center; cursor: pointer; transition: .2s ease; }
+    .time-slot:hover { background: rgba(18, 215, 246, 0.12); border-color: var(--cyan); color: var(--cyan); transform: translateY(-1px); }
+    .time-slot.selected { background: linear-gradient(90deg, var(--cyan), #1cbeeb); color: #03111a; font-weight: 800; border-color: var(--cyan); box-shadow: 0 4px 12px rgba(18, 215, 246, 0.3); }
     
-    @media (max-width: 500px) {
-      .cart-drawer { width: 100%; }
-    }
+    .time-slot.sold-out { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; border-color: transparent; background: transparent; }
+    .time-slot.sold-out:hover { transform: none; color: var(--text); }
+
+    .software-options { display: flex; gap: 12px; margin-bottom: 15px; }
+    .software-btn { flex: 1; padding: 14px 12px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,0.04); color: var(--muted); cursor: pointer; text-align: center; font-size: 0.85rem; font-weight: 600; transition: .2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .software-btn:hover { background: rgba(18, 215, 246, 0.05); border-color: rgba(18, 215, 246, 0.3); color: white; }
+    .software-btn.selected { background: rgba(18, 215, 246, 0.12); border-color: var(--cyan); color: var(--cyan); box-shadow: inset 0 0 12px rgba(18,215,246,0.15); }
+    
+    .liquid-input { width: 100%; padding: 12px 14px; background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 12px; color: white; font-family: inherit; font-size: 0.85rem; }
+    .liquid-input:focus { border-color: var(--cyan); outline: none; box-shadow: 0 0 10px rgba(0, 213, 255, 0.2); }
+    textarea.liquid-input { resize: none; line-height: 1.4; }
+
+    .booking-footer { margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: center; }
+    .cupon-group { display: flex; gap: 8px; }
+    
+    .liquid-btn-cupon { padding: 0 14px; background: rgba(0,213,255,0.1); border: 1px solid var(--cyan); color: var(--cyan); border-radius: 12px; font-weight: 750; cursor: pointer; transition:.2s ease; font-size: 0.82rem; }
+    .liquid-btn-cupon:hover { background: var(--cyan); color: #03111a; }
+    
+    .liquid-btn { width: 100%; border: 0; border-radius: 12px; padding: 12px; background: linear-gradient(100deg, #0bd8f4, #1cbeeb); color: #03111a; font-weight: 800; cursor: pointer; transition: .2s ease; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 0.92rem; }
+    .liquid-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(11, 216, 244, 0.4); }
+
+    #modal-notif { display: none; padding: 10px; border-radius: 10px; font-size: 0.82rem; margin-bottom: 12px; text-align: center; font-weight: 600; grid-column: span 2; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    #reservasModal .liquid-modal-card { max-width: 500px; }
+
+    @media(max-width:768px){ .booking-grid { grid-template-columns: 1fr; } .booking-footer { grid-template-columns: 1fr; } #modal-notif { grid-column: span 1; } .software-options { flex-direction: column; } }
+    @media(max-width:1080px){.app{grid-template-columns:78px 1fr}.sidebar{padding:25px 10px}.brand{margin:0 auto 42px;font-size:0}.brand span{font-size:1.8rem}.nav a{justify-content:center;padding:15px}.nav a span,.profile strong,.profile small,.logout span{display:none}.profile{padding:12px;display:grid;place-items:center}.logout{justify-content:center}.stats{grid-template-columns:1fr}.dashboard{grid-template-columns:1fr}.right{grid-template-columns:1fr}}
+    @media(max-width:700px){.app{display:block}.sidebar{position:static;height:auto;padding:16px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:1.5rem;margin:0 8px 13px}.brand span{font-size:inherit}.nav{display:flex;overflow:auto}.nav a{min-width:55px;padding:12px}.nav a span{display:none}.profile{display:none}.content{padding:28px 16px}.top{align-items:flex-start}.top p{font-size:.86rem}.stats{margin:25px 0}.stat{min-height:93px}.right{grid-template-columns:1fr}.download-row{grid-template-columns:55px minmax(110px,1fr) auto}.product-art{width:52px;height:62px}.trust{justify-content:flex-start;gap:12px}.top-avatar{display:none}}
   </style>
 </head>
 <body>
+  <div class="app">
+    <aside class="sidebar">
+      <a href="index.html" class="brand"><span>D</span>ingloft</a>
+      <nav class="nav" aria-label="Navegación de cuenta">
+        <a href="index.html"><i class="bi bi-house-door"></i><span>Home</span></a>
+        <a class="active" href="#descargas"><i class="bi bi-download"></i><span>Descargas</span></a>
+        <a href="#" onclick="openReservasModal(); return false;"><i class="bi bi-calendar2-check"></i><span>Mis Reservas</span></a>
+        
+        <a href="admin.html" id="btn-admin" style="display: none; color: #ff5050; margin-top: 15px; border: 1px solid rgba(255,80,80,0.3); background: rgba(255,80,80,0.05);"><i class="bi bi-incognito"></i><span>Panel Admin</span></a>
+      </nav>
+      <div class="profile">
+        <div class="profile-top">
+          <div class="avatar" id="sidebar-avatar">...</div>
+          <div>
+            <strong id="sidebar-name">Cargando...</strong>
+            <small id="sidebar-email">...</small>
+          </div>
+        </div>
+        <button class="logout"><i class="bi bi-box-arrow-right"></i><span>Cerrar sesión</span></button>
+      </div>
+    </aside>
 
-  <!-- Orbes de luz -->
-  <div class="bg-orb orb-1"></div>
-  <div class="bg-orb orb-2"></div>
-  <div class="bg-orb orb-3"></div>
+    <main class="content" id="resumen">
+      <div class="top">
+        <div>
+          <h1>Hola, <span id="welcome-name">...</span></h1>
+          <p>Aquí tienes el control de tus programas y descargas.</p>
+        </div>
+        <div class="top-actions">
+          <div class="top-avatar" id="top-avatar"></div>
+        </div>
+      </div>
+      
+      <section class="stats" aria-label="Resumen de la cuenta">
+        <article class="stat">
+          <i class="bi bi-laptop"></i>
+          <div><span>Programas activos</span><strong id="stat-programas">0</strong></div>
+        </article>
+        <article class="stat">
+          <i class="bi bi-infinity"></i>
+          <div><span>Descargas disponibles</span><strong id="stat-descargas">0</strong></div>
+        </article>
+      </section>
 
-  <!-- MODAL DE ÉXITO -->
-  <div class="success-modal-overlay" id="success-modal">
-    <div class="success-modal-box">
-      <img src="img/dingloft.png" alt="Dingloft" class="success-modal-logo">
-      <div class="success-icon-ring"><i class="bi bi-check-lg"></i></div>
-      <h3 class="success-modal-title">¡Compra Exitosa!</h3>
-      <p class="success-modal-desc" id="success-modal-text">Tu pedido se ha procesado correctamente. Redirigiendo a tu panel de descargas...</p>
-      <button class="btn-cyan w-100" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
-    </div>
+      <section class="dashboard">
+        <article class="card" id="descargas">
+          <div class="tabs-header">
+            <button class="tab-btn active" id="btn-tab-programas" onclick="switchTab('programas')"><i class="bi bi-grid"></i> Mis Programas</button>
+            <button class="tab-btn" id="btn-tab-reserva" onclick="switchTab('reserva')"><i class="bi bi-calendar-check"></i> Estado de mi Reserva</button>
+          </div>
+          
+          <div id="tab-programas" class="tab-content active">
+             <div class="downloads" id="downloads-container">
+               <p style="color: var(--muted); padding: 15px;">Cargando tus programas...</p>
+             </div>
+          </div>
+
+          <div id="tab-reserva" class="tab-content">
+             <div id="dashboard-reserva-info">
+                <p style="color: var(--muted); padding: 15px;">Buscando tus reservas...</p>
+             </div>
+          </div>
+        </article>
+        
+        <aside class="right">
+          <article class="card support-card">
+            <div class="card-title"><h2>Instalación Remota</h2></div>
+            <div class="remote-install-content" style="padding-top:0;">
+              <div class="icon-wrapper"><i class="bi bi-shield-check"></i></div>
+              <h3>Soporte Técnico Especializado</h3>
+              <p>Deja la configuración en manos de expertos. Nos conectamos a tu equipo mediante <strong>Google Chrome Remote Desktop</strong> para asegurar una experiencia transparente, encriptada y totalmente privada.</p>
+              
+              <ul class="benefits">
+                <li><i class="bi bi-shield-lock-fill"></i> Conexión de Google 100% segura</li>
+                <li><i class="bi bi-eye-fill"></i> Tú controlas y observas el proceso</li>
+                <li><i class="bi bi-check-circle-fill"></i> Garantía de software operativo</li>
+              </ul>
+              
+              <button class="liquid-btn" onclick="openReservaModal()" style="margin-top: 8px;">
+                <i class="bi bi-calendar2-check"></i> Agendar Sesión
+              </button>
+            </div>
+          </article>
+        </aside>
+      </section>
+      
+      <div class="trust">
+        <span><i class="bi bi-check-circle-fill"></i>Programas verificados</span>
+        <span><i class="bi bi-cloud-arrow-down"></i>Instalación remota</span>
+        <span><i class="bi bi-headset"></i>Soporte técnico</span>
+      </div>
+    </main>
   </div>
-
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
-    <div class="container">
-      <a class="navbar-brand fw-bold fs-4 text-white" href="index.html">
-        <span class="text-accent">D</span>ingloft
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="filter: invert(1);">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-        <ul class="navbar-nav align-items-center">
-          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="#catalogo">Catálogo</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Preguntas</a></li>
-          
-          <li class="nav-item d-lg-none mt-3 w-100" id="mobile-auth-container">
-            <a href="login.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none">
-              <i class="bi bi-person-circle"></i> Iniciar Sesión
-            </a>
-          </li>
-          <li class="nav-item d-lg-none mt-2 w-100">
-            <button class="btn-cyan w-100 cart-btn-global">
-              <i class="bi bi-cart3"></i> Ver Carrito (<span class="cart-badge-count-global">0</span>)
-            </button>
-          </li>
-        </ul>
-      </div>
-      <div class="d-none d-lg-flex align-items-center gap-3">
-        <div id="desktop-auth-container">
-          <a href="login.html" class="text-white text-decoration-none small fw-semibold d-flex align-items-center gap-2" style="transition: color 0.3s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#fff'">
-            <i class="bi bi-person-circle fs-5"></i> Iniciar Sesión
-          </a>
-        </div>
-        <button id="main-cart-btn" class="btn-outline-custom cart-btn-global" style="padding: 6px 15px; font-size: 0.9rem;">
-          <i class="bi bi-cart3"></i> CARRITO (<span class="cart-badge-count-global">0</span>)
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Botón Flotante Universal (Móvil y PC) -->
-  <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
-    <i class="bi bi-cart3 fs-4"></i>
-    <span class="badge-floating cart-badge-count-global">0</span>
-  </button>
-
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="container">
-      <div class="row align-items-center">
-        <!-- Columna Izquierda -->
-        <div class="col-lg-6 mb-5 mb-lg-0">
-          <h1 class="hero-title">Software vitalicio.<br>Trabajo <span class="text-accent">sin límites.</span></h1>
-          
-          <div class="hero-paragraph-container">
-            <p class="mb-4 fs-5 text-white" style="max-width: 480px;">Licencias vitalicias creadas o distribuidas por Dingloft, instalación remota profesional y soporte experto para que trabajes sin interrupciones.</p>
-          </div>
-          
-          <div class="hero-buttons d-flex gap-3 mb-5 flex-wrap">
-            <a href="#catalogo" class="btn-cyan text-decoration-none">Ver catálogo <i class="bi bi-arrow-right"></i></a>
-            <button class="btn-outline-custom">Cómo funciona <i class="bi bi-play-circle"></i></button>
-          </div>
-
-          <div class="feature-container d-flex gap-4">
-            <div class="feature-item d-flex gap-2 align-items-center">
-              <span class="fs-4 text-accent"><i class="bi bi-lightning-charge"></i></span>
-              <div class="text-start">
-                <h6>Entrega rápida</h6>
-                <p>Activación ágil y segura</p>
-              </div>
-            </div>
-            <div class="feature-item d-flex gap-2 align-items-center">
-              <span class="fs-4 text-accent"><i class="bi bi-shield-check"></i></span>
-              <div class="text-start">
-                <h6>Pago seguro</h6>
-                <p>Protegemos tu compra</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Columna Derecha -->
-        <div class="col-lg-6 text-center">
-          <div class="hero-img-box glass-effect">
-            <img src="img/dashboard.png" alt="Workspace Dashboard" onerror="this.src='https://ui-avatars.com/api/?name=Workspace&background=00e5ff&color=000&size=400'">
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Barra de Confianza -->
-  <div class="container text-center" style="margin-top: -30px; position: relative; z-index: 10;">
-    <div class="trust-bar glass-effect">
-      <span><i class="bi bi-patch-check text-success"></i> Licencias vitalicias</span>
-      <span class="text-muted bullet-point" style="color: rgba(255,255,255,0.3) !important;">•</span>
-      <span><i class="bi bi-pc-display text-info"></i> Instalación remota</span>
-      <span class="text-muted bullet-point" style="color: rgba(255,255,255,0.3) !important;">•</span>
-      <span><i class="bi bi-headset text-warning"></i> Soporte especializado</span>
-    </div>
-  </div>
-
-  <!-- Categorías -->
-  <section class="container mt-5 pt-5">
-    <h3 class="section-title text-center text-lg-start">Encuentra la herramienta ideal</h3>
-    <div class="row g-4">
-      <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card glass-effect" onclick="window.location.href='#arquitectura'" style="cursor: pointer;">
-          <h4 class="category-title">Diseño y<br>Arquitectura</h4>
-          <a href="#arquitectura" class="category-link mt-3 mt-lg-0">Ver categoría <i class="bi bi-arrow-right"></i></a>
-        </div>
-      </div>
-      <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card glass-effect" onclick="window.location.href='#oficina'" style="cursor: pointer;">
-          <h4 class="category-title">Oficina y<br>Productividad</h4>
-          <a href="#oficina" class="category-link mt-3 mt-lg-0" style="color: #00ff88;">Ver categoría <i class="bi bi-arrow-right"></i></a>
-        </div>
-      </div>
-      <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card glass-effect" onclick="window.location.href='#audio'" style="cursor: pointer;">
-          <h4 class="category-title">DAWs y<br>Librerías</h4>
-          <a href="#audio" class="category-link mt-3 mt-lg-0" style="color: #ffa600;">Ver categoría <i class="bi bi-arrow-right"></i></a>
-        </div>
-      </div>
-      <div class="col-12 col-sm-6 col-md-3">
-        <div class="category-card glass-effect" onclick="window.location.href='#arquitectura'" style="cursor: pointer;">
-          <h4 class="category-title">Edición<br>y Video</h4>
-          <a href="#arquitectura" class="category-link mt-3 mt-lg-0" style="color: #a200ff;">Ver categoría <i class="bi bi-arrow-right"></i></a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Catálogo Completo Ordenado -->
-  <section id="catalogo" class="container mt-5 pt-4 pb-5">
-    <div class="d-flex justify-content-between align-items-end mb-4">
-      <h3 class="section-title mb-0" style="font-size: 2rem;">Catálogo Completo</h3>
-    </div>
-
-    <!-- SECCIÓN: DISEÑO Y ARQUITECTURA -->
-    <div id="arquitectura" class="category-section mb-5">
-      <h4 class="category-header">
-        <i class="bi bi-vector-pen"></i> Diseño, Arquitectura y Video
-      </h4>
-      <div class="row g-4">
-
-        <div class="col-12 col-lg-6">
-          <div class="product-horizontal glass-effect">
-            <a href="sketchup.html" class="prod-img-box"><img src="img/sketchup.png" alt="SketchUp 2026" onerror="this.src='https://ui-avatars.com/api/?name=Sk&background=00e5ff&color=000'"></a>
-            <div class="prod-info">
-              <div>
-                <a href="sketchup.html" class="prod-title">SketchUp Pro 2026</a>
-                <p class="prod-desc">Modelado 3D profesional y avanzado, ideal para arquitectura y proyectos BIM.</p>
-                <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac (Intel a M5 Max)</div>
-                <div class="mb-2 mt-1">
-                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.9 (312)</span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <div>
-                  <span class="old-price">$60.00</span>
-                  <span class="prod-price">$27.00</span>
-                </div>
-                <button class="btn-add-cart" data-id="2" data-name="SketchUp Pro 2026" data-price="27" data-img="sketchup" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-lg-6">
-          <div class="product-horizontal glass-effect">
-            <a href="autocad.html" class="prod-img-box"><img src="img/autocad.png" alt="AutoCAD 2026" onerror="this.src='https://ui-avatars.com/api/?name=AC&background=00e5ff&color=000'"></a>
-            <div class="prod-info">
-              <div>
-                <a href="autocad.html" class="prod-title">AutoCAD 2026</a>
-                <p class="prod-desc">El estándar de la industria para diseño y dibujo técnico asistido por computadora.</p>
-                <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac (Intel a M5 Max)</div>
-                <div class="mb-2 mt-1">
-                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.9 (641)</span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <div>
-                  <span class="old-price">$100.00</span>
-                  <span class="prod-price">$35.00</span>
-                </div>
-                <button class="btn-add-cart" data-id="5" data-name="AutoCAD 2026" data-price="35" data-img="autocad" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-lg-6">
-          <div class="product-horizontal glass-effect">
-            <a href="cinema4d.html" class="prod-img-box"><img src="img/cinema4d.png" alt="Cinema 4D" onerror="this.src='https://ui-avatars.com/api/?name=C4&background=00e5ff&color=000'"></a>
-            <div class="prod-info">
-              <div>
-                <a href="cinema4d.html" class="prod-title">Cinema 4D</a>
-                <p class="prod-desc">Software profesional de gráficos 3D, animación y renderizado avanzado.</p>
-                <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac (Intel a M5 Max)</div>
-                <div class="mb-2 mt-1">
-                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.8 (190)</span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <div>
-                  <span class="old-price">$300.00</span>
-                  <span class="prod-price">$35.00</span>
-                </div>
-                <button class="btn-add-cart" data-id="6" data-name="Cinema 4D" data-price="35" data-img="cinema4d" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- SECCIÓN: DAWS, LIBRERÍAS Y PLUGINS -->
-    <div id="audio" class="category-section mb-5">
-      <h4 class="category-header" style="color: #ffa600; border-color: rgba(255,166,0,0.2);">
-        <i class="bi bi-sliders"></i> DAWs, Librerías y Plugins
-      </h4>
-      <div class="row g-4">
-        
-        <div class="col-12 col-lg-6">
-          <div class="product-horizontal glass-effect">
-            <a href="dual.html" class="prod-img-box"><img src="img/dual.png" alt="Dual Legends" onerror="this.src='https://ui-avatars.com/api/?name=Du&background=00e5ff&color=000'"></a>
-            <div class="prod-info">
-              <div>
-                <a href="dual.html" class="prod-title">Pianos Legendarios SF2 Bundle</a>
-                <p class="prod-desc">Sample library de Nord + Yamaha en formato SF2 para workstations y móviles.</p>
-                <div class="tech-tag tech-tag-lib"><i class="bi bi-phone"></i> Multiplataforma (iOS, Android, PC)</div>
-                <div class="mb-2 mt-1">
-                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.9 (108)</span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <div>
-                  <span class="old-price">$150.00</span>
-                  <span class="prod-price" style="color: #ffa600;">$60.00</span>
-                </div>
-                <button class="btn-add-cart" style="background: #ffa600;" data-id="9" data-name="Pianos Legendarios SF2 Bundle" data-price="60" data-img="dual" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-lg-6">
-          <div class="product-horizontal glass-effect">
-            <a href="nord.html" class="prod-img-box"><img src="img/nord.png" alt="Nord Stage 4" onerror="this.src='https://ui-avatars.com/api/?name=NS&background=00e5ff&color=000'"></a>
-            <div class="prod-info">
-              <div>
-                <a href="nord.html" class="prod-title">Nord Stage 4 Ultimate Library</a>
-                <p class="prod-desc">Librería definitiva optimizada para Kontakt con samples de alta fidelidad.</p>
-                <div class="tech-tag tech-tag-lib"><i class="bi bi-music-player-fill"></i> Requiere Kontakt (WAV HD)</div>
-                <div class="mb-2 mt-1">
-                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                  <span style="font-size: 0.8rem; color: #f1f5f9;">5.0 (193)</span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <div>
-                  <span class="old-price">$200.00</span>
-                  <span class="prod-price" style="color: #ffa600;">$40.00</span>
-                </div>
-                <button class="btn-add-cart" style="background: #ffa600;" data-id="8" data-name="Nord Stage 4 Ultimate Library" data-price="40" data-img="nord" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-lg-6">
-          <div class="product-horizontal glass-effect">
-            <a href="yamahakeys.html" class="prod-img-box"><img src="img/yamahakeys.png" alt="Yamaha Premium Keys" onerror="this.src='https://ui-avatars.com/api/?name=Ya&background=00e5ff&color=000'"></a>
-            <div class="prod-info">
-              <div>
-                <a href="yamahakeys.html" class="prod-title">Yamaha Premium Keys</a>
-                <p class="prod-desc">Pianos acústicos y eléctricos. Incluye Kontakt 7 completo para Mac y Windows.</p>
-                <div class="tech-tag tech-tag-lib"><i class="bi bi-disc"></i> Incluye Kontakt 7 (Mac y Windows)</div>
-                <div class="mb-2 mt-1">
-                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.9 (160)</span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <div>
-                  <span class="old-price">$100.00</span>
-                  <span class="prod-price" style="color: #ffa600;">$30.00</span>
-                </div>
-                <button class="btn-add-cart" style="background: #ffa600;" data-id="14" data-name="Yamaha Premium Keys" data-price="30" data-img="yamahakeys" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-lg-6">
-          <div class="product-horizontal glass-effect">
-            <a href="cosmos.html" class="prod-img-box"><img src="img/cosmos.png" alt="Cosmos Collection" onerror="this.src='https://ui-avatars.com/api/?name=Co&background=00e5ff&color=000'"></a>
-            <div class="prod-info">
-              <div>
-                <a href="cosmos.html" class="prod-title">Cosmos Collection</a>
-                <p class="prod-desc">Pack de expansión con pads y texturas espaciales de alta calidad.</p>
-                <div class="tech-tag tech-tag-lib"><i class="bi bi-tablet-landscape-fill"></i> Para MusicStudio (iPad)</div>
-                <div class="mb-2 mt-1">
-                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                  <span style="font-size: 0.8rem; color: #f1f5f9;">5.0 (96)</span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <div>
-                  <span class="old-price">$100.00</span>
-                  <span class="prod-price" style="color: #ffa600;">$70.00</span>
-                </div>
-                <button class="btn-add-cart" style="background: #ffa600;" data-id="12" data-name="Cosmos Collection" data-price="70" data-img="cosmos" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-lg-6">
-          <div class="product-horizontal glass-effect">
-            <a href="rhodes.html" class="prod-img-box"><img src="img/rhodes.png" alt="Rhodes Affair 2" onerror="this.src='https://ui-avatars.com/api/?name=Rh&background=00e5ff&color=000'"></a>
-            <div class="prod-info">
-              <div>
-                <a href="rhodes.html" class="prod-title">Rhodes Affair 2</a>
-                <p class="prod-desc">Sonidos de piano eléctrico cálidos y profesionales para tus directos.</p>
-                <div class="tech-tag tech-tag-mac"><i class="bi bi-plugin"></i> Plugin VST/AU para DAWs</div>
-                <div class="mb-2 mt-1">
-                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.9 (142)</span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <div>
-                  <span class="old-price">$100.00</span>
-                  <span class="prod-price" style="color: #ffa600;">$30.00</span>
-                </div>
-                <button class="btn-add-cart" style="background: #ffa600;" data-id="11" data-name="Rhodes Affair 2" data-price="30" data-img="rhodes" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-lg-6">
-          <div class="product-horizontal glass-effect">
-            <a href="mainstage.html" class="prod-img-box"><img src="img/mainstage.png" alt="Montage & Nord" onerror="this.src='https://ui-avatars.com/api/?name=Mo&background=00e5ff&color=000'"></a>
-            <div class="prod-info">
-              <div>
-                <a href="mainstage.html" class="prod-title">Montage 8 & Nord Stage 3</a>
-                <p class="prod-desc">Conciertos configurados en vivo. Ya incluye Apple MainStage para usar.</p>
-                <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Incluye MainStage (Solo Mac M1-M5 Max)</div>
-                <div class="mb-2 mt-1">
-                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                  <span style="font-size: 0.8rem; color: #f1f5f9;">5.0 (210)</span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <div>
-                  <span class="old-price">$65.00</span>
-                  <span class="prod-price" style="color: #ffa600;">$27.00</span>
-                </div>
-                <button class="btn-add-cart" style="background: #ffa600;" data-id="15" data-name="Montage 8 & Nord Stage 3" data-price="27" data-img="mainstage" data-type="Librería vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-lg-6">
-          <div class="product-horizontal glass-effect">
-            <a href="logic.html" class="prod-img-box"><img src="img/logic.png" alt="Logic Pro" onerror="this.src='https://ui-avatars.com/api/?name=Lo&background=00e5ff&color=000'"></a>
-            <div class="prod-info">
-              <div>
-                <a href="logic.html" class="prod-title">Logic Pro</a>
-                <p class="prod-desc">Estación de trabajo de audio digital avanzada para producción, mezcla y masterización.</p>
-                <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac (Intel a M5 Max)</div>
-                <div class="mb-2 mt-1">
-                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.9 (412)</span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <div>
-                  <span class="old-price">$200.00</span>
-                  <span class="prod-price" style="color: #ffa600;">$25.00</span>
-                </div>
-                <button class="btn-add-cart" style="background: #ffa600;" data-id="7" data-name="Logic Pro" data-price="25" data-img="logic" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- SECCIÓN: OFICINA Y PRODUCTIVIDAD -->
-    <div id="oficina" class="category-section mb-5">
-      <h4 class="category-header" style="color: #00ff88; border-color: rgba(0,255,136,0.2);">
-        <i class="bi bi-pc-display-horizontal"></i> Oficina y Productividad
-      </h4>
-      <div class="row g-4">
-        
-        <div class="col-12 col-lg-6">
-          <div class="product-horizontal glass-effect">
-            <a href="office.html" class="prod-img-box"><img src="img/office.png" alt="Office Suite" onerror="this.src='https://ui-avatars.com/api/?name=Of&background=00e5ff&color=000'"></a>
-            <div class="prod-info">
-              <div>
-                <a href="office.html" class="prod-title">Office Home & Business</a>
-                <p class="prod-desc">Productividad completa para todos los días: Word, Excel, PowerPoint y más.</p>
-                <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Solo Mac (Intel a M5 Max)</div>
-                <div class="mb-2 mt-1">
-                  <span class="text-warning" style="font-size: 0.8rem;">★★★★★</span>
-                  <span style="font-size: 0.8rem; color: #f1f5f9;">4.8 (278)</span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <div>
-                  <span class="old-price">$100.00</span>
-                  <span class="prod-price" style="color: #00ff88;">$40.00</span>
-                </div>
-                <button class="btn-add-cart" style="background: #00ff88;" data-id="4" data-name="Office Home & Business" data-price="40" data-img="office" data-type="Licencia vitalicia">Agregar <i class="bi bi-cart-plus"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-lg-6">
-          <div class="product-horizontal glass-effect">
-            <a href="esword.html" class="prod-img-box"><img src="img/esword.png" alt="E-Sword" onerror="this.src='https://ui-avatars.com/api/?name=eS&background=00e5ff&color=000'"></a>
-            <div class="prod-info">
-              <div>
-                <a href="esword.html" class="prod-title">Biblias y Diccionarios para E-Sword</a>
-                <p class="prod-desc">Módulos bíblicos en español listos para instalar. Descarga gratuita.</p>
-                <div class="tech-tag tech-tag-mac"><i class="bi bi-apple"></i> Para e-Sword (Mac e iPad)</div>
-                <div class="mb-2 mt-1">
-                  <span class="text-success" style="font-size: 0.8rem; font-weight: 600;">GRATIS</span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <div>
-                  <span class="prod-price" style="color: #00ff88;">$0.00</span>
-                </div>
-                <button class="btn-add-cart" style="background: #00ff88;" data-id="1" data-name="Biblias E-Sword" data-price="0" data-img="esword" data-type="Descarga gratuita">Obtener <i class="bi bi-download"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </section>
-
-  <!-- Footer -->
-  <footer class="py-4 mt-5 border-top" style="border-color: var(--border-color) !important;">
-    <div class="container text-center">
-      <p class="mb-0 text-white font-weight-bold" style="font-size: 0.9rem;">
-        &copy; 2026 Dingloft - Evolution Group. Todos los derechos reservados.
-      </p>
-    </div>
-  </footer>
-
-  <!-- ====== ESTRUCTURA DEL CARRITO LATERAL Y BLOQUEO IZQUIERDO ====== -->
-  <div class="cart-overlay" id="cart-overlay"></div>
   
-  <div class="cart-brand-watermark">
-    <img src="img/dingloft.png" alt="Dingloft Logo" class="animated-watermark-logo" onerror="this.src='https://ui-avatars.com/api/?name=Dingloft&background=00e5ff&color=000'">
-  </div>
-
-  <div class="cart-drawer" id="cart-drawer">
-    <div class="cart-header">
-      <div>
-        <h4 class="mb-1 text-white" style="font-weight: 600;"><i class="bi bi-cart4"></i> Tu carrito</h4>
-        <span class="text-white" style="font-size: 0.85rem;" id="cart-item-count-text">0 productos</span>
-      </div>
-      <button class="btn-close-cart" id="close-cart-btn"><i class="bi bi-x-lg"></i></button>
-    </div>
-    
-    <div class="cart-items-container" id="cart-items-container">
-      <div class="cart-empty-msg" id="empty-cart-msg">
-        <p>Tu carrito está vacío.</p>
-      </div>
-    </div>
-    
-    <div class="cart-footer">
-      <div class="coupon-box" id="coupon-section" style="display: none;">
-        <input type="text" id="coupon-input" class="coupon-input" placeholder="Código de descuento">
-        <button type="button" id="apply-coupon-btn" class="btn-apply-coupon">Aplicar</button>
-      </div>
-      <div id="coupon-msg" class="coupon-msg" style="display: none;"></div>
-
-      <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;">
-        <span class="text-white">Subtotal</span>
-        <span id="cart-subtotal" class="text-white">$0.00</span>
-      </div>
-      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;">
-        <span class="fs-5 fw-bold text-white">Total</span>
-        <span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span>
-      </div>
+  <div class="liquid-modal-overlay" id="reservasModal">
+    <div class="liquid-modal-card" id="modal-reservas-content">
+      <button class="liquid-close" onclick="closeReservasModal()"><i class="bi bi-x-lg"></i></button>
+      <h3 style="margin: 0 0 4px; font-size: 1.3rem;">Mis Reservas</h3>
+      <p style="color: var(--muted); font-size: 0.83rem; margin: 0 0 15px;">Estado actual de tus instalaciones programadas.</p>
       
-      <div class="text-center mb-3 text-white" style="font-size: 0.85rem; font-weight: 500; display: none;" id="security-badge-box">
-        <i class="bi bi-shield-lock"></i> Pago 100% seguro con PayPal
-      </div>
-      
-      <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;">
-        <div id="paypal-button-container" class="w-100"></div>
-      </div>
-
-      <button id="free-checkout-btn" class="btn-free-checkout mb-3" style="display: none;">
-        Obtener gratis <i class="bi bi-download ms-1"></i>
-      </button>
-
-      <div class="text-center" id="continue-shopping-box" style="display: none;">
-        <a href="#" class="text-accent text-decoration-none" id="continue-shopping">Seguir comprando</a>
-      </div>
+      <div id="modal-reserva-info"></div>
     </div>
   </div>
 
-  <!-- Bootstrap 5 JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <div class="liquid-modal-overlay" id="reservaModal">
+    <div class="liquid-modal-card">
+      <button class="liquid-close" onclick="closeReservaModal()"><i class="bi bi-x-lg"></i></button>
+      <h3 style="margin: 0 0 4px; font-size: 1.3rem;">Reserva tu Sesión de Instalación</h3>
+      <p style="color: var(--muted); font-size: 0.83rem; margin: 0 0 15px;">Selecciona el día y horario que mejor te convenga.</p>
 
-  <!-- Lógica de Firebase Auth y renderizado de PayPal -->
+      <div class="booking-grid">
+        <div class="calendar-box">
+          <div class="calendar-header">
+            <button id="btn-prev-month" class="calendar-nav-btn" onclick="cambiarMes(-1)"><i class="bi bi-chevron-left"></i></button>
+            <h4 id="calendar-month-year">Cargando...</h4>
+            <button class="calendar-nav-btn" onclick="cambiarMes(1)"><i class="bi bi-chevron-right"></i></button>
+          </div>
+          <div class="calendar-days-head">
+            <span>Do</span><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span>
+          </div>
+          <div class="calendar-days-grid" id="calendar-days"></div>
+        </div>
+
+        <div class="times-box">
+          <div class="times-header" id="selected-date-text">Selecciona un día</div>
+          <div class="time-slots-container" id="time-slots-list">
+            <p style="color: var(--muted); font-size: 0.8rem; text-align: center; margin-top: 30px;">Toca un día disponible del calendario para ver las horas.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px; background: rgba(6, 12, 22, 0.4); padding: 20px 22px; border-radius: 20px; border: 1px solid var(--line);">
+        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text); display: block; margin-bottom: 10px;">Software de Conexión preferido:</label>
+        
+        <div class="software-options">
+          <div class="software-btn selected" onclick="seleccionarSoftware('Google Chrome Remote Desktop', this)">
+            <i class="bi bi-browser-chrome" style="font-size: 1.1rem;"></i> Chrome Remote Desktop
+          </div>
+          <div class="software-btn" onclick="seleccionarSoftware('AnyDesk', this)">
+            <i class="bi bi-display" style="font-size: 1.1rem;"></i> AnyDesk
+          </div>
+        </div>
+
+        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text); display: block; margin-bottom: 8px;">¿En qué te ayudamos en esta sesión?:</label>
+        <textarea id="reservaComentario" class="liquid-input" rows="2" placeholder="Ej. Necesito ayuda instalando el Yamaha Premium Keys o el AutoCAD..." style="margin-bottom: 0;"></textarea>
+      </div>
+
+      <div class="booking-footer">
+        <div id="modal-notif"></div>
+
+        <div class="cupon-group">
+          <input type="text" id="cuponInput" placeholder="CÓDIGO DE CUPÓN" class="liquid-input" style="text-transform: uppercase;">
+          <button type="button" class="liquid-btn-cupon" onclick="aplicarCupon()">Aplicar</button>
+        </div>
+
+        <!-- CONTENEDOR DINÁMICO DE PAGO (PAYPAL O GRATIS) -->
+        <div id="payment-buttons-container" style="width: 100%; min-height: 45px;">
+          <button id="btn-pagar-gratis" class="liquid-btn" style="display: none;" onclick="procesarReservaGratis()">
+            <i class="bi bi-check2-circle"></i> Reservar Gratis
+          </button>
+          <div id="paypal-button-container" class="w-100"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
+
+  <script>
+    window.switchTab = function(tab) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-' + tab).classList.add('active');
+        document.getElementById('btn-tab-' + tab).classList.add('active');
+    };
+
+    window.diaSeleccionado = null;
+    window.horaSeleccionada = null;
+    window.softwareSeleccionado = "Google Chrome Remote Desktop";
+    window.precioBase = 10.00;
+    window.precioFinal = 10.00;
+
+    window.openReservasModal = function() {
+      document.getElementById('reservasModal').classList.add('active');
+    };
+
+    window.closeReservasModal = function() {
+      document.getElementById('reservasModal').classList.remove('active');
+    };
+
+    let fechaActual = new Date();
+    let mesActual = fechaActual.getMonth();
+    let anoActual = fechaActual.getFullYear();
+    const fechaReal = new Date();
+    const mesReal = fechaReal.getMonth();
+    const anoReal = fechaReal.getFullYear();
+
+    const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    const horariosDisponibles = ["01:00 AM (Miami/EST)", "02:00 AM (Miami/EST)", "03:00 AM (Miami/EST)", "04:00 AM (Miami/EST)", "05:00 AM (Miami/EST)", "06:00 AM (Miami/EST)", "07:00 AM (Miami/EST)"];
+
+    function pseudoRandom(seed) {
+        let x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+    }
+
+    window.horaYaPaso = function(horaStr, fechaElegida) {
+        let ahora = new Date(); 
+        let match = horaStr.match(/(\d+):(\d+)\s(AM|PM)/);
+        let hMiami = parseInt(match[1]);
+        if (match[3] === 'PM' && hMiami < 12) hMiami += 12;
+        if (match[3] === 'AM' && hMiami === 12) hMiami = 0;
+        
+        let hGuate = hMiami - 2;
+        let diaAjuste = 0;
+        if (hGuate < 0) {
+            hGuate += 24;
+            diaAjuste = -1; 
+        }
+        
+        let fechaSlot = new Date(fechaElegida);
+        fechaSlot.setDate(fechaSlot.getDate() + diaAjuste);
+        fechaSlot.setHours(hGuate, 0, 0, 0);
+        
+        return fechaSlot <= ahora;
+    };
+
+    function actualizarBotonRetroceso() {
+      const btnPrev = document.getElementById('btn-prev-month');
+      if (anoActual < anoReal || (anoActual === anoReal && mesActual <= mesReal)) {
+        btnPrev.classList.add('disabled');
+      } else {
+        btnPrev.classList.remove('disabled');
+      }
+    }
+
+    function renderizarCalendario() {
+      const headerTitle = document.getElementById('calendar-month-year');
+      const grid = document.getElementById('calendar-days');
+      
+      headerTitle.textContent = `${nombresMeses[mesActual]} ${anoActual}`;
+      grid.innerHTML = '';
+
+      const primerDiaMes = new Date(anoActual, mesActual, 1).getDay();
+      const totalDiasMes = new Date(anoActual, mesActual + 1, 0).getDate();
+      const hoy = new Date();
+      hoy.setHours(0,0,0,0);
+
+      for(let i = 0; i < primerDiaMes; i++) {
+        grid.innerHTML += `<div class="day-cell empty"></div>`;
+      }
+
+      for(let dia = 1; dia <= totalDiasMes; dia++) {
+        const fechaEvaluar = new Date(anoActual, mesActual, dia);
+        fechaEvaluar.setHours(0,0,0,0);
+
+        let esPasado = fechaEvaluar < hoy;
+        let diaSemana = fechaEvaluar.getDay();
+        let esFinDeSemana = (diaSemana === 0 || diaSemana === 6); 
+        let esSeleccionado = window.diaSeleccionado && window.diaSeleccionado.getDate() === dia && window.diaSeleccionado.getMonth() === mesActual && window.diaSeleccionado.getFullYear() === anoActual;
+
+        if (esPasado) {
+          grid.innerHTML += `<div class="day-cell disabled" title="Día pasado">${dia}</div>`;
+        } else if (esFinDeSemana) {
+          grid.innerHTML += `<div class="day-cell disabled" style="opacity: 0.3;" title="Fin de semana (No laboral)">${dia}</div>`;
+        } else {
+          grid.innerHTML += `<div class="day-cell available ${esSeleccionado ? 'selected' : ''}" onclick="seleccionarDia(${dia})">${dia}</div>`;
+        }
+      }
+      actualizarBotonRetroceso();
+    }
+
+    window.cambiarMes = function(delta) {
+      let nuevoMes = mesActual + delta;
+      let nuevoAno = anoActual;
+      if (nuevoMes < 0) { nuevoMes = 11; nuevoAno--; } else if (nuevoMes > 11) { nuevoMes = 0; nuevoAno++; }
+      if (nuevoAno < anoReal || (nuevoAno === anoReal && nuevoMes < mesReal)) return; 
+      mesActual = nuevoMes; anoActual = nuevoAno;
+      renderizarCalendario();
+    }
+
+    window.seleccionarDia = function(dia) {
+      window.diaSeleccionado = new Date(anoActual, mesActual, dia);
+      window.horaSeleccionada = null;
+      renderizarCalendario();
+      
+      const headerText = document.getElementById('selected-date-text');
+      const slotsContainer = document.getElementById('time-slots-list');
+      const opcionesFecha = { weekday: 'short', month: 'short', day: 'numeric' };
+      headerText.textContent = window.diaSeleccionado.toLocaleDateString('es-ES', opcionesFecha);
+
+      slotsContainer.innerHTML = '';
+      let seed = anoActual * 10000 + mesActual * 100 + dia;
+
+      horariosDisponibles.forEach((hora, index) => {
+        let yaPaso = window.horaYaPaso(hora, window.diaSeleccionado);
+        let ocupado = pseudoRandom(seed + index) < 0.40;
+
+        if (yaPaso) {
+          slotsContainer.innerHTML += `<div class="time-slot sold-out" title="Horario finalizado">${hora} - Finalizado</div>`;
+        } else if (ocupado) {
+          slotsContainer.innerHTML += `<div class="time-slot sold-out" title="Horario ocupado">${hora} - Agotado</div>`;
+        } else {
+          slotsContainer.innerHTML += `<div class="time-slot" onclick="seleccionarHora('${hora}', this)">${hora}</div>`;
+        }
+      });
+    }
+
+    window.seleccionarHora = function(hora, elemento) {
+      window.horaSeleccionada = hora;
+      document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
+      elemento.classList.add('selected');
+    }
+
+    window.seleccionarSoftware = function(software, elemento) {
+      window.softwareSeleccionado = software;
+      document.querySelectorAll('.software-btn').forEach(btn => btn.classList.remove('selected'));
+      elemento.classList.add('selected');
+    }
+
+    window.aplicarCupon = function() {
+      const codigo = document.getElementById('cuponInput').value.trim().toUpperCase();
+      let cuponesValidos = { "DINGLOFT5": 5.00, "VIP": 10.00, "INSTALA30": 3.00 };
+      
+      const hoyString = new Date().toISOString().split('T')[0];
+      if (hoyString === "2026-08-04" && codigo === "PRUEBAGRATIS") {
+          cuponesValidos["PRUEBAGRATIS"] = 10.00;
+      }
+
+      if (cuponesValidos[codigo] !== undefined) {
+        let descuento = cuponesValidos[codigo];
+        window.precioFinal = Math.max(0, window.precioBase - descuento);
+        
+        const btnGratis = document.getElementById('btn-pagar-gratis');
+        const btnPaypal = document.getElementById('paypal-button-container');
+
+        if (window.precioFinal === 0) {
+           btnPaypal.style.display = 'none';
+           btnGratis.style.display = 'flex';
+        } else {
+           btnGratis.style.display = 'none';
+           btnPaypal.style.display = 'block';
+           if(typeof window.renderPayPalReserva === 'function') window.renderPayPalReserva();
+        }
+
+        window.mostrarAlertaModal("¡Cupón aplicado con éxito!", true);
+      } else {
+        window.mostrarAlertaModal("Cupón inválido o expirado.", false);
+      }
+    };
+
+    window.mostrarAlertaModal = function(mensaje, esExito) {
+      const notif = document.getElementById('modal-notif');
+      notif.style.display = 'block';
+      notif.style.background = esExito ? 'rgba(53,221,146,.15)' : 'rgba(255,80,80,.15)';
+      notif.style.color = esExito ? 'var(--green)' : '#ff5050';
+      notif.style.border = `1px solid ${esExito ? 'rgba(53,221,146,.4)' : 'rgba(255,80,80,.4)'}`;
+      notif.innerHTML = esExito ? `<i class="bi bi-check-circle-fill"></i> ${mensaje}` : `<i class="bi bi-exclamation-triangle-fill"></i> ${mensaje}`;
+      setTimeout(() => { notif.style.display = 'none'; }, 4000);
+    }
+
+    window.openReservaModal = function() {
+      document.getElementById('reservaModal').classList.add('active');
+      renderizarCalendario();
+      if(typeof window.renderPayPalReserva === 'function' && window.precioFinal > 0) {
+          window.renderPayPalReserva();
+      }
+    };
+
+    window.closeReservaModal = function() {
+      document.getElementById('reservaModal').classList.remove('active');
+    };
+
+    window.toggleBundle = function(element) {
+      const container = element.parentElement;
+      const subs = container.querySelector('.sub-downloads');
+      const btn = element.querySelector('.toggle-btn');
+      subs.classList.toggle('active');
+      btn.classList.toggle('active');
+      element.classList.toggle('active');
+    };
+  </script>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, query, where, getDocs, addDoc, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
@@ -996,417 +552,506 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    function mostrarModalExito(mensaje) {
-      const modal = document.getElementById('success-modal');
-      const text = document.getElementById('success-modal-text');
-      if (text && mensaje) text.textContent = mensaje;
-      if (modal) modal.classList.add('active');
-    }
+    const downloadLinksMap = {
+      "AutoCAD 2026": "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase",
+      "Microsoft Office 2024": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
+      "Office Home & Business": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
+      "SketchUp Pro 2026": "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD",
+      "Cosmo Collection": "https://drive.google.com/uc?export=download&id=1Z3Xk2MiDMk90PP2jajvVwG3bWHUmSzeL",
+      "Montage 8 & Nord Stage 3": "https://drive.google.com/uc?export=download&id=1OayW_WEpr6Y3Ea5e9wVBC7kLpDptRJA1",
+      "Biblias E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo",
+      "Biblias y Diccionarios para E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo"
+    };
+
+    const bundlesMap = {
+      "Dual Legend": [
+        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
+        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
+        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
+      ],
+      "Dual Legends": [
+        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
+        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
+        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
+      ],
+      "Dual Legend SF2": [
+        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
+        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
+        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
+      ],
+      "Dual Legends SF2": [
+        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
+        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
+        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
+      ],
+      "Nord Essentials SF2 Collection": [
+        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
+        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
+      ],
+      "Nord Stage 4 Ultimate Library": [
+        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
+        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
+      ],
+      "Yamaha Legacy Collection SF2": [
+        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
+        { name: "Bonus", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
+      ],
+      "Yamaha Premium Keys": [
+        { name: "Yamaha Premium Keys v2.0", url: "https://drive.google.com/uc?export=download&id=1r7yW_100iqzQTY7K96Yv05jvFCgq2Abw" },
+        { name: "Yamaha Premium Keys (Bonus)", url: "https://drive.google.com/uc?export=download&id=1I73jq9Baj9uJi0-RHpUCvX-X5dwGOJcd" },
+        { name: "Yamaha Premium Keys (Bonus 2)", url: "https://drive.google.com/uc?export=download&id=1_ubpxmpvlHTCKO6Wdbpjpys-YLVQkEs6" },
+        { name: "Kontakt 8 (Win)", url: "https://drive.google.com/uc?export=download&id=1Wg895Pq8em6h-vGLIy0C-2vDFGZURFSl" },
+        { name: "Kontakt 7 (Mac)", url: "https://drive.google.com/uc?export=download&id=13deJgVvPCi6haaLXET3qV2K7mQ_ojMA2" }
+      ],
+      "Rhodes Affair 2": [
+        { name: "Rhodes Affair 2 (Mac)", url: "https://drive.google.com/uc?export=download&id=1B6dfQJjCh0vzOAuf6eTtuKQ91EAhfFKY" },
+        { name: "Rhodes Affair 2 (Windows)", url: "https://drive.google.com/uc?export=download&id=1C2Lj_8jMqRLdjdd1O4jSdOQYwrDayJx_" }
+      ],
+      "SketchUp 2026 & AutoCAD 2026": [
+        { name: "Sketchup (Mac)", url: "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD" },
+        { name: "AutoCAD (Mac)", url: "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase" }
+      ],
+      "SketchUp & AutoCAD Combo": [
+        { name: "Sketchup (Mac)", url: "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD" },
+        { name: "AutoCAD (Mac)", url: "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase" }
+      ]
+    };
 
     onAuthStateChanged(auth, async (user) => {
-      const desktopAuthContainer = document.getElementById('desktop-auth-container');
-      const mobileAuthContainer = document.getElementById('mobile-auth-container');
-
       if (user) {
-        let displayName = "Usuario";
-        if (user.displayName) {
-          displayName = user.displayName.split(' ')[0];
-        } else if (user.email) {
-          displayName = user.email.split('@')[0];
+        let isAdmin = false;
+        if (user.email === 'evolutiongt01@gmail.com' || user.email === 'tepaz2025@gmail.com') {
+          document.getElementById('btn-admin').style.display = 'flex';
+          isAdmin = true;
         }
+
+        let displayName = user.displayName || user.email.split('@')[0];
+        let firstName = displayName.split(' ')[0];
+
+        document.getElementById('welcome-name').textContent = firstName;
+        document.getElementById('sidebar-name').textContent = displayName;
+        document.getElementById('sidebar-email').textContent = user.email;
 
         let avatarHtml = '';
         if (user.photoURL) {
-          avatarHtml = `<img src="${user.photoURL}" alt="Perfil" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">`;
+          avatarHtml = `<img src="${user.photoURL}" alt="Perfil" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
         } else {
-          const initial = displayName.charAt(0).toUpperCase();
-          avatarHtml = `<div style="width: 28px; height: 28px; border-radius: 50%; background: var(--accent-color); color: #000; display: grid; place-items: center; font-weight: bold; font-size: 14px;">${initial}</div>`;
+          const initial = firstName.charAt(0).toUpperCase();
+          avatarHtml = `<div style="width: 100%; height: 100%; display: grid; place-items: center; font-size: 1.2rem;">${initial}</div>`;
+        }
+        document.getElementById('sidebar-avatar').innerHTML = avatarHtml;
+        document.getElementById('top-avatar').innerHTML = avatarHtml;
+
+        function pintarReservaUI(htmlData) {
+            document.getElementById('dashboard-reserva-info').innerHTML = htmlData;
+            document.getElementById('modal-reserva-info').innerHTML = htmlData;
         }
 
-        if (desktopAuthContainer) {
-          desktopAuthContainer.innerHTML = `
-            <a href="account.html" class="text-white text-decoration-none small fw-semibold d-flex align-items-center gap-2" style="transition: color 0.3s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#fff'">
-              ${avatarHtml} Hola, ${displayName}
-            </a>
-          `;
+        function verificarDesbloqueo() {
+            let ahora = Date.now();
+            if(!window.misReservasData) return;
+            window.misReservasData.forEach(reserva => {
+                if(reserva.estado === 'completado' || reserva.codigoAcceso) return;
+
+                let faltanMs = reserva.timestampReserva - ahora;
+                let faltanMinutos = faltanMs / 1000 / 60;
+
+                document.querySelectorAll(`.texto-espera-codigo[data-id="${reserva.id}"]`).forEach(el => {
+                    const formCodigo = el.nextElementSibling;
+                    if (faltanMinutos <= 5 && faltanMinutos >= -60) {
+                        el.style.display = 'none';
+                        formCodigo.style.display = 'block';
+                    } else if (faltanMinutos > 5) {
+                        let hrs = Math.floor(faltanMinutos / 60);
+                        let mns = Math.floor(faltanMinutos % 60);
+                        let tiempoTxt = hrs > 0 ? `${hrs} hrs y ${mns} min` : `${mns} min`;
+                        
+                        el.innerHTML = `<i class="bi bi-clock-history"></i> El campo para ingresar tu código se habilitará 5 minutos antes de tu sesión (Faltan aprox. ${tiempoTxt}).`;
+                        el.style.display = 'block';
+                        formCodigo.style.display = 'none';
+                    } else {
+                         el.innerHTML = `<i class="bi bi-x-circle"></i> Tu tiempo de sesión ha expirado o finalizado.`;
+                         formCodigo.style.display = 'none';
+                    }
+                });
+            });
         }
 
-        if (mobileAuthContainer) {
-          mobileAuthContainer.innerHTML = `
-            <a href="account.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none d-flex align-items-center justify-content-center gap-2">
-              ${avatarHtml} Mi Cuenta
-            </a>
-          `;
+        async function cargarMisReservas() {
+          try {
+            const qReservas = query(collection(db, "reservas"), where("uid", "==", user.uid));
+            const reservasSnap = await getDocs(qReservas);
+            
+            if (!reservasSnap.empty) {
+              let reservasArray = [];
+              reservasSnap.forEach(d => reservasArray.push({ id: d.id, ...d.data() }));
+              
+              reservasArray.sort((a, b) => b.timestampReserva - a.timestampReserva);
+              window.misReservasData = reservasArray;
+              
+              let htmlTotal = '';
+
+              reservasArray.forEach(miReservaData => {
+                  let miReservaId = miReservaData.id;
+                  let estadoHTML = miReservaData.estado === "completado" 
+                      ? `<span style="background: rgba(18, 215, 246, 0.15); color: var(--cyan); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(18, 215, 246, 0.3);">Completado <i class="bi bi-check-all"></i></span>`
+                      : `<span style="background: rgba(53, 221, 146, 0.15); color: var(--green); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(53, 221, 146, 0.3);">Pendiente</span>`;
+
+                  let btnEliminar = isAdmin ? `<button onclick="eliminarReserva('${miReservaId}')" style="margin-top: 15px; width: 100%; padding: 10px; background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.4); color: #ff5050; border-radius: 8px; cursor: pointer; font-weight: 600;"><i class="bi bi-trash"></i> Cancelar / Eliminar Reserva (Solo Admin)</button>` : '';
+
+                  let baseHTML = `
+                    <div style="background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin-bottom: 18px;">
+                      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 12px;">
+                        <strong style="color: var(--cyan);"><i class="bi bi-calendar-check"></i> Instalación Remota</strong>
+                        <div>${estadoHTML}</div>
+                      </div>
+                      
+                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.85rem; color: #c4d0df;">
+                        <div>
+                          <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Fecha programada</span>
+                          <strong style="color: white;">${miReservaData.fecha}</strong>
+                        </div>
+                        <div>
+                          <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Hora (EST/Miami)</span>
+                          <strong style="color: white;">${miReservaData.hora}</strong>
+                        </div>
+                      </div>
+
+                      <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Vía de conexión seleccionada</span>
+                        <strong style="color: white; font-size: 0.85rem;"><i class="bi bi-display"></i> ${miReservaData.software}</strong>
+                      </div>
+
+                      <div style="margin-top: 10px;">
+                        <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Comentarios de la sesión</span>
+                        <p style="color: #c4d0df; font-size: 0.82rem; margin: 0; line-height: 1.5; background: rgba(0,0,0,0.2); padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03);">${miReservaData.comentario || 'Sin comentarios.'}</p>
+                      </div>
+                  `;
+
+                  if (miReservaData.estado !== "completado") {
+                      if (miReservaData.codigoAcceso) {
+                          baseHTML += `
+                            <div style="margin-top: 18px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); text-align: center;">
+                              <p style="color: var(--green); font-size: 0.8rem; margin: 0;"><i class="bi bi-check-circle-fill"></i> Código enviado exitosamente: <b>${miReservaData.codigoAcceso}</b></p>
+                            </div>
+                          `;
+                      } else {
+                          baseHTML += `
+                            <div style="margin-top: 18px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); text-align: center;">
+                              <p style="font-size: 0.8rem; color: var(--muted); margin: 0;" class="texto-espera-codigo" data-id="${miReservaId}">
+                                Calculando tiempo...
+                              </p>
+                              <div class="formulario-codigo" style="display: none; background: rgba(18, 215, 246, 0.05); border: 1px solid rgba(18, 215, 246, 0.2); padding: 14px; border-radius: 12px;">
+                                <label style="font-size: 0.82rem; color: var(--cyan); display: block; margin-bottom: 8px; font-weight: 600; text-align: left;">¡Es hora! Pega tu Código / Enlace aquí:</label>
+                                <div style="display: flex; gap: 8px;">
+                                  <input type="text" class="liquid-input codigo-input-${miReservaId}" placeholder="Ej. 123 456 789" style="margin-bottom: 0;">
+                                  <button class="liquid-btn-cupon" onclick="enviarCodigo('${miReservaId}')" style="padding: 0 18px; font-weight: 800;">Enviar</button>
+                                </div>
+                              </div>
+                            </div>
+                          `;
+                      }
+                  }
+
+                  baseHTML += `${btnEliminar}</div>`;
+                  htmlTotal += baseHTML;
+              });
+
+              pintarReservaUI(htmlTotal);
+              verificarDesbloqueo();
+              setInterval(verificarDesbloqueo, 30000); 
+
+            } else {
+               pintarReservaUI('<div style="padding: 20px; text-align: center;"><i class="bi bi-calendar-x" style="font-size: 2rem; color: var(--muted);"></i><p style="color: var(--muted); margin-top: 10px;">Aún no tienes reservas activas. Utiliza el botón Agendar Sesión.</p></div>');
+            }
+          } catch (error) {
+            console.error("Error leyendo reservas:", error);
+          }
         }
 
-        // Comprobación de compras
+        await cargarMisReservas();
+
+        window.enviarCodigo = async function(id) {
+            const inputs = document.querySelectorAll('.codigo-input-' + id);
+            let codigo = '';
+            inputs.forEach(input => { if(input.value) codigo = input.value; });
+            
+            if(!codigo) return;
+            
+            try {
+                await updateDoc(doc(db, "reservas", id), { codigoAcceso: codigo });
+                window.mostrarAlertaModal("Código enviado correctamente al administrador", true);
+                await cargarMisReservas(); 
+            } catch(e) {
+                console.error(e);
+                window.mostrarAlertaModal("Error enviando el código", false);
+            }
+        };
+
+        window.eliminarReserva = async function(id) {
+            if(!confirm("¿Estás seguro de eliminar esta reserva permanentemente?")) return;
+            try {
+                await deleteDoc(doc(db, "reservas", id));
+                window.mostrarAlertaModal("Reserva eliminada exitosamente.", true);
+                await cargarMisReservas();
+            } catch(e) {
+                console.error(e);
+                window.mostrarAlertaModal("Error eliminando reserva.", false);
+            }
+        }
+
+        // --- SISTEMA DE PAGO Y RESERVAS A FIREBASE ---
+        
+        window.procesarReservaFirebase = async function(paypalOrderId = null, payerName = null) {
+          const comentario = document.getElementById('reservaComentario').value;
+          const fechaFormateada = window.diaSeleccionado.toLocaleDateString('es-ES', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+          
+          let matches = window.horaSeleccionada.match(/(\d+):(\d+)\s(AM|PM)/);
+          let hour = parseInt(matches[1]);
+          if (matches[3] === 'PM' && hour < 12) hour += 12;
+          if (matches[3] === 'AM' && hour === 12) hour = 0;
+          
+          let monthStr = String(window.diaSeleccionado.getMonth() + 1).padStart(2, '0');
+          let dayStr = String(window.diaSeleccionado.getDate()).padStart(2, '0');
+          let yearStr = window.diaSeleccionado.getFullYear();
+          let hourStr = String(hour).padStart(2, '0');
+          let isoString = `${yearStr}-${monthStr}-${dayStr}T${hourStr}:00:00-04:00`;
+          let timestampCalculado = new Date(isoString).getTime();
+
+          try {
+            await addDoc(collection(db, "reservas"), {
+              uid: user.uid,
+              email: user.email,
+              fecha: fechaFormateada,
+              hora: window.horaSeleccionada,
+              software: window.softwareSeleccionado,
+              comentario: comentario,
+              estado: "pendiente",
+              timestampReserva: timestampCalculado,
+              montoPagado: window.precioFinal,
+              paypalOrderId: paypalOrderId || "GRATIS",
+              creado: serverTimestamp()
+            });
+
+            window.closeReservaModal();
+            window.mostrarAlertaModal(`¡Reserva creada con éxito!`, true);
+
+            setTimeout(async () => {
+              window.switchTab('reserva'); 
+              await cargarMisReservas();   
+            }, 500);
+
+          } catch (e) {
+            console.error(e);
+            window.mostrarAlertaModal("Error en base de datos al guardar reserva.", false);
+          }
+        };
+
+        // INTEGRACIÓN PAYPAL PARA EL MODAL DE RESERVA
+        window.renderPayPalReserva = function() {
+            const container = document.getElementById('paypal-button-container');
+            if (!container) return;
+            container.innerHTML = ''; 
+
+            if (typeof paypal === 'undefined') return;
+
+            paypal.Buttons({
+                style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
+                onClick: function(data, actions) {
+                    const comentario = document.getElementById('reservaComentario').value;
+                    if(!window.diaSeleccionado || !window.horaSeleccionada) {
+                        window.mostrarAlertaModal("Selecciona un día y un horario libre primero.", false);
+                        return actions.reject();
+                    }
+                    if(comentario.trim() === "") {
+                        window.mostrarAlertaModal("Por favor cuéntanos brevemente en qué te ayudamos.", false);
+                        return actions.reject();
+                    }
+                    return actions.resolve();
+                },
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{ amount: { value: window.precioFinal.toFixed(2) } }]
+                    });
+                },
+                onApprove: async function(data, actions) {
+                    return actions.order.capture().then(async function(details) {
+                        // Una vez aprobado el pago, guardamos en firebase
+                        window.procesarReservaFirebase(details.id, details.payer.name.given_name);
+                    });
+                },
+                onError: function(err) {
+                    console.error("Error con PayPal:", err);
+                    window.mostrarAlertaModal("Ocurrió un error al procesar el pago con PayPal.", false);
+                }
+            }).render('#paypal-button-container');
+        };
+
+        // Procesar reserva si es de $0.00 (Botón Celeste)
+        window.procesarReservaGratis = function() {
+            const comentario = document.getElementById('reservaComentario').value;
+            if(!window.diaSeleccionado || !window.horaSeleccionada) {
+                window.mostrarAlertaModal("Selecciona un día y un horario libre primero.", false);
+                return;
+            }
+            if(comentario.trim() === "") {
+                window.mostrarAlertaModal("Por favor cuéntanos brevemente en qué te ayudamos.", false);
+                return;
+            }
+            
+            const btnGratis = document.getElementById('btn-pagar-gratis');
+            btnGratis.innerHTML = '<i class="bi bi-arrow-repeat" style="animation: spin 1s linear infinite;"></i> Procesando...';
+            btnGratis.style.pointerEvents = 'none';
+
+            window.procesarReservaFirebase();
+            
+            setTimeout(() => {
+                btnGratis.innerHTML = `<i class="bi bi-check2-circle"></i> Reservar Gratis`;
+                btnGratis.style.pointerEvents = 'auto';
+            }, 2000);
+        };
+
+
+        const downloadsContainer = document.getElementById('downloads-container');
         try {
           const q = query(collection(db, "purchases"), where("uid", "==", user.uid));
-          const snapshot = await getDocs(q);
-          let purchasedNames = [];
-          snapshot.forEach(docSnap => {
-            const data = docSnap.data();
-            if (data.items && Array.isArray(data.items)) {
-              data.items.forEach(item => purchasedNames.push(item.name));
-            }
-          });
+          const querySnapshot = await getDocs(q);
 
-          const buyButtons = document.querySelectorAll('.btn-add-cart');
-          buyButtons.forEach(btn => {
-            const prodName = btn.getAttribute('data-name');
-            if (purchasedNames.includes(prodName)) {
-              btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> OBTENIDO';
-              btn.style.background = 'rgba(0, 255, 136, 0.1)';
-              btn.style.color = '#00ff88';
-              btn.style.border = '1px solid rgba(0, 255, 136, 0.4)';
-              btn.disabled = true;
-            }
+          let totalProgramas = 0;
+          downloadsContainer.innerHTML = '';
+
+          if (querySnapshot.empty) {
+            downloadsContainer.innerHTML = '<p style="color: var(--muted); padding: 15px;">Aún no tienes programas comprados.</p>';
+          } else {
+            downloadsContainer.innerHTML = `
+              <div style="background: rgba(53,221,146,0.08); border: 1px solid rgba(53,221,146,0.3); border-radius: 15px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: center; gap: 15px;">
+                <i class="bi bi-stopwatch" style="color: var(--green); font-size: 1.8rem;"></i>
+                <div>
+                  <strong style="color: var(--green); display: block; font-size: 0.95rem;">Descuento desbloqueado por tu compra</strong>
+                  <span style="font-size: 0.82rem; color: #c4d0df;">Usa el código <b style="color: white; background: #0c1421; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--cyan); letter-spacing: 1px;">INSTALA30</b> para un 30% OFF en Instalación Remota. (Válido por 12 hrs)</span>
+                </div>
+              </div>
+            `;
+
+            querySnapshot.forEach((docSnap) => {
+              const compra = docSnap.data();
+              const items = compra.items || [];
+              
+              items.forEach(producto => {
+                totalProgramas++;
+                let nombreProd = producto.name || producto;
+                let imgProd = producto.img || "autocad"; 
+                let typeProd = producto.type || 'Instalador digital';
+                
+                if(typeof producto === 'string') {
+                    const prodLower = producto.toLowerCase();
+                    if(prodLower.includes("sketchup")) imgProd = "sketchup";
+                    else if(prodLower.includes("logic")) imgProd = "logic";
+                    else if(prodLower.includes("twinmotion")) imgProd = "twinmotion";
+                    else if(prodLower.includes("office")) imgProd = "office";
+                    else if(prodLower.includes("cinema")) imgProd = "cinema4d";
+                }
+
+                if (bundlesMap[nombreProd]) {
+                  let subHTML = '';
+                  bundlesMap[nombreProd].forEach(subItem => {
+                    subHTML += `
+                      <div class="sub-download-row">
+                        <div><i class="bi bi-file-earmark-zip"></i> ${subItem.name}</div>
+                        <button class="download-btn-small" data-url="${subItem.url}" data-product="${subItem.name}" aria-label="Descargar ${subItem.name}">
+                          <i class="bi bi-download"></i>
+                        </button>
+                      </div>
+                    `;
+                  });
+
+                  const bundleHTML = `
+                    <div class="bundle-container">
+                      <div class="download-row has-subs" style="cursor:pointer;" onclick="toggleBundle(this)">
+                        <div class="product-art"><img src="img/${imgProd}.png" alt="${nombreProd}"></div>
+                        <div>
+                          <h3>${nombreProd}</h3>
+                          <p>${typeProd} (Pack de ${bundlesMap[nombreProd].length} archivos)</p>
+                          <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso vitalicio</span>
+                        </div>
+                        <button class="toggle-btn" aria-label="Ver archivos del paquete">
+                          <i class="bi bi-chevron-down"></i>
+                        </button>
+                      </div>
+                      <div class="sub-downloads">
+                        ${subHTML}
+                      </div>
+                    </div>
+                  `;
+                  downloadsContainer.insertAdjacentHTML('beforeend', bundleHTML);
+
+                } else {
+                  let directLink = producto.downloadUrl || downloadLinksMap[nombreProd] || "https://drive.google.com";
+                  
+                  const singleHTML = `
+                    <div class="download-row">
+                      <div class="product-art"><img src="img/${imgProd}.png" alt="${nombreProd}"></div>
+                      <div>
+                        <h3>${nombreProd}</h3>
+                        <p>${typeProd}</p>
+                        <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso vitalicio</span>
+                      </div>
+                      <button class="download-btn" data-url="${directLink}" data-product="${nombreProd}" aria-label="Descargar ${nombreProd}">
+                        <i class="bi bi-download"></i>
+                      </button>
+                    </div>
+                  `;
+                  downloadsContainer.insertAdjacentHTML('beforeend', singleHTML);
+                }
+              });
+            });
+          }
+          document.getElementById('stat-programas').textContent = totalProgramas; 
+
+          const toast = document.getElementById('toast-message');
+          document.querySelectorAll('.download-btn, .download-btn-small').forEach(button => {
+            button.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              
+              const url = button.getAttribute('data-url') + '&confirm=t';
+              const productName = button.getAttribute('data-product');
+
+              toast.textContent = `Procesando la descarga de ${productName}...`;
+              toast.classList.add('show');
+              setTimeout(() => toast.classList.remove('show'), 3500);
+
+              const width = 600;
+              const height = 450;
+              const left = (window.innerWidth / 2) - (width / 2);
+              const top = (window.innerHeight / 2) - (height / 2);
+              
+              const popup = window.open(
+                url, 
+                'DescargaSegura', 
+                `width=${width},height=${height},top=${top},left=${left},toolbar=no,menubar=no,location=no,status=no`
+              );
+
+              setTimeout(() => {
+                if (popup && !popup.closed) {
+                  popup.close();
+                  toast.textContent = `Descarga iniciada. Revisa tu navegador.`;
+                  toast.classList.add('show');
+                  setTimeout(() => toast.classList.remove('show'), 3000);
+                }
+              }, 12000);
+            });
           });
-        } catch (err) {
-          console.error("Error al verificar compras previas:", err);
+        } catch(error) {
+          console.error(error);
         }
+      } else {
+        window.location.href = 'login.html';
       }
     });
 
-    window.renderPayPalStable = function(monto) {
-        const container = document.getElementById('paypal-button-container');
-        if (!container) return;
-        container.innerHTML = ''; 
-
-        if (typeof paypal === 'undefined') return;
-
-        paypal.Buttons({
-          style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
-          createOrder: function(data, actions) {
-            return actions.order.create({
-              purchase_units: [{ amount: { value: monto.toFixed(2) } }]
-            });
-          },
-          onApprove: async function(data, actions) {
-            return actions.order.capture().then(async function(details) {
-              const user = auth.currentUser;
-              if (!user) {
-                alert("Debes iniciar sesión para registrar tus programas en tu cuenta.");
-                window.location.href = 'login.html';
-                return;
-              }
-
-              try {
-                const itemsComprados = window.cartItemsList || [];
-                await addDoc(collection(db, "purchases"), {
-                  uid: user.uid,
-                  userEmail: user.email,
-                  paypalOrderId: details.id,
-                  payerName: details.payer.name.given_name,
-                  items: itemsComprados,
-                  createdAt: serverTimestamp()
-                });
-
-                if (typeof window.clearCart === 'function') window.clearCart();
-                mostrarModalExito(`¡Pago exitoso, ${details.payer.name.given_name}! Redirigiendo a tu cuenta...`);
-                setTimeout(() => { window.location.href = 'account.html'; }, 2200);
-
-              } catch (error) {
-                console.error("Error guardando la compra en Firestore:", error);
-                alert("El pago en PayPal se realizó, pero ocurrió un error al guardar tus programas. Contacta a soporte.");
-              }
-            });
-          },
-          onError: function(err) {
-            console.error("Error con PayPal:", err);
-            alert("Ocurrió un error al procesar el pago con PayPal.");
-          }
-        }).render('#paypal-button-container');
-    };
-
-    const freeCheckoutBtn = document.getElementById('free-checkout-btn');
-    if(freeCheckoutBtn){
-      freeCheckoutBtn.addEventListener('click', async () => {
-        const user = auth.currentUser;
-        if (!user) {
-          alert("Debes iniciar sesión para descargar este programa.");
-          window.location.href = 'login.html';
-          return;
-        }
-
-        try {
-          const itemsComprados = window.cartItemsList || [];
-          freeCheckoutBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 8px;"></span> Procesando...';
-          freeCheckoutBtn.disabled = true;
-
-          await addDoc(collection(db, "purchases"), {
-            uid: user.uid,
-            userEmail: user.email,
-            paypalOrderId: "PEDIDO-GRATUITO-" + Date.now(),
-            payerName: user.displayName || "Usuario",
-            items: itemsComprados,
-            createdAt: serverTimestamp()
-          });
-
-          if (typeof window.clearCart === 'function') window.clearCart();
-          mostrarModalExito("¡Pedido procesado con éxito! Redirigiendo a tus descargas...");
-          setTimeout(() => { window.location.href = 'account.html'; }, 2200);
-
-        } catch (error) {
-          console.error("Error guardando pedido gratuito en Firestore:", error);
-          alert("Ocurrió un error al procesar tu pedido. Contacta a soporte.");
-          freeCheckoutBtn.innerHTML = 'Obtener gratis <i class="bi bi-download ms-1"></i>';
-          freeCheckoutBtn.disabled = false;
-        }
-      });
-    }
-  </script>
-
-  <!-- LÓGICA FUNCIONAL DEL CARRITO Y CUPONES -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
-      let couponApplied = false;
-
-      const cartBtns = document.querySelectorAll('.cart-btn-global');
-      const cartDrawer = document.getElementById('cart-drawer');
-      const cartOverlay = document.getElementById('cart-overlay');
-      const closeCartBtn = document.getElementById('close-cart-btn');
-      const continueShoppingBtn = document.getElementById('continue-shopping');
-      
-      const cartCountBadges = document.querySelectorAll('.cart-badge-count-global, #cart-count, .mobile-cart-count');
-      const cartItemCountText = document.getElementById('cart-item-count-text');
-      const cartItemsContainer = document.getElementById('cart-items-container');
-      const emptyCartMsg = document.getElementById('empty-cart-msg');
-      const cartSubtotalText = document.getElementById('cart-subtotal');
-      const cartTotalText = document.getElementById('cart-total');
-      const paypalWrapper = document.getElementById('paypal-container-wrapper');
-      const freeCheckoutBtn = document.getElementById('free-checkout-btn');
-      const securityBadge = document.getElementById('security-badge-box');
-      const couponSection = document.getElementById('coupon-section');
-      const subtotalRow = document.getElementById('subtotal-row');
-      const totalRow = document.getElementById('total-row');
-      const continueShoppingBox = document.getElementById('continue-shopping-box');
-
-      const couponInput = document.getElementById('coupon-input');
-      const applyCouponBtn = document.getElementById('apply-coupon-btn');
-      const couponMsg = document.getElementById('coupon-msg');
-
-      const addButtons = document.querySelectorAll('.btn-add-cart');
-
-      const openCart = (e) => { 
-        if(e) e.preventDefault(); 
-        cartDrawer.classList.add('active'); 
-        cartOverlay.classList.add('active');
-        document.body.classList.add('cart-open'); 
-        
-        updateCartUI();
-
-        const navbarCollapse = document.getElementById('navbarNav');
-        if(navbarCollapse && navbarCollapse.classList.contains('show')) {
-          const bsCollapse = new bootstrap.Collapse(navbarCollapse, {toggle: false});
-          bsCollapse.hide();
-        }
-      };
-
-      const closeCart = (e) => { 
-        if(e) e.preventDefault(); 
-        cartDrawer.classList.remove('active'); 
-        cartOverlay.classList.remove('active'); 
-        document.body.classList.remove('cart-open'); 
-      };
-
-      cartBtns.forEach(btn => { if(btn) btn.addEventListener('click', openCart); });
-      if(closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
-      if(cartOverlay) cartOverlay.addEventListener('click', closeCart);
-      if(continueShoppingBtn) continueShoppingBtn.addEventListener('click', closeCart);
-
-      const updateCartUI = () => {
-        cartItemsContainer.innerHTML = '';
-        
-        let totalItems = 0;
-        let totalPrice = 0;
-
-        window.cartItemsList = [];
-        window.cartTotalPrice = 0;
-
-        if (cart.length === 0) {
-          cartItemsContainer.appendChild(emptyCartMsg);
-          emptyCartMsg.style.display = 'block';
-          paypalWrapper.style.display = 'none';
-          freeCheckoutBtn.style.display = 'none';
-          securityBadge.style.display = 'none';
-          couponSection.style.display = 'none';
-          subtotalRow.style.display = 'none';
-          totalRow.style.display = 'none';
-          continueShoppingBox.style.display = 'none';
-          couponApplied = false;
-          couponMsg.style.display = 'none';
-          if(couponInput) couponInput.value = '';
-        } else {
-          emptyCartMsg.style.display = 'none';
-          couponSection.style.display = 'flex';
-          subtotalRow.style.display = 'flex';
-          totalRow.style.display = 'flex';
-          continueShoppingBox.style.display = 'block';
-          
-          cart.forEach((item, index) => {
-            totalItems += item.qty;
-            totalPrice += (item.price * item.qty);
-
-            for(let i=0; i<item.qty; i++) {
-              window.cartItemsList.push({
-                name: item.name,
-                img: item.img,
-                type: item.type,
-                price: couponApplied ? 0 : item.price
-              });
-            }
-
-            const itemHTML = `
-              <div class="cart-item">
-                <div class="cart-item-img">
-                  <img src="img/${item.img}.png" alt="${item.name}" onerror="this.src='https://ui-avatars.com/api/?name=${item.name.charAt(0)}&background=00e5ff&color=000'">
-                </div>
-                <div class="cart-item-info">
-                  <h4 class="cart-item-title">${item.name}</h4>
-                  <p class="cart-item-desc">${item.type}</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <span class="fw-bold text-accent">$${(couponApplied ? 0 : item.price).toFixed(2)}</span>
-                    <div class="qty-controls">
-                      <button class="qty-btn" onclick="changeQty(${index}, -1)"><i class="bi bi-dash"></i></button>
-                      <span class="qty-value">${item.qty}</span>
-                      <button class="qty-btn" onclick="changeQty(${index}, 1)"><i class="bi bi-plus"></i></button>
-                    </div>
-                  </div>
-                </div>
-                <button class="cart-item-remove" onclick="removeItem(${index})"><i class="bi bi-trash"></i></button>
-              </div>
-            `;
-            cartItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
-          });
-
-          let finalTotal = totalPrice;
-          if (couponApplied) {
-            finalTotal = 0;
-          }
-
-          window.cartTotalPrice = totalPrice;
-          window.cartFinalTotal = finalTotal;
-
-          if (finalTotal === 0) {
-            paypalWrapper.style.display = 'none';
-            securityBadge.style.display = 'none';
-            freeCheckoutBtn.style.display = 'block';
-          } else {
-            paypalWrapper.style.display = 'block';
-            securityBadge.style.display = 'block';
-            freeCheckoutBtn.style.display = 'none';
-            
-            setTimeout(() => {
-                if (typeof window.renderPayPalStable === 'function') {
-                    window.renderPayPalStable(finalTotal);
-                }
-            }, 100);
-          }
-        }
-
-        cartCountBadges.forEach(badge => { if(badge) badge.textContent = totalItems; });
-        if(cartItemCountText) cartItemCountText.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
-        
-        if(cartSubtotalText) cartSubtotalText.textContent = `$${totalPrice.toFixed(2)}`;
-        if(cartTotalText) cartTotalText.textContent = `$${(couponApplied ? 0 : totalPrice).toFixed(2)}`;
-        
-        localStorage.setItem('dingloft_cart', JSON.stringify(cart));
-      };
-
-      window.clearCart = () => {
-        cart = [];
-        localStorage.removeItem('dingloft_cart');
-        updateCartUI();
-      };
-
-      // Inicializar UI al cargar
-      updateCartUI();
-
-      if(applyCouponBtn) {
-        applyCouponBtn.addEventListener('click', () => {
-          const code = couponInput.value.trim().toUpperCase();
-          if (code === 'ADMIN_EVOLUTION') {
-            couponApplied = true;
-            if(couponMsg) {
-              couponMsg.style.display = 'block';
-              couponMsg.style.color = '#00ff88';
-              couponMsg.innerHTML = '<i class="bi bi-check-circle-fill"></i> ¡Cupón ADMIN_EVOLUTION aplicado!';
-            }
-            updateCartUI();
-          } else {
-            couponApplied = false;
-            if(couponMsg) {
-              couponMsg.style.display = 'block';
-              couponMsg.style.color = '#ff4444';
-              couponMsg.innerHTML = '<i class="bi bi-x-circle-fill"></i> Código de cupón inválido.';
-            }
-            updateCartUI();
-          }
-        });
-      }
-
-      window.changeQty = (index, delta) => {
-        if (cart[index].qty + delta > 0) {
-          cart[index].qty += delta;
-        } else {
-          cart.splice(index, 1);
-        }
-        updateCartUI();
-      };
-
-      window.removeItem = (index) => {
-        cart.splice(index, 1);
-        updateCartUI();
-      };
-
-      addButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-          e.preventDefault(); 
-          if(this.disabled) return;
-          
-          const id = this.getAttribute('data-id');
-          const name = this.getAttribute('data-name');
-          const price = parseFloat(this.getAttribute('data-price'));
-          const img = this.getAttribute('data-img');
-          const type = this.getAttribute('data-type');
-          
-          const existingItem = cart.find(item => item.id === id);
-          if (existingItem) {
-            existingItem.qty += 1;
-          } else {
-            cart.push({ id, name, price, img, type, qty: 1 });
-          }
-          
-          updateCartUI(); 
-          
-          cartBtns.forEach(btn => {
-            if(btn && btn.classList) {
-              btn.classList.remove('cart-bounce');
-              void btn.offsetWidth; 
-              btn.classList.add('cart-bounce');
-            }
-          });
-          
-          const originalHTML = this.innerHTML;
-          const originalBg = this.style.background;
-          const originalColor = this.style.color;
-          
-          this.innerHTML = 'Agregado <i class="bi bi-check2"></i>';
-          this.style.background = '#00ff88';
-          this.style.color = '#000';
-          
-          setTimeout(() => {
-            if(!this.disabled) {
-              this.innerHTML = originalHTML;
-              this.style.background = originalBg;
-              this.style.color = originalColor || '';
-            }
-            openCart(); 
-          }, 800);
-        });
-      });
+    document.querySelector('.logout').addEventListener('click', async () => {
+      try { await signOut(auth); window.location.href = 'login.html'; } catch (error) { console.error(error); }
     });
   </script>
 </body>
