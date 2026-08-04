@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mi cuenta | Dingloft</title>
+  
+  <!-- FAVICON AGREGADO AQUÍ -->
+  <link rel="icon" href="img/favicon.png" type="image/x-icon">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -27,7 +31,6 @@
     .content { min-width:0; padding:42px clamp(25px,5vw,78px) 37px; } .top { display:flex; align-items:center; justify-content:space-between; gap:20px; }
     .top h1 { margin:0; letter-spacing:-.06em; font-size:clamp(2rem,3vw,3.2rem); } .top p { margin:.7rem 0 0; color:var(--muted); } .top-actions { display:flex; gap:13px; align-items:center; }
     
-    /* El botón de agenda fue eliminado, solo queda el avatar arriba a la derecha */
     .top-avatar { width:45px; height:45px; border:1px solid var(--cyan); border-radius:50%; display:grid; place-items:center; color:#07131e; background:linear-gradient(135deg,#f5b36e,#a56bff); font-weight:800; overflow:hidden; }
     .top-avatar img { width: 100%; height: 100%; object-fit: cover; }
     
@@ -58,7 +61,7 @@
     .download-row h3 { margin:0 0 7px; font-size:1rem; letter-spacing:-.025em; } .download-row p { margin:0; color:var(--muted); font-size:.78rem; } .badge { display:inline-flex; align-items:center; gap:6px; margin-top:7px; color:var(--green); font-size:.72rem; font-weight:700; } .download-btn { width:43px; height:43px; border:1px solid rgba(0,217,255,.5); border-radius:11px; color:var(--cyan); background:rgba(0,213,255,.08); font-size:1.2rem; display:grid; place-items:center; text-decoration:none; transition:.2s ease; cursor:pointer;} .download-btn:hover{background:var(--cyan);color:#04111a;transform:translateY(-2px)}
     .right { display:grid; gap:23px; align-content:start; } 
     
-    /* ESTILOS NUEVA TARJETA INSTALACIÓN REMOTA */
+    /* ESTILOS TARJETA INSTALACIÓN REMOTA */
     .support-card { display: flex; flex-direction: column; }
     .remote-install-content { padding: 0 25px 25px; display: flex; flex-direction: column; gap: 14px; }
     .remote-install-content .icon-wrapper { width: 54px; height: 54px; background: rgba(53, 221, 146, 0.1); border: 1px solid rgba(53, 221, 146, 0.3); border-radius: 14px; display: grid; place-items: center; font-size: 1.5rem; color: var(--green); margin-bottom: 4px; }
@@ -72,7 +75,7 @@
     .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
 
-    /* ESTILOS WIDGET CALENDARIO ESTILO KOALENDAR / LIQUID GLASS */
+    /* WIDGET CALENDARIO & PEDIDOS ESTILO LIQUID GLASS */
     .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 9, 17, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .liquid-modal-overlay.active { opacity: 1; pointer-events: auto; }
     
@@ -88,28 +91,29 @@
     .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
     .calendar-header h4 { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--text); }
     .calendar-nav-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); color: var(--muted); border-radius: 8px; width: 32px; height: 32px; display: grid; place-items: center; transition: .2s; cursor: pointer; }
-    .calendar-nav-btn:hover { background: var(--cyan); color: #04111a; }
-    .calendar-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+    .calendar-nav-btn:hover:not(.disabled) { background: var(--cyan); color: #04111a; }
+    .calendar-nav-btn.disabled { opacity: 0.2; cursor: not-allowed; }
     
     .calendar-days-head { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-bottom: 10px; }
     .calendar-days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
     .day-cell { aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: .2s ease; color: var(--text); }
     .day-cell.empty { cursor: default; }
+    
     .day-cell.disabled { color: rgba(158, 172, 192, 0.25); cursor: not-allowed; text-decoration: line-through; }
-    
-    /* Estilo para los días falsos ocupados */
-    .day-cell.full { color: #ff5050; opacity: 0.6; cursor: not-allowed; text-decoration: line-through; font-weight: 400; }
-    
     .day-cell.available:hover { background: rgba(18, 215, 246, 0.15); border-color: var(--cyan); color: var(--cyan); }
     .day-cell.selected { background: var(--cyan) !important; color: #04111a !important; font-weight: 800; box-shadow: 0 0 12px rgba(18, 215, 246, 0.5); }
 
     /* COLUMNA DERECHA: HORARIOS Y SELECCIÓN */
     .times-box { background: rgba(6, 12, 22, 0.5); border: 1px solid var(--line); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; }
     .times-header { font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 8px; }
-    .time-slots-container { display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto; padding-right: 4px; }
-    .time-slot { width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.03); color: var(--text); font-size: 0.88rem; font-weight: 600; text-align: center; cursor: pointer; transition: .2s ease; }
+    .time-slots-container { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; padding-right: 4px; }
+    
+    .time-slot { width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.03); color: var(--text); font-size: 0.82rem; font-weight: 600; text-align: center; cursor: pointer; transition: .2s ease; }
     .time-slot:hover { background: rgba(18, 215, 246, 0.12); border-color: var(--cyan); color: var(--cyan); transform: translateY(-1px); }
     .time-slot.selected { background: linear-gradient(90deg, var(--cyan), #1cbeeb); color: #03111a; font-weight: 800; border-color: var(--cyan); box-shadow: 0 4px 12px rgba(18, 215, 246, 0.3); }
+    
+    .time-slot.sold-out { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; border-color: transparent; background: transparent; }
+    .time-slot.sold-out:hover { transform: none; color: var(--text); }
 
     /* FOOTER DEL MODAL Y BOTONES LIQUID */
     .booking-footer { margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: center; }
@@ -125,6 +129,9 @@
     #modal-notif { display: none; padding: 10px; border-radius: 10px; font-size: 0.82rem; margin-bottom: 12px; text-align: center; font-weight: 600; grid-column: span 2; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
+    /* Estilos específicos para Modal "Mis Pedidos" más pequeño */
+    #pedidosModal .liquid-modal-card { max-width: 500px; }
+
     @media(max-width:768px){ .booking-grid { grid-template-columns: 1fr; } .booking-footer { grid-template-columns: 1fr; } #modal-notif { grid-column: span 1; } }
     @media(max-width:1080px){.app{grid-template-columns:78px 1fr}.sidebar{padding:25px 10px}.brand{margin:0 auto 42px;font-size:0}.brand span{font-size:1.8rem}.nav a{justify-content:center;padding:15px}.nav a span,.profile strong,.profile small,.logout span{display:none}.profile{padding:12px;display:grid;place-items:center}.logout{justify-content:center}.stats{grid-template-columns:1fr}.dashboard{grid-template-columns:1fr}.right{grid-template-columns:1fr}}
     @media(max-width:700px){.app{display:block}.sidebar{position:static;height:auto;padding:16px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:1.5rem;margin:0 8px 13px}.brand span{font-size:inherit}.nav{display:flex;overflow:auto}.nav a{min-width:55px;padding:12px}.nav a span{display:none}.profile{display:none}.content{padding:28px 16px}.top{align-items:flex-start}.top p{font-size:.86rem}.stats{margin:25px 0}.stat{min-height:93px}.right{grid-template-columns:1fr}.download-row{grid-template-columns:55px minmax(110px,1fr) auto}.product-art{width:52px;height:62px}.trust{justify-content:flex-start;gap:12px}.top-avatar{display:none}}
@@ -137,8 +144,8 @@
       <nav class="nav" aria-label="Navegación de cuenta">
         <a href="index.html"><i class="bi bi-house-door"></i><span>Home</span></a>
         <a class="active" href="#descargas"><i class="bi bi-download"></i><span>Descargas</span></a>
-        <!-- BOTÓN EN LA BARRA LATERAL -->
-        <a href="#" onclick="openReservaModal(); return false;"><i class="bi bi-headset"></i><span>Instalación Remota</span></a>
+        <!-- ENLACE ACTUALIZADO A MIS PEDIDOS -->
+        <a href="#" onclick="openPedidosModal(); return false;"><i class="bi bi-box-seam"></i><span>Mis Pedidos</span></a>
       </nav>
       <div class="profile">
         <div class="profile-top">
@@ -159,7 +166,6 @@
           <p>Aquí tienes el control de tus programas y descargas.</p>
         </div>
         <div class="top-actions">
-          <!-- SOLO EL AVATAR, ICONO DE AGENDA ELIMINADO -->
           <div class="top-avatar" id="top-avatar"></div>
         </div>
       </div>
@@ -184,7 +190,7 @@
         </article>
         
         <aside class="right">
-          <!-- TARJETA PROFESIONAL DE INSTALACIÓN REMOTA -->
+          <!-- TARJETA DE SOPORTE -->
           <article class="card support-card">
             <div class="card-title"><h2>Instalación Remota</h2></div>
             <div class="remote-install-content">
@@ -214,6 +220,33 @@
     </main>
   </div>
   
+  <!-- MODAL MIS PEDIDOS -->
+  <div class="liquid-modal-overlay" id="pedidosModal">
+    <div class="liquid-modal-card">
+      <button class="liquid-close" onclick="closePedidosModal()"><i class="bi bi-x-lg"></i></button>
+      <h3 style="margin: 0 0 4px; font-size: 1.3rem;">Mis Pedidos y Reservas</h3>
+      <p style="color: var(--muted); font-size: 0.83rem; margin: 0 0 15px;">Estado actual de tus instalaciones programadas.</p>
+
+      <div style="background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 16px; padding: 18px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 12px;">
+          <strong style="color: var(--cyan);"><i class="bi bi-calendar-check"></i> Instalación Remota</strong>
+          <span style="background: rgba(53, 221, 146, 0.15); color: var(--green); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(53, 221, 146, 0.3);">Pendiente</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.85rem; color: #c4d0df;">
+          <div>
+            <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Fecha programada</span>
+            <strong style="color: white;">Aún no tienes reservas activas</strong>
+          </div>
+          <div>
+            <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Hora (CET/Madrid)</span>
+            <strong style="color: white;">--:--</strong>
+          </div>
+        </div>
+        <p style="margin: 12px 0 0; font-size: 0.8rem; color: var(--muted); text-align: center;">Cuando reserves, aquí verás los detalles. Te enviaremos el enlace de conexión 15 minutos antes.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL CALENDARIO ESTILO KOALENDAR / DINGLOFT -->
   <div class="liquid-modal-overlay" id="reservaModal">
     <div class="liquid-modal-card">
@@ -265,12 +298,20 @@
   <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
   <script>
+    // FUNCIONES DEL MODAL MIS PEDIDOS
+    window.openPedidosModal = function() {
+      document.getElementById('pedidosModal').classList.add('active');
+    };
+
+    window.closePedidosModal = function() {
+      document.getElementById('pedidosModal').classList.remove('active');
+    };
+
     // ESTADO DEL CALENDARIO Y RESERVAS
     let fechaActual = new Date();
     let mesActual = fechaActual.getMonth();
     let anoActual = fechaActual.getFullYear();
     
-    // Guardamos la fecha real actual para bloquear el retroceso en meses
     const fechaReal = new Date();
     const mesReal = fechaReal.getMonth();
     const anoReal = fechaReal.getFullYear();
@@ -281,7 +322,7 @@
 
     const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     
-    // HORARIOS TRADUCIDOS A ESPAÑA (11 PM a 5 AM en Guate = 7 AM a 1 PM en España CEST)
+    // HORARIOS TRADUCIDOS A ESPAÑA
     const horariosDisponibles = [
       "07:00 AM (CET/Madrid)",
       "08:00 AM (CET/Madrid)",
@@ -292,25 +333,13 @@
       "01:00 PM (CET/Madrid)"
     ];
 
-    // SISTEMA PARA GENERAR 10 DÍAS "LLENOS" AL AZAR POR MES (MANTIENE CONSISTENCIA MIENTRAS NAVEGAS)
-    const fakeReservedCache = {};
-    function isFakeReserved(ano, mes, dia) {
-        let key = `${ano}-${mes}`;
-        if (!fakeReservedCache[key]) {
-            let reserved = new Set();
-            let totalDias = new Date(ano, mes + 1, 0).getDate();
-            // Elegir 10 días aleatorios
-            while(reserved.size < 10) {
-                reserved.add(Math.floor(Math.random() * totalDias) + 1);
-            }
-            fakeReservedCache[key] = reserved;
-        }
-        return fakeReservedCache[key].has(dia);
+    function pseudoRandom(seed) {
+        let x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
     }
 
     function actualizarBotonRetroceso() {
       const btnPrev = document.getElementById('btn-prev-month');
-      // Si el año y el mes mostrado es igual o menor al actual, deshabilitar retroceso
       if (anoActual < anoReal || (anoActual === anoReal && mesActual <= mesReal)) {
         btnPrev.classList.add('disabled');
       } else {
@@ -330,18 +359,18 @@
       const hoy = new Date();
       hoy.setHours(0,0,0,0);
 
-      // Espacios en blanco previo al primer día
       for(let i = 0; i < primerDiaMes; i++) {
         grid.innerHTML += `<div class="day-cell empty"></div>`;
       }
 
-      // Render de los días del mes
       for(let dia = 1; dia <= totalDiasMes; dia++) {
         const fechaEvaluar = new Date(anoActual, mesActual, dia);
         fechaEvaluar.setHours(0,0,0,0);
 
         let esPasado = fechaEvaluar < hoy;
-        let esReservado = isFakeReserved(anoActual, mesActual, dia);
+        let diaSemana = fechaEvaluar.getDay();
+        let esFinDeSemana = (diaSemana === 0 || diaSemana === 6); 
+        
         let esSeleccionado = diaSeleccionado && 
                              diaSeleccionado.getDate() === dia && 
                              diaSeleccionado.getMonth() === mesActual && 
@@ -349,8 +378,8 @@
 
         if (esPasado) {
           grid.innerHTML += `<div class="day-cell disabled" title="Día pasado">${dia}</div>`;
-        } else if (esReservado) {
-          grid.innerHTML += `<div class="day-cell full" title="Agenda llena">${dia}</div>`;
+        } else if (esFinDeSemana) {
+          grid.innerHTML += `<div class="day-cell disabled" style="opacity: 0.3;" title="Fin de semana (No laboral)">${dia}</div>`;
         } else {
           grid.innerHTML += `<div class="day-cell available ${esSeleccionado ? 'selected' : ''}" onclick="seleccionarDia(${dia})">${dia}</div>`;
         }
@@ -371,7 +400,6 @@
         nuevoAno++;
       }
 
-      // VALIDACIÓN FINAL: Bloquear navegación hacia el pasado
       if (nuevoAno < anoReal || (nuevoAno === anoReal && nuevoMes < mesReal)) {
         return; 
       }
@@ -383,7 +411,7 @@
 
     function seleccionarDia(dia) {
       diaSeleccionado = new Date(anoActual, mesActual, dia);
-      horaSeleccionada = null; // reset hora al cambiar día
+      horaSeleccionada = null;
       renderizarCalendario();
       
       const headerText = document.getElementById('selected-date-text');
@@ -393,12 +421,24 @@
       headerText.textContent = diaSeleccionado.toLocaleDateString('es-ES', opcionesFecha);
 
       slotsContainer.innerHTML = '';
-      horariosDisponibles.forEach(hora => {
-        slotsContainer.innerHTML += `
-          <div class="time-slot" onclick="seleccionarHora('${hora}', this)">
-            ${hora}
-          </div>
-        `;
+      let seed = anoActual * 10000 + mesActual * 100 + dia;
+
+      horariosDisponibles.forEach((hora, index) => {
+        let ocupado = pseudoRandom(seed + index) < 0.40;
+
+        if (ocupado) {
+          slotsContainer.innerHTML += `
+            <div class="time-slot sold-out" title="Horario ocupado">
+              ${hora} - Agotado
+            </div>
+          `;
+        } else {
+          slotsContainer.innerHTML += `
+            <div class="time-slot" onclick="seleccionarHora('${hora}', this)">
+              ${hora}
+            </div>
+          `;
+        }
       });
     }
 
@@ -408,10 +448,9 @@
       elemento.classList.add('selected');
     }
 
-    // APLICAR CUPÓN
     window.aplicarCupon = function() {
       const codigo = document.getElementById('cuponInput').value.trim().toUpperCase();
-      const cuponesValidos = { "DINGLOFT5": 5.00, "VIP": 10.00 };
+      const cuponesValidos = { "DINGLOFT5": 5.00, "VIP": 10.00, "INSTALA30": 3.00 };
       
       if (cuponesValidos[codigo] !== undefined) {
         let descuento = cuponesValidos[codigo];
@@ -445,7 +484,7 @@
 
     window.procesarPagoReserva = function() {
       if(!diaSeleccionado || !horaSeleccionada) {
-        mostrarAlertaModal("Selecciona un día y un horario primero.", false);
+        mostrarAlertaModal("Selecciona un día y un horario libre primero.", false);
         return;
       }
 
@@ -455,10 +494,6 @@
 
       setTimeout(() => {
         mostrarAlertaModal(`Redirigiendo a pasarela de pago...`, true);
-        
-        // AQUÍ COLOCAS TU URL DE PAGO (STRIPE / TILOPAY) EN LA MISMA PESTAÑA:
-        // window.location.href = "https://tu-link-de-pago.com";
-
         setTimeout(() => {
           btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Redirigiendo';
           btn.style.background = 'linear-gradient(100deg, #35dd92, #2bb978)';
@@ -593,6 +628,17 @@
           if (querySnapshot.empty) {
             downloadsContainer.innerHTML = '<p style="color: var(--muted); padding: 15px;">Aún no tienes programas comprados. Ve al catálogo para conseguir tus instaladores.</p>';
           } else {
+            // BANNER DEL CUPÓN DEL 30% INYECTADO SOLO SI COMPRARON
+            downloadsContainer.innerHTML = `
+              <div style="background: rgba(53,221,146,0.08); border: 1px solid rgba(53,221,146,0.3); border-radius: 15px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: center; gap: 15px;">
+                <i class="bi bi-stopwatch" style="color: var(--green); font-size: 1.8rem;"></i>
+                <div>
+                  <strong style="color: var(--green); display: block; font-size: 0.95rem;">Descuento desbloqueado por tu compra</strong>
+                  <span style="font-size: 0.82rem; color: #c4d0df;">Usa el código <b style="color: white; background: #0c1421; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--cyan); letter-spacing: 1px;">INSTALA30</b> para un 30% OFF en Instalación Remota. (Válido por 12 hrs)</span>
+                </div>
+              </div>
+            `;
+
             querySnapshot.forEach((docSnap) => {
               const compra = docSnap.data();
               const items = compra.items || [];
