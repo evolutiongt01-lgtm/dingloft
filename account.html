@@ -63,7 +63,19 @@
     .recent-item strong{font-size:.9rem}.recent-item button.download-btn-recent{margin-left:auto;border:0;background:transparent;color:var(--cyan);font-size:1.3rem; transition: .2s ease; cursor: pointer;} .recent-item button.download-btn-recent:hover { transform: translateY(-2px); text-shadow: 0 0 8px var(--cyan); }
     .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
     .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
-    @media(max-width:1080px){.app{grid-template-columns:78px 1fr}.sidebar{padding:25px 10px}.brand{margin:0 auto 42px;font-size:0}.brand span{font-size:1.8rem}.nav a{justify-content:center;padding:15px}.nav a span,.profile strong,.profile small,.logout span{display:none}.profile{padding:12px;display:grid;place-items:center}.logout{justify-content:center}.stats{grid-template-columns:1fr}.dashboard{grid-template-columns:1fr}.right{grid-template-columns:1fr}.support{height:100%}}
+
+    /* ESTILOS LIQUID GLASS PARA MODAL DE RESERVA */
+    .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 9, 17, 0.65); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .liquid-modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .liquid-modal-card { width: 90%; max-width: 450px; padding: 30px; border-radius: 24px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: var(--text); }
+    .liquid-modal-card h3 { margin-top: 0; font-size: 1.4rem; letter-spacing: -.03em; }
+    .liquid-input { width: 100%; padding: 12px 16px; margin-top: 8px; margin-bottom: 14px; background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 12px; color: white; font-family: inherit; }
+    .liquid-input:focus { border-color: var(--cyan); outline: none; box-shadow: 0 0 10px rgba(0, 213, 255, 0.2); }
+    .liquid-btn { width: 100%; border: 0; border-radius: 12px; padding: 14px; background: linear-gradient(100deg, #0bd8f4, #1cbeeb); color: #03111a; font-weight: 800; cursor: pointer; margin-top: 10px; transition: .2s ease; }
+    .liquid-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(11, 216, 244, 0.4); }
+    .liquid-close { background: transparent; border: none; color: var(--muted); font-size: 1rem; cursor: pointer; float: right; }
+
+    @media(max-width:1080px){.app{grid-template-columns:78px 1fr}.sidebar{padding:25px 10px}.brand{margin:0 auto 42px;font-size:0}.brand span{font-size:1.8rem}.nav a{justify-content:center;padding:15px}.nav a span,.profile strong,.profile small,.logout span{display:none}.profile{padding:12px;display:grid;place-items:center}.logout{justify-content:center}.stats{grid-template-columns:1fr}.dashboard{grid-template-columns:1fr}.right{grid-template-columns:1fr}}
     @media(max-width:700px){.app{display:block}.sidebar{position:static;height:auto;padding:16px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:1.5rem;margin:0 8px 13px}.brand span{font-size:inherit}.nav{display:flex;overflow:auto}.nav a{min-width:55px;padding:12px}.nav a span{display:none}.profile{display:none}.content{padding:28px 16px}.top{align-items:flex-start}.top p{font-size:.86rem}.stats{margin:25px 0}.stat{min-height:93px}.right{grid-template-columns:1fr}.download-row{grid-template-columns:55px minmax(110px,1fr) auto}.product-art{width:52px;height:62px}.trust{justify-content:flex-start;gap:12px}.top-avatar{display:none}}
   </style>
 </head>
@@ -94,7 +106,7 @@
           <p>Aquí tienes el control de tus programas y descargas.</p>
         </div>
         <div class="top-actions">
-          <button class="icon-button" aria-label="Notificaciones"><i class="bi bi-bell"></i></button>
+          <button class="icon-button" onclick="openReservaModal()" title="Reservar fecha y hora"><i class="bi bi-calendar-event"></i></button>
           <div class="top-avatar" id="top-avatar"></div>
         </div>
       </div>
@@ -136,10 +148,33 @@
     </main>
   </div>
   
+  <!-- VENTANA MODAL LIQUID GLASS PARA RESERVAS Y PAGOS ($10 + CUPÓN) -->
+  <div class="liquid-modal-overlay" id="reservaModal">
+    <div class="liquid-modal-card">
+      <button class="liquid-close" onclick="closeReservaModal()"><i class="bi bi-x-lg"></i></button>
+      <h3>Reserva tu Instalación</h3>
+      <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 15px;">Selecciona fecha, hora y aplica tu cupón. Total: <strong id="precio-total" style="color: var(--cyan);">$10.00 USD</strong></p>
+      
+      <label style="font-size: 0.85rem; color: var(--muted);">Fecha de reserva:</label>
+      <input type="date" id="reservaFecha" class="liquid-input">
+
+      <label style="font-size: 0.85rem; color: var(--muted);">Hora preferida:</label>
+      <input type="time" id="reservaHora" class="liquid-input">
+
+      <label style="font-size: 0.85rem; color: var(--muted);">Código de Cupón:</label>
+      <div style="display: flex; gap: 8px;">
+        <input type="text" id="cuponInput" placeholder="Ej. DINGLOFT5" class="liquid-input" style="margin-bottom:0;">
+        <button type="button" onclick="aplicarCupon()" style="padding: 0 15px; background: rgba(0,213,255,0.1); border: 1px solid var(--cyan); color: var(--cyan); border-radius: 12px; font-weight: 750; cursor: pointer;">Aplicar</button>
+      </div>
+
+      <button class="liquid-btn" onclick="procesarPagoReserva()"><i class="bi bi-credit-card"></i> Pagar y Reservar ($10)</button>
+    </div>
+  </div>
+
   <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
   <script>
-    // FUNCIÓN GLOBAL PARA DESPLEGAR LOS BUNDLES
+    // FUNCIONES GLOBALES DE MODAL Y BUNDLES
     window.toggleBundle = function(element) {
       const container = element.parentElement;
       const subs = container.querySelector('.sub-downloads');
@@ -148,6 +183,39 @@
       subs.classList.toggle('active');
       btn.classList.toggle('active');
       element.classList.toggle('active');
+    };
+
+    window.openReservaModal = function() {
+      document.getElementById('reservaModal').classList.add('active');
+    };
+
+    window.closeReservaModal = function() {
+      document.getElementById('reservaModal').classList.remove('active');
+    };
+
+    let precioBase = 10.00;
+    window.aplicarCupon = function() {
+      const codigo = document.getElementById('cuponInput').value.trim().toUpperCase();
+      const cuponesValidos = { "DINGLOFT5": 5.00, "VIP": 10.00 };
+      if (cuponesValidos[codigo] !== undefined) {
+        let descuento = cuponesValidos[codigo];
+        let totalFinal = Math.max(0, precioBase - descuento);
+        document.getElementById('precio-total').textContent = `$${totalFinal.toFixed(2)} USD`;
+        alert("¡Cupón aplicado con éxito!");
+      } else {
+        alert("Cupón inválido o expirado.");
+      }
+    };
+
+    window.procesarPagoReserva = function() {
+      const fecha = document.getElementById('reservaFecha').value;
+      const hora = document.getElementById('reservaHora').value;
+      if(!fecha || !hora) {
+        alert("Por favor selecciona una fecha y una hora.");
+        return;
+      }
+      alert(`Reserva agendada para el ${fecha} a las ${hora}. Redirigiendo a pasarela de pago...`);
+      closeReservaModal();
     };
   </script>
 
@@ -183,7 +251,7 @@
       "Biblias y Diccionarios para E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo"
     };
 
-    // MAPA DE PAQUETES (BUNDLES) CON EL NUEVO "Dual Legend"
+    // MAPA DE PAQUETES (BUNDLES) CON EL NUEVO "Dual Legend" (Yamaha Legacy + Nord Essential + Bonus PAD)
     const bundlesMap = {
       "Dual Legend": [
         { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
@@ -292,7 +360,6 @@
                     else if(prodLower.includes("cinema")) imgProd = "cinema4d";
                 }
 
-                // VERIFICAR SI EL PRODUCTO ES UN PAQUETE (BUNDLE) O INDIVIDUAL
                 if (bundlesMap[nombreProd]) {
                   let subHTML = '';
                   bundlesMap[nombreProd].forEach(subItem => {
