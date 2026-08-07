@@ -1,16 +1,3 @@
-Conversación con Gemini
-por que no puedo ver a los clientes registrados con sus fotos de perfil y ultima conexion?
-
-El motivo por el cual no puedes ver las fotos de perfil ni la última conexión de los clientes en este panel de administración se debe a que el código actual de la interfaz y la consulta a Firestore no están diseñados para almacenar, recopilar ni mostrar esos datos.
-
-Analizando el código HTML y JavaScript proporcionado, esto ocurre por dos razones principales:
-
-La colección de usuarios no existe como tal en Firestore: El sistema recopila la lista de clientes agrupando dinámicamente los correos electrónicos que aparecen en las reservas y en el historial de compras (purchases). Ninguna de estas colecciones guarda información sobre fotos de perfil (photoURL) o marcas de tiempo de última conexión (lastLogin).  
-HTML
-
-La tabla de clientes está limitada en estructura: En la sección correspondiente al HTML de la pestaña Clientes, las columnas definidas solo muestran el email, las compras, las reservas, las notas privadas, el estado activo/interesado y el botón de acción:  
-HTML
-
 HTML
 <thead>
   <tr>
