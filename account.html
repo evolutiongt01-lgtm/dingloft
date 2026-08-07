@@ -536,7 +536,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, query, where, getDocs, addDoc, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, collection, query, where, getDocs, addDoc, doc, updateDoc, deleteDoc, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
@@ -627,6 +627,18 @@
 
         let displayName = user.displayName || user.email.split('@')[0];
         let firstName = displayName.split(' ')[0];
+        
+        // --- INICIO NUEVO CÓDIGO: GUARDAR/ACTUALIZAR USUARIO PARA EL PANEL ADMIN ---
+        try {
+            await setDoc(doc(db, "users", user.uid), {
+                email: user.email,
+                photoURL: user.photoURL || "",
+                lastLogin: serverTimestamp()
+            }, { merge: true });
+        } catch (error) {
+            console.error("Error guardando datos del usuario para el panel admin:", error);
+        }
+        // --- FIN NUEVO CÓDIGO ---
 
         document.getElementById('welcome-name').textContent = firstName;
         document.getElementById('sidebar-name').textContent = displayName;
