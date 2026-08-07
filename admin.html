@@ -18,18 +18,6 @@
     body { margin:0; min-height:100vh; color:var(--text); font-family:Inter,system-ui,sans-serif; background:radial-gradient(circle at 70% 14%,rgba(255,80,80,.05),transparent 28%),radial-gradient(circle at 15% 80%,rgba(0,202,255,.08),transparent 28%),var(--bg); overflow-x: hidden; }
     button,a { font:inherit; } button { cursor:pointer; }
     
-    /* BLOQUEO DE SEGURIDAD */
-    #security-lock { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #04070a; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
-    #security-lock.unlocked { opacity: 0; visibility: hidden; pointer-events: none; }
-    .lock-box { background: rgba(16, 27, 45, 0.6); border: 1px solid rgba(255, 80, 80, 0.3); border-radius: 20px; padding: 40px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,80,80,0.05); backdrop-filter: blur(10px); }
-    .lock-box i { font-size: 3rem; color: var(--red); margin-bottom: 10px; display: block; }
-    .lock-box h2 { margin: 0 0 10px; font-weight: 800; color: white; letter-spacing: -1px; }
-    .lock-box p { color: var(--muted); font-size: 0.9rem; margin-bottom: 25px; }
-    .pass-input { width: 100%; padding: 14px; background: rgba(0,0,0,0.5); border: 1px solid var(--line); border-radius: 12px; color: white; font-family: monospace; font-size: 1.1rem; text-align: center; margin-bottom: 15px; letter-spacing: 2px; transition: .2s; }
-    .pass-input:focus { outline: none; border-color: var(--red); box-shadow: 0 0 15px rgba(255,80,80,0.2); }
-    .btn-unlock { width: 100%; padding: 14px; background: linear-gradient(90deg, #ff5050, #ff2a2a); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem; transition: .2s; text-transform: uppercase; letter-spacing: 1px; }
-    .btn-unlock:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,80,80,0.3); }
-
     /* REPRODUCTOR FLOTANTE LIQUID GLASS */
     .music-player-pill { position: fixed; bottom: 25px; right: 25px; background: rgba(16, 27, 45, 0.85); border: 1px solid rgba(53, 221, 146, 0.3); padding: 12px 20px; border-radius: 50px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 15px 35px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 14px; z-index: 9999; }
     .music-icon-box { width: 36px; height: 36px; background: rgba(53, 221, 146, 0.15); border: 1px solid rgba(53, 221, 146, 0.4); border-radius: 50%; display: grid; place-items: center; color: var(--green); font-size: 1rem; }
@@ -48,8 +36,7 @@
     .custom-modal-desc { font-size: 0.88rem; color: var(--muted); margin-bottom: 25px; line-height: 1.5; }
     .custom-modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-    .app { min-height:100vh; display:grid; grid-template-columns:292px 1fr; filter: blur(10px); transition: filter 0.5s ease; }
-    body.unlocked .app { filter: blur(0); }
+    .app { min-height:100vh; display:grid; grid-template-columns:292px 1fr; }
 
     /* WIDGET LIQUID GLASS (RELOJ DINÁMICO) */
     .world-clock-pill { display: inline-flex; align-items: center; gap: 20px; background: rgba(16, 27, 45, 0.45); border: 1px solid rgba(255, 255, 255, 0.12); padding: 10px 22px; border-radius: 50px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 0 12px rgba(255,255,255,0.03); margin-top: 15px; flex-wrap: wrap; }
@@ -137,18 +124,6 @@
   </style>
 </head>
 <body>
-
-  <!-- PANTALLA DE BLOQUEO CON CONTRASEÑA -->
-  <div id="security-lock">
-    <div class="lock-box">
-      <i class="bi bi-shield-lock-fill"></i>
-      <h2>Acceso Restringido</h2>
-      <p>Centro de comando de Dingloft. Ingresa la contraseña maestra para continuar.</p>
-      <input type="password" id="admin-pass" class="pass-input" placeholder="•••••••••" onkeypress="if(event.key === 'Enter') unlockPanel()">
-      <button class="btn-unlock" onclick="unlockPanel()">Desbloquear Panel</button>
-      <p id="pass-error" style="color: var(--red); font-size: 0.8rem; margin-top: 15px; display: none; margin-bottom: 0;">Contraseña incorrecta. Intenta de nuevo.</p>
-    </div>
-  </div>
 
   <!-- REPRODUCTOR DE YOUTUBE INTEGRADO (INVISIBLE PERO FUNCIONAL EN SEGUNDO PLANO) -->
   <div id="youtube-player-hidden" style="display:none;"></div>
@@ -464,7 +439,7 @@
     window.adminNombreReal = "Jefe";
 
     // FRASES EVANGÉLICAS PROFUNDAS + APERTURA DE MÚSICA EN SEGUNDO PLANO
-    function hablarBienvenida(nombre) {
+    window.hablarBienvenida = function(nombre) {
         if ('speechSynthesis' in window) {
             const frasesEvangelicasLargas = [
                 `Sistema Dingloft en línea. Hola ${nombre}, bendiciones en este día. Recuerda que la palabra del Señor nos enseña en Josué uno nueve: Esfuérzate y sé valiente, no temas ni desmayes, porque Jehová tu Dios estará contigo en dondequiera que vayas. Hoy encomendamos cada proyecto, cada cliente y cada meta de Dingloft en las manos del Creador para que su favor nos rodee como un escudo. ¡Que tengas una jornada de absoluta victoria y prosperidad celestial!`,
@@ -509,23 +484,6 @@
 
     if ('speechSynthesis' in window) {
         window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
-    }
-
-    window.unlockPanel = function() {
-        const pass = document.getElementById('admin-pass').value;
-        const errorMsg = document.getElementById('pass-error');
-        
-        if(pass === "Lanuevaera1") {
-            document.getElementById('security-lock').classList.add('unlocked');
-            document.body.classList.add('unlocked');
-            
-            hablarBienvenida(window.adminNombreReal);
-
-            if (window.iniciarCargaDeDatos) window.iniciarCargaDeDatos();
-        } else {
-            errorMsg.style.display = 'block';
-            document.getElementById('admin-pass').value = '';
-        }
     }
 
     function switchAdminTab(tabId, element) {
@@ -598,8 +556,7 @@
             csv.push(data.join(','));
         });
 
-        let csvFile = new Blob([csv.join('
-')], { type: 'text/csv;charset=utf-8;' });
+        let csvFile = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
         let downloadLink = document.createElement('a');
         downloadLink.download = filename;
         downloadLink.href = window.URL.createObjectURL(csvFile);
@@ -645,9 +602,11 @@
         document.getElementById('sidebar-name').textContent = `${window.adminNombreReal} (Admin)`;
         document.getElementById('sidebar-email').textContent = user.email;
 
-        window.iniciarCargaDeDatos = async function() {
-           await loadAdminData();
-        };
+        // INICIAMOS AUTOMATICAMENTE AL DETECTAR EL LOGIN DEL ADMIN
+        if (typeof window.hablarBienvenida === 'function') {
+            window.hablarBienvenida(window.adminNombreReal);
+        }
+        await loadAdminData();
 
       } else {
         window.location.href = 'login.html';
