@@ -1,3 +1,69 @@
+Conversación con Gemini
+por que no puedo ver a los clientes registrados con sus fotos de perfil y ultima conexion?
+
+El motivo por el cual no puedes ver las fotos de perfil ni la última conexión de los clientes en este panel de administración se debe a que el código actual de la interfaz y la consulta a Firestore no están diseñados para almacenar, recopilar ni mostrar esos datos.
+
+Analizando el código HTML y JavaScript proporcionado, esto ocurre por dos razones principales:
+
+La colección de usuarios no existe como tal en Firestore: El sistema recopila la lista de clientes agrupando dinámicamente los correos electrónicos que aparecen en las reservas y en el historial de compras (purchases). Ninguna de estas colecciones guarda información sobre fotos de perfil (photoURL) o marcas de tiempo de última conexión (lastLogin).  
+HTML
+
+La tabla de clientes está limitada en estructura: En la sección correspondiente al HTML de la pestaña Clientes, las columnas definidas solo muestran el email, las compras, las reservas, las notas privadas, el estado activo/interesado y el botón de acción:  
+HTML
+
+HTML
+<thead>
+  <tr>
+    <th>Email del Cliente</th>
+    <th>Compras</th>
+    <th>Reservas</th>
+    <th>Notas Privadas</th>
+    <th>Estado</th>
+    <th>Acción</th>
+  </tr>
+</thead>
+No hay elementos ni etiquetas de imagen (<img>) preparadas para renderizar una foto de perfil, ni campos para consultar la última actividad.
+
+¿Cómo se podría solucionar?
+Para que el panel muestre fotos de perfil y la última conexión, tendrías que integrar lo siguiente en tu plataforma:
+
+Sincronización con Firebase Authentication: Al momento de que un usuario inicie sesión o se registre, su perfil de autenticación guarda datos como photoURL y metadatos de último acceso (metadata.lastSignInTime).
+
+Guardar un documento en la colección users: Cada vez que un usuario interactúe o se registre, debes asegurarte de escribir o actualizar un documento en una colección de Firestore llamada users que incluya campos como:
+
+JavaScript
+{
+  email: user.email,
+  photoURL: user.photoURL || 'img/default-avatar.png',
+  lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+}
+Actualizar la tabla HTML y el script de carga: Modificar el bucle en JavaScript que llena la tabla de clientes para que cree una etiqueta de imagen con el avatar y formatee la fecha de la última conexión obtenida de Firestore.
+
+entregame ese html corregido
+
+Your HTML file is ready
+
+Ícono de HTML
+admin-corregido
+ HTML 
+Abrir
+He implementado las modificaciones necesarias en el código para que el panel soporte las fotos de perfil y la última conexión de tus clientes.
+
+Los cambios principales realizados en este archivo incluyen:
+
+Actualización de la Interfaz (HTML/CSS): Se agregaron las columnas Foto y Última Conexión en la tabla de clientes. También se añadió una nueva regla de estilo .client-avatar para dar un formato circular y estilizado a las fotos de perfil.
+
+Sincronización con colección de usuarios (JavaScript): Se agregó una nueva consulta getDocs(collection(db, "users")). El sistema ahora intentará escanear la colección users en Firestore para buscar el correo de cada cliente.
+
+Imágenes dinámicas y alternativa de respaldo: Si el usuario está registrado en la colección users y tiene un photoURL, la imagen se mostrará automáticamente; de lo contrario, el sistema generará una imagen dinámica utilizando la inicial del correo electrónico. Asimismo, calculará la fecha desde su parámetro lastLogin o mostrará el estado como "Desconocida".
+
+Para que estos nuevos campos funcionen de forma 100% real, asegúrate de que al momento en el que los clientes se registren o ingresen en la plataforma, tu script de autenticación (por ejemplo, en la página de login.html o register.html) guarde esos datos en la colección users dentro de Firestore.
+
+
+
+
+Gemini es una IA y puede cometer errores.
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -122,6 +188,8 @@
     th { padding: 15px 20px; font-size: 0.85rem; color: var(--muted); border-bottom: 1px solid var(--line); font-weight: 600; text-transform: uppercase; }
     td { padding: 15px 20px; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.05); color: #c4d0df; vertical-align: middle; }
     tr:hover td { background: rgba(255,255,255,0.02); color: white; }
+    
+    .client-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); display: block; }
     
     .compra-item { display: block; font-size: 0.85rem; color: var(--cyan); background: rgba(0,213,255,0.05); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0,213,255,0.1); margin-bottom: 4px; width: fit-content; }
     .admin-note-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: 8px; color: white; padding: 8px 10px; font-size: 0.85rem; }
@@ -256,16 +324,18 @@
           <table id="tabla-clientes">
             <thead>
               <tr>
+                <th>Foto</th>
                 <th>Email del Cliente</th>
                 <th>Compras</th>
                 <th>Reservas</th>
                 <th>Notas Privadas</th>
                 <th>Estado</th>
+                <th>Última Conexión</th>
                 <th>Acción</th>
               </tr>
             </thead>
             <tbody id="clientes-tbody">
-              <tr><td colspan="6" style="text-align: center;">Escaneando base de datos...</td></tr>
+              <tr><td colspan="8" style="text-align: center;">Escaneando base de datos...</td></tr>
             </tbody>
           </table>
         </div>
@@ -619,6 +689,20 @@
             let notasMap = {};
             notasSnap.forEach(d => { notasMap[d.id] = d.data().note || ''; });
 
+            // Extraer la colección de usuarios si existe, para perfiles y ultima conexión
+            let usersMap = {};
+            try {
+                const usersSnap = await getDocs(collection(db, "users"));
+                usersSnap.forEach(u => {
+                    let data = u.data();
+                    if(data.email) {
+                        usersMap[data.email] = data;
+                    }
+                });
+            } catch(e) {
+                console.warn("La colección 'users' no existe o no tiene permisos. Se usarán datos genéricos.");
+            }
+
             const reservasSnap = await getDocs(collection(db, "reservas"));
             let reservas = [];
             reservasSnap.forEach(d => reservas.push({ id: d.id, ...d.data() }));
@@ -738,19 +822,26 @@
 
             clientesTbody.innerHTML = '';
             if(clientesArr.length === 0) {
-                clientesTbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay clientes aún.</td></tr>';
+                clientesTbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No hay clientes aún.</td></tr>';
             } else {
                 clientesArr.forEach(c => {
                     let estado = c.compras > 0 ? '<span style="color:var(--green);"><i class="bi bi-circle-fill" style="font-size:0.6rem;"></i> Activo</span>' : '<span style="color:var(--cyan);"><i class="bi bi-circle-fill" style="font-size:0.6rem;"></i> Interesado</span>';
                     let safeEmailKey = c.email.replace(/[@\.]/g, '_');
                     let notaActual = notasMap[safeEmailKey] || '';
 
+                    // Integrar datos de la colección users
+                    let userData = usersMap[c.email] || {};
+                    let photoUrl = userData.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(c.email)}&background=random&color=fff`;
+                    let lastLogin = userData.lastLogin ? new Date(userData.lastLogin.toMillis()).toLocaleString('es-ES') : '<span style="color:var(--muted)">Desconocida</span>';
+
                     let tr = `<tr>
+                        <td><img src="${photoUrl}" class="client-avatar" alt="Avatar"></td>
                         <td><strong>${c.email}</strong></td>
                         <td>${c.compras} items</td>
                         <td>${c.reservas} sesiones</td>
                         <td><input type="text" class="admin-note-input" value="${notaActual}" placeholder="Escribe una nota..." onchange="guardarNotaCliente('${safeEmailKey}', this.value)"></td>
                         <td>${estado}</td>
+                        <td>${lastLogin}</td>
                         <td>
                            <button class="admin-btn btn-eliminar" onclick="confirmarEliminarCliente('${c.email}')" style="padding: 6px 12px; font-size: 0.78rem;">
                               <i class="bi bi-trash"></i> Borrar
