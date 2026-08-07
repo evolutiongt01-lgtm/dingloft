@@ -623,14 +623,19 @@
             let notasMap = {};
             notasSnap.forEach(d => { notasMap[d.id] = d.data().note || ''; });
 
-            // Extraer la colección de usuarios si existe, para perfiles y ultima conexión
+            // INICIALIZAMOS LA LISTA DE CLIENTES ACÁ ARRIBA
             let usersMap = {};
+            let clientesMap = {}; 
+
             try {
                 const usersSnap = await getDocs(collection(db, "users"));
                 usersSnap.forEach(u => {
                     let data = u.data();
                     if(data.email) {
                         usersMap[data.email] = data;
+                        // Forzamos a que TODOS los registrados aparezcan en la tabla de clientes
+                        // aunque aún tengan 0 compras y 0 reservas
+                        clientesMap[data.email] = { email: data.email, reservas: 0, compras: 0 };
                     }
                 });
             } catch(e) {
@@ -699,7 +704,6 @@
 
             const comprasSnap = await getDocs(collection(db, "purchases"));
             let totalCompras = 0;
-            let clientesMap = {};
             let comprasArr = [];
             let totalGananciasSoftware = 0;
             let ingresosSoftwareHTML = '';
