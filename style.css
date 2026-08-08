@@ -1,0 +1,223 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #121212;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.5s ease;
+}
+
+/* Cuando la lámpara está ENCENDIDA */
+body.light-on {
+    background-color: #2b2b2b;
+}
+
+.room {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- ESTILOS DE LA LÁMPARA --- */
+.lamp-container {
+    position: absolute;
+    left: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+}
+
+.lamp {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.shade {
+    width: 180px;
+    height: 90px;
+    background-color: #e0e0e0;
+    border-radius: 180px 180px 0 0;
+    box-shadow: inset 0 -10px 20px rgba(0,0,0,0.2);
+    transition: background 0.3s;
+}
+
+body.light-on .shade {
+    background-color: #fff;
+    box-shadow: 0 0 40px #fff, inset 0 -5px 10px rgba(0,0,0,0.1);
+}
+
+.stand {
+    width: 10px;
+    height: 140px;
+    background-color: #d1d1d1;
+}
+
+.base {
+    width: 100px;
+    height: 15px;
+    background-color: #d1d1d1;
+    border-radius: 10px 10px 0 0;
+}
+
+/* Cuerda para jalar */
+.string {
+    position: absolute;
+    top: 75px;
+    right: 45px;
+    width: 2px;
+    height: 100px;
+    background-color: #fff;
+    cursor: pointer;
+    transform-origin: top;
+    transition: height 0.1s ease;
+}
+
+.bulb-pull {
+    position: absolute;
+    bottom: -12px;
+    left: -6px;
+    width: 14px;
+    height: 14px;
+    background-color: #ffcc00;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Haz de luz proyectado */
+.light-beam {
+    position: absolute;
+    top: 145px;
+    left: -150px;
+    width: 480px;
+    height: 450px;
+    background: radial-gradient(circle at 50% 0%, rgba(255, 220, 100, 0.25) 0%, rgba(255, 200, 50, 0.05) 50%, transparent 80%);
+    clip-path: polygon(45% 0%, 55% 0%, 100% 100%, 0% 100%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+body.light-on .light-beam {
+    opacity: 1;
+}
+
+/* --- FORMULARIO DE LOGIN (Efecto Glassmorphism) --- */
+.login-card {
+    position: absolute;
+    right: 25%;
+    width: 320px;
+    padding: 35px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: all 0.5s ease;
+}
+
+/* Aparece cuando la luz se enciende */
+body.light-on .login-card {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.login-card h2 {
+    margin-bottom: 25px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.input-group {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 6px;
+}
+
+.input-group input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #ffcc00;
+}
+
+.sign-in-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #ffcc00, #ff9900);
+    border: none;
+    border-radius: 8px;
+    color: #121212;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: opacity 0.2s;
+}
+
+.sign-in-btn:hover {
+    opacity: 0.9;
+}
+
+/* --- ADAPTACIÓN RESPONSIVE PARA MÓVILES --- */
+@media (max-width: 768px) {
+    .room {
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 40px;
+    }
+
+    .lamp-container {
+        position: relative;
+        left: 0;
+        transform: scale(0.85);
+        margin-bottom: 20px;
+    }
+
+    .light-beam {
+        top: 135px;
+        left: -120px;
+        width: 350px;
+        height: 300px;
+    }
+
+    .login-card {
+        position: relative;
+        right: 0;
+        width: 85%;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+}
