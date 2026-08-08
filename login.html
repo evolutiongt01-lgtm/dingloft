@@ -14,80 +14,8 @@
   <!-- Google Fonts: Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
   
-  <style>
-    :root { --cyan:#11d5f7; --violet:#7c4dff; --ink:#060911; --panel:rgba(12,18,31,.78); --line:rgba(169,201,229,.17); --muted:#9ba9bd; }
-    * { box-sizing: border-box; }
-    body { margin:0; min-height:100vh; color:#f7fbff; font-family:'Inter',sans-serif; background:radial-gradient(circle at 18% 45%,rgba(90,48,238,.24),transparent 33%),radial-gradient(circle at 78% 38%,rgba(0,211,255,.12),transparent 32%),var(--ink); overflow-x:hidden; }
-    body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:-1; opacity:.32; background-image:linear-gradient(rgba(119,185,255,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(119,185,255,.10) 1px,transparent 1px); background-size:72px 72px; mask-image:linear-gradient(to bottom,black,transparent 82%); }
-    a { color:inherit; }
-    .site-header { height:100px; display:flex; align-items:center; border-bottom:1px solid var(--line); background:rgba(5,8,15,.58); backdrop-filter:blur(18px); }
-    .shell { width:min(1400px,calc(100% - 48px)); margin:0 auto; }
-    .site-header .shell { display:flex; align-items:center; justify-content:space-between; }
-    .brand { text-decoration:none; color:#fff; font-size:1.65rem; font-weight:800; letter-spacing:-.07em; }
-    .brand span { color:var(--cyan); }
-    .back-link { border:1px solid var(--line); border-radius:10px; color:#e7f4ff; text-decoration:none; font-weight:600; font-size:.92rem; padding:.75rem 1rem; transition:.2s ease; }
-    .back-link:hover { border-color:var(--cyan); color:var(--cyan); transform:translateX(-2px); }
-    .login-page { min-height:calc(100vh - 100px); display:flex; align-items:center; padding:56px 0 36px; }
-    .login-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(460px,560px); gap:clamp(44px,7vw,120px); align-items:center; }
-    .hero-copy { max-width:580px; }
-    .eyebrow { color:var(--cyan); font-size:.8rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; margin-bottom:1rem; }
-    .hero-copy h1 { margin:0 0 1rem; font-size:clamp(2.3rem,4vw,4.2rem); letter-spacing:-.065em; line-height:1.02; }
-    .hero-copy h1 em { color:var(--cyan); font-style:normal; }
-    .hero-copy p { color:#b4c0d3; max-width:490px; line-height:1.7; margin:0 0 2.4rem; }
-    
-    /* NUEVO BANNER INFORMATIVO PARA MÓVIL Y COMUNIDAD */
-    .community-notice { background: rgba(17, 213, 247, 0.06); border: 1px solid rgba(17, 213, 247, 0.22); border-radius: 12px; padding: 14px 18px; margin-bottom: 1.5rem; display: flex; gap: 12px; align-items: center; }
-    .community-notice i { font-size: 1.4rem; color: var(--cyan); flex-shrink: 0; }
-    .community-notice p { margin: 0; font-size: 0.85rem; color: #d6e4f5; line-height: 1.4; }
-
-    .license-stage { min-height:350px; position:relative; display:grid; place-items:center; isolation:isolate; }
-    .license-stage::before { content:''; position:absolute; width:420px; height:250px; border-radius:50%; background:radial-gradient(ellipse,rgba(4,216,255,.30),rgba(124,77,255,.12) 45%,transparent 72%); filter:blur(12px); z-index:-1; }
-    .license-card { position:relative; width:min(385px,88%); height:235px; padding:27px; border:1px solid rgba(116,224,255,.45); border-radius:24px; background:linear-gradient(145deg,rgba(18,49,98,.72),rgba(9,14,30,.82)); box-shadow:0 28px 70px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.1); overflow:hidden; }
-    .license-card::after { content:''; position:absolute; inset:auto -10% -70% 18%; height:190px; background:radial-gradient(ellipse,rgba(0,219,255,.38),transparent 67%); transform:rotate(-12deg); }
-    .license-word { font-size:.75rem; letter-spacing:.16em; color:#b7eaff; font-weight:800; }
-    .license-lines { display:grid; gap:9px; margin-top:26px; width:53%; }
-    .license-lines span { height:8px; border-radius:99px; background:rgba(203,239,255,.24); } .license-lines span:nth-child(2){width:74%}.license-lines span:nth-child(3){width:47%}
-    .status { display:flex; gap:8px; align-items:center; position:absolute; left:27px; bottom:24px; color:#49f2bb; font-size:.83rem; font-weight:700; }
-    .shield { position:absolute; right:24px; bottom:22px; width:90px; height:104px; display:grid; place-items:center; color:var(--cyan); font-size:3.2rem; border:2px solid currentColor; border-radius:46% 46% 56% 56% / 36% 36% 67% 67%; filter:drop-shadow(0 0 16px rgba(0,217,255,.55)); z-index:1; }
-    .float-chip { position:absolute; width:108px; padding:14px 12px; border:1px solid rgba(158,210,255,.35); border-radius:15px; background:rgba(15,25,53,.78); box-shadow:0 14px 30px rgba(0,0,0,.25); font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:#d9ecff; }
-    .float-chip i { display:block; margin-top:10px; font-size:1.45rem; color:var(--cyan); } .chip-a{left:0;top:6px}.chip-b{right:8px;top:26px}.chip-c{left:9%;bottom:0}.chip-c i{color:#a677ff}
-    .hero-trust { display:flex; flex-wrap:wrap; gap:20px; color:#d6e4f5; font-size:.9rem; font-weight:600; margin-top:1.4rem; } .hero-trust i{color:var(--cyan); margin-right:7px;}
-    .login-card { padding:clamp(30px,4vw,47px); border:1px solid rgba(150,192,230,.27); border-radius:25px; background:linear-gradient(145deg,rgba(18,25,42,.90),rgba(7,11,22,.82)); box-shadow:0 28px 80px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.05); backdrop-filter:blur(18px); }
-    .login-card h2 { font-size:2rem; letter-spacing:-.055em; margin:0 0 .55rem; font-weight:800; } .login-card > p { color:var(--muted); margin-bottom:1.5rem; }
-    .form-label { color:#e7eef8; font-size:.9rem; font-weight:700; margin-bottom:.65rem; } .label-row { display:flex; justify-content:space-between; align-items:center; } .label-row a { color:var(--cyan); font-size:.82rem; font-weight:700; text-decoration:none; }
-    .field { position:relative; margin-bottom:1.3rem; } .field .bi { position:absolute; left:17px; top:50%; transform:translateY(-50%); color:#afbed1; z-index:2; } .field .toggle-password { left:auto; right:15px; border:0; background:transparent; color:#afbed1; }
-    .form-control { width:100%; height:56px; border:1px solid rgba(153,185,216,.25); border-radius:11px; color:#fff; background:rgba(4,9,18,.55); padding:0 50px; box-shadow:none; } .form-control::placeholder{color:#6f7d91}.form-control:focus{color:#fff;background:rgba(4,9,18,.78);border-color:var(--cyan);box-shadow:0 0 0 4px rgba(0,217,255,.10)}
-    .remember { display:flex; justify-content:space-between; align-items:center; margin:1.45rem 0; color:#ced9e7; font-size:.88rem; } .remember label{display:flex;gap:9px;align-items:center}.remember input{accent-color:var(--cyan);width:17px;height:17px}
-    .btn-login { width:100%; border:0; border-radius:11px; padding:16px; font-weight:800; background:linear-gradient(100deg,#0dd9f4,#32bdf9); color:#03111a; box-shadow:0 14px 30px rgba(0,210,245,.2); transition:.2s ease; } .btn-login:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(0,210,245,.34)}
-    .divider { display:flex; align-items:center; gap:12px; color:#708097; font-size:.8rem; margin:1.5rem 0; } .divider::before,.divider::after{content:'';height:1px;flex:1;background:var(--line)}
-    
-    .social-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .btn-social { width:100%; display:flex; justify-content:center; align-items:center; border:1px solid rgba(153,185,216,.25); border-radius:11px; color:#f1f7ff; background:rgba(4,9,18,.4); font-weight:700; font-size: 0.85rem; padding: 12px; cursor:pointer; transition:.2s ease; } 
-    .btn-social:hover { background:rgba(255,255,255,0.08); border-color:var(--cyan); transform: translateY(-1px); }
-    
-    .register { color:#8998ae; text-align:center; font-size:.88rem; margin:1.45rem 0 0; } .register a{color:var(--cyan);font-weight:700;text-decoration:none}
-    .trust-bar { display:flex; justify-content:center; flex-wrap:wrap; gap:30px; margin-top:42px; color:#aab9ca; font-size:.86rem; } .trust-bar i{color:var(--cyan);font-size:1.1rem;margin-right:8px}
-
-    @media (max-width: 950px) {
-      .hero-copy { display: none !important; }
-      .login-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
-      .login-page { align-items: center; }
-    }
-
-    @media (max-width: 540px) {
-      .shell { width:min(100% - 28px,1400px) }
-      .site-header { height:76px }
-      .brand { font-size:1.42rem }
-      .back-link { font-size:0; padding:.65rem }
-      .back-link span { display:none }
-      .login-page { padding:34px 0 }
-      .login-card { padding:27px 20px }
-      .login-card h2 { font-size:1.7rem }
-      .social-btns { grid-template-columns: 1fr; }
-      .trust-bar { gap:15px; justify-content:flex-start }
-      .trust-bar span { font-size:.8rem }
-    }
-  </style>
+  <!-- Enlace al archivo CSS externo -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
