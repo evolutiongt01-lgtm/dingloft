@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   
   <!-- Google Fonts: Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- PAYPAL SDK -->
   <script src="https://www.paypal.com/sdk/js?client-id=BAA88hYhrlAVHUFkzsqrlDE1atrFHrCZe7j0XOYtbB4YlxcxBASouD2NAU2J_BV1fp9-jGGYK2Mh4bHN20&currency=USD"></script>
@@ -395,6 +395,145 @@
       .cart-drawer { width:100%; }
     }
   </style>
+
+  <style id="dingloft-v3">
+    :root{
+      --v3-bg:#050608;
+      --v3-panel:#0b0d11;
+      --v3-panel2:#10131a;
+      --v3-line:rgba(255,255,255,.09);
+      --v3-text:#f7f8fb;
+      --v3-muted:#8e97a6;
+      --v3-blue:#6dd6ff;
+      --v3-blue2:#2aa7ff;
+      --v3-violet:#8e7dff;
+      --v3-green:#72efb2;
+      --v3-shadow:0 35px 100px rgba(0,0,0,.50);
+    }
+    html{scroll-padding-top:90px}
+    body{
+      font-family:'Manrope','Inter',sans-serif;
+      background:
+        radial-gradient(900px 600px at 80% -8%,rgba(60,179,255,.13),transparent 68%),
+        radial-gradient(700px 520px at 0% 40%,rgba(113,84,255,.07),transparent 70%),
+        #050608;
+      color:var(--v3-text);
+    }
+    body::before{
+      opacity:.18;background-size:64px 64px;
+      background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+      mask-image:linear-gradient(to bottom,#000 0%,transparent 75%);
+    }
+    .container{max-width:1320px}
+    .bg-orb{opacity:.55;filter:blur(130px)}
+    .orb-1{width:520px;height:520px;background:rgba(45,175,255,.14);top:-220px;right:-100px}
+    .orb-2{width:480px;height:480px;background:rgba(120,85,255,.08);left:-220px;bottom:8%}
+
+    /* NAV */
+    .navbar-glass{background:rgba(5,6,8,.72);border-bottom:1px solid rgba(255,255,255,.075);backdrop-filter:blur(28px) saturate(150%);padding:11px 0}
+    .brand-lockup{gap:10px}.brand-lockup img{width:38px;height:38px;filter:drop-shadow(0 0 20px rgba(77,188,255,.22))}
+    .brand-name{font-size:1rem;letter-spacing:.18em}.brand-sub{font-size:.53rem;color:#697386}
+    .nav-link{font-size:.78rem;letter-spacing:.02em;color:#9da5b2!important;border-radius:10px;padding:9px 11px!important;margin:0 2px}
+    .nav-link::after{display:none}.nav-link:hover{background:rgba(255,255,255,.055);color:#fff!important}
+    .nav-action-link,.btn-outline-custom{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.045);box-shadow:inset 0 1px rgba(255,255,255,.05)}
+    #main-cart-btn{border-radius:12px!important}
+
+    /* HERO */
+    .hero-section{padding:150px 0 72px;position:relative;overflow:visible}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(560px,1.08fr);gap:72px;align-items:center}
+    .hero-copy{position:relative;z-index:5}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;padding:7px 10px;border:1px solid rgba(255,255,255,.09);border-radius:999px;background:rgba(255,255,255,.035);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#aeb7c5}
+    .eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--v3-green);box-shadow:0 0 14px var(--v3-green)}
+    .hero-title{font-size:clamp(3.6rem,6vw,6.6rem);line-height:.91;letter-spacing:-.068em;margin:24px 0 24px;font-weight:700;max-width:740px}
+    .hero-title .quiet{display:block;color:#747d8c;font-weight:600}
+    .hero-title .gradient-word{background:linear-gradient(110deg,#fff 0%,#87dfff 47%,#968aff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-lead{font-size:1.02rem;line-height:1.75;color:#9ca5b4;max-width:620px;margin:0 0 30px}
+    .hero-buttons{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:34px}
+    .btn-cyan{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:#f4f7fb;color:#07090c;border-radius:13px;padding:13px 19px;font-size:.8rem;font-weight:800;box-shadow:0 12px 36px rgba(0,0,0,.34);transition:.25s ease}
+    .btn-cyan:hover{background:#fff;color:#000;transform:translateY(-2px);box-shadow:0 18px 45px rgba(0,0,0,.44)}
+    .hero-primary i{transition:.25s}.hero-primary:hover i{transform:translate(3px,-3px)}
+    .hero-secondary{display:inline-flex;gap:9px;align-items:center;border-radius:13px;padding:12px 17px!important;font-size:.8rem}
+    .hero-proof{display:flex;gap:9px;flex-wrap:wrap}
+    .proof-item{display:flex;align-items:center;gap:8px;font-size:.7rem;color:#8791a0;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);padding:8px 10px;border-radius:10px}
+    .proof-icon{color:#dce5ef;font-size:.87rem}
+
+    .hero-universe{position:relative;min-height:610px;perspective:1200px}
+    .universe-glow{position:absolute;inset:8% 8%;background:radial-gradient(circle,rgba(61,181,255,.16),rgba(112,84,255,.07) 35%,transparent 67%);filter:blur(16px);pointer-events:none}
+    .universe-grid{position:absolute;inset:8% 3% 4%;border-radius:42px;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(circle at center,black,transparent 72%);opacity:.55;transform:rotateX(63deg) translateY(120px) scale(1.1)}
+    .core-panel{position:absolute;left:50%;top:50%;width:72%;height:64%;transform:translate(-50%,-50%);border-radius:32px;background:linear-gradient(145deg,rgba(18,22,30,.94),rgba(7,9,13,.96));border:1px solid rgba(255,255,255,.12);box-shadow:0 50px 120px rgba(0,0,0,.62),inset 0 1px rgba(255,255,255,.07);overflow:hidden;transition:transform .12s ease-out}
+    .core-panel::before{content:'';position:absolute;inset:-1px;background:radial-gradient(520px circle at var(--mx,50%) var(--my,30%),rgba(95,205,255,.16),transparent 45%);pointer-events:none}
+    .core-top{height:47px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;padding:0 17px;color:#6e7888;font-size:.61rem;letter-spacing:.12em;text-transform:uppercase}
+    .core-top .live{display:flex;align-items:center;gap:7px}.core-top .live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--v3-green);box-shadow:0 0 12px var(--v3-green)}
+    .core-workspace{height:calc(100% - 47px);display:grid;grid-template-columns:68px 1fr;position:relative}
+    .core-sidebar{border-right:1px solid rgba(255,255,255,.07);padding:15px 12px;display:flex;flex-direction:column;gap:11px;align-items:center}
+    .sidebar-dot{width:33px;height:33px;border-radius:10px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.035);display:grid;place-items:center;color:#6c7685;font-size:.78rem}
+    .sidebar-dot.active{color:#fff;background:rgba(76,188,255,.12);border-color:rgba(76,188,255,.22);box-shadow:inset 0 0 20px rgba(76,188,255,.06)}
+    .core-content{padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+    .core-heading{display:flex;align-items:flex-end;justify-content:space-between}.core-heading strong{font-size:1.05rem;letter-spacing:-.03em}.core-heading span{font-size:.6rem;color:#697385}
+    .core-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.core-metric{border:1px solid rgba(255,255,255,.07);border-radius:12px;background:rgba(255,255,255,.03);padding:10px}.core-metric span{display:block;font-size:.55rem;color:#667182;text-transform:uppercase;letter-spacing:.08em}.core-metric strong{display:block;font-size:.86rem;margin-top:4px}
+    .core-products{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;flex:1}.mini-product{position:relative;border:1px solid rgba(255,255,255,.075);border-radius:15px;background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.015));padding:12px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}.mini-product img{width:64%;height:74px;object-fit:contain;align-self:center;filter:drop-shadow(0 12px 15px rgba(0,0,0,.32));transition:.3s}.mini-product:hover img{transform:translateY(-4px) scale(1.06)}.mini-product small{color:#697586;font-size:.52rem}.mini-product strong{font-size:.64rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .orbit-app{position:absolute;width:86px;height:86px;border-radius:24px;background:linear-gradient(145deg,rgba(22,26,34,.96),rgba(8,10,14,.95));border:1px solid rgba(255,255,255,.13);box-shadow:0 24px 60px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.07);display:grid;place-items:center;z-index:5;transition:transform .3s,border-color .3s,box-shadow .3s;text-decoration:none;animation:orbitFloat 5s ease-in-out infinite}
+    .orbit-app img{width:58px;height:58px;object-fit:contain;filter:drop-shadow(0 8px 15px rgba(0,0,0,.35));transition:.3s}.orbit-app:hover{border-color:rgba(107,214,255,.45);box-shadow:0 28px 70px rgba(0,0,0,.58),0 0 35px rgba(80,189,255,.12);z-index:8}.orbit-app:hover img{transform:scale(1.12) rotate(-3deg)}
+    .orbit-app::after{content:attr(data-label);position:absolute;top:calc(100% + 8px);white-space:nowrap;font-size:.58rem;color:#8b95a5;opacity:0;transform:translateY(-4px);transition:.25s}.orbit-app:hover::after{opacity:1;transform:none}
+    .app-a{left:1%;top:15%;animation-delay:-1s}.app-b{right:-1%;top:11%;animation-delay:-2.1s}.app-c{right:2%;bottom:12%;animation-delay:-.4s}.app-d{left:3%;bottom:8%;animation-delay:-3.3s}.app-e{left:44%;top:-1%;width:74px;height:74px;border-radius:21px;animation-delay:-4s}.app-e img{width:50px;height:50px}
+    @keyframes orbitFloat{0%,100%{translate:0 0}50%{translate:0 -9px}}
+    .hero-status{position:absolute;right:10%;bottom:-2%;z-index:7;background:rgba(7,9,13,.86);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:11px 13px;display:flex;align-items:center;gap:10px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+    .hero-status i{color:var(--v3-green);font-size:1.05rem}.hero-status small{display:block;color:#647083;font-size:.5rem;text-transform:uppercase;letter-spacing:.1em}.hero-status strong{display:block;font-size:.68rem;margin-top:2px}
+
+    /* APP MARQUEE */
+    .product-marquee{border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.018);overflow:hidden;padding:13px 0;position:relative}
+    .product-marquee::before,.product-marquee::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none}.product-marquee::before{left:0;background:linear-gradient(90deg,#050608,transparent)}.product-marquee::after{right:0;background:linear-gradient(-90deg,#050608,transparent)}
+    .marquee-track{display:flex;width:max-content;gap:12px;animation:marqueeMove 34s linear infinite}.product-marquee:hover .marquee-track{animation-play-state:paused}
+    .marquee-item{height:38px;display:flex;align-items:center;gap:9px;padding:0 13px;border:1px solid rgba(255,255,255,.07);border-radius:11px;background:rgba(255,255,255,.025);font-size:.64rem;color:#8e98a7;white-space:nowrap}.marquee-item img{width:23px;height:23px;object-fit:contain}.marquee-item b{color:#dbe0e7;font-weight:600}
+    @keyframes marqueeMove{to{transform:translateX(-50%)}}
+
+    /* TRUST */
+    .trust-shell{padding:38px 0 28px}.trust-bar{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid rgba(255,255,255,.08);border-radius:22px;background:rgba(255,255,255,.025);overflow:hidden;padding:0}.trust-item{display:flex;gap:13px;align-items:center;padding:19px 22px;border-right:1px solid rgba(255,255,255,.07)}.trust-item:last-child{border-right:0}.trust-item>i{font-size:1.15rem;color:#cfd7e2}.trust-copy strong{font-size:.72rem}.trust-copy span{font-size:.61rem;color:#697486;margin-top:3px}
+
+    /* CATEGORY */
+    .category-area{padding:70px 0 35px}.category-heading,.catalog-intro{display:grid;grid-template-columns:1fr 420px;align-items:end;gap:50px;margin-bottom:28px}.section-kicker{font-size:.59rem;letter-spacing:.16em;text-transform:uppercase;color:#697586;font-weight:800;margin-bottom:9px}.section-display{font-size:clamp(2.2rem,4vw,4.5rem);line-height:1;letter-spacing:-.055em;font-weight:650;margin:0}.section-copy{font-size:.83rem;line-height:1.7;color:#7e8898;margin:0}
+    .category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.category-card{height:260px;position:relative;overflow:hidden;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,#0d1015,#080a0e);padding:20px;cursor:pointer;transition:.35s cubic-bezier(.2,.7,.2,1)}.category-card::before{content:'';position:absolute;width:230px;height:230px;border-radius:50%;right:-95px;top:-95px;background:radial-gradient(circle,rgba(93,197,255,.10),transparent 65%);transition:.4s}.category-card:hover{transform:translateY(-7px);border-color:rgba(255,255,255,.16);box-shadow:0 28px 70px rgba(0,0,0,.3)}.category-card:hover::before{transform:scale(1.35)}
+    .category-number{font-size:.54rem;color:#657083;letter-spacing:.12em}.category-icon{position:absolute;right:13px;top:9px;font-size:7.8rem;line-height:1;color:rgba(255,255,255,.035);transform:rotate(-7deg);transition:.4s}.category-card:hover .category-icon{color:rgba(109,214,255,.08);transform:rotate(0) scale(1.05)}.category-title{position:absolute;left:20px;bottom:53px;font-size:1.05rem;line-height:1.25;letter-spacing:-.03em;margin:0}.category-link{position:absolute;left:20px;bottom:19px;font-size:.64rem;color:#7d8796;text-decoration:none}.category-link i{margin-left:5px;transition:.25s}.category-card:hover .category-link{color:#dce4ed}.category-card:hover .category-link i{margin-left:9px}
+
+    /* CATALOG */
+    #catalogo{padding-top:90px!important}.catalog-intro{margin-bottom:44px}.category-section{margin-bottom:82px!important;position:relative}.category-header{display:flex;align-items:center;gap:10px;font-size:.72rem!important;font-weight:700!important;text-transform:uppercase;letter-spacing:.1em;color:#9da7b5!important;border:0!important;margin:0 0 16px!important;padding:0!important}.category-header i{width:31px;height:31px;display:grid;place-items:center;border-radius:9px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07);color:#c9d2dd}
+    #catalogo .row{--bs-gutter-x:12px;--bs-gutter-y:12px}
+    .product-horizontal{--rx:0deg;--ry:0deg;position:relative;isolation:isolate;min-height:282px;padding:0!important;border-radius:23px!important;overflow:hidden;display:grid!important;grid-template-columns:188px 1fr;gap:0!important;background:linear-gradient(145deg,rgba(15,18,24,.96),rgba(7,9,12,.98))!important;border:1px solid rgba(255,255,255,.08)!important;box-shadow:none!important;transform:perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));transform-style:preserve-3d;transition:transform .15s ease-out,border-color .3s,box-shadow .3s!important}
+    .product-horizontal::before{content:'';position:absolute;inset:0;background:radial-gradient(480px circle at var(--spot-x,50%) var(--spot-y,50%),rgba(90,199,255,.12),transparent 45%);opacity:0;transition:opacity .3s;z-index:-1;pointer-events:none}.product-horizontal::after{content:'';position:absolute;right:-45px;bottom:-55px;width:245px;height:245px;background:var(--product-art);background-repeat:no-repeat;background-position:center;background-size:contain;filter:grayscale(1);opacity:.027;transform:rotate(-12deg);z-index:-1;transition:.5s ease;pointer-events:none}.product-horizontal:hover{border-color:rgba(255,255,255,.16)!important;box-shadow:0 30px 80px rgba(0,0,0,.34)!important}.product-horizontal:hover::before{opacity:1}.product-horizontal:hover::after{opacity:.055;transform:rotate(-5deg) scale(1.1)}
+    .prod-img-box{width:auto!important;height:auto!important;min-height:282px;border:0!important;border-right:1px solid rgba(255,255,255,.07)!important;border-radius:0!important;background:radial-gradient(circle at 50% 43%,rgba(255,255,255,.08),transparent 55%)!important;padding:25px!important;position:relative;overflow:hidden;display:flex!important;align-items:center;justify-content:center;transform:translateZ(18px)}
+    .prod-img-box::after{content:'VIEW';position:absolute;bottom:15px;left:50%;transform:translate(-50%,8px);font-size:.5rem;letter-spacing:.18em;color:#798494;opacity:0;transition:.3s}.product-horizontal:hover .prod-img-box::after{opacity:1;transform:translate(-50%,0)}
+    .prod-img-box img{width:128px!important;height:128px!important;object-fit:contain!important;filter:drop-shadow(0 18px 25px rgba(0,0,0,.38))!important;transition:.42s cubic-bezier(.2,.8,.2,1)!important}.product-horizontal:hover .prod-img-box img{transform:translateY(-7px) scale(1.08) rotate(-2deg)!important;filter:drop-shadow(0 24px 35px rgba(0,0,0,.5))!important}
+    .prod-info{padding:22px 22px 19px!important;display:flex!important;flex-direction:column;justify-content:space-between;min-width:0;transform:translateZ(12px)}
+    .prod-title{font-size:1.15rem!important;letter-spacing:-.035em;font-weight:700!important;color:#f3f5f8!important;margin-bottom:7px!important}.prod-title:hover{color:var(--v3-blue)!important}.prod-desc{font-size:.7rem!important;line-height:1.55!important;color:#778293!important;max-width:380px;margin-bottom:8px!important;-webkit-line-clamp:2}
+    .tech-tag{font-size:.5rem!important;letter-spacing:.06em!important;border-radius:7px!important;padding:5px 7px!important;background:rgba(255,255,255,.035)!important;border:1px solid rgba(255,255,255,.07)!important;color:#8994a4!important;margin-top:6px!important}.tech-tag i{color:#cbd3dd}.text-warning{color:#99a4b3!important;letter-spacing:.05em}.prod-info .mb-2.mt-1 span:last-child{color:#697586!important;font-size:.61rem!important}.old-price{font-size:.68rem!important;color:#596474!important}.prod-price{font-size:1.35rem!important;color:#f5f7fa!important;letter-spacing:-.04em}.prod-price[style]{color:#f5f7fa!important}
+    .btn-add-cart{border-radius:11px!important;background:rgba(255,255,255,.07)!important;color:#e8edf3!important;border:1px solid rgba(255,255,255,.10)!important;padding:9px 12px!important;font-size:.65rem!important;font-weight:700!important;box-shadow:none!important;transition:.25s!important}.btn-add-cart:hover{background:#f4f7fb!important;color:#050608!important;border-color:#f4f7fb!important;transform:translateY(-2px)!important}.btn-add-cart[style]{background:rgba(255,255,255,.07)!important;color:#e8edf3!important}.btn-add-cart[style]:hover{background:#f4f7fb!important;color:#050608!important}
+    .product-horizontal.featured-product{grid-column:span 2;min-height:330px}.product-horizontal.featured-product .prod-img-box{min-height:330px}.product-horizontal.featured-product::before{background:radial-gradient(650px circle at var(--spot-x,50%) var(--spot-y,50%),rgba(109,214,255,.15),transparent 48%)}
+
+    /* PROCESS */
+    .service-band{padding:40px 0 100px}.service-shell{border:1px solid rgba(255,255,255,.08);border-radius:30px;background:linear-gradient(145deg,#0c0f14,#07090c);padding:48px;position:relative;overflow:hidden}.service-shell::after{content:'';position:absolute;width:460px;height:460px;border-radius:50%;right:-180px;top:-220px;background:radial-gradient(circle,rgba(78,190,255,.12),transparent 68%)}.service-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:58px;align-items:center}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.step-card{min-height:205px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);border-radius:18px;padding:16px;position:relative;transition:.3s}.step-card:hover{transform:translateY(-5px);background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.13)}.step-card>span{position:absolute;right:14px;top:12px;font-size:.5rem;color:#5d6878}.step-card>i{font-size:1.2rem;color:#cdd5df;display:block;margin:12px 0 36px}.step-card strong{font-size:.74rem}.step-card p{font-size:.62rem;line-height:1.5;color:#6f7a8b;margin:7px 0 0}
+
+    /* CART / MODAL */
+    .btn-floating-cart{width:58px;height:58px;border-radius:18px;background:#f4f7fb!important;color:#080a0d!important;border:0!important;box-shadow:0 18px 45px rgba(0,0,0,.38)!important}.badge-floating{background:var(--v3-blue2)!important;border:2px solid #050608!important}.cart-overlay{background:rgba(0,0,0,.72)!important}.cart-drawer{background:rgba(8,10,14,.94)!important;border-left:1px solid rgba(255,255,255,.10)!important;box-shadow:-30px 0 80px rgba(0,0,0,.55)!important}.cart-header{border-bottom-color:rgba(255,255,255,.08)!important}.cart-footer{background:rgba(5,7,10,.75)!important;border-top-color:rgba(255,255,255,.08)!important}.paypal-white-card{border-radius:14px!important}.success-modal-box{background:linear-gradient(145deg,#11151d,#080a0e)!important;border-color:rgba(255,255,255,.12)!important;border-radius:26px!important}
+
+    /* REVEALS */
+    .reveal-v3{opacity:0;transform:translateY(22px);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.75,.2,1)}.reveal-v3.is-visible{opacity:1;transform:none}
+
+    @media(max-width:1199px){
+      .hero-grid{grid-template-columns:1fr 1fr;gap:28px}.hero-universe{min-height:540px}.core-panel{width:78%;height:62%}.orbit-app{width:76px;height:76px;border-radius:21px}.orbit-app img{width:51px;height:51px}.category-grid{grid-template-columns:repeat(2,1fr)}.category-card{height:220px}
+      .product-horizontal{grid-template-columns:160px 1fr}.prod-img-box{min-height:270px}.service-grid{grid-template-columns:1fr}.steps{max-width:760px}
+    }
+    @media(max-width:991px){
+      .hero-section{padding:118px 0 38px;text-align:left}.hero-grid{grid-template-columns:1fr}.hero-copy{max-width:760px}.hero-title{font-size:clamp(3.4rem,10vw,5.6rem)}.hero-universe{min-height:540px;max-width:760px;width:100%;margin:0 auto}.hero-buttons{justify-content:flex-start}.hero-proof{justify-content:flex-start}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:0;border-bottom:1px solid rgba(255,255,255,.07)}.trust-item:last-child{border-bottom:0}.category-heading,.catalog-intro{grid-template-columns:1fr;gap:16px}.section-copy{max-width:650px}.product-horizontal{grid-template-columns:180px 1fr}.service-shell{padding:32px}.navbar-collapse{margin-top:12px;padding:12px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:#0a0c10}.nav-link{text-align:center}.product-marquee{margin-top:10px}
+    }
+    @media(max-width:767px){
+      .hero-section{padding-top:104px}.hero-title{font-size:clamp(3.1rem,15vw,4.8rem);line-height:.93}.hero-lead{font-size:.88rem}.hero-universe{min-height:430px}.core-panel{width:88%;height:68%;border-radius:24px}.core-workspace{grid-template-columns:48px 1fr}.core-sidebar{padding:12px 7px}.sidebar-dot{width:29px;height:29px}.core-content{padding:13px}.core-metrics{grid-template-columns:repeat(2,1fr)}.core-metric:nth-child(3){display:none}.core-products{grid-template-columns:repeat(2,1fr)}.mini-product:nth-child(3){display:none}.orbit-app{width:61px;height:61px;border-radius:17px}.orbit-app img{width:42px;height:42px}.app-e{width:56px;height:56px}.app-e img{width:38px;height:38px}.app-a{left:0}.app-b{right:0}.app-c{right:0}.app-d{left:0}.hero-status{right:6%;bottom:1%}.category-grid{grid-template-columns:1fr}.category-card{height:180px}.category-icon{font-size:6.5rem}.section-display{font-size:2.65rem}.product-horizontal{grid-template-columns:130px 1fr;min-height:245px}.prod-img-box{min-height:245px!important;padding:15px!important}.prod-img-box img{width:95px!important;height:95px!important}.prod-info{padding:17px 15px!important}.prod-title{font-size:1rem!important}.prod-desc{font-size:.64rem!important}.prod-info>.d-flex{align-items:center!important}.prod-price{font-size:1.15rem!important}.service-shell{padding:24px}.steps{grid-template-columns:1fr}.step-card{min-height:135px}.step-card>i{margin-bottom:18px}.premium-footer{padding-bottom:100px}
+    }
+    @media(max-width:520px){
+      .hero-buttons>*{width:auto}.hero-proof{display:flex}.proof-item{width:auto}.hero-universe{min-height:390px;margin-top:10px}.core-panel{width:92%;height:66%}.core-top{height:39px}.core-workspace{height:calc(100% - 39px)}.orbit-app{width:55px;height:55px}.orbit-app img{width:36px;height:36px}.app-e{top:-2%}.hero-status{display:none}.marquee-item{height:34px}.trust-shell{padding-top:22px}.category-area{padding-top:55px}.category-card{height:168px}.product-horizontal{grid-template-columns:1fr!important}.prod-img-box{min-height:148px!important;border-right:0!important;border-bottom:1px solid rgba(255,255,255,.07)!important}.prod-img-box img{width:105px!important;height:105px!important}.prod-info{padding:17px!important}.prod-desc{max-width:none}.prod-info>.d-flex{flex-direction:row!important;gap:12px!important}.btn-add-cart{width:auto!important}.service-band{padding-bottom:80px}
+    }
+    @media(prefers-reduced-motion:reduce){.orbit-app,.marquee-track{animation:none!important}.reveal-v3{opacity:1!important;transform:none!important}.product-horizontal{transform:none!important}}
+  </style>
+
 </head>
 <body>
 
@@ -490,49 +629,90 @@
     <span class="badge-floating cart-badge-count-global">0</span>
   </button>
 
-  <!-- Hero Section -->
+  <!-- Hero Section · Dingloft V3 -->
   <section class="hero-section">
     <div class="container">
       <div class="hero-grid">
         <div class="hero-copy">
-          <div class="eyebrow"><span class="eyebrow-dot"></span> Software profesional · acceso digital</div>
-          <h1 class="hero-title">Trabajo serio.<br><span class="quiet">Herramientas a la altura.</span></h1>
-          <p class="hero-lead">Licencias vitalicias creadas o distribuidas por Dingloft, instalación remota profesional y librerías de audio seleccionadas para trabajar con una experiencia simple, rápida y segura.</p>
+          <div class="eyebrow"><span class="eyebrow-dot"></span> Ecosistema digital para profesionales</div>
+          <h1 class="hero-title">Software que <span class="gradient-word">eleva</span><br><span class="quiet">tu forma de crear.</span></h1>
+          <p class="hero-lead">Licencias vitalicias creadas o distribuidas por Dingloft, instalación remota profesional y librerías de audio seleccionadas en una experiencia de compra diseñada para sentirse simple, seria y premium.</p>
           <div class="hero-buttons">
-            <a href="#catalogo" class="btn-cyan hero-primary">Explorar catálogo <i class="bi bi-arrow-up-right"></i></a>
-            <a href="#servicio" class="btn-outline-custom hero-secondary">Conocer el proceso <i class="bi bi-arrow-down"></i></a>
+            <a href="#catalogo" class="btn-cyan hero-primary">Explorar productos <i class="bi bi-arrow-up-right"></i></a>
+            <a href="#servicio" class="btn-outline-custom hero-secondary">Cómo funciona <i class="bi bi-play-circle"></i></a>
           </div>
           <div class="hero-proof">
-            <div class="proof-item"><span class="proof-icon"><i class="bi bi-infinity"></i></span> Licencias vitalicias</div>
-            <div class="proof-item"><span class="proof-icon"><i class="bi bi-display"></i></span> Instalación remota</div>
-            <div class="proof-item"><span class="proof-icon"><i class="bi bi-headset"></i></span> Soporte especializado</div>
+            <div class="proof-item"><span class="proof-icon"><i class="bi bi-infinity"></i></span> Acceso vitalicio</div>
+            <div class="proof-item"><span class="proof-icon"><i class="bi bi-shield-check"></i></span> Compra protegida</div>
+            <div class="proof-item"><span class="proof-icon"><i class="bi bi-person-check"></i></span> Soporte especializado</div>
           </div>
         </div>
 
-        <div class="hero-visual" aria-label="Panel de trabajo Dingloft">
-          <div class="hero-frame">
-            <div class="hero-frame-top">
-              <span class="window-dots"><span></span><span></span><span></span></span>
-              <span>Dingloft / Workspace</span>
-            </div>
-            <div class="hero-img-box">
-              <img src="img/dashboard.png" alt="Workspace Dashboard" onerror="this.src='https://ui-avatars.com/api/?name=Dingloft&background=111820&color=73d7ff&size=600'">
+        <div class="hero-universe" id="heroUniverse" aria-label="Ecosistema de productos Dingloft">
+          <div class="universe-glow"></div>
+          <div class="universe-grid"></div>
+          <div class="core-panel" id="corePanel">
+            <div class="core-top"><span>Dingloft / Digital Workspace</span><span class="live">Store online</span></div>
+            <div class="core-workspace">
+              <div class="core-sidebar">
+                <span class="sidebar-dot active"><i class="bi bi-grid"></i></span>
+                <span class="sidebar-dot"><i class="bi bi-box-seam"></i></span>
+                <span class="sidebar-dot"><i class="bi bi-cloud-arrow-down"></i></span>
+                <span class="sidebar-dot"><i class="bi bi-headset"></i></span>
+              </div>
+              <div class="core-content">
+                <div class="core-heading"><strong>Tu espacio de trabajo</strong><span>SOFTWARE · AUDIO · PRODUCTIVITY</span></div>
+                <div class="core-metrics">
+                  <div class="core-metric"><span>Modalidad</span><strong>Digital</strong></div>
+                  <div class="core-metric"><span>Acceso</span><strong>Vitalicio</strong></div>
+                  <div class="core-metric"><span>Soporte</span><strong>Directo</strong></div>
+                </div>
+                <div class="core-products">
+                  <a href="autocad.html" class="mini-product text-decoration-none"><img src="img/autocad.png" alt="AutoCAD"><div><small>Arquitectura</small><strong>AutoCAD 2026</strong></div></a>
+                  <a href="sketchup.html" class="mini-product text-decoration-none"><img src="img/sketchup.png" alt="SketchUp"><div><small>Diseño 3D</small><strong>SketchUp Pro</strong></div></a>
+                  <a href="nord.html" class="mini-product text-decoration-none"><img src="img/nord.png" alt="Nord Stage"><div><small>Audio</small><strong>Nord Library</strong></div></a>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="floating-chip chip-one"><small>Compra</small><strong><i class="bi bi-shield-check"></i> Pago protegido</strong></div>
-          <div class="floating-chip chip-two"><small>Servicio</small><strong><i class="bi bi-lightning-charge"></i> Entrega rápida</strong></div>
+          <a class="orbit-app app-a" href="autocad.html" data-label="AutoCAD 2026"><img src="img/autocad.png" alt="AutoCAD"></a>
+          <a class="orbit-app app-b" href="sketchup.html" data-label="SketchUp Pro"><img src="img/sketchup.png" alt="SketchUp"></a>
+          <a class="orbit-app app-c" href="logic.html" data-label="Logic Pro"><img src="img/logic.png" alt="Logic Pro"></a>
+          <a class="orbit-app app-d" href="nord.html" data-label="Nord Stage 4"><img src="img/nord.png" alt="Nord Stage 4"></a>
+          <a class="orbit-app app-e" href="office.html" data-label="Office"><img src="img/office.png" alt="Office"></a>
+          <div class="hero-status"><i class="bi bi-patch-check-fill"></i><div><small>Dingloft Care</small><strong>Instalación y soporte</strong></div></div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Product marquee -->
+  <div class="product-marquee" aria-label="Productos disponibles">
+    <div class="marquee-track">
+      <span class="marquee-item"><img src="img/autocad.png" alt=""><b>AutoCAD 2026</b> · Arquitectura</span>
+      <span class="marquee-item"><img src="img/sketchup.png" alt=""><b>SketchUp Pro</b> · 3D</span>
+      <span class="marquee-item"><img src="img/cinema4d.png" alt=""><b>Cinema 4D</b> · Motion</span>
+      <span class="marquee-item"><img src="img/nord.png" alt=""><b>Nord Stage 4</b> · Library</span>
+      <span class="marquee-item"><img src="img/yamahakeys.png" alt=""><b>Yamaha Premium Keys</b> · Audio</span>
+      <span class="marquee-item"><img src="img/logic.png" alt=""><b>Logic Pro</b> · DAW</span>
+      <span class="marquee-item"><img src="img/office.png" alt=""><b>Office</b> · Productivity</span>
+      <span class="marquee-item"><img src="img/autocad.png" alt=""><b>AutoCAD 2026</b> · Arquitectura</span>
+      <span class="marquee-item"><img src="img/sketchup.png" alt=""><b>SketchUp Pro</b> · 3D</span>
+      <span class="marquee-item"><img src="img/cinema4d.png" alt=""><b>Cinema 4D</b> · Motion</span>
+      <span class="marquee-item"><img src="img/nord.png" alt=""><b>Nord Stage 4</b> · Library</span>
+      <span class="marquee-item"><img src="img/yamahakeys.png" alt=""><b>Yamaha Premium Keys</b> · Audio</span>
+      <span class="marquee-item"><img src="img/logic.png" alt=""><b>Logic Pro</b> · DAW</span>
+      <span class="marquee-item"><img src="img/office.png" alt=""><b>Office</b> · Productivity</span>
+    </div>
+  </div>
+
   <!-- Barra de confianza -->
   <section class="trust-shell">
     <div class="container">
       <div class="trust-bar">
-        <div class="trust-item"><i class="bi bi-patch-check"></i><div class="trust-copy"><strong>Licencias vitalicias</strong><span>Compra una vez, trabaja sin límites.</span></div></div>
-        <div class="trust-item"><i class="bi bi-pc-display-horizontal"></i><div class="trust-copy"><strong>Instalación remota</strong><span>Proceso profesional y guiado.</span></div></div>
-        <div class="trust-item"><i class="bi bi-headset"></i><div class="trust-copy"><strong>Soporte especializado</strong><span>Acompañamiento para tu compra.</span></div></div>
+        <div class="trust-item"><i class="bi bi-infinity"></i><div class="trust-copy"><strong>Licencias vitalicias</strong><span>Compra una vez y conserva tu acceso.</span></div></div>
+        <div class="trust-item"><i class="bi bi-display"></i><div class="trust-copy"><strong>Instalación remota</strong><span>Acompañamiento técnico durante el proceso.</span></div></div>
+        <div class="trust-item"><i class="bi bi-shield-check"></i><div class="trust-copy"><strong>Compra segura</strong><span>Tu flujo de pago actual se mantiene intacto.</span></div></div>
       </div>
     </div>
   </section>
@@ -540,35 +720,15 @@
   <!-- Categorías -->
   <section class="category-area">
     <div class="container">
-      <div class="category-heading">
-        <div>
-          <div class="section-kicker">Catálogo seleccionado</div>
-          <h2 class="section-display">Una tienda hecha para profesionales.</h2>
-        </div>
-        <p class="section-copy">Arquitectura, productividad y producción musical reunidas en una experiencia más limpia, ordenada y directa.</p>
+      <div class="category-heading reveal-v3">
+        <div><div class="section-kicker">Dingloft Collection</div><h2 class="section-display">Todo lo que usas.<br>Mejor presentado.</h2></div>
+        <p class="section-copy">No queríamos otra cuadrícula de tienda. Cada categoría funciona como una puerta visual hacia una disciplina distinta, conservando el catálogo y la operación que ya tenías.</p>
       </div>
-
       <div class="category-grid">
-        <div class="category-card" onclick="window.location.href='#arquitectura'">
-          <span class="category-number">01 / DESIGN</span><span class="category-icon"><i class="bi bi-vector-pen"></i></span>
-          <h3 class="category-title">Diseño, arquitectura<br>y visualización</h3>
-          <a class="category-link" href="#arquitectura">Ver selección <i class="bi bi-arrow-right"></i></a>
-        </div>
-        <div class="category-card" onclick="window.location.href='#oficina'">
-          <span class="category-number">02 / WORK</span><span class="category-icon"><i class="bi bi-grid-1x2"></i></span>
-          <h3 class="category-title">Oficina<br>y productividad</h3>
-          <a class="category-link" href="#oficina">Ver selección <i class="bi bi-arrow-right"></i></a>
-        </div>
-        <div class="category-card" onclick="window.location.href='#audio'">
-          <span class="category-number">03 / AUDIO</span><span class="category-icon"><i class="bi bi-soundwave"></i></span>
-          <h3 class="category-title">DAWs, instrumentos<br>y librerías</h3>
-          <a class="category-link" href="#audio">Ver selección <i class="bi bi-arrow-right"></i></a>
-        </div>
-        <div class="category-card" onclick="window.location.href='#arquitectura'">
-          <span class="category-number">04 / CREATE</span><span class="category-icon"><i class="bi bi-play-btn"></i></span>
-          <h3 class="category-title">Edición, motion<br>y creación</h3>
-          <a class="category-link" href="#arquitectura">Ver selección <i class="bi bi-arrow-right"></i></a>
-        </div>
+        <div class="category-card reveal-v3" onclick="window.location.href='#arquitectura'"><span class="category-number">01 / DESIGN</span><span class="category-icon"><i class="bi bi-bezier2"></i></span><h3 class="category-title">Diseño, arquitectura<br>y visualización</h3><a class="category-link" href="#arquitectura">Explorar colección <i class="bi bi-arrow-right"></i></a></div>
+        <div class="category-card reveal-v3" onclick="window.location.href='#oficina'"><span class="category-number">02 / PRODUCTIVITY</span><span class="category-icon"><i class="bi bi-command"></i></span><h3 class="category-title">Oficina<br>y productividad</h3><a class="category-link" href="#oficina">Explorar colección <i class="bi bi-arrow-right"></i></a></div>
+        <div class="category-card reveal-v3" onclick="window.location.href='#audio'"><span class="category-number">03 / AUDIO</span><span class="category-icon"><i class="bi bi-soundwave"></i></span><h3 class="category-title">DAWs, instrumentos<br>y librerías</h3><a class="category-link" href="#audio">Explorar colección <i class="bi bi-arrow-right"></i></a></div>
+        <div class="category-card reveal-v3" onclick="window.location.href='#arquitectura'"><span class="category-number">04 / CREATE</span><span class="category-icon"><i class="bi bi-badge-3d"></i></span><h3 class="category-title">3D, motion<br>y creación</h3><a class="category-link" href="#arquitectura">Explorar colección <i class="bi bi-arrow-right"></i></a></div>
       </div>
     </div>
   </section>
@@ -577,10 +737,10 @@
   <section id="catalogo" class="container mt-5 pt-4 pb-5">
     <div class="catalog-intro">
       <div>
-        <div class="section-kicker">Dingloft Store</div>
-        <h2 class="section-display">Catálogo profesional.</h2>
+        <div class="section-kicker">Software / Audio / Productivity</div>
+        <h2 class="section-display">Elige tu próxima<br>herramienta.</h2>
       </div>
-      <p class="section-copy">Elige la herramienta que necesitas. Las condiciones, precios, compatibilidad y flujo de compra se mantienen tal como están configurados en tu tienda.</p>
+      <p class="section-copy">Explora el catálogo completo con los mismos productos, precios, compatibilidad y flujo de compra de tu tienda; ahora con una presentación visual mucho más premium.</p>
     </div>
 
     <!-- SECCIÓN: DISEÑO Y ARQUITECTURA -->
@@ -907,9 +1067,9 @@
       <div class="service-shell">
         <div class="service-grid">
           <div>
-            <div class="section-kicker">Experiencia Dingloft</div>
-            <h2 class="section-display" style="font-size:clamp(2rem,4vw,3.2rem);">Simple por fuera.<br>Profesional por dentro.</h2>
-            <p class="section-copy mt-3 mb-0">El diseño cambia; tu operación no. El carrito, los métodos de pago, los cupones, el acceso a descargas y el soporte siguen trabajando con la misma lógica del sitio.</p>
+            <div class="section-kicker">Dingloft Care</div>
+            <h2 class="section-display" style="font-size:clamp(2rem,4vw,3.4rem);">Compra simple.<br>Respaldo profesional.</h2>
+            <p class="section-copy mt-3 mb-0">La nueva experiencia visual no cambia tu operación: carrito, métodos de pago, cupones, acceso a descargas y soporte conservan la lógica que ya utilizabas.</p>
           </div>
           <div class="steps">
             <div class="step-card"><span>01</span><i class="bi bi-bag-check"></i><strong>Selecciona</strong><p>Agrega al carrito el software o librería que necesitas.</p></div>
@@ -1493,5 +1653,67 @@
       });
     });
   </script>
+
+  <script id="dingloft-v3-interactions">
+    (() => {
+      const finePointer = window.matchMedia('(pointer:fine)').matches;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Give every product card its own ghost artwork using the existing product icon.
+      document.querySelectorAll('.product-horizontal').forEach((card, index) => {
+        const img = card.querySelector('.prod-img-box img');
+        if (img) card.style.setProperty('--product-art', `url("${img.getAttribute('src')}")`);
+        card.classList.add('reveal-v3');
+
+        if (finePointer && !reduced) {
+          card.addEventListener('pointermove', (e) => {
+            const r = card.getBoundingClientRect();
+            const x = e.clientX - r.left, y = e.clientY - r.top;
+            card.style.setProperty('--spot-x', `${x}px`);
+            card.style.setProperty('--spot-y', `${y}px`);
+            const ry = ((x / r.width) - .5) * 2.4;
+            const rx = -((y / r.height) - .5) * 1.8;
+            card.style.setProperty('--rx', `${rx}deg`);
+            card.style.setProperty('--ry', `${ry}deg`);
+          });
+          card.addEventListener('pointerleave', () => {
+            card.style.setProperty('--rx','0deg');
+            card.style.setProperty('--ry','0deg');
+          });
+        }
+      });
+
+      // Scroll reveal.
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {threshold:.08, rootMargin:'0px 0px -35px 0px'});
+      document.querySelectorAll('.reveal-v3').forEach((el,i) => {
+        el.style.transitionDelay = `${Math.min((i % 4) * 55, 165)}ms`;
+        observer.observe(el);
+      });
+
+      // Hero panel follows the pointer very subtly.
+      const universe = document.getElementById('heroUniverse');
+      const panel = document.getElementById('corePanel');
+      if (universe && panel && finePointer && !reduced) {
+        universe.addEventListener('pointermove', (e) => {
+          const r = universe.getBoundingClientRect();
+          const px = (e.clientX-r.left)/r.width;
+          const py = (e.clientY-r.top)/r.height;
+          const tx = (px-.5)*9, ty=(py-.5)*7;
+          panel.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) rotateX(${-(py-.5)*2}deg) rotateY(${(px-.5)*2}deg)`;
+          panel.style.setProperty('--mx', `${px*100}%`);
+          panel.style.setProperty('--my', `${py*100}%`);
+        });
+        universe.addEventListener('pointerleave', () => panel.style.transform='translate(-50%,-50%)');
+      }
+    })();
+  </script>
+
 </body>
 </html>
