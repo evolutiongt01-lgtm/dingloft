@@ -1656,14 +1656,19 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
 .mt-catalog-head { display:grid; grid-template-columns:1fr 420px; gap:50px; align-items:end; margin-bottom:30px; }
 .mt-catalog-head h2 { margin:0; font-size:clamp(2.4rem,4.5vw,4.8rem); line-height:.96; letter-spacing:-.06em; font-weight:650; }
 .mt-catalog-head p { margin:0; color:#7e8898; line-height:1.7; font-size:.8rem; }
-.mt-slot-note { margin:0 0 20px; display:flex; align-items:center; gap:9px; color:#706d80; font-size:.65rem; }
-.mt-slot-note i { color:#a78fff; }
 .mt-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; }
 .mt-card { position:relative; overflow:hidden; min-height:316px; display:grid; grid-template-columns:170px 1fr; border:1px solid var(--mt-line); border-radius:24px; background:linear-gradient(145deg,rgba(15,17,24,.98),rgba(7,9,13,.99)); transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s; }
 .mt-card::before { content:''; position:absolute; inset:0; background:radial-gradient(450px circle at var(--mx,80%) var(--my,20%),rgba(147,109,255,.11),transparent 46%); opacity:0; transition:.3s; pointer-events:none; }
 .mt-card:hover { transform:translateY(-6px); border-color:rgba(255,255,255,.15); box-shadow:0 30px 75px rgba(0,0,0,.32); }
 .mt-card:hover::before { opacity:1; }
-.mt-cover { position:relative; z-index:1; display:flex; flex-direction:column; justify-content:space-between; padding:17px; border-right:1px solid rgba(255,255,255,.065); background:linear-gradient(160deg,rgba(155,118,255,.11),rgba(37,112,159,.035) 55%,rgba(255,255,255,.015)); }
+.mt-cover { position:relative; z-index:1; isolation:isolate; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; padding:17px; border-right:1px solid rgba(255,255,255,.065); background:linear-gradient(160deg,rgba(155,118,255,.11),rgba(37,112,159,.035) 55%,rgba(255,255,255,.015)); }
+.mt-cover::after { content:''; position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(180deg,rgba(5,6,10,.48) 0%,rgba(5,6,10,.08) 38%,rgba(5,6,10,.14) 58%,rgba(5,6,10,.72) 100%); opacity:0; transition:opacity .35s ease; }
+.mt-cover.has-cover::after { opacity:1; }
+.mt-cover-image { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; z-index:0; transform:scale(1.01); filter:saturate(.96) contrast(1.03); transition:transform .65s cubic-bezier(.16,1,.3,1),filter .45s ease; }
+.mt-card:hover .mt-cover-image { transform:scale(1.065); filter:saturate(1.04) contrast(1.05); }
+.mt-cover-index,.mt-cover-tag,.mt-cover-art { position:relative; z-index:2; }
+.mt-cover.has-cover .mt-cover-index,.mt-cover.has-cover .mt-cover-tag { color:rgba(255,255,255,.72); text-shadow:0 2px 14px rgba(0,0,0,.65); }
+.mt-cover.has-cover .mt-cover-art { display:none; }
 .mt-cover-index { color:#6e6680; font-size:.53rem; letter-spacing:.16em; font-weight:800; }
 .mt-cover-art { align-self:center; width:112px; height:112px; position:relative; display:grid; place-items:center; border-radius:31px; background:linear-gradient(145deg,#171329,#0c101a); border:1px solid rgba(255,255,255,.10); box-shadow:0 22px 45px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.05); }
 .mt-cover-art::before,.mt-cover-art::after { content:''; position:absolute; border-radius:50%; border:1px solid rgba(190,169,255,.12); }
@@ -1889,9 +1894,8 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
 <div class="container">
 <div class="mt-catalog-head">
 <div><div class="section-kicker">Multitrack Library</div><h2>Encuentra tu<br/>próxima sesión.</h2></div>
-<p>La página está preparada para crecer sin crear nuevos HTML. Cada canción nace desde un solo bloque de datos y automáticamente obtiene tarjeta, preview y conexión al carrito.</p>
+<p>Escucha un preview, consulta BPM, tono y stems, y agrega al carrito la sesión que necesitas sin salir del catálogo.</p>
 </div>
-<p class="mt-slot-note"><i class="bi bi-info-circle"></i> Los productos incluidos ahora son slots demo. Cambia nombre, artista, precio y audio en el bloque <strong>MULTITRACKS</strong> del HTML.</p>
 <div class="mt-grid" id="mtGrid"></div>
 <div class="mt-empty" id="mtEmpty"><i class="bi bi-search"></i>No encontré resultados con ese filtro.</div>
 </div>
@@ -1971,18 +1975,13 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
 </div>
 </div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script><script id="multitrack-store-data">
 (() => {
-  /* =========================================================
-     AQUÍ AGREGAS / EDITAS TODOS LOS MULTITRACKS.
-     price: coloca un número (ej. 25) para activar el carrito.
-     preview: ruta a un MP3 corto (recomendado 20–40 s).
-     ========================================================= */
   const MULTITRACKS = [
-    { id:'MT-001', title:'Todos Reunidos', artist:'Genesis Campos', price:16, bpm:'155', key:'Am', stems:'11', tag:'new', featured:true, preview:'audio/Preview1.mp3' },
-    { id:'MT-002', title:'Multitrack Demo 02', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'featured', featured:true, preview:'audio/multitrack-02-preview.mp3' },
-    { id:'MT-003', title:'Multitrack Demo 03', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'new', featured:false, preview:'audio/multitrack-03-preview.mp3' },
-    { id:'MT-004', title:'Multitrack Demo 04', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, preview:'audio/multitrack-04-preview.mp3' },
-    { id:'MT-005', title:'Multitrack Demo 05', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'featured', featured:true, preview:'audio/multitrack-05-preview.mp3' },
-    { id:'MT-006', title:'Multitrack Demo 06', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, preview:'audio/multitrack-06-preview.mp3' }
+    { id:'MT-001', title:'Todos Reunidos', artist:'Genesis Campos', price:16, bpm:'155', key:'Am', stems:'11', tag:'new', featured:true, cover:'img/albums/todos-reunidos.jpg', preview:'audio/Preview1.mp3' },
+    { id:'MT-002', title:'Multitrack Demo 02', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'featured', featured:true, cover:'', preview:'audio/multitrack-02-preview.mp3' },
+    { id:'MT-003', title:'Multitrack Demo 03', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'new', featured:false, cover:'', preview:'audio/multitrack-03-preview.mp3' },
+    { id:'MT-004', title:'Multitrack Demo 04', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'audio/multitrack-04-preview.mp3' },
+    { id:'MT-005', title:'Multitrack Demo 05', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'featured', featured:true, cover:'', preview:'audio/multitrack-05-preview.mp3' },
+    { id:'MT-006', title:'Multitrack Demo 06', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'audio/multitrack-06-preview.mp3' }
   ];
   window.DINGLOFT_MULTITRACKS = MULTITRACKS;
 
@@ -2013,6 +2012,7 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
 
   const cardHTML = (item, index) => {
     const configured = Number.isFinite(item.price);
+    const hasCover = typeof item.cover === 'string' && item.cover.trim().length > 0;
     const price = configured ? `$${item.price.toFixed(2)}` : 'Precio pendiente';
     const cartClass = configured ? 'btn-add-cart' : 'btn-mt-pending';
     const cartAttrs = configured
@@ -2020,7 +2020,8 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
       : `data-pending="true"`;
     return `
       <article class="mt-card" data-search="${(item.title+' '+item.artist).toLowerCase()}" data-featured="${item.featured}" data-tag="${item.tag}" data-preview="${item.preview ? 'true':'false'}">
-        <div class="mt-cover">
+        <div class="mt-cover ${hasCover ? 'has-cover' : ''}">
+          ${hasCover ? `<img class="mt-cover-image" src="${item.cover}" alt="Portada de ${item.title}" loading="lazy" onerror="this.closest('.mt-cover').classList.remove('has-cover');this.remove();">` : ''}
           <span class="mt-cover-index">${String(index+1).padStart(2,'0')} / MT</span>
           <div class="mt-cover-art"><i class="bi bi-soundwave"></i></div>
           <span class="mt-cover-tag">Dingloft Session</span>
