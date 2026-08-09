@@ -1745,6 +1745,70 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
   .mt-title{font-size:3.15rem}.mt-studio{min-height:365px}.mt-studio-track:nth-child(5){display:none}.mt-studio-panel{height:340px}.mt-card{flex-basis:91vw}.mt-cover{min-height:155px}.mt-cover-art{width:92px;height:92px}.mt-meta{grid-template-columns:repeat(3,1fr)}.mt-card-bottom{align-items:center}.mt-price strong{font-size:1.12rem}.mt-cart-action{min-width:116px;padding:9px!important}
 }
 @media(prefers-reduced-motion:reduce){.mt-studio-head,.mt-meter i{animation:none!important}.mt-card,.mt-studio-panel{transition:none!important}}
+
+
+/* =========================================================
+   MULTITRACK STEM MIXER · PLAY INFERIOR + MUTE / SOLO
+   ========================================================= */
+.mt-card{grid-template-rows:auto auto auto}
+.mt-mixer-toggle{
+  grid-column:1/-1; position:relative; z-index:3; width:100%; min-height:64px;
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding:10px 14px; border:0; border-top:1px solid rgba(255,255,255,.065);
+  background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.012));
+  color:#dcd6ee; cursor:pointer; text-align:left;
+  transition:background .28s ease,border-color .28s ease,color .28s ease;
+}
+.mt-mixer-toggle:hover,.mt-mixer-toggle.is-playing{background:linear-gradient(180deg,rgba(150,112,255,.095),rgba(91,157,210,.035));border-top-color:rgba(171,145,255,.18);color:#fff}
+.mt-mixer-toggle-main{display:flex;align-items:center;gap:11px;min-width:0}
+.mt-mixer-play-icon{width:39px;height:39px;flex:none;display:grid;place-items:center;border-radius:50%;background:#eee9ff;color:#100d18;box-shadow:0 8px 25px rgba(0,0,0,.28);transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s}
+.mt-mixer-toggle:hover .mt-mixer-play-icon{transform:scale(1.06)}
+.mt-mixer-toggle.is-playing .mt-mixer-play-icon{box-shadow:0 8px 30px rgba(157,130,255,.22),0 0 0 5px rgba(157,130,255,.055)}
+.mt-mixer-play-copy{min-width:0}
+.mt-mixer-play-copy small{display:block;color:#655f74;font-size:.45rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px}
+.mt-mixer-play-copy strong{display:block;font-size:.67rem;font-weight:760;color:#dcd8e8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mt-mixer-toggle-meta{flex:none;display:flex;align-items:center;gap:7px;color:#665f76;font-size:.49rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.mt-mixer-chevron{transition:transform .42s cubic-bezier(.16,1,.3,1)}
+.mt-card.mixer-open .mt-mixer-chevron{transform:rotate(180deg)}
+
+.mt-mixer-panel{grid-column:1/-1;position:relative;z-index:2;max-height:0;opacity:0;overflow:hidden;background:linear-gradient(180deg,rgba(11,12,18,.96),rgba(6,8,12,.99));transition:max-height .62s cubic-bezier(.16,1,.3,1),opacity .35s ease}
+.mt-card.mixer-open .mt-mixer-panel{max-height:720px;opacity:1;border-top:1px solid rgba(255,255,255,.055)}
+.mt-mixer-inner{padding:15px 16px 17px}
+.mt-mixer-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:10px}
+.mt-mixer-head-left{display:flex;align-items:center;gap:9px;min-width:0}
+.mt-mixer-head-icon{width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:9px;border:1px solid rgba(174,145,255,.13);background:rgba(150,111,255,.055);color:#c3b2ff;font-size:.78rem}
+.mt-mixer-head strong{display:block;color:#dcd9e5;font-size:.63rem;font-weight:760}
+.mt-mixer-head small{display:block;color:#5e6776;font-size:.47rem;margin-top:1px}
+.mt-mixer-status{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025);color:#626b79;font-size:.43rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.mt-mixer-status::before{content:'';width:5px;height:5px;border-radius:50%;background:#606876}
+.mt-mixer-status.ready{color:#8bc9ac;border-color:rgba(112,228,165,.10);background:rgba(112,228,165,.035)}
+.mt-mixer-status.ready::before{background:#70e4a5;box-shadow:0 0 9px rgba(112,228,165,.45)}
+.mt-channel-list{display:grid;gap:6px}
+.mt-channel-row{display:grid;grid-template-columns:minmax(105px,.72fr) minmax(110px,1fr) auto;align-items:center;gap:10px;min-height:42px;padding:6px 7px 6px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.045);background:rgba(255,255,255,.018);transition:background .22s,border-color .22s,opacity .22s}
+.mt-channel-row[hidden]{display:none!important}
+.mt-channel-row.is-muted{opacity:.48;background:rgba(255,91,117,.025);border-color:rgba(255,91,117,.075)}
+.mt-channel-row.is-solo{background:rgba(165,132,255,.075);border-color:rgba(179,151,255,.14);opacity:1}
+.mt-channel-name{display:flex;align-items:center;gap:8px;min-width:0;color:#929aa7;font-size:.55rem;font-weight:740;text-transform:uppercase;letter-spacing:.055em}
+.mt-channel-name i{color:#776b9c;font-size:.68rem}
+.mt-channel-name span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mt-channel-wave{height:12px;border-radius:4px;position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(126,93,215,.09),rgba(157,123,236,.16),rgba(62,143,197,.06))}
+.mt-channel-wave::after{content:'';position:absolute;inset:2px 0;background:repeating-linear-gradient(90deg,transparent 0 5px,rgba(207,195,255,.38) 5px 6px,transparent 6px 10px);opacity:.6}
+.mt-channel-controls{display:flex;gap:5px}
+.mt-ms-btn{width:31px;height:27px;border-radius:7px;border:1px solid rgba(255,255,255,.065);background:rgba(255,255,255,.025);color:#707887;font-size:.47rem;font-weight:850;cursor:pointer;transition:.2s}
+.mt-ms-btn:hover{color:#e8e3f3;border-color:rgba(255,255,255,.13)}
+.mt-ms-btn[data-action="mute"].active{background:rgba(255,91,117,.11);border-color:rgba(255,91,117,.20);color:#ff93a3}
+.mt-ms-btn[data-action="solo"].active{background:rgba(166,132,255,.14);border-color:rgba(183,154,255,.23);color:#d8c8ff}
+.mt-mixer-empty{padding:15px 12px;text-align:center;border:1px dashed rgba(255,255,255,.065);border-radius:10px;color:#616a79;font-size:.54rem;line-height:1.5}
+.mt-mixer-empty i{color:#8e79d0;margin-right:5px}
+
+@media(max-width:767px){
+  .mt-mixer-toggle{min-height:60px;padding:9px 11px}.mt-mixer-toggle-meta{font-size:.43rem}.mt-mixer-inner{padding:13px 11px 14px}
+  .mt-channel-row{grid-template-columns:minmax(82px,.72fr) 1fr auto;gap:7px;padding-left:8px}.mt-channel-wave{height:10px}.mt-ms-btn{width:28px;height:26px}
+}
+@media(max-width:420px){
+  .mt-mixer-toggle-meta span{display:none}.mt-mixer-toggle-meta{gap:5px}.mt-mixer-play-copy strong{font-size:.61rem}
+  .mt-channel-row{grid-template-columns:1fr auto}.mt-channel-wave{grid-column:1/-1;grid-row:2}.mt-channel-name{font-size:.5rem}.mt-mixer-head{align-items:flex-start}.mt-mixer-status{font-size:.38rem}
+}
 </style></head>
 <body class="multitrack-page">
 <!-- Orbes de luz -->
@@ -1976,12 +2040,28 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
 </div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script><script id="multitrack-store-data">
 (() => {
   const MULTITRACKS = [
-    { id:'MT-001', title:'Todos Reunidos', artist:'Genesis Campos', price:16, bpm:'155', key:'Am', stems:'11', tag:'new', featured:true, cover:'img/albums/todos-reunidos.jpg', preview:'audio/Preview1.mp3' },
-    { id:'MT-002', title:'Multitrack Demo 02', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'featured', featured:true, cover:'', preview:'audio/multitrack-02-preview.mp3' },
-    { id:'MT-003', title:'Multitrack Demo 03', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'new', featured:false, cover:'', preview:'audio/multitrack-03-preview.mp3' },
-    { id:'MT-004', title:'Multitrack Demo 04', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'audio/multitrack-04-preview.mp3' },
-    { id:'MT-005', title:'Multitrack Demo 05', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'featured', featured:true, cover:'', preview:'audio/multitrack-05-preview.mp3' },
-    { id:'MT-006', title:'Multitrack Demo 06', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'audio/multitrack-06-preview.mp3' }
+    {
+      id:'MT-001', title:'Todos Reunidos', artist:'Genesis Campos', price:16, bpm:'155', key:'Am', stems:'11', tag:'new', featured:true,
+      cover:'img/albums/todos-reunidos.jpg', preview:'audio/Preview1.mp3',
+      channels:[
+        { name:'Batería', icon:'bi-vinyl', src:'audio/todos-reunidos/Bateria.mp3' },
+        { name:'Percusión', icon:'bi-grid-3x3-gap', src:'audio/todos-reunidos/Percusion.mp3' },
+        { name:'Bajo', icon:'bi-music-note', src:'audio/todos-reunidos/Bajo.mp3' },
+        { name:'Piano', icon:'bi-keyboard', src:'audio/todos-reunidos/Piano.mp3' },
+        { name:'Keys', icon:'bi-sliders2', src:'audio/todos-reunidos/Keys.mp3' },
+        { name:'Guitarra 1', icon:'bi-music-note-beamed', src:'audio/todos-reunidos/Guitarra1.mp3' },
+        { name:'Guitarra 2', icon:'bi-music-note-beamed', src:'audio/todos-reunidos/Guitarra2.mp3' },
+        { name:'Voz principal', icon:'bi-mic', src:'audio/todos-reunidos/VozPrincipal.mp3' },
+        { name:'Coros', icon:'bi-people', src:'audio/todos-reunidos/Coros.mp3' },
+        { name:'Pads', icon:'bi-soundwave', src:'audio/todos-reunidos/Pads.mp3' },
+        { name:'Secuencias', icon:'bi-grid-1x2', src:'audio/todos-reunidos/Secuencias.mp3' }
+      ]
+    },
+    { id:'MT-002', title:'Multitrack Demo 02', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'featured', featured:true, cover:'', preview:'audio/multitrack-02-preview.mp3', channels:[] },
+    { id:'MT-003', title:'Multitrack Demo 03', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'new', featured:false, cover:'', preview:'audio/multitrack-03-preview.mp3', channels:[] },
+    { id:'MT-004', title:'Multitrack Demo 04', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'audio/multitrack-04-preview.mp3', channels:[] },
+    { id:'MT-005', title:'Multitrack Demo 05', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'featured', featured:true, cover:'', preview:'audio/multitrack-05-preview.mp3', channels:[] },
+    { id:'MT-006', title:'Multitrack Demo 06', artist:'Agrega artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'audio/multitrack-06-preview.mp3', channels:[] }
   ];
   window.DINGLOFT_MULTITRACKS = MULTITRACKS;
 
@@ -1998,9 +2078,15 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
   const playerToggle = document.getElementById('mtPlayerToggle');
   const playerClose = document.getElementById('mtPlayerClose');
   const toast = document.getElementById('mtToast');
+
   let activeFilter = 'all';
   let currentId = null;
   let toastTimer = null;
+  let stemMode = false;
+  let stemTracks = [];
+  let stemClock = null;
+  let syncTimer = null;
+  const availableChannels = new Map();
 
   const showToast = (message) => {
     if (!toast) return;
@@ -2008,6 +2094,19 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
     toast.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+  };
+
+  const channelRowsHTML = (item) => {
+    if (!Array.isArray(item.channels) || !item.channels.length) return '';
+    return item.channels.map((ch,idx) => `
+      <div class="mt-channel-row" data-channel-index="${idx}" data-src="${ch.src || ''}" hidden>
+        <div class="mt-channel-name"><i class="bi ${ch.icon || 'bi-soundwave'}"></i><span>${ch.name}</span></div>
+        <div class="mt-channel-wave"></div>
+        <div class="mt-channel-controls">
+          <button type="button" class="mt-ms-btn" data-action="mute" aria-label="Mute ${ch.name}">M</button>
+          <button type="button" class="mt-ms-btn" data-action="solo" aria-label="Solo ${ch.name}">S</button>
+        </div>
+      </div>`).join('');
   };
 
   const cardHTML = (item, index) => {
@@ -2019,7 +2118,7 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
       ? `data-id="${item.id}" data-name="${item.title}" data-price="${item.price}" data-img="dingloft" data-type="Multitrack digital"`
       : `data-pending="true"`;
     return `
-      <article class="mt-card" data-search="${(item.title+' '+item.artist).toLowerCase()}" data-featured="${item.featured}" data-tag="${item.tag}" data-preview="${item.preview ? 'true':'false'}">
+      <article class="mt-card" data-id="${item.id}" data-search="${(item.title+' '+item.artist).toLowerCase()}" data-featured="${item.featured}" data-tag="${item.tag}" data-preview="${item.preview ? 'true':'false'}">
         <div class="mt-cover ${hasCover ? 'has-cover' : ''}">
           ${hasCover ? `<img class="mt-cover-image" src="${item.cover}" alt="Portada de ${item.title}" loading="lazy" onerror="this.closest('.mt-cover').classList.remove('has-cover');this.remove();">` : ''}
           <span class="mt-cover-index">${String(index+1).padStart(2,'0')} / MT</span>
@@ -2030,7 +2129,6 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
           <div>
             <div class="mt-card-top">
               <div><div class="mt-card-kicker">Multitrack digital</div><h3 class="mt-card-title">${item.title}</h3><div class="mt-card-artist">${item.artist}</div></div>
-              <button type="button" class="mt-play-btn" data-id="${item.id}" data-src="${item.preview || ''}" data-title="${item.title}" aria-label="Reproducir preview de ${item.title}"><i class="bi bi-play-fill"></i></button>
             </div>
             <div class="mt-meta"><div><span>BPM</span><strong>${item.bpm}</strong></div><div><span>Tono</span><strong>${item.key}</strong></div><div><span>Stems</span><strong>${item.stems}</strong></div></div>
             <div class="mt-preview-line"><i class="bi bi-headphones"></i><span>PREVIEW</span><div class="mt-mini-wave"></div><span>SHORT</span></div>
@@ -2038,6 +2136,25 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
           <div class="mt-card-bottom">
             <div class="mt-price"><small>Precio</small><strong class="${configured?'':'pending'}">${price}</strong></div>
             <button type="button" class="mt-cart-action ${cartClass}" ${cartAttrs}>Agregar <i class="bi bi-bag-plus"></i></button>
+          </div>
+        </div>
+
+        <button type="button" class="mt-mixer-toggle" data-id="${item.id}" aria-expanded="false" aria-label="Escuchar ${item.title} y abrir mezclador">
+          <span class="mt-mixer-toggle-main">
+            <span class="mt-mixer-play-icon"><i class="bi bi-play-fill"></i></span>
+            <span class="mt-mixer-play-copy"><small>Preview Multitrack</small><strong>Escuchar y abrir mixer</strong></span>
+          </span>
+          <span class="mt-mixer-toggle-meta"><i class="bi bi-sliders2"></i><span>Mute / Solo</span><i class="bi bi-chevron-down mt-mixer-chevron"></i></span>
+        </button>
+
+        <div class="mt-mixer-panel" data-mixer="${item.id}">
+          <div class="mt-mixer-inner">
+            <div class="mt-mixer-head">
+              <div class="mt-mixer-head-left"><span class="mt-mixer-head-icon"><i class="bi bi-sliders"></i></span><div><strong>Stem Mixer</strong><small>Aísla o silencia instrumentos durante el preview.</small></div></div>
+              <span class="mt-mixer-status" data-status="${item.id}">Preview general</span>
+            </div>
+            <div class="mt-channel-list" data-channel-list="${item.id}">${channelRowsHTML(item)}</div>
+            <div class="mt-mixer-empty" data-mixer-empty="${item.id}"><i class="bi bi-headphones"></i> Preview general disponible. Los canales individuales aparecerán automáticamente cuando estén disponibles.</div>
           </div>
         </div>
       </article>`;
@@ -2063,49 +2180,239 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
     if (grid) grid.innerHTML = MULTITRACKS.map((item,i) => cardHTML(item,i)).join('');
     bindCards();
     applyFilters();
+    probeAllChannels();
   };
 
-  const stopPreview = () => {
-    if (!audio) return;
-    audio.pause();
-    currentId = null;
-    document.querySelectorAll('.mt-play-btn').forEach(btn => { btn.classList.remove('is-playing'); btn.innerHTML='<i class="bi bi-play-fill"></i>'; });
-    if (player) player.classList.remove('active');
+  const probeAudio = async (src) => {
+    if (!src) return false;
+    try {
+      const r = await fetch(src, { method:'HEAD', cache:'no-store' });
+      return r.ok;
+    } catch (_) { return false; }
   };
 
-  const playPreview = async (btn) => {
-    const src = btn.dataset.src;
-    if (!src) { showToast('Agrega una ruta MP3 en el campo preview de este multitrack.'); return; }
-    if (currentId === btn.dataset.id && !audio.paused) { audio.pause(); return; }
-    document.querySelectorAll('.mt-play-btn').forEach(b => { b.classList.remove('is-playing'); b.innerHTML='<i class="bi bi-play-fill"></i>'; });
-    currentId = btn.dataset.id;
-    btn.classList.add('is-playing'); btn.innerHTML='<i class="bi bi-pause-fill"></i>';
-    if (playerTitle) playerTitle.textContent = btn.dataset.title;
+  const updateChannelAvailabilityUI = (item, available) => {
+    const card = grid?.querySelector(`.mt-card[data-id="${item.id}"]`);
+    if (!card) return;
+    const availableSrc = new Set(available.map(c => c.src));
+    let count = 0;
+    card.querySelectorAll('.mt-channel-row').forEach(row => {
+      const ready = availableSrc.has(row.dataset.src);
+      row.hidden = !ready;
+      if (ready) count++;
+    });
+    const emptyBox = card.querySelector(`[data-mixer-empty="${item.id}"]`);
+    const status = card.querySelector(`[data-status="${item.id}"]`);
+    if (emptyBox) emptyBox.style.display = count ? 'none' : '';
+    if (status) {
+      status.textContent = count ? `${count} canales listos` : 'Preview general';
+      status.classList.toggle('ready', !!count);
+    }
+  };
+
+  const probeAllChannels = () => {
+    MULTITRACKS.forEach(async item => {
+      const channels = Array.isArray(item.channels) ? item.channels : [];
+      if (!channels.length) { availableChannels.set(item.id, []); updateChannelAvailabilityUI(item, []); return; }
+      const checks = await Promise.all(channels.map(async (ch, index) => (await probeAudio(ch.src)) ? {...ch,index} : null));
+      const available = checks.filter(Boolean);
+      availableChannels.set(item.id, available);
+      updateChannelAvailabilityUI(item, available);
+    });
+  };
+
+  const getItem = id => MULTITRACKS.find(x => x.id === id);
+  const getClock = () => stemMode ? stemClock : audio;
+  const isPlaying = () => stemMode ? stemTracks.some(t => !t.audio.paused) : !!(audio && !audio.paused);
+
+  const clearSync = () => { if (syncTimer) { clearInterval(syncTimer); syncTimer = null; } };
+
+  const updatePlayUI = (playing) => {
+    document.querySelectorAll('.mt-mixer-toggle').forEach(btn => {
+      const active = btn.dataset.id === currentId;
+      btn.classList.toggle('is-playing', active && playing);
+      const icon = btn.querySelector('.mt-mixer-play-icon i');
+      const copy = btn.querySelector('.mt-mixer-play-copy strong');
+      if (icon) icon.className = `bi ${active && playing ? 'bi-pause-fill' : 'bi-play-fill'}`;
+      if (copy) copy.textContent = active && playing ? 'Pausar preview' : 'Escuchar y abrir mixer';
+    });
+    if (playerToggle) playerToggle.innerHTML = `<i class="bi ${playing ? 'bi-pause-fill' : 'bi-play-fill'}"></i>`;
+  };
+
+  const setPlayer = (item) => {
+    if (playerTitle) playerTitle.textContent = item.title;
     if (player) player.classList.add('active');
-    if (audio.src !== new URL(src, location.href).href) { audio.src = src; audio.currentTime = 0; }
-    try { await audio.play(); }
-    catch(err) { btn.classList.remove('is-playing'); btn.innerHTML='<i class="bi bi-play-fill"></i>'; if (player) player.classList.remove('active'); showToast(`Preview aún no cargado. Sube el MP3 en: ${src}`); }
+  };
+
+  const closeOtherMixers = (id) => {
+    document.querySelectorAll('.mt-card.mixer-open').forEach(card => {
+      if (card.dataset.id !== id) {
+        card.classList.remove('mixer-open');
+        card.querySelector('.mt-mixer-toggle')?.setAttribute('aria-expanded','false');
+      }
+    });
+  };
+
+  const stopAllAudio = (hidePlayer=true) => {
+    clearSync();
+    if (audio) { audio.pause(); audio.currentTime = 0; }
+    stemTracks.forEach(t => { t.audio.pause(); try { t.audio.currentTime = 0; } catch(_){} });
+    stemTracks = [];
+    stemClock = null;
+    stemMode = false;
+    if (hidePlayer && player) player.classList.remove('active');
+    updatePlayUI(false);
+  };
+
+  const pauseCurrent = () => {
+    if (stemMode) stemTracks.forEach(t => t.audio.pause());
+    else audio?.pause();
+    updatePlayUI(false);
+  };
+
+  const applyMixerStates = (id) => {
+    if (!stemMode || currentId !== id) return;
+    const card = grid?.querySelector(`.mt-card[data-id="${id}"]`);
+    if (!card) return;
+    const visibleRows = [...card.querySelectorAll('.mt-channel-row:not([hidden])')];
+    const anySolo = visibleRows.some(r => r.classList.contains('is-solo'));
+    stemTracks.forEach(track => {
+      const row = card.querySelector(`.mt-channel-row[data-channel-index="${track.index}"]`);
+      if (!row) return;
+      const solo = row.classList.contains('is-solo');
+      const muted = row.classList.contains('is-muted');
+      track.audio.muted = anySolo ? !solo : muted;
+    });
+  };
+
+  const startStemPlayback = async (item, available, startAt=0) => {
+    stopAllAudio(false);
+    currentId = item.id;
+    stemMode = true;
+    stemTracks = available.map(ch => {
+      const a = new Audio(ch.src);
+      a.preload = 'auto';
+      try { a.currentTime = startAt; } catch(_){}
+      return {...ch, audio:a};
+    });
+    applyMixerStates(item.id);
+    const attempts = stemTracks.map(t => t.audio.play());
+    const results = await Promise.allSettled(attempts);
+    stemTracks = stemTracks.filter((_,i) => results[i].status === 'fulfilled');
+    if (!stemTracks.length) {
+      stemMode = false;
+      return false;
+    }
+    stemClock = stemTracks[0].audio;
+    setPlayer(item);
+    updatePlayUI(true);
+    clearSync();
+    syncTimer = setInterval(() => {
+      if (!stemMode || !stemClock || stemClock.paused) return;
+      stemTracks.slice(1).forEach(t => {
+        if (Math.abs(t.audio.currentTime - stemClock.currentTime) > .09) t.audio.currentTime = stemClock.currentTime;
+      });
+    }, 650);
+    stemClock.addEventListener('ended', () => stopAllAudio(), {once:true});
+    return true;
+  };
+
+  const startPreviewMix = async (item) => {
+    if (!item.preview) { showToast('Preview no disponible todavía.'); return false; }
+    stopAllAudio(false);
+    currentId = item.id;
+    stemMode = false;
+    if (audio.src !== new URL(item.preview, location.href).href) { audio.src = item.preview; audio.currentTime = 0; }
+    setPlayer(item);
+    try { await audio.play(); updatePlayUI(true); return true; }
+    catch(_) { if (player) player.classList.remove('active'); updatePlayUI(false); showToast('No pude cargar el preview de esta canción.'); return false; }
+  };
+
+  const openAndPlay = async (btn) => {
+    const id = btn.dataset.id;
+    const item = getItem(id);
+    if (!item) return;
+    const card = btn.closest('.mt-card');
+    closeOtherMixers(id);
+    card?.classList.add('mixer-open');
+    btn.setAttribute('aria-expanded','true');
+
+    if (currentId === id) {
+      if (isPlaying()) { pauseCurrent(); return; }
+      await resumeCurrent();
+      return;
+    }
+
+    const available = availableChannels.get(id) || [];
+    if (available.length) {
+      const ok = await startStemPlayback(item, available, 0);
+      if (ok) return;
+    }
+    await startPreviewMix(item);
+  };
+
+  const resumeCurrent = async () => {
+    if (!currentId) return;
+    if (stemMode && stemTracks.length) {
+      const results = await Promise.allSettled(stemTracks.map(t => t.audio.play()));
+      if (results.some(r => r.status === 'fulfilled')) { updatePlayUI(true); return; }
+    } else if (audio?.src) {
+      try { await audio.play(); updatePlayUI(true); return; } catch(_){}
+    }
   };
 
   const bindCards = () => {
-    document.querySelectorAll('.mt-play-btn').forEach(btn => btn.addEventListener('click', () => playPreview(btn)));
-    document.querySelectorAll('.btn-mt-pending').forEach(btn => btn.addEventListener('click', () => showToast('Este slot demo todavía necesita un precio. Pon price: 25 (por ejemplo) en MULTITRACKS y el carrito se activa automáticamente.')));
+    document.querySelectorAll('.btn-mt-pending').forEach(btn => btn.addEventListener('click', () => showToast('Este multitrack estará disponible próximamente.')));
     if (window.matchMedia('(pointer:fine)').matches) {
       document.querySelectorAll('.mt-card').forEach(card => card.addEventListener('pointermove', e => { const r=card.getBoundingClientRect(); card.style.setProperty('--mx',`${e.clientX-r.left}px`); card.style.setProperty('--my',`${e.clientY-r.top}px`); }));
     }
   };
 
+  grid?.addEventListener('click', async e => {
+    const toggle = e.target.closest('.mt-mixer-toggle');
+    if (toggle) { e.preventDefault(); await openAndPlay(toggle); return; }
+
+    const ms = e.target.closest('.mt-ms-btn');
+    if (ms) {
+      e.preventDefault(); e.stopPropagation();
+      const row = ms.closest('.mt-channel-row');
+      const card = ms.closest('.mt-card');
+      if (!row || !card) return;
+      const cls = ms.dataset.action === 'solo' ? 'is-solo' : 'is-muted';
+      row.classList.toggle(cls);
+      ms.classList.toggle('active', row.classList.contains(cls));
+      applyMixerStates(card.dataset.id);
+      return;
+    }
+  });
+
   search?.addEventListener('input', applyFilters);
   filters?.addEventListener('click', e => { const btn=e.target.closest('.mt-filter'); if(!btn)return; filters.querySelectorAll('.mt-filter').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); activeFilter=btn.dataset.filter; applyFilters(); });
 
-  audio?.addEventListener('play', () => { const btn=document.querySelector(`.mt-play-btn[data-id="${currentId}"]`); if(btn){btn.classList.add('is-playing');btn.innerHTML='<i class="bi bi-pause-fill"></i>';} if(playerToggle)playerToggle.innerHTML='<i class="bi bi-pause-fill"></i>'; });
-  audio?.addEventListener('pause', () => { const btn=document.querySelector(`.mt-play-btn[data-id="${currentId}"]`); if(btn){btn.classList.remove('is-playing');btn.innerHTML='<i class="bi bi-play-fill"></i>';} if(playerToggle)playerToggle.innerHTML='<i class="bi bi-play-fill"></i>'; });
-  audio?.addEventListener('ended', stopPreview);
-  audio?.addEventListener('timeupdate', () => { if(!audio.duration || !isFinite(audio.duration))return; const pct=(audio.currentTime/audio.duration)*100; if(playerFill)playerFill.style.width=`${pct}%`; const fmt=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`; if(playerTime)playerTime.textContent=`${fmt(audio.currentTime)} / ${fmt(audio.duration)}`; });
-  audio?.addEventListener('error', () => { if(currentId) showToast('No encontré ese preview MP3. Revisa la ruta del archivo.'); });
-  playerToggle?.addEventListener('click', () => { if(!audio.src)return; audio.paused ? audio.play().catch(()=>{}) : audio.pause(); });
-  playerClose?.addEventListener('click', stopPreview);
-  playerProgress?.addEventListener('click', e => { if(!audio.duration || !isFinite(audio.duration))return; const r=playerProgress.getBoundingClientRect(); audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration; });
+  audio?.addEventListener('play', () => updatePlayUI(true));
+  audio?.addEventListener('pause', () => { if (!stemMode) updatePlayUI(false); });
+  audio?.addEventListener('ended', () => stopAllAudio());
+  audio?.addEventListener('error', () => { if(currentId && !stemMode) showToast('No encontré el archivo de preview.'); });
+
+  const fmt = s => `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+  setInterval(() => {
+    const clock = getClock();
+    if (!clock || !clock.duration || !isFinite(clock.duration)) return;
+    const pct = (clock.currentTime / clock.duration) * 100;
+    if (playerFill) playerFill.style.width = `${pct}%`;
+    if (playerTime) playerTime.textContent = `${fmt(clock.currentTime)} / ${fmt(clock.duration)}`;
+  }, 220);
+
+  playerToggle?.addEventListener('click', () => { isPlaying() ? pauseCurrent() : resumeCurrent(); });
+  playerClose?.addEventListener('click', () => stopAllAudio());
+  playerProgress?.addEventListener('click', e => {
+    const clock = getClock();
+    if (!clock || !clock.duration || !isFinite(clock.duration)) return;
+    const r = playerProgress.getBoundingClientRect();
+    const target = ((e.clientX-r.left)/r.width) * clock.duration;
+    if (stemMode) stemTracks.forEach(t => { try { t.audio.currentTime = target; } catch(_){} });
+    else if (audio) audio.currentTime = target;
+  });
 
   render();
 })();
