@@ -552,70 +552,19 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const downloadLinksMap = {
-      "AutoCAD 2026": "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase",
-      "Microsoft Office 2024": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
-      "Office Home & Business": "https://drive.google.com/uc?export=download&id=1gPUVFwuDrpK9aymOAsqaruu_4933dbn6",
-      "SketchUp Pro 2026": "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD",
-      "Cosmo Collection": "https://drive.google.com/uc?export=download&id=1Z3Xk2MiDMk90PP2jajvVwG3bWHUmSzeL",
-      "Montage 8 & Nord Stage 3": "https://drive.google.com/uc?export=download&id=1OayW_WEpr6Y3Ea5e9wVBC7kLpDptRJA1",
-      "Biblias E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo",
-      "Biblias y Diccionarios para E-Sword": "https://drive.google.com/uc?export=download&id=1Bfxi3KH5ik-uMAa0pPOiwvDJruY_niqo"
-    };
+    const WORKER = String(window.DINGLOFT_WORKER_BASE || "https://autumn-breeze-dfa0.evolutiongt01.workers.dev").replace(/\/$/, "");
+    const escHtml = (value) => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
-    const bundlesMap = {
-      "Dual Legend": [
-        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
-        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
-        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
-      ],
-      "Dual Legends": [
-        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
-        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
-        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
-      ],
-      "Dual Legend SF2": [
-        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
-        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
-        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
-      ],
-      "Dual Legends SF2": [
-        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
-        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
-        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
-      ],
-      "Nord Essentials SF2 Collection": [
-        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
-        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
-      ],
-      "Nord Stage 4 Ultimate Library": [
-        { name: "Nord Essential SF2", url: "https://drive.google.com/uc?export=download&id=1dGiTz44DrV9nrEGGhATegXuk2wrFUpB1" },
-        { name: "Bonus PAD", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
-      ],
-      "Yamaha Legacy Collection SF2": [
-        { name: "Yamaha Legacy Collection SF2", url: "https://drive.google.com/uc?export=download&id=1ozXolT51O3dn3Fw8UKnRySi0F_p0rWCe" },
-        { name: "Bonus", url: "https://drive.google.com/uc?export=download&id=1BdXv3hk63f4ixYjqogaED1fwshXfpNTj" }
-      ],
-      "Yamaha Premium Keys": [
-        { name: "Yamaha Premium Keys v2.0", url: "https://drive.google.com/uc?export=download&id=1r7yW_100iqzQTY7K96Yv05jvFCgq2Abw" },
-        { name: "Yamaha Premium Keys (Bonus)", url: "https://drive.google.com/uc?export=download&id=1I73jq9Baj9uJi0-RHpUCvX-X5dwGOJcd" },
-        { name: "Yamaha Premium Keys (Bonus 2)", url: "https://drive.google.com/uc?export=download&id=1_ubpxmpvlHTCKO6Wdbpjpys-YLVQkEs6" },
-        { name: "Kontakt 8 (Win)", url: "https://drive.google.com/uc?export=download&id=1Wg895Pq8em6h-vGLIy0C-2vDFGZURFSl" },
-        { name: "Kontakt 7 (Mac)", url: "https://drive.google.com/uc?export=download&id=13deJgVvPCi6haaLXET3qV2K7mQ_ojMA2" }
-      ],
-      "Rhodes Affair 2": [
-        { name: "Rhodes Affair 2 (Mac)", url: "https://drive.google.com/uc?export=download&id=1B6dfQJjCh0vzOAuf6eTtuKQ91EAhfFKY" },
-        { name: "Rhodes Affair 2 (Windows)", url: "https://drive.google.com/uc?export=download&id=1C2Lj_8jMqRLdjdd1O4jSdOQYwrDayJx_" }
-      ],
-      "SketchUp 2026 & AutoCAD 2026": [
-        { name: "Sketchup (Mac)", url: "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD" },
-        { name: "AutoCAD (Mac)", url: "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase" }
-      ],
-      "SketchUp & AutoCAD Combo": [
-        { name: "Sketchup (Mac)", url: "https://drive.google.com/uc?export=download&id=1l24gXzpm2xTxTdAI6OiAUtoccWpfLnUD" },
-        { name: "AutoCAD (Mac)", url: "https://drive.google.com/uc?export=download&id=1mWRwEisCuxeuSsMYM-ZhoYpT_PFwbase" }
-      ]
-    };
+    async function commerceApi(user, path) {
+      const token = await user.getIdToken(false);
+      const response = await fetch(WORKER + path, {
+        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+        cache: "no-store"
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || data.ok === false) throw new Error(data.error || `Error ${response.status}`);
+      return data;
+    }
 
     onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -926,15 +875,105 @@
 
         const downloadsContainer = document.getElementById('downloads-container');
         try {
-          const q = query(collection(db, "purchases"), where("uid", "==", user.uid));
-          const querySnapshot = await getDocs(q);
-
-          let totalProgramas = 0;
+          downloadsContainer.innerHTML = '<p style="color: var(--muted); padding: 15px;"><i class="bi bi-arrow-repeat"></i> Sincronizando tus compras y descargas…</p>';
+          const library = await commerceApi(user, "/me/library");
+          const orders = Array.isArray(library.orders) ? library.orders : [];
+          const items = orders.flatMap(order => (Array.isArray(order.items) ? order.items : []).map(item => ({...item, orderNumber: order.orderNumber, purchaseId: order.purchaseId})));
+          let totalProgramas = items.length;
           downloadsContainer.innerHTML = '';
 
-          if (querySnapshot.empty) {
+          if (!items.length) {
             downloadsContainer.innerHTML = '<p style="color: var(--muted); padding: 15px;">Aún no tienes programas comprados.</p>';
           } else {
+            downloadsContainer.innerHTML = `
+              <div style="background: rgba(53,221,146,0.08); border: 1px solid rgba(53,221,146,0.3); border-radius: 15px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: center; gap: 15px;">
+                <i class="bi bi-shield-check" style="color: var(--green); font-size: 1.8rem;"></i>
+                <div>
+                  <strong style="color: var(--green); display: block; font-size: 0.95rem;">Tus descargas están vinculadas a tu cuenta</strong>
+                  <span style="font-size: 0.82rem; color: #c4d0df;">Los botones se generan de forma segura desde Dingloft. Si Administración cambia un link, aquí se actualiza automáticamente.</span>
+                </div>
+              </div>
+            `;
+
+            for (const producto of items) {
+              const nombreProd = producto.name || 'Producto digital';
+              const imgProd = producto.img || 'dingloft';
+              const typeProd = producto.type || 'Producto digital';
+              const assets = Array.isArray(producto.assets) ? producto.assets : [];
+              const ready = producto.deliveryStatus === 'ready' && assets.length > 0;
+
+              if (ready && assets.length > 1) {
+                const subHTML = assets.map(asset => `
+                  <div class="sub-download-row">
+                    <div><i class="bi bi-file-earmark-arrow-down"></i> ${escHtml(asset.name || 'Descarga')}</div>
+                    <button class="download-btn-small" data-url="${escHtml(asset.downloadUrl)}" data-product="${escHtml(asset.name || nombreProd)}" aria-label="Descargar ${escHtml(asset.name || nombreProd)}">
+                      <i class="bi bi-download"></i>
+                    </button>
+                  </div>
+                `).join('');
+                downloadsContainer.insertAdjacentHTML('beforeend', `
+                  <div class="bundle-container">
+                    <div class="download-row has-subs" style="cursor:pointer;" onclick="toggleBundle(this)">
+                      <div class="product-art"><img src="img/${escHtml(imgProd)}.png" alt="${escHtml(nombreProd)}" onerror="this.src='img/dingloft.png'"></div>
+                      <div>
+                        <h3>${escHtml(nombreProd)}</h3>
+                        <p>${escHtml(typeProd)} · ${assets.length} descargas</p>
+                        <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso habilitado</span>
+                      </div>
+                      <button class="toggle-btn" aria-label="Ver archivos del paquete"><i class="bi bi-chevron-down"></i></button>
+                    </div>
+                    <div class="sub-downloads">${subHTML}</div>
+                  </div>
+                `);
+              } else if (ready) {
+                const asset = assets[0];
+                downloadsContainer.insertAdjacentHTML('beforeend', `
+                  <div class="download-row">
+                    <div class="product-art"><img src="img/${escHtml(imgProd)}.png" alt="${escHtml(nombreProd)}" onerror="this.src='img/dingloft.png'"></div>
+                    <div>
+                      <h3>${escHtml(nombreProd)}</h3>
+                      <p>${escHtml(typeProd)}</p>
+                      <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso habilitado</span>
+                    </div>
+                    <button class="download-btn" data-url="${escHtml(asset.downloadUrl)}" data-product="${escHtml(nombreProd)}" aria-label="Descargar ${escHtml(nombreProd)}"><i class="bi bi-download"></i></button>
+                  </div>
+                `);
+              } else {
+                downloadsContainer.insertAdjacentHTML('beforeend', `
+                  <div class="download-row">
+                    <div class="product-art"><img src="img/${escHtml(imgProd)}.png" alt="${escHtml(nombreProd)}" onerror="this.src='img/dingloft.png'"></div>
+                    <div>
+                      <h3>${escHtml(nombreProd)}</h3>
+                      <p>${escHtml(typeProd)} · Orden ${escHtml(producto.orderNumber || '')}</p>
+                      <span class="badge" style="color:#ffd36b"><i class="bi bi-clock-history"></i> Pago confirmado · entrega pendiente</span>
+                    </div>
+                    <button class="download-btn" disabled style="opacity:.35;cursor:not-allowed" aria-label="Entrega pendiente"><i class="bi bi-hourglass-split"></i></button>
+                  </div>
+                `);
+              }
+            }
+          }
+          document.getElementById('stat-programas').textContent = totalProgramas;
+
+          const toast = document.getElementById('toast-message');
+          document.querySelectorAll('.download-btn:not([disabled]), .download-btn-small:not([disabled])').forEach(button => {
+            button.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const url = button.getAttribute('data-url');
+              const productName = button.getAttribute('data-product');
+              if (!url) return;
+              toast.textContent = `Preparando la descarga de ${productName}...`;
+              toast.classList.add('show');
+              setTimeout(() => toast.classList.remove('show'), 3000);
+              window.location.href = url;
+            });
+          });
+        } catch(error) {
+          console.error(error);
+          downloadsContainer.innerHTML = `<div style="color:#ffc1c6;padding:15px;border:1px solid rgba(255,93,105,.3);border-radius:12px;background:rgba(255,93,105,.08)"><i class="bi bi-exclamation-triangle"></i> No pudimos cargar tus descargas: ${escHtml(error.message || 'Error de sincronización')}</div>`;
+        }
+      } else {
             downloadsContainer.innerHTML = `
               <div style="background: rgba(53,221,146,0.08); border: 1px solid rgba(53,221,146,0.3); border-radius: 15px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: center; gap: 15px;">
                 <i class="bi bi-stopwatch" style="color: var(--green); font-size: 1.8rem;"></i>
