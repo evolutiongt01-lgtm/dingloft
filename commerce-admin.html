@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dingloft · Entregas Digitales</title>
+  <link rel="icon" href="img/dingloft.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root{--bg:#05080d;--panel:#0b111b;--panel2:#101a28;--line:#223247;--text:#eff7ff;--muted:#8fa2b7;--cyan:#12d7f6;--green:#35dd92;--red:#ff5d69;--gold:#ffd36b}
+    *{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 80% -10%,rgba(18,215,246,.12),transparent 34%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+    header{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,4vw,58px);background:rgba(5,8,13,.82);backdrop-filter:blur(18px);position:sticky;top:0;z-index:10}
+    .brand{font-size:1.35rem;font-weight:850;letter-spacing:-.04em}.brand span{color:var(--cyan)} a{color:inherit;text-decoration:none}
+    .back{color:var(--muted);font-size:.88rem}.back:hover{color:white}
+    main{max-width:1180px;margin:0 auto;padding:42px 20px 70px}.eyebrow{color:var(--cyan);font-size:.75rem;letter-spacing:.16em;font-weight:800;text-transform:uppercase}h1{font-size:clamp(2rem,5vw,3.7rem);margin:8px 0 8px;letter-spacing:-.055em} .lead{color:var(--muted);max-width:780px;line-height:1.65}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:32px}.card{background:linear-gradient(145deg,rgba(16,26,40,.94),rgba(8,13,21,.96));border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 18px 48px rgba(0,0,0,.22)}.card h2{font-size:1.15rem;margin:0 0 5px}.card p{color:var(--muted);font-size:.86rem;line-height:1.55;margin:0 0 20px}
+    label{display:block;font-size:.76rem;color:#b8c6d5;margin:13px 0 6px;font-weight:700}.input,select,textarea{width:100%;background:#070c13;color:white;border:1px solid var(--line);border-radius:11px;padding:11px 12px;font:inherit;font-size:.87rem;outline:none}.input:focus,select:focus,textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(18,215,246,.08)}textarea{min-height:105px;resize:vertical}select option{background:#0b111b}
+    .row{display:grid;grid-template-columns:1fr 120px;gap:10px}.asset{display:grid;grid-template-columns:155px 1fr 40px 40px;gap:8px;margin-bottom:8px}.asset button{border-radius:10px;cursor:pointer}.asset .test-link{border:1px solid rgba(18,215,246,.35);background:rgba(18,215,246,.08);color:var(--cyan)}.asset .remove-link{border:1px solid #442833;background:#211018;color:#ff8f99}.asset .test-link:hover{background:rgba(18,215,246,.18)}.btn{border:0;border-radius:11px;padding:12px 16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}.primary{background:linear-gradient(135deg,#12d7f6,#5cecff);color:#031116}.danger{background:linear-gradient(135deg,#ff6671,#ff8a71);color:#190408}.ghost{background:rgba(255,255,255,.05);border:1px solid var(--line);color:#dfeaf4}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.status{display:none;margin-top:15px;padding:12px 14px;border-radius:11px;font-size:.84rem;line-height:1.5}.status.ok{display:block;background:rgba(53,221,146,.08);border:1px solid rgba(53,221,146,.3);color:#9ff2cc}.status.err{display:block;background:rgba(255,93,105,.08);border:1px solid rgba(255,93,105,.3);color:#ffc1c6}.status.info{display:block;background:rgba(18,215,246,.08);border:1px solid rgba(18,215,246,.3);color:#b6f4ff}
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;font-size:.72rem;font-weight:800;border:1px solid}.pill.ok{color:var(--green);border-color:rgba(53,221,146,.35);background:rgba(53,221,146,.08)}.pill.missing{color:var(--gold);border-color:rgba(255,211,107,.35);background:rgba(255,211,107,.08)}
+    .small{font-size:.73rem;color:#75899f;margin-top:7px}.full{grid-column:1/-1}.catalog{max-height:275px;overflow:auto;border:1px solid var(--line);border-radius:12px;margin-top:12px}.catalog-item{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;gap:12px;align-items:center}.catalog-item:last-child{border-bottom:0}.catalog-item b{font-size:.82rem}.catalog-item small{display:block;color:var(--muted);font-size:.69rem;margin-top:2px}
+    @media(max-width:850px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.asset{grid-template-columns:1fr}.asset button{height:38px}.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header><a class="brand" href="admin.html"><span>D</span>ingloft · Admin</a><a class="back" href="admin.html"><i class="bi bi-arrow-left"></i> Volver al panel</a></header>
+<main>
+  <div class="eyebrow">Commerce Control</div>
+  <h1>Entregas digitales</h1>
+  <p class="lead">Configura los archivos que se habilitan después del pago y recupera cobros antiguos de PayPal de forma verificada. Las compras nuevas se bloquean antes del cobro si un producto no tiene entrega configurada.</p>
+
+  <div class="grid">
+    <section class="card">
+      <h2><i class="bi bi-cloud-arrow-down"></i> Archivos por producto</h2>
+      <p>El Worker usa estos datos como fuente de verdad. <b>El enlace que guardes aquí es el que se vincula automáticamente al botón Descargar del cliente en Mi cuenta</b>. Puedes pegar enlaces normales de Google Drive; el backend los normaliza para descarga.</p>
+      <label>Producto</label>
+      <select id="product-select"><option>Cargando catálogo…</option></select>
+      <div class="row">
+        <div><label>Nombre</label><input id="product-name" class="input"></div>
+        <div><label>Precio USD</label><input id="product-price" class="input" type="number" min="0" step="0.01"></div>
+      </div>
+      <label>Links vinculados al botón Descargar del cliente</label>
+      <div id="assets"></div>
+      <button class="btn ghost" id="add-asset" type="button"><i class="bi bi-link-45deg"></i> Agregar otro link</button>
+      <div class="small">Puedes usar un solo link o varios. Si agregas varios, el cliente verá un botón de descarga para cada archivo. Sin links, las compras nuevas de ese producto quedan bloqueadas antes del cobro.</div>
+      <div class="actions"><button class="btn primary" id="save-product"><i class="bi bi-link-45deg"></i> Guardar y vincular al cliente</button></div>
+      <div id="product-status" class="status"></div>
+    </section>
+
+    <section class="card">
+      <h2><i class="bi bi-life-preserver"></i> Recuperar cobro PayPal</h2>
+      <p>Para el cliente que sí fue cobrado pero no recibió archivos. PayPal se verifica en el servidor antes de crear la compra.</p>
+      <label>PayPal Order ID</label>
+      <input id="recover-order" class="input" placeholder="Ej. 8AB12345CD6789012">
+      <label>Correo de la cuenta Dingloft del cliente</label>
+      <input id="recover-email" class="input" type="email" placeholder="cliente@correo.com">
+      <label>Productos comprados · uno por línea</label>
+      <textarea id="recover-items" placeholder="Yamaha Premium Keys&#10;Rhodes Affair 2"></textarea>
+      <label>Cupón usado (solo si realmente se usó)</label>
+      <input id="recover-coupon" class="input" placeholder="Opcional">
+      <div class="small">El total canónico de esos productos debe coincidir exactamente con lo capturado por PayPal. Si no coincide, el Worker rechaza la recuperación.</div>
+      <div class="actions"><button class="btn danger" id="recover-btn"><i class="bi bi-shield-check"></i> Verificar y recuperar</button></div>
+      <div id="recover-status" class="status"></div>
+    </section>
+
+    <section class="card full">
+      <h2><i class="bi bi-boxes"></i> Estado del catálogo</h2>
+      <p>Los elementos amarillos están bloqueados para compras nuevas hasta que agregues al menos un archivo.</p>
+      <div id="catalog" class="catalog"><div class="catalog-item">Cargando…</div></div>
+    </section>
+  </div>
+</main>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const firebaseConfig={apiKey:"AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",authDomain:"login-dingloft.firebaseapp.com",projectId:"login-dingloft",storageBucket:"login-dingloft.firebasestorage.app",messagingSenderId:"549466738202",appId:"1:549466738202:web:8bf305fe2c753e9d76cba3",measurementId:"G-R9SGZCDN13"};
+  const app=initializeApp(firebaseConfig),auth=getAuth(app);
+  const ADMIN=new Set(["evolutiongt01@gmail.com","tepaz2025@gmail.com"]);
+  const WORKER=String(window.DINGLOFT_WORKER_BASE||"https://autumn-breeze-dfa0.evolutiongt01.workers.dev").replace(/\/$/,"");
+  let currentUser=null,products=[];
+
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  function status(id,msg,kind="info"){const e=$(id);e.className=`status ${kind}`;e.textContent=msg;}
+  async function api(path,{method="GET",body}={}){if(!currentUser)throw new Error("Sesión no disponible.");const token=await currentUser.getIdToken(false);const r=await fetch(WORKER+path,{method,headers:{Authorization:`Bearer ${token}`,Accept:"application/json",...(body!==undefined?{"content-type":"application/json"}:{})},body:body===undefined?undefined:JSON.stringify(body),cache:"no-store"});const d=await r.json().catch(()=>({}));if(!r.ok||d.ok===false)throw new Error(d.error||`Error ${r.status}`);return d;}
+
+  function assetRow(asset={}){const row=document.createElement("div");row.className="asset";row.innerHTML=`<input class="input asset-name" placeholder="Nombre (ej. Descarga principal)" value="${esc(asset.name||"")}"><input class="input asset-url" placeholder="Pega aquí el link que abrirá Descargar" value="${esc(asset.url||"")}"><button class="test-link" type="button" title="Probar enlace"><i class="bi bi-box-arrow-up-right"></i></button><button class="remove-link" type="button" title="Quitar enlace"><i class="bi bi-trash"></i></button>`;row.querySelector(".remove-link").onclick=()=>row.remove();row.querySelector(".test-link").onclick=()=>{const url=row.querySelector(".asset-url").value.trim();if(!/^https:\/\//i.test(url)){status("product-status","Pega primero un enlace HTTPS válido.","err");return;}window.open(url,"_blank","noopener,noreferrer");};$("assets").appendChild(row);}
+  function fillProduct(){const p=products.find(x=>x.sku===$("product-select").value);if(!p)return;$("product-name").value=p.name||"";$("product-price").value=Number(p.priceUsd||0).toFixed(2);$("assets").innerHTML="";(p.assets||[]).forEach(assetRow);if(!(p.assets||[]).length)assetRow();}
+  function renderCatalog(){$("catalog").innerHTML=products.map(p=>`<div class="catalog-item"><div><b>${esc(p.name)}</b><small>${esc(p.sku)} · $${Number(p.priceUsd||0).toFixed(2)}</small></div><div class="actions" style="margin:0;align-items:center"><span class="pill ${p.deliveryConfigured?'ok':'missing'}"><i class="bi bi-${p.deliveryConfigured?'check-circle-fill':'exclamation-triangle-fill'}"></i>${p.deliveryConfigured?`${p.assets.length} link${p.assets.length===1?'':'s'}`:'SIN LINK'}</span><button class="btn ghost edit-product-link" type="button" data-sku="${esc(p.sku)}" style="padding:7px 10px;font-size:.72rem"><i class="bi bi-pencil-square"></i> Editar link</button></div></div>`).join("");document.querySelectorAll(".edit-product-link").forEach(btn=>btn.onclick=()=>{$("product-select").value=btn.dataset.sku;fillProduct();window.scrollTo({top:0,behavior:"smooth"});});}
+  async function loadCatalog(){const d=await api("/admin/products/catalog");products=d.products||[];$("product-select").innerHTML=products.map(p=>`<option value="${esc(p.sku)}">${esc(p.name)}${p.deliveryConfigured?'':' · FALTA ARCHIVO'}</option>`).join("");fillProduct();renderCatalog();}
+
+  $("product-select").addEventListener("change",fillProduct);$("add-asset").onclick=()=>assetRow();
+  $("save-product").onclick=async()=>{const p=products.find(x=>x.sku===$("product-select").value);if(!p)return;const rows=[...document.querySelectorAll("#assets .asset")];const assets=rows.map((row,index)=>{const url=row.querySelector(".asset-url").value.trim();const name=row.querySelector(".asset-name").value.trim()||((rows.length===1?($("product-name").value.trim()||p.name):`Archivo ${index+1}`));return{name,url};}).filter(a=>a.url);try{status("product-status","Guardando y vinculando…","info");await api("/admin/products/upsert",{method:"POST",body:{sku:p.sku,name:$("product-name").value.trim()||p.name,priceUsd:Number($("product-price").value||p.priceUsd),img:p.img,type:p.type,aliases:p.aliases||[],active:true,assets}});status("product-status",assets.length?`Listo. ${assets.length===1?'El link quedó vinculado':'Los links quedaron vinculados'} al botón Descargar de los clientes que tengan este producto.`:"Producto guardado sin links: sus ventas quedarán bloqueadas antes del cobro.",assets.length?"ok":"err");await loadCatalog();}catch(e){status("product-status",e.message,"err")}};
+
+  $("recover-btn").onclick=async()=>{const paypalOrderId=$("recover-order").value.trim(),customerEmail=$("recover-email").value.trim(),names=$("recover-items").value.split(/\n+/).map(x=>x.trim()).filter(Boolean),couponCode=$("recover-coupon").value.trim();if(!paypalOrderId||!customerEmail||!names.length){status("recover-status","Completa PayPal Order ID, correo y al menos un producto.","err");return;}try{status("recover-status","Verificando el cobro directamente con PayPal…","info");const d=await api("/admin/recover-legacy-paypal",{method:"POST",body:{paypalOrderId,customerEmail,items:names.map(name=>({name})),couponCode}});status("recover-status",`Recuperado correctamente. ${d.orderNumber||""} · transacción ${d.transactionId||""}. El cliente ya puede entrar a Mi cuenta.`,"ok");}catch(e){status("recover-status",e.message,"err")}};
+
+  onAuthStateChanged(auth,async user=>{if(!user){location.href=`login.html?next=${encodeURIComponent('commerce-admin.html')}`;return;}if(!ADMIN.has(String(user.email||"").toLowerCase())){location.href="account.html";return;}currentUser=user;try{await loadCatalog();}catch(e){status("product-status",e.message,"err");$("catalog").innerHTML=`<div class="catalog-item">${esc(e.message)}</div>`;}});
+</script>
+</body>
+</html>
