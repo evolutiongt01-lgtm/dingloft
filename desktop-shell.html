@@ -165,6 +165,13 @@ html.dingloft-installed #navInstall{display:none!important}
   .shell-nav.loading::before,.shell-nav.loading::after,.shell-nav.load-complete::before,.shell-nav.load-complete::after{animation:none!important;opacity:0!important}
 }
 </style>
+
+<style id="dingloft-admin-nav-v40">
+.shell-nav .action.admin-link{color:#ff9da5!important}
+.shell-nav .action.admin-link:hover{color:#ffd9dc!important}
+.shell-nav .action.admin-link svg{filter:drop-shadow(0 0 7px rgba(255,82,93,.18))}
+.shell-nav .action.admin-link[hidden]{display:none!important}
+</style>
 </head>
 <body style="background:#040609">
 <div id="desktopSplash" aria-label="Cargando Dingloft"><div class="desktop-splash-inner"><div class="desktop-splash-mark"><img src="/img/pwa-liquid-rounded-192-v17.png?v=18" alt="Dingloft"></div><div class="desktop-splash-brand">DINGLOFT</div><div class="desktop-splash-group">Evolution Group</div><div class="desktop-splash-status">Preparando tu espacio</div><div class="desktop-splash-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div></div>
@@ -173,12 +180,13 @@ html.dingloft-installed #navInstall{display:none!important}
   <nav class="actions" id="desktopNavActions" aria-label="Navegación principal">
     <span class="nav-glider" id="navGlider" aria-hidden="true"></span>
     <a class="action" id="navHome" href="ventas.html" data-shell-link="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M9.5 20v-6h5v6"/></svg><span>Home</span></a>
+    <a class="action admin-link" id="navAdmin" href="admin.html" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3.5 19 6v5.2c0 4.4-2.7 7.7-7 9.3-4.3-1.6-7-4.9-7-9.3V6l7-2.5Z"/><path d="m9.4 12 1.7 1.7 3.7-4"/></svg><span>Admin</span></a>
     <a class="action" id="navMultitracks" href="multitrack.html" data-shell-link="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12v2"/><path d="M8 8v8"/><path d="M12 5v14"/><path d="M16 8v8"/><path d="M20 11v3"/></svg><span>Multitracks</span></a>
     <a class="action" id="navAccount" href="account.html" data-shell-link="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3"/><path d="M5 20c.8-4 3.2-6 7-6s6.2 2 7 6"/></svg><span>Cuenta</span></a>
   </nav>
 </header>
 <div class="stage" id="stage"></div><div class="progress" id="progress"></div>
-<script src="desktop-shell.js?v=37"></script>
+<script src="desktop-shell.js?v=40"></script>
 <script src="dingloft-ui-guard.js?v=34"></script>
 <script src="/pwa-runtime.js?v=39"></script>
 </body></html>

@@ -2326,11 +2326,17 @@
       const desktopAdminContainer = document.getElementById('desktop-admin-btn-container');
       const mobileAdminContainer = document.getElementById('mobile-admin-btn-container');
 
-      if (user) {
-        if (['evolutiongt01@gmail.com','tepaz2025@gmail.com','matzarcesar01@hotmail.com'].includes((user.email || '').toLowerCase())) {
-          if (desktopAdminContainer) desktopAdminContainer.style.display = 'block';
-          if (mobileAdminContainer) mobileAdminContainer.style.display = 'block';
+      const adminEmails = ['evolutiongt01@gmail.com','tepaz2025@gmail.com','matzarcesar01@hotmail.com'];
+      const isAdminUser = !!user && adminEmails.includes((user.email || '').toLowerCase());
+      try {
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: 'dingloft:admin-state', isAdmin: isAdminUser }, window.location.origin);
         }
+      } catch (_) {}
+      if (desktopAdminContainer) desktopAdminContainer.style.display = isAdminUser ? 'block' : 'none';
+      if (mobileAdminContainer) mobileAdminContainer.style.display = isAdminUser ? 'block' : 'none';
+
+      if (user) {
 
         let displayName = "Usuario";
         if (user.displayName) {
