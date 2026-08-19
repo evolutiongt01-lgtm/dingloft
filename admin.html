@@ -167,6 +167,20 @@ function openCustomer(c){activeCustomer=c;$('cUid').value=c.uid;$('cEmail').valu
 function fillProductSelect(sel,value=''){sel.innerHTML='<option value="">Selecciona producto…</option>'+products.filter(p=>p.active!==false).map(p=>`<option value="${esc(p.sku)}" ${p.sku===value?'selected':''}>${esc(p.name)} · ${money(p.priceUsd)}${p.deliveryConfigured?'':' · SIN LINK'}</option>`).join('')}
 function orderItemRow(data={}){const r=document.createElement('div');r.className='order-item';r.innerHTML=`<select class="field product-select"></select><input class="field qty" type="number" min="1" max="99" value="${data.quantity||1}" title="Cantidad"><input class="field unit" type="number" step="0.01" min="0" value="${Number(data.unitPriceUsd||0).toFixed(2)}" title="Precio unitario"><b class="line-total">$0.00</b><button class="btn danger small remove-item" type="button"><i class="bi bi-trash"></i></button>`;const sel=r.querySelector('.product-select');fillProductSelect(sel,data.sku||'');sel.onchange=()=>{const p=products.find(x=>x.sku===sel.value);if(p)r.querySelector('.unit').value=Number(p.priceUsd||0).toFixed(2);calcManual()};r.querySelector('.qty').oninput=calcManual;r.querySelector('.unit').oninput=calcManual;r.querySelector('.remove-item').onclick=()=>{r.remove();calcManual()};$('manualItems').appendChild(r);calcManual()}
 function calcManual(){let subtotal=0;document.querySelectorAll('#manualItems .order-item').forEach(r=>{const q=Math.max(1,Number(r.querySelector('.qty').value||1)),u=Math.max(0,Number(r.querySelector('.unit').value||0)),line=q*u;subtotal+=line;r.querySelector('.line-total').textContent=money(line)});const type=$('discountType').value,val=Math.max(0,Number($('discountValue').value||0));let disc=type==='percent'?subtotal*Math.min(100,val)/100:type==='fixed'?Math.min(subtotal,val):0;$('mSubtotal').textContent=money(subtotal);$('mDiscount').textContent=`-${money(disc)}`;$('mTotal').textContent=money(Math.max(0,subtotal-disc))} $('addOrderItem').onclick=()=>orderItemRow();$('discountType').onchange=calcManual;$('discountValue').oninput=calcManual;
+function openNewOrder(){
+  $('mCustomer').value='';
+  $('manualItems').innerHTML='';
+  orderItemRow();
+  $('discountType').value='none';
+  $('discountValue').value=0;
+  $('manualPaymentStatus').value='paid';
+  $('manualProvider').value='admin-manual';
+  $('manualNote').value='';
+  $('manualSendEmail').checked=true;
+  status('manualStatus','');
+  calcManual();
+  $('orderModal').classList.add('show');
+}
 $('newOrder').onclick=openNewOrder;$('newOrderTop').onclick=openNewOrder;
 $('createManualOrder').onclick=async()=>{try{const email=$('mCustomer').value.trim(),items=[...document.querySelectorAll('#manualItems .order-item')].map(r=>({sku:r.querySelector('.product-select').value,quantity:Number(r.querySelector('.qty').value||1),unitPriceUsd:Number(r.querySelector('.unit').value||0)})).filter(i=>i.sku);if(!email||!items.length)throw Error('Selecciona cliente y al menos un producto.');status('manualStatus','Creando pedido…','warn');const d=await api('/admin/orders/manual-create',{method:'POST',body:{customerEmail:email,items,discountType:$('discountType').value,discountValue:Number($('discountValue').value||0),paymentStatus:$('manualPaymentStatus').value,paymentProvider:$('manualProvider').value,adminNote:$('manualNote').value,sendEmail:$('manualSendEmail').checked}});status('manualStatus',`Pedido ${d.orderNumber} creado. Total ${money(d.totalUsd)}.`,'ok');await Promise.all([loadOrders(),loadCustomers()]);renderDashboard();renderFinance();setTimeout(()=>$('orderModal').classList.remove('show'),800)}catch(e){status('manualStatus',e.message,'bad')}};
 
@@ -233,5 +247,5 @@ $('refreshAll').onclick=async()=>{toast('Actualizando…');try{await loadAll();t
   purgeResolvedJuniorReviews().catch(()=>{});
   const h=location.hash.replace('#','');if(h&&$(`view-${h}`))showView(h);
 });blankProduct();
-</script><script src="dingloft-ui-guard.js?v=42"></script>
+</script><script src="dingloft-ui-guard.js?v=43"></script>
 </body></html>
