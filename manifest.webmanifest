@@ -1,15 +1,14 @@
 {
-  "id": "/app.html",
+  "id": "/launch.html",
   "name": "Dingloft · Evolution Group",
   "short_name": "Dingloft",
   "description": "Software, librerías y multitracks de Dingloft.",
   "lang": "es",
   "dir": "ltr",
-  "start_url": "/app.html?route=home&utm_source=pwa_v17",
+  "start_url": "/launch.html?v=18",
   "scope": "/",
   "display": "standalone",
   "display_override": [
-    "window-controls-overlay",
     "standalone",
     "minimal-ui"
   ],
@@ -23,19 +22,19 @@
   ],
   "icons": [
     {
-      "src": "/img/pwa-liquid-192-v5.png",
+      "src": "/img/pwa-liquid-rounded-192-v17.png?v=18",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/img/pwa-liquid-512-v5.png",
+      "src": "/img/pwa-liquid-rounded-512-v17.png?v=18",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/img/pwa-liquid-maskable-512-v5.png",
+      "src": "/img/pwa-liquid-maskable-512-v5.png?v=18",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

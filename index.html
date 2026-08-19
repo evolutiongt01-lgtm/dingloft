@@ -3,15 +3,32 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"><meta name="theme-color" content="#040609"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="apple-mobile-web-app-title" content="Dingloft">
+<style id="dingloft-first-paint">html,body{margin:0!important;background:#040609!important;color-scheme:dark!important}html{background-color:#040609!important}body{min-height:100vh;background-color:#040609!important}</style>
+<script id="dingloft-early-launch">(()=>{try{const ua=navigator.userAgent||"";const mobile=/Android|iPhone|iPad|iPod/i.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);const coarse=matchMedia("(max-width:1024px) and (pointer:coarse)").matches;if((mobile||coarse)&&location.search.indexOf("embed=")<0){document.documentElement.style.background="#040609";document.documentElement.style.visibility="hidden";location.replace("/app.html?route=home&from=entry18");}}catch(_){}})();</script>
+
+<link rel="apple-touch-startup-image" href="/img/iphone-se-640x1136.png?v=18" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)">
+<link rel="apple-touch-startup-image" href="/img/iphone-8-750x1334.png?v=18" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
+<link rel="apple-touch-startup-image" href="/img/iphone-8-plus-1242x2208.png?v=18" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="/img/iphone-x-1125x2436.png?v=18" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="/img/iphone-11-828x1792.png?v=18" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)">
+<link rel="apple-touch-startup-image" href="/img/iphone-11-pro-max-1242x2688.png?v=18" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="/img/iphone-12-mini-1080x2340.png?v=18" media="(device-width: 360px) and (device-height: 780px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="/img/iphone-14-1170x2532.png?v=18" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="/img/iphone-14-plus-1284x2778.png?v=18" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="/img/iphone-15-pro-1179x2556.png?v=18" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="/img/iphone-15-pro-max-1290x2796.png?v=18" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="/img/iphone-16-pro-1206x2622.png?v=18" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="/img/iphone-16-pro-max-1320x2868.png?v=18" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3)">
 <title>Dingloft</title>
 <meta name="description" content="Instala Dingloft como app o entra a la tienda de software, librerías y multitracks.">
-<meta name="theme-color" content="#050607">
+<meta name="theme-color" content="#040609">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Dingloft">
 <meta name="application-name" content="Dingloft">
-<link rel="manifest" href="/manifest.webmanifest?v=7">
+<link rel="manifest" href="/manifest.webmanifest?v=18">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon-liquid-v5.png?v=7">
 <link rel="apple-touch-icon-precomposed" sizes="180x180" href="/img/apple-touch-icon-liquid-v5.png?v=7">
 <link rel="icon" type="image/png" sizes="192x192" href="/img/pwa-liquid-192-v5.png?v=7">
@@ -226,10 +243,10 @@ a{text-decoration:none;color:inherit}
   document.getElementById('installUniversal').onclick=()=>promptInstall('universal');
   const close=()=>{guide.classList.remove('show');guide.setAttribute('aria-hidden','true')};
   document.getElementById('closeGuide').onclick=close;document.getElementById('doneGuide').onclick=close;guide.onclick=e=>{if(e.target===guide)close()};
-  if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=6',{scope:'/'}).then(r=>r.update()).catch(()=>{}));
+  if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=18',{scope:'/'}).then(r=>r.update()).catch(()=>{}));
 })();
 </script>
 <script src="install-banner.js?v=7"></script>
-<script src="desktop-global-nav.js?v=10"></script>
-<script src="dingloft-ui-guard.js?v=10"></script>
+<script src="desktop-global-nav.js?v=18"></script>
+<script src="dingloft-ui-guard.js?v=18"></script>
 </body></html>
