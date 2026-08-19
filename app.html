@@ -1,15 +1,27 @@
 <!doctype html>
 <html lang="es"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#05070a">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
+<style id="dingloft-boot-paint">html,body{margin:0!important;width:100%!important;height:100%!important;background:#040609!important;color-scheme:dark!important}body{background-color:#040609!important}#appSplash{background-color:#040609!important}</style>
+<meta name="theme-color" content="#040609">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Dingloft">
 <meta name="application-name" content="Dingloft">
-<link rel="manifest" href="manifest.webmanifest?v=9">
+<link rel="manifest" href="manifest.webmanifest?v=17">
 <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon-liquid-v5.png?v=6">
 <link rel="apple-touch-icon-precomposed" sizes="180x180" href="img/apple-touch-icon-liquid-v5.png?v=6">
+
+<link rel="apple-touch-startup-image" href="img/iphone-16-pro-1206x2622.png?v=17" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="img/iphone-16-pro-max-1320x2868.png?v=17" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="img/iphone-15-pro-1179x2556.png?v=17" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="img/iphone-15-pro-max-1290x2796.png?v=17" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="img/iphone-14-1170x2532.png?v=17" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="img/iphone-12-mini-1080x2340.png?v=17" media="(device-width: 360px) and (device-height: 780px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="img/iphone-x-1125x2436.png?v=17" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="img/iphone-11-828x1792.png?v=17" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)">
 <title>Dingloft</title><link rel="icon" type="image/png" href="img/pwa-liquid-192-v5.png?v=6">
 <style>
 :root{--bg:#05070a;--panel:rgba(11,15,21,.90);--line:rgba(255,255,255,.10);--text:#f4f7fa;--muted:#718094;--cyan:#72dcff;--safe-top:env(safe-area-inset-top,0px);--safe-right:env(safe-area-inset-right,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px);--top:calc(72px + var(--safe-top));--dock:82px}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;overscroll-behavior:none;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,"Segoe UI",sans-serif}body{position:fixed;inset:0;touch-action:pan-y;overscroll-behavior-x:none;-webkit-tap-highlight-color:transparent;background:radial-gradient(circle at 84% -8%,rgba(71,174,220,.10),transparent 24rem),#05070a}.top{position:fixed;z-index:100;top:0;left:0;right:0;height:var(--top);padding:calc(8px + var(--safe-top)) max(20px,var(--safe-right)) 8px max(20px,var(--safe-left));display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,.075);background:linear-gradient(180deg,rgba(4,6,9,.985),rgba(5,7,10,.94));backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%)}.top:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,var(--cyan),rgba(103,108,255,.25),transparent 78%);opacity:.55}.brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none}.brand img{width:38px;height:38px;object-fit:contain}.bc{display:flex;flex-direction:column;line-height:1}.bn{font-size:1.03rem;font-weight:850;letter-spacing:.20em}.bs{margin-top:7px;color:#69768a;font-size:.57rem;font-weight:650;letter-spacing:.16em}.online{margin-left:auto;display:flex;align-items:center;gap:7px;color:#6f7d8f;font-size:.54rem;font-weight:750;letter-spacing:.12em;text-transform:uppercase}.dot{width:7px;height:7px;border-radius:99px;background:#69e2ad;box-shadow:0 0 0 5px rgba(105,226,173,.07)}#stage{position:fixed;z-index:1;left:0;right:0;top:var(--top);bottom:0;overflow:hidden;overscroll-behavior:none;touch-action:pan-y;background:#05070a}.frame{position:absolute;inset:0;width:100%;height:100%;border:0;background:#05070a;overflow:hidden;overscroll-behavior:none;touch-action:pan-y;transition:opacity .18s ease,transform .22s cubic-bezier(.16,1,.3,1)}.frame.in{opacity:0;transform:scale(.997)}.frame.active{opacity:1;transform:none}.frame.out{opacity:0;transform:scale(.998);pointer-events:none}.progress{position:fixed;z-index:130;top:var(--top);left:0;right:0;height:2px;opacity:0;overflow:hidden}.progress.show{opacity:1}.progress:before{content:"";position:absolute;inset:0;width:34%;background:linear-gradient(90deg,#72dcff,#7b8cff);animation:p .7s ease-in-out infinite}@keyframes p{from{transform:translateX(-120%)}to{transform:translateX(390%)}}.dock{position:fixed;z-index:120;left:16px;right:16px;bottom:calc(10px + var(--safe-bottom));height:var(--dock);padding:7px 8px;display:grid;grid-template-columns:1fr 1fr 92px 1fr 1fr;align-items:stretch;border:1px solid rgba(255,255,255,.12);border-radius:28px;background:linear-gradient(145deg,rgba(18,24,31,.91),rgba(6,9,13,.95));box-shadow:0 22px 64px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(28px) saturate(165%);-webkit-backdrop-filter:blur(28px) saturate(165%)}.item{border:0;background:transparent;color:#69778a;text-decoration:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border-radius:20px;font-size:.61rem;font-weight:720}.item svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.item.active{color:#edf8ff;background:rgba(255,255,255,.04)}.item.active svg{color:var(--cyan);filter:drop-shadow(0 0 8px rgba(114,220,255,.25))}.cartslot{position:relative;display:flex;justify-content:center}.cart{position:absolute;top:-24px;width:74px;height:74px;border-radius:24px;border:8px solid #05080c;background:#f4f7f9;color:#05080c;display:grid;place-items:center;box-shadow:0 15px 36px rgba(0,0,0,.52);cursor:pointer}.cart svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:1.8}.count{position:absolute;right:-5px;top:-7px;min-width:28px;height:28px;padding:0 7px;border-radius:99px;display:grid;place-items:center;background:#24aaf2;color:white;border:3px solid #05080c;font-size:.72rem;font-weight:900}.cartlabel{position:absolute;top:65px;color:#69778a;font-size:.60rem;font-weight:720}.toast{position:fixed;z-index:150;left:50%;bottom:calc(108px + var(--safe-bottom));transform:translate(-50%,10px);max-width:calc(100vw - 38px);padding:10px 14px;border:1px solid rgba(255,255,255,.11);border-radius:13px;background:rgba(10,14,19,.95);color:#dce8f1;font-size:.72rem;font-weight:650;opacity:0;visibility:hidden;transition:.18s}.toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
@@ -106,7 +118,7 @@ body.cart-sheet-open .dock{opacity:0!important;transform:scale(.985)!important;p
 .splash-inner{width:min(310px,84vw);display:flex;flex-direction:column;align-items:center;text-align:center;transform:translateY(-2vh)}
 .splash-mark{position:relative;width:104px;height:104px;border-radius:30px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.12);box-shadow:0 28px 75px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);animation:splashFloat 2.8s ease-in-out infinite}
 .splash-mark::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(130,225,255,.75),rgba(255,255,255,.06) 40%,rgba(113,94,255,.32));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.55}
-.splash-mark img{width:76px;height:76px;object-fit:contain;filter:drop-shadow(0 12px 24px rgba(93,204,255,.18))}
+.splash-mark img{width:76px;height:76px;object-fit:contain;border-radius:20px;overflow:hidden;filter:drop-shadow(0 12px 24px rgba(93,204,255,.18))}
 .splash-brand{margin-top:25px;color:#f5f8fb;font-size:1.16rem;font-weight:850;letter-spacing:.24em;line-height:1;text-indent:.24em}
 .splash-group{margin-top:9px;color:#66758a;font-size:.61rem;font-weight:750;letter-spacing:.26em;text-transform:uppercase;text-indent:.26em}
 .splash-status{margin-top:34px;color:#8593a6;font-size:.69rem;font-weight:650;letter-spacing:.03em}
@@ -152,11 +164,34 @@ body.cart-sheet-open .dock{opacity:0!important;transform:scale(.985)!important;p
   #stage{bottom:72px!important}
 }
 body.cart-sheet-open #stage{bottom:0!important}
+
+/* APP SPLASH v16 */
+#appSplash{position:fixed;z-index:9999;inset:0;display:grid;place-items:center;padding:max(28px,var(--safe-top)) 24px max(28px,var(--safe-bottom));overflow:hidden;background:#040609;opacity:1;visibility:visible;transition:opacity .48s cubic-bezier(.22,1,.36,1),visibility .48s;isolation:isolate}
+#appSplash::before{content:"";position:absolute;inset:-15%;background:radial-gradient(circle at 50% 35%,rgba(79,195,245,.14),transparent 23%),radial-gradient(circle at 50% 67%,rgba(108,90,255,.08),transparent 25%);filter:blur(12px);animation:splashGlow 3.2s ease-in-out infinite alternate;z-index:-2}
+#appSplash::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:54px 54px;mask-image:radial-gradient(circle at center,#000 0%,transparent 72%);opacity:.34;z-index:-1}
+#appSplash.hide{opacity:0;visibility:hidden;pointer-events:none}
+.splash-inner{width:min(310px,84vw);display:flex;flex-direction:column;align-items:center;text-align:center;transform:translateY(-2vh)}
+.splash-mark{position:relative;width:104px;height:104px;border-radius:30px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.12);box-shadow:0 28px 75px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);animation:splashFloat 2.8s ease-in-out infinite}
+.splash-mark::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(130,225,255,.75),rgba(255,255,255,.06) 40%,rgba(113,94,255,.32));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.55}
+.splash-mark img{width:76px;height:76px;object-fit:contain;border-radius:20px;overflow:hidden;filter:drop-shadow(0 12px 24px rgba(93,204,255,.18))}
+.splash-brand{margin-top:25px;color:#f5f8fb;font-size:1.16rem;font-weight:850;letter-spacing:.24em;line-height:1;text-indent:.24em}
+.splash-group{margin-top:9px;color:#66758a;font-size:.61rem;font-weight:750;letter-spacing:.26em;text-transform:uppercase;text-indent:.26em}
+.splash-status{margin-top:34px;color:#8593a6;font-size:.69rem;font-weight:650;letter-spacing:.03em}
+.splash-wave{height:26px;margin-top:13px;display:flex;align-items:center;gap:5px}
+.splash-wave i{display:block;width:3px;border-radius:999px;background:linear-gradient(180deg,#bceeff,#5acff8 68%,#807dff);box-shadow:0 0 12px rgba(92,207,248,.22);animation:splashWave .88s ease-in-out infinite alternate}
+.splash-wave i:nth-child(1){height:8px;animation-delay:-.4s}.splash-wave i:nth-child(2){height:17px;animation-delay:-.2s}.splash-wave i:nth-child(3){height:24px}.splash-wave i:nth-child(4){height:15px;animation-delay:-.32s}.splash-wave i:nth-child(5){height:9px;animation-delay:-.5s}
+.splash-foot{position:absolute;left:0;right:0;bottom:max(18px,calc(var(--safe-bottom) + 8px));text-align:center;color:#465164;font-size:.52rem;font-weight:700;letter-spacing:.19em;text-transform:uppercase}
+@keyframes splashFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-5px) scale(1.012)}}
+@keyframes splashGlow{from{transform:scale(.96);opacity:.74}to{transform:scale(1.04);opacity:1}}
+@keyframes splashWave{from{transform:scaleY(.42);opacity:.55}to{transform:scaleY(1);opacity:1}}
+@media(max-width:390px){.splash-mark{width:92px;height:92px;border-radius:27px}.splash-mark img{width:67px;height:67px}.splash-brand{font-size:1.02rem}.splash-status{margin-top:28px}}
+@media(prefers-reduced-motion:reduce){.splash-mark,.splash-wave i,#appSplash::before{animation:none!important}}
+
 </style>
 </head><body>
 <div id="appSplash" aria-live="polite" aria-label="Cargando Dingloft">
   <div class="splash-inner">
-    <div class="splash-mark"><img src="img/pwa-liquid-192-v5.png?v=8" alt="Dingloft"></div>
+    <div class="splash-mark"><img src="img/pwa-liquid-rounded-192-v17.png?v=17" alt="Dingloft"></div>
     <div class="splash-brand">DINGLOFT</div>
     <div class="splash-group">Evolution Group</div>
     <div class="splash-status" id="splashStatus">Preparando tu experiencia</div>
@@ -170,5 +205,5 @@ body.cart-sheet-open #stage{bottom:0!important}
 <nav class="dock" id="dock"><a class="item" href="app.html?route=home" data-route="home"><svg viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5H15v-6H9v6H3.5a.5.5 0 0 1-.5-.5z"/></svg><span>Inicio</span></a><a class="item" href="app.html?route=catalog" data-route="catalog"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg><span>Catálogo</span></a><div class="cartslot"><button class="cart" id="cart"><svg viewBox="0 0 24 24"><path d="M6 8h12l1 13H5z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="count" id="count">0</span></button><span class="cartlabel">Carrito</span></div><a class="item" href="app.html?route=multitrack" data-route="multitrack"><svg viewBox="0 0 24 24"><path d="M4 13v-2M8 17V7M12 20V4M16 17V7M20 13v-2"/></svg><span>Multitrack</span></a><a class="item" href="app.html?route=account" data-route="account"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"/></svg><span>Cuenta</span></a></nav>
 <div class="install-card" id="installCard" role="dialog" aria-label="Instalar Dingloft"><button class="install-close" id="installCardClose" aria-label="Cerrar">×</button><div class="install-logo"><img src="img/pwa-liquid-192-v5.png?v=6" alt=""></div><div class="install-copy"><strong>Instala Dingloft</strong><span>Ábrelo como una app desde tu pantalla principal.</span></div><button class="install-action" id="installCardAction">Instalar</button></div>
 <div class="install-guide" id="installGuide"><div class="install-sheet"><div class="install-handle"></div><h2 id="installGuideTitle">Instala Dingloft</h2><p id="installGuideText">Añádelo a tu pantalla de inicio.</p><div id="installSteps"></div><button class="install-done" id="installGuideClose">Entendido</button></div></div>
-<div class="toast" id="toast"></div><script src="dingloft-app.js?v=16"></script><script src="pwa-install.js?v=10"></script><script src="dingloft-ui-guard.js?v=14"></script>
+<div class="toast" id="toast"></div><script src="dingloft-app.js?v=17"></script><script src="pwa-install.js?v=17"></script><script src="dingloft-ui-guard.js?v=14"></script>
 </body></html>

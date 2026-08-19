@@ -5,7 +5,7 @@
   "description": "Software, librerías y multitracks de Dingloft.",
   "lang": "es",
   "dir": "ltr",
-  "start_url": "/app.html?route=home&utm_source=pwa",
+  "start_url": "/app.html?route=home&utm_source=pwa_v17",
   "scope": "/",
   "display": "standalone",
   "display_override": [
@@ -14,8 +14,8 @@
     "minimal-ui"
   ],
   "orientation": "any",
-  "background_color": "#05070a",
-  "theme_color": "#05070a",
+  "background_color": "#040609",
+  "theme_color": "#040609",
   "categories": [
     "shopping",
     "music",
