@@ -97,6 +97,29 @@ body.cart-sheet-open .dock{opacity:0!important;transform:scale(.985)!important;p
 }
 @media(display-mode:standalone){.dock{bottom:calc(3px + var(--safe-bottom))!important}}
 
+
+/* APP SPLASH v16 */
+#appSplash{position:fixed;z-index:9999;inset:0;display:grid;place-items:center;padding:max(28px,var(--safe-top)) 24px max(28px,var(--safe-bottom));overflow:hidden;background:#040609;opacity:1;visibility:visible;transition:opacity .48s cubic-bezier(.22,1,.36,1),visibility .48s;isolation:isolate}
+#appSplash::before{content:"";position:absolute;inset:-15%;background:radial-gradient(circle at 50% 35%,rgba(79,195,245,.14),transparent 23%),radial-gradient(circle at 50% 67%,rgba(108,90,255,.08),transparent 25%);filter:blur(12px);animation:splashGlow 3.2s ease-in-out infinite alternate;z-index:-2}
+#appSplash::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:54px 54px;mask-image:radial-gradient(circle at center,#000 0%,transparent 72%);opacity:.34;z-index:-1}
+#appSplash.hide{opacity:0;visibility:hidden;pointer-events:none}
+.splash-inner{width:min(310px,84vw);display:flex;flex-direction:column;align-items:center;text-align:center;transform:translateY(-2vh)}
+.splash-mark{position:relative;width:104px;height:104px;border-radius:30px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.12);box-shadow:0 28px 75px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);animation:splashFloat 2.8s ease-in-out infinite}
+.splash-mark::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(130,225,255,.75),rgba(255,255,255,.06) 40%,rgba(113,94,255,.32));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.55}
+.splash-mark img{width:76px;height:76px;object-fit:contain;filter:drop-shadow(0 12px 24px rgba(93,204,255,.18))}
+.splash-brand{margin-top:25px;color:#f5f8fb;font-size:1.16rem;font-weight:850;letter-spacing:.24em;line-height:1;text-indent:.24em}
+.splash-group{margin-top:9px;color:#66758a;font-size:.61rem;font-weight:750;letter-spacing:.26em;text-transform:uppercase;text-indent:.26em}
+.splash-status{margin-top:34px;color:#8593a6;font-size:.69rem;font-weight:650;letter-spacing:.03em}
+.splash-wave{height:26px;margin-top:13px;display:flex;align-items:center;gap:5px}
+.splash-wave i{display:block;width:3px;border-radius:999px;background:linear-gradient(180deg,#bceeff,#5acff8 68%,#807dff);box-shadow:0 0 12px rgba(92,207,248,.22);animation:splashWave .88s ease-in-out infinite alternate}
+.splash-wave i:nth-child(1){height:8px;animation-delay:-.4s}.splash-wave i:nth-child(2){height:17px;animation-delay:-.2s}.splash-wave i:nth-child(3){height:24px}.splash-wave i:nth-child(4){height:15px;animation-delay:-.32s}.splash-wave i:nth-child(5){height:9px;animation-delay:-.5s}
+.splash-foot{position:absolute;left:0;right:0;bottom:max(18px,calc(var(--safe-bottom) + 8px));text-align:center;color:#465164;font-size:.52rem;font-weight:700;letter-spacing:.19em;text-transform:uppercase}
+@keyframes splashFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-5px) scale(1.012)}}
+@keyframes splashGlow{from{transform:scale(.96);opacity:.74}to{transform:scale(1.04);opacity:1}}
+@keyframes splashWave{from{transform:scaleY(.42);opacity:.55}to{transform:scaleY(1);opacity:1}}
+@media(max-width:390px){.splash-mark{width:92px;height:92px;border-radius:27px}.splash-mark img{width:67px;height:67px}.splash-brand{font-size:1.02rem}.splash-status{margin-top:28px}}
+@media(prefers-reduced-motion:reduce){.splash-mark,.splash-wave i,#appSplash::before{animation:none!important}}
+
 </style>
 <style id="cart-shell-v12">
 .cart-sheet-open .cart{transform:translateY(-3px) scale(.96)!important;box-shadow:0 18px 42px rgba(0,0,0,.62),0 0 0 1px rgba(114,220,255,.12)!important}
@@ -131,10 +154,21 @@ body.cart-sheet-open .dock{opacity:0!important;transform:scale(.985)!important;p
 body.cart-sheet-open #stage{bottom:0!important}
 </style>
 </head><body>
+<div id="appSplash" aria-live="polite" aria-label="Cargando Dingloft">
+  <div class="splash-inner">
+    <div class="splash-mark"><img src="img/pwa-liquid-192-v5.png?v=8" alt="Dingloft"></div>
+    <div class="splash-brand">DINGLOFT</div>
+    <div class="splash-group">Evolution Group</div>
+    <div class="splash-status" id="splashStatus">Preparando tu experiencia</div>
+    <div class="splash-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+  <div class="splash-foot">Digital workspace · secure access</div>
+</div>
+
 <header class="top"><a class="brand" href="app.html?route=home" data-route="home"><img src="img/pwa-liquid-192-v5.png?v=8" alt=""><span class="bc"><strong class="bn">DINGLOFT</strong><small class="bs">EVOLUTION GROUP</small></span></a><div class="online" id="onlineState"><span class="dot"></span><span>Store online</span></div><button class="install-top" id="installAppBtn" aria-label="Instalar Dingloft" title="Instalar Dingloft"><svg viewBox="0 0 24 24"><path d="M12 3v11"/><path d="m8 10 4 4 4-4"/><path d="M5 19h14"/></svg></button></header>
 <div id="stage"></div><div class="progress" id="progress"></div>
 <nav class="dock" id="dock"><a class="item" href="app.html?route=home" data-route="home"><svg viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5H15v-6H9v6H3.5a.5.5 0 0 1-.5-.5z"/></svg><span>Inicio</span></a><a class="item" href="app.html?route=catalog" data-route="catalog"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg><span>Catálogo</span></a><div class="cartslot"><button class="cart" id="cart"><svg viewBox="0 0 24 24"><path d="M6 8h12l1 13H5z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="count" id="count">0</span></button><span class="cartlabel">Carrito</span></div><a class="item" href="app.html?route=multitrack" data-route="multitrack"><svg viewBox="0 0 24 24"><path d="M4 13v-2M8 17V7M12 20V4M16 17V7M20 13v-2"/></svg><span>Multitrack</span></a><a class="item" href="app.html?route=account" data-route="account"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"/></svg><span>Cuenta</span></a></nav>
 <div class="install-card" id="installCard" role="dialog" aria-label="Instalar Dingloft"><button class="install-close" id="installCardClose" aria-label="Cerrar">×</button><div class="install-logo"><img src="img/pwa-liquid-192-v5.png?v=6" alt=""></div><div class="install-copy"><strong>Instala Dingloft</strong><span>Ábrelo como una app desde tu pantalla principal.</span></div><button class="install-action" id="installCardAction">Instalar</button></div>
 <div class="install-guide" id="installGuide"><div class="install-sheet"><div class="install-handle"></div><h2 id="installGuideTitle">Instala Dingloft</h2><p id="installGuideText">Añádelo a tu pantalla de inicio.</p><div id="installSteps"></div><button class="install-done" id="installGuideClose">Entendido</button></div></div>
-<div class="toast" id="toast"></div><script src="dingloft-app.js?v=15"></script><script src="pwa-install.js?v=10"></script><script src="dingloft-ui-guard.js?v=14"></script>
+<div class="toast" id="toast"></div><script src="dingloft-app.js?v=16"></script><script src="pwa-install.js?v=10"></script><script src="dingloft-ui-guard.js?v=14"></script>
 </body></html>
