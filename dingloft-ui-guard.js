@@ -128,71 +128,23 @@
 
 
 
-  const directProductFiles = new Set([
-    'autocad.html','cinema4d.html','dual.html','esword.html','logic.html','mainstage.html',
-    'nord.html','office.html','producto.html','rhodes.html','sketchup.html','yamahakeys.html'
-  ]);
-
-  function setupDirectMobileProduct(){
+  // Universal mobile chrome lives in ONE independent file.
+  // This guard only bootstraps it; it no longer owns or duplicates header/dock/cart UI.
+  function loadMobileChrome(){
     if (!isMobile || window.self !== window.top) return;
-    const params = new URLSearchParams(location.search);
-    if (params.get('app') !== '1') return;
-    const file = (location.pathname.split('/').filter(Boolean).pop() || '').toLowerCase();
-    if (!directProductFiles.has(file)) return;
-    if (document.getElementById('dlDirectDock')) return;
-
-    document.documentElement.classList.add('dingloft-direct-app');
-    document.body?.classList.add('dingloft-direct-app');
-    // A stale no-scroll class from a hidden menu/cart must never freeze a freshly opened product.
-    const drawerOpen = !!document.querySelector('.cart-drawer.active,#cart-drawer.active,.search-overlay-fullscreen.active,#search-overlay-fullscreen.active,.side-menu.active,#side-menu.active');
-    if (!drawerOpen) document.body?.classList.remove('no-scroll','cart-open');
-
-    if(!document.getElementById('dlDockMasterCss')){const l=document.createElement('link');l.id='dlDockMasterCss';l.rel='stylesheet';l.href='/dingloft-mobile-dock.css?v=31';document.head.appendChild(l);}
-
-    const style=document.createElement('style');
-    style.id='dl-direct-app-style';
-    style.textContent=`
-      html.dingloft-direct-app,html.dingloft-direct-app body{
-        width:100%!important;max-width:100%!important;height:auto!important;min-height:100dvh!important;
-        overflow-x:hidden!important;overflow-y:auto!important;position:relative!important;
-        -webkit-overflow-scrolling:touch!important;touch-action:pan-y!important;overscroll-behavior-x:none!important;
-      }
-      html.dingloft-direct-app body{padding-top:calc(76px + env(safe-area-inset-top))!important;padding-bottom:calc(94px + env(safe-area-inset-bottom))!important}
-      html.dingloft-direct-app body:not(.no-scroll):not(.cart-open){overflow-y:auto!important;height:auto!important;touch-action:pan-y!important}
-      html.dingloft-direct-app .page-wrapper,html.dingloft-direct-app main{height:auto!important;min-height:0!important;overflow:visible!important;touch-action:pan-y!important}
-      html.dingloft-direct-app .navbar-glass,html.dingloft-direct-app .navbar.fixed-top,html.dingloft-direct-app #main-navbar,
-      html.dingloft-direct-app .mobile-app-dock,html.dingloft-direct-app #mobileAppDock,
-      html.dingloft-direct-app .btn-floating-cart,html.dingloft-direct-app .floating-cart,html.dingloft-direct-app .cart-fab,
-      html.dingloft-direct-app [data-floating-cart]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
-      #dlDirectTop{position:fixed;z-index:2147481000;top:0;left:0;right:0;height:calc(72px + env(safe-area-inset-top));padding:env(safe-area-inset-top) max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left));display:flex;align-items:center;justify-content:center;gap:11px;border-bottom:1px solid rgba(255,255,255,.075);background:linear-gradient(180deg,rgba(4,6,9,1),rgba(5,7,10,.97));backdrop-filter:blur(26px) saturate(160%);-webkit-backdrop-filter:blur(26px) saturate(160%);box-shadow:0 10px 34px rgba(0,0,0,.26)}
-      #dlDirectTop img{width:36px;height:36px;border-radius:12px;object-fit:cover}#dlDirectTop .dt-copy{min-width:0;line-height:1}#dlDirectTop strong{display:block;color:#f5f8fb;font:850 .92rem/1 -apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;letter-spacing:.16em}#dlDirectTop small{display:block;margin-top:6px;color:#718094;font:700 .52rem/1 -apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;letter-spacing:.11em;text-transform:uppercase}#dlDirectTop .dt-online{display:none!important}
-      #dlDirectDock{position:fixed;z-index:2147481001;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));bottom:calc(5px + env(safe-area-inset-bottom));height:66px;padding:6px 7px;display:grid;grid-template-columns:1fr 1fr 76px 1fr 1fr;align-items:center;border:1px solid rgba(255,255,255,.11);border-radius:22px;background:linear-gradient(180deg,rgba(18,22,29,.84),rgba(8,10,14,.91));box-shadow:0 18px 55px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.07);backdrop-filter:blur(24px) saturate(175%);-webkit-backdrop-filter:blur(24px) saturate(175%)}
-      #dlDirectDock .dd-item{height:52px;border:0;background:transparent;color:#687384;text-decoration:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:17px;font:760 .48rem/1 -apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;-webkit-tap-highlight-color:transparent}#dlDirectDock .dd-item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}#dlDirectDock .dd-item.active,#dlDirectDock .dd-item.catalog{color:#eaf5ff;background:rgba(255,255,255,.045)}#dlDirectDock .dd-item.active svg,#dlDirectDock .dd-item.catalog svg{color:#79dcff;filter:drop-shadow(0 0 8px rgba(109,214,255,.28))}#dlDirectDock .dd-cart-slot{position:relative;height:52px;display:flex;align-items:center;justify-content:center}#dlDirectDock .dd-cart{position:absolute;left:50%;top:-9px;width:60px;height:60px;border-radius:20px;border:1px solid rgba(255,255,255,.85);background:linear-gradient(145deg,#fbfdff,#eaf1f5);color:#080b0e;display:grid;place-items:center;transform:translateX(-50%);box-shadow:0 18px 45px rgba(0,0,0,.42);-webkit-tap-highlight-color:transparent}#dlDirectDock .dd-cart svg{width:27px;height:27px;stroke:currentColor;fill:none;stroke-width:1.8}#dlDirectDock .dd-count{position:absolute;top:-5px;right:-6px;min-width:25px;height:25px;padding:0 6px;border:2px solid #050608;border-radius:999px;background:#24aaf2;color:#fff;display:grid;place-items:center;font:850 .68rem/1 -apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif}#dlDirectDock .dd-count[data-empty="1"]{display:none}#dlDirectDock .dd-cart-label{display:none!important}
-      body.dl-direct-cart-open #dlDirectDock{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(15px);transition:.18s}
-      html.dingloft-direct-app .cart-items-container{overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important}
-      @media(max-width:350px){#dlDirectDock .dd-item span,#dlDirectDock .dd-cart-label{display:none!important}}
-    `;
-    document.head.appendChild(style);
-
-    const top=document.createElement('div');top.id='dlDirectTop';top.innerHTML=`<img src="/img/pwa-liquid-rounded-192-v17.png?v=31" alt="Dingloft"><div class="dt-copy"><strong>DINGLOFT</strong><small>Evolution Group</small></div>`;document.body.appendChild(top);
-    const dock=document.createElement('nav');dock.id='dlDirectDock';dock.setAttribute('aria-label','Navegación Dingloft');dock.innerHTML=`
-      <a class="dd-item" href="/app.html?route=home" aria-label="Inicio"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5.5 9.5V21h13V9.5"></path></svg><span>Inicio</span></a>
-      <a class="dd-item active catalog" href="/app.html?route=catalog" aria-label="Catálogo"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"></path><path d="M8 9h8M8 13h8M8 17h5"></path></svg><span>Catálogo</span></a>
-      <span class="dd-cart-slot"><button class="dd-cart" id="dlDirectCart" type="button" aria-label="Abrir carrito"><svg viewBox="0 0 24 24"><path d="M6.5 8.5h11l-1 11h-9z"></path><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"></path></svg><span class="dd-count" id="dlDirectCount" data-empty="1">0</span></button></span>
-      <a class="dd-item" href="/multitrack.html?app=1" aria-label="Multitrack"><svg viewBox="0 0 24 24"><path d="M4 14v-4M8 18V6M12 15V9M16 20V4M20 13v-2"></path></svg><span>Multitrack</span></a>
-      <a class="dd-item" href="/app.html?route=account" aria-label="Cuenta"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path></svg><span>Cuenta</span></a>`;document.body.appendChild(dock);
-
-    const syncOnline=()=>{const label=top.querySelector('.dt-online span:last-child');if(label)label.textContent=navigator.onLine?'Store online':'Sin conexión'};addEventListener('online',syncOnline);addEventListener('offline',syncOnline);
-    const localCart=()=>document.querySelector('.btn-floating-cart.cart-btn-global,.cart-btn-global,#main-cart-btn,.floating-cart,.cart-fab');
-    const syncDirectCount=()=>{let n=0;try{const c=JSON.parse(localStorage.getItem('dingloft_cart')||'[]');if(Array.isArray(c))n=c.reduce((sum,x)=>sum+Math.max(0,Number(x?.qty||1)),0)}catch(_){}const badge=document.getElementById('dlDirectCount');if(badge){badge.textContent=String(n);badge.dataset.empty=n?'0':'1'}};syncDirectCount();addEventListener('storage',e=>{if(e.key==='dingloft_cart')syncDirectCount()});setInterval(syncDirectCount,1200);
-    document.getElementById('dlDirectCart')?.addEventListener('click',e=>{e.preventDefault();const btn=localCart();if(btn){btn.click();setTimeout(syncDrawer,35)}});
-    const syncDrawer=()=>{const drawer=document.querySelector('.cart-drawer,#cart-drawer');const open=!!drawer?.classList.contains('active');document.body.classList.toggle('dl-direct-cart-open',open);if(!open && !document.querySelector('.search-overlay-fullscreen.active,#search-overlay-fullscreen.active,.side-menu.active,#side-menu.active')) document.body.classList.remove('no-scroll','cart-open')};
-    const drawer=document.querySelector('.cart-drawer,#cart-drawer');if(drawer){new MutationObserver(syncDrawer).observe(drawer,{attributes:true,attributeFilter:['class','style']});syncDrawer();if(!document.getElementById('dlDirectCartX')){const x=document.createElement('button');x.id='dlDirectCartX';x.type='button';x.setAttribute('aria-label','Cerrar carrito');x.textContent='×';x.style.cssText='position:absolute;z-index:20;top:14px;right:14px;width:38px;height:38px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(8,11,15,.82);color:#fff;font-size:25px;line-height:1;display:grid;place-items:center;';drawer.appendChild(x);x.addEventListener('click',ev=>{ev.preventDefault();const close=document.querySelector('#close-cart-btn,.btn-close-cart');if(close)close.click();else{drawer.classList.remove('active');document.querySelector('.cart-overlay,#cart-overlay')?.classList.remove('active');document.body.classList.remove('no-scroll','cart-open')}setTimeout(syncDrawer,30)})}}
+    const file=(location.pathname.split('/').filter(Boolean).pop()||'index.html').toLowerCase();
+    const appView=file==='app.html' || new URLSearchParams(location.search).get('app')==='1' || file==='multitrack.html';
+    if (!appView || document.querySelector('script[data-dingloft-mobile-chrome]')) return;
+    const script=document.createElement('script');
+    script.src='/dingloft-mobile-chrome.js?v=33';
+    script.defer=true;
+    script.dataset.dingloftMobileChrome='33';
+    document.head.appendChild(script);
   }
 
   addBaseStyle();
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { markInstalled(); setupDirectMobileProduct(); }, {once:true});
-  else { markInstalled(); setupDirectMobileProduct(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { markInstalled(); loadMobileChrome(); }, {once:true});
+  else { markInstalled(); loadMobileChrome(); }
   addEventListener('appinstalled', () => { localStorage.setItem('dingloft_installed_at', String(Date.now())); markInstalled(); });
   matchMedia('(display-mode: standalone)').addEventListener?.('change', markInstalled);
 })();
