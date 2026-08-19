@@ -43,36 +43,7 @@
     }
   }
 
-  // iPhone/iPad: keep the PAGE fixed, but allow intentional horizontal rails/carousels.
-  if (isiOS) {
-    let sx = 0, sy = 0, rail = null;
-    const getRail = target => {
-      const el = target instanceof Element ? target : null;
-      let candidate = el?.closest?.(horizontalSelectors) || null;
-      if (candidate && candidate.scrollWidth > candidate.clientWidth + 3) return candidate;
-      let node = el;
-      while (node && node !== document.body) {
-        if (node.dataset?.horizontalScroll === 'true' && node.scrollWidth > node.clientWidth + 3) return node;
-        node = node.parentElement;
-      }
-      return null;
-    };
-    document.addEventListener('touchstart', e => {
-      if (e.touches?.length === 1) {
-        sx = e.touches[0].clientX; sy = e.touches[0].clientY; rail = getRail(e.target);
-      }
-    }, { passive:true });
-    document.addEventListener('touchmove', e => {
-      if (e.touches?.length !== 1) return;
-      const dx = e.touches[0].clientX - sx;
-      const dy = e.touches[0].clientY - sy;
-      if (Math.abs(dx) <= Math.abs(dy) + 3) return;
-      if (rail && rail.scrollWidth > rail.clientWidth + 3) return; // native carousel swipe
-      e.preventDefault(); // stop only the viewport/rubber-band motion
-    }, { passive:false });
-    document.addEventListener('touchend', () => { rail = null; }, { passive:true });
-    document.addEventListener('touchcancel', () => { rail = null; }, { passive:true });
-  }
+  // iPhone/iPad v34: never cancel one-finger touchmove. CSS owns horizontal containment; native WebKit owns vertical scroll and carousel swipes.
 
   // Horizontal trackpad scrolling for wide UI rails in the macOS app/desktop shell.
   const horizontalSelectors = [
@@ -106,12 +77,12 @@
     const s = document.createElement('style');
     s.id = 'dingloft-ui-guard-style';
     s.textContent = `
-      html,body{touch-action:pan-y;}
-      html.dingloft-ios-fixed,html.dingloft-ios-fixed body{width:100%!important;max-width:100%!important;overflow-x:hidden!important;overscroll-behavior-x:none!important;touch-action:pan-y!important;}
+      html,body{touch-action:pan-x pan-y;}
+      html.dingloft-ios-fixed,html.dingloft-ios-fixed body{width:100%!important;max-width:100%!important;overflow-x:hidden!important;overscroll-behavior-x:none!important;touch-action:pan-x pan-y!important;}
       html.dingloft-ios-fixed body{position:relative!important;}
       
-      html.dingloft-ios-fixed body:not(.no-scroll):not(.cart-open){overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important;}
-      html.dingloft-ios-fixed main,html.dingloft-ios-fixed #page-wrapper,html.dingloft-ios-fixed .page-wrapper{touch-action:pan-y!important;}
+      html.dingloft-ios-fixed body:not(.no-scroll):not(.cart-open){overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-x pan-y!important;}
+      html.dingloft-ios-fixed main,html.dingloft-ios-fixed #page-wrapper,html.dingloft-ios-fixed .page-wrapper{touch-action:pan-x pan-y!important;}
 
       html.dingloft-installed #navInstall,
       html.dingloft-installed #installAppBtn,
@@ -133,12 +104,13 @@
   function loadMobileChrome(){
     if (!isMobile || window.self !== window.top) return;
     const file=(location.pathname.split('/').filter(Boolean).pop()||'index.html').toLowerCase();
-    const appView=file==='app.html' || new URLSearchParams(location.search).get('app')==='1' || file==='multitrack.html';
+    const customerFiles=new Set(['ventas.html','account.html','multitrack.html','autocad.html','cinema4d.html','dual.html','esword.html','logic.html','mainstage.html','nord.html','office.html','producto.html','rhodes.html','sketchup.html','yamahakeys.html']);
+    const appView=file==='app.html' || new URLSearchParams(location.search).get('app')==='1' || customerFiles.has(file);
     if (!appView || document.querySelector('script[data-dingloft-mobile-chrome]')) return;
     const script=document.createElement('script');
-    script.src='/dingloft-mobile-chrome.js?v=33';
+    script.src='/dingloft-mobile-chrome.js?v=34';
     script.defer=true;
-    script.dataset.dingloftMobileChrome='33';
+    script.dataset.dingloftMobileChrome='34';
     document.head.appendChild(script);
   }
 

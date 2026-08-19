@@ -1,10 +1,10 @@
-/* Dingloft Mobile Chrome v33
+/* Dingloft Mobile Chrome v34
    Universal mobile header + dock + cart bridge.
    Visual master: multitrack.html iPhone direct-app chrome. */
 (() => {
   'use strict';
-  if (window.__DINGLOFT_MOBILE_CHROME_V33__) return;
-  window.__DINGLOFT_MOBILE_CHROME_V33__ = true;
+  if (window.__DINGLOFT_MOBILE_CHROME_V34__) return;
+  window.__DINGLOFT_MOBILE_CHROME_V34__ = true;
 
   const ua = navigator.userAgent || '';
   const iOS = /iPad|iPhone|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -12,18 +12,19 @@
   if (!mobile || window.self !== window.top) return;
 
   const pathFile = () => (location.pathname.split('/').filter(Boolean).pop() || 'index.html').toLowerCase();
-  const params = new URLSearchParams(location.search);
-  const isAppShell = pathFile() === 'app.html';
-  const isDirectApp = params.get('app') === '1' || pathFile() === 'multitrack.html';
-  const customerPage = isAppShell || isDirectApp;
-  if (!customerPage) return;
-
   const PRODUCT_FILES = new Set([
     'autocad.html','cinema4d.html','dual.html','esword.html','logic.html','mainstage.html',
     'nord.html','office.html','producto.html','rhodes.html','sketchup.html','yamahakeys.html'
   ]);
+  const CUSTOMER_FILES = new Set(['ventas.html','account.html','multitrack.html', ...PRODUCT_FILES]);
+  const params = new URLSearchParams(location.search);
+  const currentFile = pathFile();
+  const isAppShell = currentFile === 'app.html';
+  const isDirectApp = params.get('app') === '1' || CUSTOMER_FILES.has(currentFile);
+  const customerPage = isAppShell || isDirectApp;
+  if (!customerPage) return;
   const CART_KEY = 'dingloft_cart';
-  const COVER_KEY = 'dingloft_multitrack_covers_v33';
+  const COVER_KEY = 'dingloft_multitrack_covers_v34';
   const CART_ANIM_MS = 360;
   let closeTimer = 0;
 
@@ -45,13 +46,20 @@
   html.dl-universal-mobile,html.dl-universal-mobile body{background:#05070a!important;max-width:100%!important;overflow-x:hidden!important;overscroll-behavior-x:none!important}
   body.dl-universal-mobile{--dl-header-total:calc(var(--dl-header-h) + var(--dl-safe-top));}
 
-  /* Old copies stay in DOM only as compatibility hooks. They are never visible. */
-  body.dl-universal-mobile>.top,
-  body.dl-universal-mobile>.dock,
-  body.dl-universal-mobile>.dingloft-direct-top,
-  body.dl-universal-mobile>.mobile-app-dock,
-  body.dl-universal-mobile>#dlDirectTop,
-  body.dl-universal-mobile>#dlDirectDock{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+  /* v34: there is ONE mobile chrome. Kill every legacy navbar/dock copy, even when nested in wrappers. */
+  html.dl-universal-mobile #main-navbar,
+  html.dl-universal-mobile nav.navbar-glass,
+  html.dl-universal-mobile .navbar.navbar-glass,
+  html.dl-universal-mobile #mobileAppDock,
+  html.dl-universal-mobile nav.mobile-app-dock,
+  html.dl-universal-mobile .mobile-app-dock,
+  html.dl-universal-mobile .dingloft-direct-top,
+  html.dl-universal-mobile #dingloftDirectTop,
+  html.dl-universal-mobile #dlDirectTop,
+  html.dl-universal-mobile #dlDirectDock,
+  html.dl-universal-mobile .top,
+  html.dl-universal-mobile .dock{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+  html.dl-universal-mobile #side-menu,html.dl-universal-mobile #side-menu-overlay{display:none!important;visibility:hidden!important;pointer-events:none!important}
   html.dl-universal-mobile body>.btn-floating-cart{display:block!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;width:1px!important;height:1px!important;left:-9999px!important;right:auto!important;bottom:0!important;transform:none!important;box-shadow:none!important}
 
   #dlUniversalHeader{position:fixed;z-index:2147483000;top:0;left:0;right:0;height:calc(var(--dl-header-h) + var(--dl-safe-top));padding:var(--dl-safe-top) max(14px,var(--dl-safe-right)) 0 max(14px,var(--dl-safe-left));display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#040609 0%,rgba(5,7,10,.985) 70%,rgba(5,7,10,.94) 100%);border-bottom:1px solid rgba(255,255,255,.075);box-shadow:0 10px 34px rgba(0,0,0,.20);backdrop-filter:blur(26px) saturate(160%);-webkit-backdrop-filter:blur(26px) saturate(160%);transform:translateZ(0)}
@@ -81,10 +89,14 @@
   body.dl-universal-mobile.cart-sheet-open #stage,body.dl-universal-mobile.dl-cart-open #stage{bottom:0!important}
   body.dl-universal-mobile .progress{top:calc(var(--dl-header-h) + var(--dl-safe-top))!important}
 
-  /* Direct pages use native vertical scroll, with room for one shared chrome. */
-  html.dingloft-direct-app body.dl-universal-mobile{padding-top:calc(var(--dl-header-h) + var(--dl-safe-top))!important;padding-bottom:calc(92px + var(--dl-safe-bottom))!important;height:auto!important;min-height:100dvh!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important}
-  html.dingloft-direct-app body.dl-universal-mobile:not(.no-scroll):not(.cart-open){overflow-y:auto!important;height:auto!important;touch-action:pan-y!important}
-  html.dingloft-direct-app body.dl-universal-mobile main,html.dingloft-direct-app body.dl-universal-mobile .page-wrapper{height:auto!important;min-height:0!important;overflow:visible!important;touch-action:pan-y!important}
+  /* Direct pages: the DOCUMENT owns scrolling. No iframe/body scroll traps on iPhone. */
+  html.dingloft-direct-app{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-x pan-y!important;overscroll-behavior-x:none!important}
+  html.dingloft-direct-app body.dl-universal-mobile{position:relative!important;padding-top:calc(var(--dl-header-h) + var(--dl-safe-top))!important;padding-bottom:calc(92px + var(--dl-safe-bottom))!important;height:auto!important;min-height:100dvh!important;max-height:none!important;overflow:visible!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-x pan-y!important}
+  html.dingloft-direct-app body.dl-universal-mobile main,html.dingloft-direct-app body.dl-universal-mobile #page-wrapper,html.dingloft-direct-app body.dl-universal-mobile .page-wrapper{position:relative!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;touch-action:pan-x pan-y!important}
+  html.dingloft-direct-app body.dl-page-product .product-detail-section{padding-top:24px!important}
+  html.dingloft-direct-app body.dl-page-ventas .hero-section{padding-top:28px!important}
+  html.dingloft-direct-app.dl-scroll-locked{height:100%!important;overflow:hidden!important}
+  html.dingloft-direct-app.dl-scroll-locked body.dl-universal-mobile{height:100%!important;overflow:hidden!important;touch-action:none!important}
 
   /* ONE stable cart animation for every customer page. No nested/staggered motion. */
   html.dl-universal-mobile .cart-overlay{position:fixed!important;inset:0!important;width:100%!important;height:100%!important;background:rgba(0,0,0,.60)!important;backdrop-filter:blur(11px)!important;-webkit-backdrop-filter:blur(11px)!important;z-index:2147483010!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;transition:opacity .22s ease,visibility 0s linear .24s!important}
@@ -107,12 +119,42 @@
   `;
   document.head.appendChild(css);
 
+  function removeLegacyChrome(doc=document){
+    doc.querySelectorAll('#main-navbar,nav.navbar-glass,.navbar.navbar-glass,#mobileAppDock,nav.mobile-app-dock,.mobile-app-dock,.dingloft-direct-top,#dingloftDirectTop,#dlDirectTop,#dlDirectDock').forEach(el=>el.remove());
+    if (currentFile === 'producto.html') doc.querySelector('body > header')?.remove();
+  }
+
+  function blockingOverlayOpen(doc=document){
+    return !!doc.querySelector('.cart-drawer.active,#cart-drawer.active,.search-overlay-fullscreen.active,#search-overlay-fullscreen.active,.side-menu.active,#side-menu.active,.site-install-guide.show');
+  }
+
+  function setScrollLocked(locked){
+    if (isAppShell) return;
+    document.documentElement.classList.toggle('dl-scroll-locked', !!locked);
+    if (!locked && document.body) {
+      document.body.classList.remove('no-scroll','cart-open');
+      document.body.style.removeProperty('overflow');
+      document.body.style.removeProperty('height');
+      document.body.style.removeProperty('position');
+      document.body.style.removeProperty('touch-action');
+    }
+  }
+
+  function healScrollLock(){
+    if (isAppShell) return;
+    setScrollLocked(blockingOverlayOpen(document));
+  }
+
   function setDirectClass(){
     if (!isAppShell) {
       document.documentElement.classList.add('dingloft-direct-app');
       document.body?.classList.add('dingloft-direct-app');
-      const open = !!document.querySelector('.cart-drawer.active,#cart-drawer.active,.search-overlay-fullscreen.active,#search-overlay-fullscreen.active,.side-menu.active,#side-menu.active');
-      if (!open) document.body?.classList.remove('no-scroll','cart-open');
+      if (PRODUCT_FILES.has(currentFile)) document.body?.classList.add('dl-page-product');
+      if (currentFile === 'ventas.html') document.body?.classList.add('dl-page-ventas');
+      if (currentFile === 'multitrack.html') document.body?.classList.add('dl-page-multitrack');
+      if (currentFile === 'account.html') document.body?.classList.add('dl-page-account');
+      removeLegacyChrome();
+      healScrollLock();
     }
   }
 
@@ -123,7 +165,7 @@
     header.id = 'dlUniversalHeader';
     header.innerHTML = `
       <a id="dlUniversalBrand" href="/app.html?route=home" data-route="home" aria-label="Dingloft inicio">
-        <img src="/img/pwa-liquid-rounded-192-v17.png?v=33" alt="Dingloft">
+        <img src="/img/pwa-liquid-rounded-192-v17.png?v=34" alt="Dingloft">
         <span class="copy"><strong>DINGLOFT</strong><small>Evolution Group</small></span>
       </a>
       <a id="dlUniversalAdmin" href="/admin.html" aria-label="Abrir administración">
@@ -288,9 +330,13 @@
     clearTimeout(closeTimer);
     if (open) {
       document.body.classList.add('dl-cart-open');
+      if (!isAppShell) document.documentElement.classList.add('dl-scroll-locked');
       patchCartCovers(drawer.ownerDocument);
     } else {
-      closeTimer = setTimeout(() => document.body.classList.remove('dl-cart-open'), CART_ANIM_MS - 30);
+      closeTimer = setTimeout(() => {
+        document.body.classList.remove('dl-cart-open');
+        healScrollLock();
+      }, CART_ANIM_MS - 30);
     }
   }
 
@@ -328,6 +374,22 @@
   function enhanceActiveFrame(){
     const frame = currentAppFrame();
     try { if (frame?.contentDocument) enhanceCartDocument(frame.contentDocument); } catch (_) {}
+  }
+
+  function installScrollGuard(){
+    if (isAppShell || !document.body) return;
+    const schedule = () => requestAnimationFrame(healScrollLock);
+    const observer = new MutationObserver(schedule);
+    observer.observe(document.body,{attributes:true,attributeFilter:['class']});
+    document.querySelectorAll('.cart-drawer,#cart-drawer,.cart-overlay,#cart-overlay,.search-overlay-fullscreen,#search-overlay-fullscreen,.side-menu,#side-menu,.site-install-guide').forEach(el=>{
+      try{observer.observe(el,{attributes:true,attributeFilter:['class']});}catch(_){}
+    });
+    addEventListener('pageshow',schedule,{passive:true});
+    addEventListener('focus',schedule,{passive:true});
+    addEventListener('orientationchange',schedule,{passive:true});
+    document.addEventListener('touchstart',schedule,{passive:true});
+    setTimeout(schedule,0);
+    setTimeout(schedule,250);
   }
 
   function watchFrames(){
@@ -373,6 +435,7 @@
   }, true);
 
   buildChrome();
+  installScrollGuard();
   rememberCurrentMultitrackCovers();
   watchFrames();
   installHistorySync();
@@ -384,5 +447,5 @@
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { syncRoute(); syncCount(); } });
   setTimeout(() => { rememberCurrentMultitrackCovers(); syncCount(true); enhanceActiveFrame(); },700);
 
-  window.DingloftMobileChrome = { sync: () => { syncRoute(); syncCount(); syncAdmin(); }, patchCartCovers, version:'33' };
+  window.DingloftMobileChrome = { sync: () => { syncRoute(); syncCount(); syncAdmin(); }, patchCartCovers, version:'34' };
 })();

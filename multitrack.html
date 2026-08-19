@@ -2399,6 +2399,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   html.dingloft-direct-app body.cart-open .mobile-app-dock{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:translateY(15px)!important;}
 }
 </style>
+<link rel="stylesheet" href="dingloft-mobile-dock.css?v=31">
 </head>
 <body class="multitrack-page">
 <!-- Orbes de luz -->
@@ -2436,68 +2437,13 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
 </div>
 <button class="btn-cyan w-100" id="btn-go-to-account" onclick="window.location.href='https://www.dingloft.com/account#descargas'">Ir a mis descargas ahora</button>
 </div>
-</div><nav class="navbar navbar-expand-lg navbar-glass fixed-top">
-<div class="container">
-<a aria-label="Dingloft inicio" class="brand-lockup" href="index.html">
-<img alt="Dingloft" onerror="this.style.display='none'" src="img/dingloft.png"/>
-<span class="brand-copy">
-<span class="brand-name">DINGLOFT</span>
-<span class="brand-sub">Evolution Group</span>
-</span>
-</a>
-<button aria-label="Abrir navegación" class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" style="filter: invert(1);" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-<div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-<ul class="navbar-nav align-items-center">
-<li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
-<li class="nav-item"><a class="nav-link" href="#catalogo">Catálogo</a></li>
-<li class="nav-item"><a class="nav-link" href="#como-funciona">Cómo funciona</a></li>
-<li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
-<li class="nav-item d-lg-none mt-2 w-100" id="mobile-admin-btn-container" style="display: none !important;">
-<a class="btn w-100 text-center text-white text-decoration-none" href="admin.html" style="background: rgba(255,107,125,.10); border: 1px solid rgba(255,107,125,.34); font-weight: 700;">
-<i class="bi bi-shield-lock-fill" style="color: var(--red);"></i> Modo Admin
-            </a>
-</li>
-<li class="nav-item d-lg-none mt-3 w-100" id="mobile-auth-container">
-<a class="btn btn-outline-custom w-100 text-center text-white text-decoration-none" href="login.html">
-<i class="bi bi-person-circle"></i> Iniciar sesión
-            </a>
-</li>
-<li class="nav-item d-lg-none mt-2 w-100">
-<button class="btn-cyan w-100 cart-btn-global">
-<i class="bi bi-bag"></i> Ver carrito (<span class="cart-badge-count-global">0</span>)
-            </button>
-</li>
-</ul>
 </div>
-<div class="d-none d-lg-flex align-items-center gap-2">
-<div id="desktop-admin-btn-container" style="display: none;">
-<a class="nav-action-link" href="admin.html" style="color:var(--red);">
-<i class="bi bi-shield-lock-fill"></i> Admin
-          </a>
-</div>
-<div id="desktop-auth-container">
-<a class="nav-action-link" href="login.html"><i class="bi bi-person"></i> Iniciar sesión</a>
-</div>
-<button class="btn-outline-custom cart-btn-global" id="main-cart-btn" style="padding: 8px 13px; font-size: .75rem;">
-<i class="bi bi-bag"></i> CARRITO <span style="opacity:.45;">/</span> <span class="cart-badge-count-global">0</span>
-</button>
-</div>
-</div>
-</nav><button aria-expanded="false" aria-label="Abrir carrito" class="btn-floating-cart cart-btn-global" title="Ver carrito">
+<button aria-expanded="false" aria-label="Abrir carrito" class="btn-floating-cart cart-btn-global" title="Ver carrito">
 <span aria-hidden="true" class="floating-cart-icon floating-cart-icon-open"><i class="bi bi-bag"></i></span>
 <span aria-hidden="true" class="floating-cart-icon floating-cart-icon-close"><i class="bi bi-x-lg"></i></span>
 <span class="badge-floating cart-badge-count-global">0</span>
-</button><nav aria-label="Navegación móvil" class="mobile-app-dock" id="mobileAppDock">
-<a aria-label="Inicio" class="mobile-dock-item" href="app.html?route=home"><i class="bi bi-house"></i><span>Inicio</span></a>
-<a aria-label="Catálogo" class="mobile-dock-item" href="app.html?route=catalog"><i class="bi bi-grid"></i><span>Catálogo</span></a>
-<span aria-hidden="true" class="mobile-dock-spacer"></span>
-<a aria-label="Multitrack" class="mobile-dock-item active" href="#catalogo"><i class="bi bi-sliders"></i><span>Multitrack</span></a>
-<a aria-label="Mi cuenta" class="mobile-dock-item" href="app.html?route=account"><i class="bi bi-person"></i><span>Cuenta</span></a>
-
-</nav>
-<div class="dingloft-direct-top" id="dingloftDirectTop"><a class="dingloft-direct-brand" href="app.html?route=home"><img src="/img/pwa-liquid-rounded-192-v17.png?v=29" alt="Dingloft"><span><strong>DINGLOFT</strong><small>Evolution Group</small></span></a></div><main>
+</button>
+<main>
 <section class="mt-hero" id="inicio">
 <div class="container">
 <div class="mt-hero-grid">
@@ -3600,6 +3546,6 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
       }, {passive:true});
     })();
   </script>  <script type="module" src="dingloft-commerce.js?v=2.1.0"></script>
-<script src="dingloft-ui-guard.js?v=33"></script>
+<script src="dingloft-ui-guard.js?v=34"></script>
 </body>
 </html>

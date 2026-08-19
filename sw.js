@@ -47,7 +47,7 @@ const CORE = [
   '/mobile-shell-redirect.js',
   '/pwa-install.js',
   '/pwa-runtime.js?v=33',
-  '/dingloft-mobile-chrome.js?v=33',
+  '/dingloft-mobile-chrome.js?v=34',
   '/manifest.webmanifest?v=33',
   '/img/pwa-liquid-rounded-192-v17.png',
   '/img/pwa-liquid-rounded-512-v17.png',

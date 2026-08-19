@@ -1673,63 +1673,7 @@
   </div>
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
-    <div class="container">
-      <a class="brand-lockup" href="index.html" aria-label="Dingloft inicio">
-        <img src="img/dingloft.png" alt="Dingloft" onerror="this.style.display='none'">
-        <span class="brand-copy">
-          <span class="brand-name">DINGLOFT</span>
-          <span class="brand-sub">Evolution Group</span>
-        </span>
-      </a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Abrir navegación" style="filter: invert(1);">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-        <ul class="navbar-nav align-items-center">
-          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="#catalogo">Catálogo</a></li>
-          <li class="nav-item"><a class="nav-link" href="#servicio">Cómo funciona</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
-
-          <li class="nav-item d-lg-none mt-2 w-100" id="mobile-admin-btn-container" style="display: none !important;">
-            <a href="admin.html" class="btn w-100 text-center text-white text-decoration-none" style="background: rgba(255,107,125,.10); border: 1px solid rgba(255,107,125,.34); font-weight: 700;">
-              <i class="bi bi-shield-lock-fill" style="color: var(--red);"></i> Modo Admin
-            </a>
-          </li>
-
-          <li class="nav-item d-lg-none mt-3 w-100" id="mobile-auth-container">
-            <a href="login.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none">
-              <i class="bi bi-person-circle"></i> Iniciar sesión
-            </a>
-          </li>
-          <li class="nav-item d-lg-none mt-2 w-100">
-            <button class="btn-cyan w-100 cart-btn-global">
-              <i class="bi bi-bag"></i> Ver carrito (<span class="cart-badge-count-global">0</span>)
-            </button>
-          </li>
-        </ul>
-      </div>
-
-      <div class="d-none d-lg-flex align-items-center gap-2">
-        <div id="desktop-admin-btn-container" style="display: none;">
-          <a href="admin.html" class="nav-action-link" style="color:var(--red);">
-            <i class="bi bi-shield-lock-fill"></i> Admin
-          </a>
-        </div>
-        <div id="desktop-auth-container">
-          <a href="login.html" class="nav-action-link"><i class="bi bi-person"></i> Iniciar sesión</a>
-        </div>
-        <button id="main-cart-btn" class="btn-outline-custom cart-btn-global" style="padding: 8px 13px; font-size: .75rem;">
-          <i class="bi bi-bag"></i> CARRITO <span style="opacity:.45;">/</span> <span class="cart-badge-count-global">0</span>
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Botón Flotante Universal (Móvil y PC) -->
+<!-- Botón Flotante Universal (Móvil y PC) -->
   <button class="btn-floating-cart cart-btn-global" title="Ver carrito" aria-label="Abrir carrito" aria-expanded="false">
     <span class="floating-cart-icon floating-cart-icon-open" aria-hidden="true"><i class="bi bi-bag"></i></span>
     <span class="floating-cart-icon floating-cart-icon-close" aria-hidden="true"><i class="bi bi-x-lg"></i></span>
@@ -1737,16 +1681,7 @@
   </button>
 
   <!-- Mobile Pro MAX · Dock de navegación tipo app -->
-  <nav class="mobile-app-dock" id="mobileAppDock" aria-label="Navegación móvil">
-    <a href="#inicio" class="mobile-dock-item active" data-dock-target="inicio" aria-label="Inicio"><i class="bi bi-house"></i><span>Inicio</span></a>
-    <a href="#catalogo" class="mobile-dock-item" data-dock-target="catalogo" aria-label="Catálogo"><i class="bi bi-grid"></i><span>Catálogo</span></a>
-    <span class="mobile-dock-spacer" aria-hidden="true"></span>
-    <a href="#multitrack" class="mobile-dock-item" data-dock-target="multitrack" aria-label="Multitrack"><i class="bi bi-soundwave"></i><span>Multitrack</span></a>
-    <a href="account.html" class="mobile-dock-item" aria-label="Mi cuenta"><i class="bi bi-person"></i><span>Cuenta</span></a>
-    <span class="mobile-dock-cart-label" aria-hidden="true">Carrito</span>
-  </nav>
-
-  <!-- Hero Section · Dingloft V3 -->
+<!-- Hero Section · Dingloft V3 -->
   <section class="hero-section" id="inicio">
     <div class="container">
       <div class="hero-grid">
@@ -2962,7 +2897,7 @@
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js?v=18', {scope:'/'}).then(r => r.update()).catch(() => {});
+    navigator.serviceWorker.register('/sw.js?v=34', {scope:'/'}).then(r => r.update()).catch(() => {});
   });
 }
 </script>
@@ -2994,6 +2929,6 @@ if ('serviceWorker' in navigator) {
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',mark,{once:true}); else mark();
 })();
 </script>
-<script src="dingloft-ui-guard.js?v=33"></script>
+<script src="dingloft-ui-guard.js?v=34"></script>
 </body>
 </html>
