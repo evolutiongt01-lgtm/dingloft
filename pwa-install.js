@@ -5,6 +5,7 @@
   const ua = navigator.userAgent || '';
   const isIOS = /iPad|iPhone|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   const isAndroid = /Android/i.test(ua);
+  const isMac = /Macintosh|Mac OS X/i.test(ua) && !isIOS;
   const isMobile = isIOS || isAndroid || matchMedia('(max-width: 767px)').matches;
   let deferredPrompt = null;
 
@@ -14,7 +15,8 @@
     document.body.classList.add('pwa-installed');
   }
   function showInstallUI(){
-    if (!isMobile || isStandalone()) return hideInstallUI();
+    if (isStandalone() || localStorage.getItem('dingloft_installed_at')) return hideInstallUI();
+    if (!isMobile && !isMac) return hideInstallUI();
     $('installAppBtn')?.classList.add('visible');
     const dismissed = Number(localStorage.getItem('dingloft_install_dismissed_at') || 0);
     if (!dismissed || Date.now() - dismissed > 5 * 24 * 60 * 60 * 1000) {
@@ -29,6 +31,15 @@
         ['1','Toca el botón Compartir del navegador.'],
         ['2','Elige “Añadir a pantalla de inicio”.'],
         ['3','Pulsa “Añadir” y abre Dingloft desde el icono.']
+      ]
+    };
+    if (isMac) return {
+      title:'Instala Dingloft en tu Mac',
+      text:'Añádelo al Dock y ábrelo como una app independiente.',
+      steps:[
+        ['1','En Safari usa Archivo → Añadir al Dock.'],
+        ['2','En Chrome usa el icono de instalación de la barra de direcciones.'],
+        ['3','Abre Dingloft desde el Dock o Launchpad.']
       ]
     };
     return {
@@ -91,7 +102,7 @@
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const reg=await navigator.serviceWorker.register('/sw.js?v=8', { scope:'/' });
+        const reg=await navigator.serviceWorker.register('/sw.js?v=10', { scope:'/' });
         reg.update().catch(()=>{});
       } catch (err) { console.warn('Dingloft PWA:', err); }
     });

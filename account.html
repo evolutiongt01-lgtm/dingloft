@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
   <title>Mi cuenta | Dingloft</title>
   
   <link rel="icon" href="img/favicon.ico" type="image/x-icon">
@@ -362,11 +362,33 @@
       .ghost-btn,.solid-btn{width:100%; justify-content:center}
     }
 
-  </style>
+  
+/* REMOTE SESSION CALENDAR v10 */
+#reservaModal{background:rgba(2,5,10,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+#reservaModal .liquid-modal-card{width:min(1040px,calc(100% - 28px));max-width:1040px;padding:0;border-radius:30px;overflow:hidden;background:linear-gradient(160deg,rgba(12,18,30,.99),rgba(6,10,18,.99));border:1px solid rgba(136,196,235,.16);box-shadow:0 42px 110px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.04)}
+.booking-modal-head{padding:26px 28px 22px;border-bottom:1px solid rgba(158,186,224,.10);background:radial-gradient(circle at 10% 0,rgba(18,215,246,.10),transparent 26rem)}
+.booking-kicker{display:inline-flex;align-items:center;gap:8px;color:#8ee6ff;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.18em}.booking-kicker i{font-size:.9rem}
+.booking-modal-head h3{margin:10px 0 7px;font-size:1.65rem;letter-spacing:-.05em}.booking-modal-head p{margin:0;color:#8fa1b5;font-size:.88rem;line-height:1.55;max-width:720px}
+.booking-stepbar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px}.booking-step{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:13px;border:1px solid rgba(158,186,224,.09);background:rgba(255,255,255,.025);color:#76869a;font-size:.72rem;font-weight:750}.booking-step b{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;background:rgba(18,215,246,.08);color:#8ee6ff;font-size:.68rem}.booking-step.active{color:#dff8ff;border-color:rgba(18,215,246,.22);background:rgba(18,215,246,.055)}
+.booking-body{padding:24px 28px 28px}.booking-grid{grid-template-columns:minmax(0,1.25fr) minmax(270px,.75fr);gap:18px;margin:0}
+.calendar-box,.times-box{border-radius:22px;padding:18px;border:1px solid rgba(158,186,224,.11);background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.018));box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
+.calendar-header{margin-bottom:16px}.calendar-header h4{font-size:1.08rem;letter-spacing:-.03em}.calendar-nav-btn{width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.035);border-color:rgba(158,186,224,.12)}
+.calendar-nav-btn:hover:not(.disabled){background:rgba(18,215,246,.10);color:#a8f0ff;border-color:rgba(18,215,246,.28)}
+.calendar-days-head{margin-bottom:8px;font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:#64758b}.calendar-days-grid{gap:7px}.day-cell{aspect-ratio:auto;min-height:44px;border-radius:12px;font-size:.82rem;background:rgba(255,255,255,.02);border:1px solid transparent}.day-cell.available{border-color:rgba(158,186,224,.07)}.day-cell.available:hover{background:rgba(18,215,246,.08);border-color:rgba(18,215,246,.24);color:#b7f2ff;transform:translateY(-1px)}.day-cell.selected{background:linear-gradient(135deg,#83e6ff,#6fb7ff)!important;color:#051019!important;box-shadow:0 8px 20px rgba(18,166,230,.22)!important;border-color:transparent!important}.day-cell.disabled{background:transparent;opacity:.24;text-decoration:none}
+.times-box{padding:18px}.times-header{margin-bottom:13px;padding-bottom:12px;font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;color:#7890a7}.time-slots-container{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;max-height:330px;padding-right:2px}.time-slot{padding:12px 8px;border-radius:13px;font-size:.78rem;background:rgba(255,255,255,.025);border-color:rgba(158,186,224,.09)}.time-slot:hover{background:rgba(18,215,246,.07);border-color:rgba(18,215,246,.24);color:#b7f2ff}.time-slot.selected{background:linear-gradient(135deg,#83e6ff,#6fb7ff);color:#041019;border:0;box-shadow:0 8px 18px rgba(18,166,230,.20)}.time-slot.sold-out{opacity:.22;background:rgba(255,255,255,.015);text-decoration:none}
+.booking-config{margin-top:18px!important;padding:18px!important;border-radius:22px!important;background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.015))!important;border-color:rgba(158,186,224,.10)!important}.booking-config-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}.booking-config-title strong{font-size:.92rem}.booking-price{display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border-radius:999px;border:1px solid rgba(53,221,146,.18);background:rgba(53,221,146,.06);color:#78ebb5;font-size:.76rem;font-weight:800}
+.software-options{margin-bottom:16px}.software-btn{min-height:50px;border-radius:14px;background:rgba(255,255,255,.025);border-color:rgba(158,186,224,.10)}.software-btn.selected{background:rgba(18,215,246,.08);box-shadow:inset 0 0 0 1px rgba(18,215,246,.16);border-color:rgba(18,215,246,.28)}
+.liquid-input{min-height:48px;background:rgba(3,7,13,.55);border-color:rgba(158,186,224,.11)}textarea.liquid-input{min-height:74px}
+.booking-footer{margin-top:18px;padding-top:18px;grid-template-columns:minmax(0,1fr) minmax(280px,.85fr);border-top-color:rgba(158,186,224,.10)}.cupon-group{min-height:48px}.liquid-btn-cupon{border-color:rgba(18,215,246,.26);background:rgba(18,215,246,.06)}
+#payment-buttons-container{display:flex;align-items:center}.liquid-btn{min-height:48px}
+#modal-notif{border-radius:13px!important}
+@media(max-width:760px){#reservaModal{align-items:end}#reservaModal .liquid-modal-card{width:100%;max-height:92dvh;border-radius:26px 26px 0 0;border-bottom:0}.booking-modal-head{padding:22px 18px 17px}.booking-modal-head h3{font-size:1.35rem}.booking-stepbar{grid-template-columns:1fr 1fr 1fr;gap:5px}.booking-step{padding:8px 7px;gap:5px;font-size:.62rem}.booking-step b{width:21px;height:21px}.booking-body{padding:17px 14px calc(20px + env(safe-area-inset-bottom,0px))}.booking-grid{grid-template-columns:1fr}.calendar-box,.times-box{padding:14px;border-radius:18px}.day-cell{min-height:40px;border-radius:11px}.time-slots-container{grid-template-columns:repeat(3,minmax(0,1fr));max-height:none}.time-slot{padding:11px 5px}.booking-config{padding:15px!important;border-radius:18px!important}.software-options{flex-direction:row!important;overflow-x:auto;scroll-snap-type:x proximity}.software-btn{min-width:190px;scroll-snap-align:start}.booking-footer{grid-template-columns:1fr}.liquid-input{font-size:16px}.booking-modal-head p{font-size:.8rem}}
+
+</style>
 
   <script>window.__DINGLOFT_COMMERCE_V1__ = true;</script>
-  <script src="mobile-shell-redirect.js?v=8"></script>
-<script defer src="desktop-global-nav.js?v=1"></script>
+  <script src="mobile-shell-redirect.js?v=10"></script>
+<script defer src="desktop-global-nav.js?v=10"></script>
 </head>
 <body>
   <div class="app">
@@ -548,55 +570,50 @@
   <div class="liquid-modal-overlay" id="reservaModal">
     <div class="liquid-modal-card">
       <button class="liquid-close" onclick="closeReservaModal()"><i class="bi bi-x-lg"></i></button>
-      <h3 style="margin: 0 0 4px; font-size: 1.3rem;">Reserva tu Sesión de Instalación</h3>
-      <p style="color: var(--muted); font-size: 0.83rem; margin: 0 0 15px;">Selecciona el día y horario que mejor te convenga.</p>
-
-      <div class="booking-grid">
-        <div class="calendar-box">
-          <div class="calendar-header">
-            <button id="btn-prev-month" class="calendar-nav-btn" onclick="cambiarMes(-1)"><i class="bi bi-chevron-left"></i></button>
-            <h4 id="calendar-month-year">Cargando...</h4>
-            <button class="calendar-nav-btn" onclick="cambiarMes(1)"><i class="bi bi-chevron-right"></i></button>
-          </div>
-          <div class="calendar-days-head">
-            <span>Do</span><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span>
-          </div>
-          <div class="calendar-days-grid" id="calendar-days"></div>
-        </div>
-
-        <div class="times-box">
-          <div class="times-header" id="selected-date-text">Selecciona un día</div>
-          <div class="time-slots-container" id="time-slots-list">
-            <p style="color: var(--muted); font-size: 0.8rem; text-align: center; margin-top: 30px;">Toca un día disponible del calendario para ver las horas.</p>
-          </div>
+      <div class="booking-modal-head">
+        <div class="booking-kicker"><i class="bi bi-headset"></i> Soporte remoto Dingloft</div>
+        <h3>Agenda tu sesión de instalación</h3>
+        <p>Elige fecha, horario y método de conexión. Tú ves y controlas todo el proceso mientras dejamos tu software listo.</p>
+        <div class="booking-stepbar" aria-label="Pasos para reservar">
+          <div class="booking-step active"><b>1</b><span>Fecha</span></div>
+          <div class="booking-step"><b>2</b><span>Horario</span></div>
+          <div class="booking-step"><b>3</b><span>Conexión</span></div>
         </div>
       </div>
 
-      <div style="margin-top: 20px; background: rgba(6, 12, 22, 0.4); padding: 20px 22px; border-radius: 20px; border: 1px solid var(--line);">
-        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text); display: block; margin-bottom: 10px;">Software de Conexión preferido:</label>
-        <div class="software-options">
-          <div class="software-btn selected" onclick="seleccionarSoftware('Google Chrome Remote Desktop', this)">
-            <i class="bi bi-browser-chrome" style="font-size: 1.1rem;"></i> Chrome Remote Desktop
+      <div class="booking-body">
+        <div class="booking-grid">
+          <div class="calendar-box">
+            <div class="calendar-header">
+              <button id="btn-prev-month" class="calendar-nav-btn" onclick="cambiarMes(-1)" aria-label="Mes anterior"><i class="bi bi-chevron-left"></i></button>
+              <h4 id="calendar-month-year">Cargando...</h4>
+              <button class="calendar-nav-btn" onclick="cambiarMes(1)" aria-label="Mes siguiente"><i class="bi bi-chevron-right"></i></button>
+            </div>
+            <div class="calendar-days-head"><span>Do</span><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span></div>
+            <div class="calendar-days-grid" id="calendar-days"></div>
           </div>
-          <div class="software-btn" onclick="seleccionarSoftware('AnyDesk', this)">
-            <i class="bi bi-display" style="font-size: 1.1rem;"></i> AnyDesk
-          </div>
-        </div>
-        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text); display: block; margin-bottom: 8px;">¿En qué te ayudamos en esta sesión?:</label>
-        <textarea id="reservaComentario" class="liquid-input" rows="2" placeholder="Ej. Necesito ayuda instalando el Yamaha Premium Keys o el AutoCAD..." style="margin-bottom: 0;"></textarea>
-      </div>
 
-      <div class="booking-footer">
-        <div id="modal-notif"></div>
-        <div class="cupon-group">
-          <input type="text" id="cuponInput" placeholder="CÓDIGO DE CUPÓN" class="liquid-input" style="text-transform: uppercase;">
-          <button type="button" class="liquid-btn-cupon" onclick="aplicarCupon()">Aplicar</button>
+          <div class="times-box">
+            <div class="times-header" id="selected-date-text">Selecciona una fecha disponible</div>
+            <div class="time-slots-container" id="time-slots-list">
+              <p style="grid-column:1/-1;color:var(--muted);font-size:.8rem;text-align:center;margin:30px 0;">Selecciona un día del calendario para ver los horarios disponibles.</p>
+            </div>
+          </div>
         </div>
-        <div id="payment-buttons-container" style="width: 100%; min-height: 45px;">
-          <button id="btn-pagar-gratis" class="liquid-btn" style="display: none;" onclick="procesarReservaGratis()">
-            <i class="bi bi-check2-circle"></i> Reservar Gratis
-          </button>
-          <div id="paypal-button-container" class="w-100"></div>
+
+        <div class="booking-config" data-horizontal-scroll>
+          <div class="booking-config-title"><strong>Conexión y detalles de la sesión</strong><span class="booking-price"><i class="bi bi-tag"></i> <span id="booking-price">$10.00</span></span></div>
+          <div class="software-options" data-horizontal-scroll>
+            <div class="software-btn selected" onclick="seleccionarSoftware('Google Chrome Remote Desktop', this)"><i class="bi bi-browser-chrome"></i> Chrome Remote Desktop</div>
+            <div class="software-btn" onclick="seleccionarSoftware('AnyDesk', this)"><i class="bi bi-display"></i> AnyDesk</div>
+          </div>
+          <textarea id="reservaComentario" class="liquid-input" rows="2" placeholder="Cuéntanos qué programa instalaremos o qué necesitas configurar..."></textarea>
+        </div>
+
+        <div class="booking-footer">
+          <div id="modal-notif"></div>
+          <div class="cupon-group"><input type="text" id="cuponInput" placeholder="CÓDIGO DE CUPÓN" class="liquid-input" style="text-transform:uppercase"><button type="button" class="liquid-btn-cupon" onclick="aplicarCupon()">Aplicar</button></div>
+          <div id="payment-buttons-container" style="width:100%;min-height:48px"><button id="btn-pagar-gratis" class="liquid-btn" style="display:none" onclick="procesarReservaGratis()"><i class="bi bi-check2-circle"></i> Reservar Gratis</button><div id="paypal-button-container" class="w-100"></div></div>
         </div>
       </div>
     </div>
@@ -706,6 +723,16 @@
       actualizarBotonRetroceso();
     }
 
+
+    function actualizarResumenReserva(){
+      const price=document.getElementById('booking-price');
+      if(price) price.textContent=`$${Number(window.precioFinal||0).toFixed(2)}`;
+      const steps=[...document.querySelectorAll('.booking-step')];
+      steps[0]?.classList.toggle('active',true);
+      steps[1]?.classList.toggle('active',Boolean(window.diaSeleccionado));
+      steps[2]?.classList.toggle('active',Boolean(window.diaSeleccionado&&window.horaSeleccionada));
+    }
+
     window.cambiarMes = function(delta) {
       let nuevoMes = mesActual + delta;
       let nuevoAno = anoActual;
@@ -724,6 +751,7 @@
       const slotsContainer = document.getElementById('time-slots-list');
       const opcionesFecha = { weekday: 'short', month: 'short', day: 'numeric' };
       headerText.textContent = window.diaSeleccionado.toLocaleDateString('es-ES', opcionesFecha);
+      actualizarResumenReserva();
 
       slotsContainer.innerHTML = '';
       let seed = anoActual * 10000 + mesActual * 100 + dia;
@@ -746,6 +774,7 @@
       window.horaSeleccionada = hora;
       document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
       elemento.classList.add('selected');
+      actualizarResumenReserva();
     }
 
     window.seleccionarSoftware = function(software, elemento) {
@@ -779,6 +808,7 @@
            if(typeof window.renderPayPalReserva === 'function') window.renderPayPalReserva();
         }
 
+        actualizarResumenReserva();
         window.mostrarAlertaModal("¡Cupón aplicado con éxito!", true);
       } else {
         window.mostrarAlertaModal("Cupón inválido o expirado.", false);
@@ -798,6 +828,7 @@
     window.openReservaModal = function() {
       document.getElementById('reservaModal').classList.add('active');
       renderizarCalendario();
+      actualizarResumenReserva();
       if(typeof window.renderPayPalReserva === 'function' && window.precioFinal > 0) {
           window.renderPayPalReserva();
       }
@@ -1279,5 +1310,6 @@
       try { await signOut(auth); window.location.href = 'login.html'; } catch (error) { console.error(error); }
     });
   </script>
+<script src="dingloft-ui-guard.js?v=10"></script>
 </body>
 </html>

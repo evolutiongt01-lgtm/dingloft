@@ -1,7 +1,5 @@
-const CACHE = 'dingloft-app-v8-multitrack-safe';
+const CACHE = 'dingloft-app-v10-index-ventas';
 const CORE = [
-  '/dingloft-commerce.js',
-  '/multitrack-worker-gate.js',
   '/app.html?route=home',
   '/ventas.html',
   '/index.html',
