@@ -773,6 +773,7 @@
         let snapshot = await getDocs(q);
         let dbComments = [];
         snapshot.forEach(docSnap => dbComments.push({ id: docSnap.id, ...docSnap.data() }));
+        dbComments = dbComments.filter(c => String(c.name || c.userName || c.displayName || '').trim().toLowerCase() !== 'juniorromero098');
         const allComments = [...dbComments, ...initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c }))];
         renderCommentsUI(allComments);
       } catch (err) {
@@ -1121,6 +1122,6 @@
     });
   </script>
   <script type="module" src="dingloft-commerce.js?v=1.0.0"></script>
-<script src="dingloft-ui-guard.js?v=10"></script>
+<script src="dingloft-ui-guard.js?v=11"></script>
 </body>
 </html>

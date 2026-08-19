@@ -7,6 +7,8 @@
   const isMobile = isiOS || isAndroid || (navigator.maxTouchPoints > 0 && matchMedia('(max-width:1024px)').matches);
   const standalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
 
+  if (isiOS) document.documentElement.classList.add('dingloft-ios-fixed');
+
   const markInstalled = () => {
     const installed = standalone() || Boolean(localStorage.getItem('dingloft_installed_at'));
     document.documentElement.classList.toggle('dingloft-installed', installed);
@@ -41,6 +43,20 @@
     }
   }
 
+  // iPhone/iPad: the app viewport is fixed. Horizontal swipes must never drag the page.
+  if (isiOS) {
+    let sx = 0, sy = 0;
+    document.addEventListener('touchstart', e => {
+      if (e.touches?.length === 1) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }
+    }, { passive:true });
+    document.addEventListener('touchmove', e => {
+      if (e.touches?.length !== 1) return;
+      const dx = e.touches[0].clientX - sx;
+      const dy = e.touches[0].clientY - sy;
+      if (Math.abs(dx) > Math.abs(dy) + 3) e.preventDefault();
+    }, { passive:false });
+  }
+
   // Horizontal trackpad scrolling for wide UI rails in the macOS app/desktop shell.
   const horizontalSelectors = [
     '[data-horizontal-scroll]','.tabs-header','.mt-filters','.mt-chip-row','.filter-row','.category-scroll',
@@ -73,6 +89,8 @@
     s.id = 'dingloft-ui-guard-style';
     s.textContent = `
       html,body{touch-action:pan-x pan-y;}
+      html.dingloft-ios-fixed,html.dingloft-ios-fixed body{width:100%!important;max-width:100%!important;overflow-x:hidden!important;overscroll-behavior-x:none!important;touch-action:pan-y!important;}
+      html.dingloft-ios-fixed body{position:relative!important;}
       html.dingloft-installed #navInstall,
       html.dingloft-installed #installAppBtn,
       html.dingloft-installed #installCard,
