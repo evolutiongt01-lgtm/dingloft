@@ -384,13 +384,24 @@
 #modal-notif{border-radius:13px!important}
 @media(max-width:760px){#reservaModal{align-items:end}#reservaModal .liquid-modal-card{width:100%;max-height:92dvh;border-radius:26px 26px 0 0;border-bottom:0}.booking-modal-head{padding:22px 18px 17px}.booking-modal-head h3{font-size:1.35rem}.booking-stepbar{grid-template-columns:1fr 1fr 1fr;gap:5px}.booking-step{padding:8px 7px;gap:5px;font-size:.62rem}.booking-step b{width:21px;height:21px}.booking-body{padding:17px 14px calc(20px + env(safe-area-inset-bottom,0px))}.booking-grid{grid-template-columns:1fr}.calendar-box,.times-box{padding:14px;border-radius:18px}.day-cell{min-height:40px;border-radius:11px}.time-slots-container{grid-template-columns:repeat(3,minmax(0,1fr));max-height:none}.time-slot{padding:11px 5px}.booking-config{padding:15px!important;border-radius:18px!important}.software-options{flex-direction:row!important;overflow-x:auto;scroll-snap-type:x proximity}.software-btn{min-width:190px;scroll-snap-align:start}.booking-footer{grid-template-columns:1fr}.liquid-input{font-size:16px}.booking-modal-head p{font-size:.8rem}}
 
+
+/* AUTH GATE v13: never flash account/logout UI before Firebase confirms a session */
+html.account-auth-pending .app{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+#account-auth-gate{position:fixed;z-index:5000;inset:0;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 30%,rgba(18,215,246,.08),transparent 25rem),#05070d;color:#eef7ff}
+#account-auth-gate .gate-card{width:min(330px,100%);text-align:center;padding:28px;border:1px solid rgba(158,186,224,.12);border-radius:24px;background:rgba(10,16,27,.9);box-shadow:0 28px 80px rgba(0,0,0,.45)}
+#account-auth-gate .gate-spinner{width:36px;height:36px;margin:0 auto 16px;border:3px solid rgba(255,255,255,.10);border-top-color:#72dcff;border-radius:50%;animation:gateSpin .75s linear infinite}
+#account-auth-gate strong{display:block;font-size:1rem}.gate-sub{display:block;margin-top:7px;color:#8392a6;font-size:.78rem;line-height:1.45}@keyframes gateSpin{to{transform:rotate(360deg)}}
+html.account-auth-ready #account-auth-gate{display:none!important}
+
 </style>
 
   <script>window.__DINGLOFT_COMMERCE_V1__ = true;</script>
-  <script src="mobile-shell-redirect.js?v=10"></script>
-<script defer src="desktop-global-nav.js?v=10"></script>
+  <script src="mobile-shell-redirect.js?v=13"></script>
+<script defer src="desktop-global-nav.js?v=13"></script>
+<script>document.documentElement.classList.add("account-auth-pending");</script>
 </head>
 <body>
+  <div id="account-auth-gate" aria-live="polite"><div class="gate-card"><div class="gate-spinner"></div><strong>Verificando tu cuenta</strong><span class="gate-sub">Estamos sincronizando tu sesión con Dingloft.</span></div></div>
   <div class="app">
     <aside class="sidebar">
       <a href="index.html" class="brand"><span>D</span>ingloft</a>
@@ -883,6 +894,8 @@
 
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        document.documentElement.classList.remove('account-auth-pending');
+        document.documentElement.classList.add('account-auth-ready');
         let isAdmin = false;
         if (user.email === 'evolutiongt01@gmail.com' || user.email === 'tepaz2025@gmail.com') {
           document.getElementById('btn-admin').style.display = 'flex';
@@ -905,6 +918,7 @@
         // --- FIN NUEVO CÓDIGO ---
 
         document.getElementById('welcome-name').textContent = firstName;
+        const heroUserName = document.getElementById('hero-user-name'); if (heroUserName) heroUserName.textContent = displayName;
         document.getElementById('sidebar-name').textContent = displayName;
         document.getElementById('sidebar-email').textContent = user.email;
 
@@ -1302,14 +1316,15 @@
           downloadsContainer.innerHTML = `<div style="color:#ffc1c6;padding:15px;border:1px solid rgba(255,93,105,.3);border-radius:12px;background:rgba(255,93,105,.08)"><i class="bi bi-exclamation-triangle"></i> No pudimos cargar tus descargas: ${escHtml(error.message || 'Error de sincronización')}</div>`;
         }
       } else {
-        window.location.href = 'login.html';
+        const next = encodeURIComponent('account.html');
+        window.location.replace(`login.html?next=${next}`);
       }
     });
 
     document.querySelector('.logout').addEventListener('click', async () => {
-      try { await signOut(auth); window.location.href = 'login.html'; } catch (error) { console.error(error); }
+      try { await signOut(auth); window.location.replace('login.html?loggedout=1'); } catch (error) { console.error(error); }
     });
   </script>
-<script src="dingloft-ui-guard.js?v=10"></script>
+<script src="dingloft-ui-guard.js?v=13"></script>
 </body>
 </html>
