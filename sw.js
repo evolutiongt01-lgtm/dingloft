@@ -1,4 +1,4 @@
-const VERSION = '39';
+const VERSION = '41';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
