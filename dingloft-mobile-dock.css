@@ -199,20 +199,11 @@
   }
   #dlDirectDock .dd-count[data-empty="1"]{display:none!important}
 
-  /* CART LABEL */
+  /* CENTER BAG IS SELF-EXPLANATORY: no text label below it */
   .dock .cartlabel,
   #dlDirectDock .dd-cart-label,
   html.dingloft-direct-app .mobile-dock-cart-label{
-    position:absolute!important;
-    z-index:2!important;
-    left:50%!important;
-    right:auto!important;
-    top:auto!important;
-    bottom:6px!important;
-    transform:translateX(-50%)!important;
-    color:#788394!important;
-    font:760 .44rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif!important;
-    pointer-events:none!important;
+    display:none!important;
   }
 
   /* Same hide motion when cart is open */
