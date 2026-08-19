@@ -916,13 +916,23 @@ body::before{
 
     async function commerceApi(user, path) {
       const token = await user.getIdToken(false);
-      const response = await fetch(WORKER + path, {
-        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-        cache: "no-store"
-      });
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok || data.ok === false) throw new Error(data.error || `Error ${response.status}`);
-      return data;
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 12000);
+      try {
+        const response = await fetch(WORKER + path, {
+          headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+          cache: "no-store",
+          signal: controller.signal
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || data.ok === false) throw new Error(data.error || `Error ${response.status}`);
+        return data;
+      } catch (error) {
+        if (error?.name === 'AbortError') throw new Error('La sincronización tardó demasiado. Revisa tu conexión e inténtalo de nuevo.');
+        throw error;
+      } finally {
+        clearTimeout(timeout);
+      }
     }
 
     onAuthStateChanged(auth, async (user) => {
@@ -935,25 +945,14 @@ body::before{
           isAdmin = true;
         }
 
-        let displayName = user.displayName || user.email.split('@')[0];
-        let firstName = displayName.split(' ')[0];
-        
-        // --- INICIO NUEVO CÓDIGO: GUARDAR/ACTUALIZAR USUARIO PARA EL PANEL ADMIN ---
-        try {
-            await setDoc(doc(db, "users", user.uid), {
-                email: user.email,
-                photoURL: user.photoURL || "",
-                lastLogin: serverTimestamp()
-            }, { merge: true });
-        } catch (error) {
-            console.error("Error guardando datos del usuario para el panel admin:", error);
-        }
-        // --- FIN NUEVO CÓDIGO ---
+        let displayName = user.displayName || (user.email ? user.email.split('@')[0] : 'Cliente Dingloft');
+        let firstName = displayName.split(' ')[0] || 'Cliente';
 
+        // UI FIRST: never block the visible account on a Firestore write.
         document.getElementById('welcome-name').textContent = firstName;
         const heroUserName = document.getElementById('hero-user-name'); if (heroUserName) heroUserName.textContent = displayName;
         document.getElementById('sidebar-name').textContent = displayName;
-        document.getElementById('sidebar-email').textContent = user.email;
+        document.getElementById('sidebar-email').textContent = user.email || '';
 
         let avatarHtml = '';
         if (user.photoURL) {
@@ -964,6 +963,15 @@ body::before{
         }
         document.getElementById('sidebar-avatar').innerHTML = avatarHtml;
         document.getElementById('top-avatar').innerHTML = avatarHtml;
+
+        // Background sync only. If Firestore is slow/offline, the account UI stays usable.
+        setDoc(doc(db, "users", user.uid), {
+          email: user.email || "",
+          photoURL: user.photoURL || "",
+          lastLogin: serverTimestamp()
+        }, { merge: true }).catch(error => {
+          console.warn("No se pudo sincronizar el perfil en segundo plano:", error);
+        });
 
         function pintarReservaUI(htmlData) {
             document.getElementById('dashboard-reserva-info').innerHTML = htmlData;
@@ -1092,7 +1100,7 @@ body::before{
           }
         }
 
-        await cargarMisReservas();
+        void cargarMisReservas();
 
         window.enviarCodigo = async function(id) {
             const inputs = document.querySelectorAll('.codigo-input-' + id);
