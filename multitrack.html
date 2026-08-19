@@ -2,6 +2,7 @@
 
 <html lang="es">
 <head>
+<script>try{if(new URLSearchParams(location.search).get('app')==='1')document.documentElement.classList.add('dingloft-direct-app')}catch(_){}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -1993,7 +1994,7 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
 .mt-play-btn:hover { transform:scale(1.08); background:#eee9ff; color:#120f1d; border-color:#eee9ff; box-shadow:0 10px 28px rgba(0,0,0,.34); }
 .mt-play-btn.is-playing { background:#eee9ff; color:#120f1d; border-color:#eee9ff; }
 
-.mt-card-audio{position:absolute!important;width:1px!important;height:1px!important;opacity:.001!important;pointer-events:none!important;left:-9999px!important}
+.mt-card-audio{position:absolute!important;left:12px!important;right:12px!important;bottom:12px!important;width:calc(100% - 24px)!important;height:44px!important;opacity:.001!important;pointer-events:none!important;z-index:0!important}
 .mt-card.audio-fallback .mt-card-audio{position:relative!important;left:auto!important;width:100%!important;height:38px!important;opacity:1!important;pointer-events:auto!important;margin-top:9px!important;border-radius:12px!important;overflow:hidden!important}
 .mt-card.audio-fallback .mt-preview-action{margin-bottom:4px!important}
 
@@ -2335,7 +2336,7 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
 
 
   <script>window.__DINGLOFT_COMMERCE_V1__ = true;</script>
-  <script src="mobile-shell-redirect.js?v=10"></script>
+  <script src="mobile-shell-redirect.js?v=25"></script>
 <meta name="dingloft-worker-base" content="https://autumn-breeze-dfa0.evolutiongt01.workers.dev">
 
 <style id="multitrack-worker-remodel-v8">
@@ -2360,6 +2361,28 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
 @media (min-width:900px){
   .btn-floating-cart{background:linear-gradient(145deg,#fbfdff,#eaf1f5)!important;color:#080b0e!important;border:1px solid rgba(255,255,255,.85)!important;border-radius:18px!important;box-shadow:0 18px 45px rgba(0,0,0,.42)!important}
   .btn-floating-cart:hover{background:#fff!important;transform:translateY(-3px)!important}
+}
+</style>
+
+<style id="dingloft-direct-multitrack-v25">
+.dingloft-direct-top{display:none}
+@media(max-width:1024px){
+  html.dingloft-direct-app,html.dingloft-direct-app body{background:#05070a!important;overflow-x:hidden!important;overscroll-behavior-x:none!important}
+  html.dingloft-direct-app .navbar-glass,html.dingloft-direct-app nav.navbar.fixed-top{display:none!important}
+  html.dingloft-direct-app .dingloft-direct-top{position:sticky;top:0;z-index:1035;height:calc(64px + env(safe-area-inset-top));padding:calc(7px + env(safe-area-inset-top)) 18px 7px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(4,6,9,.99),rgba(5,7,10,.94));border-bottom:1px solid rgba(255,255,255,.075);backdrop-filter:blur(26px) saturate(160%);-webkit-backdrop-filter:blur(26px) saturate(160%)}
+  html.dingloft-direct-app .dingloft-direct-brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;min-width:0}
+  html.dingloft-direct-app .dingloft-direct-brand img{width:36px;height:36px;border-radius:12px;object-fit:cover}
+  html.dingloft-direct-app .dingloft-direct-brand strong{display:block;font-size:.90rem;font-weight:850;letter-spacing:.18em;line-height:1}
+  html.dingloft-direct-app .dingloft-direct-brand small{display:block;margin-top:6px;color:#66758a;font-size:.50rem;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
+  html.dingloft-direct-app .dingloft-direct-audio{display:flex;align-items:center;gap:7px;color:#7e8c9d;font-size:.52rem;font-weight:760;letter-spacing:.10em;text-transform:uppercase;white-space:nowrap}
+  html.dingloft-direct-app .dingloft-direct-audio::before{content:'';width:7px;height:7px;border-radius:99px;background:#69e2ad;box-shadow:0 0 0 5px rgba(105,226,173,.07)}
+  html.dingloft-direct-app main{padding-top:0!important;padding-bottom:calc(96px + env(safe-area-inset-bottom))!important}
+  html.dingloft-direct-app .mt-hero{padding-top:22px!important}
+  html.dingloft-direct-app .premium-footer{padding-bottom:28px!important}
+  html.dingloft-direct-app .mobile-app-dock{bottom:calc(5px + env(safe-area-inset-bottom))!important;height:66px!important;left:10px!important;right:10px!important;border-radius:22px!important;grid-template-columns:1fr 1fr 76px 1fr 1fr!important}
+  html.dingloft-direct-app .mobile-dock-item{height:52px!important;font-size:.48rem!important}
+  html.dingloft-direct-app .btn-floating-cart{bottom:calc(20px + env(safe-area-inset-bottom))!important;width:60px!important;height:60px!important;border-radius:20px!important}
+  html.dingloft-direct-app body.cart-open .btn-floating-cart{bottom:calc(min(88dvh,780px) - 62px)!important}
 }
 </style>
 </head>
@@ -2453,14 +2476,14 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
 <span aria-hidden="true" class="floating-cart-icon floating-cart-icon-close"><i class="bi bi-x-lg"></i></span>
 <span class="badge-floating cart-badge-count-global">0</span>
 </button><nav aria-label="Navegación móvil" class="mobile-app-dock" id="mobileAppDock">
-<a aria-label="Inicio" class="mobile-dock-item" href="index.html"><i class="bi bi-house"></i><span>Inicio</span></a>
-<a aria-label="Catálogo" class="mobile-dock-item active" data-dock-target="catalogo" href="#catalogo"><i class="bi bi-grid"></i><span>Canciones</span></a>
+<a aria-label="Inicio" class="mobile-dock-item" href="app.html?route=home"><i class="bi bi-house"></i><span>Inicio</span></a>
+<a aria-label="Catálogo" class="mobile-dock-item" href="app.html?route=catalog"><i class="bi bi-grid"></i><span>Catálogo</span></a>
 <span aria-hidden="true" class="mobile-dock-spacer"></span>
-<a aria-label="Multitrack" class="mobile-dock-item" data-dock-target="como-funciona" href="#como-funciona"><i class="bi bi-sliders"></i><span>Info</span></a>
-<a aria-label="Mi cuenta" class="mobile-dock-item" href="account.html"><i class="bi bi-person"></i><span>Cuenta</span></a>
+<a aria-label="Multitrack" class="mobile-dock-item active" href="#catalogo"><i class="bi bi-sliders"></i><span>Multitrack</span></a>
+<a aria-label="Mi cuenta" class="mobile-dock-item" href="app.html?route=account"><i class="bi bi-person"></i><span>Cuenta</span></a>
 <span aria-hidden="true" class="mobile-dock-cart-label">Carrito</span>
 </nav>
-<main>
+<div class="dingloft-direct-top" id="dingloftDirectTop"><a class="dingloft-direct-brand" href="app.html?route=home"><img src="/img/pwa-liquid-rounded-192-v17.png?v=25" alt="Dingloft"><span><strong>DINGLOFT</strong><small>Evolution Group</small></span></a><span class="dingloft-direct-audio">Audio directo</span></div><main>
 <section class="mt-hero" id="inicio">
 <div class="container">
 <div class="mt-hero-grid">
@@ -2617,53 +2640,53 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
 </div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script><script>window.__DINGLOFT_MULTITRACK_AUDIO_V22__=true;</script><script id="multitrack-store-data">
 (() => {
   const MULTITRACKS = [
-    { id:'MT-001', title:'Todos Reunidos', artist:'Genesis Campos', price:20, bpm:'155', key:'Am', stems:'11', tag:'new', featured:true, cover:'img/albums/todos-reunidos.jpg', preview:'/audio/Preview1.mp3?v=24' },
-    { id:'MT-002', title:'Lanza Gritos', artist:'Ministerios Ebenezer', price:25, bpm:'150', key:'Em', stems:'10', tag:'featured', featured:true, cover:'img/albums/Lanzagritos.jpg', preview:'/audio/Preview2.mp3?v=24' },
-    { id:'MT-003', title:'Melodía de Unción - La voz de mi Amado - Libertad', artist:'CCINT', price:15, bpm:'155', key:'Am & Cm', stems:'15', tag:'new', featured:false, cover:'img/albums/ccint1.jpeg', preview:'/audio/Preview3.mp3?v=24' },
-    { id:'MT-004', title:'Ante el Rey', artist:'Genesis Campos', price:15, bpm:'155', key:'Dm', stems:'16', tag:'all', featured:false, cover:'img/albums/anteelrey.jpg', preview:'/audio/Preview4.mp3?v=24' },
-    { id:'MT-005', title:'Deleitate en el Señor', artist:'Genesis Campos', price:15, bpm:'150', key:'Bb', stems:'16', tag:'featured', featured:true, cover:'img/albums/anteelrey.jpg', preview:'/audio/Preview5.mp3?v=24' },
-    { id:'MT-006', title:'Tú Me Reivindicarás', artist:'Barro de Dios Ministerios Ebenezer', price:15, bpm:'155', key:'Em', stems:'15', tag:'all', featured:false, cover:'img/albums/barrodedios.jpeg', preview:'/audio/Preview6.mp3?v=24' },
-    { id:'MT-007', title:'Guerrero Victorioso', artist:'Ministerios Ebenezer', price:18, bpm:'150', key:'Em', stems:'11', tag:'new', featured:true, cover:'img/albums/Libertad.jpeg', preview:'/audio/Preview7.mp3?v=24' },
-    { id:'MT-008', title:'Llevando el Arca', artist:'Ministerios Ebenezer', price:18, bpm:'150', key:'Gm', stems:'14', tag:'all', featured:false, cover:'img/albums/Libertad.jpeg', preview:'/audio/Preview8.mp3?v=24' },
-    { id:'MT-009', title:'Libertad - Natsach & Jehova A Vencido', artist:'Ministerios Ebenezer', price:18, bpm:'150', key:'Em', stems:'10', tag:'all', featured:false, cover:'img/albums/Libertad.jpeg', preview:'/audio/Preview9.mp3?v=24' },
-    { id:'MT-010', title:'Preparados Estamos', artist:'Ministerios Ebenezer', price:18, bpm:'150', key:'Am', stems:'10', tag:'all', featured:false, cover:'img/albums/Libertad.jpeg', preview:'/audio/Preview10.mp3?v=24' },
-    { id:'MT-011', title:'Aleluya', artist:'Ministerios Ebenezer', price:20, bpm:'150', key:'Em', stems:'15', tag:'all', featured:false, cover:'img/albums/Album2.jpg', preview:'/audio/Preview11.mp3?v=24' },
-    { id:'MT-012', title:'Derrama de tu vino Señor', artist:'Leonardo Díaz', price:18, bpm:'155', key:'Cm', stems:'12', tag:'all', featured:false, cover:'img/albums/derrama.jpeg', preview:'/audio/Preview12.mp3?v=24' },
-    { id:'MT-013', title:'Medley Justicia', artist:'Ebenezer Honduras', price:15, bpm:'150', key:'Em - Gm', stems:'12', tag:'all', featured:false, cover:'img/albums/Reino.jpg', preview:'/audio/Preview13.mp3?v=24' },
-    { id:'MT-014', title:'Jesus eres mi paz', artist:'Genesis Campos', price:16, bpm:'150', key:'Bb', stems:'11', tag:'all', featured:false, cover:'img/albums/anteelrey.jpg', preview:'/audio/Preview14.mp3?v=24' },
-    { id:'MT-015', title:'Medley Renacer', artist:'Ebenezer San Francisco', price:15, bpm:'155', key:'Bb', stems:'18', tag:'all', featured:false, cover:'img/albums/renacer.jpg', preview:'/audio/Preview15.mp3?v=24' },
-    { id:'MT-016', title:'Multitrack 16', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview16.mp3?v=24' },
-    { id:'MT-017', title:'Multitrack 17', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview17.mp3?v=24' },
-    { id:'MT-018', title:'Multitrack 18', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview18.mp3?v=24' },
-    { id:'MT-019', title:'Multitrack 19', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview19.mp3?v=24' },
-    { id:'MT-020', title:'Multitrack 20', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview20.mp3?v=24' },
-    { id:'MT-021', title:'Multitrack 21', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview21.mp3?v=24' },
-    { id:'MT-022', title:'Multitrack 22', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview22.mp3?v=24' },
-    { id:'MT-023', title:'Multitrack 23', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview23.mp3?v=24' },
-    { id:'MT-024', title:'Multitrack 24', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview24.mp3?v=24' },
-    { id:'MT-025', title:'Multitrack 25', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview25.mp3?v=24' },
-    { id:'MT-026', title:'Multitrack 26', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview26.mp3?v=24' },
-    { id:'MT-027', title:'Multitrack 27', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview27.mp3?v=24' },
-    { id:'MT-028', title:'Multitrack 28', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview28.mp3?v=24' },
-    { id:'MT-029', title:'Multitrack 29', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview29.mp3?v=24' },
-    { id:'MT-030', title:'Multitrack 30', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview30.mp3?v=24' },
-    { id:'MT-031', title:'Multitrack 31', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview31.mp3?v=24' },
-    { id:'MT-032', title:'Multitrack 32', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview32.mp3?v=24' },
-    { id:'MT-033', title:'Multitrack 33', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview33.mp3?v=24' },
-    { id:'MT-034', title:'Multitrack 34', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview34.mp3?v=24' },
-    { id:'MT-035', title:'Multitrack 35', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview35.mp3?v=24' },
-    { id:'MT-036', title:'Multitrack 36', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview36.mp3?v=24' },
-    { id:'MT-037', title:'Multitrack 37', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview37.mp3?v=24' },
-    { id:'MT-038', title:'Multitrack 38', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview38.mp3?v=24' },
-    { id:'MT-039', title:'Multitrack 39', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview39.mp3?v=24' },
-    { id:'MT-040', title:'Multitrack 40', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview40.mp3?v=24' },
-    { id:'MT-041', title:'Multitrack 41', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview41.mp3?v=24' },
-    { id:'MT-042', title:'Multitrack 42', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview42.mp3?v=24' },
-    { id:'MT-043', title:'Multitrack 43', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview43.mp3?v=24' },
-    { id:'MT-044', title:'Multitrack 44', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview44.mp3?v=24' },
-    { id:'MT-045', title:'Multitrack 45', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview45.mp3?v=24' },
-    { id:'MT-046', title:'Multitrack 46', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview46.mp3?v=24' },
-    { id:'MT-047', title:'Multitrack 47', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview47.mp3?v=24' }
+    { id:'MT-001', title:'Todos Reunidos', artist:'Genesis Campos', price:20, bpm:'155', key:'Am', stems:'11', tag:'new', featured:true, cover:'img/albums/todos-reunidos.jpg', preview:'/audio/Preview1.mp3?v=25' },
+    { id:'MT-002', title:'Lanza Gritos', artist:'Ministerios Ebenezer', price:25, bpm:'150', key:'Em', stems:'10', tag:'featured', featured:true, cover:'img/albums/Lanzagritos.jpg', preview:'/audio/Preview2.mp3?v=25' },
+    { id:'MT-003', title:'Melodía de Unción - La voz de mi Amado - Libertad', artist:'CCINT', price:15, bpm:'155', key:'Am & Cm', stems:'15', tag:'new', featured:false, cover:'img/albums/ccint1.jpeg', preview:'/audio/Preview3.mp3?v=25' },
+    { id:'MT-004', title:'Ante el Rey', artist:'Genesis Campos', price:15, bpm:'155', key:'Dm', stems:'16', tag:'all', featured:false, cover:'img/albums/anteelrey.jpg', preview:'/audio/Preview4.mp3?v=25' },
+    { id:'MT-005', title:'Deleitate en el Señor', artist:'Genesis Campos', price:15, bpm:'150', key:'Bb', stems:'16', tag:'featured', featured:true, cover:'img/albums/anteelrey.jpg', preview:'/audio/Preview5.mp3?v=25' },
+    { id:'MT-006', title:'Tú Me Reivindicarás', artist:'Barro de Dios Ministerios Ebenezer', price:15, bpm:'155', key:'Em', stems:'15', tag:'all', featured:false, cover:'img/albums/barrodedios.jpeg', preview:'/audio/Preview6.mp3?v=25' },
+    { id:'MT-007', title:'Guerrero Victorioso', artist:'Ministerios Ebenezer', price:18, bpm:'150', key:'Em', stems:'11', tag:'new', featured:true, cover:'img/albums/Libertad.jpeg', preview:'/audio/Preview7.mp3?v=25' },
+    { id:'MT-008', title:'Llevando el Arca', artist:'Ministerios Ebenezer', price:18, bpm:'150', key:'Gm', stems:'14', tag:'all', featured:false, cover:'img/albums/Libertad.jpeg', preview:'/audio/Preview8.mp3?v=25' },
+    { id:'MT-009', title:'Libertad - Natsach & Jehova A Vencido', artist:'Ministerios Ebenezer', price:18, bpm:'150', key:'Em', stems:'10', tag:'all', featured:false, cover:'img/albums/Libertad.jpeg', preview:'/audio/Preview9.mp3?v=25' },
+    { id:'MT-010', title:'Preparados Estamos', artist:'Ministerios Ebenezer', price:18, bpm:'150', key:'Am', stems:'10', tag:'all', featured:false, cover:'img/albums/Libertad.jpeg', preview:'/audio/Preview10.mp3?v=25' },
+    { id:'MT-011', title:'Aleluya', artist:'Ministerios Ebenezer', price:20, bpm:'150', key:'Em', stems:'15', tag:'all', featured:false, cover:'img/albums/Album2.jpg', preview:'/audio/Preview11.mp3?v=25' },
+    { id:'MT-012', title:'Derrama de tu vino Señor', artist:'Leonardo Díaz', price:18, bpm:'155', key:'Cm', stems:'12', tag:'all', featured:false, cover:'img/albums/derrama.jpeg', preview:'/audio/Preview12.mp3?v=25' },
+    { id:'MT-013', title:'Medley Justicia', artist:'Ebenezer Honduras', price:15, bpm:'150', key:'Em - Gm', stems:'12', tag:'all', featured:false, cover:'img/albums/Reino.jpg', preview:'/audio/Preview13.mp3?v=25' },
+    { id:'MT-014', title:'Jesus eres mi paz', artist:'Genesis Campos', price:16, bpm:'150', key:'Bb', stems:'11', tag:'all', featured:false, cover:'img/albums/anteelrey.jpg', preview:'/audio/Preview14.mp3?v=25' },
+    { id:'MT-015', title:'Medley Renacer', artist:'Ebenezer San Francisco', price:15, bpm:'155', key:'Bb', stems:'18', tag:'all', featured:false, cover:'img/albums/renacer.jpg', preview:'/audio/Preview15.mp3?v=25' },
+    { id:'MT-016', title:'Multitrack 16', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview16.mp3?v=25' },
+    { id:'MT-017', title:'Multitrack 17', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview17.mp3?v=25' },
+    { id:'MT-018', title:'Multitrack 18', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview18.mp3?v=25' },
+    { id:'MT-019', title:'Multitrack 19', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview19.mp3?v=25' },
+    { id:'MT-020', title:'Multitrack 20', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview20.mp3?v=25' },
+    { id:'MT-021', title:'Multitrack 21', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview21.mp3?v=25' },
+    { id:'MT-022', title:'Multitrack 22', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview22.mp3?v=25' },
+    { id:'MT-023', title:'Multitrack 23', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview23.mp3?v=25' },
+    { id:'MT-024', title:'Multitrack 24', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview24.mp3?v=25' },
+    { id:'MT-025', title:'Multitrack 25', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview25.mp3?v=25' },
+    { id:'MT-026', title:'Multitrack 26', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview26.mp3?v=25' },
+    { id:'MT-027', title:'Multitrack 27', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview27.mp3?v=25' },
+    { id:'MT-028', title:'Multitrack 28', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview28.mp3?v=25' },
+    { id:'MT-029', title:'Multitrack 29', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview29.mp3?v=25' },
+    { id:'MT-030', title:'Multitrack 30', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview30.mp3?v=25' },
+    { id:'MT-031', title:'Multitrack 31', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview31.mp3?v=25' },
+    { id:'MT-032', title:'Multitrack 32', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview32.mp3?v=25' },
+    { id:'MT-033', title:'Multitrack 33', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview33.mp3?v=25' },
+    { id:'MT-034', title:'Multitrack 34', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview34.mp3?v=25' },
+    { id:'MT-035', title:'Multitrack 35', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview35.mp3?v=25' },
+    { id:'MT-036', title:'Multitrack 36', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview36.mp3?v=25' },
+    { id:'MT-037', title:'Multitrack 37', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview37.mp3?v=25' },
+    { id:'MT-038', title:'Multitrack 38', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview38.mp3?v=25' },
+    { id:'MT-039', title:'Multitrack 39', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview39.mp3?v=25' },
+    { id:'MT-040', title:'Multitrack 40', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview40.mp3?v=25' },
+    { id:'MT-041', title:'Multitrack 41', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview41.mp3?v=25' },
+    { id:'MT-042', title:'Multitrack 42', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview42.mp3?v=25' },
+    { id:'MT-043', title:'Multitrack 43', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview43.mp3?v=25' },
+    { id:'MT-044', title:'Multitrack 44', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview44.mp3?v=25' },
+    { id:'MT-045', title:'Multitrack 45', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview45.mp3?v=25' },
+    { id:'MT-046', title:'Multitrack 46', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview46.mp3?v=25' },
+    { id:'MT-047', title:'Multitrack 47', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview47.mp3?v=25' }
   ];
   window.DINGLOFT_MULTITRACKS = MULTITRACKS;
 
@@ -2714,7 +2737,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
             <div class="mt-price"><small>Precio</small><strong class="${configured?'':'pending'}">${price}</strong></div>
             <button type="button" class="mt-cart-action ${cartClass}" ${cartAttrs}>Agregar <i class="bi bi-bag-plus"></i></button>
           </div>
-          <audio class="mt-card-audio" src="${item.preview || ''}" preload="none" playsinline webkit-playsinline aria-hidden="true"></audio>
+          <audio class="mt-card-audio" src="${item.preview || ''}" preload="metadata" playsinline webkit-playsinline aria-hidden="true"></audio>
           <button type="button" class="mt-preview-action mt-play-btn" data-id="${item.id}" data-src="${item.preview || ''}" data-title="${item.title}" aria-label="Escuchar preview de ${item.title}">
             <span class="mt-preview-action-main">
               <span class="mt-preview-action-icon"><i class="bi bi-play-fill"></i></span>
@@ -2751,6 +2774,8 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
     applyFilters();
   };
 
+  const fmtTime = (s) => `${Math.floor((s || 0)/60)}:${String(Math.floor((s || 0)%60)).padStart(2,'0')}`;
+
   const resetCardPlayer = (btn, resetProgress = false) => {
     if (!btn) return;
     btn.classList.remove('is-playing');
@@ -2764,11 +2789,6 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
       if (fill) fill.style.width = '0%';
       if (time) time.textContent = '0:00 / 0:00';
     }
-  };
-
-  const fmtTime = (sec) => {
-    const value = Number(sec || 0);
-    return `${Math.floor(value/60)}:${String(Math.floor(value%60)).padStart(2,'0')}`;
   };
 
   const playerForButton = btn => btn?.closest('.mt-card')?.querySelector('.mt-card-audio') || null;
@@ -2897,7 +2917,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
 
   render();
 })();
-</script><script src="multitrack-worker-gate.js?v=24"></script><script type="module">
+</script><script src="multitrack-worker-gate.js?v=25"></script><script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -3514,13 +3534,14 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
       const dock = document.getElementById('mobileAppDock');
       const navbar = document.querySelector('.navbar-glass');
       const items = dock ? [...dock.querySelectorAll('.mobile-dock-item[data-dock-target]')] : [];
+      const directApp = document.documentElement.classList.contains('dingloft-direct-app');
 
       const setActive = (name) => {
         items.forEach(item => item.classList.toggle('active', item.dataset.dockTarget === name));
       };
 
       const updateMobileChrome = () => {
-        if (!isMobile()) return;
+        if (!isMobile() || directApp) return;
         const doc = document.documentElement;
         const max = Math.max(1, doc.scrollHeight - window.innerHeight);
         const progress = Math.min(100, Math.max(0, (window.scrollY / max) * 100));
@@ -3565,6 +3586,6 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
       }, {passive:true});
     })();
   </script>  <script type="module" src="dingloft-commerce.js?v=2.1.0"></script>
-<script src="dingloft-ui-guard.js?v=24"></script>
+<script src="dingloft-ui-guard.js?v=25"></script>
 </body>
 </html>

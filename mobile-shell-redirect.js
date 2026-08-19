@@ -6,12 +6,11 @@
   const mobileViewport=window.matchMedia('(max-width:1024px)').matches && navigator.maxTouchPoints>0;
   if (!(mobileOS || mobileViewport)) return;
   const params=new URLSearchParams(location.search);
-  if(params.get('embed')==='1') return;
+  if(params.get('embed')==='1' || params.get('app')==='1' || params.get('direct')==='1') return;
 
   let part=(location.pathname.split('/').filter(Boolean).pop()||'index').toLowerCase();
   part=part.replace(/\.html$/,'');
   if(part==='app') return;
-  // Admin stays independent; embedding it would hide its own admin navigation.
   if(part==='admin'||part==='commerce-admin') return;
 
   const app=new URL('/app.html',location.origin);

@@ -1,4 +1,4 @@
-const VERSION = '24';
+const VERSION = '25';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -6,12 +6,13 @@ const OFFLINE = '/offline.html';
 
 const CORE = [
   '/offline.html',
-  '/launch.html?v=24',
+  '/launch.html?v=25',
   '/app.html?route=home',
   '/desktop-shell.html?src=ventas.html',
   '/ventas.html',
   '/index.html',
   '/multitrack.html',
+  '/multitrack.html?app=1',
   '/account.html',
   '/login.html',
   '/sketchup.html',
@@ -33,8 +34,8 @@ const CORE = [
   '/dingloft-ui-guard.js',
   '/mobile-shell-redirect.js',
   '/pwa-install.js',
-  '/pwa-runtime.js?v=24',
-  '/manifest.webmanifest?v=24',
+  '/pwa-runtime.js?v=25',
+  '/manifest.webmanifest?v=25',
   '/img/pwa-liquid-rounded-192-v17.png',
   '/img/pwa-liquid-rounded-512-v17.png',
   '/img/pwa-liquid-192-v5.png',

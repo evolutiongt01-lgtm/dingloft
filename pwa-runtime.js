@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const VERSION = '24';
+  const VERSION = '25';
   const SW_URL = `/sw.js?v=${VERSION}`;
   const PROMPT_KEY = 'dingloft_update_prompted_version';
   const PROMPT_TIME_KEY = 'dingloft_update_prompted_at';
