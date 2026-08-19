@@ -1,96 +1,146 @@
-const CACHE = 'dingloft-app-v22-audio-fix';
+const VERSION = '23';
+const CACHE_PREFIX = 'dingloft-app-';
+const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
+const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
+const OFFLINE = '/offline.html';
+
 const CORE = [
-  "/launch.html?v=18",
-  "/app.html?route=home",
-  "/desktop-shell.html?src=ventas.html",
-  "/ventas.html",
-  "/index.html",
-  "/dingloft-app.js",
-  "/desktop-shell.js",
-  "/desktop-global-nav.js",
-  "/dingloft-ui-guard.js",
-  "/pwa-install.js",
-  "/manifest.webmanifest?v=18",
-  "/mobile-shell-redirect.js",
-  "/img/pwa-liquid-192-v5.png",
-  "/img/pwa-liquid-512-v5.png",
-  "/img/pwa-liquid-maskable-512-v5.png",
-  "/img/apple-touch-icon-liquid-v5.png",
-  "/img/pwa-liquid-rounded-192-v17.png",
-  "/img/pwa-liquid-rounded-512-v17.png",
-  "/img/iphone-se-640x1136.png",
-  "/img/iphone-8-750x1334.png",
-  "/img/iphone-8-plus-1242x2208.png",
-  "/img/iphone-x-1125x2436.png",
-  "/img/iphone-11-828x1792.png",
-  "/img/iphone-11-pro-max-1242x2688.png",
-  "/img/iphone-12-mini-1080x2340.png",
-  "/img/iphone-14-1170x2532.png",
-  "/img/iphone-14-plus-1284x2778.png",
-  "/img/iphone-15-pro-1179x2556.png",
-  "/img/iphone-15-pro-max-1290x2796.png",
-  "/img/iphone-16-pro-1206x2622.png",
-  "/img/iphone-16-pro-max-1320x2868.png"
+  '/offline.html',
+  '/launch.html?v=23',
+  '/app.html?route=home',
+  '/desktop-shell.html?src=ventas.html',
+  '/ventas.html',
+  '/index.html',
+  '/multitrack.html',
+  '/account.html',
+  '/login.html',
+  '/sketchup.html',
+  '/yamahakeys.html',
+  '/autocad.html',
+  '/nord.html',
+  '/rhodes.html',
+  '/mainstage.html',
+  '/logic.html',
+  '/office.html',
+  '/cinema4d.html',
+  '/dual.html',
+  '/esword.html',
+  '/producto.html',
+  '/tienda.html',
+  '/dingloft-app.js',
+  '/desktop-shell.js',
+  '/desktop-global-nav.js',
+  '/dingloft-ui-guard.js',
+  '/mobile-shell-redirect.js',
+  '/pwa-install.js',
+  '/pwa-runtime.js',
+  '/manifest.webmanifest?v=23',
+  '/img/pwa-liquid-rounded-192-v17.png',
+  '/img/pwa-liquid-rounded-512-v17.png',
+  '/img/pwa-liquid-192-v5.png',
+  '/img/pwa-liquid-512-v5.png',
+  '/img/pwa-liquid-maskable-512-v5.png'
 ];
 
+async function precache(){
+  const cache = await caches.open(CACHE);
+  await Promise.allSettled(CORE.map(async url => {
+    try {
+      const req = new Request(url, {cache:'reload'});
+      const res = await fetch(req);
+      if (res && (res.ok || res.type === 'opaque')) await cache.put(url, res.clone());
+    } catch(_) {}
+  }));
+}
+
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).catch(() => null));
-  self.skipWaiting();
+  event.waitUntil(precache());
+  // Intentionally DO NOT skipWaiting here: the app shows a full update screen first.
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.filter(k => k.startsWith('dingloft-app-') && k !== CACHE).map(k => caches.delete(k)));
+    await Promise.all(keys.filter(k => k.startsWith(CACHE_PREFIX) && ![CACHE,RUNTIME].includes(k)).map(k => caches.delete(k)));
     await self.clients.claim();
   })());
 });
 
 self.addEventListener('message', event => {
-  if (event.data === 'SKIP_WAITING') self.skipWaiting();
+  const data = event.data;
+  if (data === 'SKIP_WAITING' || data?.type === 'SKIP_WAITING') self.skipWaiting();
+  if (data?.type === 'GET_VERSION' && event.ports?.[0]) event.ports[0].postMessage({version:VERSION});
 });
+
+function isSensitive(url, req){
+  const host = url.hostname.toLowerCase();
+  if (host.includes('workers.dev') || host.includes('paypal.com') || host.includes('paypalobjects.com') || host.includes('googleapis.com') || host.includes('firebaseio.com') || host.includes('zoho.')) return true;
+  if (/\/(admin|commerce-admin|register)\.html$/i.test(url.pathname)) return true;
+  if (/\/(download|checkout|webhooks|auth)\b/i.test(url.pathname)) return true;
+  if (req.headers.has('authorization')) return true;
+  return false;
+}
+
+async function networkFirst(req){
+  const cache = await caches.open(RUNTIME);
+  try {
+    const fresh = await fetch(req);
+    if (fresh && fresh.ok) cache.put(req, fresh.clone()).catch(()=>{});
+    return fresh;
+  } catch(_) {
+    const exact = await cache.match(req) || await caches.match(req);
+    if (exact) return exact;
+    return (await caches.match(OFFLINE)) || new Response('Sin conexión', {status:503, headers:{'content-type':'text/plain;charset=utf-8'}});
+  }
+}
+
+async function staleWhileRevalidate(req){
+  const cache = await caches.open(RUNTIME);
+  const cached = await cache.match(req) || await caches.match(req);
+  const network = fetch(req).then(async fresh => {
+    if (fresh && (fresh.ok || fresh.type === 'opaque')) await cache.put(req, fresh.clone()).catch(()=>{});
+    return fresh;
+  }).catch(()=>null);
+  return cached || await network || Response.error();
+}
+
+async function cacheFirst(req){
+  const cache = await caches.open(RUNTIME);
+  const cached = await cache.match(req) || await caches.match(req);
+  if (cached) return cached;
+  const fresh = await fetch(req);
+  if (fresh && (fresh.ok || fresh.type === 'opaque')) await cache.put(req, fresh.clone()).catch(()=>{});
+  return fresh;
+}
 
 self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-  if (url.origin !== self.location.origin) return;
 
-  // Audio previews must bypass the PWA cache so Safari can request byte ranges normally.
+  // Never cache commerce/auth/API traffic. Offline checkout must fail closed.
+  if (isSensitive(url, req)) return;
+
+  // Keep audio previews on the network path so Safari byte-range playback stays reliable.
   if (req.destination === 'audio' || /^\/audio\//i.test(url.pathname) || req.headers.has('range')) return;
 
-  // Never cache admin/auth endpoints or downloadable/API-like URLs.
-  if (/\/(admin|commerce-admin|login|register)\.html$/i.test(url.pathname) || /\/download$/i.test(url.pathname)) return;
-
+  // Documents are network-first and fall back to the last visited copy/offline page.
   if (req.mode === 'navigate' || req.destination === 'document') {
-    event.respondWith((async () => {
-      try {
-        const fresh = await fetch(req);
-        if (fresh && fresh.ok) {
-          const cache = await caches.open(CACHE);
-          cache.put(req, fresh.clone()).catch(() => {});
-        }
-        return fresh;
-      } catch (_) {
-        const cached = await caches.match(req);
-        if (cached) return cached;
-        return caches.match('/launch.html?v=18') || caches.match('/app.html?route=home');
-      }
-    })());
+    event.respondWith(networkFirst(req));
     return;
   }
 
-  if (['script','style','image','font','manifest'].includes(req.destination)) {
-    event.respondWith((async () => {
-      const cached = await caches.match(req);
-      const network = fetch(req).then(async fresh => {
-        if (fresh && fresh.ok) {
-          const cache = await caches.open(CACHE);
-          cache.put(req, fresh.clone()).catch(() => {});
-        }
-        return fresh;
-      }).catch(() => null);
-      return cached || await network || Response.error();
-    })());
+  // Same-origin app code/content: show cache immediately, refresh silently in background.
+  if (url.origin === self.location.origin) {
+    if (['script','style','image','font','manifest'].includes(req.destination) || /\.(js|css|png|jpg|jpeg|webp|svg|ico|woff2?)$/i.test(url.pathname)) {
+      event.respondWith(staleWhileRevalidate(req));
+    }
+    return;
+  }
+
+  // Cache only harmless presentation resources from known CDNs for offline rendering.
+  const presentationHosts = new Set(['fonts.googleapis.com','fonts.gstatic.com','cdn.jsdelivr.net']);
+  if (presentationHosts.has(url.hostname) && ['style','font','image'].includes(req.destination)) {
+    event.respondWith(cacheFirst(req));
   }
 });

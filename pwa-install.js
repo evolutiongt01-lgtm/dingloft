@@ -102,7 +102,7 @@
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const reg=await navigator.serviceWorker.register('/sw.js?v=18', { scope:'/' });
+        const reg=await navigator.serviceWorker.register('/sw.js?v=23', { scope:'/', updateViaCache:'none' });
         reg.update().catch(()=>{});
       } catch (err) { console.warn('Dingloft PWA:', err); }
     });
