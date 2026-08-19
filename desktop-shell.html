@@ -99,6 +99,72 @@ html.dingloft-installed #navInstall{display:none!important}
 }
 @media (prefers-reduced-motion:reduce){.shell-nav .nav-glider,.shell-nav .action,.shell-nav .action:after,.shell-nav .action svg,.shell-nav .action span{transition:none!important}}
 </style>
+
+<style id="dingloft-desktop-load-glow-v37">
+@media (min-width:900px) and (pointer:fine){
+  /* v37: replace the old blue loading bar with a glow emitted by the floating nav. */
+  .progress{display:none!important;}
+  .shell-nav{
+    --load-x:82%;
+    isolation:isolate!important;
+    overflow:visible!important;
+    transition:border-color .28s ease,box-shadow .34s ease,filter .34s ease!important;
+  }
+  .shell-nav::before,
+  .shell-nav::after{
+    content:"";position:absolute;pointer-events:none;opacity:0;z-index:-1;
+    transform-origin:var(--load-x) 50%;will-change:transform,opacity,filter;
+  }
+  /* Wide ambient bloom that appears to escape from the navbar. */
+  .shell-nav::before{
+    left:-32px;right:-32px;top:-24px;bottom:-44px;border-radius:42px;
+    background:
+      radial-gradient(ellipse 280px 88px at var(--load-x) 54%,rgba(101,226,255,.46) 0%,rgba(83,176,255,.22) 34%,rgba(105,91,255,.13) 52%,transparent 74%),
+      radial-gradient(ellipse 62% 80% at var(--load-x) 38%,rgba(112,220,255,.12),transparent 70%);
+    filter:blur(18px) saturate(145%);
+  }
+  /* Sharper flash at the nav surface; no progress line/bar. */
+  .shell-nav::after{
+    inset:-2px;border-radius:24px;z-index:0;
+    background:
+      radial-gradient(ellipse 190px 50px at var(--load-x) 50%,rgba(209,250,255,.30) 0%,rgba(116,224,255,.16) 36%,transparent 72%);
+    mix-blend-mode:screen;filter:blur(1px);
+  }
+  .shell-nav.loading{
+    border-color:rgba(116,224,255,.27)!important;
+    box-shadow:0 22px 64px rgba(0,0,0,.44),0 0 34px rgba(70,188,255,.08),inset 0 1px 0 rgba(255,255,255,.07)!important;
+  }
+  .shell-nav.loading::before{animation:dingloftNavAura 1.08s cubic-bezier(.16,1,.3,1) infinite;}
+  .shell-nav.loading::after{animation:dingloftNavFlash .92s cubic-bezier(.16,1,.3,1) infinite;}
+  .shell-nav.load-complete::before{animation:dingloftNavComplete .46s cubic-bezier(.16,1,.3,1) both;}
+  .shell-nav.load-complete::after{animation:dingloftNavSurfaceComplete .38s cubic-bezier(.16,1,.3,1) both;}
+  @keyframes dingloftNavAura{
+    0%{opacity:.05;transform:scaleX(.18) scaleY(.72);filter:blur(22px) saturate(125%)}
+    24%{opacity:.82;transform:scaleX(.74) scaleY(1);filter:blur(17px) saturate(155%)}
+    72%{opacity:.34;transform:scaleX(1.18) scaleY(1.10);filter:blur(22px) saturate(145%)}
+    100%{opacity:.08;transform:scaleX(1.42) scaleY(1.18);filter:blur(27px) saturate(130%)}
+  }
+  @keyframes dingloftNavFlash{
+    0%{opacity:0;transform:scaleX(.12)}
+    22%{opacity:.82;transform:scaleX(.52)}
+    58%{opacity:.20;transform:scaleX(1.10)}
+    100%{opacity:0;transform:scaleX(1.48)}
+  }
+  @keyframes dingloftNavComplete{
+    0%{opacity:.54;transform:scaleX(.55) scaleY(.92);filter:blur(16px)}
+    48%{opacity:.78;transform:scaleX(1.06) scaleY(1.04);filter:blur(19px)}
+    100%{opacity:0;transform:scaleX(1.38) scaleY(1.14);filter:blur(25px)}
+  }
+  @keyframes dingloftNavSurfaceComplete{
+    0%{opacity:.46;transform:scaleX(.38)}
+    55%{opacity:.72;transform:scaleX(.94)}
+    100%{opacity:0;transform:scaleX(1.30)}
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .shell-nav.loading::before,.shell-nav.loading::after,.shell-nav.load-complete::before,.shell-nav.load-complete::after{animation:none!important;opacity:0!important}
+}
+</style>
 </head>
 <body style="background:#040609">
 <div id="desktopSplash" aria-label="Cargando Dingloft"><div class="desktop-splash-inner"><div class="desktop-splash-mark"><img src="/img/pwa-liquid-rounded-192-v17.png?v=18" alt="Dingloft"></div><div class="desktop-splash-brand">DINGLOFT</div><div class="desktop-splash-group">Evolution Group</div><div class="desktop-splash-status">Preparando tu espacio</div><div class="desktop-splash-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div></div>
@@ -112,7 +178,7 @@ html.dingloft-installed #navInstall{display:none!important}
   </nav>
 </header>
 <div class="stage" id="stage"></div><div class="progress" id="progress"></div>
-<script src="desktop-shell.js?v=36"></script>
+<script src="desktop-shell.js?v=37"></script>
 <script src="dingloft-ui-guard.js?v=34"></script>
-<script src="/pwa-runtime.js?v=36"></script>
+<script src="/pwa-runtime.js?v=37"></script>
 </body></html>
