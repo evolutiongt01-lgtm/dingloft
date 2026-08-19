@@ -1,4 +1,4 @@
-const CACHE = 'dingloft-app-v18-zero-white';
+const CACHE = 'dingloft-app-v22-audio-fix';
 const CORE = [
   "/launch.html?v=18",
   "/app.html?route=home",
@@ -55,6 +55,9 @@ self.addEventListener('fetch', event => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
+
+  // Audio previews must bypass the PWA cache so Safari can request byte ranges normally.
+  if (req.destination === 'audio' || /^\/audio\//i.test(url.pathname) || req.headers.has('range')) return;
 
   // Never cache admin/auth endpoints or downloadable/API-like URLs.
   if (/\/(admin|commerce-admin|login|register)\.html$/i.test(url.pathname) || /\/download$/i.test(url.pathname)) return;
