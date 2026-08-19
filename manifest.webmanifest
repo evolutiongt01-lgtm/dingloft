@@ -23,19 +23,19 @@
   ],
   "icons": [
     {
-      "src": "/img/pwa-icon-192.png",
+      "src": "/img/pwa-liquid-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/img/pwa-icon-512.png",
+      "src": "/img/pwa-liquid-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/img/pwa-maskable-512.png",
+      "src": "/img/pwa-liquid-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -48,8 +48,9 @@
       "url": "/app.html?route=catalog",
       "icons": [
         {
-          "src": "/img/pwa-icon-192.png",
-          "sizes": "192x192"
+          "src": "/img/pwa-liquid-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ]
     },
@@ -59,8 +60,9 @@
       "url": "/app.html?route=multitrack",
       "icons": [
         {
-          "src": "/img/pwa-icon-192.png",
-          "sizes": "192x192"
+          "src": "/img/pwa-liquid-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ]
     },
@@ -70,8 +72,9 @@
       "url": "/app.html?route=account",
       "icons": [
         {
-          "src": "/img/pwa-icon-192.png",
-          "sizes": "192x192"
+          "src": "/img/pwa-liquid-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ]
     }
