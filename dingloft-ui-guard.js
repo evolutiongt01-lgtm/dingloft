@@ -99,6 +99,16 @@
 
 
 
+  // Universal presence tracker: one bootstrap for every Dingloft page that loads this guard.
+  function loadPresence(){
+    if (document.querySelector('script[data-dingloft-presence]')) return;
+    const script=document.createElement('script');
+    script.type='module';
+    script.src='/dingloft-presence.js?v=45';
+    script.dataset.dingloftPresence='45';
+    document.head.appendChild(script);
+  }
+
   // Universal mobile chrome lives in ONE independent file.
   // This guard only bootstraps it; it no longer owns or duplicates header/dock/cart UI.
   function loadMobileChrome(){
@@ -115,8 +125,8 @@
   }
 
   addBaseStyle();
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { markInstalled(); loadMobileChrome(); }, {once:true});
-  else { markInstalled(); loadMobileChrome(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { markInstalled(); loadPresence(); loadMobileChrome(); }, {once:true});
+  else { markInstalled(); loadPresence(); loadMobileChrome(); }
   addEventListener('appinstalled', () => { localStorage.setItem('dingloft_installed_at', String(Date.now())); markInstalled(); });
   matchMedia('(display-mode: standalone)').addEventListener?.('change', markInstalled);
 })();
