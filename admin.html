@@ -112,12 +112,34 @@ const tableObserver=new MutationObserver(()=>requestAnimationFrame(decorateMobil
 
 const $=id=>document.getElementById(id),esc=s=>String(s??"").replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])),money=n=>`$${Number(n||0).toFixed(2)}`,date=v=>{if(!v)return"—";const d=new Date(v);return isNaN(d)?"—":d.toLocaleString("es-GT",{dateStyle:"medium",timeStyle:"short"})},flag=code=>{code=String(code||"").toUpperCase();return/^[A-Z]{2}$/.test(code)?String.fromCodePoint(...[...code].map(c=>127397+c.charCodeAt(0))):"🌐"},slug=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,80);
 function toast(t){$('toast').textContent=t;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2800)}function status(id,t,type=""){$(id).textContent=t;$(id).className=`statusmsg ${type}`}
-async function api(path,{method="GET",body}={}){const u=auth.currentUser;if(!u)throw Error("Sesión no válida");const token=await u.getIdToken();let r;try{r=await fetch(WORKER+path,{method,headers:{Authorization:`Bearer ${token}`,...(body?{"content-type":"application/json"}:{})},body:body?JSON.stringify(body):undefined})}catch(networkError){const e=Error("No se pudo conectar con el Worker");e.status=0;e.path=path;throw e}const d=await r.json().catch(()=>({}));if(!r.ok||d.ok===false){const e=Error(d.error||`Error ${r.status}`);e.status=r.status;e.code=d.code||"";e.path=path;throw e}return d}
+async function api(path,{method="GET",body}={}){
+  const u=auth.currentUser;if(!u)throw Error("Sesión no válida");
+  const run=async(forceRefresh=false)=>{
+    const token=await u.getIdToken(forceRefresh);
+    const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),12000);
+    let r;
+    try{r=await fetch(WORKER+path,{method,signal:controller.signal,cache:"no-store",headers:{Authorization:`Bearer ${token}`,...(body?{"content-type":"application/json"}:{})},body:body?JSON.stringify(body):undefined})}
+    catch(networkError){const e=Error(networkError?.name==="AbortError"?"El Worker tardó demasiado en responder":"No se pudo conectar con el Worker");e.status=0;e.path=path;throw e}
+    finally{clearTimeout(timer)}
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok||d.ok===false){const e=Error(d.error||`Error ${r.status}`);e.status=r.status;e.code=d.code||"";e.path=path;throw e}
+    return d;
+  };
+  try{return await run(false)}catch(e){if(e.status===401||e.status===403){try{return await run(true)}catch(retry){throw retry}}throw e}
+}
 function showView(name){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));const target=$(`view-${name}`);if(!target)return;target.classList.add('active');document.querySelectorAll('.nav button[data-view],.mobile-admin-nav button[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===name));$('crumb').textContent={dashboard:'Resumen',orders:'Pedidos',products:'Productos',customers:'Clientes',reviews:'Reseñas',finance:'Finanzas',reservations:'Reservas'}[name]||name;history.replaceState(null,'',`#${name}`);window.scrollTo({top:0,behavior:'smooth'});const active=document.querySelector(`.mobile-admin-nav button[data-view="${name}"]`);active?.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});decorateMobileTables()}document.querySelectorAll('.nav button[data-view],.mobile-admin-nav button[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));document.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>showView(b.dataset.goto));document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>$(b.dataset.close).classList.remove('show'));document.querySelectorAll('.modal').forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove('show')});
 const loadErrors={};
 async function guardedLoad(key,fn){try{await fn();delete loadErrors[key];return{key,ok:true}}catch(error){loadErrors[key]=error;console.error(`[Admin ${key}]`,error);return{key,ok:false,error}}}
 function renderSyncHealth(){const box=$('adminSyncHealth');if(!box)return;const entries=Object.entries(loadErrors);if(!entries.length){box.classList.remove('show','auth');return}box.classList.add('show');const authProblem=entries.some(([,e])=>Number(e?.status)===401||Number(e?.status)===403);box.classList.toggle('auth',authProblem);$('adminSyncTitle').textContent=authProblem?'El Worker rechazó parte del panel':'Algunos módulos no pudieron sincronizar';$('adminSyncText').textContent=entries.map(([k,e])=>`${({products:'Productos',orders:'Pedidos',customers:'Clientes',reviews:'Reseñas',reservations:'Reservas'}[k]||k)}: ${e?.message||'error'}`).join(' · ');$('adminSyncHint').textContent=authProblem?'Si estás usando matzarcesar01@hotmail.com, confirma que el Worker desplegado también tenga ese correo en ADMIN_EMAILS. Los demás módulos seguirán cargando por separado.':'El panel ya no se pone todo en cero por un solo fallo. Pulsa Actualizar para reintentar.'}
-async function loadAll(){const results=await Promise.all([guardedLoad('products',loadProducts),guardedLoad('orders',loadOrders),guardedLoad('customers',loadCustomers),guardedLoad('reviews',loadReviews),guardedLoad('reservations',loadReservations)]);renderDashboard();renderFinance();renderClientGlobe();renderSyncHealth();decorateMobileTables();return results}
+async function loadAll(){
+  const jobs=[['products',loadProducts],['orders',loadOrders],['customers',loadCustomers],['reviews',loadReviews],['reservations',loadReservations]];
+  const tasks=jobs.map(([key,fn])=>guardedLoad(key,fn).then(result=>{
+    renderDashboard();renderFinance();renderClientGlobe();renderSyncHealth();decorateMobileTables();return result;
+  }));
+  const results=await Promise.all(tasks);
+  renderDashboard();renderFinance();renderClientGlobe();renderSyncHealth();decorateMobileTables();
+  return results;
+}
 function renderDashboard(){const paid=orders.filter(o=>o.paymentStatus==='paid'),rev=paid.reduce((s,o)=>s+Number(o.amountPaidUsd||0),0),active=products.filter(p=>p.active!==false),missing=active.filter(p=>!p.deliveryConfigured);$('dOrders').textContent=loadErrors.orders?'—':paid.length;$('dRevenue').textContent=loadErrors.orders?'—':money(rev);$('dCustomers').textContent=loadErrors.customers?'—':customers.length;$('dProducts').textContent=loadErrors.products?'—':active.length;$('dMissing').textContent=loadErrors.products?'Sin sincronizar':`${missing.length} sin entrega`;$('recentOrders').innerHTML=loadErrors.orders?`<div class="empty">${esc(loadErrors.orders.message||'No se pudieron cargar los pedidos.')}</div>`:orders.slice(0,6).map(o=>`<div style="display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)"><div><b>${esc(o.orderNumber)}</b><div class="muted" style="font-size:11px;margin-top:3px">${esc(o.userEmail)} · ${(o.items||[]).map(i=>esc(i.name)).join(', ')}</div></div><b>${money(o.amountPaidUsd)}</b></div>`).join('')||'<div class="empty">Todavía no hay pedidos.</div>';$('catalogAlerts').innerHTML=loadErrors.products?`<div class="alert"><b>Catálogo sin sincronizar</b><br>${esc(loadErrors.products.message||'No se pudo consultar el catálogo.')}</div>`:missing.length?missing.slice(0,10).map(p=>`<div class="alert"><b>${esc(p.name)}</b><br>Falta link de descarga. El checkout permanece bloqueado.</div>`).join(''):'<div class="pill ok"><i class="bi bi-check-circle"></i> Todo el catálogo activo tiene entrega</div>'}
 
 // --- Globe / recent customer locations ---
@@ -182,7 +204,7 @@ function renderReviews(){
     <td style="max-width:480px;white-space:normal;line-height:1.45">${esc(r.text||'')}</td>
     <td><span style="color:#ffc857;letter-spacing:.04em">${stars(r.rating)}</span></td>
     <td>${Number(r.likes||0)}</td>
-    <td>${dateText(r.createdAt)}</td>
+    <td>${date(r.createdAt)}</td>
     <td><button class="btn danger small review-delete" data-id="${esc(r.id)}" data-collection="${esc(r.collection)}" data-name="${esc(r.name||'Usuario')}"><i class="bi bi-trash"></i> Eliminar</button></td>
   </tr>`).join(''):'<tr><td colspan="7"><div class="empty">No hay reseñas que coincidan.</div></td></tr>';
   document.querySelectorAll('.review-delete').forEach(btn=>btn.onclick=async()=>{
@@ -200,6 +222,16 @@ $('reviewSearch').oninput=renderReviews;$('reviewProductFilter').onchange=render
 function renderFinance(){const paid=orders.filter(o=>o.paymentStatus==='paid'),rev=paid.reduce((s,o)=>s+Number(o.amountPaidUsd||0),0),aov=paid.length?rev/paid.length:0,now=new Date(),month=paid.filter(o=>{const d=new Date(o.createdAt);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear()}).reduce((s,o)=>s+Number(o.amountPaidUsd||0),0);$('fRevenue').textContent=money(rev);$('fAov').textContent=money(aov);$('fMonth').textContent=money(month);const map={};paid.forEach(o=>(o.items||[]).forEach(i=>{const k=i.name||i.sku;map[k]=(map[k]||0)+Number(i.quantity||1)}));const top=Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,10);$('topProducts').innerHTML=top.map(([n,c],i)=>`<div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05)"><span>${i+1}. ${esc(n)}</span><b>${c} ventas</b></div>`).join('')||'<div class="empty">Sin datos todavía.</div>'}
 async function loadReservations(){try{const snap=await getDocs(collection(db,'reservas'));reservations=snap.docs.map(d=>({id:d.id,...d.data()}));renderReservations()}catch(e){$('reservationsList').innerHTML='<div class="empty">No se pudieron cargar las reservas.</div>'}}
 function renderReservations(){$('reservationsList').innerHTML=reservations.length?reservations.map(r=>`<div class="reservation"><div class="reservation-top"><div><b>${esc(r.email||r.nombre||'Cliente')}</b><div class="muted">${esc(r.software||r.producto||'Servicio remoto')}</div></div><span class="pill ${r.estado==='completado'?'ok':'warn'}">${esc(r.estado||'pendiente')}</span></div><div class="reservation-grid"><div><small>Fecha</small><b>${esc(r.fecha||r.date||'—')}</b></div><div><small>Hora</small><b>${esc(r.hora||r.time||'—')}</b></div><div><small>Precio</small><b>${money(r.precio||r.price||0)}</b></div><div><small>Código</small><b>${esc(r.codigo||r.code||'—')}</b></div></div><div style="display:flex;gap:8px;margin-top:11px">${r.estado!=='completado'?`<button class="btn small res-done" data-id="${esc(r.id)}">Completar</button>`:''}<button class="btn danger small res-del" data-id="${esc(r.id)}">Eliminar</button></div></div>`).join(''):'<div class="empty">No hay reservas.</div>';document.querySelectorAll('.res-done').forEach(b=>b.onclick=async()=>{await updateDoc(doc(db,'reservas',b.dataset.id),{estado:'completado'});await loadReservations()});document.querySelectorAll('.res-del').forEach(b=>b.onclick=async()=>{if(confirm('¿Eliminar reserva?')){await deleteDoc(doc(db,'reservas',b.dataset.id));await loadReservations()}})}
-$('refreshAll').onclick=async()=>{toast('Actualizando…');try{await loadAll();toast(Object.keys(loadErrors).length?'Panel actualizado con avisos':'Panel actualizado')}catch(e){toast(e.message||'No se pudo actualizar')}};$('logout').onclick=()=>signOut(auth);onAuthStateChanged(auth,async u=>{if(!u){location.href='login.html';return}if(!ADMIN.has(u.email)){location.href='account.html';return}$('adminEmail').textContent=u.email;$('adminName').textContent=u.email==='tepaz2025@gmail.com'?'Antonio · Admin':'César · Admin';await purgeResolvedJuniorReviews();await loadAll();const h=location.hash.replace('#','');if(h&&$(`view-${h}`))showView(h);hideAdminIntro()});blankProduct();
-</script><script src="dingloft-ui-guard.js?v=41"></script>
+$('refreshAll').onclick=async()=>{toast('Actualizando…');try{await loadAll();toast(Object.keys(loadErrors).length?'Panel actualizado con avisos':'Panel actualizado')}catch(e){toast(e.message||'No se pudo actualizar')}};$('logout').onclick=()=>signOut(auth);onAuthStateChanged(auth,async u=>{
+  if(!u){location.href='login.html';return}
+  const email=String(u.email||'').toLowerCase();
+  if(!ADMIN.has(email)){location.href='account.html';return}
+  $('adminEmail').textContent=email;$('adminName').textContent=email==='tepaz2025@gmail.com'?'Antonio · Admin':'César · Admin';
+  hideAdminIntro();
+  // Nunca bloquear el panel por limpiezas/tareas secundarias.
+  loadAll().catch(e=>{console.error('Admin loadAll',e);renderSyncHealth();toast(e?.message||'No se pudo sincronizar el panel')});
+  purgeResolvedJuniorReviews().catch(()=>{});
+  const h=location.hash.replace('#','');if(h&&$(`view-${h}`))showView(h);
+});blankProduct();
+</script><script src="dingloft-ui-guard.js?v=42"></script>
 </body></html>
