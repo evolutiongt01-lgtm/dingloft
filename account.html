@@ -1,30 +1,997 @@
-<!doctype html>
-<html lang="es"><head>
-<!-- DINGLOFT_MOBILE_SHELL_BRIDGE -->
-<script>
-(()=>{
-  const q=new URLSearchParams(location.search);
-  const embedded=q.get('embed')==='1'||window.self!==window.top;
-  if(embedded){document.documentElement.classList.add('dingloft-shell-view');return;}
-  if(window.matchMedia('(max-width: 767px)').matches){
-    let target='app.html?route=account';
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi cuenta | Dingloft</title>
+  
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- PAYPAL SDK INTEGRADOR -->
+  <script src="https://www.paypal.com/sdk/js?client-id=BAA88hYhrlAVHUFkzsqrlDE1atrFHrCZe7j0XOYtbB4YlxcxBASouD2NAU2J_BV1fp9-jGGYK2Mh4bHN20&currency=USD"></script>
+
+  <style>
+    :root { --bg:#060911; --panel:#0c1421; --line:rgba(173,201,232,.14); --text:#f4f8ff; --muted:#9eacc0; --cyan:#12d7f6; --violet:#9a5cff; --green:#35dd92; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; color:var(--text); font-family:Inter,system-ui,sans-serif; background:radial-gradient(circle at 70% 14%,rgba(0,202,255,.10),transparent 28%),radial-gradient(circle at 15% 80%,rgba(121,77,255,.11),transparent 28%),var(--bg); }
+    button,a { font:inherit; } button { cursor:pointer; }
+    .app { min-height:100vh; display:grid; grid-template-columns:292px 1fr; }
+    .sidebar { position:sticky; top:0; height:100vh; display:flex; flex-direction:column; padding:33px 17px 20px; border-right:1px solid var(--line); background:rgba(4,8,15,.77); backdrop-filter:blur(18px); }
+    .brand { margin:0 36px 50px; text-decoration:none; color:white; font-weight:800; font-size:1.75rem; letter-spacing:-.07em; } .brand span { color:var(--cyan); }
+    .nav { display:grid; gap:7px; } .nav a { display:flex; gap:16px; align-items:center; padding:15px 19px; border-radius:13px; text-decoration:none; color:#c4d0df; font-size:.96rem; transition:.2s ease; }
+    .nav a i { width:21px; font-size:1.3rem; text-align:center; } .nav a:hover { background:rgba(64,93,126,.15); color:white; }
+    .nav a.active { color:var(--cyan); font-weight:700; background:linear-gradient(90deg,rgba(0,220,255,.13),rgba(41,71,112,.18)); box-shadow:inset 2px 0 var(--cyan); }
+    .profile { margin-top:auto; padding:18px; border:1px solid var(--line); border-radius:17px; background:rgba(10,16,28,.68); } .profile-top { display:flex; align-items:center; gap:12px; }
+    .avatar { width:42px; height:42px; display:grid; place-items:center; border-radius:50%; color:#07131e; font-weight:800; background:linear-gradient(135deg,#4ce7ff,#8b5bff); box-shadow:0 0 0 2px rgba(37,214,247,.42); overflow:hidden; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile strong { display:block; font-size:.87rem; } .profile small { display:block; margin-top:4px; color:var(--muted); font-size:.72rem; overflow:hidden; text-overflow:ellipsis; }
+    .logout { width:100%; display:flex; gap:12px; align-items:center; margin-top:17px; padding:12px 0 0; border:0; border-top:1px solid var(--line); color:#c7d3e1; background:transparent; text-align:left; font-size:.86rem; }
+    .content { min-width:0; padding:42px clamp(25px,5vw,78px) 37px; } .top { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    .top h1 { margin:0; letter-spacing:-.06em; font-size:clamp(2rem,3vw,3.2rem); } .top p { margin:.7rem 0 0; color:var(--muted); } .top-actions { display:flex; gap:13px; align-items:center; }
     
-    location.replace(target);
-  }
-})();
-</script>
-<style>
-@media(max-width:767px){
-  html.dingloft-shell-view body{padding-bottom:110px!important;overscroll-behavior-y:contain!important}
-  html.dingloft-shell-view .navbar-glass,
-  html.dingloft-shell-view .mobile-app-dock,
-  html.dingloft-shell-view .btn-floating-cart,
-  html.dingloft-shell-view body>header{display:none!important}
-  html.dingloft-shell-view .hero-section{padding-top:26px!important}
-  html.dingloft-shell-view main{padding-top:24px!important}
-}
-</style>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mi cuenta · Dingloft</title><link rel="icon" href="img/dingloft.png"><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"><style>
-:root{--bg:#05070a;--panel:#0b1118;--line:#1c2936;--text:#f2f8fc;--muted:#8899aa;--cyan:#16d8f4;--green:#35dc94;--gold:#ffd36b}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% -10%,rgba(22,216,244,.11),transparent 30%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}a{color:inherit;text-decoration:none}header{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,5vw,70px);border-bottom:1px solid var(--line);background:rgba(5,7,10,.84);backdrop-filter:blur(18px);position:sticky;top:0;z-index:20}.brand{font-size:1.35rem;font-weight:900;letter-spacing:-.04em}.brand span{color:var(--cyan)}.nav{display:flex;gap:16px;align-items:center;color:#9eabb8;font-size:.82rem}.logout{border:1px solid var(--line);background:#0b1118;color:#d9e5ee;border-radius:9px;padding:8px 10px;cursor:pointer}main{max-width:1120px;margin:auto;padding:48px 20px 90px}.eyebrow{font-size:.67rem;color:var(--cyan);font-weight:850;letter-spacing:.15em;text-transform:uppercase}h1{font-size:clamp(2.7rem,7vw,5.2rem);letter-spacing:-.06em;line-height:.94;margin:10px 0 12px}.lead{color:var(--muted);line-height:1.7}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:30px 0}.stat,.order{border:1px solid var(--line);background:linear-gradient(145deg,#0c141c,#080d12);border-radius:17px}.stat{padding:17px}.stat small{display:block;color:#73879a;font-size:.65rem;text-transform:uppercase;letter-spacing:.08em}.stat strong{display:block;font-size:1.55rem;margin-top:6px}.orders{display:grid;gap:12px}.order{padding:18px}.orderhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.06)}.orderid{font-weight:850}.date{font-size:.68rem;color:#718497;margin-top:4px}.pill{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:.62rem;font-weight:850;color:#83edbb;border:1px solid #24573f;background:#0b2418}.item{display:grid;grid-template-columns:54px 1fr auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.05)}.item:last-child{border-bottom:0;padding-bottom:0}.art{width:54px;height:54px;border-radius:12px;background:#0a0f15;border:1px solid #1b2936;display:grid;place-items:center}.art img{max-width:38px;max-height:38px;object-fit:contain}.item h3{margin:0 0 4px;font-size:.86rem}.item p{margin:0;color:#76899b;font-size:.68rem}.downloads{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.download{border:0;border-radius:9px;background:var(--cyan);color:#031116;padding:9px 11px;font-size:.69rem;font-weight:850;cursor:pointer}.missing{font-size:.66rem;color:var(--gold);border:1px solid #5a471e;background:#241d0d;padding:7px 9px;border-radius:9px}.empty{padding:50px;text-align:center;border:1px dashed #223242;border-radius:16px;color:#8091a2}.toast{position:fixed;right:18px;bottom:18px;background:#0d1820;border:1px solid #28536a;color:#dff9ff;padding:11px 14px;border-radius:11px;opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s;z-index:100}.toast.show{opacity:1;transform:none}@media(max-width:700px){.stats{grid-template-columns:1fr}.item{grid-template-columns:48px 1fr}.downloads{grid-column:1/-1;justify-content:stretch}.download{flex:1}h1{font-size:3.5rem}}
-</style></head><body><header><a class="brand" href="index.html"><span>D</span>ingloft</a><div class="nav"><a href="tienda.html">Tienda</a><span id="email"></span><button class="logout" id="logout"><i class="bi bi-box-arrow-right"></i></button></div></header><main><div class="eyebrow">Biblioteca digital</div><h1>Mis compras.</h1><p class="lead">Tus pedidos confirmados y descargas aparecen aquí. Los enlaces son temporales y los genera el Worker únicamente para tu cuenta.</p><div class="stats"><div class="stat"><small>Pedidos</small><strong id="sOrders">—</strong></div><div class="stat"><small>Productos</small><strong id="sProducts">—</strong></div><div class="stat"><small>Estado</small><strong style="color:#72e9b2">Protegido</strong></div></div><div class="orders" id="orders"><div class="empty">Cargando tus compras…</div></div></main><div class="toast" id="toast"></div>
-<script type="module">import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';import{getAuth,onAuthStateChanged,signOut}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';const WORKER="https://autumn-breeze-dfa0.evolutiongt01.workers.dev",cfg={apiKey:'AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA',authDomain:'login-dingloft.firebaseapp.com',projectId:'login-dingloft',storageBucket:'login-dingloft.firebasestorage.app',messagingSenderId:'549466738202',appId:'1:549466738202:web:8bf305fe2c753e9d76cba3'},app=initializeApp(cfg),auth=getAuth(app),$=x=>document.getElementById(x),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));function imageOf(p){const r=String(p.img||'dingloft');return /^https?:\/\//i.test(r)||r.startsWith('img/')?r:`img/${r}.png`;}function date(v){try{return new Date(v).toLocaleString('es-GT')}catch{return '—'}}function toast(m){$('toast').textContent=m;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2600)}async function load(user){const token=await user.getIdToken(false),r=await fetch(WORKER+'/me/library',{headers:{Authorization:`Bearer ${token}`,Accept:'application/json'},cache:'no-store'}),d=await r.json().catch(()=>({}));if(!r.ok||!d.ok)throw Error(d.error||'No pudimos cargar tu biblioteca.');const orders=d.orders||[];$('sOrders').textContent=orders.length;let total=0;$('orders').innerHTML=orders.length?orders.map(o=>{total+=(o.items||[]).length;return `<section class="order"><div class="orderhead"><div><div class="orderid">${esc(o.orderNumber)}</div><div class="date">${date(o.createdAt)}</div></div><span class="pill"><i class="bi bi-check-circle-fill"></i>&nbsp; Pago confirmado</span></div>${(o.items||[]).map(p=>`<div class="item"><div class="art"><img src="${esc(imageOf(p))}" onerror="this.src='img/dingloft.png'" alt=""></div><div><h3>${esc(p.name)}</h3><p>${esc(p.type||'Producto digital')}</p></div><div class="downloads">${(p.assets||[]).length?(p.assets||[]).map(a=>`<button class="download" data-url="${esc(a.downloadUrl)}"><i class="bi bi-download"></i> ${esc(a.name||'Descargar')}</button>`).join(''):'<span class="missing">Entrega pendiente de configuración</span>'}</div></div>`).join('')}</section>`}).join(''):'<div class="empty"><i class="bi bi-bag" style="font-size:2rem"></i><br><br>Todavía no tienes compras.<br><a href="tienda.html" style="color:#16d8f4">Explorar tienda</a></div>';$('sProducts').textContent=total;document.querySelectorAll('.download').forEach(b=>b.onclick=()=>{toast('Preparando descarga segura…');location.href=b.dataset.url;});}onAuthStateChanged(auth,async user=>{if(!user){location.href='login.html?next=account.html';return}$('email').textContent=user.email||'';try{await load(user)}catch(e){$('orders').innerHTML=`<div class="empty" style="color:#ffb6bc">${esc(e.message)}</div>`;}});$('logout').onclick=async()=>{await signOut(auth);location.href='login.html'};</script></body></html>
+    .top-avatar { width:45px; height:45px; border:1px solid var(--cyan); border-radius:50%; display:grid; place-items:center; color:#07131e; background:linear-gradient(135deg,#f5b36e,#a56bff); font-weight:800; overflow:hidden; }
+    .top-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    
+    .stats { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; margin:34px 0 26px; } .stat { display:flex; align-items:center; gap:19px; min-height:118px; padding:23px 26px; border:1px solid var(--line); border-radius:18px; background:linear-gradient(145deg,rgba(18,29,47,.84),rgba(8,14,25,.71)); }
+    .stat i { width:57px; height:57px; display:grid; place-items:center; border-radius:16px; font-size:1.75rem; color:var(--cyan); border:1px solid rgba(0,217,255,.55); background:rgba(0,210,255,.08); } .stat:nth-child(2) i{color:var(--violet);border-color:rgba(154,92,255,.6);background:rgba(154,92,255,.08)}
+    .stat span { display:block; color:#cad5e3; font-size:.89rem; } .stat strong { display:block; margin-top:4px; font-size:2rem; line-height:1; color:var(--cyan); } .stat:nth-child(2) strong{color:var(--violet)}
+    .dashboard { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(320px,.9fr); gap:23px; } .card { border:1px solid var(--line); border-radius:20px; background:linear-gradient(145deg,rgba(16,27,45,.82),rgba(8,14,25,.78)); box-shadow:0 18px 35px rgba(0,0,0,.15); overflow: hidden; }
+    
+    .tabs-header { display: flex; border-bottom: 1px solid var(--line); background: rgba(8, 14, 25, 0.4); }
+    .tab-btn { flex: 1; background: transparent; border: none; padding: 18px 0; color: var(--muted); font-size: 0.95rem; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; transition: .2s ease; }
+    .tab-btn:hover { color: white; background: rgba(255,255,255,0.02); }
+    .tab-btn.active { color: var(--cyan); border-bottom-color: var(--cyan); background: rgba(18, 215, 246, 0.05); }
+    .tab-content { display: none; padding: 25px 29px; }
+    .tab-content.active { display: block; }
+
+    .downloads { padding: 0; } 
+    .download-row { display:grid; grid-template-columns:68px minmax(120px,1fr) auto; gap:17px; align-items:center; padding:11px; border:1px solid transparent; border-radius:15px; transition:.2s ease; } 
+    .download-row:hover{border-color:var(--line);background:rgba(54,77,108,.13)}
+    
+    .bundle-container { display: flex; flex-direction: column; gap: 0; }
+    .download-row.has-subs.active { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-color: var(--line); background: rgba(54,77,108,.13); }
+    .sub-downloads { display: none; padding: 12px 15px 12px 25px; margin-left: 35px; margin-bottom: 12px; border-left: 2px solid var(--line); flex-direction: column; gap: 8px; background: rgba(8, 14, 25, 0.4); border-radius: 0 0 15px 15px; }
+    .sub-downloads.active { display: flex; }
+    .sub-download-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(255,255,255,0.03); border-radius: 10px; font-size: 0.9rem; border: 1px solid var(--line); transition: .2s ease; }
+    .sub-download-row:hover { background: rgba(54,77,108,.13); border-color: rgba(18, 215, 246, 0.3); }
+    .sub-download-row i.bi-file-earmark-zip { color: var(--cyan); margin-right: 8px; font-size: 1.1rem; }
+    .download-btn-small { width: 36px; height: 36px; border: 1px solid rgba(0,217,255,.5); border-radius: 9px; color: var(--cyan); background: rgba(0,213,255,.08); font-size: 1.1rem; display: grid; place-items: center; transition: .2s ease; cursor: pointer; }
+    .download-btn-small:hover { background: var(--cyan); color: #04111a; transform: translateY(-2px); }
+    .toggle-btn { width:43px; height:43px; background:transparent; border:none; color:var(--muted); font-size:1.4rem; transition:.3s ease; cursor:pointer; display: grid; place-items: center;}
+    .toggle-btn.active { transform: rotate(180deg); color: var(--cyan); }
+
+    .product-art { width:62px; height:72px; border:1px solid rgba(158,203,255,.35); border-radius:10px; background:#071119; overflow:hidden; display:flex; justify-content:center; align-items:center; }
+    .product-art img { width:100%; height:100%; object-fit:contain; padding:5px; }
+    
+    .download-row h3 { margin:0 0 7px; font-size:1rem; letter-spacing:-.025em; } .download-row p { margin:0; color:var(--muted); font-size:.78rem; } .badge { display:inline-flex; align-items:center; gap:6px; margin-top:7px; color:var(--green); font-size:.72rem; font-weight:700; } .download-btn { width:43px; height:43px; border:1px solid rgba(0,217,255,.5); border-radius:11px; color:var(--cyan); background:rgba(0,213,255,.08); font-size:1.2rem; display:grid; place-items:center; text-decoration:none; transition:.2s ease; cursor:pointer;} .download-btn:hover{background:var(--cyan);color:#04111a;transform:translateY(-2px)}
+    .right { display:grid; gap:23px; align-content:start; } 
+    
+    .support-card { display: flex; flex-direction: column; }
+    .remote-install-content { padding: 25px; display: flex; flex-direction: column; gap: 14px; }
+    .remote-install-content .icon-wrapper { width: 54px; height: 54px; background: rgba(53, 221, 146, 0.1); border: 1px solid rgba(53, 221, 146, 0.3); border-radius: 14px; display: grid; place-items: center; font-size: 1.5rem; color: var(--green); margin-bottom: 4px; }
+    .remote-install-content h3 { margin: 0; font-size: 1.15rem; letter-spacing: -0.02em; color: white; }
+    .remote-install-content p { margin: 0; color: var(--muted); font-size: 0.86rem; line-height: 1.55; }
+    .remote-install-content strong { color: #f4f8ff; font-weight: 700; }
+    .benefits { list-style: none; padding: 0; margin: 8px 0 12px; display: grid; gap: 10px; }
+    .benefits li { display: flex; align-items: center; gap: 10px; font-size: 0.84rem; color: #c4d0df; font-weight: 500; }
+    .benefits li i { color: var(--cyan); font-size: 1.1rem; }
+
+    .trust { display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:25px; padding:18px 23px; border:1px solid var(--line); border-radius:17px; background:rgba(13,22,36,.74); color:#c7d3df; font-size:.9rem; } .trust i { color:var(--cyan); margin-right:8px; }
+    .toast { position:fixed; right:24px; bottom:24px; transform:translateY(120px); padding:14px 18px; border:1px solid rgba(50,221,145,.5); border-radius:12px; color:#eafff3; background:#0c251d; box-shadow:0 14px 32px rgba(0,0,0,.3); transition:.25s ease; z-index: 9999; } .toast.show{transform:translateY(0)}
+
+    .liquid-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 8, 15, 0.85); display: grid; place-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .liquid-modal-overlay.active { opacity: 1; pointer-events: auto; }
+    
+    .liquid-modal-card { width: 95%; max-width: 960px; padding: 28px; border-radius: 28px; background: linear-gradient(145deg, rgba(16, 27, 45, 0.96), rgba(8, 14, 25, 0.98)); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.03); color: var(--text); position: relative; max-height: 95vh; overflow-y: auto; transform: scale(0.92) translateY(20px); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .liquid-modal-overlay.active .liquid-modal-card { transform: scale(1) translateY(0); }
+    
+    .liquid-close { position: absolute; top: 22px; right: 22px; background: transparent; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; transition: .2s; z-index: 10;}
+    .liquid-close:hover { color: white; }
+
+    .booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 15px; }
+    
+    .calendar-box { background: rgba(6, 12, 22, 0.6); border: 1px solid var(--line); border-radius: 20px; padding: 18px; }
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .calendar-header h4 { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--text); }
+    .calendar-nav-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); color: var(--muted); border-radius: 8px; width: 32px; height: 32px; display: grid; place-items: center; transition: .2s; cursor: pointer; }
+    .calendar-nav-btn:hover:not(.disabled) { background: var(--cyan); color: #04111a; }
+    .calendar-nav-btn.disabled { opacity: 0.2; cursor: not-allowed; }
+    
+    .calendar-days-head { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-bottom: 10px; }
+    .calendar-days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .day-cell { aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: .2s ease; color: var(--text); }
+    .day-cell.empty { cursor: default; }
+    
+    .day-cell.disabled { color: rgba(158, 172, 192, 0.25); cursor: not-allowed; text-decoration: line-through; }
+    .day-cell.available:hover { background: rgba(18, 215, 246, 0.15); border-color: var(--cyan); color: var(--cyan); }
+    .day-cell.selected { background: var(--cyan) !important; color: #04111a !important; font-weight: 800; box-shadow: 0 0 12px rgba(18, 215, 246, 0.5); }
+
+    .times-box { background: rgba(6, 12, 22, 0.6); border: 1px solid var(--line); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; }
+    .times-header { font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    .time-slots-container { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; padding-right: 4px; }
+    
+    .time-slot { width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.04); color: var(--text); font-size: 0.82rem; font-weight: 600; text-align: center; cursor: pointer; transition: .2s ease; }
+    .time-slot:hover { background: rgba(18, 215, 246, 0.12); border-color: var(--cyan); color: var(--cyan); transform: translateY(-1px); }
+    .time-slot.selected { background: linear-gradient(90deg, var(--cyan), #1cbeeb); color: #03111a; font-weight: 800; border-color: var(--cyan); box-shadow: 0 4px 12px rgba(18, 215, 246, 0.3); }
+    
+    .time-slot.sold-out { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; border-color: transparent; background: transparent; }
+    .time-slot.sold-out:hover { transform: none; color: var(--text); }
+
+    .software-options { display: flex; gap: 12px; margin-bottom: 15px; }
+    .software-btn { flex: 1; padding: 14px 12px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,0.04); color: var(--muted); cursor: pointer; text-align: center; font-size: 0.85rem; font-weight: 600; transition: .2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .software-btn:hover { background: rgba(18, 215, 246, 0.05); border-color: rgba(18, 215, 246, 0.3); color: white; }
+    .software-btn.selected { background: rgba(18, 215, 246, 0.12); border-color: var(--cyan); color: var(--cyan); box-shadow: inset 0 0 12px rgba(18,215,246,0.15); }
+    
+    .liquid-input { width: 100%; padding: 12px 14px; background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 12px; color: white; font-family: inherit; font-size: 0.85rem; }
+    .liquid-input:focus { border-color: var(--cyan); outline: none; box-shadow: 0 0 10px rgba(0, 213, 255, 0.2); }
+    textarea.liquid-input { resize: none; line-height: 1.4; }
+
+    .booking-footer { margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: center; }
+    .cupon-group { display: flex; gap: 8px; }
+    
+    .liquid-btn-cupon { padding: 0 14px; background: rgba(0,213,255,0.1); border: 1px solid var(--cyan); color: var(--cyan); border-radius: 12px; font-weight: 750; cursor: pointer; transition:.2s ease; font-size: 0.82rem; }
+    .liquid-btn-cupon:hover { background: var(--cyan); color: #03111a; }
+    
+    .liquid-btn { width: 100%; border: 0; border-radius: 12px; padding: 12px; background: linear-gradient(100deg, #0bd8f4, #1cbeeb); color: #03111a; font-weight: 800; cursor: pointer; transition: .2s ease; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 0.92rem; }
+    .liquid-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(11, 216, 244, 0.4); }
+
+    #modal-notif { display: none; padding: 10px; border-radius: 10px; font-size: 0.82rem; margin-bottom: 12px; text-align: center; font-weight: 600; grid-column: span 2; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    #reservasModal .liquid-modal-card { max-width: 500px; }
+
+    @media(max-width:768px){ .booking-grid { grid-template-columns: 1fr; } .booking-footer { grid-template-columns: 1fr; } #modal-notif { grid-column: span 1; } .software-options { flex-direction: column; } }
+    @media(max-width:1080px){.app{grid-template-columns:78px 1fr}.sidebar{padding:25px 10px}.brand{margin:0 auto 42px;font-size:0}.brand span{font-size:1.8rem}.nav a{justify-content:center;padding:15px}.nav a span,.profile strong,.profile small,.logout span{display:none}.profile{padding:12px;display:grid;place-items:center}.logout{justify-content:center}.stats{grid-template-columns:1fr}.dashboard{grid-template-columns:1fr}.right{grid-template-columns:1fr}}
+    @media(max-width:700px){.app{display:block}.sidebar{position:static;height:auto;padding:16px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:1.5rem;margin:0 8px 13px}.brand span{font-size:inherit}.nav{display:flex;overflow:auto}.nav a{min-width:55px;padding:12px}.nav a span{display:none}.profile{display:none}.content{padding:28px 16px}.top{align-items:flex-start}.top p{font-size:.86rem}.stats{margin:25px 0}.stat{min-height:93px}.right{grid-template-columns:1fr}.download-row{grid-template-columns:55px minmax(110px,1fr) auto}.product-art{width:52px;height:62px}.trust{justify-content:flex-start;gap:12px}.top-avatar{display:none}}
+  </style>
+
+  <script>window.__DINGLOFT_COMMERCE_V1__ = true;</script>
+  <script src="mobile-shell-redirect.js?v=8"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <a href="index.html" class="brand"><span>D</span>ingloft</a>
+      <nav class="nav" aria-label="Navegación de cuenta">
+        <a href="index.html"><i class="bi bi-house-door"></i><span>Home</span></a>
+        <a class="active" href="#descargas"><i class="bi bi-download"></i><span>Descargas</span></a>
+        <a href="#" onclick="openReservasModal(); return false;"><i class="bi bi-calendar2-check"></i><span>Mis Reservas</span></a>
+        
+        <a href="admin.html" id="btn-admin" style="display: none; color: #ff5050; margin-top: 15px; border: 1px solid rgba(255,80,80,0.3); background: rgba(255,80,80,0.05);"><i class="bi bi-incognito"></i><span>Panel Admin</span></a>
+      </nav>
+      <div class="profile">
+        <div class="profile-top">
+          <div class="avatar" id="sidebar-avatar">...</div>
+          <div>
+            <strong id="sidebar-name">Cargando...</strong>
+            <small id="sidebar-email">...</small>
+          </div>
+        </div>
+        <button class="logout"><i class="bi bi-box-arrow-right"></i><span>Cerrar sesión</span></button>
+      </div>
+    </aside>
+
+    <main class="content" id="resumen">
+      <div class="top">
+        <div>
+          <h1>Hola, <span id="welcome-name">...</span></h1>
+          <p>Aquí tienes el control de tus programas y descargas.</p>
+        </div>
+        <div class="top-actions">
+          <div class="top-avatar" id="top-avatar"></div>
+        </div>
+      </div>
+      
+      <section class="stats" aria-label="Resumen de la cuenta">
+        <article class="stat">
+          <i class="bi bi-laptop"></i>
+          <div><span>Programas activos</span><strong id="stat-programas">0</strong></div>
+        </article>
+        <article class="stat">
+          <i class="bi bi-infinity"></i>
+          <div><span>Descargas disponibles</span><strong id="stat-descargas">0</strong></div>
+        </article>
+      </section>
+
+      <section class="dashboard">
+        <article class="card" id="descargas">
+          <div class="tabs-header">
+            <button class="tab-btn active" id="btn-tab-programas" onclick="switchTab('programas')"><i class="bi bi-grid"></i> Mis Programas</button>
+            <button class="tab-btn" id="btn-tab-reserva" onclick="switchTab('reserva')"><i class="bi bi-calendar-check"></i> Estado de mi Reserva</button>
+          </div>
+          
+          <div id="tab-programas" class="tab-content active">
+             <div class="downloads" id="downloads-container">
+               <p style="color: var(--muted); padding: 15px;">Cargando tus programas...</p>
+             </div>
+          </div>
+
+          <div id="tab-reserva" class="tab-content">
+             <div id="dashboard-reserva-info">
+                <p style="color: var(--muted); padding: 15px;">Buscando tus reservas...</p>
+             </div>
+          </div>
+        </article>
+        
+        <aside class="right">
+          <article class="card support-card">
+            <div class="card-title"><h2>Instalación Remota</h2></div>
+            <div class="remote-install-content" style="padding-top:0;">
+              <div class="icon-wrapper"><i class="bi bi-shield-check"></i></div>
+              <h3>Soporte Técnico Especializado</h3>
+              <p>Deja la configuración en manos de expertos. Nos conectamos a tu equipo mediante <strong>Google Chrome Remote Desktop</strong> para asegurar una experiencia transparente, encriptada y totalmente privada.</p>
+              
+              <ul class="benefits">
+                <li><i class="bi bi-shield-lock-fill"></i> Conexión de Google 100% segura</li>
+                <li><i class="bi bi-eye-fill"></i> Tú controlas y observas el proceso</li>
+                <li><i class="bi bi-check-circle-fill"></i> Garantía de software operativo</li>
+              </ul>
+              
+              <button class="liquid-btn" onclick="openReservaModal()" style="margin-top: 8px;">
+                <i class="bi bi-calendar2-check"></i> Agendar Sesión
+              </button>
+            </div>
+          </article>
+        </aside>
+      </section>
+      
+      <div class="trust">
+        <span><i class="bi bi-check-circle-fill"></i>Programas verificados</span>
+        <span><i class="bi bi-cloud-arrow-down"></i>Instalación remota</span>
+        <span><i class="bi bi-headset"></i>Soporte técnico</span>
+      </div>
+    </main>
+  </div>
+  
+  <div class="liquid-modal-overlay" id="reservasModal">
+    <div class="liquid-modal-card" id="modal-reservas-content">
+      <button class="liquid-close" onclick="closeReservasModal()"><i class="bi bi-x-lg"></i></button>
+      <h3 style="margin: 0 0 4px; font-size: 1.3rem;">Mis Reservas</h3>
+      <p style="color: var(--muted); font-size: 0.83rem; margin: 0 0 15px;">Estado actual de tus instalaciones programadas.</p>
+      
+      <div id="modal-reserva-info"></div>
+    </div>
+  </div>
+
+  <div class="liquid-modal-overlay" id="reservaModal">
+    <div class="liquid-modal-card">
+      <button class="liquid-close" onclick="closeReservaModal()"><i class="bi bi-x-lg"></i></button>
+      <h3 style="margin: 0 0 4px; font-size: 1.3rem;">Reserva tu Sesión de Instalación</h3>
+      <p style="color: var(--muted); font-size: 0.83rem; margin: 0 0 15px;">Selecciona el día y horario que mejor te convenga.</p>
+
+      <div class="booking-grid">
+        <div class="calendar-box">
+          <div class="calendar-header">
+            <button id="btn-prev-month" class="calendar-nav-btn" onclick="cambiarMes(-1)"><i class="bi bi-chevron-left"></i></button>
+            <h4 id="calendar-month-year">Cargando...</h4>
+            <button class="calendar-nav-btn" onclick="cambiarMes(1)"><i class="bi bi-chevron-right"></i></button>
+          </div>
+          <div class="calendar-days-head">
+            <span>Do</span><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span>
+          </div>
+          <div class="calendar-days-grid" id="calendar-days"></div>
+        </div>
+
+        <div class="times-box">
+          <div class="times-header" id="selected-date-text">Selecciona un día</div>
+          <div class="time-slots-container" id="time-slots-list">
+            <p style="color: var(--muted); font-size: 0.8rem; text-align: center; margin-top: 30px;">Toca un día disponible del calendario para ver las horas.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px; background: rgba(6, 12, 22, 0.4); padding: 20px 22px; border-radius: 20px; border: 1px solid var(--line);">
+        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text); display: block; margin-bottom: 10px;">Software de Conexión preferido:</label>
+        
+        <div class="software-options">
+          <div class="software-btn selected" onclick="seleccionarSoftware('Google Chrome Remote Desktop', this)">
+            <i class="bi bi-browser-chrome" style="font-size: 1.1rem;"></i> Chrome Remote Desktop
+          </div>
+          <div class="software-btn" onclick="seleccionarSoftware('AnyDesk', this)">
+            <i class="bi bi-display" style="font-size: 1.1rem;"></i> AnyDesk
+          </div>
+        </div>
+
+        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text); display: block; margin-bottom: 8px;">¿En qué te ayudamos en esta sesión?:</label>
+        <textarea id="reservaComentario" class="liquid-input" rows="2" placeholder="Ej. Necesito ayuda instalando el Yamaha Premium Keys o el AutoCAD..." style="margin-bottom: 0;"></textarea>
+      </div>
+
+      <div class="booking-footer">
+        <div id="modal-notif"></div>
+
+        <div class="cupon-group">
+          <input type="text" id="cuponInput" placeholder="CÓDIGO DE CUPÓN" class="liquid-input" style="text-transform: uppercase;">
+          <button type="button" class="liquid-btn-cupon" onclick="aplicarCupon()">Aplicar</button>
+        </div>
+
+        <!-- CONTENEDOR DINÁMICO DE PAGO (PAYPAL O GRATIS) -->
+        <div id="payment-buttons-container" style="width: 100%; min-height: 45px;">
+          <button id="btn-pagar-gratis" class="liquid-btn" style="display: none;" onclick="procesarReservaGratis()">
+            <i class="bi bi-check2-circle"></i> Reservar Gratis
+          </button>
+          <div id="paypal-button-container" class="w-100"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
+
+  <script>
+    window.switchTab = function(tab) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-' + tab).classList.add('active');
+        document.getElementById('btn-tab-' + tab).classList.add('active');
+    };
+
+    window.diaSeleccionado = null;
+    window.horaSeleccionada = null;
+    window.softwareSeleccionado = "Google Chrome Remote Desktop";
+    window.precioBase = 10.00;
+    window.precioFinal = 10.00;
+
+    window.openReservasModal = function() {
+      document.getElementById('reservasModal').classList.add('active');
+    };
+
+    window.closeReservasModal = function() {
+      document.getElementById('reservasModal').classList.remove('active');
+    };
+
+    let fechaActual = new Date();
+    let mesActual = fechaActual.getMonth();
+    let anoActual = fechaActual.getFullYear();
+    const fechaReal = new Date();
+    const mesReal = fechaReal.getMonth();
+    const anoReal = fechaReal.getFullYear();
+
+    const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    const horariosDisponibles = ["01:00 AM (Miami/EST)", "02:00 AM (Miami/EST)", "03:00 AM (Miami/EST)", "04:00 AM (Miami/EST)", "05:00 AM (Miami/EST)", "06:00 AM (Miami/EST)", "07:00 AM (Miami/EST)"];
+
+    function pseudoRandom(seed) {
+        let x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+    }
+
+    window.horaYaPaso = function(horaStr, fechaElegida) {
+        let ahora = new Date(); 
+        let match = horaStr.match(/(\d+):(\d+)\s(AM|PM)/);
+        let hMiami = parseInt(match[1]);
+        if (match[3] === 'PM' && hMiami < 12) hMiami += 12;
+        if (match[3] === 'AM' && hMiami === 12) hMiami = 0;
+        
+        let hGuate = hMiami - 2;
+        let diaAjuste = 0;
+        if (hGuate < 0) {
+            hGuate += 24;
+            diaAjuste = -1; 
+        }
+        
+        let fechaSlot = new Date(fechaElegida);
+        fechaSlot.setDate(fechaSlot.getDate() + diaAjuste);
+        fechaSlot.setHours(hGuate, 0, 0, 0);
+        
+        return fechaSlot <= ahora;
+    };
+
+    function actualizarBotonRetroceso() {
+      const btnPrev = document.getElementById('btn-prev-month');
+      if (anoActual < anoReal || (anoActual === anoReal && mesActual <= mesReal)) {
+        btnPrev.classList.add('disabled');
+      } else {
+        btnPrev.classList.remove('disabled');
+      }
+    }
+
+    function renderizarCalendario() {
+      const headerTitle = document.getElementById('calendar-month-year');
+      const grid = document.getElementById('calendar-days');
+      
+      headerTitle.textContent = `${nombresMeses[mesActual]} ${anoActual}`;
+      grid.innerHTML = '';
+
+      const primerDiaMes = new Date(anoActual, mesActual, 1).getDay();
+      const totalDiasMes = new Date(anoActual, mesActual + 1, 0).getDate();
+      const hoy = new Date();
+      hoy.setHours(0,0,0,0);
+
+      for(let i = 0; i < primerDiaMes; i++) {
+        grid.innerHTML += `<div class="day-cell empty"></div>`;
+      }
+
+      for(let dia = 1; dia <= totalDiasMes; dia++) {
+        const fechaEvaluar = new Date(anoActual, mesActual, dia);
+        fechaEvaluar.setHours(0,0,0,0);
+
+        let esPasado = fechaEvaluar < hoy;
+        let diaSemana = fechaEvaluar.getDay();
+        let esFinDeSemana = (diaSemana === 0 || diaSemana === 6); 
+        let esSeleccionado = window.diaSeleccionado && window.diaSeleccionado.getDate() === dia && window.diaSeleccionado.getMonth() === mesActual && window.diaSeleccionado.getFullYear() === anoActual;
+
+        if (esPasado) {
+          grid.innerHTML += `<div class="day-cell disabled" title="Día pasado">${dia}</div>`;
+        } else if (esFinDeSemana) {
+          grid.innerHTML += `<div class="day-cell disabled" style="opacity: 0.3;" title="Fin de semana (No laboral)">${dia}</div>`;
+        } else {
+          grid.innerHTML += `<div class="day-cell available ${esSeleccionado ? 'selected' : ''}" onclick="seleccionarDia(${dia})">${dia}</div>`;
+        }
+      }
+      actualizarBotonRetroceso();
+    }
+
+    window.cambiarMes = function(delta) {
+      let nuevoMes = mesActual + delta;
+      let nuevoAno = anoActual;
+      if (nuevoMes < 0) { nuevoMes = 11; nuevoAno--; } else if (nuevoMes > 11) { nuevoMes = 0; nuevoAno++; }
+      if (nuevoAno < anoReal || (nuevoAno === anoReal && nuevoMes < mesReal)) return; 
+      mesActual = nuevoMes; anoActual = nuevoAno;
+      renderizarCalendario();
+    }
+
+    window.seleccionarDia = function(dia) {
+      window.diaSeleccionado = new Date(anoActual, mesActual, dia);
+      window.horaSeleccionada = null;
+      renderizarCalendario();
+      
+      const headerText = document.getElementById('selected-date-text');
+      const slotsContainer = document.getElementById('time-slots-list');
+      const opcionesFecha = { weekday: 'short', month: 'short', day: 'numeric' };
+      headerText.textContent = window.diaSeleccionado.toLocaleDateString('es-ES', opcionesFecha);
+
+      slotsContainer.innerHTML = '';
+      let seed = anoActual * 10000 + mesActual * 100 + dia;
+
+      horariosDisponibles.forEach((hora, index) => {
+        let yaPaso = window.horaYaPaso(hora, window.diaSeleccionado);
+        let ocupado = pseudoRandom(seed + index) < 0.40;
+
+        if (yaPaso) {
+          slotsContainer.innerHTML += `<div class="time-slot sold-out" title="Horario finalizado">${hora} - Finalizado</div>`;
+        } else if (ocupado) {
+          slotsContainer.innerHTML += `<div class="time-slot sold-out" title="Horario ocupado">${hora} - Agotado</div>`;
+        } else {
+          slotsContainer.innerHTML += `<div class="time-slot" onclick="seleccionarHora('${hora}', this)">${hora}</div>`;
+        }
+      });
+    }
+
+    window.seleccionarHora = function(hora, elemento) {
+      window.horaSeleccionada = hora;
+      document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
+      elemento.classList.add('selected');
+    }
+
+    window.seleccionarSoftware = function(software, elemento) {
+      window.softwareSeleccionado = software;
+      document.querySelectorAll('.software-btn').forEach(btn => btn.classList.remove('selected'));
+      elemento.classList.add('selected');
+    }
+
+    window.aplicarCupon = function() {
+      const codigo = document.getElementById('cuponInput').value.trim().toUpperCase();
+      let cuponesValidos = { "DINGLOFT5": 5.00, "VIP": 10.00, "INSTALA30": 3.00 };
+      
+      const hoyString = new Date().toISOString().split('T')[0];
+      if (hoyString === "2026-08-04" && codigo === "PRUEBAGRATIS") {
+          cuponesValidos["PRUEBAGRATIS"] = 10.00;
+      }
+
+      if (cuponesValidos[codigo] !== undefined) {
+        let descuento = cuponesValidos[codigo];
+        window.precioFinal = Math.max(0, window.precioBase - descuento);
+        
+        const btnGratis = document.getElementById('btn-pagar-gratis');
+        const btnPaypal = document.getElementById('paypal-button-container');
+
+        if (window.precioFinal === 0) {
+           btnPaypal.style.display = 'none';
+           btnGratis.style.display = 'flex';
+        } else {
+           btnGratis.style.display = 'none';
+           btnPaypal.style.display = 'block';
+           if(typeof window.renderPayPalReserva === 'function') window.renderPayPalReserva();
+        }
+
+        window.mostrarAlertaModal("¡Cupón aplicado con éxito!", true);
+      } else {
+        window.mostrarAlertaModal("Cupón inválido o expirado.", false);
+      }
+    };
+
+    window.mostrarAlertaModal = function(mensaje, esExito) {
+      const notif = document.getElementById('modal-notif');
+      notif.style.display = 'block';
+      notif.style.background = esExito ? 'rgba(53,221,146,.15)' : 'rgba(255,80,80,.15)';
+      notif.style.color = esExito ? 'var(--green)' : '#ff5050';
+      notif.style.border = `1px solid ${esExito ? 'rgba(53,221,146,.4)' : 'rgba(255,80,80,.4)'}`;
+      notif.innerHTML = esExito ? `<i class="bi bi-check-circle-fill"></i> ${mensaje}` : `<i class="bi bi-exclamation-triangle-fill"></i> ${mensaje}`;
+      setTimeout(() => { notif.style.display = 'none'; }, 4000);
+    }
+
+    window.openReservaModal = function() {
+      document.getElementById('reservaModal').classList.add('active');
+      renderizarCalendario();
+      if(typeof window.renderPayPalReserva === 'function' && window.precioFinal > 0) {
+          window.renderPayPalReserva();
+      }
+    };
+
+    window.closeReservaModal = function() {
+      document.getElementById('reservaModal').classList.remove('active');
+    };
+
+    window.toggleBundle = function(element) {
+      const container = element.parentElement;
+      const subs = container.querySelector('.sub-downloads');
+      const btn = element.querySelector('.toggle-btn');
+      subs.classList.toggle('active');
+      btn.classList.toggle('active');
+      element.classList.toggle('active');
+    };
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, query, where, getDocs, addDoc, doc, updateDoc, deleteDoc, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
+      authDomain: "login-dingloft.firebaseapp.com",
+      projectId: "login-dingloft",
+      storageBucket: "login-dingloft.firebasestorage.app",
+      messagingSenderId: "549466738202",
+      appId: "1:549466738202:web:8bf305fe2c753e9d76cba3",
+      measurementId: "G-R9SGZCDN13"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const WORKER = String(window.DINGLOFT_WORKER_BASE || "https://autumn-breeze-dfa0.evolutiongt01.workers.dev").replace(/\/$/, "");
+    const escHtml = (value) => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+    async function commerceApi(user, path) {
+      const token = await user.getIdToken(false);
+      const response = await fetch(WORKER + path, {
+        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+        cache: "no-store"
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || data.ok === false) throw new Error(data.error || `Error ${response.status}`);
+      return data;
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        let isAdmin = false;
+        if (user.email === 'evolutiongt01@gmail.com' || user.email === 'tepaz2025@gmail.com') {
+          document.getElementById('btn-admin').style.display = 'flex';
+          isAdmin = true;
+        }
+
+        let displayName = user.displayName || user.email.split('@')[0];
+        let firstName = displayName.split(' ')[0];
+        
+        // --- INICIO NUEVO CÓDIGO: GUARDAR/ACTUALIZAR USUARIO PARA EL PANEL ADMIN ---
+        try {
+            await setDoc(doc(db, "users", user.uid), {
+                email: user.email,
+                photoURL: user.photoURL || "",
+                lastLogin: serverTimestamp()
+            }, { merge: true });
+        } catch (error) {
+            console.error("Error guardando datos del usuario para el panel admin:", error);
+        }
+        // --- FIN NUEVO CÓDIGO ---
+
+        document.getElementById('welcome-name').textContent = firstName;
+        document.getElementById('sidebar-name').textContent = displayName;
+        document.getElementById('sidebar-email').textContent = user.email;
+
+        let avatarHtml = '';
+        if (user.photoURL) {
+          avatarHtml = `<img src="${user.photoURL}" alt="Perfil" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+        } else {
+          const initial = firstName.charAt(0).toUpperCase();
+          avatarHtml = `<div style="width: 100%; height: 100%; display: grid; place-items: center; font-size: 1.2rem;">${initial}</div>`;
+        }
+        document.getElementById('sidebar-avatar').innerHTML = avatarHtml;
+        document.getElementById('top-avatar').innerHTML = avatarHtml;
+
+        function pintarReservaUI(htmlData) {
+            document.getElementById('dashboard-reserva-info').innerHTML = htmlData;
+            document.getElementById('modal-reserva-info').innerHTML = htmlData;
+        }
+
+        function verificarDesbloqueo() {
+            let ahora = Date.now();
+            if(!window.misReservasData) return;
+            window.misReservasData.forEach(reserva => {
+                if(reserva.estado === 'completado' || reserva.codigoAcceso) return;
+
+                let faltanMs = reserva.timestampReserva - ahora;
+                let faltanMinutos = faltanMs / 1000 / 60;
+
+                document.querySelectorAll(`.texto-espera-codigo[data-id="${reserva.id}"]`).forEach(el => {
+                    const formCodigo = el.nextElementSibling;
+                    if (faltanMinutos <= 5 && faltanMinutos >= -60) {
+                        el.style.display = 'none';
+                        formCodigo.style.display = 'block';
+                    } else if (faltanMinutos > 5) {
+                        let hrs = Math.floor(faltanMinutos / 60);
+                        let mns = Math.floor(faltanMinutos % 60);
+                        let tiempoTxt = hrs > 0 ? `${hrs} hrs y ${mns} min` : `${mns} min`;
+                        
+                        el.innerHTML = `<i class="bi bi-clock-history"></i> El campo para ingresar tu código se habilitará 5 minutos antes de tu sesión (Faltan aprox. ${tiempoTxt}).`;
+                        el.style.display = 'block';
+                        formCodigo.style.display = 'none';
+                    } else {
+                         el.innerHTML = `<i class="bi bi-x-circle"></i> Tu tiempo de sesión ha expirado o finalizado.`;
+                         formCodigo.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        async function cargarMisReservas() {
+          try {
+            const qReservas = query(collection(db, "reservas"), where("uid", "==", user.uid));
+            const reservasSnap = await getDocs(qReservas);
+            
+            if (!reservasSnap.empty) {
+              let reservasArray = [];
+              reservasSnap.forEach(d => reservasArray.push({ id: d.id, ...d.data() }));
+              
+              reservasArray.sort((a, b) => b.timestampReserva - a.timestampReserva);
+              window.misReservasData = reservasArray;
+              
+              let htmlTotal = '';
+
+              reservasArray.forEach(miReservaData => {
+                  let miReservaId = miReservaData.id;
+                  let estadoHTML = miReservaData.estado === "completado" 
+                      ? `<span style="background: rgba(18, 215, 246, 0.15); color: var(--cyan); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(18, 215, 246, 0.3);">Completado <i class="bi bi-check-all"></i></span>`
+                      : `<span style="background: rgba(53, 221, 146, 0.15); color: var(--green); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(53, 221, 146, 0.3);">Pendiente</span>`;
+
+                  let btnEliminar = isAdmin ? `<button onclick="eliminarReserva('${miReservaId}')" style="margin-top: 15px; width: 100%; padding: 10px; background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.4); color: #ff5050; border-radius: 8px; cursor: pointer; font-weight: 600;"><i class="bi bi-trash"></i> Cancelar / Eliminar Reserva (Solo Admin)</button>` : '';
+
+                  let baseHTML = `
+                    <div style="background: rgba(8, 14, 25, 0.6); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin-bottom: 18px;">
+                      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 12px;">
+                        <strong style="color: var(--cyan);"><i class="bi bi-calendar-check"></i> Instalación Remota</strong>
+                        <div>${estadoHTML}</div>
+                      </div>
+                      
+                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.85rem; color: #c4d0df;">
+                        <div>
+                          <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Fecha programada</span>
+                          <strong style="color: white;">${miReservaData.fecha}</strong>
+                        </div>
+                        <div>
+                          <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Hora (EST/Miami)</span>
+                          <strong style="color: white;">${miReservaData.hora}</strong>
+                        </div>
+                      </div>
+
+                      <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Vía de conexión seleccionada</span>
+                        <strong style="color: white; font-size: 0.85rem;"><i class="bi bi-display"></i> ${miReservaData.software}</strong>
+                      </div>
+
+                      <div style="margin-top: 10px;">
+                        <span style="color: var(--muted); display: block; font-size: 0.75rem; margin-bottom: 2px;">Comentarios de la sesión</span>
+                        <p style="color: #c4d0df; font-size: 0.82rem; margin: 0; line-height: 1.5; background: rgba(0,0,0,0.2); padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03);">${miReservaData.comentario || 'Sin comentarios.'}</p>
+                      </div>
+                  `;
+
+                  if (miReservaData.estado !== "completado") {
+                      if (miReservaData.codigoAcceso) {
+                          baseHTML += `
+                            <div style="margin-top: 18px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); text-align: center;">
+                              <p style="color: var(--green); font-size: 0.8rem; margin: 0;"><i class="bi bi-check-circle-fill"></i> Código enviado exitosamente: <b>${miReservaData.codigoAcceso}</b></p>
+                            </div>
+                          `;
+                      } else {
+                          baseHTML += `
+                            <div style="margin-top: 18px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); text-align: center;">
+                              <p style="font-size: 0.8rem; color: var(--muted); margin: 0;" class="texto-espera-codigo" data-id="${miReservaId}">
+                                Calculando tiempo...
+                              </p>
+                              <div class="formulario-codigo" style="display: none; background: rgba(18, 215, 246, 0.05); border: 1px solid rgba(18, 215, 246, 0.2); padding: 14px; border-radius: 12px;">
+                                <label style="font-size: 0.82rem; color: var(--cyan); display: block; margin-bottom: 8px; font-weight: 600; text-align: left;">¡Es hora! Pega tu Código / Enlace aquí:</label>
+                                <div style="display: flex; gap: 8px;">
+                                  <input type="text" class="liquid-input codigo-input-${miReservaId}" placeholder="Ej. 123 456 789" style="margin-bottom: 0;">
+                                  <button class="liquid-btn-cupon" onclick="enviarCodigo('${miReservaId}')" style="padding: 0 18px; font-weight: 800;">Enviar</button>
+                                </div>
+                              </div>
+                            </div>
+                          `;
+                      }
+                  }
+
+                  baseHTML += `${btnEliminar}</div>`;
+                  htmlTotal += baseHTML;
+              });
+
+              pintarReservaUI(htmlTotal);
+              verificarDesbloqueo();
+              setInterval(verificarDesbloqueo, 30000); 
+
+            } else {
+               pintarReservaUI('<div style="padding: 20px; text-align: center;"><i class="bi bi-calendar-x" style="font-size: 2rem; color: var(--muted);"></i><p style="color: var(--muted); margin-top: 10px;">Aún no tienes reservas activas. Utiliza el botón Agendar Sesión.</p></div>');
+            }
+          } catch (error) {
+            console.error("Error leyendo reservas:", error);
+          }
+        }
+
+        await cargarMisReservas();
+
+        window.enviarCodigo = async function(id) {
+            const inputs = document.querySelectorAll('.codigo-input-' + id);
+            let codigo = '';
+            inputs.forEach(input => { if(input.value) codigo = input.value; });
+            
+            if(!codigo) return;
+            
+            try {
+                await updateDoc(doc(db, "reservas", id), { codigoAcceso: codigo });
+                window.mostrarAlertaModal("Código enviado correctamente al administrador", true);
+                await cargarMisReservas(); 
+            } catch(e) {
+                console.error(e);
+                window.mostrarAlertaModal("Error enviando el código", false);
+            }
+        };
+
+        window.eliminarReserva = async function(id) {
+            if(!confirm("¿Estás seguro de eliminar esta reserva permanentemente?")) return;
+            try {
+                await deleteDoc(doc(db, "reservas", id));
+                window.mostrarAlertaModal("Reserva eliminada exitosamente.", true);
+                await cargarMisReservas();
+            } catch(e) {
+                console.error(e);
+                window.mostrarAlertaModal("Error eliminando reserva.", false);
+            }
+        }
+
+        // --- SISTEMA DE PAGO Y RESERVAS A FIREBASE ---
+        
+        window.procesarReservaFirebase = async function(paypalOrderId = null, payerName = null) {
+          const comentario = document.getElementById('reservaComentario').value;
+          const fechaFormateada = window.diaSeleccionado.toLocaleDateString('es-ES', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+          
+          let matches = window.horaSeleccionada.match(/(\d+):(\d+)\s(AM|PM)/);
+          let hour = parseInt(matches[1]);
+          if (matches[3] === 'PM' && hour < 12) hour += 12;
+          if (matches[3] === 'AM' && hour === 12) hour = 0;
+          
+          let monthStr = String(window.diaSeleccionado.getMonth() + 1).padStart(2, '0');
+          let dayStr = String(window.diaSeleccionado.getDate()).padStart(2, '0');
+          let yearStr = window.diaSeleccionado.getFullYear();
+          let hourStr = String(hour).padStart(2, '0');
+          let isoString = `${yearStr}-${monthStr}-${dayStr}T${hourStr}:00:00-04:00`;
+          let timestampCalculado = new Date(isoString).getTime();
+
+          try {
+            await addDoc(collection(db, "reservas"), {
+              uid: user.uid,
+              email: user.email,
+              fecha: fechaFormateada,
+              hora: window.horaSeleccionada,
+              software: window.softwareSeleccionado,
+              comentario: comentario,
+              estado: "pendiente",
+              timestampReserva: timestampCalculado,
+              montoPagado: window.precioFinal,
+              paypalOrderId: paypalOrderId || "GRATIS",
+              creado: serverTimestamp()
+            });
+
+            window.closeReservaModal();
+            window.mostrarAlertaModal(`¡Reserva creada con éxito!`, true);
+
+            setTimeout(async () => {
+              window.switchTab('reserva'); 
+              await cargarMisReservas();   
+            }, 500);
+
+          } catch (e) {
+            console.error(e);
+            window.mostrarAlertaModal("Error en base de datos al guardar reserva.", false);
+          }
+        };
+
+        // INTEGRACIÓN PAYPAL PARA EL MODAL DE RESERVA
+        window.renderPayPalReserva = function() {
+            const container = document.getElementById('paypal-button-container');
+            if (!container) return;
+            container.innerHTML = ''; 
+
+            if (typeof paypal === 'undefined') return;
+
+            paypal.Buttons({
+                style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
+                onClick: function(data, actions) {
+                    const comentario = document.getElementById('reservaComentario').value;
+                    if(!window.diaSeleccionado || !window.horaSeleccionada) {
+                        window.mostrarAlertaModal("Selecciona un día y un horario libre primero.", false);
+                        return actions.reject();
+                    }
+                    if(comentario.trim() === "") {
+                        window.mostrarAlertaModal("Por favor cuéntanos brevemente en qué te ayudamos.", false);
+                        return actions.reject();
+                    }
+                    return actions.resolve();
+                },
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{ amount: { value: window.precioFinal.toFixed(2) } }]
+                    });
+                },
+                onApprove: async function(data, actions) {
+                    return actions.order.capture().then(async function(details) {
+                        // Una vez aprobado el pago, guardamos en firebase
+                        window.procesarReservaFirebase(details.id, details.payer.name.given_name);
+                    });
+                },
+                onError: function(err) {
+                    console.error("Error con PayPal:", err);
+                    window.mostrarAlertaModal("Ocurrió un error al procesar el pago con PayPal.", false);
+                }
+            }).render('#paypal-button-container');
+        };
+
+        // Procesar reserva si es de $0.00 (Botón Celeste)
+        window.procesarReservaGratis = function() {
+            const comentario = document.getElementById('reservaComentario').value;
+            if(!window.diaSeleccionado || !window.horaSeleccionada) {
+                window.mostrarAlertaModal("Selecciona un día y un horario libre primero.", false);
+                return;
+            }
+            if(comentario.trim() === "") {
+                window.mostrarAlertaModal("Por favor cuéntanos brevemente en qué te ayudamos.", false);
+                return;
+            }
+            
+            const btnGratis = document.getElementById('btn-pagar-gratis');
+            btnGratis.innerHTML = '<i class="bi bi-arrow-repeat" style="animation: spin 1s linear infinite;"></i> Procesando...';
+            btnGratis.style.pointerEvents = 'none';
+
+            window.procesarReservaFirebase();
+            
+            setTimeout(() => {
+                btnGratis.innerHTML = `<i class="bi bi-check2-circle"></i> Reservar Gratis`;
+                btnGratis.style.pointerEvents = 'auto';
+            }, 2000);
+        };
+
+
+        const downloadsContainer = document.getElementById('downloads-container');
+        try {
+          downloadsContainer.innerHTML = '<p style="color: var(--muted); padding: 15px;"><i class="bi bi-arrow-repeat"></i> Sincronizando tus compras y descargas…</p>';
+          let library = await commerceApi(user, "/me/library");
+          let orders = Array.isArray(library.orders) ? library.orders : [];
+          // A recovered/manual order can have been written seconds ago. Refresh the
+          // Firebase token once and re-read without cache before declaring it empty.
+          if (!orders.length) {
+            await user.getIdToken(true).catch(() => null);
+            library = await commerceApi(user, "/me/library");
+            orders = Array.isArray(library.orders) ? library.orders : [];
+          }
+          const items = orders.flatMap(order => (Array.isArray(order.items) ? order.items : []).map(item => ({...item, orderNumber: order.orderNumber, purchaseId: order.purchaseId})));
+          let totalProgramas = items.length;
+          downloadsContainer.innerHTML = '';
+
+          if (!items.length) {
+            downloadsContainer.innerHTML = '<p style="color: var(--muted); padding: 15px;">Aún no tienes programas comprados.</p>';
+          } else {
+            downloadsContainer.innerHTML = `
+              ${Number(library.repairedPurchases || 0) > 0 ? `<div style="background:rgba(18,215,246,.08);border:1px solid rgba(18,215,246,.3);border-radius:15px;padding:12px 16px;margin-bottom:12px;color:#bdefff"><i class="bi bi-wrench-adjustable-circle"></i> Reparamos automáticamente ${Number(library.repairedPurchases)} compra(s) que estaban vinculadas al UID anterior de tu cuenta.</div>` : ''}
+              <div style="background: rgba(53,221,146,0.08); border: 1px solid rgba(53,221,146,0.3); border-radius: 15px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: center; gap: 15px;">
+                <i class="bi bi-shield-check" style="color: var(--green); font-size: 1.8rem;"></i>
+                <div>
+                  <strong style="color: var(--green); display: block; font-size: 0.95rem;">Tus descargas están vinculadas a tu cuenta</strong>
+                  <span style="font-size: 0.82rem; color: #c4d0df;">Los botones se generan de forma segura desde Dingloft. Si Administración cambia un link, aquí se actualiza automáticamente.</span>
+                </div>
+              </div>
+            `;
+
+            for (const producto of items) {
+              const nombreProd = producto.name || 'Producto digital';
+              const imgProd = producto.img || 'dingloft';
+              const typeProd = producto.type || 'Producto digital';
+              const assets = Array.isArray(producto.assets) ? producto.assets : [];
+              const ready = producto.deliveryStatus === 'ready' && assets.length > 0;
+
+              if (ready && assets.length > 1) {
+                const subHTML = assets.map(asset => `
+                  <div class="sub-download-row">
+                    <div><i class="bi bi-file-earmark-arrow-down"></i> ${escHtml(asset.name || 'Descarga')}</div>
+                    <button class="download-btn-small" data-url="${escHtml(asset.downloadUrl)}" data-product="${escHtml(asset.name || nombreProd)}" aria-label="Descargar ${escHtml(asset.name || nombreProd)}">
+                      <i class="bi bi-download"></i>
+                    </button>
+                  </div>
+                `).join('');
+                downloadsContainer.insertAdjacentHTML('beforeend', `
+                  <div class="bundle-container">
+                    <div class="download-row has-subs" style="cursor:pointer;" onclick="toggleBundle(this)">
+                      <div class="product-art"><img src="img/${escHtml(imgProd)}.png" alt="${escHtml(nombreProd)}" onerror="this.src='img/dingloft.png'"></div>
+                      <div>
+                        <h3>${escHtml(nombreProd)}</h3>
+                        <p>${escHtml(typeProd)} · ${assets.length} descargas</p>
+                        <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso habilitado</span>
+                      </div>
+                      <button class="toggle-btn" aria-label="Ver archivos del paquete"><i class="bi bi-chevron-down"></i></button>
+                    </div>
+                    <div class="sub-downloads">${subHTML}</div>
+                  </div>
+                `);
+              } else if (ready) {
+                const asset = assets[0];
+                downloadsContainer.insertAdjacentHTML('beforeend', `
+                  <div class="download-row">
+                    <div class="product-art"><img src="img/${escHtml(imgProd)}.png" alt="${escHtml(nombreProd)}" onerror="this.src='img/dingloft.png'"></div>
+                    <div>
+                      <h3>${escHtml(nombreProd)}</h3>
+                      <p>${escHtml(typeProd)}</p>
+                      <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso habilitado</span>
+                    </div>
+                    <button class="download-btn" data-url="${escHtml(asset.downloadUrl)}" data-product="${escHtml(nombreProd)}" aria-label="Descargar ${escHtml(nombreProd)}"><i class="bi bi-download"></i></button>
+                  </div>
+                `);
+              } else {
+                downloadsContainer.insertAdjacentHTML('beforeend', `
+                  <div class="download-row">
+                    <div class="product-art"><img src="img/${escHtml(imgProd)}.png" alt="${escHtml(nombreProd)}" onerror="this.src='img/dingloft.png'"></div>
+                    <div>
+                      <h3>${escHtml(nombreProd)}</h3>
+                      <p>${escHtml(typeProd)} · Orden ${escHtml(producto.orderNumber || '')}</p>
+                      <span class="badge" style="color:#ffd36b"><i class="bi bi-clock-history"></i> Pago confirmado · entrega pendiente</span>
+                    </div>
+                    <button class="download-btn" disabled style="opacity:.35;cursor:not-allowed" aria-label="Entrega pendiente"><i class="bi bi-hourglass-split"></i></button>
+                  </div>
+                `);
+              }
+            }
+          }
+          document.getElementById('stat-programas').textContent = totalProgramas;
+
+          const toast = document.getElementById('toast-message');
+          document.querySelectorAll('.download-btn:not([disabled]), .download-btn-small:not([disabled])').forEach(button => {
+            button.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const url = button.getAttribute('data-url');
+              const productName = button.getAttribute('data-product');
+              if (!url) return;
+              toast.textContent = `Preparando la descarga de ${productName}...`;
+              toast.classList.add('show');
+              setTimeout(() => toast.classList.remove('show'), 3000);
+              window.location.href = url;
+            });
+          });
+        } catch(error) {
+          console.error(error);
+          downloadsContainer.innerHTML = `<div style="color:#ffc1c6;padding:15px;border:1px solid rgba(255,93,105,.3);border-radius:12px;background:rgba(255,93,105,.08)"><i class="bi bi-exclamation-triangle"></i> No pudimos cargar tus descargas: ${escHtml(error.message || 'Error de sincronización')}</div>`;
+        }
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+
+    document.querySelector('.logout').addEventListener('click', async () => {
+      try { await signOut(auth); window.location.href = 'login.html'; } catch (error) { console.error(error); }
+    });
+  </script>
+</body>
+</html>

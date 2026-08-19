@@ -364,6 +364,9 @@
     /* UTILIDAD PARA REELS (SHORTS) VERTICALES */
     .ratio-9x16 { --bs-aspect-ratio: 177.77%; }
   </style>
+
+  <script>window.__DINGLOFT_COMMERCE_V1__ = true;</script>
+  <script src="mobile-shell-redirect.js?v=8"></script>
 </head>
 <body>
 
@@ -969,7 +972,7 @@
       }
     };
 
-    window.renderPayPalStable = function(monto) {
+    window.renderPayPalStableLegacyDisabled = function(monto) {
       const container = document.getElementById('paypal-button-container');
       if (!container) return;
       container.innerHTML = '';
@@ -979,6 +982,11 @@
         style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
         createOrder: function(data, actions) { return actions.order.create({ purchase_units: [{ amount: { value: monto.toFixed(2) } }] }); },
         onApprove: async function(data, actions) {
+          // Legacy browser capture is permanently disabled. Secure checkout is rendered by dingloft-commerce.js.
+          if (window.__DINGLOFT_COMMERCE_V1__) {
+            if (typeof window.renderPayPalStable === 'function') window.renderPayPalStable();
+            return;
+          }
           return actions.order.capture().then(async function(details) {
             let user = auth.currentUser;
             let userId = user ? user.uid : "GUEST-" + Date.now();
@@ -1146,9 +1154,9 @@
 
       if(applyCouponBtn) {
         applyCouponBtn.addEventListener('click', () => {
-          if (couponInput.value.trim().toUpperCase() === 'ADMIN_EVOLUTION') {
+          if (couponInput.value.trim().toUpperCase() === '__LEGACY_DISABLED__') {
             couponApplied = true;
-            couponMsg.style.display = 'block'; couponMsg.style.color = '#00ff88'; couponMsg.innerHTML = '<i class="bi bi-check-circle-fill"></i> ¡Cupón ADMIN_EVOLUTION aplicado!';
+            couponMsg.style.display = 'block'; couponMsg.style.color = '#00ff88'; couponMsg.innerHTML = '<i class="bi bi-check-circle-fill"></i> ¡Cupón __LEGACY_DISABLED__ aplicado!';
           } else {
             couponApplied = false;
             couponMsg.style.display = 'block'; couponMsg.style.color = '#ff4444'; couponMsg.innerHTML = '<i class="bi bi-x-circle-fill"></i> Código inválido.';
@@ -1199,5 +1207,6 @@
       updateCartUI();
     });
   </script>
+  <script type="module" src="dingloft-commerce.js?v=1.0.0"></script>
 </body>
 </html>

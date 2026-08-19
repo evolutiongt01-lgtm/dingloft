@@ -1,4 +1,4 @@
-/* Dingloft Commerce Bridge · v1.0.0
+/* Dingloft Commerce Bridge · v2.1.0 · Worker Canonical Catalog
    Payment and digital fulfillment are finalized by Cloudflare Worker.
    This file intentionally never writes a paid purchase from the browser. */
 
@@ -28,12 +28,14 @@ let lastQuote = null;
 let paypalRenderGeneration = 0;
 
 window.__DINGLOFT_COMMERCE_V1__ = true;
+window.__DINGLOFT_COMMERCE_V2__ = true;
 
 function currentItems() {
   const source = Array.isArray(window.cartItemsList) ? window.cartItemsList : [];
   return source
     .slice(0, 50)
     .map(item => ({
+      sku: String(item?.sku || item?.productSku || item?.workerSku || item?.id || "").trim(),
       name: String(item?.name || "").trim(),
       type: String(item?.type || "").trim(),
       img: String(item?.img || "").trim()
