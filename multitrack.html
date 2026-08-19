@@ -2494,7 +2494,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
 <div class="mt-quickbar">
 <div class="container mt-quickbar-inner">
 <label class="mt-search"><i class="bi bi-search"></i><input autocomplete="off" id="mtSearch" placeholder="Buscar canción o artista…" type="search"/></label>
-<div class="mt-filter-row" id="mtFilters">
+<div class="mt-filter-row" data-horizontal-scroll="true" id="mtFilters">
 <button class="mt-filter active" data-filter="all" type="button">Todos</button>
 <button class="mt-filter" data-filter="featured" type="button">Destacados</button>
 <button class="mt-filter" data-filter="new" type="button">Nuevos</button>
@@ -2519,7 +2519,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
       <div><div class="section-kicker">Explora por artista</div><h2 id="mt-seo-title">Multitracks cristianos por artista y canción.</h2></div>
       <p>Encuentra sesiones de Ministerios Ebenezer, Genesis Campos, CCINT, Ebenezer Honduras, Ebenezer San Francisco, Leonardo Díaz y más. Cada canción incluye preview y datos técnicos antes de agregarla al carrito.</p>
     </div>
-    <div class="mt-seo-artists"><article class="mt-seo-artist" id="artista-genesis-campos">
+    <div class="mt-seo-artists" data-horizontal-scroll="true"><article class="mt-seo-artist" id="artista-genesis-campos">
       <div class="mt-seo-artist-top"><h3>Multitracks de Genesis Campos</h3><span class="mt-seo-count">4 canciones</span></div>
       <div class="mt-seo-songlinks"><a href="#mt-MT-001">Todos Reunidos</a><a href="#mt-MT-004">Ante el Rey</a><a href="#mt-MT-005">Deleitate en el Señor</a><a href="#mt-MT-014">Jesus eres mi paz</a></div>
     </article><article class="mt-seo-artist" id="artista-ministerios-ebenezer">
@@ -2562,7 +2562,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
 </div>
 </section>
 </main>
-<audio id="mtAudio" preload="metadata"></audio>
+<audio id="mtAudio" preload="auto" playsinline webkit-playsinline></audio>
 <div class="mt-toast" id="mtToast"></div>
 <footer class="premium-footer">
 <div class="container"><div class="footer-grid"><div class="footer-mark"><img alt="Dingloft" onerror="this.style.display='none'" src="img/dingloft.png"/><span>DINGLOFT · MULTITRACK COLLECTION</span></div><div class="footer-note">© 2026 Dingloft - Evolution Group. Todos los derechos reservados.</div></div></div>
@@ -2771,23 +2771,31 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   };
 
   const playPreview = async (btn) => {
-    const src = btn.dataset.src;
-    if (!src) { showToast('Este preview todavía no está disponible.'); return; }
+    const src = String(btn.dataset.src || '').trim();
+    if (!src || !audio) { showToast('Este preview todavía no está disponible.'); return; }
 
-    if (currentId === btn.dataset.id) {
-      if (!audio.paused) audio.pause();
-      else { try { await audio.play(); } catch(_) {} }
+    // Resolve always from the site root. This stays correct inside app/desktop iframes.
+    const resolved = new URL(src.replace(/^\/+/, ''), `${location.origin}/`).href;
+
+    if (currentId === btn.dataset.id && audio.src === resolved) {
+      if (!audio.paused) { audio.pause(); return; }
+      try { await audio.play(); } catch(err) { console.error('Dingloft preview resume', err); showToast('No pude reanudar el preview. Toca nuevamente.'); }
       return;
     }
 
     const previousBtn = document.querySelector(`.mt-play-btn[data-id="${currentId}"]`);
     resetCardPlayer(previousBtn, true);
-
     currentId = btn.dataset.id;
-    if (audio.src !== new URL(src, location.href).href) {
-      audio.src = src;
+
+    if (audio.src !== resolved) {
+      audio.pause();
+      audio.src = resolved;
       audio.currentTime = 0;
+      audio.load();
     }
+    audio.playsInline = true;
+    audio.setAttribute('playsinline','');
+    audio.setAttribute('webkit-playsinline','');
 
     btn.classList.add('is-playing');
     const icon = btn.querySelector('.mt-preview-action-icon i');
@@ -2796,16 +2804,18 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
     if (copy) copy.textContent = 'Pausar preview';
 
     try {
+      // play() is called synchronously from the user's click, preserving iOS media permission.
       await audio.play();
     } catch(err) {
+      console.error('Dingloft preview play failed', err, resolved);
       resetCardPlayer(btn, true);
       currentId = null;
-      showToast(`Preview aún no cargado. Revisa: ${src}`);
+      showToast('No pude reproducir este preview. Recarga la página e inténtalo otra vez.');
     }
   };
 
   const bindCards = () => {
-    document.querySelectorAll('.mt-play-btn').forEach(btn => btn.addEventListener('click', () => playPreview(btn)));
+    document.querySelectorAll('.mt-play-btn').forEach(btn => btn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); playPreview(btn); }));
     document.querySelectorAll('.btn-mt-pending').forEach(btn => btn.addEventListener('click', () => showToast('Este Multitrack estará disponible próximamente.')));
     if (window.matchMedia('(pointer:fine)').matches) {
       document.querySelectorAll('.mt-card').forEach(card => card.addEventListener('pointermove', e => { const r=card.getBoundingClientRect(); card.style.setProperty('--mx',`${e.clientX-r.left}px`); card.style.setProperty('--my',`${e.clientY-r.top}px`); }));
@@ -3524,6 +3534,6 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
       }, {passive:true});
     })();
   </script>  <script type="module" src="dingloft-commerce.js?v=2.1.0"></script>
-<script src="dingloft-ui-guard.js?v=10"></script>
+<script src="dingloft-ui-guard.js?v=20"></script>
 </body>
 </html>
