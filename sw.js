@@ -1,4 +1,4 @@
-const VERSION = '46';
+const VERSION = '48';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -44,10 +44,10 @@ const CORE = [
   '/desktop-shell.js',
   '/desktop-global-nav.js',
   '/dingloft-ui-guard.js?v=46',
-  '/dingloft-presence.js?v=46',
+  '/dingloft-presence.js?v=48',
   '/mobile-shell-redirect.js',
   '/pwa-install.js',
-  '/pwa-runtime.js?v=46',
+  '/pwa-runtime.js?v=48',
   '/dingloft-mobile-chrome.js?v=34',
   '/manifest.webmanifest?v=46',
   '/img/pwa-liquid-rounded-192-v17.png',

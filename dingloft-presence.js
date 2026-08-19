@@ -1,4 +1,4 @@
-/* Dingloft Presence v46 · live presence + anonymous ghost session analytics
+/* Dingloft Presence v48 · live presence + anonymous ghost session analytics
    - Approximate geolocation comes from Cloudflare request.cf on the Worker.
    - Raw IP is never stored.
    - Active duration is approximate and counts visible/heartbeat time only.
@@ -39,14 +39,28 @@ function touchSession(){
     if(data?.id){data.last=Date.now();safeStorageSet(DINGLOFT_SESSION_KEY,JSON.stringify(data))}
   }catch(_){}
 }
-function presenceDevice(){
+function presenceClientInfo(){
   const ua=navigator.userAgent||'';
-  if(/iPhone|iPod/i.test(ua))return 'iPhone';
-  if(/iPad/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1))return 'iPad';
-  if(/Android/i.test(ua))return 'Android';
-  if(/Macintosh|Mac OS X/i.test(ua))return 'Mac';
-  if(/Windows/i.test(ua))return 'Windows';
-  return 'Web';
+  const isiPad=/iPad/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const isiPhone=/iPhone|iPod/i.test(ua);
+  const isAndroid=/Android/i.test(ua);
+  const isAndroidTablet=isAndroid&&/Tablet|SM-T|Lenovo Tab|Nexus 7|Nexus 9|Pixel C/i.test(ua);
+  let device='Web', os='Otro';
+  if(isiPhone){device='iPhone';os='iOS'}
+  else if(isiPad){device='iPad';os='iPadOS'}
+  else if(isAndroidTablet){device='Android Tablet';os='Android'}
+  else if(isAndroid){device='Android';os='Android'}
+  else if(/Macintosh|Mac OS X/i.test(ua)){device='Mac';os='macOS'}
+  else if(/Windows/i.test(ua)){device='Windows PC';os='Windows'}
+  else if(/Linux/i.test(ua)){device='Linux PC';os='Linux'}
+  let browser='Otro';
+  if(/EdgiOS|EdgA|Edg\//i.test(ua))browser='Edge';
+  else if(/OPiOS|OPR\//i.test(ua))browser='Opera';
+  else if(/SamsungBrowser\//i.test(ua))browser='Samsung Internet';
+  else if(/Firefox|FxiOS/i.test(ua))browser='Firefox';
+  else if(/CriOS|Chrome\//i.test(ua))browser='Chrome';
+  else if(/Version\//i.test(ua)&&/Safari/i.test(ua))browser='Safari';
+  return {device,browser,os};
 }
 function presencePath(){ return `${location.pathname}${location.search}`.slice(0,500) }
 function isInfrastructurePage(){
@@ -93,13 +107,16 @@ async function dingloftPresencePing(reason='heartbeat',force=false,{anonymousFas
       const token=await presenceFirebaseToken();
       if(token)headers.authorization=`Bearer ${token}`;
     }
+    const clientInfo=presenceClientInfo();
     const payload={
       visitorId:presenceVisitorId(),
       sessionId:presenceSessionId(),
       path,
       title:(document.title||'Dingloft').slice(0,180),
       referrer:(document.referrer||'').slice(0,500),
-      device:presenceDevice(),
+      device:clientInfo.device,
+      browser:clientInfo.browser,
+      os:clientInfo.os,
       standalone:matchMedia('(display-mode: standalone)').matches||navigator.standalone===true,
       language:(navigator.language||'').slice(0,30),
       reason:String(reason||'heartbeat').slice(0,40),
