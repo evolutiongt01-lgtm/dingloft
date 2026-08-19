@@ -39,11 +39,16 @@
 @media(max-width:390px){.dock{left:7px;right:7px;grid-template-columns:1fr 1fr 80px 1fr 1fr;height:73px}.cart{width:66px;height:66px}.cartlabel{top:58px}.item{font-size:.58rem}.item svg{width:21px;height:21px}}
 @media(display-mode:standalone){.install-top,.install-card,.install-guide{display:none!important}}
 
-</style></head><body>
+</style>
+<style id="cart-shell-v12">
+.cart-sheet-open .cart{transform:translateY(-3px) scale(.96)!important;box-shadow:0 18px 42px rgba(0,0,0,.62),0 0 0 1px rgba(114,220,255,.12)!important}
+.cart-sheet-open .cartslot:after{content:"";position:absolute;top:-31px;width:82px;height:82px;border-radius:29px;background:rgba(114,220,255,.055);filter:blur(8px);pointer-events:none}
+</style>
+</head><body>
 <header class="top"><a class="brand" href="app.html?route=home" data-route="home"><img src="img/pwa-liquid-192-v5.png?v=8" alt=""><span class="bc"><strong class="bn">DINGLOFT</strong><small class="bs">EVOLUTION GROUP</small></span></a><div class="online" id="onlineState"><span class="dot"></span><span>Store online</span></div><button class="install-top" id="installAppBtn" aria-label="Instalar Dingloft" title="Instalar Dingloft"><svg viewBox="0 0 24 24"><path d="M12 3v11"/><path d="m8 10 4 4 4-4"/><path d="M5 19h14"/></svg></button></header>
 <div id="stage"></div><div class="progress" id="progress"></div>
 <nav class="dock" id="dock"><a class="item" href="app.html?route=home" data-route="home"><svg viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5H15v-6H9v6H3.5a.5.5 0 0 1-.5-.5z"/></svg><span>Inicio</span></a><a class="item" href="app.html?route=catalog" data-route="catalog"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg><span>Catálogo</span></a><div class="cartslot"><button class="cart" id="cart"><svg viewBox="0 0 24 24"><path d="M6 8h12l1 13H5z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="count" id="count">0</span></button><span class="cartlabel">Carrito</span></div><a class="item" href="app.html?route=multitrack" data-route="multitrack"><svg viewBox="0 0 24 24"><path d="M4 13v-2M8 17V7M12 20V4M16 17V7M20 13v-2"/></svg><span>Multitrack</span></a><a class="item" href="app.html?route=account" data-route="account"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"/></svg><span>Cuenta</span></a></nav>
 <div class="install-card" id="installCard" role="dialog" aria-label="Instalar Dingloft"><button class="install-close" id="installCardClose" aria-label="Cerrar">×</button><div class="install-logo"><img src="img/pwa-liquid-192-v5.png?v=6" alt=""></div><div class="install-copy"><strong>Instala Dingloft</strong><span>Ábrelo como una app desde tu pantalla principal.</span></div><button class="install-action" id="installCardAction">Instalar</button></div>
 <div class="install-guide" id="installGuide"><div class="install-sheet"><div class="install-handle"></div><h2 id="installGuideTitle">Instala Dingloft</h2><p id="installGuideText">Añádelo a tu pantalla de inicio.</p><div id="installSteps"></div><button class="install-done" id="installGuideClose">Entendido</button></div></div>
-<div class="toast" id="toast"></div><script src="dingloft-app.js?v=11"></script><script src="pwa-install.js?v=10"></script><script src="dingloft-ui-guard.js?v=11"></script>
+<div class="toast" id="toast"></div><script src="dingloft-app.js?v=12"></script><script src="pwa-install.js?v=10"></script><script src="dingloft-ui-guard.js?v=12"></script>
 </body></html>

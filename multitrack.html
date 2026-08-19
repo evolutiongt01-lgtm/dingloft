@@ -2346,6 +2346,17 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
 </style>
 
 <script defer src="desktop-global-nav.js?v=10"></script>
+
+<style id="multitrack-shell-fix-v12">
+@media (min-width:900px) and (pointer:fine){
+  html.dingloft-desktop-shell-view .mt-quickbar{top:0!important;z-index:60!important;background:rgba(5,7,10,.95)!important;box-shadow:0 14px 34px rgba(0,0,0,.18)!important}
+  html.dingloft-desktop-shell-view .mt-hero{padding-top:54px!important}
+}
+@media (min-width:900px){
+  .btn-floating-cart{background:linear-gradient(145deg,#fbfdff,#eaf1f5)!important;color:#080b0e!important;border:1px solid rgba(255,255,255,.85)!important;border-radius:18px!important;box-shadow:0 18px 45px rgba(0,0,0,.42)!important}
+  .btn-floating-cart:hover{background:#fff!important;transform:translateY(-3px)!important}
+}
+</style>
 </head>
 <body class="multitrack-page">
 <!-- Orbes de luz -->
