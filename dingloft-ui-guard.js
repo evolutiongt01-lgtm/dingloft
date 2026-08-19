@@ -78,7 +78,7 @@
   const horizontalSelectors = [
     '[data-horizontal-scroll]','.hero-proof','.trust-bar','.category-grid','.category-section > .row','.steps',
     '.mt-filter-row','.mt-seo-artists','.tabs-header','.mt-filters','.mt-chip-row','.filter-row','.category-scroll',
-    '.product-tabs','.nav-pills','.shortcut-row','.horizontal-scroll','.table-scroll','.cards-scroll'
+    '.product-tabs','.nav-pills','.shortcut-row','.horizontal-scroll','.table-scroll','.cards-scroll','.similar-carousel-wrapper','.reels-scroll','.video-carousel'
   ].join(',');
   if (isMac) {
     document.addEventListener('wheel', e => {
@@ -106,9 +106,13 @@
     const s = document.createElement('style');
     s.id = 'dingloft-ui-guard-style';
     s.textContent = `
-      html,body{touch-action:pan-x pan-y;}
-      html.dingloft-ios-fixed,html.dingloft-ios-fixed body{width:100%!important;max-width:100%!important;overflow-x:hidden!important;overscroll-behavior-x:none!important;touch-action:pan-x pan-y!important;}
+      html,body{touch-action:pan-y;}
+      html.dingloft-ios-fixed,html.dingloft-ios-fixed body{width:100%!important;max-width:100%!important;overflow-x:hidden!important;overscroll-behavior-x:none!important;touch-action:pan-y!important;}
       html.dingloft-ios-fixed body{position:relative!important;}
+      
+      html.dingloft-ios-fixed body:not(.no-scroll):not(.cart-open){overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important;}
+      html.dingloft-ios-fixed main,html.dingloft-ios-fixed #page-wrapper,html.dingloft-ios-fixed .page-wrapper{touch-action:pan-y!important;}
+
       html.dingloft-installed #navInstall,
       html.dingloft-installed #installAppBtn,
       html.dingloft-installed #installCard,
