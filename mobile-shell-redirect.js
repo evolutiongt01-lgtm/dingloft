@@ -5,10 +5,10 @@
   const params = new URLSearchParams(location.search);
   if (params.get('embed') === '1') return;
   const file = (location.pathname.split('/').pop() || 'index.html');
-  if (/^(app|login|register|admin|commerce-admin)\.html$/i.test(file)) return;
+  if (/^(app|index|login|register|admin|commerce-admin)\.html$/i.test(file)) return;
   const lower = file.toLowerCase();
   const app = new URL('app.html', location.href);
-  if (lower === 'index.html' || lower === '') {
+  if (lower === 'ventas.html') {
     const h = (location.hash || '').toLowerCase();
     app.searchParams.set('route', h === '#catalogo' ? 'catalog' : h === '#multitrack' ? 'multitrack' : 'home');
   } else if (lower === 'account.html') {

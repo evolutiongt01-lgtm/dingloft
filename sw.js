@@ -1,14 +1,16 @@
-const CACHE = 'dingloft-app-v3-liquid';
+const CACHE = 'dingloft-app-v6-index-ventas';
 const CORE = [
   '/app.html?route=home',
+  '/ventas.html',
+  '/index.html',
   '/dingloft-app.js',
   '/pwa-install.js',
-  '/manifest.webmanifest?v=3',
+  '/manifest.webmanifest?v=6',
   '/mobile-shell-redirect.js',
-  '/img/pwa-liquid-192.png',
-  '/img/pwa-liquid-512.png',
-  '/img/pwa-liquid-maskable-512.png',
-  '/img/apple-touch-icon-180.png',
+  '/img/pwa-liquid-192-v5.png',
+  '/img/pwa-liquid-512-v5.png',
+  '/img/pwa-liquid-maskable-512-v5.png',
+  '/img/apple-touch-icon-liquid-v5.png',
   '/img/dingloft.png'
 ];
 
