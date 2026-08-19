@@ -40,6 +40,32 @@ html.dingloft-installed #navInstall{display:none!important}
 @media(display-mode:standalone){.shell-nav{top:7px!important;width:min(1160px,calc(100% - 16px))!important}#navInstall{display:none!important}.stage{top:78px!important}}
 
 </style>
+
+<style id="dingloft-desktop-floating-v35">
+@media (min-width:900px) and (pointer:fine){
+  html,body{background:#05070a!important;}
+  .shell-nav{
+    top:12px!important;
+    width:min(1180px,calc(100% - 28px))!important;
+    height:64px!important;
+    border-radius:22px!important;
+    background:
+      radial-gradient(circle at 10% -20%,rgba(89,205,255,.11),transparent 22rem),
+      linear-gradient(150deg,rgba(15,19,25,.86),rgba(7,9,13,.90))!important;
+    border:1px solid rgba(255,255,255,.12)!important;
+    box-shadow:0 20px 58px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.055)!important;
+    backdrop-filter:blur(26px) saturate(155%)!important;
+    -webkit-backdrop-filter:blur(26px) saturate(155%)!important;
+  }
+  /* The iframe now paints behind the floating nav, so there is no full-width header rectangle. */
+  .stage{top:0!important;background:#05070a!important;}
+  .progress{top:78px!important;width:min(1140px,calc(100% - 52px))!important;}
+  @media(display-mode:standalone){
+    .shell-nav{top:10px!important;width:min(1160px,calc(100% - 24px))!important;}
+    .stage{top:0!important;}
+  }
+}
+</style>
 </head>
 <body style="background:#040609">
 <div id="desktopSplash" aria-label="Cargando Dingloft"><div class="desktop-splash-inner"><div class="desktop-splash-mark"><img src="/img/pwa-liquid-rounded-192-v17.png?v=18" alt="Dingloft"></div><div class="desktop-splash-brand">DINGLOFT</div><div class="desktop-splash-group">Evolution Group</div><div class="desktop-splash-status">Preparando tu espacio</div><div class="desktop-splash-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div></div>
@@ -52,7 +78,7 @@ html.dingloft-installed #navInstall{display:none!important}
   </nav>
 </header>
 <div class="stage" id="stage"></div><div class="progress" id="progress"></div>
-<script src="desktop-shell.js?v=21"></script>
-<script src="dingloft-ui-guard.js?v=31"></script>
-<script src="/pwa-runtime.js?v=28"></script>
+<script src="desktop-shell.js?v=35"></script>
+<script src="dingloft-ui-guard.js?v=34"></script>
+<script src="/pwa-runtime.js?v=35"></script>
 </body></html>
