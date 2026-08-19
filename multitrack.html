@@ -2655,7 +2655,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
 </div>
 </div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script><script>window.__DINGLOFT_MULTITRACK_AUDIO_V22__=true;</script><script id="multitrack-store-data">
 (() => {
-  const MULTITRACKS = [
+  const LEGACY_MULTITRACKS = [
     { id:'MT-001', title:'Todos Reunidos', artist:'Genesis Campos', price:20, bpm:'155', key:'Am', stems:'11', tag:'new', featured:true, cover:'img/albums/todos-reunidos.jpg', preview:'/audio/Preview1.mp3?v=25' },
     { id:'MT-002', title:'Lanza Gritos', artist:'Ministerios Ebenezer', price:25, bpm:'150', key:'Em', stems:'10', tag:'featured', featured:true, cover:'img/albums/Lanzagritos.jpg', preview:'/audio/Preview2.mp3?v=25' },
     { id:'MT-003', title:'Melodía de Unción - La voz de mi Amado - Libertad', artist:'CCINT', price:15, bpm:'155', key:'Am & Cm', stems:'15', tag:'new', featured:false, cover:'img/albums/ccint1.jpeg', preview:'/audio/Preview3.mp3?v=25' },
@@ -2704,6 +2704,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
     { id:'MT-046', title:'Multitrack 46', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview46.mp3?v=25' },
     { id:'MT-047', title:'Multitrack 47', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview47.mp3?v=25' }
   ];
+  let MULTITRACKS = LEGACY_MULTITRACKS.filter(item => Number.isFinite(item.price));
   window.DINGLOFT_MULTITRACKS = MULTITRACKS;
 
   const grid = document.getElementById('mtGrid');
@@ -2785,9 +2786,19 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   };
 
   const render = () => {
-    if (grid) grid.innerHTML = MULTITRACKS.filter(item => Number.isFinite(item.price)).map((item,i) => cardHTML(item,i)).join('');
+    if (grid) grid.innerHTML = MULTITRACKS.filter(item => item.active !== false && Number.isFinite(Number(item.price))).map((item,i) => cardHTML({...item,price:Number(item.price)},i)).join('');
     bindCards();
     applyFilters();
+  };
+  const loadManagedMultitracks = async () => {
+    try {
+      const r = await fetch('https://autumn-breeze-dfa0.evolutiongt01.workers.dev/multitracks/catalog',{cache:'no-store'});
+      const d = await r.json().catch(()=>({}));
+      if (!r.ok || !d.ok || !Array.isArray(d.multitracks)) return;
+      MULTITRACKS = d.multitracks.filter(item => item.active !== false && Number.isFinite(Number(item.price))).map(item => ({...item,price:Number(item.price),key:item.chord||item.key||'—'}));
+      window.DINGLOFT_MULTITRACKS = MULTITRACKS;
+      render();
+    } catch (e) { console.warn('Dingloft managed multitracks unavailable; using local catalog.', e); }
   };
 
   const fmtTime = (s) => `${Math.floor((s || 0)/60)}:${String(Math.floor((s || 0)%60)).padStart(2,'0')}`;
@@ -2932,6 +2943,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   filters?.addEventListener('click', e => { const btn=e.target.closest('.mt-filter'); if(!btn)return; filters.querySelectorAll('.mt-filter').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); activeFilter=btn.dataset.filter; applyFilters(); });
 
   render();
+  loadManagedMultitracks();
 })();
 </script><script src="multitrack-worker-gate.js?v=25"></script><script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
