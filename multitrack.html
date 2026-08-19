@@ -2385,6 +2385,15 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   html.dingloft-direct-app body.cart-open .btn-floating-cart{bottom:calc(min(88dvh,780px) - 62px)!important}
 }
 </style>
+
+<style id="dingloft-multitrack-dock-lock-v27">
+@media(max-width:1024px){
+  html.dingloft-direct-app .mobile-app-dock{position:fixed!important;left:max(10px,env(safe-area-inset-left))!important;right:max(10px,env(safe-area-inset-right))!important;bottom:calc(5px + env(safe-area-inset-bottom))!important;height:66px!important;padding:6px 7px!important;grid-template-columns:1fr 1fr 76px 1fr 1fr!important;border-radius:22px!important;transform:none;}
+  html.dingloft-direct-app .mobile-dock-item{height:52px!important;}
+  html.dingloft-direct-app .btn-floating-cart{left:50%!important;right:auto!important;top:auto!important;bottom:calc(20px + env(safe-area-inset-bottom))!important;width:60px!important;height:60px!important;border-radius:20px!important;transform:translateX(-50%)!important;}
+  html.dingloft-direct-app body.cart-open .mobile-app-dock{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:translateY(15px)!important;}
+}
+</style>
 </head>
 <body class="multitrack-page">
 <!-- Orbes de luz -->

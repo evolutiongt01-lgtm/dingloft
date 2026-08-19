@@ -1,4 +1,4 @@
-const VERSION = '25';
+const VERSION = '27';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -6,7 +6,7 @@ const OFFLINE = '/offline.html';
 
 const CORE = [
   '/offline.html',
-  '/launch.html?v=25',
+  '/launch.html?v=27',
   '/app.html?route=home',
   '/desktop-shell.html?src=ventas.html',
   '/ventas.html',
@@ -16,17 +16,29 @@ const CORE = [
   '/account.html',
   '/login.html',
   '/sketchup.html',
+  '/sketchup.html?app=1',
   '/yamahakeys.html',
+  '/yamahakeys.html?app=1',
   '/autocad.html',
+  '/autocad.html?app=1',
   '/nord.html',
+  '/nord.html?app=1',
   '/rhodes.html',
+  '/rhodes.html?app=1',
   '/mainstage.html',
+  '/mainstage.html?app=1',
   '/logic.html',
+  '/logic.html?app=1',
   '/office.html',
+  '/office.html?app=1',
   '/cinema4d.html',
+  '/cinema4d.html?app=1',
   '/dual.html',
+  '/dual.html?app=1',
   '/esword.html',
+  '/esword.html?app=1',
   '/producto.html',
+  '/producto.html?app=1',
   '/tienda.html',
   '/dingloft-app.js',
   '/desktop-shell.js',
@@ -34,8 +46,8 @@ const CORE = [
   '/dingloft-ui-guard.js',
   '/mobile-shell-redirect.js',
   '/pwa-install.js',
-  '/pwa-runtime.js?v=25',
-  '/manifest.webmanifest?v=25',
+  '/pwa-runtime.js?v=27',
+  '/manifest.webmanifest?v=27',
   '/img/pwa-liquid-rounded-192-v17.png',
   '/img/pwa-liquid-rounded-512-v17.png',
   '/img/pwa-liquid-192-v5.png',
