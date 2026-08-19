@@ -2732,7 +2732,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
     const price = configured ? `$${item.price.toFixed(2)}` : 'Precio pendiente';
     const cartClass = configured ? 'btn-add-cart' : 'btn-mt-pending';
     const cartAttrs = configured
-      ? `data-id="${item.id}" data-name="${item.title}" data-price="${item.price}" data-img="dingloft" data-cover="${item.cover || ''}" data-type="Multitrack digital"`
+      ? `data-id="${item.id}" data-sku="${item.sku || item.id}" data-name="${item.title}" data-price="${item.price}" data-img="dingloft" data-cover="${item.cover || ''}" data-type="Multitrack digital"`
       : `data-pending="true"`;
     return `
       <article id="mt-${item.id}" class="mt-card" data-search="${(item.title+' '+item.artist).toLowerCase()}" data-featured="${item.featured}" data-tag="${item.tag}" data-preview="${item.preview ? 'true':'false'}">
@@ -3248,7 +3248,6 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
       const applyCouponBtn = document.getElementById('apply-coupon-btn');
       const couponMsg = document.getElementById('coupon-msg');
 
-      const addButtons = document.querySelectorAll('.btn-add-cart');
 
       const openCart = (e) => { 
         if(e) e.preventDefault(); 
@@ -3335,10 +3334,13 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
             totalPrice += (item.price * item.qty);
 
             for(let i=0; i<item.qty; i++) {
+              const mtCatalogItem = (window.DINGLOFT_MULTITRACKS || []).find(track => track.id === item.id);
               window.cartItemsList.push({
+                id: item.id,
+                sku: item.sku || mtCatalogItem?.sku || item.id,
                 name: item.name,
                 img: item.img,
-                cover: item.cover || '',
+                cover: item.cover || mtCatalogItem?.cover || '',
                 type: item.type,
                 price: couponApplied ? 0 : item.price
               });
@@ -3448,53 +3450,57 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
         updateCartUI();
       };
 
-      addButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-          e.preventDefault(); 
-          if(this.disabled) return;
-          
-          const id = this.getAttribute('data-id');
-          const name = this.getAttribute('data-name');
-          const price = parseFloat(this.getAttribute('data-price'));
-          const img = this.getAttribute('data-img');
-          const cover = this.getAttribute('data-cover') || '';
-          const type = this.getAttribute('data-type');
-          
-          const existingItem = cart.find(item => item.id === id);
-          if (existingItem) {
-            existingItem.qty = 1;
-            if (cover) existingItem.cover = cover;
-          } else {
-            cart.push({ id, sku: this.getAttribute('data-sku') || '', name, price, img, cover, type, qty: 1 });
+      // Delegated cart handler: managed Multitracks are rendered asynchronously,
+      // so buttons may be replaced after DOMContentLoaded. Delegation keeps them clickable.
+      document.addEventListener('click', function(e) {
+        const button = e.target.closest('.btn-add-cart');
+        if (!button || !button.closest('#mtGrid')) return;
+        e.preventDefault();
+        if (button.disabled) return;
+
+        const id = button.getAttribute('data-id');
+        const sku = button.getAttribute('data-sku') || id || '';
+        const name = button.getAttribute('data-name');
+        const price = parseFloat(button.getAttribute('data-price'));
+        const img = button.getAttribute('data-img');
+        const cover = button.getAttribute('data-cover') || '';
+        const type = button.getAttribute('data-type');
+        if (!id || !name || !Number.isFinite(price)) return;
+
+        const existingItem = cart.find(item => item.id === id);
+        if (existingItem) {
+          existingItem.qty = 1;
+          existingItem.sku = sku || existingItem.sku || id;
+          if (cover) existingItem.cover = cover;
+        } else {
+          cart.push({ id, sku, name, price, img, cover, type, qty: 1 });
+        }
+
+        updateCartUI();
+
+        cartBtns.forEach(btn => {
+          if (btn && btn.classList) {
+            btn.classList.remove('cart-bounce');
+            void btn.offsetWidth;
+            btn.classList.add('cart-bounce');
           }
-          
-          updateCartUI(); 
-          
-          cartBtns.forEach(btn => {
-            if(btn && btn.classList) {
-              btn.classList.remove('cart-bounce');
-              void btn.offsetWidth; 
-              btn.classList.add('cart-bounce');
-            }
-          });
-          
-          const originalHTML = this.innerHTML;
-          const originalBg = this.style.background;
-          const originalColor = this.style.color;
-          
-          this.innerHTML = 'Agregado <i class="bi bi-check2"></i>';
-          this.style.background = '#00ff88';
-          this.style.color = '#000';
-          
-          setTimeout(() => {
-            if(!this.disabled) {
-              this.innerHTML = originalHTML;
-              this.style.background = originalBg;
-              this.style.color = originalColor || '';
-            }
-            openCart(); 
-          }, 800);
         });
+
+        const originalHTML = button.innerHTML;
+        const originalBg = button.style.background;
+        const originalColor = button.style.color;
+        button.innerHTML = 'Agregado <i class="bi bi-check2"></i>';
+        button.style.background = '#00ff88';
+        button.style.color = '#000';
+
+        setTimeout(() => {
+          if (!button.disabled && button.isConnected) {
+            button.innerHTML = originalHTML;
+            button.style.background = originalBg;
+            button.style.color = originalColor || '';
+          }
+          openCart();
+        }, 450);
       });
     });
   </script><script id="dingloft-v3-interactions">
