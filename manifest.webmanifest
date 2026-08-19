@@ -1,0 +1,79 @@
+{
+  "id": "/app.html",
+  "name": "Dingloft · Evolution Group",
+  "short_name": "Dingloft",
+  "description": "Software, librerías y multitracks de Dingloft.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "/app.html?route=home&utm_source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait-primary",
+  "background_color": "#05070a",
+  "theme_color": "#05070a",
+  "categories": [
+    "shopping",
+    "music",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "/img/pwa-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/img/pwa-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/img/pwa-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Catálogo",
+      "short_name": "Catálogo",
+      "url": "/app.html?route=catalog",
+      "icons": [
+        {
+          "src": "/img/pwa-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Multitracks",
+      "short_name": "Multitracks",
+      "url": "/app.html?route=multitrack",
+      "icons": [
+        {
+          "src": "/img/pwa-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Mi cuenta",
+      "short_name": "Cuenta",
+      "url": "/app.html?route=account",
+      "icons": [
+        {
+          "src": "/img/pwa-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

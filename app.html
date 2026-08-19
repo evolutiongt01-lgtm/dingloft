@@ -1,101 +1,23 @@
 <!doctype html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#05070a">
-<meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Dingloft</title>
-<link rel="icon" href="img/favicon.png" type="image/png">
+<meta name="apple-mobile-web-app-title" content="Dingloft">
+<meta name="application-name" content="Dingloft">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="img/pwa-icon-192.png">
+<title>Dingloft</title><link rel="icon" href="img/dingloft.png">
 <style>
-:root{
-  --dl-bg:#05070a;
-  --dl-panel:rgba(10,14,19,.88);
-  --dl-line:rgba(255,255,255,.10);
-  --dl-muted:#738092;
-  --dl-text:#f5f8fb;
-  --dl-cyan:#75dcff;
-  --dl-blue:#29aef2;
-  --dl-safe-b:env(safe-area-inset-bottom,0px);
-  --dl-top-h:84px;
-  --dl-dock-h:84px;
-}
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--dl-bg);color:var(--dl-text);font-family:-apple-system,BlinkMacSystemFont,"Inter","SF Pro Display","Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}
-body{position:fixed;inset:0;background:radial-gradient(circle at 85% -8%,rgba(55,171,220,.11),transparent 25rem),#05070a}
-.dl-shell-top{position:fixed;z-index:100;left:0;right:0;top:0;height:var(--dl-top-h);display:flex;align-items:center;padding:10px 18px 9px;background:linear-gradient(180deg,rgba(4,6,8,.985),rgba(5,7,10,.93));border-bottom:1px solid rgba(255,255,255,.075);backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%);box-shadow:0 14px 38px rgba(0,0,0,.24)}
-.dl-shell-top::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,rgba(117,220,255,.75),rgba(102,113,255,.18),transparent 78%);opacity:.65}
-.dl-brand{display:flex;align-items:center;gap:13px;color:#fff;text-decoration:none;min-width:0}
-.dl-brand-logo{width:39px;height:39px;display:grid;place-items:center;flex:0 0 39px}
-.dl-brand-logo img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 14px rgba(117,220,255,.12))}
-.dl-brand-copy{display:flex;flex-direction:column;line-height:1;min-width:0}
-.dl-brand-name{font-size:1.05rem;font-weight:850;letter-spacing:.21em;white-space:nowrap}
-.dl-brand-sub{margin-top:7px;color:#687486;font-size:.58rem;font-weight:650;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
-.dl-shell-state{margin-left:auto;display:flex;align-items:center;gap:7px;color:#697687;font-size:.55rem;font-weight:760;letter-spacing:.13em;text-transform:uppercase}
-.dl-state-dot{width:7px;height:7px;border-radius:99px;background:#69e1af;box-shadow:0 0 0 5px rgba(105,225,175,.07),0 0 16px rgba(105,225,175,.25)}
-#dingloft-stage{position:fixed;z-index:1;left:0;right:0;top:var(--dl-top-h);bottom:0;background:#05070a;overflow:hidden}
-.dl-frame{position:absolute;inset:0;width:100%;height:100%;border:0;background:#05070a;opacity:1;transform:none;transition:opacity .20s ease,transform .30s cubic-bezier(.16,1,.3,1);will-change:opacity,transform}
-.dl-frame.incoming{opacity:0;transform:translate3d(12px,0,0) scale(.998);z-index:4}
-.dl-frame.active{opacity:1;transform:none;z-index:4}
-.dl-frame.leaving{opacity:0;transform:translate3d(-8px,0,0) scale(.998);z-index:3;pointer-events:none}
-#dl-route-progress{position:fixed;z-index:130;top:var(--dl-top-h);left:0;right:0;height:2px;opacity:0;overflow:hidden;pointer-events:none;transition:opacity .13s ease}
-#dl-route-progress.show{opacity:1}
-#dl-route-progress::before{content:"";position:absolute;inset:0;width:34%;background:linear-gradient(90deg,#73d7ff,#8591ff);box-shadow:0 0 14px rgba(115,215,255,.38);animation:dlProgress .72s ease-in-out infinite}
-@keyframes dlProgress{from{transform:translateX(-120%)}to{transform:translateX(390%)}}
-.dl-shell-dock{position:fixed;z-index:120;left:16px;right:16px;bottom:calc(10px + var(--dl-safe-b));height:var(--dl-dock-h);display:grid;grid-template-columns:1fr 1fr 94px 1fr 1fr;align-items:stretch;padding:7px 8px;border-radius:29px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(145deg,rgba(18,24,31,.91),rgba(6,9,13,.94));box-shadow:0 22px 64px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(28px) saturate(165%);-webkit-backdrop-filter:blur(28px) saturate(165%);overflow:visible}
-.dl-shell-dock::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(circle at var(--dock-x,50%) 0,rgba(117,220,255,.10),transparent 31%)}
-.dl-dock-item{position:relative;z-index:2;border:0;background:transparent;color:#687688;text-decoration:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border-radius:20px;font-size:.62rem;font-weight:720;transition:color .18s ease,background .22s ease,transform .2s ease}
-.dl-dock-item svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s cubic-bezier(.16,1,.3,1),color .18s ease}
-.dl-dock-item.active{color:#eaf6ff;background:rgba(255,255,255,.042)}
-.dl-dock-item.active svg{color:var(--dl-cyan);transform:translateY(-1px);filter:drop-shadow(0 0 8px rgba(117,220,255,.24))}
-.dl-dock-item:active{transform:scale(.91)}
-.dl-cart-slot{position:relative;z-index:4;display:flex;align-items:flex-start;justify-content:center}
-.dl-cart-label{position:absolute;top:66px;left:50%;transform:translateX(-50%);color:#687688;font-size:.61rem;font-weight:720;white-space:nowrap}
-.dl-cart{position:absolute;top:-24px;width:76px;height:76px;border-radius:25px;border:8px solid #05080c;background:#f4f7f9;color:#05080c;display:grid;place-items:center;box-shadow:0 15px 36px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.8);cursor:pointer;transition:transform .24s cubic-bezier(.16,1,.3,1)}
-.dl-cart:active{transform:scale(.91)}
-.dl-cart svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.dl-cart-count{position:absolute;right:-5px;top:-7px;min-width:28px;height:28px;padding:0 7px;border-radius:99px;display:grid;place-items:center;background:#25aaf1;color:#fff;border:3px solid #05080c;font-size:.72rem;font-weight:900;box-shadow:0 8px 18px rgba(37,170,241,.35)}
-.dl-toast{position:fixed;z-index:160;left:50%;bottom:calc(110px + var(--dl-safe-b));transform:translate(-50%,12px);max-width:calc(100vw - 38px);padding:10px 14px;border:1px solid rgba(255,255,255,.11);border-radius:13px;background:rgba(10,14,19,.94);color:#dce8f1;font-size:.72rem;font-weight:650;opacity:0;visibility:hidden;transition:.2s ease;box-shadow:0 15px 38px rgba(0,0,0,.4);backdrop-filter:blur(20px)}
-.dl-toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
-@media(max-width:390px){.dl-shell-dock{left:8px;right:8px;border-radius:24px}.dl-shell-top{padding-left:14px;padding-right:14px}.dl-brand-logo{width:35px;height:35px;flex-basis:35px}.dl-brand-name{font-size:.94rem}.dl-brand-sub{font-size:.52rem}.dl-shell-state{display:none}.dl-shell-dock{grid-template-columns:1fr 1fr 84px 1fr 1fr}.dl-cart{width:70px;height:70px;border-radius:23px}.dl-dock-item{font-size:.57rem}}
-@media(min-width:768px){body{display:none!important}}
-@media(prefers-reduced-motion:reduce){.dl-frame,.dl-dock-item,.dl-cart,.dl-toast{transition:none!important}#dl-route-progress::before{animation:none!important;width:100%}}
-</style>
-</head>
-<body>
-<header class="dl-shell-top">
-  <a class="dl-brand" href="app.html?route=home" data-shell-route="home" aria-label="Dingloft Inicio">
-    <span class="dl-brand-logo"><img src="img/dingloft.png" alt="Dingloft"></span>
-    <span class="dl-brand-copy"><strong class="dl-brand-name">DINGLOFT</strong><small class="dl-brand-sub">EVOLUTION GROUP</small></span>
-  </a>
-  <div class="dl-shell-state"><span class="dl-state-dot"></span><span>Store online</span></div>
-</header>
-<div id="dingloft-stage" aria-live="polite"></div>
-<div id="dl-route-progress" aria-hidden="true"></div>
-<nav class="dl-shell-dock" id="dlShellDock" aria-label="Navegación Dingloft">
-  <a class="dl-dock-item" href="app.html?route=home" data-shell-route="home" aria-label="Inicio">
-    <svg viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5H15v-6H9v6H3.5a.5.5 0 0 1-.5-.5z"/></svg><span>Inicio</span>
-  </a>
-  <a class="dl-dock-item" href="app.html?route=catalog" data-shell-route="catalog" aria-label="Catálogo">
-    <svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg><span>Catálogo</span>
-  </a>
-  <div class="dl-cart-slot">
-    <button class="dl-cart" id="dlShellCart" type="button" aria-label="Abrir carrito">
-      <svg viewBox="0 0 24 24"><path d="M6 8h12l1 13H5z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
-      <span class="dl-cart-count" id="dlShellCartCount">0</span>
-    </button>
-    <span class="dl-cart-label">Carrito</span>
-  </div>
-  <a class="dl-dock-item" href="app.html?route=multitrack" data-shell-route="multitrack" aria-label="Multitrack">
-    <svg viewBox="0 0 24 24"><path d="M4 13v-2M8 17V7M12 20V4M16 17V7M20 13v-2"/></svg><span>Multitrack</span>
-  </a>
-  <a class="dl-dock-item" href="app.html?route=account" data-shell-route="account" aria-label="Cuenta">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"/></svg><span>Cuenta</span>
-  </a>
-</nav>
-<div class="dl-toast" id="dlShellToast"></div>
-<script src="dingloft-app.js" defer></script>
-</body>
-</html>
+:root{--bg:#05070a;--panel:rgba(11,15,21,.90);--line:rgba(255,255,255,.10);--text:#f4f7fa;--muted:#718094;--cyan:#72dcff;--safe-top:env(safe-area-inset-top,0px);--safe-right:env(safe-area-inset-right,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px);--top:calc(72px + var(--safe-top));--dock:82px}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;overscroll-behavior:none;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,"Segoe UI",sans-serif}body{position:fixed;inset:0;touch-action:manipulation;-webkit-tap-highlight-color:transparent;background:radial-gradient(circle at 84% -8%,rgba(71,174,220,.10),transparent 24rem),#05070a}.top{position:fixed;z-index:100;top:0;left:0;right:0;height:var(--top);padding:calc(8px + var(--safe-top)) max(20px,var(--safe-right)) 8px max(20px,var(--safe-left));display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,.075);background:linear-gradient(180deg,rgba(4,6,9,.985),rgba(5,7,10,.94));backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%)}.top:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,var(--cyan),rgba(103,108,255,.25),transparent 78%);opacity:.55}.brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none}.brand img{width:38px;height:38px;object-fit:contain}.bc{display:flex;flex-direction:column;line-height:1}.bn{font-size:1.03rem;font-weight:850;letter-spacing:.20em}.bs{margin-top:7px;color:#69768a;font-size:.57rem;font-weight:650;letter-spacing:.16em}.online{margin-left:auto;display:flex;align-items:center;gap:7px;color:#6f7d8f;font-size:.54rem;font-weight:750;letter-spacing:.12em;text-transform:uppercase}.dot{width:7px;height:7px;border-radius:99px;background:#69e2ad;box-shadow:0 0 0 5px rgba(105,226,173,.07)}#stage{position:fixed;z-index:1;left:0;right:0;top:var(--top);bottom:0;overflow:hidden;background:#05070a}.frame{position:absolute;inset:0;width:100%;height:100%;border:0;background:#05070a;transition:opacity .18s ease,transform .28s cubic-bezier(.16,1,.3,1)}.frame.in{opacity:0;transform:translateX(10px)}.frame.active{opacity:1;transform:none}.frame.out{opacity:0;transform:translateX(-8px);pointer-events:none}.progress{position:fixed;z-index:130;top:var(--top);left:0;right:0;height:2px;opacity:0;overflow:hidden}.progress.show{opacity:1}.progress:before{content:"";position:absolute;inset:0;width:34%;background:linear-gradient(90deg,#72dcff,#7b8cff);animation:p .7s ease-in-out infinite}@keyframes p{from{transform:translateX(-120%)}to{transform:translateX(390%)}}.dock{position:fixed;z-index:120;left:16px;right:16px;bottom:calc(10px + var(--safe-bottom));height:var(--dock);padding:7px 8px;display:grid;grid-template-columns:1fr 1fr 92px 1fr 1fr;align-items:stretch;border:1px solid rgba(255,255,255,.12);border-radius:28px;background:linear-gradient(145deg,rgba(18,24,31,.91),rgba(6,9,13,.95));box-shadow:0 22px 64px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(28px) saturate(165%);-webkit-backdrop-filter:blur(28px) saturate(165%)}.item{border:0;background:transparent;color:#69778a;text-decoration:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border-radius:20px;font-size:.61rem;font-weight:720}.item svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.item.active{color:#edf8ff;background:rgba(255,255,255,.04)}.item.active svg{color:var(--cyan);filter:drop-shadow(0 0 8px rgba(114,220,255,.25))}.cartslot{position:relative;display:flex;justify-content:center}.cart{position:absolute;top:-24px;width:74px;height:74px;border-radius:24px;border:8px solid #05080c;background:#f4f7f9;color:#05080c;display:grid;place-items:center;box-shadow:0 15px 36px rgba(0,0,0,.52);cursor:pointer}.cart svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:1.8}.count{position:absolute;right:-5px;top:-7px;min-width:28px;height:28px;padding:0 7px;border-radius:99px;display:grid;place-items:center;background:#24aaf2;color:white;border:3px solid #05080c;font-size:.72rem;font-weight:900}.cartlabel{position:absolute;top:65px;color:#69778a;font-size:.60rem;font-weight:720}.toast{position:fixed;z-index:150;left:50%;bottom:calc(108px + var(--safe-bottom));transform:translate(-50%,10px);max-width:calc(100vw - 38px);padding:10px 14px;border:1px solid rgba(255,255,255,.11);border-radius:13px;background:rgba(10,14,19,.95);color:#dce8f1;font-size:.72rem;font-weight:650;opacity:0;visibility:hidden;transition:.18s}.toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.install-top{margin-left:10px;width:38px;height:38px;border:1px solid rgba(255,255,255,.11);border-radius:13px;background:rgba(255,255,255,.035);color:#dce8f1;display:none;place-items:center;cursor:pointer}.install-top.visible{display:grid}.install-top svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.install-card{position:fixed;z-index:145;left:max(14px,var(--safe-left));right:max(14px,var(--safe-right));bottom:calc(104px + var(--safe-bottom));padding:15px 15px 14px;border:1px solid rgba(114,220,255,.18);border-radius:21px;background:linear-gradient(145deg,rgba(16,23,31,.97),rgba(7,10,14,.98));box-shadow:0 24px 70px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.07);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);display:flex;gap:12px;align-items:center;opacity:0;visibility:hidden;transform:translateY(14px);transition:.25s cubic-bezier(.16,1,.3,1)}.install-card.show{opacity:1;visibility:visible;transform:none}.install-logo{width:48px;height:48px;border-radius:15px;background:#090d12;border:1px solid rgba(255,255,255,.08);display:grid;place-items:center;flex:none}.install-logo img{width:34px;height:34px;object-fit:contain}.install-copy{min-width:0;flex:1}.install-copy strong{display:block;font-size:.82rem;letter-spacing:-.01em}.install-copy span{display:block;margin-top:4px;color:#7f8da0;font-size:.66rem;line-height:1.35}.install-action{border:0;border-radius:12px;padding:10px 12px;background:#eef7fb;color:#081017;font-size:.68rem;font-weight:850;white-space:nowrap}.install-close{position:absolute;right:6px;top:-29px;width:26px;height:26px;border:1px solid rgba(255,255,255,.1);border-radius:50%;background:#0a0e13;color:#8b97a7;display:grid;place-items:center;font-size:16px}.install-guide{position:fixed;z-index:300;inset:0;padding:18px max(16px,var(--safe-right)) calc(18px + var(--safe-bottom)) max(16px,var(--safe-left));background:rgba(0,0,0,.70);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;align-items:flex-end;opacity:0;visibility:hidden;transition:.22s}.install-guide.show{opacity:1;visibility:visible}.install-sheet{width:100%;border:1px solid rgba(255,255,255,.12);border-radius:28px;background:linear-gradient(160deg,#111821,#070a0e);box-shadow:0 -16px 70px rgba(0,0,0,.55);padding:23px 19px calc(20px + var(--safe-bottom));transform:translateY(24px);transition:.28s cubic-bezier(.16,1,.3,1)}.install-guide.show .install-sheet{transform:none}.install-handle{width:42px;height:4px;border-radius:10px;background:rgba(255,255,255,.16);margin:-10px auto 17px}.install-sheet h2{font-size:1.18rem;margin:0 0 7px;letter-spacing:-.035em}.install-sheet>p{margin:0 0 18px;color:#8c99aa;font-size:.76rem;line-height:1.5}.install-step{display:grid;grid-template-columns:34px 1fr;gap:11px;align-items:center;padding:11px 0;border-top:1px solid rgba(255,255,255,.07)}.install-step span{width:31px;height:31px;border-radius:10px;display:grid;place-items:center;background:rgba(114,220,255,.10);color:#8ee5ff;font-size:.70rem;font-weight:900}.install-step p{margin:0;color:#dfe8ef;font-size:.76rem;line-height:1.4}.install-done{margin-top:14px;width:100%;height:48px;border:0;border-radius:15px;background:#f4f7f9;color:#081017;font-weight:850}.keyboard-open .dock{opacity:0;transform:translateY(130%);pointer-events:none}.dock{transition:opacity .18s ease,transform .22s ease}.pwa-installed .install-card,.pwa-installed .install-top{display:none!important}@media(display-mode:standalone){.top{background:linear-gradient(180deg,rgba(4,6,9,.995),rgba(5,7,10,.965))}.dock{bottom:calc(7px + var(--safe-bottom))}}
+@media(max-width:390px){.dock{left:8px;right:8px;grid-template-columns:1fr 1fr 82px 1fr 1fr}.top{padding-left:14px;padding-right:14px}.online{display:none}.brand img{width:35px;height:35px}.bn{font-size:.92rem}}@media(min-width:768px){body{display:none!important}}
+</style></head><body>
+<header class="top"><a class="brand" href="app.html?route=home" data-route="home"><img src="img/dingloft.png" alt=""><span class="bc"><strong class="bn">DINGLOFT</strong><small class="bs">EVOLUTION GROUP</small></span></a><div class="online" id="onlineState"><span class="dot"></span><span>Store online</span></div><button class="install-top" id="installAppBtn" aria-label="Instalar Dingloft" title="Instalar Dingloft"><svg viewBox="0 0 24 24"><path d="M12 3v11"/><path d="m8 10 4 4 4-4"/><path d="M5 19h14"/></svg></button></header>
+<div id="stage"></div><div class="progress" id="progress"></div>
+<nav class="dock" id="dock"><a class="item" href="app.html?route=home" data-route="home"><svg viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5H15v-6H9v6H3.5a.5.5 0 0 1-.5-.5z"/></svg><span>Inicio</span></a><a class="item" href="app.html?route=catalog" data-route="catalog"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg><span>Catálogo</span></a><div class="cartslot"><button class="cart" id="cart"><svg viewBox="0 0 24 24"><path d="M6 8h12l1 13H5z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="count" id="count">0</span></button><span class="cartlabel">Carrito</span></div><a class="item" href="app.html?route=multitrack" data-route="multitrack"><svg viewBox="0 0 24 24"><path d="M4 13v-2M8 17V7M12 20V4M16 17V7M20 13v-2"/></svg><span>Multitrack</span></a><a class="item" href="app.html?route=account" data-route="account"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"/></svg><span>Cuenta</span></a></nav>
+<div class="install-card" id="installCard" role="dialog" aria-label="Instalar Dingloft"><button class="install-close" id="installCardClose" aria-label="Cerrar">×</button><div class="install-logo"><img src="img/pwa-icon-192.png" alt=""></div><div class="install-copy"><strong>Instala Dingloft</strong><span>Ábrelo como una app desde tu pantalla principal.</span></div><button class="install-action" id="installCardAction">Instalar</button></div>
+<div class="install-guide" id="installGuide"><div class="install-sheet"><div class="install-handle"></div><h2 id="installGuideTitle">Instala Dingloft</h2><p id="installGuideText">Añádelo a tu pantalla de inicio.</p><div id="installSteps"></div><button class="install-done" id="installGuideClose">Entendido</button></div></div>
+<div class="toast" id="toast"></div><script src="dingloft-app.js"></script><script src="pwa-install.js"></script></body></html>

@@ -1,226 +1,47 @@
 (() => {
-  'use strict';
-  const MOBILE = matchMedia('(max-width: 767px)');
-  if (!MOBILE.matches) {
-    const p = new URLSearchParams(location.search);
-    const route = p.get('route') || 'home';
-    const slug = p.get('slug') || '';
-    const desktop = route === 'catalog' ? 'tienda.html' : route === 'multitrack' ? 'tienda.html?mode=multitrack' : route === 'account' ? 'account.html' : route === 'product' && slug ? `producto.html?slug=${encodeURIComponent(slug)}` : 'index.html';
-    location.replace(desktop);
-    return;
+'use strict';
+const M=matchMedia('(max-width:767px)');
+const q=new URLSearchParams(location.search);
+if(!M.matches){const route=q.get('route')||'home';const src=q.get('src')||'';const dest=src|| (route==='catalog'?'index.html#catalogo':route==='multitrack'?'multitrack.html':route==='account'?'account.html':'index.html');location.replace(dest);return;}
+const stage=document.getElementById('stage'),progress=document.getElementById('progress'),count=document.getElementById('count'),toastEl=document.getElementById('toast');let active=null,token=0,activeKey='';
+const toast=s=>{toastEl.textContent=s;toastEl.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>toastEl.classList.remove('show'),1600)};
+const sanitizeSrc=(raw)=>{try{const u=new URL(raw||'',location.href);if(u.origin!==location.origin)return'';const file=u.pathname.split('/').pop()||'index.html';if(!/^[A-Za-z0-9_.-]+\.html$/i.test(file))return'';u.searchParams.set('embed','1');return `${file}${u.search}${u.hash}`;}catch(_){return'';}};
+function info(route,params={}){if(route==='catalog')return{key:'catalog',src:'index.html?embed=1#catalogo'};if(route==='multitrack')return{key:'multitrack',src:'multitrack.html?embed=1'};if(route==='account')return{key:'account',src:'account.html?embed=1'};if(route==='page'){const src=sanitizeSrc(params.src||'');return src?{key:'page',src}:{key:'catalog',src:'index.html?embed=1#catalogo'};}return{key:'home',src:'index.html?embed=1#inicio'};}
+function fromUrl(){return info(qRoute(),{src:new URLSearchParams(location.search).get('src')||''})}function qRoute(){return new URLSearchParams(location.search).get('route')||'home'}
+function appUrl(i){const u=new URL('app.html',location.href);u.searchParams.set('route',i.key);if(i.key==='page')u.searchParams.set('src',i.src.replace(/([?&])embed=1&?/,'$1').replace(/[?&]embed=1(?=#|$)/,''));return `${u.pathname}${u.search}`;}
+function activeDock(key){const visual=key==='page'?'catalog':key;document.querySelectorAll('[data-route]').forEach(a=>a.classList.toggle('active',a.dataset.route===visual));}
+function cartCount(){let n=0;try{const c=JSON.parse(localStorage.getItem('dingloft_cart')||'[]');if(Array.isArray(c))n=c.reduce((s,x)=>s+Math.max(0,Number(x?.qty||1)),0)}catch(_){}count.textContent=String(n)}
+function mapHref(href,base){let u;try{u=new URL(href,base)}catch(_){return null}if(u.origin!==location.origin)return null;const file=(u.pathname.split('/').pop()||'index.html').toLowerCase();if(file==='index.html'||file===''){if((u.hash||'').toLowerCase()==='#catalogo')return{route:'catalog'};if((u.hash||'').toLowerCase()==='#multitrack')return{route:'multitrack'};return{route:'home'}}if(file==='tienda.html')return{route:'catalog'};if(file==='multitrack.html')return{route:'multitrack'};if(file==='account.html')return{route:'account'};if(file==='admin.html'||file==='commerce-admin.html'||file==='login.html'||file==='register.html')return null;return{route:'page',src:`${u.pathname.split('/').pop()}${u.search}${u.hash}`};}
+function child(frame){try{const w=frame.contentWindow,d=w.document;d.documentElement.classList.add('dingloft-shell-view');if(!d.getElementById('dl-shell-style')){const s=d.createElement('style');s.id='dl-shell-style';s.textContent=`@media(max-width:767px){html.dingloft-shell-view,html.dingloft-shell-view body{background:#05070a!important;overscroll-behavior-y:contain!important}html.dingloft-shell-view body{padding-bottom:112px!important}html.dingloft-shell-view .navbar-glass,html.dingloft-shell-view .navbar.fixed-top,html.dingloft-shell-view .mobile-app-dock,html.dingloft-shell-view .btn-floating-cart{display:none!important}html.dingloft-shell-view .sidebar{display:none!important}html.dingloft-shell-view .app{display:block!important}html.dingloft-shell-view .content{padding:24px 16px 120px!important}html.dingloft-shell-view .hero-section{padding-top:28px!important}html.dingloft-shell-view main{padding-top:24px!important}html.dingloft-shell-view .premium-footer{padding-bottom:120px!important}}`;d.head.appendChild(s)}if(!d.__dlBridge){d.__dlBridge=1;d.addEventListener('click',e=>{const a=e.target instanceof w.Element?e.target.closest('a[href]'):null;if(!a||a.target==='_blank'||a.hasAttribute('download'))return;const m=mapHref(a.getAttribute('href'),w.location.href);if(!m)return;e.preventDefault();e.stopPropagation();navigate(m.route,m,{push:true})},true)} }catch(_){} }
+function navigate(route,params={},opt={}){const i=info(route,params);const id=++token;progress.classList.add('show');activeDock(i.key);const f=document.createElement('iframe');f.className='frame in';f.allow='payment *; clipboard-read; clipboard-write';f.src=i.src;stage.appendChild(f);const loaded=()=>{if(id!==token){f.remove();return}child(f);requestAnimationFrame(()=>{f.classList.remove('in');f.classList.add('active')});const old=active;active=f;activeKey=i.key;if(old&&old!==f){old.classList.add('out');setTimeout(()=>old.remove(),280)}progress.classList.remove('show');cartCount()};f.addEventListener('load',loaded,{once:true});if(!opt.pop){const url=appUrl(i);if(opt.replace)history.replaceState({},'',url);else if(opt.push!==false)history.pushState({},'',url)}}
+document.addEventListener('click',e=>{const a=e.target.closest?.('[data-route]');if(!a)return;e.preventDefault();navigate(a.dataset.route,{},{push:true})});
+document.getElementById('cart').onclick=()=>{try{if(active){const d=active.contentWindow.document;const b=d.querySelector('.btn-floating-cart.cart-btn-global,.cart-btn-global');if(b){b.click();return}}}catch(_){}navigate('home',{}, {push:true});setTimeout(()=>{try{active?.contentWindow?.document?.querySelector('.btn-floating-cart.cart-btn-global,.cart-btn-global')?.click()}catch(_){}},250)};
+addEventListener('message',e=>{if(e.origin!==location.origin||!e.data||e.data.type!=='dingloft:navigate')return;navigate(e.data.route||'page',{src:e.data.src||''},{push:true})});
+addEventListener('popstate',()=>{const p=new URLSearchParams(location.search);navigate(p.get('route')||'home',{src:p.get('src')||''},{pop:true,push:false})});addEventListener('storage',e=>{if(e.key==='dingloft_cart')cartCount()});setInterval(cartCount,1500);const initial=info(qRoute(),{src:new URLSearchParams(location.search).get('src')||''});history.replaceState({},'',appUrl(initial));navigate(initial.key,{src:new URLSearchParams(location.search).get('src')||''},{replace:true,push:false});cartCount();
+})();
+
+// App-mode runtime polish: network state + mobile keyboard handling.
+(() => {
+  const online=document.getElementById('onlineState');
+  const paintNetwork=()=>{
+    if(!online)return;
+    const span=online.querySelector('span:last-child');
+    if(span)span.textContent=navigator.onLine?'Store online':'Sin conexión';
+    online.style.opacity=navigator.onLine?'1':'.55';
+  };
+  addEventListener('online',paintNetwork);
+  addEventListener('offline',paintNetwork);
+  paintNetwork();
+
+  const vv=window.visualViewport;
+  if(vv){
+    let base=Math.max(vv.height,innerHeight);
+    const keyboard=()=>{
+      base=Math.max(base,innerHeight);
+      document.body.classList.toggle('keyboard-open', vv.height < base * .72);
+    };
+    vv.addEventListener('resize',keyboard);
+    vv.addEventListener('scroll',keyboard);
+    addEventListener('orientationchange',()=>setTimeout(()=>{base=Math.max(vv.height,innerHeight);keyboard()},250));
   }
-
-  const stage = document.getElementById('dingloft-stage');
-  const progress = document.getElementById('dl-route-progress');
-  const dock = document.getElementById('dlShellDock');
-  const cartBtn = document.getElementById('dlShellCart');
-  const cartCount = document.getElementById('dlShellCartCount');
-  const toastEl = document.getElementById('dlShellToast');
-  let activeFrame = null;
-  let activeRoute = '';
-  let navToken = 0;
-  let cartAfterHome = false;
-
-  const toast = (text) => {
-    if (!toastEl) return;
-    toastEl.textContent = String(text || '');
-    toastEl.classList.add('show');
-    clearTimeout(toast._t);
-    toast._t = setTimeout(() => toastEl.classList.remove('show'), 1800);
-  };
-
-  const routeInfo = (route, params = {}) => {
-    switch (route) {
-      case 'catalog': return { key:'catalog', src:'tienda.html?embed=1' };
-      case 'multitrack': return { key:'multitrack', src:'tienda.html?embed=1&mode=multitrack' };
-      case 'account': return { key:'account', src:'account.html?embed=1' };
-      case 'product': {
-        const slug = String(params.slug || '').trim();
-        if (!slug) return { key:'catalog', src:'tienda.html?embed=1' };
-        return { key:'product', slug, src:`producto.html?embed=1&slug=${encodeURIComponent(slug)}` };
-      }
-      default: return { key:'home', src:'index.html?embed=1#inicio' };
-    }
-  };
-
-  const currentFromUrl = () => {
-    const p = new URLSearchParams(location.search);
-    return routeInfo(p.get('route') || 'home', { slug:p.get('slug') || '' });
-  };
-
-  const appUrl = (info) => {
-    const u = new URL('app.html', location.href);
-    u.searchParams.set('route', info.key);
-    if (info.key === 'product' && info.slug) u.searchParams.set('slug', info.slug);
-    return `${u.pathname}${u.search}`;
-  };
-
-  const setActive = (route) => {
-    const visual = route === 'product' ? 'catalog' : route;
-    document.querySelectorAll('[data-shell-route]').forEach(a => {
-      const on = a.dataset.shellRoute === visual;
-      a.classList.toggle('active', on);
-      if (on) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
-    });
-  };
-
-  const showProgress = (show) => progress?.classList.toggle('show', !!show);
-
-  const updateCartCount = () => {
-    let total = 0;
-    try {
-      const cart = JSON.parse(localStorage.getItem('dingloft_cart') || '[]');
-      if (Array.isArray(cart)) total = cart.reduce((sum, item) => sum + Math.max(0, Number(item?.qty || 0)), 0);
-    } catch (_) {}
-    if (cartCount) cartCount.textContent = String(total);
-  };
-
-  const routeForHref = (href, base) => {
-    let u;
-    try { u = new URL(href, base); } catch (_) { return null; }
-    if (u.origin !== location.origin) return null;
-    const path = u.pathname.replace(/\/+$/, '').toLowerCase();
-    const file = path.split('/').pop() || '';
-    if (file === 'producto.html') return { route:'product', slug:u.searchParams.get('slug') || '' };
-    if (file === 'tienda.html') {
-      return u.searchParams.get('mode') === 'multitrack' ? { route:'multitrack' } : { route:'catalog' };
-    }
-    if (file === 'multitrack.html' || path.endsWith('/multitrack')) return { route:'multitrack' };
-    if (file === 'account.html') return { route:'account' };
-    if (file === 'index.html' || file === '' || path === '/') return { route:'home' };
-    return null;
-  };
-
-  const installChildBridge = (frame) => {
-    try {
-      const win = frame.contentWindow;
-      const doc = win.document;
-      doc.documentElement.classList.add('dingloft-shell-view');
-      doc.body?.classList.add('dingloft-shell-view');
-
-      if (!doc.getElementById('dingloft-shell-injected-style')) {
-        const style = doc.createElement('style');
-        style.id = 'dingloft-shell-injected-style';
-        style.textContent = `
-          @media(max-width:767px){
-            html.dingloft-shell-view,html.dingloft-shell-view body{background:#05070a!important;overscroll-behavior-y:contain!important}
-            html.dingloft-shell-view body{padding-bottom:110px!important}
-            html.dingloft-shell-view .navbar-glass,
-            html.dingloft-shell-view .mobile-app-dock,
-            html.dingloft-shell-view .btn-floating-cart,
-            html.dingloft-shell-view body>header{display:none!important}
-            html.dingloft-shell-view .hero-section{padding-top:26px!important}
-            html.dingloft-shell-view main{padding-top:24px!important}
-            html.dingloft-shell-view .toast{bottom:116px!important}
-          }`;
-        doc.head.appendChild(style);
-      }
-
-      if (!doc.__dingloftShellClickBridge) {
-        doc.__dingloftShellClickBridge = true;
-        doc.addEventListener('click', (e) => {
-          const target = e.target instanceof win.Element ? e.target.closest('a[href]') : null;
-          if (!target || target.target === '_blank' || target.hasAttribute('download')) return;
-          const mapped = routeForHref(target.getAttribute('href'), win.location.href);
-          if (!mapped) return;
-          e.preventDefault();
-          e.stopPropagation();
-          navigate(mapped.route, mapped, { push:true });
-        }, true);
-      }
-    } catch (_) {}
-  };
-
-  const openHomeCart = () => {
-    if (!activeFrame) return false;
-    try {
-      const doc = activeFrame.contentWindow.document;
-      const btn = doc.querySelector('.btn-floating-cart.cart-btn-global, .cart-btn-global');
-      if (btn) {
-        btn.click();
-        updateCartCount();
-        return true;
-      }
-    } catch (_) {}
-    return false;
-  };
-
-  const navigate = (route, params = {}, options = {}) => {
-    const info = routeInfo(route, params);
-    const same = activeRoute === info.key && (info.key !== 'product' || activeFrame?.dataset.slug === info.slug);
-    if (same) return;
-    const token = ++navToken;
-    showProgress(true);
-    setActive(info.key);
-
-    const frame = document.createElement('iframe');
-    frame.className = 'dl-frame incoming';
-    frame.setAttribute('title', `Dingloft ${info.key}`);
-    frame.setAttribute('allow', 'payment *; clipboard-read; clipboard-write');
-    frame.dataset.route = info.key;
-    if (info.slug) frame.dataset.slug = info.slug;
-    frame.src = info.src;
-    stage.appendChild(frame);
-
-    frame.addEventListener('load', () => {
-      if (token !== navToken) { frame.remove(); return; }
-      installChildBridge(frame);
-      requestAnimationFrame(() => frame.classList.add('active'));
-      frame.classList.remove('incoming');
-      const old = activeFrame;
-      activeFrame = frame;
-      activeRoute = info.key;
-      if (old && old !== frame) {
-        old.classList.add('leaving');
-        setTimeout(() => old.remove(), 300);
-      }
-      showProgress(false);
-      updateCartCount();
-      if (cartAfterHome && info.key === 'home') {
-        cartAfterHome = false;
-        setTimeout(() => { if (!openHomeCart()) toast('El carrito se está preparando…'); }, 160);
-      }
-    }, { once:true });
-
-    if (!options.pop) {
-      const url = appUrl(info);
-      if (options.replace) history.replaceState({ route:info.key, slug:info.slug || '' }, '', url);
-      else if (options.push !== false) history.pushState({ route:info.key, slug:info.slug || '' }, '', url);
-    }
-  };
-
-  document.addEventListener('click', (e) => {
-    const el = e.target instanceof Element ? e.target.closest('[data-shell-route]') : null;
-    if (!el) return;
-    e.preventDefault();
-    navigate(el.dataset.shellRoute || 'home', {}, { push:true });
-  });
-
-  cartBtn?.addEventListener('click', () => {
-    if (activeRoute === 'home') {
-      if (!openHomeCart()) toast('Abriendo carrito…');
-      return;
-    }
-    cartAfterHome = true;
-    navigate('home', {}, { push:true });
-  });
-
-  dock?.addEventListener('pointermove', e => {
-    const r = dock.getBoundingClientRect();
-    dock.style.setProperty('--dock-x', `${e.clientX-r.left}px`);
-  });
-
-  addEventListener('storage', e => { if (e.key === 'dingloft_cart') updateCartCount(); });
-  addEventListener('focus', updateCartCount);
-  setInterval(updateCartCount, 1800);
-
-  addEventListener('popstate', () => {
-    const info = currentFromUrl();
-    navigate(info.key, info, { pop:true, push:false });
-  });
-
-  const initial = currentFromUrl();
-  history.replaceState({ route:initial.key, slug:initial.slug || '' }, '', appUrl(initial));
-  navigate(initial.key, initial, { replace:true, push:false });
-  updateCartCount();
 })();
