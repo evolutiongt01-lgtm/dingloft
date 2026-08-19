@@ -877,7 +877,7 @@
         style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
         createOrder: function(data, actions) { return actions.order.create({ purchase_units: [{ amount: { value: monto.toFixed(2) } }] }); },
         onApprove: async function(data, actions) {
-          // Legacy browser capture is permanently disabled. Secure checkout is rendered by dingloft-commerce.js.
+          // Legacy browser capture is permanently disabled. Secure checkout is rendered by dingloft-commerce.js?v=2.1.0.
           if (window.__DINGLOFT_COMMERCE_V1__) {
             if (typeof window.renderPayPalStable === 'function') window.renderPayPalStable();
             return;
@@ -1100,8 +1100,8 @@
       updateCartUI();
     });
   </script>
-  <script type="module" src="dingloft-commerce.js?v=1.0.0"></script>
-<script src="dingloft-ui-guard.js?v=46"></script>
+  <script type="module" src="dingloft-commerce.js?v=2.1.0"></script>
+<script src="dingloft-ui-guard.js?v=55"></script>
   <script src="dingloft-video-cinema.js?v=28" defer></script>
 </body>
 </html>

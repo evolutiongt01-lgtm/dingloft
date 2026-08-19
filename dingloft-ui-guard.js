@@ -104,8 +104,8 @@
     if (document.querySelector('script[data-dingloft-presence]')) return;
     const script=document.createElement('script');
     script.type='module';
-    script.src='/dingloft-presence.js?v=48';
-    script.dataset.dingloftPresence='45';
+    script.src='/dingloft-presence.js?v=55';
+    script.dataset.dingloftPresence='55';
     document.head.appendChild(script);
   }
 
