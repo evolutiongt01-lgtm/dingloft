@@ -949,7 +949,7 @@ body::before{
         let firstName = displayName.split(' ')[0] || 'Cliente';
 
         // UI FIRST: never block the visible account on a Firestore write.
-        document.getElementById('welcome-name').textContent = firstName;
+        const welcomeName = document.getElementById('welcome-name'); if (welcomeName) welcomeName.textContent = firstName;
         const heroUserName = document.getElementById('hero-user-name'); if (heroUserName) heroUserName.textContent = displayName;
         document.getElementById('sidebar-name').textContent = displayName;
         document.getElementById('sidebar-email').textContent = user.email || '';
