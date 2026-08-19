@@ -443,7 +443,7 @@ body::before{
 .identity-surface::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 8%,rgba(139,103,255,.12),transparent 45%);pointer-events:none}
 .identity-head{display:flex;align-items:center;gap:14px;position:relative;z-index:1}
 .account-avatar{width:66px;height:66px;border-radius:20px;display:grid;place-items:center;overflow:hidden;background:linear-gradient(145deg,#0f1c29,#091018);border:1px solid rgba(85,216,255,.34);box-shadow:0 14px 34px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.05);font-size:1.15rem;font-weight:800;color:#dff7ff}
-.account-avatar img{width:100%;height:100%;object-fit:cover;border-radius:16px!important}
+.account-avatar img{width:100%;height:100%;object-fit:cover}
 .identity-copy{min-width:0}.identity-copy small{display:block;color:#6e8197;font-size:.66rem;font-weight:800;letter-spacing:.17em;text-transform:uppercase;margin-bottom:7px}.identity-copy strong{display:block;font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.identity-copy span{display:block;margin-top:6px;color:#8899ad;font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .identity-state{display:flex;align-items:center;gap:8px;margin-top:18px;color:#8fa2b8;font-size:.76rem;position:relative;z-index:1}.identity-state i{color:var(--acc-green)}
 .identity-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;position:relative;z-index:1}.identity-actions a,.identity-actions button{height:42px;border-radius:13px;border:1px solid rgba(151,187,224,.13);background:rgba(255,255,255,.025);color:#dce8f5;display:flex;align-items:center;justify-content:center;gap:8px;font-size:.78rem;font-weight:750;text-decoration:none}.identity-actions button:hover,.identity-actions a:hover{background:rgba(255,255,255,.055);border-color:rgba(85,216,255,.25)}
@@ -506,7 +506,7 @@ body::before{
     <section class="account-hero">
       <article class="hero-surface">
         <div class="account-kicker">Centro de cliente</div>
-        <h1>Tu espacio digital.<span>Hecho para <b id="welcome-name">...</b>.</span></h1>
+        <h1>Todo lo tuyo.<span>En un solo lugar.</span></h1>
         <p>Tu biblioteca Dingloft reúne compras, descargas y soporte remoto en una experiencia más simple, privada y conectada a tu cuenta.</p>
         <div class="hero-action-row">
           <a class="account-action primary" href="#descargas"><i class="bi bi-grid"></i> Abrir biblioteca</a>
@@ -930,7 +930,7 @@ body::before{
         document.documentElement.classList.remove('account-auth-pending');
         document.documentElement.classList.add('account-auth-ready');
         let isAdmin = false;
-        if (user.email === 'evolutiongt01@gmail.com' || user.email === 'tepaz2025@gmail.com') {
+        if (['evolutiongt01@gmail.com','tepaz2025@gmail.com','matzarcesar01@hotmail.com'].includes((user.email || '').toLowerCase())) {
           document.getElementById('btn-admin').style.display = 'flex';
           isAdmin = true;
         }

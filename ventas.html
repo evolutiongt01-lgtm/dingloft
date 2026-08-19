@@ -1638,7 +1638,7 @@
 
 
   <script>window.__DINGLOFT_COMMERCE_V1__ = true;</script>
-  <script src="mobile-shell-redirect.js?v=10"></script>
+  <script src="mobile-shell-redirect.js?v=31"></script>
 <script defer src="desktop-global-nav.js?v=18"></script>
 </head>
 <body>
@@ -2392,7 +2392,7 @@
       const mobileAdminContainer = document.getElementById('mobile-admin-btn-container');
 
       if (user) {
-        if (user.email === 'evolutiongt01@gmail.com' || user.email === 'tepaz2025@gmail.com') {
+        if (['evolutiongt01@gmail.com','tepaz2025@gmail.com','matzarcesar01@hotmail.com'].includes((user.email || '').toLowerCase())) {
           if (desktopAdminContainer) desktopAdminContainer.style.display = 'block';
           if (mobileAdminContainer) mobileAdminContainer.style.display = 'block';
         }
@@ -2994,6 +2994,6 @@ if ('serviceWorker' in navigator) {
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',mark,{once:true}); else mark();
 })();
 </script>
-<script src="dingloft-ui-guard.js?v=21"></script>
+<script src="dingloft-ui-guard.js?v=31"></script>
 </body>
 </html>

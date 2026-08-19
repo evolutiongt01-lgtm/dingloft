@@ -2399,7 +2399,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   html.dingloft-direct-app body.cart-open .mobile-app-dock{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:translateY(15px)!important;}
 }
 </style>
-<link rel="stylesheet" href="dingloft-mobile-dock.css?v=29">
+<link rel="stylesheet" href="dingloft-mobile-dock.css?v=31">
 </head>
 <body class="multitrack-page">
 <!-- Orbes de luz -->
@@ -3034,7 +3034,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
       const mobileAdminContainer = document.getElementById('mobile-admin-btn-container');
 
       if (user) {
-        if (user.email === 'evolutiongt01@gmail.com' || user.email === 'tepaz2025@gmail.com') {
+        if (['evolutiongt01@gmail.com','tepaz2025@gmail.com','matzarcesar01@hotmail.com'].includes((user.email || '').toLowerCase())) {
           if (desktopAdminContainer) desktopAdminContainer.style.display = 'block';
           if (mobileAdminContainer) mobileAdminContainer.style.display = 'block';
         }
