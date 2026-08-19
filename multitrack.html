@@ -2344,6 +2344,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
 @media(max-width:520px){.mt-hero-actions{display:grid!important;grid-template-columns:1fr 1fr!important}.mt-hero-note{grid-template-columns:1fr!important}.mt-studio{display:none!important}.mt-card{grid-template-columns:112px minmax(0,1fr)!important;min-height:240px!important;border-radius:19px!important}.mt-cover{min-height:240px!important}.mt-cover-index{font-size:.46rem!important}.mt-cover-tag{font-size:.42rem!important}.mt-cover-art{width:72px!important;height:72px!important}.mt-card-body{padding:13px!important}.mt-card-kicker{font-size:.46rem!important}.mt-card-title{font-size:.91rem!important}.mt-card-artist{font-size:.59rem!important}.mt-meta span{font-size:.40rem!important}.mt-meta strong{font-size:.52rem!important}.mt-preview-action-copy small{font-size:.4rem!important}.mt-preview-action-copy strong{font-size:.58rem!important}.mt-preview-action-icon{width:30px!important;height:30px!important}.mt-card-bottom{gap:8px!important}.mt-price small{font-size:.43rem!important}.mt-price strong{font-size:1rem!important}.mt-cart-action{min-width:96px!important}.mt-why-grid{grid-template-columns:1fr!important}}
 </style>
 
+<script defer src="desktop-global-nav.js?v=1"></script>
 </head>
 <body class="multitrack-page">
 <!-- Orbes de luz -->
@@ -2844,30 +2845,275 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   render();
 })();
 </script><script src="multitrack-worker-gate.js?v=8"></script><script type="module">
-  import { getApps, getApp, initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  const firebaseConfig={apiKey:"AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",authDomain:"login-dingloft.firebaseapp.com",projectId:"login-dingloft",storageBucket:"login-dingloft.firebasestorage.app",messagingSenderId:"549466738202",appId:"1:549466738202:web:8bf305fe2c753e9d76cba3",measurementId:"G-R9SGZCDN13"};
-  const app=getApps().length?getApp():initializeApp(firebaseConfig);
-  const auth=getAuth(app);
-  onAuthStateChanged(auth,user=>{
-    const desktopAuth=document.getElementById('desktop-auth-container');
-    const mobileAuth=document.getElementById('mobile-auth-container');
-    const desktopAdmin=document.getElementById('desktop-admin-btn-container');
-    const mobileAdmin=document.getElementById('mobile-admin-btn-container');
-    const admin=user&&['evolutiongt01@gmail.com','tepaz2025@gmail.com'].includes(String(user.email||'').toLowerCase());
-    if(desktopAdmin)desktopAdmin.style.display=admin?'block':'none';
-    if(mobileAdmin)mobileAdmin.style.display=admin?'block':'none';
-    if(!user){
-      if(desktopAuth)desktopAuth.innerHTML='<a class="nav-action-link" href="login.html"><i class="bi bi-person"></i> Iniciar sesión</a>';
-      if(mobileAuth)mobileAuth.innerHTML='<a class="btn btn-outline-custom w-100 text-center text-white text-decoration-none" href="login.html"><i class="bi bi-person-circle"></i> Iniciar sesión</a>';
-      return;
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
+      authDomain: "login-dingloft.firebaseapp.com",
+      projectId: "login-dingloft",
+      storageBucket: "login-dingloft.firebasestorage.app",
+      messagingSenderId: "549466738202",
+      appId: "1:549466738202:web:8bf305fe2c753e9d76cba3",
+      measurementId: "G-R9SGZCDN13"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window.globalEmailRecienComprado = "";
+    window.globalPurchaseDocId = "";
+    const DOWNLOADS_URL = 'https://www.dingloft.com/account#descargas';
+
+    function mostrarModalExito(mensaje, esInvitado = false, emailInvitado = "") {
+      const modal = document.getElementById('success-modal');
+      const text = document.getElementById('success-modal-text');
+      const expressBox = document.getElementById('express-signup-container');
+      const btnGoAccount = document.getElementById('btn-go-to-account');
+
+      if (text && mensaje) text.textContent = mensaje;
+
+      if (esInvitado && emailInvitado) {
+        window.globalEmailRecienComprado = emailInvitado;
+        document.getElementById('express-email').value = emailInvitado;
+        expressBox.style.display = 'block';
+        btnGoAccount.style.display = 'none'; // Ocultar hasta que cree su contraseña o decida saltar
+      } else {
+        expressBox.style.display = 'none';
+        btnGoAccount.style.display = 'block';
+      }
+
+      if (modal) modal.classList.add('active');
     }
-    const name=(user.displayName||user.email?.split('@')[0]||'Usuario').split(' ')[0];
-    const avatar=user.photoURL?`<img src="${user.photoURL}" alt="Perfil" style="width:28px;height:28px;border-radius:50%;object-fit:cover">`:`<span style="width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#7f6ee8;color:#fff;font-weight:800">${name.charAt(0).toUpperCase()}</span>`;
-    if(desktopAuth)desktopAuth.innerHTML=`<a href="account.html" class="text-white text-decoration-none small fw-semibold d-flex align-items-center gap-2">${avatar} Hola, ${name}</a>`;
-    if(mobileAuth)mobileAuth.innerHTML=`<a href="account.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none d-flex align-items-center justify-content-center gap-2">${avatar} Mi Cuenta</a>`;
-  });
-</script><script>
+
+    window.crearCuentaExpress = async function() {
+      const passInput = document.getElementById('express-password').value.trim();
+      const email = window.globalEmailRecienComprado;
+      const btn = document.getElementById('btn-save-express-account');
+
+      if (passInput.length < 6) {
+        alert("La contraseña debe tener al menos 6 caracteres.");
+        return;
+      }
+
+      try {
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 8px;"></span> Creando cuenta...';
+        btn.disabled = true;
+
+        // Crear la cuenta en Firebase Auth con el correo de PayPal y la pass nueva
+        const userCredential = await createUserWithEmailAndPassword(auth, email, passInput);
+
+        if (window.globalPurchaseDocId) {
+          await updateDoc(doc(db, "purchases", window.globalPurchaseDocId), {
+            uid: userCredential.user.uid,
+            userEmail: email
+          });
+        }
+
+        alert("¡Cuenta creada con éxito! Ya puedes acceder a tus descargas.");
+        window.location.href = DOWNLOADS_URL;
+      } catch (error) {
+        console.error("Error creando cuenta express:", error);
+        if (error.code === 'auth/email-already-in-use') {
+          // Si el correo ya existía, intentamos iniciar sesión por ellos para enlazarlos
+          try {
+            const signedUser = await signInWithEmailAndPassword(auth, email, passInput);
+            if (window.globalPurchaseDocId) {
+              await updateDoc(doc(db, "purchases", window.globalPurchaseDocId), {
+                uid: signedUser.user.uid,
+                userEmail: email
+              });
+            }
+            window.location.href = DOWNLOADS_URL;
+            return;
+          } catch(innerErr) {
+            alert("Este correo ya tiene una contraseña registrada. Por favor inicia sesión normalmente.");
+            window.location.href = 'login.html';
+            return;
+          }
+        }
+        alert("No se pudo crear la cuenta automáticamente. Puedes iniciar sesión después con tu correo.");
+        window.location.href = DOWNLOADS_URL;
+      }
+    };
+
+    onAuthStateChanged(auth, async (user) => {
+      const desktopAuthContainer = document.getElementById('desktop-auth-container');
+      const mobileAuthContainer = document.getElementById('mobile-auth-container');
+      const desktopAdminContainer = document.getElementById('desktop-admin-btn-container');
+      const mobileAdminContainer = document.getElementById('mobile-admin-btn-container');
+
+      if (user) {
+        if (user.email === 'evolutiongt01@gmail.com' || user.email === 'tepaz2025@gmail.com') {
+          if (desktopAdminContainer) desktopAdminContainer.style.display = 'block';
+          if (mobileAdminContainer) mobileAdminContainer.style.display = 'block';
+        }
+
+        let displayName = "Usuario";
+        if (user.displayName) {
+          displayName = user.displayName.split(' ')[0];
+        } else if (user.email) {
+          displayName = user.email.split('@')[0];
+        }
+
+        let avatarHtml = '';
+        if (user.photoURL) {
+          avatarHtml = `<img src="${user.photoURL}" alt="Perfil" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">`;
+        } else {
+          const initial = displayName.charAt(0).toUpperCase();
+          avatarHtml = `<div style="width: 28px; height: 28px; border-radius: 50%; background: var(--accent-color); color: #000; display: grid; place-items: center; font-weight: bold; font-size: 14px;">${initial}</div>`;
+        }
+
+        if (desktopAuthContainer) {
+          desktopAuthContainer.innerHTML = `
+            <a href="account.html" class="text-white text-decoration-none small fw-semibold d-flex align-items-center gap-2" style="transition: color 0.3s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='#fff'">
+              ${avatarHtml} Hola, ${displayName}
+            </a>
+          `;
+        }
+
+        if (mobileAuthContainer) {
+          mobileAuthContainer.innerHTML = `
+            <a href="account.html" class="btn btn-outline-custom w-100 text-center text-white text-decoration-none d-flex align-items-center justify-content-center gap-2">
+              ${avatarHtml} Mi Cuenta
+            </a>
+          `;
+        }
+
+        // Comprobación de compras
+        try {
+          const q = query(collection(db, "purchases"), where("uid", "==", user.uid));
+          const snapshot = await getDocs(q);
+          let purchasedNames = [];
+          snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            if (data.items && Array.isArray(data.items)) {
+              data.items.forEach(item => purchasedNames.push(item.name));
+            }
+          });
+
+          const buyButtons = document.querySelectorAll('.btn-add-cart');
+          buyButtons.forEach(btn => {
+            const prodName = btn.getAttribute('data-name');
+            if (purchasedNames.includes(prodName)) {
+              btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> OBTENIDO';
+              btn.style.background = 'rgba(0, 255, 136, 0.1)';
+              btn.style.color = '#00ff88';
+              btn.style.border = '1px solid rgba(0, 255, 136, 0.4)';
+              btn.disabled = true;
+            }
+          });
+        } catch (err) {
+          console.error("Error al verificar compras previas:", err);
+        }
+      }
+    });
+
+    window.renderPayPalStableLegacyDisabled = function(monto) {
+        const container = document.getElementById('paypal-button-container');
+        if (!container) return;
+        container.innerHTML = ''; 
+
+        if (typeof paypal === 'undefined') return;
+
+        paypal.Buttons({
+          style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
+          createOrder: function(data, actions) {
+            return actions.order.create({
+              purchase_units: [{ amount: { value: monto.toFixed(2) } }]
+            });
+          },
+          onApprove: async function(data, actions) {
+            if (window.__DINGLOFT_COMMERCE_V1__) {
+              if (typeof window.renderPayPalStable === 'function') window.renderPayPalStable();
+              return;
+            }
+            return actions.order.capture().then(async function(details) {
+              let user = auth.currentUser;
+              let userId = user ? user.uid : "GUEST-" + Date.now();
+              let userEmail = details.payer.email_address || (user ? user.email : "invitado@dingloft.com");
+              let payerName = details.payer.name.given_name || "Cliente";
+
+              try {
+                const itemsComprados = window.cartItemsList || [];
+                const purchaseRef = await addDoc(collection(db, "purchases"), {
+                  uid: userId,
+                  userEmail: userEmail,
+                  paypalOrderId: details.id,
+                  payerName: payerName,
+                  items: itemsComprados,
+                  createdAt: serverTimestamp()
+                });
+
+                if (!user) window.globalPurchaseDocId = purchaseRef.id;
+
+                if (typeof window.clearCart === 'function') window.clearCart();
+
+                // Si compró como invitado (no tenía sesión), mostrar cajita para crear contraseña
+                if (!user) {
+                  mostrarModalExito(`¡Pago exitoso, ${payerName}! Tu compra ha sido guardada en ${userEmail}.`, true, userEmail);
+                } else {
+                  mostrarModalExito(`¡Pago exitoso, ${payerName}! Redirigiendo a tu cuenta...`, false, "");
+                  setTimeout(() => { window.location.href = DOWNLOADS_URL; }, 2200);
+                }
+
+              } catch (error) {
+                console.error("Error guardando la compra en Firestore:", error);
+                alert("El pago en PayPal se realizó, pero ocurrió un error al guardar tus programas. Contacta a soporte.");
+              }
+            });
+          },
+          onError: function(err) {
+            console.error("Error con PayPal:", err);
+            alert("Ocurrió un error al procesar el pago con PayPal.");
+          }
+        }).render('#paypal-button-container');
+    };
+
+    const freeCheckoutBtn = document.getElementById('free-checkout-btn');
+    if(freeCheckoutBtn){
+      freeCheckoutBtn.addEventListener('click', async () => {
+        let user = auth.currentUser;
+        let userId = user ? user.uid : "GUEST-FREE-" + Date.now();
+        let userEmail = user ? user.email : "invitado@dingloft.com";
+        let payerName = user ? (user.displayName || "Usuario") : "Cliente Invitado";
+
+        try {
+          const itemsComprados = window.cartItemsList || [];
+          freeCheckoutBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 8px;"></span> Procesando...';
+          freeCheckoutBtn.disabled = true;
+
+          await addDoc(collection(db, "purchases"), {
+            uid: userId,
+            userEmail: userEmail,
+            paypalOrderId: "PEDIDO-GRATUITO-" + Date.now(),
+            payerName: payerName,
+            items: itemsComprados,
+            createdAt: serverTimestamp()
+          });
+
+          if (typeof window.clearCart === 'function') window.clearCart();
+          
+          if (!user) {
+            // Pedir correo o pass express si es necesario, o mandar directo
+            mostrarModalExito("¡Pedido procesado con éxito!", false, "");
+            setTimeout(() => { window.location.href = DOWNLOADS_URL; }, 2200);
+          } else {
+            mostrarModalExito("¡Pedido procesado con éxito! Redirigiendo a tus descargas...", false, "");
+            setTimeout(() => { window.location.href = DOWNLOADS_URL; }, 2200);
+          }
+
+        } catch (error) {
+          console.error("Error guardando pedido gratuito en Firestore:", error);
+          alert("Ocurrió un error al procesar tu pedido. Contacta a soporte.");
+          freeCheckoutBtn.innerHTML = 'Obtener gratis <i class="bi bi-download ms-1"></i>';
+          freeCheckoutBtn.disabled = false;
+        }
+      });
+    }
+  </script><script>
     document.addEventListener('DOMContentLoaded', () => {
       let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
       cart = cart.map(item => {
