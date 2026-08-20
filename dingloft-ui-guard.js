@@ -113,14 +113,14 @@
   // This guard only bootstraps it; it no longer owns or duplicates header/dock/cart UI.
   function loadMobileChrome(){
     if (!isMobile || window.self !== window.top) return;
-    const file=(location.pathname.split('/').filter(Boolean).pop()||'index.html').toLowerCase();
-    const customerFiles=new Set(['ventas.html','account.html','multitrack.html','autocad.html','cinema4d.html','dual.html','esword.html','logic.html','mainstage.html','nord.html','office.html','producto.html','rhodes.html','sketchup.html','yamahakeys.html']);
-    const appView=file==='app.html' || new URLSearchParams(location.search).get('app')==='1' || customerFiles.has(file);
+    const file=(location.pathname.split('/').filter(Boolean).pop()||'index').toLowerCase().replace(/\.html$/,'');
+    const customerFiles=new Set(['ventas','account','login','register','multitrack','autocad','cinema4d','dual','esword','logic','mainstage','nord','office','producto','rhodes','sketchup','yamahakeys']);
+    const appView=file==='app' || new URLSearchParams(location.search).get('app')==='1' || customerFiles.has(file);
     if (!appView || document.querySelector('script[data-dingloft-mobile-chrome]')) return;
     const script=document.createElement('script');
-    script.src='/dingloft-mobile-chrome.js?v=34';
+    script.src='/dingloft-mobile-chrome.js?v=36';
     script.defer=true;
-    script.dataset.dingloftMobileChrome='34';
+    script.dataset.dingloftMobileChrome='36';
     document.head.appendChild(script);
   }
 

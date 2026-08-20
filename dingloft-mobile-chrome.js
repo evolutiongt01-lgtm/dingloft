@@ -1,25 +1,25 @@
-/* Dingloft Mobile Chrome v35
+/* Dingloft Mobile Chrome v36
    Universal mobile header + dock + cart bridge.
    Visual master: Inicio. Same geometry on Android and iPhone, on every customer page. */
 (() => {
   'use strict';
-  if (window.__DINGLOFT_MOBILE_CHROME_V35__) return;
-  window.__DINGLOFT_MOBILE_CHROME_V35__ = true;
+  if (window.__DINGLOFT_MOBILE_CHROME_V36__) return;
+  window.__DINGLOFT_MOBILE_CHROME_V36__ = true;
 
   const ua = navigator.userAgent || '';
   const iOS = /iPad|iPhone|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   const mobile = /Android|iPhone|iPad|iPod/i.test(ua) || iOS || (navigator.maxTouchPoints > 0 && matchMedia('(max-width:1024px)').matches);
   if (!mobile || window.self !== window.top) return;
 
-  const pathFile = () => (location.pathname.split('/').filter(Boolean).pop() || 'index.html').toLowerCase();
+  const pathKey = () => (location.pathname.split('/').filter(Boolean).pop() || 'index').toLowerCase().replace(/\.html$/,'');
   const PRODUCT_FILES = new Set([
-    'autocad.html','cinema4d.html','dual.html','esword.html','logic.html','mainstage.html',
-    'nord.html','office.html','producto.html','rhodes.html','sketchup.html','yamahakeys.html'
+    'autocad','cinema4d','dual','esword','logic','mainstage',
+    'nord','office','producto','rhodes','sketchup','yamahakeys'
   ]);
-  const CUSTOMER_FILES = new Set(['ventas.html','account.html','login.html','register.html','multitrack.html', ...PRODUCT_FILES]);
+  const CUSTOMER_FILES = new Set(['ventas','account','login','register','multitrack', ...PRODUCT_FILES]);
   const params = new URLSearchParams(location.search);
-  const currentFile = pathFile();
-  const isAppShell = currentFile === 'app.html';
+  const currentFile = pathKey();
+  const isAppShell = currentFile === 'app';
   const isDirectApp = params.get('app') === '1' || CUSTOMER_FILES.has(currentFile);
   const customerPage = isAppShell || isDirectApp;
   if (!customerPage) return;
@@ -125,7 +125,7 @@
 
   function removeLegacyChrome(doc=document){
     doc.querySelectorAll('#main-navbar,nav.navbar-glass,.navbar.navbar-glass,#mobileAppDock,nav.mobile-app-dock,.mobile-app-dock,.dingloft-direct-top,#dingloftDirectTop,#dlDirectTop,#dlDirectDock').forEach(el=>el.remove());
-    if (currentFile === 'producto.html') doc.querySelector('body > header')?.remove();
+    if (currentFile === 'producto') doc.querySelector('body > header')?.remove();
   }
 
   function blockingOverlayOpen(doc=document){
@@ -154,9 +154,9 @@
       document.documentElement.classList.add('dingloft-direct-app');
       document.body?.classList.add('dingloft-direct-app');
       if (PRODUCT_FILES.has(currentFile)) document.body?.classList.add('dl-page-product');
-      if (currentFile === 'ventas.html') document.body?.classList.add('dl-page-ventas');
-      if (currentFile === 'multitrack.html') document.body?.classList.add('dl-page-multitrack');
-      if (currentFile === 'account.html' || currentFile === 'login.html' || currentFile === 'register.html') document.body?.classList.add('dl-page-account');
+      if (currentFile === 'ventas') document.body?.classList.add('dl-page-ventas');
+      if (currentFile === 'multitrack') document.body?.classList.add('dl-page-multitrack');
+      if (currentFile === 'account' || currentFile === 'login' || currentFile === 'register') document.body?.classList.add('dl-page-account');
       removeLegacyChrome();
       healScrollLock();
     }
@@ -199,14 +199,14 @@
   }
 
   function activeRoute(){
-    const file = pathFile();
-    if (file === 'app.html') {
+    const file = pathKey();
+    if (file === 'app') {
       const r = new URLSearchParams(location.search).get('route') || document.body?.dataset?.appRoute || 'home';
       return r === 'page' ? 'catalog' : r;
     }
-    if (file === 'multitrack.html') return 'multitrack';
+    if (file === 'multitrack') return 'multitrack';
     if (PRODUCT_FILES.has(file)) return 'catalog';
-    if (file === 'account.html' || file === 'login.html' || file === 'register.html') return 'account';
+    if (file === 'account' || file === 'login' || file === 'register') return 'account';
     return 'home';
   }
 
@@ -451,5 +451,5 @@
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { syncRoute(); syncCount(); } });
   setTimeout(() => { rememberCurrentMultitrackCovers(); syncCount(true); enhanceActiveFrame(); },700);
 
-  window.DingloftMobileChrome = { sync: () => { syncRoute(); syncCount(); syncAdmin(); }, patchCartCovers, version:'35' };
+  window.DingloftMobileChrome = { sync: () => { syncRoute(); syncCount(); syncAdmin(); }, patchCartCovers, version:'36' };
 })();
