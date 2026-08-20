@@ -2023,6 +2023,34 @@ body.multitrack-page .brand-sub { color:#7d6dad; }
 .mt-preview-inline-progress { width:100%; height:3px; overflow:hidden; border-radius:999px; background:rgba(255,255,255,.08); }
 .mt-preview-inline-progress span { display:block; width:0%; height:100%; border-radius:inherit; background:linear-gradient(90deg,#a28cff,#6fd7ff); transition:width .08s linear; }
 .mt-preview-action.is-playing .mt-preview-inline-time { color:#c9c0e4; }
+
+/* v73 · Preview aislado: una pista sin muestra no crea elemento <audio>. */
+.mt-preview-disabled,
+.mt-preview-action.is-unavailable{
+  cursor:default!important;
+  pointer-events:none!important;
+  border-color:rgba(255,255,255,.055)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.014))!important;
+  opacity:.72!important;
+  transform:none!important;
+}
+.mt-preview-disabled .mt-preview-action-icon,
+.mt-preview-action.is-unavailable .mt-preview-action-icon{
+  background:rgba(255,255,255,.065)!important;
+  color:#87909c!important;
+  box-shadow:none!important;
+}
+.mt-preview-disabled .mt-preview-action-copy small,
+.mt-preview-action.is-unavailable .mt-preview-action-copy small{color:#69727f!important}
+.mt-preview-disabled .mt-preview-action-copy strong,
+.mt-preview-action.is-unavailable .mt-preview-action-copy strong{color:#9aa3af!important}
+.mt-preview-disabled .mt-preview-inline-time,
+.mt-preview-action.is-unavailable .mt-preview-inline-time{color:#68717d!important}
+.mt-preview-disabled .mt-preview-inline-progress,
+.mt-preview-action.is-unavailable .mt-preview-inline-progress{background:rgba(255,255,255,.035)!important}
+.mt-preview-disabled .mt-preview-inline-progress span,
+.mt-preview-action.is-unavailable .mt-preview-inline-progress span{width:0!important}
+
 .mt-meta { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin:18px 0 15px; }
 .mt-meta div { padding:8px 9px; border-radius:9px; border:1px solid rgba(255,255,255,.055); background:rgba(255,255,255,.025); }
 .mt-meta span { display:block; color:#555f70; font-size:.46rem; text-transform:uppercase; letter-spacing:.1em; margin-bottom:3px; }
@@ -2582,7 +2610,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
 </div>
 </section>
 </main>
-<audio id="mtAudio" preload="none" playsinline webkit-playsinline></audio>
+
 <div class="mt-toast" id="mtToast"></div>
 <footer class="premium-footer">
 <div class="container"><div class="footer-grid"><div class="footer-mark"><img alt="Dingloft" onerror="this.style.display='none'" src="img/dingloft.png"/><span>DINGLOFT · MULTITRACK COLLECTION</span></div><div class="footer-note">© 2026 Dingloft - Evolution Group. Todos los derechos reservados.</div></div></div>
@@ -2647,7 +2675,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
     { id:'MT-013', title:'Medley Justicia', artist:'Ebenezer Honduras', price:15, bpm:'150', key:'Em - Gm', stems:'12', tag:'all', featured:false, cover:'img/albums/Reino.jpg', preview:'/audio/Preview13.mp3?v=25' },
     { id:'MT-014', title:'Jesus eres mi paz', artist:'Genesis Campos', price:16, bpm:'150', key:'Bb', stems:'11', tag:'all', featured:false, cover:'img/albums/anteelrey.jpg', preview:'/audio/Preview14.mp3?v=25' },
     { id:'MT-015', title:'Medley Renacer', artist:'Ebenezer San Francisco', price:15, bpm:'155', key:'Bb', stems:'18', tag:'all', featured:false, cover:'img/albums/renacer.jpg', preview:'/audio/Preview15.mp3?v=25' },
-    { id:'MT-016', title:'Desierto en Paraíso', artist:'Hannah Ponce y Nuestro Legado', price:20, bpm:'155', key:'Gm', stems:'11', tag:'all', featured:false, cover:'img/albums/desierto-paraiso-16.png', preview:'/audio/Preview16.mp3?v=58' },
+    { id:'MT-016', title:'Desierto en Paraíso', artist:'Hannah Ponce y Nuestro Legado', price:20, bpm:'155', key:'Gm', stems:'11', tag:'all', featured:false, cover:'img/albums/desierto-paraiso-16.png', preview:'' },
     { id:'MT-017', title:'Multitrack 17', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview17.mp3?v=25' },
     { id:'MT-018', title:'Multitrack 18', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview18.mp3?v=25' },
     { id:'MT-019', title:'Multitrack 19', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview19.mp3?v=25' },
@@ -2681,11 +2709,15 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
     { id:'MT-047', title:'Multitrack 47', artist:'Artista', price:null, bpm:'—', key:'—', stems:'—', tag:'all', featured:false, cover:'', preview:'/audio/Preview47.mp3?v=25' }
   ];
   const LOCAL_MEDIA_FALLBACKS = Object.freeze({
-    'MT-016': { cover:'img/albums/desierto-paraiso-16.png', preview:'/audio/Preview16.mp3?v=58' }
+    'MT-016': { cover:'img/albums/desierto-paraiso-16.png' }
   });
   const withLocalMediaFallback = item => {
     const local = LOCAL_MEDIA_FALLBACKS[String(item?.id||'')] || {};
     return {...item, cover:(item?.cover||local.cover||''), preview:(item?.preview||local.preview||'')};
+  };
+  const hasPreviewRef = value => {
+    const ref = String(value || '').trim();
+    return !!ref && !/^(?:null|undefined|none|false)$/i.test(ref);
   };
   let MULTITRACKS = LEGACY_MULTITRACKS.filter(item => Number.isFinite(item.price)).map(withLocalMediaFallback);
   window.DINGLOFT_MULTITRACKS = MULTITRACKS;
@@ -2694,7 +2726,6 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   const empty = document.getElementById('mtEmpty');
   const search = document.getElementById('mtSearch');
   const filters = document.getElementById('mtFilters');
-  const legacyAudio = document.getElementById('mtAudio');
   let currentAudio = null;
   const toast = document.getElementById('mtToast');
   let activeFilter = 'all';
@@ -2712,13 +2743,36 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   const cardHTML = (item, index) => {
     const configured = Number.isFinite(item.price);
     const hasCover = typeof item.cover === 'string' && item.cover.trim().length > 0;
+    const hasPreview = hasPreviewRef(item.preview);
     const price = configured ? `$${item.price.toFixed(2)}` : 'Precio pendiente';
     const cartClass = configured ? 'btn-add-cart' : 'btn-mt-pending';
     const cartAttrs = configured
       ? `data-id="${item.id}" data-sku="${item.sku || item.id}" data-name="${item.title}" data-price="${item.price}" data-img="dingloft" data-cover="${item.cover || ''}" data-type="Multitrack digital"`
       : `data-pending="true"`;
+    const previewControl = hasPreview ? `
+          <audio class="mt-card-audio" src="${item.preview}" preload="none" playsinline webkit-playsinline aria-hidden="true"></audio>
+          <button type="button" class="mt-preview-action mt-play-btn" data-id="${item.id}" data-src="${item.preview}" data-title="${item.title}" aria-label="Escuchar preview de ${item.title}">
+            <span class="mt-preview-action-main">
+              <span class="mt-preview-action-icon"><i class="bi bi-play-fill"></i></span>
+              <span class="mt-preview-action-copy"><small>Preview de audio</small><strong>Escuchar preview</strong></span>
+            </span>
+            <span class="mt-preview-inline-status">
+              <span class="mt-preview-inline-time">0:00 / 0:00</span>
+              <span class="mt-preview-inline-progress"><span></span></span>
+            </span>
+          </button>` : `
+          <div class="mt-preview-action mt-preview-disabled" aria-disabled="true" aria-label="Preview no disponible para ${item.title}">
+            <span class="mt-preview-action-main">
+              <span class="mt-preview-action-icon"><i class="bi bi-volume-mute-fill"></i></span>
+              <span class="mt-preview-action-copy"><small>Preview de audio</small><strong>Preview no disponible</strong></span>
+            </span>
+            <span class="mt-preview-inline-status">
+              <span class="mt-preview-inline-time">Sin muestra</span>
+              <span class="mt-preview-inline-progress"><span></span></span>
+            </span>
+          </div>`;
     return `
-      <article id="mt-${item.id}" class="mt-card" data-search="${(item.title+' '+item.artist).toLowerCase()}" data-featured="${item.featured}" data-tag="${item.tag}" data-preview="${item.preview ? 'true':'false'}">
+      <article id="mt-${item.id}" class="mt-card" data-search="${(item.title+' '+item.artist).toLowerCase()}" data-featured="${item.featured}" data-tag="${item.tag}" data-preview="${hasPreview ? 'true':'false'}">
         <div class="mt-cover ${hasCover ? 'has-cover' : ''}">
           ${hasCover ? `<img class="mt-cover-image" src="${item.cover}" alt="Portada de ${item.title}" loading="lazy" onerror="this.closest('.mt-cover').classList.remove('has-cover');this.remove();">` : ''}
           <span class="mt-cover-index">${String(index+1).padStart(2,'0')} / MT</span>
@@ -2731,23 +2785,13 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
               <div><div class="mt-card-kicker">Multitrack digital</div><h3 class="mt-card-title">${item.title}</h3><div class="mt-card-artist">${item.artist}</div></div>
             </div>
             <div class="mt-meta"><div><span>BPM</span><strong>${item.bpm}</strong></div><div><span>Tono</span><strong>${item.key}</strong></div><div><span>Stems</span><strong>${item.stems}</strong></div></div>
-            <div class="mt-preview-line"><i class="bi bi-headphones"></i><span>PREVIEW</span><div class="mt-mini-wave"></div><span>SHORT</span></div>
+            <div class="mt-preview-line"><i class="bi bi-headphones"></i><span>PREVIEW</span><div class="mt-mini-wave"></div><span>${hasPreview ? 'SHORT' : 'NO DISP.'}</span></div>
           </div>
           <div class="mt-card-bottom">
             <div class="mt-price"><small>Precio</small><strong class="${configured?'':'pending'}">${price}</strong></div>
             <button type="button" class="mt-cart-action ${cartClass}" ${cartAttrs}>Agregar <i class="bi bi-bag-plus"></i></button>
           </div>
-          <audio class="mt-card-audio" src="${item.preview || ''}" preload="none" playsinline webkit-playsinline aria-hidden="true"></audio>
-          <button type="button" class="mt-preview-action mt-play-btn" data-id="${item.id}" data-src="${item.preview || ''}" data-title="${item.title}" aria-label="Escuchar preview de ${item.title}">
-            <span class="mt-preview-action-main">
-              <span class="mt-preview-action-icon"><i class="bi bi-play-fill"></i></span>
-              <span class="mt-preview-action-copy"><small>Preview de audio</small><strong>Escuchar preview</strong></span>
-            </span>
-            <span class="mt-preview-inline-status">
-              <span class="mt-preview-inline-time">0:00 / 0:00</span>
-              <span class="mt-preview-inline-progress"><span></span></span>
-            </span>
-          </button>
+          ${previewControl}
         </div>
       </article>`;
   };
@@ -2772,6 +2816,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
     if (grid) grid.innerHTML = MULTITRACKS.filter(item => item.active !== false && Number.isFinite(Number(item.price))).map((item,i) => cardHTML({...item,price:Number(item.price)},i)).join('');
     bindCards();
     applyFilters();
+    window.dispatchEvent(new CustomEvent('dingloft:multitracks-rendered', {detail:{count:MULTITRACKS.length}}));
   };
   const loadManagedMultitracks = async () => {
     try {
@@ -2805,31 +2850,42 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   const playerForButton = btn => btn?.closest('.mt-card')?.querySelector('.mt-card-audio') || null;
   const buttonForPlayer = player => player?.closest('.mt-card')?.querySelector('.mt-play-btn') || null;
 
-  const markPreviewUnavailable = (player, btn, toastMessage, inlineMessage = 'Sin preview') => {
+  const markPreviewUnavailable = (player, btn, inlineMessage = 'Sin muestra') => {
+    // A broken preview belongs only to its own card. It must never poison the
+    // active player, cart buttons, or any other Multitrack.
     if (player) {
-      try { player.pause(); } catch(_) {}
       player.dataset.previewBroken = '1';
+      if (currentAudio === player) {
+        try { player.pause(); } catch(_) {}
+        currentAudio = null;
+        currentId = null;
+      }
     }
     if (!btn) return;
     btn.classList.remove('is-playing');
     btn.classList.add('is-unavailable');
     btn.dataset.previewUnavailable = '1';
-    btn.dataset.previewMessage = toastMessage || 'Este preview no está disponible en este momento.';
+    btn.disabled = true;
+    btn.setAttribute('aria-disabled','true');
     const icon = btn.querySelector('.mt-preview-action-icon i');
     const copy = btn.querySelector('.mt-preview-action-copy strong');
     const time = btn.querySelector('.mt-preview-inline-time');
     const fill = btn.querySelector('.mt-preview-inline-progress span');
-    if (icon) icon.className = 'bi bi-exclamation-circle';
+    if (icon) icon.className = 'bi bi-volume-mute-fill';
     if (copy) copy.textContent = 'Preview no disponible';
     if (time) time.textContent = inlineMessage;
     if (fill) fill.style.width = '0%';
+    // Remove the failed media element after the current event loop. No native
+    // player can appear and the browser will not retry this broken source.
+    if (player) setTimeout(() => { try { player.remove(); } catch(_) {} }, 0);
   };
 
   const activatePreviewButton = (btn) => {
     if (!btn) return;
     btn.classList.remove('is-unavailable');
     btn.dataset.previewUnavailable = '0';
-    btn.dataset.previewMessage = '';
+    btn.disabled = false;
+    btn.removeAttribute('aria-disabled');
   };
 
   const stopCurrent = (reset = true) => {
@@ -2841,51 +2897,43 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   };
 
   const playPreview = async (btn) => {
+    if (!btn || btn.disabled || btn.dataset.previewUnavailable === '1') return;
     const player = playerForButton(btn);
-    if (btn?.dataset.previewUnavailable === '1') {
-      showToast(btn.dataset.previewMessage || 'Este preview no está disponible en este momento.');
-      return;
-    }
-    if (!player || !player.getAttribute('src')) {
-      markPreviewUnavailable(player, btn, 'Este preview todavía no está disponible.', 'Sin archivo');
-      showToast('Este preview todavía no está disponible.');
+    if (!player || !hasPreviewRef(player.getAttribute('src')) || player.dataset.previewBroken === '1') {
+      markPreviewUnavailable(player, btn, 'Sin muestra');
       return;
     }
 
-    // Same card: play/pause directly. No src mutation, no load(), no shared player.
     if (currentAudio === player) {
       if (!player.paused) { player.pause(); return; }
       try {
-        player.muted = false; player.volume = 1;
+        player.muted = false;
+        player.volume = 1;
         await player.play();
       } catch (err) {
         console.error('Dingloft preview resume failed', err, player.currentSrc || player.src);
-        showToast('No pude reanudar ese preview. Inténtalo otra vez.');
+        if (Number(player.error?.code || 0) === 4) markPreviewUnavailable(player, btn, 'No disponible');
       }
       return;
     }
 
-    if (currentAudio) stopCurrent(true);
-    currentAudio = player;
-    currentId = btn.dataset.id;
     player.muted = false;
     player.volume = 1;
     player.playsInline = true;
     player.setAttribute('playsinline','');
     player.setAttribute('webkit-playsinline','');
 
-    // This play() is called directly inside the click event on an element whose src already exists.
+    // Do NOT stop the current valid preview until this new one actually starts.
+    // A missing/broken MP3 therefore cannot interrupt or contaminate another card.
     try {
       await player.play();
     } catch (err) {
       console.error('Dingloft preview play failed', err, player.currentSrc || player.src, player.error);
-      currentAudio = null; currentId = null;
-      resetCardPlayer(btn, true);
-      if (Number(player.error?.code || 0) === 4) {
-        markPreviewUnavailable(player, btn, 'No pude abrir ese MP3. Sube el archivo correspondiente a /audio.', 'Falta MP3');
-        showToast('Ese preview no existe o no se pudo cargar. Sube el MP3 correspondiente a /audio.');
+      if (Number(player.error?.code || 0) === 4 || player.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
+        markPreviewUnavailable(player, btn, 'No disponible');
       } else {
-        showToast('No pude iniciar el preview con el botón.');
+        resetCardPlayer(btn, true);
+        showToast('No pude iniciar este preview. Inténtalo otra vez.');
       }
     }
   };
@@ -2905,7 +2953,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
       if (player.dataset.audioBound === '1') return;
       player.dataset.audioBound = '1';
       const btn = buttonForPlayer(player);
-      if (!player.getAttribute('src')) markPreviewUnavailable(player, btn, 'Este preview todavía no está disponible.', 'Sin archivo');
+      if (!player.getAttribute('src')) markPreviewUnavailable(player, btn, 'Sin muestra');
       player.addEventListener('play', () => {
         if (currentAudio && currentAudio !== player) stopCurrent(true);
         currentAudio = player; currentId = btn?.dataset.id || '';
@@ -2941,7 +2989,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
       });
       player.addEventListener('error', () => {
         console.error('Dingloft audio element error', player.error, player.currentSrc || player.src);
-        markPreviewUnavailable(player, btn, 'No pude cargar ese preview. Verifica el archivo en /audio.', 'Falta MP3');
+        markPreviewUnavailable(player, btn, 'No disponible');
       });
     });
     document.querySelectorAll('.btn-mt-pending').forEach(btn => btn.addEventListener('click', () => showToast('Este Multitrack estará disponible próximamente.')));
@@ -2956,7 +3004,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   render();
   loadManagedMultitracks();
 })();
-</script><script src="multitrack-worker-gate.js?v=25"></script><script type="module">
+</script><script src="multitrack-worker-gate.js?v=73"></script><script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";

@@ -1,4 +1,4 @@
-const VERSION = '72';
+const VERSION = '73';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -54,6 +54,7 @@ const CORE = [
   '/dingloft-commerce.js?v=2.2.0',
   '/pwa-runtime.js?v=60',
   '/dingloft-mobile-nav-v71.js',
+  '/multitrack-worker-gate.js?v=73',
   '/manifest.webmanifest?v=46',
   '/img/pwa-liquid-rounded-192-v17.png',
   '/img/pwa-liquid-rounded-512-v17.png',
@@ -75,7 +76,7 @@ async function precache(){
 
 self.addEventListener('install', event => {
   event.waitUntil(precache());
-  // v72 updates the global mobile chrome/checkout spacing: activate immediately so the old UI cannot linger.
+  // v73 isolates Multitrack preview failures and refreshes cart-delivery verification after async catalog renders.
   self.skipWaiting();
 });
 
