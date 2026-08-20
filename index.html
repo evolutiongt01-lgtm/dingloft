@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="es">
-<head>
+<head><script src="/dingloft-mobile-nav-v71.js" data-dingloft-mobile-chrome="71"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"><meta name="theme-color" content="#040609"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="apple-mobile-web-app-title" content="Dingloft">
@@ -243,7 +243,7 @@ a{text-decoration:none;color:inherit}
   document.getElementById('installUniversal').onclick=()=>promptInstall('universal');
   const close=()=>{guide.classList.remove('show');guide.setAttribute('aria-hidden','true')};
   document.getElementById('closeGuide').onclick=close;document.getElementById('doneGuide').onclick=close;guide.onclick=e=>{if(e.target===guide)close()};
-  if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=62',{scope:'/'}).then(r=>r.update()).catch(()=>{}));
+  if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=71',{scope:'/'}).then(r=>r.update()).catch(()=>{}));
 })();
 </script>
 <script src="install-banner.js?v=7"></script>

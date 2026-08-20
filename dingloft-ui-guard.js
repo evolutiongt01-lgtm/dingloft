@@ -110,20 +110,9 @@
     document.head.appendChild(script);
   }
 
-  // Universal mobile chrome lives in ONE independent file.
-  // This guard only bootstraps it; it no longer owns or duplicates header/dock/cart UI.
-  function loadMobileChrome(){
-    if (!isMobile || window.self !== window.top) return;
-    const file=(location.pathname.split('/').filter(Boolean).pop()||'index').toLowerCase().replace(/\.html$/,'');
-    const customerFiles=new Set(['ventas','account','login','register','multitrack','autocad','cinema4d','dual','esword','logic','mainstage','nord','office','producto','rhodes','sketchup','yamahakeys']);
-    const appView=file==='app' || new URLSearchParams(location.search).get('app')==='1' || customerFiles.has(file);
-    if (!appView || document.querySelector('script[data-dingloft-mobile-chrome]')) return;
-    const script=document.createElement('script');
-    script.src='/dingloft-mobile-chrome.js?v=70';
-    script.defer=true;
-    script.dataset.dingloftMobileChrome='70';
-    document.head.appendChild(script);
-  }
+  // v71: mobile header/nav are loaded directly by each customer page from
+  // /dingloft-mobile-nav-v71.js. UI Guard no longer creates, positions or bootstraps navigation.
+  function loadMobileChrome(){ /* intentionally empty */ }
 
   addBaseStyle();
   // Start the isolated overlay immediately so legacy page navbars never get a chance to take control.

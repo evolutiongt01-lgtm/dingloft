@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="es">
-<head>
+<head><script src="/dingloft-mobile-nav-v71.js" data-dingloft-mobile-chrome="71"></script>
 <script>try{if(new URLSearchParams(location.search).get('app')==='1')document.documentElement.classList.add('dingloft-direct-app')}catch(_){}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta charset="utf-8"/>
@@ -2376,38 +2376,6 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
 }
 </style>
 
-<style id="dingloft-direct-multitrack-v25">
-.dingloft-direct-top{display:none}
-@media(max-width:1024px){
-  html.dingloft-direct-app,html.dingloft-direct-app body{background:#05070a!important;overflow-x:hidden!important;overscroll-behavior-x:none!important}
-  html.dingloft-direct-app .navbar-glass,html.dingloft-direct-app nav.navbar.fixed-top{display:none!important}
-  html.dingloft-direct-app .dingloft-direct-top{position:sticky;top:0;z-index:1035;height:calc(68px + env(safe-area-inset-top));padding:calc(8px + env(safe-area-inset-top)) 18px 8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(4,6,9,1),rgba(5,7,10,.97));border-bottom:1px solid rgba(255,255,255,.075);backdrop-filter:blur(26px) saturate(160%);-webkit-backdrop-filter:blur(26px) saturate(160%)}
-  html.dingloft-direct-app .dingloft-direct-brand{display:flex;align-items:center;justify-content:center;gap:11px;color:#fff;text-decoration:none;min-width:0;text-align:left;margin:0 auto}
-  html.dingloft-direct-app .dingloft-direct-brand img{width:36px;height:36px;border-radius:12px;object-fit:cover}
-  html.dingloft-direct-app .dingloft-direct-brand strong{display:block;font-size:.90rem;font-weight:850;letter-spacing:.18em;line-height:1}
-  html.dingloft-direct-app .dingloft-direct-brand small{display:block;margin-top:6px;color:#66758a;font-size:.50rem;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
-  html.dingloft-direct-app .dingloft-direct-audio{display:none!important}
-  
-  html.dingloft-direct-app main{padding-top:0!important;padding-bottom:calc(96px + env(safe-area-inset-bottom))!important}
-  html.dingloft-direct-app .mt-hero{padding-top:22px!important}
-  html.dingloft-direct-app .premium-footer{padding-bottom:28px!important}
-  html.dingloft-direct-app .mobile-app-dock{bottom:calc(5px + env(safe-area-inset-bottom))!important;height:66px!important;left:10px!important;right:10px!important;border-radius:22px!important;grid-template-columns:1fr 1fr 76px 1fr 1fr!important}
-  html.dingloft-direct-app .mobile-dock-item{height:52px!important;font-size:.48rem!important}
-  html.dingloft-direct-app .btn-floating-cart{bottom:calc(20px + env(safe-area-inset-bottom))!important;width:60px!important;height:60px!important;border-radius:20px!important}
-  html.dingloft-direct-app body.cart-open .btn-floating-cart{bottom:calc(min(88dvh,780px) - 62px)!important}
-}
-</style>
-
-<style id="dingloft-multitrack-dock-lock-v27">
-@media(max-width:1024px){
-  html.dingloft-direct-app .mobile-app-dock{position:fixed!important;left:max(10px,env(safe-area-inset-left))!important;right:max(10px,env(safe-area-inset-right))!important;bottom:calc(5px + env(safe-area-inset-bottom))!important;height:66px!important;padding:6px 7px!important;grid-template-columns:1fr 1fr 76px 1fr 1fr!important;border-radius:22px!important;transform:none;}
-  html.dingloft-direct-app .mobile-dock-item{height:52px!important;}
-  html.dingloft-direct-app .btn-floating-cart{left:50%!important;right:auto!important;top:auto!important;bottom:calc(20px + env(safe-area-inset-bottom))!important;width:60px!important;height:60px!important;border-radius:20px!important;transform:translateX(-50%)!important;}
-  html.dingloft-direct-app body.cart-open .mobile-app-dock{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:translateY(15px)!important;}
-}
-</style>
-<link rel="stylesheet" href="dingloft-mobile-dock.css?v=31">
-
 <style id="dingloft-multitrack-floating-desktop-v35">
 @media (min-width:900px) and (pointer:fine){
   body.multitrack-page .mt-quickbar{
@@ -2463,102 +2431,6 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   }
 }
 </style>
-
-<style id="dingloft-multitrack-mobile-chrome-hard-lock-v68">
-/* v68 — Multitracks obeys Inicio's mobile chrome, with no page-specific offsets. */
-@media (max-width:1024px){
-  html.dl-universal-mobile body.dl-universal-mobile #dlUniversalHeader,
-  html.dingloft-direct-app body #dlUniversalHeader{
-    position:fixed!important;
-    top:0!important;
-    left:0!important;
-    right:0!important;
-    bottom:auto!important;
-    width:100%!important;
-    height:calc(68px + env(safe-area-inset-top,0px))!important;
-    margin:0!important;
-    transform:translate3d(0,0,0)!important;
-    z-index:2147483000!important;
-  }
-
-  html.dl-universal-mobile body.dl-universal-mobile #dlUniversalDock,
-  html.dingloft-direct-app body #dlUniversalDock{
-    position:fixed!important;
-    top:auto!important;
-    left:max(10px,env(safe-area-inset-left,0px))!important;
-    right:max(10px,env(safe-area-inset-right,0px))!important;
-    bottom:calc(5px + env(safe-area-inset-bottom,0px))!important;
-    width:auto!important;
-    height:66px!important;
-    min-height:66px!important;
-    margin:0!important;
-    padding:6px 7px!important;
-    grid-template-columns:1fr 1fr 76px 1fr 1fr!important;
-    border-radius:22px!important;
-    transform:translate3d(0,0,0)!important;
-    z-index:2147483001!important;
-  }
-
-  /* Never allow Multitracks' old sticky/direct chrome to compete with the master bars. */
-  html.dl-universal-mobile .dingloft-direct-top,
-  html.dl-universal-mobile #dingloftDirectTop,
-  html.dl-universal-mobile #dlDirectTop,
-  html.dl-universal-mobile #mobileAppDock,
-  html.dl-universal-mobile nav.mobile-app-dock,
-  html.dl-universal-mobile .mobile-app-dock{
-    display:none!important;
-    visibility:hidden!important;
-    opacity:0!important;
-    pointer-events:none!important;
-  }
-
-  /* Reserve exactly the same fixed chrome space as Inicio. */
-  html.dingloft-direct-app body.dl-universal-mobile{
-    padding-top:calc(68px + env(safe-area-inset-top,0px))!important;
-    padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))!important;
-  }
-}
-</style>
-<script id="dingloft-multitrack-mobile-chrome-hard-lock-v68-js">
-(()=>{
-  const mobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent||'') || (navigator.maxTouchPoints>0 && matchMedia('(max-width:1024px)').matches);
-  if(!mobile || window.self!==window.top) return;
-
-  const enforce=()=>{
-    if(document.body) document.body.classList.add('dl-page-multitrack');
-    const header=document.getElementById('dlUniversalHeader');
-    const dock=document.getElementById('dlUniversalDock');
-    if(header){
-      header.style.setProperty('position','fixed','important');
-      header.style.setProperty('top','0','important');
-      header.style.setProperty('left','0','important');
-      header.style.setProperty('right','0','important');
-      header.style.setProperty('transform','translate3d(0,0,0)','important');
-    }
-    if(dock){
-      dock.style.setProperty('position','fixed','important');
-      dock.style.setProperty('top','auto','important');
-      dock.style.setProperty('bottom','calc(5px + env(safe-area-inset-bottom,0px))','important');
-      dock.style.setProperty('left','max(10px,env(safe-area-inset-left,0px))','important');
-      dock.style.setProperty('right','max(10px,env(safe-area-inset-right,0px))','important');
-      dock.style.setProperty('transform','translate3d(0,0,0)','important');
-      dock.querySelectorAll('.dl-u-item[data-route]').forEach(item=>item.classList.toggle('active',item.dataset.route==='multitrack'));
-      if(!dock.__dingloftMtV68Observer){
-        dock.__dingloftMtV68Observer=true;
-        new MutationObserver(()=>queueMicrotask(enforce)).observe(dock,{subtree:true,attributes:true,attributeFilter:['class','style']});
-      }
-    }
-  };
-
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',enforce,{once:true});
-  else enforce();
-  new MutationObserver(enforce).observe(document.documentElement,{childList:true,subtree:true});
-  addEventListener('pageshow',enforce,{passive:true});
-  addEventListener('focus',enforce,{passive:true});
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden) enforce();},{passive:true});
-  setTimeout(enforce,0); setTimeout(enforce,120); setTimeout(enforce,600);
-})();
-</script>
 
 </head>
 <body class="multitrack-page">

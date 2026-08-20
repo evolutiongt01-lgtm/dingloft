@@ -1,4 +1,4 @@
-const VERSION = '64';
+const VERSION = '71';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -53,7 +53,7 @@ const CORE = [
   '/pwa-install.js',
   '/dingloft-commerce.js?v=2.2.0',
   '/pwa-runtime.js?v=60',
-  '/dingloft-mobile-chrome.js?v=70',
+  '/dingloft-mobile-nav-v71.js',
   '/manifest.webmanifest?v=46',
   '/img/pwa-liquid-rounded-192-v17.png',
   '/img/pwa-liquid-rounded-512-v17.png',
@@ -75,7 +75,8 @@ async function precache(){
 
 self.addEventListener('install', event => {
   event.waitUntil(precache());
-  // Intentionally DO NOT skipWaiting here: the app shows a full update screen first.
+  // v71 is a navigation architecture fix: activate immediately so old cached chrome cannot linger.
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
