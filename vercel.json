@@ -1,3 +1,57 @@
 {
-  "cleanUrls": true
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/es",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/collections/all",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/es/products/yamaha-premium-keys",
+      "destination": "/yamahakeys",
+      "statusCode": 301
+    },
+    {
+      "source": "/products/biblias-y-diccionarios-para-e-sword",
+      "destination": "/esword",
+      "statusCode": 301
+    },
+    {
+      "source": "/products/nord-essentials-sf2-collection-evosound-edition",
+      "destination": "/nord",
+      "statusCode": 301
+    },
+    {
+      "source": "/products/sketchup-pro-2026",
+      "destination": "/sketchup",
+      "statusCode": 301
+    },
+    {
+      "source": "/products/autocad-2026",
+      "destination": "/autocad",
+      "statusCode": 301
+    },
+    {
+      "source": "/products/microsoft-office",
+      "destination": "/office",
+      "statusCode": 301
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/multitracks",
+      "destination": "/multitrack"
+    },
+    {
+      "source": "/cuenta",
+      "destination": "/account"
+    }
+  ]
 }
