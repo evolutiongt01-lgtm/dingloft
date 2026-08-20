@@ -1,10 +1,10 @@
-/* Dingloft Mobile Chrome v36
+/* Dingloft Mobile Chrome v70
    Universal mobile header + dock + cart bridge.
    Visual master: Inicio. Same geometry on Android and iPhone, on every customer page. */
 (() => {
   'use strict';
-  if (window.__DINGLOFT_MOBILE_CHROME_V36__) return;
-  window.__DINGLOFT_MOBILE_CHROME_V36__ = true;
+  if (window.__DINGLOFT_MOBILE_CHROME_V70__) return;
+  window.__DINGLOFT_MOBILE_CHROME_V70__ = true;
 
   const ua = navigator.userAgent || '';
   const iOS = /iPad|iPhone|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -27,6 +27,10 @@
   const COVER_KEY = 'dingloft_multitrack_covers_v34';
   const CART_ANIM_MS = 360;
   let closeTimer = 0;
+  let chromeHost = null;
+  let chromeRoot = null;
+  const chromeQuery = selector => chromeRoot?.querySelector(selector) || null;
+  const chromeQueryAll = selector => chromeRoot ? [...chromeRoot.querySelectorAll(selector)] : [];
 
   document.documentElement.classList.add('dl-universal-mobile');
   document.body?.classList.add('dl-universal-mobile');
@@ -40,13 +44,13 @@
   status.content = 'black-translucent';
 
   const css = document.createElement('style');
-  css.id = 'dingloft-mobile-chrome-v35-style';
+  css.id = 'dingloft-mobile-chrome-v70-style';
   css.textContent = `
   :root{--dl-safe-top:env(safe-area-inset-top,0px);--dl-safe-right:env(safe-area-inset-right,0px);--dl-safe-bottom:env(safe-area-inset-bottom,0px);--dl-safe-left:env(safe-area-inset-left,0px);--dl-header-h:68px;--dl-dock-h:66px;--dl-dock-bottom:calc(5px + var(--dl-safe-bottom));}
   html.dl-universal-mobile,html.dl-universal-mobile body{background:#05070a!important;max-width:100%!important;overflow-x:hidden!important;overscroll-behavior-x:none!important}
   body.dl-universal-mobile{--dl-header-total:calc(var(--dl-header-h) + var(--dl-safe-top));}
 
-  /* v34: there is ONE mobile chrome. Kill every legacy navbar/dock copy, even when nested in wrappers. */
+  /* v70: there is ONE isolated mobile chrome. Kill every legacy navbar/dock copy, even when nested in wrappers. */
   html.dl-universal-mobile #main-navbar,
   html.dl-universal-mobile nav.navbar-glass,
   html.dl-universal-mobile .navbar.navbar-glass,
@@ -57,36 +61,16 @@
   html.dl-universal-mobile #dingloftDirectTop,
   html.dl-universal-mobile #dlDirectTop,
   html.dl-universal-mobile #dlDirectDock,
+  html.dl-universal-mobile #dlUniversalHeader,
+  html.dl-universal-mobile #dlUniversalDock,
   html.dl-universal-mobile .top,
   html.dl-universal-mobile .dock{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
   html.dl-universal-mobile #side-menu,html.dl-universal-mobile #side-menu-overlay{display:none!important;visibility:hidden!important;pointer-events:none!important}
   html.dl-universal-mobile body>.btn-floating-cart{display:block!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;width:1px!important;height:1px!important;left:-9999px!important;right:auto!important;bottom:0!important;transform:none!important;box-shadow:none!important}
 
-  #dlUniversalHeader{position:fixed!important;z-index:2147483000!important;top:0!important;left:0!important;right:0!important;height:calc(var(--dl-header-h) + var(--dl-safe-top))!important;padding:var(--dl-safe-top) max(14px,var(--dl-safe-right)) 0 max(14px,var(--dl-safe-left))!important;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#040609 0%,rgba(5,7,10,.985) 70%,rgba(5,7,10,.94) 100%);border-bottom:1px solid rgba(255,255,255,.075);box-shadow:0 10px 34px rgba(0,0,0,.20);backdrop-filter:blur(26px) saturate(160%);-webkit-backdrop-filter:blur(26px) saturate(160%);transform:translateZ(0)}
-  #dlUniversalHeader:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent 4%,rgba(109,214,255,.45) 44%,rgba(141,115,255,.28) 62%,transparent 96%);opacity:.55;pointer-events:none}
-  #dlUniversalBrand{position:absolute;left:50%;top:calc(var(--dl-safe-top) + 8px);height:52px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:11px;min-width:max-content;color:#fff;text-decoration:none;text-align:left;-webkit-tap-highlight-color:transparent}
-  #dlUniversalBrand img{width:36px;height:36px;border-radius:12px;object-fit:cover;display:block;box-shadow:0 8px 20px rgba(0,0,0,.28)}
-  #dlUniversalBrand .copy{line-height:1;min-width:0}
-  #dlUniversalBrand strong{display:block;color:#f7fbff;font:850 .90rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,sans-serif;letter-spacing:.18em;white-space:nowrap}
-  #dlUniversalBrand small{display:block;margin-top:6px;color:#66758a;font:750 .50rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,sans-serif;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap}
-  #dlUniversalAdmin{position:absolute;right:max(12px,var(--dl-safe-right));top:calc(var(--dl-safe-top) + 15px);height:38px;padding:0 11px;border:1px solid rgba(112,220,255,.18);border-radius:13px;background:rgba(255,255,255,.035);color:#a8eaff;text-decoration:none;display:none;align-items:center;gap:6px;font:780 .54rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,sans-serif;letter-spacing:.025em;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
-  #dlUniversalAdmin.show{display:flex}#dlUniversalAdmin svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  #dlGlobalChromeHost{all:initial!important;position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;border:0!important;z-index:2147483647!important;pointer-events:none!important;overflow:visible!important;contain:layout style paint!important;isolation:isolate!important;transform:none!important;}
 
-  #dlUniversalDock{position:fixed!important;z-index:2147483001!important;left:max(10px,var(--dl-safe-left))!important;right:max(10px,var(--dl-safe-right))!important;bottom:var(--dl-dock-bottom)!important;height:var(--dl-dock-h)!important;padding:6px 7px!important;display:grid;grid-template-columns:1fr 1fr 76px 1fr 1fr;align-items:center;border:1px solid rgba(255,255,255,.11);border-radius:22px;background:linear-gradient(180deg,rgba(18,22,29,.84),rgba(8,10,14,.91));box-shadow:0 18px 55px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.07);backdrop-filter:blur(24px) saturate(175%);-webkit-backdrop-filter:blur(24px) saturate(175%);transition:opacity .18s ease,transform .30s cubic-bezier(.22,1,.36,1),visibility 0s linear 0s;transform:translate3d(0,0,0);will-change:transform,opacity}
 
-  /* v35: Inicio owns the navigation coordinates. No customer page may offset either bar. */
-  body.dl-page-ventas #dlUniversalHeader,body.dl-page-multitrack #dlUniversalHeader,body.dl-page-account #dlUniversalHeader,body.dl-page-product #dlUniversalHeader{top:0!important;transform:translateZ(0)!important}
-  body.dl-page-ventas #dlUniversalDock,body.dl-page-multitrack #dlUniversalDock,body.dl-page-account #dlUniversalDock,body.dl-page-product #dlUniversalDock{bottom:var(--dl-dock-bottom)!important;left:max(10px,var(--dl-safe-left))!important;right:max(10px,var(--dl-safe-right))!important;transform:translate3d(0,0,0)!important}
-  #dlUniversalDock:before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(160px circle at 50% 0%,rgba(109,214,255,.10),transparent 70%)}
-  .dl-u-item{position:relative;z-index:2;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:0;border-radius:17px;background:transparent;color:#687384;text-decoration:none;font:760 .48rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,sans-serif;letter-spacing:.015em;-webkit-tap-highlight-color:transparent;transition:color .18s ease,background .18s ease,transform .12s ease}
-  .dl-u-item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:color .18s ease,filter .18s ease}
-  .dl-u-item.active{color:#eaf5ff;background:rgba(255,255,255,.045)}.dl-u-item.active svg{color:#79dcff;filter:drop-shadow(0 0 8px rgba(109,214,255,.28))}.dl-u-item:active{transform:scale(.92)}
-  .dl-u-cart-slot{position:relative;z-index:4;height:52px;display:flex;align-items:center;justify-content:center}
-  #dlUniversalCart{position:absolute;left:50%;top:-9px;width:60px;height:60px;margin:0;padding:0;border:1px solid rgba(255,255,255,.85);border-radius:20px;background:linear-gradient(145deg,#fbfdff,#eaf1f5);color:#080b0e;display:grid;place-items:center;transform:translateX(-50%);box-shadow:0 18px 45px rgba(0,0,0,.42);-webkit-tap-highlight-color:transparent;transition:transform .12s ease,box-shadow .18s ease}
-  #dlUniversalCart:active{transform:translateX(-50%) scale(.92)}#dlUniversalCart svg{width:27px;height:27px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-  #dlUniversalCount{position:absolute;top:-5px;right:-6px;min-width:25px;height:25px;padding:0 6px;border:2px solid #050608;border-radius:999px;background:#24aaf2;color:#fff;display:grid;place-items:center;font:850 .68rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;transition:transform .18s cubic-bezier(.22,1,.36,1),opacity .18s ease}
-  #dlUniversalCount[data-empty="1"]{opacity:0;transform:scale(.72);pointer-events:none}#dlUniversalCount.bump{animation:dlCountBump .34s cubic-bezier(.22,1,.36,1)}@keyframes dlCountBump{50%{transform:scale(1.22)}}
-  body.dl-cart-open #dlUniversalDock,body.cart-sheet-open #dlUniversalDock,body.keyboard-open #dlUniversalDock{opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(0,calc(100% + 28px),0);transition:opacity .15s ease,transform .26s cubic-bezier(.4,0,.2,1),visibility 0s linear .26s}
 
   /* App shell reserves exactly the universal header/dock geometry. */
   body.dl-universal-mobile #stage{top:calc(var(--dl-header-h) + var(--dl-safe-top))!important;bottom:calc(78px + var(--dl-safe-bottom))!important}
@@ -123,9 +107,32 @@
   `;
   document.head.appendChild(css);
 
+  const LEGACY_CHROME_SELECTOR = [
+    '#main-navbar','nav.navbar-glass','.navbar.navbar-glass','#mobileAppDock','nav.mobile-app-dock','.mobile-app-dock',
+    '.dingloft-direct-top','#dingloftDirectTop','#dlDirectTop','#dlDirectDock','#dlUniversalHeader','#dlUniversalDock',
+    'body > .dock','body > #dock'
+  ].join(',');
+
   function removeLegacyChrome(doc=document){
-    doc.querySelectorAll('#main-navbar,nav.navbar-glass,.navbar.navbar-glass,#mobileAppDock,nav.mobile-app-dock,.mobile-app-dock,.dingloft-direct-top,#dingloftDirectTop,#dlDirectTop,#dlDirectDock').forEach(el=>el.remove());
+    doc.querySelectorAll(LEGACY_CHROME_SELECTOR).forEach(el=>el.remove());
     if (currentFile === 'producto') doc.querySelector('body > header')?.remove();
+  }
+
+  function watchLegacyChrome(){
+    if (!document.documentElement || document.documentElement.__dlLegacyChromeWatch) return;
+    document.documentElement.__dlLegacyChromeWatch = true;
+    const observer = new MutationObserver(mutations => {
+      let shouldPurge = false;
+      for (const m of mutations) {
+        for (const n of m.addedNodes) {
+          if (!(n instanceof Element)) continue;
+          if (n.matches?.(LEGACY_CHROME_SELECTOR) || n.querySelector?.(LEGACY_CHROME_SELECTOR)) { shouldPurge = true; break; }
+        }
+        if (shouldPurge) break;
+      }
+      if (shouldPurge) removeLegacyChrome();
+    });
+    observer.observe(document.documentElement,{childList:true,subtree:true});
   }
 
   function blockingOverlayOpen(doc=document){
@@ -133,6 +140,7 @@
   }
 
   function setScrollLocked(locked){
+    chromeHost?.classList.toggle('dl-overlay-blocked', !!locked);
     if (isAppShell) return;
     document.documentElement.classList.toggle('dl-scroll-locked', !!locked);
     if (!locked && document.body) {
@@ -163,36 +171,63 @@
   }
 
   function buildChrome(){
-    if (document.getElementById('dlUniversalHeader')) return;
+    if (document.getElementById('dlGlobalChromeHost')) return;
     setDirectClass();
+    removeLegacyChrome();
+
+    chromeHost = document.createElement('div');
+    chromeHost.id = 'dlGlobalChromeHost';
+    chromeHost.setAttribute('data-dingloft-global-chrome','70');
+    chromeRoot = chromeHost.attachShadow({mode:'open'});
+
+    const shadowStyle = document.createElement('style');
+    shadowStyle.textContent = `
+      :host{--safe-top:env(safe-area-inset-top,0px);--safe-right:env(safe-area-inset-right,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px);--header-h:68px;--dock-h:66px;position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;z-index:2147483647!important;pointer-events:none!important;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,system-ui,sans-serif;color-scheme:dark;}
+      *,*::before,*::after{box-sizing:border-box}
+      #header{position:absolute;z-index:20;top:0;left:0;right:0;height:calc(var(--header-h) + var(--safe-top));padding:var(--safe-top) max(14px,var(--safe-right)) 0 max(14px,var(--safe-left));display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#040609 0%,rgba(5,7,10,.985) 70%,rgba(5,7,10,.94) 100%);border-bottom:1px solid rgba(255,255,255,.075);box-shadow:0 10px 34px rgba(0,0,0,.20);backdrop-filter:blur(26px) saturate(160%);-webkit-backdrop-filter:blur(26px) saturate(160%);pointer-events:auto;transform:translate3d(0,0,0)}
+      #header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent 4%,rgba(109,214,255,.45) 44%,rgba(141,115,255,.28) 62%,transparent 96%);opacity:.55;pointer-events:none}
+      #brand{position:absolute;left:50%;top:calc(var(--safe-top) + 8px);height:52px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:11px;min-width:max-content;color:#fff;text-decoration:none;text-align:left;-webkit-tap-highlight-color:transparent}
+      #brand img{width:36px;height:36px;border-radius:12px;object-fit:cover;display:block;box-shadow:0 8px 20px rgba(0,0,0,.28)}
+      #brand .copy{line-height:1;min-width:0}#brand strong{display:block;color:#f7fbff;font:850 .90rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,sans-serif;letter-spacing:.18em;white-space:nowrap}#brand small{display:block;margin-top:6px;color:#66758a;font:750 .50rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,sans-serif;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap}
+      #admin{position:absolute;right:max(12px,var(--safe-right));top:calc(var(--safe-top) + 15px);height:38px;padding:0 11px;border:1px solid rgba(112,220,255,.18);border-radius:13px;background:rgba(255,255,255,.035);color:#a8eaff;text-decoration:none;display:none;align-items:center;gap:6px;font:780 .54rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,sans-serif;letter-spacing:.025em;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+      #admin.show{display:flex}#admin svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+      #dock{position:absolute;z-index:21;left:max(10px,var(--safe-left));right:max(10px,var(--safe-right));bottom:calc(5px + var(--safe-bottom));height:var(--dock-h);padding:6px 7px;display:grid;grid-template-columns:1fr 1fr 76px 1fr 1fr;align-items:center;border:1px solid rgba(255,255,255,.11);border-radius:22px;background:linear-gradient(180deg,rgba(18,22,29,.84),rgba(8,10,14,.91));box-shadow:0 18px 55px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.07);backdrop-filter:blur(24px) saturate(175%);-webkit-backdrop-filter:blur(24px) saturate(175%);pointer-events:auto;transition:opacity .18s ease,transform .30s cubic-bezier(.22,1,.36,1),visibility 0s linear 0s;transform:translate3d(0,0,0);will-change:transform,opacity}
+      #dock::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(160px circle at 50% 0%,rgba(109,214,255,.10),transparent 70%)}
+      .item{position:relative;z-index:2;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:0;border-radius:17px;background:transparent;color:#687384;text-decoration:none;font:760 .48rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,sans-serif;letter-spacing:.015em;-webkit-tap-highlight-color:transparent;transition:color .18s ease,background .18s ease,transform .12s ease}
+      .item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:color .18s ease,filter .18s ease}.item.active{color:#eaf5ff;background:rgba(255,255,255,.045)}.item.active svg{color:#79dcff;filter:drop-shadow(0 0 8px rgba(109,214,255,.28))}.item:active{transform:scale(.92)}
+      .cart-slot{position:relative;z-index:4;height:52px;display:flex;align-items:center;justify-content:center}#cart{position:absolute;left:50%;top:-9px;width:60px;height:60px;margin:0;padding:0;border:1px solid rgba(255,255,255,.85);border-radius:20px;background:linear-gradient(145deg,#fbfdff,#eaf1f5);color:#080b0e;display:grid;place-items:center;transform:translateX(-50%);box-shadow:0 18px 45px rgba(0,0,0,.42);-webkit-tap-highlight-color:transparent;transition:transform .12s ease,box-shadow .18s ease;cursor:pointer}#cart:active{transform:translateX(-50%) scale(.92)}#cart svg{width:27px;height:27px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+      #count{position:absolute;top:-5px;right:-6px;min-width:25px;height:25px;padding:0 6px;border:2px solid #050608;border-radius:999px;background:#24aaf2;color:#fff;display:grid;place-items:center;font:850 .68rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;transition:transform .18s cubic-bezier(.22,1,.36,1),opacity .18s ease}#count[data-empty="1"]{opacity:0;transform:scale(.72);pointer-events:none}#count.bump{animation:bump .34s cubic-bezier(.22,1,.36,1)}@keyframes bump{50%{transform:scale(1.22)}}
+      :host(.dl-overlay-blocked) #dock{opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(0,calc(100% + 28px),0);transition:opacity .15s ease,transform .26s cubic-bezier(.4,0,.2,1),visibility 0s linear .26s}
+      @media(max-width:350px){.item span{display:none}}
+      @media(prefers-reduced-motion:reduce){#dock{transition-duration:.01ms}}
+    `;
+
     const header = document.createElement('header');
-    header.id = 'dlUniversalHeader';
+    header.id = 'header';
     header.innerHTML = `
-      <a id="dlUniversalBrand" href="/ventas?app=1#inicio" data-route="home" aria-label="Dingloft inicio">
+      <a id="brand" href="/ventas?app=1#inicio" data-route="home" aria-label="Dingloft inicio">
         <img src="/img/pwa-liquid-rounded-192-v17.png?v=34" alt="Dingloft">
         <span class="copy"><strong>DINGLOFT</strong><small>Evolution Group</small></span>
       </a>
-      <a id="dlUniversalAdmin" href="/admin.html" aria-label="Abrir administración">
+      <a id="admin" href="/admin" aria-label="Abrir administración">
         <svg viewBox="0 0 24 24"><path d="M12 3 20 6v5c0 5.2-3.4 8.7-8 10-4.6-1.3-8-4.8-8-10V6z"></path><path d="m9.5 12 1.6 1.7 3.5-4"></path></svg><span>Admin</span>
       </a>`;
-    document.body.appendChild(header);
 
     const dock = document.createElement('nav');
-    dock.id = 'dlUniversalDock';
+    dock.id = 'dock';
     dock.setAttribute('aria-label','Navegación Dingloft');
     dock.innerHTML = `
-      <a class="dl-u-item" href="/ventas?app=1#inicio" data-route="home" aria-label="Inicio"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5.5 9.5V21h13V9.5"></path></svg><span>Inicio</span></a>
-      <a class="dl-u-item" href="/ventas?app=1#catalogo" data-route="catalog" aria-label="Catálogo"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg><span>Catálogo</span></a>
-      <span class="dl-u-cart-slot"><button id="dlUniversalCart" type="button" aria-label="Abrir carrito"><svg viewBox="0 0 24 24"><path d="M6 8h12l1 13H5z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span id="dlUniversalCount" data-empty="1">0</span></button></span>
-      <a class="dl-u-item" href="/multitrack?app=1" data-route="multitrack" aria-label="Multitrack"><svg viewBox="0 0 24 24"><path d="M4 13v-2M8 17V7M12 20V4M16 17V7M20 13v-2"></path></svg><span>Multitrack</span></a>
-      <a class="dl-u-item" href="/account?app=1" data-route="account" aria-label="Cuenta"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"></path></svg><span>Cuenta</span></a>`;
-    document.body.appendChild(dock);
+      <a class="item" href="/ventas?app=1#inicio" data-route="home" aria-label="Inicio"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5.5 9.5V21h13V9.5"></path></svg><span>Inicio</span></a>
+      <a class="item" href="/ventas?app=1#catalogo" data-route="catalog" aria-label="Catálogo"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg><span>Catálogo</span></a>
+      <span class="cart-slot"><button id="cart" type="button" aria-label="Abrir carrito"><svg viewBox="0 0 24 24"><path d="M6 8h12l1 13H5z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span id="count" data-empty="1">0</span></button></span>
+      <a class="item" href="/multitrack?app=1" data-route="multitrack" aria-label="Multitrack"><svg viewBox="0 0 24 24"><path d="M4 13v-2M8 17V7M12 20V4M16 17V7M20 13v-2"></path></svg><span>Multitrack</span></a>
+      <a class="item" href="/account?app=1" data-route="account" aria-label="Cuenta"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"></path></svg><span>Cuenta</span></a>`;
+
+    chromeRoot.append(shadowStyle, header, dock);
+    document.body.appendChild(chromeHost);
     document.body.classList.add('dl-chrome-ready');
 
-    document.getElementById('dlUniversalCart')?.addEventListener('click', e => {
-      e.preventDefault();
-      openLegacyCart();
-    });
+    chromeQuery('#cart')?.addEventListener('click', e => { e.preventDefault(); openLegacyCart(); });
     syncRoute();
     syncCount(true);
     syncAdmin();
@@ -207,17 +242,18 @@
     if (file === 'multitrack') return 'multitrack';
     if (PRODUCT_FILES.has(file)) return 'catalog';
     if (file === 'account' || file === 'login' || file === 'register') return 'account';
+    if (file === 'ventas' && /catalogo/i.test(location.hash || '')) return 'catalog';
     return 'home';
   }
 
   function syncRoute(){
     const r = activeRoute();
-    document.querySelectorAll('#dlUniversalDock .dl-u-item[data-route]').forEach(a => a.classList.toggle('active', a.dataset.route === r));
+    chromeQueryAll('#dock .item[data-route]').forEach(a => a.classList.toggle('active', a.dataset.route === r));
     syncAdmin();
   }
 
   function syncAdmin(){
-    const admin = document.getElementById('dlUniversalAdmin');
+    const admin = chromeQuery('#admin');
     if (!admin) return;
     const eligible = window.__dingloftAdminEligible === true;
     admin.classList.toggle('show', eligible && activeRoute() === 'home');
@@ -266,7 +302,7 @@
   function syncCount(force = false){
     const cart = repairCartCoverData();
     const n = cart.reduce((sum,x)=>sum + Math.max(0,Number(x?.qty || 1)),0);
-    const badge = document.getElementById('dlUniversalCount');
+    const badge = chromeQuery('#count');
     if (badge) {
       badge.textContent = String(n);
       badge.dataset.empty = n ? '0' : '1';
@@ -417,6 +453,7 @@
       wrapped.__dlUniversalWrapped = true; history[name] = wrapped;
     });
     addEventListener('popstate',syncRoute);
+    addEventListener('hashchange',syncRoute);
   }
 
   // Multitrack add buttons: persist the real album art even if the legacy page code is old.
@@ -439,6 +476,7 @@
   }, true);
 
   buildChrome();
+  watchLegacyChrome();
   installScrollGuard();
   rememberCurrentMultitrackCovers();
   watchFrames();
@@ -451,5 +489,5 @@
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { syncRoute(); syncCount(); } });
   setTimeout(() => { rememberCurrentMultitrackCovers(); syncCount(true); enhanceActiveFrame(); },700);
 
-  window.DingloftMobileChrome = { sync: () => { syncRoute(); syncCount(); syncAdmin(); }, patchCartCovers, version:'36' };
+  window.DingloftMobileChrome = { sync: () => { syncRoute(); syncCount(); syncAdmin(); }, patchCartCovers, version:'70' };
 })();

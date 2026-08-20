@@ -93,6 +93,7 @@
       html.dingloft-installed .install-cta{display:none!important}
       ${horizontalSelectors}{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:thin;touch-action:pan-x pan-y!important}
       @media(display-mode:standalone){#navInstall,#installAppBtn,#installCard,.site-install-banner,.install-shell,[data-install-cta],.install-cta{display:none!important}}
+      @media(max-width:1024px){#main-navbar,nav.navbar-glass,.navbar.navbar-glass,#mobileAppDock,nav.mobile-app-dock,.mobile-app-dock,.dingloft-direct-top,#dingloftDirectTop,#dlDirectTop,#dlDirectDock,#dlUniversalHeader,#dlUniversalDock{display:none!important;visibility:hidden!important;pointer-events:none!important}}
     `;
     document.head.appendChild(s);
   };
@@ -118,15 +119,18 @@
     const appView=file==='app' || new URLSearchParams(location.search).get('app')==='1' || customerFiles.has(file);
     if (!appView || document.querySelector('script[data-dingloft-mobile-chrome]')) return;
     const script=document.createElement('script');
-    script.src='/dingloft-mobile-chrome.js?v=36';
+    script.src='/dingloft-mobile-chrome.js?v=70';
     script.defer=true;
-    script.dataset.dingloftMobileChrome='36';
+    script.dataset.dingloftMobileChrome='70';
     document.head.appendChild(script);
   }
 
   addBaseStyle();
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { markInstalled(); loadPresence(); loadMobileChrome(); }, {once:true});
-  else { markInstalled(); loadPresence(); loadMobileChrome(); }
+  // Start the isolated overlay immediately so legacy page navbars never get a chance to take control.
+  if (document.readyState === 'loading') {
+    loadMobileChrome();
+    document.addEventListener('DOMContentLoaded', () => { markInstalled(); loadPresence(); }, {once:true});
+  } else { markInstalled(); loadPresence(); loadMobileChrome(); }
   addEventListener('appinstalled', () => { localStorage.setItem('dingloft_installed_at', String(Date.now())); markInstalled(); });
   matchMedia('(display-mode: standalone)').addEventListener?.('change', markInstalled);
 })();
