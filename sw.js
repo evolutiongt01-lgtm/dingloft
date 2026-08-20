@@ -6,10 +6,11 @@ const OFFLINE = '/offline.html';
 
 const CORE = [
   '/offline.html',
-  '/launch.html?v=60',
+  '/launch.html',
   '/app.html?route=home',
   '/desktop-shell.html?src=ventas.html',
   '/ventas.html',
+  '/ventas.html?app=1',
   '/index.html',
   '/multitrack.html',
   '/multitrack.html?app=1',
@@ -120,6 +121,20 @@ async function staleWhileRevalidate(req){
   return cached || await network || Response.error();
 }
 
+async function fastAppNavigation(req){
+  const cache = await caches.open(RUNTIME);
+  const cached = await cache.match(req, {ignoreSearch:true}) || await caches.match(req, {ignoreSearch:true});
+  const network = fetch(req).then(async fresh => {
+    if (fresh && fresh.ok) await cache.put(req, fresh.clone()).catch(()=>{});
+    return fresh;
+  }).catch(()=>null);
+  if (cached) {
+    network.catch(()=>{});
+    return cached;
+  }
+  return await network || (await caches.match(OFFLINE)) || new Response('Sin conexión', {status:503, headers:{'content-type':'text/plain;charset=utf-8'}});
+}
+
 async function cacheFirst(req){
   const cache = await caches.open(RUNTIME);
   const cached = await cache.match(req) || await caches.match(req);
@@ -140,8 +155,17 @@ self.addEventListener('fetch', event => {
   // Keep audio previews on the network path so Safari byte-range playback stays reliable.
   if (req.destination === 'audio' || /^\/audio\//i.test(url.pathname) || req.headers.has('range')) return;
 
-  // Documents are network-first and fall back to the last visited copy/offline page.
-  if (req.mode === 'navigate' || req.destination === 'document') {
+  // Installed-app startup should paint from cache immediately and refresh silently.
+  // This avoids Android cold-start stalls while keeping normal web navigations network-first.
+  const isDocument = req.mode === 'navigate' || req.destination === 'document';
+  const isFastAppRoute = isDocument && (url.pathname === '/launch.html' || url.searchParams.get('app') === '1');
+  if (isFastAppRoute) {
+    event.respondWith(fastAppNavigation(req));
+    return;
+  }
+
+  // Normal documents remain network-first and fall back to the last visited copy/offline page.
+  if (isDocument) {
     event.respondWith(networkFirst(req));
     return;
   }
