@@ -2463,6 +2463,103 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   }
 }
 </style>
+
+<style id="dingloft-multitrack-mobile-chrome-hard-lock-v68">
+/* v68 — Multitracks obeys Inicio's mobile chrome, with no page-specific offsets. */
+@media (max-width:1024px){
+  html.dl-universal-mobile body.dl-universal-mobile #dlUniversalHeader,
+  html.dingloft-direct-app body #dlUniversalHeader{
+    position:fixed!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    bottom:auto!important;
+    width:100%!important;
+    height:calc(68px + env(safe-area-inset-top,0px))!important;
+    margin:0!important;
+    transform:translate3d(0,0,0)!important;
+    z-index:2147483000!important;
+  }
+
+  html.dl-universal-mobile body.dl-universal-mobile #dlUniversalDock,
+  html.dingloft-direct-app body #dlUniversalDock{
+    position:fixed!important;
+    top:auto!important;
+    left:max(10px,env(safe-area-inset-left,0px))!important;
+    right:max(10px,env(safe-area-inset-right,0px))!important;
+    bottom:calc(5px + env(safe-area-inset-bottom,0px))!important;
+    width:auto!important;
+    height:66px!important;
+    min-height:66px!important;
+    margin:0!important;
+    padding:6px 7px!important;
+    grid-template-columns:1fr 1fr 76px 1fr 1fr!important;
+    border-radius:22px!important;
+    transform:translate3d(0,0,0)!important;
+    z-index:2147483001!important;
+  }
+
+  /* Never allow Multitracks' old sticky/direct chrome to compete with the master bars. */
+  html.dl-universal-mobile .dingloft-direct-top,
+  html.dl-universal-mobile #dingloftDirectTop,
+  html.dl-universal-mobile #dlDirectTop,
+  html.dl-universal-mobile #mobileAppDock,
+  html.dl-universal-mobile nav.mobile-app-dock,
+  html.dl-universal-mobile .mobile-app-dock{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+  }
+
+  /* Reserve exactly the same fixed chrome space as Inicio. */
+  html.dingloft-direct-app body.dl-universal-mobile{
+    padding-top:calc(68px + env(safe-area-inset-top,0px))!important;
+    padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))!important;
+  }
+}
+</style>
+<script id="dingloft-multitrack-mobile-chrome-hard-lock-v68-js">
+(()=>{
+  const mobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent||'') || (navigator.maxTouchPoints>0 && matchMedia('(max-width:1024px)').matches);
+  if(!mobile || window.self!==window.top) return;
+
+  const enforce=()=>{
+    if(document.body) document.body.classList.add('dl-page-multitrack');
+    const header=document.getElementById('dlUniversalHeader');
+    const dock=document.getElementById('dlUniversalDock');
+    if(header){
+      header.style.setProperty('position','fixed','important');
+      header.style.setProperty('top','0','important');
+      header.style.setProperty('left','0','important');
+      header.style.setProperty('right','0','important');
+      header.style.setProperty('transform','translate3d(0,0,0)','important');
+    }
+    if(dock){
+      dock.style.setProperty('position','fixed','important');
+      dock.style.setProperty('top','auto','important');
+      dock.style.setProperty('bottom','calc(5px + env(safe-area-inset-bottom,0px))','important');
+      dock.style.setProperty('left','max(10px,env(safe-area-inset-left,0px))','important');
+      dock.style.setProperty('right','max(10px,env(safe-area-inset-right,0px))','important');
+      dock.style.setProperty('transform','translate3d(0,0,0)','important');
+      dock.querySelectorAll('.dl-u-item[data-route]').forEach(item=>item.classList.toggle('active',item.dataset.route==='multitrack'));
+      if(!dock.__dingloftMtV68Observer){
+        dock.__dingloftMtV68Observer=true;
+        new MutationObserver(()=>queueMicrotask(enforce)).observe(dock,{subtree:true,attributes:true,attributeFilter:['class','style']});
+      }
+    }
+  };
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',enforce,{once:true});
+  else enforce();
+  new MutationObserver(enforce).observe(document.documentElement,{childList:true,subtree:true});
+  addEventListener('pageshow',enforce,{passive:true});
+  addEventListener('focus',enforce,{passive:true});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden) enforce();},{passive:true});
+  setTimeout(enforce,0); setTimeout(enforce,120); setTimeout(enforce,600);
+})();
+</script>
+
 </head>
 <body class="multitrack-page">
 <!-- Orbes de luz -->
