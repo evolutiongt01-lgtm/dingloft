@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"><meta name="theme-color" content="#040609"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="apple-mobile-web-app-title" content="Dingloft">
 <style id="dingloft-first-paint">html,body{margin:0!important;background:#040609!important;color-scheme:dark!important}html{background-color:#040609!important}body{min-height:100vh;background-color:#040609!important}</style>
-<script id="dingloft-early-launch">(()=>{try{const ua=navigator.userAgent||"";const mobile=/Android|iPhone|iPad|iPod/i.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);const coarse=matchMedia("(max-width:1024px) and (pointer:coarse)").matches;const q=new URLSearchParams(location.search);const direct=q.get("embed")==="1"||q.get("app")==="1"||q.get("direct")==="1";if((mobile||coarse)&&!direct){document.documentElement.style.background="#040609";document.documentElement.style.visibility="hidden";location.replace("/app.html?route=home&from=entry65");}}catch(_){}})();</script>
+<script id="dingloft-early-launch">(()=>{try{const ua=navigator.userAgent||"";const mobile=/Android|iPhone|iPad|iPod/i.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);const coarse=matchMedia("(max-width:1024px) and (pointer:coarse)").matches;const q=new URLSearchParams(location.search);const direct=q.get("embed")==="1"||q.get("app")==="1"||q.get("direct")==="1";if((mobile||coarse)&&!direct){document.documentElement.style.background="#040609";document.documentElement.style.visibility="hidden";location.replace("/ventas?app=1#inicio");}}catch(_){}})();</script>
 
 <link rel="apple-touch-startup-image" href="/img/iphone-se-640x1136.png?v=18" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)">
 <link rel="apple-touch-startup-image" href="/img/iphone-8-750x1334.png?v=18" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
@@ -233,17 +233,17 @@ a{text-decoration:none;color:inherit}
     title.textContent=data.title;text.textContent=data.text;steps.innerHTML=data.steps.map((s,i)=>`<div class="step"><b>${i+1}</b><span>${s}</span></div>`).join('');guide.classList.add('show');guide.setAttribute('aria-hidden','false');
   };
   async function promptInstall(kind){
-    if(isStandalone()){ location.href='app.html?route=home'; return; }
+    if(isStandalone()){ location.href='ventas.html?app=1#inicio'; return; }
     if(deferredPrompt){ const p=deferredPrompt; deferredPrompt=null; try{await p.prompt();await p.userChoice;return}catch(_){} }
     renderGuide(kind);
   }
   addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e});
-  addEventListener('appinstalled',()=>{location.href='app.html?route=home'});
+  addEventListener('appinstalled',()=>{location.href='ventas.html?app=1#inicio'});
   document.getElementById('installApple').onclick=()=>promptInstall('apple');
   document.getElementById('installUniversal').onclick=()=>promptInstall('universal');
   const close=()=>{guide.classList.remove('show');guide.setAttribute('aria-hidden','true')};
   document.getElementById('closeGuide').onclick=close;document.getElementById('doneGuide').onclick=close;guide.onclick=e=>{if(e.target===guide)close()};
-  if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=18',{scope:'/'}).then(r=>r.update()).catch(()=>{}));
+  if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js?v=62',{scope:'/'}).then(r=>r.update()).catch(()=>{}));
 })();
 </script>
 <script src="install-banner.js?v=7"></script>

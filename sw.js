@@ -1,4 +1,4 @@
-const VERSION = '60';
+const VERSION = '62';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -6,41 +6,44 @@ const OFFLINE = '/offline.html';
 
 const CORE = [
   '/offline.html',
-  '/launch.html',
-  '/app.html?route=home',
-  '/desktop-shell.html?src=ventas.html',
-  '/ventas.html',
-  '/ventas.html?app=1',
-  '/index.html',
-  '/multitrack.html',
-  '/multitrack.html?app=1',
-  '/account.html',
-  '/login.html',
-  '/sketchup.html',
-  '/sketchup.html?app=1',
-  '/yamahakeys.html',
-  '/yamahakeys.html?app=1',
-  '/autocad.html',
-  '/autocad.html?app=1',
-  '/nord.html',
-  '/nord.html?app=1',
-  '/rhodes.html',
-  '/rhodes.html?app=1',
-  '/mainstage.html',
-  '/mainstage.html?app=1',
-  '/logic.html',
-  '/logic.html?app=1',
-  '/office.html',
-  '/office.html?app=1',
-  '/cinema4d.html',
-  '/cinema4d.html?app=1',
-  '/dual.html',
-  '/dual.html?app=1',
-  '/esword.html',
-  '/esword.html?app=1',
-  '/producto.html',
-  '/producto.html?app=1',
-  '/tienda.html',
+  '/launch',
+  '/app?route=home',
+  '/desktop-shell?src=ventas.html',
+  '/ventas',
+  '/ventas?app=1',
+  '/',
+  '/multitrack',
+  '/multitrack?app=1',
+  '/account',
+  '/account?app=1',
+  '/login',
+  '/login?app=1',
+  '/register?app=1',
+  '/sketchup',
+  '/sketchup?app=1',
+  '/yamahakeys',
+  '/yamahakeys?app=1',
+  '/autocad',
+  '/autocad?app=1',
+  '/nord',
+  '/nord?app=1',
+  '/rhodes',
+  '/rhodes?app=1',
+  '/mainstage',
+  '/mainstage?app=1',
+  '/logic',
+  '/logic?app=1',
+  '/office',
+  '/office?app=1',
+  '/cinema4d',
+  '/cinema4d?app=1',
+  '/dual',
+  '/dual?app=1',
+  '/esword',
+  '/esword?app=1',
+  '/producto',
+  '/producto?app=1',
+  '/tienda',
   '/dingloft-app.js',
   '/desktop-shell.js',
   '/desktop-global-nav.js',
@@ -50,7 +53,7 @@ const CORE = [
   '/pwa-install.js',
   '/dingloft-commerce.js?v=2.2.0',
   '/pwa-runtime.js?v=60',
-  '/dingloft-mobile-chrome.js?v=34',
+  '/dingloft-mobile-chrome.js?v=35',
   '/manifest.webmanifest?v=46',
   '/img/pwa-liquid-rounded-192-v17.png',
   '/img/pwa-liquid-rounded-512-v17.png',
@@ -92,7 +95,7 @@ self.addEventListener('message', event => {
 function isSensitive(url, req){
   const host = url.hostname.toLowerCase();
   if (host.includes('workers.dev') || host.includes('paypal.com') || host.includes('paypalobjects.com') || host.includes('googleapis.com') || host.includes('firebaseio.com') || host.includes('zoho.')) return true;
-  if (/\/(admin|commerce-admin|register)\.html$/i.test(url.pathname)) return true;
+  if (/\/(admin|commerce-admin|register)(?:\.html)?$/i.test(url.pathname)) return true;
   if (/\/(download|checkout|webhooks|auth)\b/i.test(url.pathname)) return true;
   if (req.headers.has('authorization')) return true;
   return false;
@@ -155,10 +158,19 @@ self.addEventListener('fetch', event => {
   // Keep audio previews on the network path so Safari byte-range playback stays reliable.
   if (req.destination === 'audio' || /^\/audio\//i.test(url.pathname) || req.headers.has('range')) return;
 
-  // Installed-app startup should paint from cache immediately and refresh silently.
-  // This avoids Android cold-start stalls while keeping normal web navigations network-first.
+  // Vercel has cleanUrls enabled. If Chromium asks the Service Worker for an old
+  // *.html navigation, proxying Vercel's redirect can surface as ERR_FAILED.
+  // Redirect legacy installed-PWA URLs locally before touching the network.
   const isDocument = req.mode === 'navigate' || req.destination === 'document';
-  const isFastAppRoute = isDocument && (url.pathname === '/launch.html' || url.searchParams.get('app') === '1');
+  if (isDocument && /\.html$/i.test(url.pathname)) {
+    const clean = new URL(url.href);
+    clean.pathname = clean.pathname.replace(/\.html$/i, '') || '/';
+    event.respondWith(Promise.resolve(Response.redirect(clean.href, 302)));
+    return;
+  }
+
+  // Installed-app startup paints from cache immediately on clean routes.
+  const isFastAppRoute = isDocument && (url.pathname === '/launch' || url.searchParams.get('app') === '1');
   if (isFastAppRoute) {
     event.respondWith(fastAppNavigation(req));
     return;

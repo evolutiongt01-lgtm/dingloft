@@ -13,17 +13,24 @@
   if(part==='app') return;
   if(part==='admin'||part==='commerce-admin') return;
 
-  const app=new URL('/app.html',location.origin);
+  const direct=new URL(location.href);
+  direct.searchParams.delete('embed');
+  direct.searchParams.delete('direct');
+  direct.searchParams.set('app','1');
+
   const hash=(location.hash||'').toLowerCase();
-  if(part==='index'||part==='ventas'||part==='tienda'||part===''){
-    app.searchParams.set('route',hash==='#catalogo'?'catalog':hash==='#multitrack'?'multitrack':'home');
-  } else if(part==='multitrack') app.searchParams.set('route','multitrack');
-  else if(part==='account') app.searchParams.set('route','account');
+  if(part==='index'||part==='tienda'||part===''){
+    direct.pathname='/ventas';
+    direct.hash=hash==='#catalogo'?'#catalogo':hash==='#multitrack'?'#multitrack':'#inicio';
+  } else if(part==='ventas') {
+    direct.pathname='/ventas';
+    if(!direct.hash) direct.hash='#inicio';
+  } else if(part==='multitrack') direct.pathname='/multitrack';
+  else if(part==='account') direct.pathname='/account';
   else {
     const known=new Set(['login','register','producto','autocad','cinema4d','dual','esword','logic','mainstage','nord','office','rhodes','sketchup','yamahakeys']);
-    const file=known.has(part)?`${part}.html`:(part.includes('.')?part:`${part}.html`);
-    const src=`${file}${location.search||''}${location.hash||''}`;
-    app.searchParams.set('route','page'); app.searchParams.set('src',src);
+    if(!known.has(part)) return;
+    direct.pathname=`/${part}.html`;
   }
-  location.replace(`${app.pathname}${app.search}`);
+  location.replace(`${direct.pathname}${direct.search}${direct.hash}`);
 })();

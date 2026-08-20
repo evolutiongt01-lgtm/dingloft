@@ -1,10 +1,10 @@
-/* Dingloft Mobile Chrome v34
+/* Dingloft Mobile Chrome v35
    Universal mobile header + dock + cart bridge.
-   Visual master: multitrack.html iPhone direct-app chrome. */
+   Visual master: Inicio. Same geometry on Android and iPhone, on every customer page. */
 (() => {
   'use strict';
-  if (window.__DINGLOFT_MOBILE_CHROME_V34__) return;
-  window.__DINGLOFT_MOBILE_CHROME_V34__ = true;
+  if (window.__DINGLOFT_MOBILE_CHROME_V35__) return;
+  window.__DINGLOFT_MOBILE_CHROME_V35__ = true;
 
   const ua = navigator.userAgent || '';
   const iOS = /iPad|iPhone|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -16,7 +16,7 @@
     'autocad.html','cinema4d.html','dual.html','esword.html','logic.html','mainstage.html',
     'nord.html','office.html','producto.html','rhodes.html','sketchup.html','yamahakeys.html'
   ]);
-  const CUSTOMER_FILES = new Set(['ventas.html','account.html','multitrack.html', ...PRODUCT_FILES]);
+  const CUSTOMER_FILES = new Set(['ventas.html','account.html','login.html','register.html','multitrack.html', ...PRODUCT_FILES]);
   const params = new URLSearchParams(location.search);
   const currentFile = pathFile();
   const isAppShell = currentFile === 'app.html';
@@ -40,7 +40,7 @@
   status.content = 'black-translucent';
 
   const css = document.createElement('style');
-  css.id = 'dingloft-mobile-chrome-v33-style';
+  css.id = 'dingloft-mobile-chrome-v35-style';
   css.textContent = `
   :root{--dl-safe-top:env(safe-area-inset-top,0px);--dl-safe-right:env(safe-area-inset-right,0px);--dl-safe-bottom:env(safe-area-inset-bottom,0px);--dl-safe-left:env(safe-area-inset-left,0px);--dl-header-h:68px;--dl-dock-h:66px;--dl-dock-bottom:calc(5px + var(--dl-safe-bottom));}
   html.dl-universal-mobile,html.dl-universal-mobile body{background:#05070a!important;max-width:100%!important;overflow-x:hidden!important;overscroll-behavior-x:none!important}
@@ -62,7 +62,7 @@
   html.dl-universal-mobile #side-menu,html.dl-universal-mobile #side-menu-overlay{display:none!important;visibility:hidden!important;pointer-events:none!important}
   html.dl-universal-mobile body>.btn-floating-cart{display:block!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;width:1px!important;height:1px!important;left:-9999px!important;right:auto!important;bottom:0!important;transform:none!important;box-shadow:none!important}
 
-  #dlUniversalHeader{position:fixed;z-index:2147483000;top:0;left:0;right:0;height:calc(var(--dl-header-h) + var(--dl-safe-top));padding:var(--dl-safe-top) max(14px,var(--dl-safe-right)) 0 max(14px,var(--dl-safe-left));display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#040609 0%,rgba(5,7,10,.985) 70%,rgba(5,7,10,.94) 100%);border-bottom:1px solid rgba(255,255,255,.075);box-shadow:0 10px 34px rgba(0,0,0,.20);backdrop-filter:blur(26px) saturate(160%);-webkit-backdrop-filter:blur(26px) saturate(160%);transform:translateZ(0)}
+  #dlUniversalHeader{position:fixed!important;z-index:2147483000!important;top:0!important;left:0!important;right:0!important;height:calc(var(--dl-header-h) + var(--dl-safe-top))!important;padding:var(--dl-safe-top) max(14px,var(--dl-safe-right)) 0 max(14px,var(--dl-safe-left))!important;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#040609 0%,rgba(5,7,10,.985) 70%,rgba(5,7,10,.94) 100%);border-bottom:1px solid rgba(255,255,255,.075);box-shadow:0 10px 34px rgba(0,0,0,.20);backdrop-filter:blur(26px) saturate(160%);-webkit-backdrop-filter:blur(26px) saturate(160%);transform:translateZ(0)}
   #dlUniversalHeader:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent 4%,rgba(109,214,255,.45) 44%,rgba(141,115,255,.28) 62%,transparent 96%);opacity:.55;pointer-events:none}
   #dlUniversalBrand{position:absolute;left:50%;top:calc(var(--dl-safe-top) + 8px);height:52px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:11px;min-width:max-content;color:#fff;text-decoration:none;text-align:left;-webkit-tap-highlight-color:transparent}
   #dlUniversalBrand img{width:36px;height:36px;border-radius:12px;object-fit:cover;display:block;box-shadow:0 8px 20px rgba(0,0,0,.28)}
@@ -72,7 +72,11 @@
   #dlUniversalAdmin{position:absolute;right:max(12px,var(--dl-safe-right));top:calc(var(--dl-safe-top) + 15px);height:38px;padding:0 11px;border:1px solid rgba(112,220,255,.18);border-radius:13px;background:rgba(255,255,255,.035);color:#a8eaff;text-decoration:none;display:none;align-items:center;gap:6px;font:780 .54rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,sans-serif;letter-spacing:.025em;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
   #dlUniversalAdmin.show{display:flex}#dlUniversalAdmin svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
-  #dlUniversalDock{position:fixed;z-index:2147483001;left:max(10px,var(--dl-safe-left));right:max(10px,var(--dl-safe-right));bottom:var(--dl-dock-bottom);height:var(--dl-dock-h);padding:6px 7px;display:grid;grid-template-columns:1fr 1fr 76px 1fr 1fr;align-items:center;border:1px solid rgba(255,255,255,.11);border-radius:22px;background:linear-gradient(180deg,rgba(18,22,29,.84),rgba(8,10,14,.91));box-shadow:0 18px 55px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.07);backdrop-filter:blur(24px) saturate(175%);-webkit-backdrop-filter:blur(24px) saturate(175%);transition:opacity .18s ease,transform .30s cubic-bezier(.22,1,.36,1),visibility 0s linear 0s;transform:translate3d(0,0,0);will-change:transform,opacity}
+  #dlUniversalDock{position:fixed!important;z-index:2147483001!important;left:max(10px,var(--dl-safe-left))!important;right:max(10px,var(--dl-safe-right))!important;bottom:var(--dl-dock-bottom)!important;height:var(--dl-dock-h)!important;padding:6px 7px!important;display:grid;grid-template-columns:1fr 1fr 76px 1fr 1fr;align-items:center;border:1px solid rgba(255,255,255,.11);border-radius:22px;background:linear-gradient(180deg,rgba(18,22,29,.84),rgba(8,10,14,.91));box-shadow:0 18px 55px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.07);backdrop-filter:blur(24px) saturate(175%);-webkit-backdrop-filter:blur(24px) saturate(175%);transition:opacity .18s ease,transform .30s cubic-bezier(.22,1,.36,1),visibility 0s linear 0s;transform:translate3d(0,0,0);will-change:transform,opacity}
+
+  /* v35: Inicio owns the navigation coordinates. No customer page may offset either bar. */
+  body.dl-page-ventas #dlUniversalHeader,body.dl-page-multitrack #dlUniversalHeader,body.dl-page-account #dlUniversalHeader,body.dl-page-product #dlUniversalHeader{top:0!important;transform:translateZ(0)!important}
+  body.dl-page-ventas #dlUniversalDock,body.dl-page-multitrack #dlUniversalDock,body.dl-page-account #dlUniversalDock,body.dl-page-product #dlUniversalDock{bottom:var(--dl-dock-bottom)!important;left:max(10px,var(--dl-safe-left))!important;right:max(10px,var(--dl-safe-right))!important;transform:translate3d(0,0,0)!important}
   #dlUniversalDock:before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(160px circle at 50% 0%,rgba(109,214,255,.10),transparent 70%)}
   .dl-u-item{position:relative;z-index:2;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:0;border-radius:17px;background:transparent;color:#687384;text-decoration:none;font:760 .48rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,sans-serif;letter-spacing:.015em;-webkit-tap-highlight-color:transparent;transition:color .18s ease,background .18s ease,transform .12s ease}
   .dl-u-item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:color .18s ease,filter .18s ease}
@@ -152,7 +156,7 @@
       if (PRODUCT_FILES.has(currentFile)) document.body?.classList.add('dl-page-product');
       if (currentFile === 'ventas.html') document.body?.classList.add('dl-page-ventas');
       if (currentFile === 'multitrack.html') document.body?.classList.add('dl-page-multitrack');
-      if (currentFile === 'account.html') document.body?.classList.add('dl-page-account');
+      if (currentFile === 'account.html' || currentFile === 'login.html' || currentFile === 'register.html') document.body?.classList.add('dl-page-account');
       removeLegacyChrome();
       healScrollLock();
     }
@@ -164,7 +168,7 @@
     const header = document.createElement('header');
     header.id = 'dlUniversalHeader';
     header.innerHTML = `
-      <a id="dlUniversalBrand" href="/app.html?route=home" data-route="home" aria-label="Dingloft inicio">
+      <a id="dlUniversalBrand" href="/ventas?app=1#inicio" data-route="home" aria-label="Dingloft inicio">
         <img src="/img/pwa-liquid-rounded-192-v17.png?v=34" alt="Dingloft">
         <span class="copy"><strong>DINGLOFT</strong><small>Evolution Group</small></span>
       </a>
@@ -177,11 +181,11 @@
     dock.id = 'dlUniversalDock';
     dock.setAttribute('aria-label','Navegación Dingloft');
     dock.innerHTML = `
-      <a class="dl-u-item" href="/app.html?route=home" data-route="home" aria-label="Inicio"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5.5 9.5V21h13V9.5"></path></svg><span>Inicio</span></a>
-      <a class="dl-u-item" href="/app.html?route=catalog" data-route="catalog" aria-label="Catálogo"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg><span>Catálogo</span></a>
+      <a class="dl-u-item" href="/ventas?app=1#inicio" data-route="home" aria-label="Inicio"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5.5 9.5V21h13V9.5"></path></svg><span>Inicio</span></a>
+      <a class="dl-u-item" href="/ventas?app=1#catalogo" data-route="catalog" aria-label="Catálogo"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg><span>Catálogo</span></a>
       <span class="dl-u-cart-slot"><button id="dlUniversalCart" type="button" aria-label="Abrir carrito"><svg viewBox="0 0 24 24"><path d="M6 8h12l1 13H5z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span id="dlUniversalCount" data-empty="1">0</span></button></span>
-      <a class="dl-u-item" href="/multitrack.html?app=1" data-route="multitrack" aria-label="Multitrack"><svg viewBox="0 0 24 24"><path d="M4 13v-2M8 17V7M12 20V4M16 17V7M20 13v-2"></path></svg><span>Multitrack</span></a>
-      <a class="dl-u-item" href="/app.html?route=account" data-route="account" aria-label="Cuenta"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"></path></svg><span>Cuenta</span></a>`;
+      <a class="dl-u-item" href="/multitrack?app=1" data-route="multitrack" aria-label="Multitrack"><svg viewBox="0 0 24 24"><path d="M4 13v-2M8 17V7M12 20V4M16 17V7M20 13v-2"></path></svg><span>Multitrack</span></a>
+      <a class="dl-u-item" href="/account?app=1" data-route="account" aria-label="Cuenta"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"></path></svg><span>Cuenta</span></a>`;
     document.body.appendChild(dock);
     document.body.classList.add('dl-chrome-ready');
 
@@ -202,7 +206,7 @@
     }
     if (file === 'multitrack.html') return 'multitrack';
     if (PRODUCT_FILES.has(file)) return 'catalog';
-    if (file === 'account.html') return 'account';
+    if (file === 'account.html' || file === 'login.html' || file === 'register.html') return 'account';
     return 'home';
   }
 
@@ -447,5 +451,5 @@
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { syncRoute(); syncCount(); } });
   setTimeout(() => { rememberCurrentMultitrackCovers(); syncCount(true); enhanceActiveFrame(); },700);
 
-  window.DingloftMobileChrome = { sync: () => { syncRoute(); syncCount(); syncAdmin(); }, patchCartCovers, version:'34' };
+  window.DingloftMobileChrome = { sync: () => { syncRoute(); syncCount(); syncAdmin(); }, patchCartCovers, version:'35' };
 })();
