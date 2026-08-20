@@ -32,16 +32,48 @@ window.__DINGLOFT_COMMERCE_V2__ = true;
 
 function currentItems() {
   const source = Array.isArray(window.cartItemsList) ? window.cartItemsList : [];
-  return source
-    .slice(0, 50)
-    .map(item => ({
-      sku: String(item?.sku || item?.productSku || item?.workerSku || item?.id || "").trim(),
-      name: String(item?.name || "").trim(),
-      type: String(item?.type || "").trim(),
-      img: String(item?.img || "").trim()
-    }))
-    .filter(item => item.name);
+  const seen = new Set();
+  const out = [];
+  for (const raw of source.slice(0, 50)) {
+    if (raw?.uiOnly === true || raw?.bonusUiOnly === true) continue;
+    const item = {
+      sku: String(raw?.sku || raw?.productSku || raw?.workerSku || raw?.id || "").trim(),
+      name: String(raw?.name || "").trim(),
+      type: String(raw?.type || "").trim(),
+      img: String(raw?.img || "").trim()
+    };
+    if (!item.name) continue;
+    // Todos los productos de Dingloft son digitales: una unidad por SKU.
+    const key = (item.sku || item.name).toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(item);
+  }
+  return out;
 }
+
+function normalizeDigitalCartStorage() {
+  try {
+    const raw = JSON.parse(localStorage.getItem("dingloft_cart") || "[]");
+    if (!Array.isArray(raw)) return;
+    const seen = new Set();
+    const clean = [];
+    for (const item of raw) {
+      const key = String(item?.sku || item?.id || item?.name || "").trim().toLowerCase();
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      clean.push({ ...item, qty:1 });
+    }
+    localStorage.setItem("dingloft_cart", JSON.stringify(clean));
+  } catch (_) {}
+}
+
+normalizeDigitalCartStorage();
+
+// La tienda vende productos digitales, por eso no existe selector de cantidad.
+const oneCopyStyle = document.createElement("style");
+oneCopyStyle.textContent = `.qty-controls .qty-btn{display:none!important}.qty-controls .qty-value{min-width:22px;text-align:center}`;
+document.head.appendChild(oneCopyStyle);
 
 function loginUrl() {
   const next = `${location.pathname.split('/').pop() || 'index.html'}${location.search || ''}${location.hash || ''}`;
@@ -303,3 +335,30 @@ document.addEventListener("click", (event) => {
 }, true);
 
 /* When a cart is changed by legacy UI, its own call to renderPayPalStable uses this secure override. */
+// Evita que las UIs antiguas incrementen cantidad de productos digitales.
+document.addEventListener("click", (event) => {
+  const qtyButton = event.target?.closest?.(".qty-btn");
+  if (qtyButton) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    return;
+  }
+
+  const add = event.target?.closest?.(".btn-add-cart");
+  if (!add) return;
+  try {
+    const cart = JSON.parse(localStorage.getItem("dingloft_cart") || "[]");
+    if (!Array.isArray(cart)) return;
+    const id = String(add.dataset.sku || add.dataset.id || add.dataset.name || "").trim().toLowerCase();
+    if (!id) return;
+    const exists = cart.some(item => String(item?.sku || item?.id || item?.name || "").trim().toLowerCase() === id);
+    if (exists) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      showMessage("Este producto digital ya está en tu carrito. Solo puedes comprar una unidad.", "info");
+    }
+  } catch (_) {}
+}, true);
+

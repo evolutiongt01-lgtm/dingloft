@@ -346,6 +346,9 @@
     .paypal-white-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.4); padding: 15px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); margin-top: 10px; }
     .btn-free-checkout { background: #00ff88; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 14px; width: 100%; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,255,136,0.2); cursor: pointer; }
     .btn-free-checkout:hover { background: #00e67a; transform: translateY(-2px); }
+    .dual-trial-timer{font-variant-numeric:tabular-nums;color:#78e8ff;white-space:nowrap;font-size:.72rem;font-weight:800}
+    .dual-bonus-cart-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 7px;border-radius:999px;background:rgba(57,217,138,.12);border:1px solid rgba(57,217,138,.25);color:#74f1b2;font-size:.68rem;font-weight:800}
+
 
     /* ====== MODAL DE ÉXITO Y CREACIÓN EXPRESS DE CONTRASEÑA ====== */
     .success-modal-overlay { position: fixed; inset: 0; background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: grid; place-items: center; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -453,7 +456,7 @@
               <div class="d-flex justify-content-between text-white small mb-1">
                 <span><i class="bi bi-file-earmark-zip text-info"></i> Nord Essentials SF2:</span> <b class="text-white">2.73 GB</b>
               </div>
-              <div class="d-flex justify-content-between text-success small fw-bold">
+              <div class="d-flex justify-content-between text-success small fw-bold dual-bonus-copy" id="dual-bonus-summary">
                 <span><i class="bi bi-gift-fill"></i> Bonus PAD de Regalo:</span> <b class="text-success">INCLUIDO GRATIS</b>
               </div>
             </div>
@@ -481,8 +484,8 @@
                   <span class="fw-bold text-white">Bundle Completo</span>
                   <span class="fw-bold text-accent">$60.00</span>
                 </div>
-                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Nord + Yamaha + Bonus PAD</p>
-                <button class="btn-cyan w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="9" data-name="Pianos Legendarios SF2 Bundle completo" data-price="60" data-img="dual" data-type="Librería vitalicia">
+                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Nord + Yamaha <span class="dual-bonus-copy">+ Bonus PAD</span></p>
+                <button class="btn-cyan w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="9" data-sku="pianos-legendarios-sf2-bundle" data-name="Pianos Legendarios SF2 Bundle completo" data-price="60" data-img="dual" data-type="Librería vitalicia">
                   <i class="bi bi-cart3"></i> AGREGAR BUNDLE
                 </button>
               </div>
@@ -492,8 +495,8 @@
                   <span class="fw-bold text-white">Solo Nord Essentials</span>
                   <span class="fw-bold text-white">$33.00</span>
                 </div>
-                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Stage 3/4 Pianos + Bonus PAD</p>
-                <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="10" data-name="Nord Essentials SF2 Collection" data-price="33" data-img="nordessentials" data-type="Librería vitalicia">
+                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Stage 3/4 Pianos <span class="dual-bonus-copy">+ Bonus PAD</span></p>
+                <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="10" data-sku="nord-essentials-sf2-collection" data-name="Nord Essentials SF2 Collection" data-price="33" data-img="nordessentials" data-type="Librería vitalicia">
                   <i class="bi bi-cart-plus"></i> AGREGAR NORD
                 </button>
               </div>
@@ -503,14 +506,16 @@
                   <span class="fw-bold text-white">Solo Yamaha Legacy</span>
                   <span class="fw-bold text-white">$33.00</span>
                 </div>
-                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Serie Motif/Montage + Bonus PAD</p>
-                <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="13" data-name="Yamaha Legacy Collection SF2" data-price="33" data-img="yamahalegacy" data-type="Librería vitalicia">
+                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Serie Motif/Montage <span class="dual-bonus-copy">+ Bonus PAD</span></p>
+                <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="13" data-sku="yamaha-legacy-collection-sf2" data-name="Yamaha Legacy Collection SF2" data-price="33" data-img="yamahalegacy" data-type="Librería vitalicia">
                   <i class="bi bi-cart-plus"></i> AGREGAR YAMAHA
                 </button>
               </div>
 
-              <button class="btn-outline-cyan w-100 d-flex align-items-center justify-content-center gap-2" id="btn-free-trial" data-url="https://drive.google.com/file/d/1zoVl-fS-D_ex1EUmLGXfEytU2Q00nQYE/view?usp=drive_link">
-                <i class="bi bi-gift fs-5"></i> PRUEBA GRATIS (531.5 MB)
+              <button class="btn-outline-cyan w-100 d-flex align-items-center justify-content-center gap-2" id="btn-free-trial" type="button">
+                <i class="bi bi-gift fs-5"></i>
+                <span>AGREGAR PRUEBA GRATIS (531.5 MB)</span>
+                <span class="dual-trial-timer" id="dual-trial-countdown">Calculando…</span>
               </button>
             </div>
           </div>
@@ -792,6 +797,13 @@
             btn.disabled = true;
           }
         });
+        const trialBtn=document.getElementById('btn-free-trial');
+        if(trialBtn && purchasedNames.includes('Prueba Gratis Dual Legend · 531.5 MB')){
+          trialBtn.innerHTML='<i class="bi bi-check-circle-fill"></i> PRUEBA OBTENIDA';
+          trialBtn.classList.add('btn-obtained-glass');
+          trialBtn.disabled=true;
+          trialBtn.dataset.owned='1';
+        }
       } catch (err) { console.error("Error verificando compras:", err); }
     }
 
@@ -1090,8 +1102,8 @@
           cart.forEach((item, index) => {
             totalItems += item.qty;
             totalPrice += (item.price * item.qty);
-            for(let i=0; i<item.qty; i++) {
-              window.cartItemsList.push({ name: item.name, img: item.img, type: item.type, price: couponApplied ? 0 : item.price });
+            if(!item.uiOnly) {
+              window.cartItemsList.push({ sku:item.sku||item.id, name:item.name, img:item.img, type:item.type, price:couponApplied ? 0 : item.price });
             }
             cartItemsContainer.insertAdjacentHTML('beforeend', `
               <div class="cart-item">
@@ -1100,15 +1112,11 @@
                   <h4 class="cart-item-title">${item.name}</h4>
                   <p class="cart-item-desc">${item.type}</p>
                   <div class="d-flex justify-content-between align-items-center">
-                    <span class="fw-bold text-accent">$${(couponApplied ? 0 : item.price).toFixed(2)}</span>
-                    <div class="qty-controls">
-                      <button class="qty-btn" onclick="changeQty(${index}, -1)"><i class="bi bi-dash"></i></button>
-                      <span class="qty-value">${item.qty}</span>
-                      <button class="qty-btn" onclick="changeQty(${index}, 1)"><i class="bi bi-plus"></i></button>
-                    </div>
+                    <span class="fw-bold text-accent">${item.uiOnly?'<span class="dual-bonus-cart-pill"><i class="bi bi-gift-fill"></i> GRATIS</span>':'$'+(couponApplied ? 0 : item.price).toFixed(2)}</span>
+                    ${item.uiOnly?'':`<div class="qty-controls"><span class="qty-value">1</span></div>`}
                   </div>
                 </div>
-                <button class="cart-item-remove" onclick="removeItem(${index})"><i class="bi bi-trash"></i></button>
+                ${item.uiOnly?'':`<button class="cart-item-remove" onclick="removeItem(${index})"><i class="bi bi-trash"></i></button>`}
               </div>
             `);
           });
@@ -1145,49 +1153,102 @@
         });
       }
 
-      window.changeQty = (index, delta) => { if (cart[index].qty + delta > 0) cart[index].qty += delta; else cart.splice(index, 1); updateCartUI(); };
-      window.removeItem = (index) => { cart.splice(index, 1); updateCartUI(); };
+      const DUAL_BONUS_IDS = new Set(['9','10','13']);
+      const DUAL_TRIAL_SKU = 'dual-legend-free-trial-531mb';
+      const DUAL_TRIAL_FALLBACK_END = '2026-11-20T03:52:00.000Z';
+      let dualTrialActive = Date.now() < Date.parse(DUAL_TRIAL_FALLBACK_END);
+      let dualTrialEndMs = Date.parse(DUAL_TRIAL_FALLBACK_END);
+      let dualTrialClockOffset = 0;
+
+      function syncDualBonusCart(){
+        const hasEligible = cart.some(item => !item.uiOnly && DUAL_BONUS_IDS.has(String(item.id)));
+        const bonusIndex = cart.findIndex(item => item.uiOnly && item.id === 'dual-legend-bonus-pad');
+        if(hasEligible){
+          if(bonusIndex < 0) cart.push({id:'dual-legend-bonus-pad',sku:'dual-legend-bonus-pad',name:'Bonus PAD · Dual Legend',price:0,img:'dual',type:'BONUS GRATIS · Incluido con tu pack',qty:1,uiOnly:true});
+        }else if(bonusIndex >= 0){
+          cart.splice(bonusIndex,1);
+        }
+        cart.forEach(item=>item.qty=1);
+      }
+
+      function removeExpiredTrialFromCart(){
+        const i=cart.findIndex(item=>String(item.sku||item.id)===DUAL_TRIAL_SKU);
+        if(i>=0){cart.splice(i,1);syncDualBonusCart();updateCartUI();}
+      }
+
+      function renderDualTrialTimer(){
+        const el=document.getElementById('dual-trial-countdown');
+        const btn=document.getElementById('btn-free-trial');
+        if(btn?.dataset?.owned==='1') return;
+        const now=Date.now()+dualTrialClockOffset;
+        let ms=Math.max(0,dualTrialEndMs-now);
+        dualTrialActive=dualTrialActive && ms>0;
+        if(!dualTrialActive || ms<=0){
+          dualTrialActive=false;
+          if(btn) btn.style.display='none';
+          removeExpiredTrialFromCart();
+          return;
+        }
+        if(btn) btn.style.display='flex';
+        const days=Math.floor(ms/86400000);ms%=86400000;const h=Math.floor(ms/3600000);ms%=3600000;const m=Math.floor(ms/60000);const s=Math.floor((ms%60000)/1000);
+        if(el) el.textContent=`· ${days}d ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      }
+
+      async function loadDualTrialStatus(){
+        try{
+          const r=await fetch('https://autumn-breeze-dfa0.evolutiongt01.workers.dev/promo/dual-trial',{cache:'no-store'});
+          const data=await r.json();
+          if(r.ok&&data?.ok){
+            dualTrialActive=data.active===true;
+            dualTrialEndMs=Date.parse(data.endsAt||DUAL_TRIAL_FALLBACK_END);
+            const serverMs=Date.parse(data.serverNow||'');if(Number.isFinite(serverMs))dualTrialClockOffset=serverMs-Date.now();
+          }
+        }catch(_){}
+        renderDualTrialTimer();
+      }
+
+      window.changeQty = () => { updateCartUI(); };
+      window.removeItem = (index) => { if(cart[index]?.uiOnly)return; cart.splice(index, 1); syncDualBonusCart(); updateCartUI(); };
 
       addButtons.forEach(button => {
         button.addEventListener('click', function(e) {
           e.preventDefault();
           if(this.disabled) return;
           const id = this.getAttribute('data-id');
+          const sku = this.getAttribute('data-sku') || id;
           const name = this.getAttribute('data-name');
           const price = parseFloat(this.getAttribute('data-price'));
           const img = this.getAttribute('data-img');
           const type = this.getAttribute('data-type');
-          
-          const existingItem = cart.find(item => item.id === id);
-          if (existingItem) existingItem.qty += 1;
-          else cart.push({ id, name, price, img, type, qty: 1 });
-          
+          const existingItem = cart.find(item => String(item.id) === String(id));
+          if (!existingItem) cart.push({ id, sku, name, price, img, type, qty: 1 });
+          syncDualBonusCart();
           updateCartUI();
           openCart();
         });
       });
-      
+
       const freeTrialBtn = document.getElementById('btn-free-trial');
       if (freeTrialBtn) {
         freeTrialBtn.addEventListener('click', function(e) {
           e.preventDefault();
-
-          // LÓGICA PARA EXIGIR INICIO DE SESIÓN ANTES DE LA PRUEBA GRATIS
-          if (!window.globalCurrentUser) {
-            window.location.href = 'login.html';
-            return;
+          if(this.disabled || !dualTrialActive) return;
+          const existing=cart.find(item=>String(item.sku||item.id)===DUAL_TRIAL_SKU);
+          if(!existing){
+            cart.push({id:DUAL_TRIAL_SKU,sku:DUAL_TRIAL_SKU,name:'Prueba Gratis Dual Legend · 531.5 MB',price:0,img:'dual',type:'Prueba gratuita · Oferta limitada',qty:1});
           }
-
-          const url = this.getAttribute('data-url');
-          const toast = document.getElementById('toast-message');
-          if(toast){ toast.textContent = `Abriendo la prueba gratis (531.5 MB)...`; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3500); }
-          window.open(url, '_blank');
+          syncDualBonusCart();
+          updateCartUI();
+          openCart();
         });
       }
+      setInterval(renderDualTrialTimer,1000);
+      loadDualTrialStatus();
+      syncDualBonusCart();
       updateCartUI();
     });
   </script>
-  <script type="module" src="dingloft-commerce.js?v=2.1.0"></script>
+  <script type="module" src="dingloft-commerce.js?v=2.2.0"></script>
 <script src="dingloft-ui-guard.js?v=55"></script>
   <script src="dingloft-video-cinema.js?v=28" defer></script>
 </body>
