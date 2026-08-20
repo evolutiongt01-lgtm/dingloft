@@ -1,6 +1,7 @@
-/* Dingloft Mobile Nav v71
+/* Dingloft Mobile Nav v72 (served through the v71 filename to avoid touching every page)
    One mobile header + one mobile dock for the entire customer app.
-   Loaded directly by every customer HTML. No page owns its position. */
+   v72 keeps checkout actions clear of the dock and replaces the mobile loading bar
+   with subtle sparkles emitted from the fixed header. */
 (() => {
   'use strict';
 
@@ -13,6 +14,7 @@
   window.__DINGLOFT_MOBILE_CHROME_V70__ = true;
   window.__DINGLOFT_MOBILE_CHROME_V71__ = true;
   window.__DINGLOFT_MOBILE_NAV_V71__ = true;
+  window.__DINGLOFT_MOBILE_NAV_V72__ = true;
 
   const HEADER_ID = 'dlMobileHeaderV71';
   const DOCK_ID = 'dlMobileDockV71';
@@ -39,6 +41,8 @@
       html.dl-mobile-nav-v71 body.cart-open,html.dl-mobile-nav-v71 body.no-scroll{height:100dvh!important;overflow:hidden!important;touch-action:none!important}
       html.dl-mobile-nav-v71 body>.btn-floating-cart{position:fixed!important;left:-9999px!important;right:auto!important;bottom:0!important;width:1px!important;height:1px!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:none!important}
       html.dl-mobile-nav-v71 .mt-quickbar{top:0!important}
+      html.dl-mobile-nav-v71 #progress.progress{display:none!important;opacity:0!important;visibility:hidden!important}
+      html.dl-mobile-nav-v71 #dlMobileHeaderV71,html.dl-mobile-nav-v71 #dlMobileDockV71{display:block!important;visibility:visible!important;opacity:1!important}
     }
   `;
   (document.head || document.documentElement).appendChild(early);
@@ -113,6 +117,9 @@
     host.style.setProperty('-webkit-backface-visibility','hidden','important');
     host.style.setProperty('isolation','isolate','important');
     host.style.setProperty('pointer-events','auto','important');
+    host.style.setProperty('display','block','important');
+    host.style.setProperty('visibility','visible','important');
+    host.style.setProperty('opacity','1','important');
     if (where === 'header') {
       host.style.setProperty('top','0','important');
       host.style.setProperty('left','0','important');
@@ -138,6 +145,15 @@
       *,*::before,*::after{box-sizing:border-box}
       .bar{position:relative;width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;padding:env(safe-area-inset-top,0px) max(14px,env(safe-area-inset-right,0px)) 0 max(14px,env(safe-area-inset-left,0px));background:linear-gradient(180deg,#040609 0%,#05070a 100%);border-bottom:1px solid rgba(255,255,255,.075);box-shadow:0 8px 28px rgba(0,0,0,.24)}
       .bar::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent 4%,rgba(109,214,255,.42) 44%,rgba(141,115,255,.24) 62%,transparent 96%);opacity:.58;pointer-events:none}
+      .spark-field{position:absolute;left:0;right:0;bottom:-34px;height:38px;overflow:visible;pointer-events:none;opacity:0;transition:opacity .12s ease}
+      .bar.loading .spark-field{opacity:1}
+      .spark{--x:50%;--dx:0px;--sz:3px;--delay:0s;position:absolute;left:var(--x);top:0;width:var(--sz);height:var(--sz);border-radius:50%;background:rgba(226,249,255,.96);box-shadow:0 0 8px rgba(108,220,255,.95),0 0 18px rgba(128,119,255,.45);opacity:0;transform:translate3d(0,-2px,0) scale(.4);animation:dlSparkFall .92s cubic-bezier(.18,.72,.22,1) var(--delay) infinite}
+      .spark:nth-child(3n){background:rgba(255,255,255,.98);box-shadow:0 0 7px rgba(255,255,255,.92),0 0 17px rgba(116,212,255,.42)}
+      .spark:nth-child(4n){border-radius:1px;transform:rotate(45deg)}
+      .bar.loading::after{animation:dlHeaderSeam 1.1s ease-in-out infinite}
+      @keyframes dlSparkFall{0%{opacity:0;transform:translate3d(0,-3px,0) scale(.35)}18%{opacity:1}64%{opacity:.82}100%{opacity:0;transform:translate3d(var(--dx),31px,0) scale(.08)}}
+      @keyframes dlHeaderSeam{0%,100%{opacity:.36;filter:brightness(1)}50%{opacity:.88;filter:brightness(1.5)}}
+      @media(prefers-reduced-motion:reduce){.spark{animation:none!important}.bar.loading .spark-field{opacity:.45}.bar.loading::after{animation:none!important}}
       .brand{height:68px;display:flex;align-items:center;justify-content:center;gap:11px;color:#fff;text-decoration:none;-webkit-tap-highlight-color:transparent}
       .brand img{width:36px;height:36px;border-radius:12px;object-fit:cover;display:block;box-shadow:0 7px 19px rgba(0,0,0,.30)}
       .copy{line-height:1}.copy strong{display:block;color:#f7fbff;font-size:.90rem;font-weight:850;letter-spacing:.18em;white-space:nowrap}.copy small{display:block;margin-top:6px;color:#66758a;font-size:.50rem;font-weight:750;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap}
@@ -150,7 +166,19 @@
         <img src="/img/pwa-liquid-rounded-192-v17.png" alt="Dingloft">
         <span class="copy"><strong>DINGLOFT</strong><small>Evolution Group</small></span>
       </a>
-      <a class="admin" href="/admin" aria-label="Administración"><svg viewBox="0 0 24 24"><path d="M12 3 20 6v5c0 5.2-3.4 8.7-8 10-4.6-1.3-8-4.8-8-10V6z"></path><path d="m9.5 12 1.6 1.7 3.5-4"></path></svg><span>Admin</span></a>`;
+      <a class="admin" href="/admin" aria-label="Administración"><svg viewBox="0 0 24 24"><path d="M12 3 20 6v5c0 5.2-3.4 8.7-8 10-4.6-1.3-8-4.8-8-10V6z"></path><path d="m9.5 12 1.6 1.7 3.5-4"></path></svg><span>Admin</span></a>
+      <span class="spark-field" aria-hidden="true">
+        <i class="spark" style="--x:8%;--dx:-7px;--sz:2px;--delay:.03s"></i>
+        <i class="spark" style="--x:17%;--dx:5px;--sz:3px;--delay:.28s"></i>
+        <i class="spark" style="--x:29%;--dx:-3px;--sz:2px;--delay:.52s"></i>
+        <i class="spark" style="--x:39%;--dx:8px;--sz:3px;--delay:.16s"></i>
+        <i class="spark" style="--x:48%;--dx:-5px;--sz:4px;--delay:.42s"></i>
+        <i class="spark" style="--x:57%;--dx:4px;--sz:2px;--delay:.67s"></i>
+        <i class="spark" style="--x:67%;--dx:-8px;--sz:3px;--delay:.22s"></i>
+        <i class="spark" style="--x:78%;--dx:6px;--sz:2px;--delay:.58s"></i>
+        <i class="spark" style="--x:89%;--dx:-4px;--sz:3px;--delay:.10s"></i>
+        <i class="spark" style="--x:95%;--dx:3px;--sz:2px;--delay:.74s"></i>
+      </span>`;
     root.append(style, bar);
   }
 
@@ -177,6 +205,50 @@
   }
 
   let headerHost, dockHost, headerRoot, dockRoot;
+  const LOAD_KEY = 'dingloft_mobile_header_loading_v72';
+  let loadStopTimer = 0;
+
+  function headerBar(){ return headerRoot?.querySelector('.bar') || null; }
+  function setHeaderLoading(on){
+    const bar = headerBar();
+    if (!bar) return;
+    bar.classList.toggle('loading', Boolean(on));
+  }
+  function rememberLoad(){ try { sessionStorage.setItem(LOAD_KEY, String(Date.now())); } catch(_) {} }
+  function clearRememberedLoad(){ try { sessionStorage.removeItem(LOAD_KEY); } catch(_) {} }
+  function hasRecentLoad(){
+    try { const t=Number(sessionStorage.getItem(LOAD_KEY)||0); return t>0 && (Date.now()-t)<12000; } catch(_) { return false; }
+  }
+  function beginHeaderLoading(){ clearTimeout(loadStopTimer); rememberLoad(); setHeaderLoading(true); }
+  function finishHeaderLoading(delay=260){
+    clearTimeout(loadStopTimer);
+    loadStopTimer=setTimeout(()=>{ setHeaderLoading(false); clearRememberedLoad(); }, delay);
+  }
+
+  function installRuntimeGuards(){
+    if (document.getElementById('dingloft-mobile-nav-v72-runtime')) return;
+    const style=document.createElement('style');
+    style.id='dingloft-mobile-nav-v72-runtime';
+    style.textContent=`
+      @media(max-width:1024px){
+        html.dl-mobile-nav-v71 #dlMobileHeaderV71,html.dl-mobile-nav-v71 #dlMobileDockV71{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+        html.dl-mobile-nav-v71 #progress.progress{display:none!important;visibility:hidden!important;opacity:0!important}
+        html.dl-mobile-nav-v71 .cart-footer{padding-bottom:calc(106px + env(safe-area-inset-bottom,0px))!important;scroll-padding-bottom:calc(106px + env(safe-area-inset-bottom,0px))!important;-webkit-overflow-scrolling:touch!important}
+        html.dl-mobile-nav-v71 .cart-footer #paypal-container-wrapper,html.dl-mobile-nav-v71 .cart-footer #free-checkout-btn,html.dl-mobile-nav-v71 .cart-footer #continue-shopping-box{position:relative!important;z-index:2!important}
+        html.dl-mobile-nav-v71 .success-modal-box{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))!important;scroll-padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))!important}
+        html.dl-mobile-nav-v71 .checkout{margin-bottom:calc(18px + env(safe-area-inset-bottom,0px))!important}
+      }
+    `;
+    (document.head||document.documentElement).appendChild(style);
+  }
+
+  function wireLoadingLinks(root){
+    root?.querySelectorAll?.('a[href]').forEach(a=>{
+      if (a.dataset.dlLoadBound==='1') return;
+      a.dataset.dlLoadBound='1';
+      a.addEventListener('click',()=>beginHeaderLoading(),{passive:true});
+    });
+  }
 
   function sync(){
     if (!dockRoot) return;
@@ -192,6 +264,7 @@
   function mount(){
     if (!document.body || document.getElementById(HEADER_ID) || document.getElementById(DOCK_ID)) return;
     document.body.classList.add('dl-mobile-nav-v71');
+    installRuntimeGuards();
     removeLegacy(document);
 
     headerHost = makeHost(HEADER_ID, 'header');
@@ -204,6 +277,9 @@
     // Append as direct body children. The HOSTS themselves are fixed; no full-screen parent is involved.
     document.body.append(headerHost, dockHost);
     dockRoot.querySelector('.cart')?.addEventListener('click', e => { e.preventDefault(); openCart(); });
+    wireLoadingLinks(headerRoot);
+    wireLoadingLinks(dockRoot);
+    if (hasRecentLoad()) setHeaderLoading(true);
     sync();
 
     // Remove only newly-added legacy chrome nodes. No global high-frequency mutation loop.
@@ -233,6 +309,19 @@
   addEventListener('storage', e => { if (e.key === CART_KEY) sync(); });
   addEventListener('pageshow', sync, {passive:true});
   addEventListener('focus', sync, {passive:true});
+
+  document.addEventListener('click', e => {
+    if (e.defaultPrevented || e.button > 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a=e.target?.closest?.('a[href]');
+    if (!a || a.target==='_blank' || a.hasAttribute('download')) return;
+    let u; try { u=new URL(a.href, location.href); } catch(_) { return; }
+    if (u.origin!==location.origin || !/^https?:$/.test(u.protocol)) return;
+    const sameDoc=u.pathname===location.pathname && u.search===location.search;
+    if (sameDoc && u.hash) return;
+    beginHeaderLoading();
+  }, true);
+  addEventListener('load',()=>finishHeaderLoading(320),{once:true});
+  addEventListener('pageshow',()=>finishHeaderLoading(220),{passive:true});
 
   if (document.body) mount();
   else document.addEventListener('DOMContentLoaded', mount, {once:true});

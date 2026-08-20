@@ -1,4 +1,4 @@
-const VERSION = '71';
+const VERSION = '72';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -75,7 +75,7 @@ async function precache(){
 
 self.addEventListener('install', event => {
   event.waitUntil(precache());
-  // v71 is a navigation architecture fix: activate immediately so old cached chrome cannot linger.
+  // v72 updates the global mobile chrome/checkout spacing: activate immediately so the old UI cannot linger.
   self.skipWaiting();
 });
 
