@@ -565,6 +565,7 @@ body{background:radial-gradient(circle at 14% 8%,rgba(78,196,255,.07),transparen
 .dl-feedback-copy-v81{position:relative;min-width:0}.dl-feedback-eyebrow-v81{display:flex;align-items:center;gap:7px;margin-bottom:5px;color:#72dfff;font-size:.56rem;font-weight:850;letter-spacing:.16em;text-transform:uppercase}.dl-feedback-eyebrow-v81 span{width:5px;height:5px;border-radius:50%;background:currentColor;box-shadow:0 0 0 4px rgba(103,221,255,.07)}
 .dl-feedback-title-v81{display:block;color:#f2f8fc;font-size:.82rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.018em}.dl-feedback-detail-v81{display:block;margin-top:4px;color:#8395a9;font-size:.67rem;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dl-feedback-progress-v81{height:2px;margin-top:9px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.055)}.dl-feedback-progress-v81 span{display:block;width:34%;height:100%;border-radius:inherit;background:linear-gradient(90deg,transparent,var(--fb-accent),#a996ff,transparent);animation:dlFeedbackRunV81 1.05s ease-in-out infinite;transform:translateX(-130%)}
+.dl-feedback-action-v82{display:none;margin-top:9px;padding:0;border:0;background:transparent;color:#9ce9ff;font:inherit;font-size:.61rem;font-weight:800;letter-spacing:.01em;cursor:pointer;text-align:left}.dl-feedback-action-v82.show{display:inline-flex;align-items:center;gap:6px}.dl-feedback-action-v82:hover{color:#fff}.dl-feedback-action-v82 i{font-size:.72rem}
 @keyframes dlFeedbackRunV81{to{transform:translateX(390%)}}
 .dl-feedback-close-v81{position:relative;width:32px;height:32px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025);color:#718197;display:grid;place-items:center;cursor:pointer}.dl-feedback-close-v81:hover{color:#e7f5ff;background:rgba(255,255,255,.06)}
 .dl-feedback-v81.is-success{--fb-accent:#64e5a8;border-color:rgba(100,229,168,.18)}.dl-feedback-v81.is-success .dl-feedback-eyebrow-v81{color:#76e9b3}.dl-feedback-v81.is-success .dl-feedback-progress-v81 span{width:100%;transform:none;animation:none;background:linear-gradient(90deg,#55d99b,#8df0c1)}
@@ -756,6 +757,8 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
     </div>
   </div>
 
+  <iframe id="dingloft-download-frame-v82" name="dingloft-download-frame-v82" title="Descarga Dingloft" aria-hidden="true" tabindex="-1" style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;border:0;left:-9999px;top:-9999px"></iframe>
+
   <div class="dl-feedback-v81" id="account-feedback-v81" role="status" aria-live="polite" aria-atomic="true">
   <div class="dl-feedback-art-v81" id="account-feedback-art-v81"><i class="bi bi-arrow-down-circle"></i></div>
   <div class="dl-feedback-copy-v81">
@@ -763,6 +766,7 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
     <strong class="dl-feedback-title-v81" id="account-feedback-title-v81">Listo</strong>
     <span class="dl-feedback-detail-v81" id="account-feedback-detail-v81">Tu cuenta está sincronizada.</span>
     <div class="dl-feedback-progress-v81" aria-hidden="true"><span></span></div>
+    <button type="button" class="dl-feedback-action-v82" id="account-feedback-action-v82"><i class="bi bi-arrow-clockwise"></i><span>Reintentar descarga</span></button>
   </div>
   <button type="button" class="dl-feedback-close-v81" id="account-feedback-close-v81" aria-label="Cerrar aviso"><i class="bi bi-x-lg"></i></button>
 </div>
@@ -795,12 +799,19 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
       const title = document.getElementById('account-feedback-title-v81');
       const detail = document.getElementById('account-feedback-detail-v81');
       const art = document.getElementById('account-feedback-art-v81');
+      const action = document.getElementById('account-feedback-action-v82');
       const state = options.state || 'loading';
       box.classList.toggle('is-success', state === 'success');
       box.classList.toggle('is-error', state === 'error');
       if (kicker) kicker.textContent = options.kicker || (state === 'loading' ? 'Descarga segura' : 'Dingloft');
       if (title) title.textContent = options.title || 'Procesando…';
       if (detail) detail.textContent = options.detail || 'Un momento, estamos preparando todo.';
+      if (action) {
+        action.classList.toggle('show', Boolean(options.actionLabel && typeof options.onAction === 'function'));
+        const label = action.querySelector('span');
+        if (label) label.textContent = options.actionLabel || 'Reintentar';
+        action.onclick = (options.actionLabel && typeof options.onAction === 'function') ? options.onAction : null;
+      }
       if (art) {
         art.innerHTML = '';
         if (options.image) {
@@ -1588,6 +1599,21 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
           document.getElementById('stat-programas').textContent = totalProgramas;
           document.getElementById('stat-descargas').textContent = totalDescargas;
 
+          const startProtectedDownloadV82 = (downloadUrl) => {
+            const frame = document.getElementById('dingloft-download-frame-v82');
+            if (!frame || !downloadUrl) return false;
+            try {
+              const u = new URL(downloadUrl, window.location.href);
+              u.searchParams.set('dlui', '82');
+              u.searchParams.set('_', String(Date.now()));
+              frame.src = u.toString();
+              return true;
+            } catch (_) {
+              frame.src = downloadUrl;
+              return true;
+            }
+          };
+
           document.querySelectorAll('.download-btn:not([disabled]), .download-btn-small:not([disabled])').forEach(button => {
             button.addEventListener('click', (e) => {
               e.preventDefault();
@@ -1622,17 +1648,22 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
                 duration: 0
               });
 
-              // Pequeña transición visual; la navegación conserva el mismo comportamiento de descarga existente.
+              // v82: descarga en un contexto invisible para que Cuenta permanezca abierta.
+              // El Worker convierte Google Drive a su endpoint de descarga directa.
               setTimeout(() => {
+                const started = startProtectedDownloadV82(url);
                 window.showAccountFeedbackV81?.({
-                  state: 'success',
-                  kicker: 'Acceso verificado',
-                  title: 'Descarga iniciada',
-                  detail: `${productName} se está abriendo de forma segura.`,
+                  state: started ? 'success' : 'error',
+                  kicker: started ? 'Acceso verificado' : 'No pudimos iniciar',
+                  title: started ? 'Descarga enviada al navegador' : productName,
+                  detail: started
+                    ? `${productName} se está enviando a Descargas. Puedes seguir usando Dingloft.`
+                    : 'Vuelve a intentarlo. Tu acceso permanece protegido.',
                   image,
-                  duration: 3600
+                  duration: started ? 7000 : 4500,
+                  actionLabel: started ? '¿No comenzó? Reintentar' : 'Reintentar descarga',
+                  onAction: () => startProtectedDownloadV82(url)
                 });
-                window.location.href = url;
               }, 420);
 
               // Si el navegador mantiene esta página después de descargar, restauramos el botón.
