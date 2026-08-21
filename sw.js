@@ -1,4 +1,4 @@
-const VERSION = '77';
+const VERSION = '87';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -54,6 +54,7 @@ const CORE = [
   '/dingloft-commerce.js?v=2.2.0',
   '/pwa-runtime.js?v=77',
   '/dingloft-mobile-nav-v71.js',
+  '/dingloft-video-cinema.js?v=28',
   '/multitrack-worker-gate.js?v=73',
   '/manifest.webmanifest?v=46',
   '/img/pwa-liquid-rounded-192-v17.png',

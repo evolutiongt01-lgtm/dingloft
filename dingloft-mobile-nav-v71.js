@@ -1,7 +1,6 @@
-/* Dingloft Mobile Nav v72 (served through the v71 filename to avoid touching every page)
-   One mobile header + one mobile dock for the entire customer app.
-   v72 keeps checkout actions clear of the dock and replaces the mobile loading bar
-   with subtle sparkles emitted from the fixed header. */
+/* Dingloft Mobile Nav v87 (served through the v71 filename for compatibility)
+   Global mobile chrome + scroll-lock recovery.
+   v87 prevents stale no-scroll/cart locks from freezing product pages after media/fullscreen. */
 (() => {
   'use strict';
 
@@ -250,6 +249,28 @@
     });
   }
 
+  function hasRealScrollBlocker(){
+    if (document.fullscreenElement || document.webkitFullscreenElement) return true;
+    if (document.documentElement.classList.contains('dl-video-modal-open')) return true;
+    return Boolean(document.querySelector([
+      '.cart-overlay.active','#cart-overlay.active','.cart-drawer.active','#cart-drawer.active',
+      '.search-overlay-fullscreen.active','.side-menu-overlay.active','.side-menu-drawer.active',
+      '.success-modal-overlay.active','.liquid-modal-overlay.active','.modal.show',
+      '[data-dingloft-scroll-lock="1"]'
+    ].join(',')));
+  }
+
+  function healStaleScrollLock(){
+    const body=document.body;
+    if (!body || hasRealScrollBlocker()) return;
+    const hadLock=body.classList.contains('no-scroll') || body.classList.contains('cart-open');
+    if (hadLock) body.classList.remove('no-scroll','cart-open');
+    // Some browser/video flows leave inline lock styles even after the class is gone.
+    if (body.style.overflow === 'hidden') body.style.removeProperty('overflow');
+    if (body.style.touchAction === 'none') body.style.removeProperty('touch-action');
+    if (body.style.height === '100vh' || body.style.height === '100dvh') body.style.removeProperty('height');
+  }
+
   function sync(){
     if (!dockRoot) return;
     const route = activeRoute();
@@ -294,8 +315,10 @@
     });
     observer.observe(document.body,{childList:true,subtree:true});
 
-    // Same-tab cart writes do not emit a storage event, so keep this tiny sync timer.
-    setInterval(sync, 650);
+    // Same-tab cart writes do not emit a storage event. The same tiny timer also
+    // heals stale scroll locks left by fullscreen/video/browser transitions.
+    setInterval(()=>{ sync(); healStaleScrollLock(); }, 650);
+    requestAnimationFrame(()=>healStaleScrollLock());
   }
 
   ['pushState','replaceState'].forEach(name => {
@@ -320,8 +343,12 @@
     if (sameDoc && u.hash) return;
     beginHeaderLoading();
   }, true);
-  addEventListener('load',()=>finishHeaderLoading(320),{once:true});
-  addEventListener('pageshow',()=>finishHeaderLoading(220),{passive:true});
+  addEventListener('load',()=>{ finishHeaderLoading(320); setTimeout(healStaleScrollLock,80); },{once:true});
+  addEventListener('pageshow',()=>{ finishHeaderLoading(220); setTimeout(healStaleScrollLock,80); },{passive:true});
+  addEventListener('focus',()=>setTimeout(healStaleScrollLock,80),{passive:true});
+  addEventListener('fullscreenchange',()=>setTimeout(healStaleScrollLock,140),{passive:true});
+  addEventListener('webkitfullscreenchange',()=>setTimeout(healStaleScrollLock,140),{passive:true});
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden) setTimeout(healStaleScrollLock,100); },{passive:true});
 
   if (document.body) mount();
   else document.addEventListener('DOMContentLoaded', mount, {once:true});
