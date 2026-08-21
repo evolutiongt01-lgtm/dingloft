@@ -1731,36 +1731,6 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
           document.getElementById('stat-programas').textContent = totalProgramas;
           document.getElementById('stat-descargas').textContent = totalDescargas;
 
-          const startProtectedDownloadV84 = (downloadUrl) => {
-            if (!downloadUrl) return false;
-            let target = downloadUrl;
-            try {
-              const u = new URL(downloadUrl, window.location.href);
-              u.searchParams.set('dlui', '84');
-              u.searchParams.set('_', String(Date.now()));
-              target = u.toString();
-            } catch (_) {}
-
-            // v84: la descarga nace directamente del gesto del usuario.
-            // Los navegadores y Google Drive pueden bloquear descargas iniciadas
-            // dentro de iframes invisibles; una pestaña de descarga dedicada no.
-            try {
-              const opened = window.open(target, '_blank');
-              if (opened) {
-                try { opened.opener = null; } catch (_) {}
-                return true;
-              }
-            } catch (_) {}
-
-            // Fallback universal si el navegador bloquea ventanas nuevas.
-            try {
-              window.location.assign(target);
-              return true;
-            } catch (_) {
-              return false;
-            }
-          };
-
           document.querySelectorAll('.download-btn:not([disabled]), .download-btn-small:not([disabled])').forEach(button => {
             button.addEventListener('click', (e) => {
               e.preventDefault();
@@ -1795,23 +1765,20 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
                 duration: 0
               });
 
-              // v84: iniciar AHORA, dentro del click real. No retrasarlo con setTimeout:
-              // Chrome/Safari pueden retirar el permiso de descarga al perder el user gesture.
-              const started = startProtectedDownloadV84(url);
-              window.showAccountFeedbackV81?.({
-                state: started ? 'success' : 'error',
-                kicker: started ? 'Acceso verificado' : 'No pudimos iniciar',
-                title: started ? 'Descarga iniciada' : productName,
-                detail: started
-                  ? `${productName} fue enviado al navegador. Si Google necesita una confirmación adicional, aparecerá en la pestaña de descarga.`
-                  : 'El navegador bloqueó el inicio. Pulsa Reintentar descarga.',
-                image,
-                duration: started ? 6500 : 4500,
-                actionLabel: 'Reintentar descarga',
-                onAction: () => startProtectedDownloadV84(url)
-              });
+              // v85: restaurado al flujo protegido original previo a v82/v84.
+              // No abre pestañas nuevas ni expone el destino final en una ventana separada.
+              setTimeout(() => {
+                window.showAccountFeedbackV81?.({
+                  state: 'success',
+                  kicker: 'Acceso verificado',
+                  title: 'Descarga iniciada',
+                  detail: `${productName} se está abriendo de forma segura.`,
+                  image,
+                  duration: 3600
+                });
+                window.location.href = url;
+              }, 420);
 
-              // Si el navegador mantiene esta página después de descargar, restauramos el botón.
               setTimeout(() => {
                 button.dataset.downloadBusy = '0';
                 button.classList.remove('is-preparing');
