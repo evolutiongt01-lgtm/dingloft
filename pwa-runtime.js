@@ -1,18 +1,23 @@
 (() => {
   'use strict';
-  const VERSION = '62';
+  const VERSION = '77';
   const SW_URL = `/sw.js?v=${VERSION}`;
   const PROMPT_KEY = 'dingloft_update_prompted_version';
   const PROMPT_TIME_KEY = 'dingloft_update_prompted_at';
   const LAST_CHECK_KEY = 'dingloft_update_last_check';
-  const MIN_CHECK_MS = 60 * 60 * 1000; // max one forced check per hour
+  const MIN_CHECK_MS = 6 * 60 * 60 * 1000; // at most one forced check every 6 hours
   const REPROMPT_MS = 24 * 60 * 60 * 1000; // same waiting version at most once/day
   if (!('serviceWorker' in navigator)) return;
+  // The top-level document is the only owner of the Service Worker.
+  // Pages rendered inside desktop/app shells must never register or update it.
+  if (window.top !== window.self) return;
 
   let registration = null;
   let reloading = false;
   let promptVisible = false;
   let waitingWorker = null;
+  let updateRequested = false;
+  let reloadTimer = 0;
 
   const versionNumber = v => {
     const n = Number(String(v || '').replace(/[^0-9.]/g,'').split('.')[0]);
@@ -104,8 +109,15 @@
     if (btn) { btn.disabled = true; btn.textContent = 'Instalando actualización…'; }
     if (title) title.textContent = 'Actualizando Dingloft';
     if (text) text.textContent = 'Activando la versión más reciente. La app se reiniciará automáticamente.';
+    updateRequested = true;
     try { waitingWorker.postMessage({type:'SKIP_WAITING'}); } catch(_) {}
-    setTimeout(()=>{ if (!reloading) location.reload(); }, 5000);
+    // Fallback only if controllerchange never arrives. The guard below guarantees one reload maximum.
+    clearTimeout(reloadTimer);
+    reloadTimer = setTimeout(() => {
+      if (reloading || !updateRequested) return;
+      reloading = true;
+      location.reload();
+    }, 8000);
   }
 
   function watchRegistration(reg){
@@ -121,7 +133,10 @@
   }
 
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (reloading) return;
+    // A controller may change because an old/new worker activates while tabs are closing/opening.
+    // Never refresh the page unless the user explicitly pressed “Actualizar Dingloft”.
+    if (!updateRequested || reloading) return;
+    clearTimeout(reloadTimer);
     reloading = true;
     location.reload();
   });

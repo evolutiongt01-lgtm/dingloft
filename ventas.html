@@ -2900,13 +2900,7 @@
 
   <script type="module" src="dingloft-commerce.js?v=2.2.0"></script>
 
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js?v=71', {scope:'/'}).then(r => r.update()).catch(() => {});
-  });
-}
-</script>
+<script src="/pwa-runtime.js?v=77"></script>
 
 <div class="site-install-banner" id="siteInstallBanner" role="dialog" aria-label="Instalar Dingloft">
   <div class="site-install-badge"><img src="/img/pwa-liquid-192-v5.png?v=7" alt="Dingloft"></div>

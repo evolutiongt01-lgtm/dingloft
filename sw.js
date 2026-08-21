@@ -1,4 +1,4 @@
-const VERSION = '73';
+const VERSION = '77';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -52,7 +52,7 @@ const CORE = [
   '/mobile-shell-redirect.js',
   '/pwa-install.js',
   '/dingloft-commerce.js?v=2.2.0',
-  '/pwa-runtime.js?v=60',
+  '/pwa-runtime.js?v=77',
   '/dingloft-mobile-nav-v71.js',
   '/multitrack-worker-gate.js?v=73',
   '/manifest.webmanifest?v=46',
@@ -75,9 +75,9 @@ async function precache(){
 }
 
 self.addEventListener('install', event => {
+  // Precache the new build, but DO NOT take over existing tabs automatically.
+  // The runtime activates it only after the user accepts the update, preventing refresh loops.
   event.waitUntil(precache());
-  // v73 isolates Multitrack preview failures and refreshes cart-delivery verification after async catalog renders.
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
