@@ -494,6 +494,86 @@ body::before{
 }
 @media(max-width:520px){.hero-action-row{grid-template-columns:1fr}.account-action.primary{grid-column:auto}.identity-actions{grid-template-columns:1fr 1fr}.account-metrics{grid-template-columns:1fr 1fr}.metric:nth-child(3){grid-column:1/-1}.quick-links{grid-template-columns:1fr 1fr}}
 
+
+/* ================================
+   DINGLOFT ACCOUNT v80 — identity
+   ================================ */
+:root{--v80-cyan:#75ddff;--v80-blue:#73a8ff;--v80-violet:#9a7dff;--v80-green:#6de4ad;--v80-panel:#090d13;--v80-line:rgba(172,205,235,.12)}
+body{background:radial-gradient(circle at 14% 8%,rgba(78,196,255,.07),transparent 28%),radial-gradient(circle at 88% 18%,rgba(123,91,255,.07),transparent 26%),#040608!important}
+.account-page.account-v80{width:min(1380px,calc(100% - 42px));margin:0 auto;padding:34px 0 68px;color:#f3f7fb}
+.account-hero-v80{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(330px,.62fr);gap:16px;margin-bottom:16px}
+.account-welcome-v80,.account-profile-v80,.metric-v80,.library-v80,.side-stack-v80>.side-card{position:relative;border:1px solid var(--v80-line);background:linear-gradient(155deg,rgba(13,20,28,.97),rgba(6,9,13,.985));box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 24px 70px rgba(0,0,0,.22)}
+.account-welcome-v80{min-height:380px;padding:42px 44px 34px;border-radius:32px;overflow:hidden;isolation:isolate}
+.account-welcome-v80::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,rgba(92,217,255,.08),transparent 42%),radial-gradient(circle at 92% 8%,rgba(127,100,255,.13),transparent 29%);z-index:-2}
+.account-welcome-v80::after{content:"";position:absolute;left:42px;right:42px;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(112,225,255,.56),rgba(142,112,255,.34),transparent);opacity:.72}
+.welcome-orbit{position:absolute;right:-55px;top:-72px;width:330px;height:330px;border-radius:50%;border:1px solid rgba(117,221,255,.07);z-index:-1}.welcome-orbit span{position:absolute;inset:42px;border:1px solid rgba(117,221,255,.07);border-radius:inherit}.welcome-orbit span:nth-child(2){inset:86px;border-color:rgba(154,125,255,.10)}.welcome-orbit span:nth-child(3){inset:128px;background:radial-gradient(circle,rgba(117,221,255,.10),transparent 68%);border:0}
+.account-kicker-v80{display:flex;align-items:center;gap:9px;color:#83dfff;font-size:.67rem;font-weight:850;letter-spacing:.20em;text-transform:uppercase}.account-kicker-v80 i{font-size:.85rem}
+.account-welcome-v80 h1{margin:25px 0 16px;max-width:780px;font-size:clamp(3rem,5.4vw,5.9rem);line-height:.88;letter-spacing:-.075em;font-weight:800}.account-welcome-v80 h1 span{color:#fff}.account-welcome-v80 h1 em{font-style:normal;background:linear-gradient(90deg,#f6fbff 0%,#a9e9ff 50%,#bba9ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.account-welcome-v80>p{max-width:720px;margin:0;color:#8e9dad;font-size:.95rem;line-height:1.65}
+.hero-actions-v80{display:flex;gap:10px;flex-wrap:wrap;margin-top:25px}.hero-btn-v80{height:48px;padding:0 18px;border-radius:15px;border:1px solid rgba(172,205,235,.13);background:rgba(255,255,255,.025);color:#dfe9f2;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:10px;font-size:.78rem;font-weight:800}.hero-btn-v80:hover{border-color:rgba(117,221,255,.28);background:rgba(117,221,255,.06)}.hero-btn-v80.primary{background:#eef9fd;color:#071018;border-color:#eef9fd}.hero-btn-v80.primary:hover{background:#fff}
+.hero-signals-v80{display:flex;gap:18px;flex-wrap:wrap;margin-top:28px;padding-top:21px;border-top:1px solid rgba(172,205,235,.08);color:#6e7f91;font-size:.67rem;font-weight:700}.hero-signals-v80 span{display:flex;align-items:center;gap:7px}.hero-signals-v80 i{color:#6bd7ff}
+.account-profile-v80{border-radius:32px;padding:28px;overflow:hidden;display:flex;flex-direction:column;min-height:380px}.profile-glow-v80{position:absolute;width:230px;height:230px;right:-110px;top:-110px;border-radius:50%;background:radial-gradient(circle,rgba(132,102,255,.19),transparent 68%);pointer-events:none}.profile-top-v80{display:grid;grid-template-columns:66px minmax(0,1fr) 40px;gap:13px;align-items:center;position:relative}.account-profile-v80 .account-avatar{width:66px;height:66px;border-radius:21px!important;border:1px solid rgba(117,221,255,.32);background:#070a0e;overflow:hidden;box-shadow:0 14px 35px rgba(0,0,0,.32),0 0 0 4px rgba(117,221,255,.035)}.account-profile-v80 .account-avatar img{width:100%!important;height:100%!important;object-fit:cover!important;border-radius:20px!important}.profile-copy-v80{min-width:0}.profile-copy-v80 small{display:block;color:#65768a;font-size:.61rem;font-weight:850;letter-spacing:.17em;text-transform:uppercase;margin-bottom:7px}.profile-copy-v80 strong{display:block;color:#f5f8fb;font-size:1.12rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profile-copy-v80 span{display:block;margin-top:5px;color:#8392a4;font-size:.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profile-edit-v80{width:40px;height:40px;border-radius:13px;border:1px solid rgba(172,205,235,.11);background:rgba(255,255,255,.025);color:#94a6b9;display:grid;place-items:center}.profile-edit-v80:hover{color:#bdecff;border-color:rgba(117,221,255,.26);background:rgba(117,221,255,.06)}
+#sidebar-avatar{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}
+.profile-status-v80{display:flex;align-items:center;gap:11px;padding:14px 15px;margin-top:22px;border-radius:17px;background:rgba(255,255,255,.022);border:1px solid rgba(172,205,235,.08)}.status-dot-v80{width:8px;height:8px;border-radius:50%;background:#63e5ab;box-shadow:0 0 0 5px rgba(99,229,171,.07),0 0 18px rgba(99,229,171,.32)}.profile-status-v80 strong{display:block;font-size:.73rem}.profile-status-v80 small{display:block;margin-top:3px;color:#718296;font-size:.65rem}
+.profile-actions-v80{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:20px}.profile-actions-v80 button,.profile-actions-v80 a{min-height:44px;border-radius:14px;border:1px solid rgba(172,205,235,.10);background:rgba(255,255,255,.025);color:#cbd7e2;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-size:.71rem;font-weight:780}.profile-actions-v80 button:hover,.profile-actions-v80 a:hover{border-color:rgba(117,221,255,.22);background:rgba(117,221,255,.05);color:#effaff}.profile-actions-v80 .logout{margin:0;padding:0;width:auto;border-top:1px solid rgba(172,205,235,.10);text-align:center}.profile-actions-v80 .danger-v80{color:#c98a95}.profile-actions-v80 .danger-v80:hover{color:#ff9ca7;border-color:rgba(255,108,126,.22);background:rgba(255,90,110,.045)}.profile-actions-v80 #btn-admin{grid-column:1/-1!important;margin:0!important;color:#ff8b98!important;border-color:rgba(255,91,110,.18)!important;background:rgba(255,80,100,.04)!important}
+.account-metrics-v80{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 16px}.metric-v80{border-radius:23px;min-height:98px;padding:18px 20px}.metric-v80 .metric-icon{width:49px;height:49px;border-radius:16px}.metric-v80 .metric-copy small{font-size:.59rem}.metric-v80 .metric-copy strong{font-size:1.55rem;color:#f4f8fb}.metric-v80 .metric-copy span{font-size:.67rem}.metric-v80:nth-child(1) .metric-icon{color:#73dfff;background:rgba(84,216,255,.07);border-color:rgba(84,216,255,.17)}.metric-v80:nth-child(2) .metric-icon{color:#a991ff;background:rgba(154,125,255,.07);border-color:rgba(154,125,255,.18)}.metric-v80:nth-child(3) .metric-icon{color:#67e2ac;background:rgba(103,226,172,.07);border-color:rgba(103,226,172,.18)}
+.account-grid-v80{grid-template-columns:minmax(0,1.7fr) minmax(310px,.58fr);gap:16px}.library-v80{border-radius:28px;overflow:hidden}.library-head-v80{padding:26px 28px 20px}.library-head-v80 .side-label{display:flex;align-items:center;gap:8px}.library-head-v80 h2{font-size:1.55rem}.library-head-v80 p{max-width:680px}.tabs-v80{padding:9px}.account-loading-v80{color:#7b8c9f;padding:18px;margin:0;font-size:.8rem}.side-stack-v80{gap:12px}.side-stack-v80>.side-card{border-radius:25px;padding:21px}.support-v80{overflow:hidden}.support-art-v80{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;position:relative;margin-bottom:17px;color:#7de8b7;font-size:1.35rem;background:rgba(103,226,172,.055);border:1px solid rgba(103,226,172,.14)}.support-art-v80 span{position:absolute;inset:9px;border:1px solid rgba(103,226,172,.13);border-radius:12px}.support-v80 h2{font-size:1.32rem;line-height:1.05}.support-list-v80{margin:16px 0}.support-cta-v80{background:#edf8fc}.quick-v80{padding-bottom:18px!important}.quick-links-v80{grid-template-columns:1fr 1fr}.quick-links-v80 .quick-link{min-height:63px;flex-direction:row;justify-content:flex-start;padding:11px 12px}.quick-links-v80 .quick-link span{display:block}.privacy-v80{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:start}.privacy-icon-v80{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;color:#72e2ae;border:1px solid rgba(103,226,172,.16);background:rgba(103,226,172,.055)}.privacy-v80 h2{font-size:1rem;margin-top:5px}.privacy-v80 p{font-size:.72rem;margin-top:5px}
+
+/* Profile editor */
+.profile-editor-v80{width:min(470px,calc(100% - 28px))!important;max-width:470px!important;padding:30px!important;overflow:visible!important}.profile-editor-icon-v80{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;margin-bottom:18px;color:#80ddff;font-size:1.35rem;background:rgba(117,221,255,.07);border:1px solid rgba(117,221,255,.17)}.profile-editor-v80 h3{margin:15px 0 8px;font-size:1.55rem;letter-spacing:-.05em}.profile-editor-v80>p{margin:0 0 20px;color:#8797aa;font-size:.82rem;line-height:1.55}.profile-editor-v80 form{display:grid;gap:10px}.profile-editor-v80 label{color:#718397;font-size:.63rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.profile-name-input-v80{min-height:50px!important;font-size:16px!important}.profile-form-message-v80{min-height:18px;color:#91a3b5;font-size:.72rem}.profile-form-message-v80.error{color:#ff8d99}.profile-form-message-v80.success{color:#7ce5b3}.profile-save-v80{min-height:48px!important;margin-top:4px!important}
+
+/* Remote booking — desktop + mobile, never under the global nav */
+#reservaModal{padding:22px!important}#reservaModal .liquid-modal-card{width:min(1120px,calc(100% - 24px))!important;max-width:1120px!important;max-height:calc(100dvh - 44px)!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;border-radius:30px!important}#reservaModal .booking-modal-head{flex:0 0 auto;padding:26px 30px 20px!important}#reservaModal .booking-modal-head h3{font-size:1.65rem!important}#reservaModal .booking-body{flex:1 1 auto;min-height:0;overflow-y:auto!important;overscroll-behavior:contain;padding:20px 26px 26px!important;scrollbar-gutter:stable}#reservaModal .booking-grid{grid-template-columns:minmax(0,1.15fr) minmax(300px,.75fr)!important;gap:14px!important}.calendar-box,.times-box{padding:16px!important;border-radius:20px!important}.calendar-header{margin-bottom:12px!important}.calendar-days-grid{gap:5px!important}.day-cell{min-height:42px!important;border-radius:11px!important}.time-slots-container{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;max-height:300px;overflow:auto}.time-slot{min-height:44px!important;padding:9px 8px!important;border-radius:12px!important;font-size:.69rem!important}.booking-config{margin-top:14px!important;padding:16px!important}.booking-footer{position:sticky;bottom:-1px;z-index:4;margin:16px -6px -8px!important;padding:15px 6px 8px!important;background:linear-gradient(180deg,rgba(7,11,17,0),#070b11 20%,#070b11 100%);border-top:1px solid rgba(172,205,235,.09)!important}.cupon-group{min-width:0}.liquid-close{z-index:8!important}
+
+@media(max-width:1100px){.account-hero-v80{grid-template-columns:1fr}.account-profile-v80{min-height:auto}.account-grid-v80{grid-template-columns:1fr}.side-stack-v80{grid-template-columns:repeat(3,minmax(0,1fr));}.side-stack-v80>.side-card{min-width:0}.account-metrics-v80{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){
+  .account-page.account-v80{width:calc(100% - 18px);padding:10px 0 calc(26px + env(safe-area-inset-bottom,0px))}
+  .account-hero-v80{gap:9px;margin-bottom:9px}.account-welcome-v80,.account-profile-v80{border-radius:23px}.account-welcome-v80{min-height:auto;padding:24px 18px 20px}.welcome-orbit{width:220px;height:220px;right:-70px;top:-80px}.account-welcome-v80 h1{font-size:clamp(2.55rem,12.5vw,3.7rem);line-height:.91;margin:20px 0 13px}.account-welcome-v80>p{font-size:.82rem;line-height:1.58}.hero-actions-v80{display:grid;grid-template-columns:1fr 1fr;margin-top:19px}.hero-btn-v80{height:45px;padding:0 10px;font-size:.71rem}.hero-signals-v80{gap:10px 14px;margin-top:20px;padding-top:16px;font-size:.59rem}
+  .account-profile-v80{padding:18px}.profile-top-v80{grid-template-columns:56px minmax(0,1fr) 38px}.account-profile-v80 .account-avatar{width:56px;height:56px;border-radius:18px!important}.account-profile-v80 .account-avatar img{border-radius:17px!important}.profile-copy-v80 strong{font-size:.98rem}.profile-actions-v80{grid-template-columns:1fr 1fr}.profile-actions-v80 button,.profile-actions-v80 a{min-height:42px;font-size:.66rem}
+  .account-metrics-v80{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:9px}.metric-v80{min-height:82px;padding:13px;border-radius:19px}.metric-v80:nth-child(3){grid-column:1/-1}.metric-v80 .metric-icon{width:41px;height:41px;border-radius:13px}.metric-v80 .metric-copy strong{font-size:1.32rem}.metric-v80 .metric-copy span{display:none}
+  .account-grid-v80{gap:9px}.library-v80{border-radius:22px}.library-head-v80{padding:18px 16px 14px;display:block}.library-head-v80 h2{font-size:1.25rem}.library-head-v80 p{font-size:.75rem}.library-chip{margin-top:12px}.tabs-v80{overflow:auto;scrollbar-width:none}.tabs-v80::-webkit-scrollbar{display:none}.tabs-v80 .tab-btn{min-width:140px}.tab-content{padding:13px!important}.download-row{grid-template-columns:52px minmax(0,1fr) 38px!important;gap:9px!important;padding:9px!important}.product-art{width:52px!important;height:59px!important}.download-row h3{font-size:.82rem!important}.download-row p{font-size:.66rem!important}.download-btn{width:37px!important;height:37px!important}
+  .side-stack-v80{grid-template-columns:1fr;gap:9px}.side-stack-v80>.side-card{border-radius:21px;padding:17px}.quick-links-v80{grid-template-columns:1fr 1fr}.privacy-v80{grid-template-columns:43px 1fr}.privacy-icon-v80{width:43px;height:43px}
+  .profile-modal-v80{padding:10px!important}.profile-editor-v80{width:100%!important;max-width:none!important;border-radius:23px!important;padding:24px 18px calc(20px + env(safe-area-inset-bottom,0px))!important}
+
+  html.dl-mobile-nav-v71 #reservaModal{top:calc(68px + env(safe-area-inset-top,0px))!important;right:0!important;bottom:calc(77px + env(safe-area-inset-bottom,0px))!important;left:0!important;width:auto!important;height:auto!important;padding:7px!important;align-items:stretch!important;place-items:stretch!important}
+  html.dl-mobile-nav-v71 #reservaModal .liquid-modal-card{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;border-radius:22px!important;border:1px solid rgba(172,205,235,.12)!important}
+  #reservaModal .booking-modal-head{padding:18px 16px 13px!important}#reservaModal .booking-modal-head h3{font-size:1.22rem!important;margin-right:35px!important}#reservaModal .booking-modal-head p{font-size:.72rem!important;line-height:1.45!important;margin-bottom:12px!important}.booking-stepbar{gap:4px!important}.booking-step{padding:7px 5px!important;font-size:.56rem!important}.booking-step b{width:20px!important;height:20px!important}
+  #reservaModal .booking-body{padding:12px 10px 10px!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important}.booking-grid{grid-template-columns:1fr!important;gap:9px!important}.calendar-box,.times-box{padding:11px!important;border-radius:16px!important}.calendar-header h4{font-size:.92rem!important}.calendar-nav-btn{width:34px!important;height:34px!important}.calendar-days-head{font-size:.58rem!important;margin-bottom:5px!important}.calendar-days-grid{gap:4px!important}.day-cell{min-height:35px!important;border-radius:9px!important;font-size:.70rem!important}.time-slots-container{grid-template-columns:1fr 1fr!important;max-height:none!important}.time-slot{min-height:39px!important;padding:7px 6px!important;font-size:.62rem!important}.booking-config{margin-top:9px!important;padding:11px!important;border-radius:16px!important}.booking-config-title{gap:8px!important;align-items:flex-start!important}.software-options{display:grid!important;grid-template-columns:1fr 1fr!important;overflow:visible!important}.software-btn{min-width:0!important;padding:9px 7px!important;font-size:.64rem!important}.liquid-input{font-size:16px!important}.booking-footer{grid-template-columns:1fr!important;gap:9px!important;margin:10px -3px -4px!important;padding:12px 3px 4px!important;bottom:-1px!important}.cupon-group{display:grid!important;grid-template-columns:1fr auto!important}.liquid-btn-cupon{min-width:86px!important}
+  html.dl-mobile-nav-v71 .profile-modal-v80{top:calc(68px + env(safe-area-inset-top,0px))!important;bottom:calc(77px + env(safe-area-inset-bottom,0px))!important;height:auto!important;padding:8px!important;align-items:center!important}
+}
+@media(max-width:430px){.hero-actions-v80{grid-template-columns:1fr}.hero-signals-v80 span:nth-child(3){display:none}.profile-actions-v80{grid-template-columns:1fr}.profile-actions-v80 #btn-admin{grid-column:auto!important}.quick-links-v80{grid-template-columns:1fr 1fr}.account-welcome-v80 h1{font-size:2.65rem}.account-metrics-v80{grid-template-columns:1fr 1fr}.time-slots-container{grid-template-columns:1fr!important}}
+
+
+/* ===== v81 · Dingloft professional feedback system ===== */
+.dl-feedback-v81{
+  --fb-accent:#67ddff;
+  position:fixed;right:22px;bottom:22px;z-index:2147483000;
+  width:min(410px,calc(100vw - 28px));
+  display:grid;grid-template-columns:54px minmax(0,1fr) 34px;gap:13px;align-items:center;
+  padding:13px 13px 13px 14px;border-radius:19px;
+  border:1px solid rgba(160,198,230,.16);
+  background:linear-gradient(145deg,rgba(12,18,29,.96),rgba(6,10,17,.97));
+  box-shadow:0 22px 60px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.05);
+  -webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);
+  opacity:0;visibility:hidden;pointer-events:none;transform:translateY(18px) scale(.98);
+  transition:opacity .24s ease,transform .32s cubic-bezier(.16,1,.3,1),visibility .24s;
+}
+.dl-feedback-v81.show{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1)}
+.dl-feedback-v81::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(circle at 8% 0,rgba(103,221,255,.11),transparent 32%)}
+.dl-feedback-art-v81{position:relative;width:54px;height:54px;border-radius:15px;overflow:hidden;display:grid;place-items:center;background:linear-gradient(145deg,#122334,#08121c);border:1px solid rgba(103,221,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.dl-feedback-art-v81 img{width:100%;height:100%;object-fit:cover;border-radius:14px;display:block}.dl-feedback-art-v81 i{font-size:1.2rem;color:var(--fb-accent)}
+.dl-feedback-copy-v81{position:relative;min-width:0}.dl-feedback-eyebrow-v81{display:flex;align-items:center;gap:7px;margin-bottom:5px;color:#72dfff;font-size:.56rem;font-weight:850;letter-spacing:.16em;text-transform:uppercase}.dl-feedback-eyebrow-v81 span{width:5px;height:5px;border-radius:50%;background:currentColor;box-shadow:0 0 0 4px rgba(103,221,255,.07)}
+.dl-feedback-title-v81{display:block;color:#f2f8fc;font-size:.82rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.018em}.dl-feedback-detail-v81{display:block;margin-top:4px;color:#8395a9;font-size:.67rem;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dl-feedback-progress-v81{height:2px;margin-top:9px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.055)}.dl-feedback-progress-v81 span{display:block;width:34%;height:100%;border-radius:inherit;background:linear-gradient(90deg,transparent,var(--fb-accent),#a996ff,transparent);animation:dlFeedbackRunV81 1.05s ease-in-out infinite;transform:translateX(-130%)}
+@keyframes dlFeedbackRunV81{to{transform:translateX(390%)}}
+.dl-feedback-close-v81{position:relative;width:32px;height:32px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025);color:#718197;display:grid;place-items:center;cursor:pointer}.dl-feedback-close-v81:hover{color:#e7f5ff;background:rgba(255,255,255,.06)}
+.dl-feedback-v81.is-success{--fb-accent:#64e5a8;border-color:rgba(100,229,168,.18)}.dl-feedback-v81.is-success .dl-feedback-eyebrow-v81{color:#76e9b3}.dl-feedback-v81.is-success .dl-feedback-progress-v81 span{width:100%;transform:none;animation:none;background:linear-gradient(90deg,#55d99b,#8df0c1)}
+.dl-feedback-v81.is-error{--fb-accent:#ff7e8d;border-color:rgba(255,126,141,.22)}.dl-feedback-v81.is-error .dl-feedback-eyebrow-v81{color:#ff96a2}.dl-feedback-v81.is-error .dl-feedback-progress-v81 span{width:100%;transform:none;animation:none;background:#ff7e8d}
+.download-btn.is-preparing,.download-btn-small.is-preparing{pointer-events:none;position:relative;opacity:.78}.download-btn.is-preparing i,.download-btn-small.is-preparing i{animation:dlDownloadSpinV81 .85s linear infinite}@keyframes dlDownloadSpinV81{to{transform:rotate(360deg)}}
+html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-bottom,0px));right:10px;width:calc(100vw - 20px)}
+@media(max-width:520px){.dl-feedback-v81{right:10px;bottom:12px;width:calc(100vw - 20px);grid-template-columns:48px minmax(0,1fr) 30px;padding:11px;border-radius:17px}.dl-feedback-art-v81{width:48px;height:48px;border-radius:13px}.dl-feedback-art-v81 img{border-radius:12px}.dl-feedback-title-v81{font-size:.75rem}.dl-feedback-detail-v81{font-size:.62rem}.dl-feedback-close-v81{width:29px;height:29px}.dl-feedback-progress-v81{margin-top:7px}}
+@media(prefers-reduced-motion:reduce){.dl-feedback-v81,.dl-feedback-progress-v81 span,.download-btn.is-preparing i,.download-btn-small.is-preparing i{transition:none!important;animation:none!important}}
+
 </style>
 
   <script>window.__DINGLOFT_COMMERCE_V1__ = true;</script>
@@ -502,105 +582,118 @@ body::before{
 <script>document.documentElement.classList.add("account-auth-pending");</script>
 </head>
 <body>
-  <main class="account-page">
-    <section class="account-hero">
-      <article class="hero-surface">
-        <div class="account-kicker">Centro de cliente</div>
-        <h1>Todo lo tuyo.<span>En un solo lugar.</span></h1>
-        <p>Tu biblioteca Dingloft reúne compras, descargas y soporte remoto en una experiencia más simple, privada y conectada a tu cuenta.</p>
-        <div class="hero-action-row">
-          <a class="account-action primary" href="#descargas"><i class="bi bi-grid"></i> Abrir biblioteca</a>
-          <a class="account-action" href="ventas.html"><i class="bi bi-bag"></i> Explorar ventas</a>
-          <a class="account-action" href="multitrack.html"><i class="bi bi-music-note-beamed"></i> Multitracks</a>
-          <button class="account-action" type="button" onclick="openReservaModal()"><i class="bi bi-headset"></i> Soporte remoto</button>
+  <main class="account-page account-v80">
+    <section class="account-hero-v80">
+      <article class="account-welcome-v80">
+        <div class="welcome-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="account-kicker-v80"><i class="bi bi-stars"></i> Dingloft ID</div>
+        <h1>Hola, <span id="hero-first-name">Cliente</span>.<br><em>Todo lo tuyo está aquí.</em></h1>
+        <p>Compras, descargas, soporte remoto y tu acceso Dingloft reunidos en una sola experiencia, sin ruido y siempre sincronizada.</p>
+        <div class="hero-actions-v80">
+          <a href="#descargas" class="hero-btn-v80 primary"><i class="bi bi-grid-3x3-gap"></i><span>Mi biblioteca</span></a>
+          <button type="button" class="hero-btn-v80" onclick="openReservaModal()"><i class="bi bi-headset"></i><span>Agendar soporte</span></button>
+        </div>
+        <div class="hero-signals-v80">
+          <span><i class="bi bi-cloud-check"></i> Sincronizado</span>
+          <span><i class="bi bi-shield-check"></i> Acceso protegido</span>
+          <span><i class="bi bi-lightning-charge"></i> Descarga directa</span>
         </div>
       </article>
 
-      <aside class="identity-surface">
-        <div>
-          <div class="identity-head">
-            <div class="account-avatar top-avatar" id="top-avatar">...</div>
-            <div class="identity-copy">
-              <small>Cuenta Dingloft</small>
-              <strong id="sidebar-name">Cargando...</strong>
-              <span id="sidebar-email">...</span>
-            </div>
-            <div id="sidebar-avatar">...</div><span id="hero-user-name" style="display:none">Cliente Dingloft</span>
+      <aside class="account-profile-v80">
+        <div class="profile-glow-v80" aria-hidden="true"></div>
+        <div class="profile-top-v80">
+          <div class="account-avatar top-avatar" id="top-avatar">...</div>
+          <div class="profile-copy-v80">
+            <small>Cuenta Dingloft</small>
+            <strong id="sidebar-name">Cargando...</strong>
+            <span id="sidebar-email">...</span>
           </div>
-          <div class="identity-state"><i class="bi bi-patch-check-fill"></i><span>Sesión protegida · biblioteca sincronizada</span></div>
+          <button class="profile-edit-v80" type="button" onclick="openProfileNameModal()" aria-label="Editar nombre"><i class="bi bi-pencil"></i></button>
         </div>
-        <div class="identity-actions">
-          <button type="button" onclick="openReservasModal()"><i class="bi bi-calendar2-check"></i> Reservas</button>
-          <button class="logout"><i class="bi bi-box-arrow-right"></i> Salir</button>
+        <div id="sidebar-avatar" aria-hidden="true"></div><span id="hero-user-name" style="display:none">Cliente Dingloft</span>
+        <div class="profile-status-v80"><span class="status-dot-v80"></span><div><strong>Sesión protegida</strong><small>Biblioteca vinculada a tu cuenta</small></div></div>
+        <div class="profile-actions-v80">
+          <button type="button" onclick="openProfileNameModal()"><i class="bi bi-person-gear"></i> Editar nombre</button>
+          <button type="button" onclick="openReservasModal()"><i class="bi bi-calendar2-check"></i> Mis reservas</button>
           <a href="admin.html" id="btn-admin" style="display:none"><i class="bi bi-shield-lock"></i> Panel Admin</a>
+          <button class="logout danger-v80"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</button>
         </div>
       </aside>
     </section>
 
-    <section class="account-metrics" aria-label="Resumen de cuenta">
-      <article class="metric"><div class="metric-icon"><i class="bi bi-box-seam"></i></div><div class="metric-copy"><small>Productos activos</small><strong id="stat-programas">0</strong><span>Compras vinculadas a tu cuenta</span></div></article>
-      <article class="metric"><div class="metric-icon"><i class="bi bi-download"></i></div><div class="metric-copy"><small>Descargas listas</small><strong id="stat-descargas">0</strong><span>Archivos disponibles ahora</span></div></article>
-      <article class="metric"><div class="metric-icon"><i class="bi bi-shield-check"></i></div><div class="metric-copy"><small>Acceso</small><strong>Seguro</strong><span>Links protegidos y actualizados desde Dingloft</span></div></article>
+    <section class="account-metrics account-metrics-v80" aria-label="Resumen de cuenta">
+      <article class="metric metric-v80"><div class="metric-icon"><i class="bi bi-box-seam"></i></div><div class="metric-copy"><small>Productos activos</small><strong id="stat-programas">0</strong><span>Compras vinculadas</span></div></article>
+      <article class="metric metric-v80"><div class="metric-icon"><i class="bi bi-arrow-down-circle"></i></div><div class="metric-copy"><small>Descargas listas</small><strong id="stat-descargas">0</strong><span>Archivos disponibles</span></div></article>
+      <article class="metric metric-v80"><div class="metric-icon"><i class="bi bi-headset"></i></div><div class="metric-copy"><small>Soporte remoto</small><strong>Listo</strong><span>Agenda cuando lo necesites</span></div></article>
     </section>
 
-    <section class="account-grid">
-      <article class="library-shell" id="descargas">
-        <div class="library-head">
+    <section class="account-grid account-grid-v80">
+      <article class="library-shell library-v80" id="descargas">
+        <div class="library-head library-head-v80">
           <div>
-            <div class="side-label">Tu biblioteca</div>
+            <div class="side-label"><i class="bi bi-collection"></i> Tu biblioteca</div>
             <h2>Programas y descargas</h2>
-            <p>Todo lo que has comprado aparece aquí. Si Administración cambia un archivo o enlace, tu acceso se actualiza automáticamente.</p>
+            <p>Tus compras viven aquí. Cuando Dingloft actualiza un archivo, tu biblioteca recibe el nuevo enlace automáticamente.</p>
           </div>
-          <div class="library-chip"><i class="bi bi-lock"></i> Vinculado a tu cuenta</div>
+          <div class="library-chip"><i class="bi bi-lock-fill"></i> Vinculado a tu cuenta</div>
         </div>
 
-        <div class="tabs-header" data-horizontal-scroll>
+        <div class="tabs-header tabs-v80" data-horizontal-scroll>
           <button class="tab-btn active" id="btn-tab-programas" onclick="switchTab('programas')"><i class="bi bi-grid"></i> Biblioteca</button>
           <button class="tab-btn" id="btn-tab-reserva" onclick="switchTab('reserva')"><i class="bi bi-calendar-check"></i> Reservas</button>
         </div>
-
-        <div id="tab-programas" class="tab-content active"><div class="downloads" id="downloads-container"><p style="color:var(--muted);padding:15px">Cargando tu biblioteca...</p></div></div>
-        <div id="tab-reserva" class="tab-content"><div id="dashboard-reserva-info"><p style="color:var(--muted);padding:15px">Buscando tus reservas...</p></div></div>
+        <div id="tab-programas" class="tab-content active"><div class="downloads" id="downloads-container"><p class="account-loading-v80">Sincronizando tu biblioteca...</p></div></div>
+        <div id="tab-reserva" class="tab-content"><div id="dashboard-reserva-info"><p class="account-loading-v80">Buscando tus reservas...</p></div></div>
       </article>
 
-      <aside class="side-stack">
-        <article class="side-card">
-          <div class="support-badge"><i class="bi bi-headset"></i></div>
-          <div class="side-label">Soporte premium</div>
-          <h2>Instalación remota</h2>
-          <p>Agenda una sesión con el equipo Dingloft y deja tu software funcionando sin complicaciones.</p>
-          <div class="support-list">
-            <span><i class="bi bi-shield-lock"></i> Conexión privada y controlada por ti</span>
-            <span><i class="bi bi-eye"></i> Ves todo lo que hacemos</span>
-            <span><i class="bi bi-check-circle"></i> Validación final antes de cerrar</span>
+      <aside class="side-stack side-stack-v80">
+        <article class="side-card support-v80">
+          <div class="support-art-v80"><span></span><i class="bi bi-headset"></i></div>
+          <div class="side-label">Dingloft Care</div>
+          <h2>Soporte remoto, sin complicarte.</h2>
+          <p>Reserva una sesión y deja que el equipo te ayude a instalar o configurar tu software mientras tú conservas el control.</p>
+          <div class="support-list support-list-v80">
+            <span><i class="bi bi-eye"></i> Ves cada acción en tiempo real</span>
+            <span><i class="bi bi-shield-lock"></i> Conexión privada y temporal</span>
+            <span><i class="bi bi-check2-circle"></i> Validación antes de terminar</span>
           </div>
-          <button class="side-cta" type="button" onclick="openReservaModal()"><i class="bi bi-calendar2-plus"></i> Agendar una sesión</button>
+          <button class="side-cta support-cta-v80" type="button" onclick="openReservaModal()"><i class="bi bi-calendar2-plus"></i> Elegir fecha y hora</button>
         </article>
 
-        <article class="side-card">
-          <div class="side-label">Accesos rápidos</div>
-          <h2>Continúa donde quieras</h2>
-          <p>Compra, explora o vuelve a tu música sin salir del ecosistema Dingloft.</p>
-          <div class="quick-links">
-            <a class="quick-link" href="ventas.html"><i class="bi bi-bag-check"></i> Ventas</a>
-            <a class="quick-link" href="multitrack.html"><i class="bi bi-vinyl"></i> Multitracks</a>
-            <a class="quick-link" href="tienda.html"><i class="bi bi-grid-3x3-gap"></i> Catálogo</a>
-            <button class="quick-link" type="button" onclick="openReservasModal()"><i class="bi bi-clock-history"></i> Mis reservas</button>
+        <article class="side-card quick-v80">
+          <div class="side-label">Atajos Dingloft</div>
+          <div class="quick-links quick-links-v80">
+            <a class="quick-link" href="ventas.html"><i class="bi bi-bag"></i><span>Ventas</span></a>
+            <a class="quick-link" href="multitrack.html"><i class="bi bi-soundwave"></i><span>Multitracks</span></a>
+            <a class="quick-link" href="tienda.html"><i class="bi bi-grid-3x3-gap"></i><span>Catálogo</span></a>
+            <button class="quick-link" type="button" onclick="openReservasModal()"><i class="bi bi-clock-history"></i><span>Reservas</span></button>
           </div>
         </article>
 
-        <article class="side-card">
-          <div class="side-label">Protección de cuenta</div>
-          <h2>Tu acceso permanece privado.</h2>
-          <div class="security-list">
-            <div class="security-item"><i class="bi bi-person-check"></i> Sesión autenticada con Firebase</div>
-            <div class="security-item"><i class="bi bi-cloud-check"></i> Biblioteca sincronizada con Dingloft</div>
-            <div class="security-item"><i class="bi bi-link-45deg"></i> Descargas generadas de forma segura</div>
-          </div>
+        <article class="side-card privacy-v80">
+          <div class="privacy-icon-v80"><i class="bi bi-shield-check"></i></div>
+          <div><div class="side-label">Privacidad</div><h2>Tu cuenta sigue siendo tuya.</h2><p>La instalación remota no cambia tus compras, biblioteca ni sesión.</p></div>
         </article>
       </aside>
     </section>
   </main>
+
+<div class="liquid-modal-overlay profile-modal-v80" id="profileNameModal" aria-hidden="true">
+  <div class="liquid-modal-card profile-editor-v80" role="dialog" aria-modal="true" aria-labelledby="profileNameTitle">
+    <button class="liquid-close" type="button" onclick="closeProfileNameModal()" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+    <div class="profile-editor-icon-v80"><i class="bi bi-person-badge"></i></div>
+    <div class="account-kicker-v80">Tu identidad Dingloft</div>
+    <h3 id="profileNameTitle">¿Cómo quieres que te llamemos?</h3>
+    <p>Este nombre aparecerá en tu cuenta Dingloft. Tu correo y tus compras no cambian.</p>
+    <form id="profile-name-form" autocomplete="off">
+      <label for="profile-name-input">Nombre visible</label>
+      <input id="profile-name-input" class="liquid-input profile-name-input-v80" type="text" minlength="2" maxlength="48" placeholder="Tu nombre" required>
+      <div class="profile-form-message-v80" id="profile-name-message" role="status"></div>
+      <button id="profile-name-save" class="liquid-btn profile-save-v80" type="submit"><i class="bi bi-check2"></i> Guardar nombre</button>
+    </form>
+  </div>
+</div>
 
 <div class="liquid-modal-overlay" id="reservasModal">
     <div class="liquid-modal-card" id="modal-reservas-content">
@@ -616,8 +709,8 @@ body::before{
       <button class="liquid-close" onclick="closeReservaModal()"><i class="bi bi-x-lg"></i></button>
       <div class="booking-modal-head">
         <div class="booking-kicker"><i class="bi bi-headset"></i> Soporte remoto Dingloft</div>
-        <h3>Agenda tu sesión de instalación</h3>
-        <p>Elige fecha, horario y método de conexión. Tú ves y controlas todo el proceso mientras dejamos tu software listo.</p>
+        <h3>Reserva tu sesión Dingloft</h3>
+        <p>Elige una fecha y un horario disponible. El calendario se adapta a tu pantalla y la navegación de Dingloft siempre queda libre.</p>
         <div class="booking-stepbar" aria-label="Pasos para reservar">
           <div class="booking-step active"><b>1</b><span>Fecha</span></div>
           <div class="booking-step"><b>2</b><span>Horario</span></div>
@@ -663,7 +756,16 @@ body::before{
     </div>
   </div>
 
-  <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
+  <div class="dl-feedback-v81" id="account-feedback-v81" role="status" aria-live="polite" aria-atomic="true">
+  <div class="dl-feedback-art-v81" id="account-feedback-art-v81"><i class="bi bi-arrow-down-circle"></i></div>
+  <div class="dl-feedback-copy-v81">
+    <div class="dl-feedback-eyebrow-v81"><span></span><b id="account-feedback-kicker-v81">Dingloft</b></div>
+    <strong class="dl-feedback-title-v81" id="account-feedback-title-v81">Listo</strong>
+    <span class="dl-feedback-detail-v81" id="account-feedback-detail-v81">Tu cuenta está sincronizada.</span>
+    <div class="dl-feedback-progress-v81" aria-hidden="true"><span></span></div>
+  </div>
+  <button type="button" class="dl-feedback-close-v81" id="account-feedback-close-v81" aria-label="Cerrar aviso"><i class="bi bi-x-lg"></i></button>
+</div>
 <script>
     window.switchTab = function(tab) {
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -677,6 +779,49 @@ body::before{
     window.softwareSeleccionado = "Google Chrome Remote Desktop";
     window.precioBase = 10.00;
     window.precioFinal = 10.00;
+
+
+    let accountFeedbackTimerV81 = null;
+    window.hideAccountFeedbackV81 = function(){
+      const box = document.getElementById('account-feedback-v81');
+      if (!box) return;
+      box.classList.remove('show');
+      clearTimeout(accountFeedbackTimerV81);
+    };
+    window.showAccountFeedbackV81 = function(options = {}){
+      const box = document.getElementById('account-feedback-v81');
+      if (!box) return;
+      const kicker = document.getElementById('account-feedback-kicker-v81');
+      const title = document.getElementById('account-feedback-title-v81');
+      const detail = document.getElementById('account-feedback-detail-v81');
+      const art = document.getElementById('account-feedback-art-v81');
+      const state = options.state || 'loading';
+      box.classList.toggle('is-success', state === 'success');
+      box.classList.toggle('is-error', state === 'error');
+      if (kicker) kicker.textContent = options.kicker || (state === 'loading' ? 'Descarga segura' : 'Dingloft');
+      if (title) title.textContent = options.title || 'Procesando…';
+      if (detail) detail.textContent = options.detail || 'Un momento, estamos preparando todo.';
+      if (art) {
+        art.innerHTML = '';
+        if (options.image) {
+          const img = document.createElement('img');
+          img.src = options.image;
+          img.alt = '';
+          img.onerror = () => { art.innerHTML = '<i class="bi bi-arrow-down-circle"></i>'; };
+          art.appendChild(img);
+        } else {
+          const i = document.createElement('i');
+          i.className = options.icon || (state === 'success' ? 'bi bi-check2' : state === 'error' ? 'bi bi-exclamation-triangle' : 'bi bi-arrow-down-circle');
+          art.appendChild(i);
+        }
+      }
+      clearTimeout(accountFeedbackTimerV81);
+      box.classList.add('show');
+      if (options.duration !== 0) {
+        accountFeedbackTimerV81 = setTimeout(window.hideAccountFeedbackV81, options.duration || (state === 'loading' ? 5000 : 3200));
+      }
+    };
+    document.getElementById('account-feedback-close-v81')?.addEventListener('click', window.hideAccountFeedbackV81);
 
     window.openReservasModal = function() {
       document.getElementById('reservasModal').classList.add('active');
@@ -870,6 +1015,7 @@ body::before{
     }
 
     window.openReservaModal = function() {
+      document.body.classList.add('no-scroll');
       document.getElementById('reservaModal').classList.add('active');
       renderizarCalendario();
       actualizarResumenReserva();
@@ -880,6 +1026,7 @@ body::before{
 
     window.closeReservaModal = function() {
       document.getElementById('reservaModal').classList.remove('active');
+      document.body.classList.remove('no-scroll');
     };
 
     window.toggleBundle = function(element) {
@@ -894,7 +1041,7 @@ body::before{
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { getFirestore, collection, query, where, getDocs, addDoc, doc, updateDoc, deleteDoc, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -911,8 +1058,110 @@ body::before{
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    let activeAccountUser = null;
+    const profileNameModal = document.getElementById('profileNameModal');
+    const profileNameInput = document.getElementById('profile-name-input');
+    const profileNameMessage = document.getElementById('profile-name-message');
+    const profileNameSave = document.getElementById('profile-name-save');
+
+    function syncVisibleName(name) {
+      const safeName = String(name || 'Cliente Dingloft').trim() || 'Cliente Dingloft';
+      const firstName = safeName.split(/\s+/)[0] || 'Cliente';
+      const sidebarName = document.getElementById('sidebar-name');
+      const heroUserName = document.getElementById('hero-user-name');
+      const heroFirstName = document.getElementById('hero-first-name');
+      if (sidebarName) sidebarName.textContent = safeName;
+      if (heroUserName) heroUserName.textContent = safeName;
+      if (heroFirstName) heroFirstName.textContent = firstName;
+      if (activeAccountUser && !activeAccountUser.photoURL) {
+        const initial = firstName.charAt(0).toUpperCase() || 'D';
+        const avatarMarkup = `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.2rem;font-weight:800">${initial}</div>`;
+        const topAvatar = document.getElementById('top-avatar');
+        const hiddenAvatar = document.getElementById('sidebar-avatar');
+        if (topAvatar) topAvatar.innerHTML = avatarMarkup;
+        if (hiddenAvatar) hiddenAvatar.innerHTML = avatarMarkup;
+      }
+    }
+
+    window.openProfileNameModal = function() {
+      if (!activeAccountUser || !profileNameModal) return;
+      const currentName = activeAccountUser.displayName || (activeAccountUser.email ? activeAccountUser.email.split('@')[0] : 'Cliente Dingloft');
+      profileNameInput.value = currentName;
+      profileNameMessage.textContent = '';
+      profileNameMessage.className = 'profile-form-message-v80';
+      document.body.classList.add('no-scroll');
+      profileNameModal.classList.add('active');
+      profileNameModal.setAttribute('aria-hidden','false');
+      setTimeout(() => { profileNameInput.focus(); profileNameInput.select(); }, 80);
+    };
+
+    window.closeProfileNameModal = function() {
+      if (!profileNameModal) return;
+      profileNameModal.classList.remove('active');
+      profileNameModal.setAttribute('aria-hidden','true');
+      document.body.classList.remove('no-scroll');
+    };
+
+    document.getElementById('profile-name-form')?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!activeAccountUser) return;
+      const newName = profileNameInput.value.replace(/\s+/g,' ').trim();
+      if (newName.length < 2) {
+        profileNameMessage.textContent = 'Escribe al menos 2 caracteres.';
+        profileNameMessage.className = 'profile-form-message-v80 error';
+        return;
+      }
+      profileNameSave.disabled = true;
+      profileNameSave.innerHTML = '<i class="bi bi-arrow-repeat"></i> Guardando...';
+      profileNameMessage.textContent = 'Actualizando tu cuenta Dingloft...';
+      profileNameMessage.className = 'profile-form-message-v80';
+      try {
+        await updateProfile(activeAccountUser, { displayName: newName });
+        await setDoc(doc(db, 'users', activeAccountUser.uid), {
+          displayName: newName,
+          email: activeAccountUser.email || '',
+          profileUpdatedAt: serverTimestamp()
+        }, { merge: true });
+        syncVisibleName(newName);
+        profileNameMessage.textContent = 'Nombre actualizado.';
+        profileNameMessage.className = 'profile-form-message-v80 success';
+        window.showAccountFeedbackV81?.({
+          state: 'success',
+          kicker: 'Perfil actualizado',
+          title: 'Nombre guardado correctamente',
+          detail: 'Tu identidad Dingloft ya está sincronizada en tu cuenta.',
+          icon: 'bi bi-person-check',
+          duration: 3200
+        });
+        setTimeout(window.closeProfileNameModal, 500);
+      } catch (error) {
+        console.error('No se pudo actualizar el nombre:', error);
+        profileNameMessage.textContent = 'No pudimos guardar el nombre. Intenta otra vez.';
+        profileNameMessage.className = 'profile-form-message-v80 error';
+        window.showAccountFeedbackV81?.({
+          state: 'error',
+          kicker: 'No se guardó el cambio',
+          title: 'No pudimos actualizar tu nombre',
+          detail: 'Tu cuenta sigue intacta. Revisa tu conexión e inténtalo nuevamente.',
+          icon: 'bi bi-exclamation-triangle',
+          duration: 4200
+        });
+      } finally {
+        profileNameSave.disabled = false;
+        profileNameSave.innerHTML = '<i class="bi bi-check2"></i> Guardar nombre';
+      }
+    });
+
     const WORKER = String(window.DINGLOFT_WORKER_BASE || "https://autumn-breeze-dfa0.evolutiongt01.workers.dev").replace(/\/$/, "");
     const escHtml = (value) => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+
+    profileNameModal?.addEventListener('click', (event) => {
+      if (event.target === profileNameModal) window.closeProfileNameModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && profileNameModal?.classList.contains('active')) window.closeProfileNameModal();
+    });
 
     async function commerceApi(user, path) {
       const token = await user.getIdToken(false);
@@ -937,6 +1186,7 @@ body::before{
 
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        activeAccountUser = user;
         document.documentElement.classList.remove('account-auth-pending');
         document.documentElement.classList.add('account-auth-ready');
         let isAdmin = false;
@@ -950,8 +1200,7 @@ body::before{
 
         // UI FIRST: never block the visible account on a Firestore write.
         const welcomeName = document.getElementById('welcome-name'); if (welcomeName) welcomeName.textContent = firstName;
-        const heroUserName = document.getElementById('hero-user-name'); if (heroUserName) heroUserName.textContent = displayName;
-        document.getElementById('sidebar-name').textContent = displayName;
+        syncVisibleName(displayName);
         document.getElementById('sidebar-email').textContent = user.email || '';
 
         let avatarHtml = '';
@@ -967,6 +1216,7 @@ body::before{
         // Background sync only. If Firestore is slow/offline, the account UI stays usable.
         setDoc(doc(db, "users", user.uid), {
           email: user.email || "",
+          displayName: displayName,
           photoURL: user.photoURL || "",
           lastLogin: serverTimestamp()
         }, { merge: true }).catch(error => {
@@ -1245,7 +1495,7 @@ body::before{
 
         const downloadsContainer = document.getElementById('downloads-container');
         try {
-          downloadsContainer.innerHTML = '<p style="color: var(--muted); padding: 15px;"><i class="bi bi-arrow-repeat"></i> Sincronizando tus compras y descargas…</p>';
+          downloadsContainer.innerHTML = `<div class="library-state-v81" style="padding:22px;border:1px solid rgba(103,221,255,.11);border-radius:17px;background:rgba(103,221,255,.025);color:#91a4b8;display:flex;align-items:center;gap:12px"><i class="bi bi-arrow-repeat" style="color:#71dcff;font-size:1.1rem;animation:dlDownloadSpinV81 .9s linear infinite"></i><div><strong style="display:block;color:#dceaf4;font-size:.82rem;margin-bottom:3px">Sincronizando tu biblioteca</strong><span style="font-size:.71rem">Estamos comprobando tus compras y enlaces de descarga.</span></div></div>`;
           let library = await commerceApi(user, "/me/library");
           let orders = Array.isArray(library.orders) ? library.orders : [];
           // A recovered/manual order can have been written seconds ago. Refresh the
@@ -1260,7 +1510,7 @@ body::before{
           downloadsContainer.innerHTML = '';
 
           if (!items.length) {
-            downloadsContainer.innerHTML = '<p style="color: var(--muted); padding: 15px;">Aún no tienes programas comprados.</p>';
+            downloadsContainer.innerHTML = `<div style="padding:26px 18px;text-align:center;border:1px dashed rgba(151,187,224,.12);border-radius:18px;background:rgba(255,255,255,.012)"><div style="width:46px;height:46px;margin:0 auto 12px;border-radius:14px;display:grid;place-items:center;background:rgba(103,221,255,.06);border:1px solid rgba(103,221,255,.12);color:#71dcff"><i class="bi bi-bag"></i></div><strong style="display:block;color:#dce8f2;font-size:.88rem">Tu biblioteca está lista para crecer</strong><span style="display:block;margin-top:6px;color:#7f91a5;font-size:.72rem">Cuando compres un producto, aparecerá aquí automáticamente.</span></div>`;
           } else {
             downloadsContainer.innerHTML = `
               ${Number(library.repairedPurchases || 0) > 0 ? `<div style="background:rgba(18,215,246,.08);border:1px solid rgba(18,215,246,.3);border-radius:15px;padding:12px 16px;margin-bottom:12px;color:#bdefff"><i class="bi bi-wrench-adjustable-circle"></i> Reparamos automáticamente ${Number(library.repairedPurchases)} compra(s) que estaban vinculadas al UID anterior de tu cuenta.</div>` : ''}
@@ -1284,7 +1534,7 @@ body::before{
                 const subHTML = assets.map(asset => `
                   <div class="sub-download-row">
                     <div><i class="bi bi-file-earmark-arrow-down"></i> ${escHtml(asset.name || 'Descarga')}</div>
-                    <button class="download-btn-small" data-url="${escHtml(asset.downloadUrl)}" data-product="${escHtml(asset.name || nombreProd)}" aria-label="Descargar ${escHtml(asset.name || nombreProd)}">
+                    <button class="download-btn-small" data-url="${escHtml(asset.downloadUrl)}" data-product="${escHtml(asset.name || nombreProd)}" data-image="img/${escHtml(imgProd)}.png" aria-label="Descargar ${escHtml(asset.name || nombreProd)}">
                       <i class="bi bi-download"></i>
                     </button>
                   </div>
@@ -1313,7 +1563,7 @@ body::before{
                       <p>${escHtml(typeProd)}</p>
                       <span class="badge"><i class="bi bi-check-circle-fill"></i> Acceso habilitado</span>
                     </div>
-                    <button class="download-btn" data-url="${escHtml(asset.downloadUrl)}" data-product="${escHtml(nombreProd)}" aria-label="Descargar ${escHtml(nombreProd)}"><i class="bi bi-download"></i></button>
+                    <button class="download-btn" data-url="${escHtml(asset.downloadUrl)}" data-product="${escHtml(nombreProd)}" data-image="img/${escHtml(imgProd)}.png" aria-label="Descargar ${escHtml(nombreProd)}"><i class="bi bi-download"></i></button>
                   </div>
                 `);
               } else {
@@ -1338,23 +1588,65 @@ body::before{
           document.getElementById('stat-programas').textContent = totalProgramas;
           document.getElementById('stat-descargas').textContent = totalDescargas;
 
-          const toast = document.getElementById('toast-message');
           document.querySelectorAll('.download-btn:not([disabled]), .download-btn-small:not([disabled])').forEach(button => {
             button.addEventListener('click', (e) => {
               e.preventDefault();
               e.stopPropagation();
               const url = button.getAttribute('data-url');
-              const productName = button.getAttribute('data-product');
-              if (!url) return;
-              toast.textContent = `Preparando la descarga de ${productName}...`;
-              toast.classList.add('show');
-              setTimeout(() => toast.classList.remove('show'), 3000);
-              window.location.href = url;
+              const productName = button.getAttribute('data-product') || 'Tu producto';
+              const image = button.getAttribute('data-image') || 'img/dingloft.png';
+              if (button.dataset.downloadBusy === '1') return;
+              if (!url) {
+                window.showAccountFeedbackV81?.({
+                  state: 'error',
+                  kicker: 'Descarga no disponible',
+                  title: productName,
+                  detail: 'Este enlace aún no está listo. Vuelve a intentarlo en unos minutos.',
+                  image,
+                  duration: 4200
+                });
+                return;
+              }
+
+              button.dataset.downloadBusy = '1';
+              button.classList.add('is-preparing');
+              const oldIcon = button.innerHTML;
+              button.innerHTML = '<i class="bi bi-arrow-repeat"></i>';
+
+              window.showAccountFeedbackV81?.({
+                state: 'loading',
+                kicker: 'Descarga segura',
+                title: productName,
+                detail: 'Verificando tu acceso y preparando el archivo…',
+                image,
+                duration: 0
+              });
+
+              // Pequeña transición visual; la navegación conserva el mismo comportamiento de descarga existente.
+              setTimeout(() => {
+                window.showAccountFeedbackV81?.({
+                  state: 'success',
+                  kicker: 'Acceso verificado',
+                  title: 'Descarga iniciada',
+                  detail: `${productName} se está abriendo de forma segura.`,
+                  image,
+                  duration: 3600
+                });
+                window.location.href = url;
+              }, 420);
+
+              // Si el navegador mantiene esta página después de descargar, restauramos el botón.
+              setTimeout(() => {
+                button.dataset.downloadBusy = '0';
+                button.classList.remove('is-preparing');
+                button.innerHTML = oldIcon;
+              }, 1800);
             });
           });
         } catch(error) {
           console.error(error);
-          downloadsContainer.innerHTML = `<div style="color:#ffc1c6;padding:15px;border:1px solid rgba(255,93,105,.3);border-radius:12px;background:rgba(255,93,105,.08)"><i class="bi bi-exclamation-triangle"></i> No pudimos cargar tus descargas: ${escHtml(error.message || 'Error de sincronización')}</div>`;
+          downloadsContainer.innerHTML = `<div style="padding:22px;border:1px solid rgba(255,126,141,.17);border-radius:17px;background:rgba(255,90,110,.035);display:flex;align-items:flex-start;gap:12px"><div style="width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(255,126,141,.08);color:#ff8e9b"><i class="bi bi-exclamation-triangle"></i></div><div><strong style="display:block;color:#f2dce0;font-size:.82rem;margin:2px 0 5px">No pudimos sincronizar tu biblioteca</strong><span style="color:#9e8790;font-size:.70rem;line-height:1.45">Tus compras siguen seguras. Actualiza la página o vuelve a intentarlo en un momento.</span></div></div>`;
+          window.showAccountFeedbackV81?.({ state:'error', kicker:'Sincronización pendiente', title:'No pudimos cargar tus descargas', detail:'Tus compras siguen protegidas. Inténtalo nuevamente.', icon:'bi bi-cloud-slash', duration:4200 });
         }
       } else {
         const next = encodeURIComponent('account.html');
