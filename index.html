@@ -72,32 +72,63 @@ a{text-decoration:none;color:inherit}
 @media(max-width:860px){.wrap{width:min(100% - 24px,720px)}.topbar{padding:13px 14px;margin-bottom:18px}.nav-actions{gap:8px}.nav-link-ghost span{display:none}.hero-copy,.hero-visual,.install-main,.install-side{padding:22px}.hero-copy h1{font-size:clamp(2.8rem,13vw,4.7rem)}.hero-shell{gap:16px}.benefits,.kpi-strip,.footer-strip,.shortcut-grid,.install-row{grid-template-columns:1fr}.visual-grid{grid-template-columns:1fr}.icon-stage{min-height:300px}.install-btn{border-radius:24px;min-height:92px}.site-install-banner{width:calc(100% - 20px);padding:13px;gap:12px;bottom:14px}.site-install-copy strong{font-size:.88rem}.site-install-copy span{font-size:.74rem}.site-install-btn{padding:0 16px}.site-install-badge{width:40px;height:40px}.site-install-badge img{width:27px;height:27px}}
 @media(max-width:540px){.wrap{width:calc(100% - 18px)}.topbar{flex-direction:column;align-items:flex-start}.nav-actions{width:100%}.nav-link-ghost,.nav-link-solid{flex:1;justify-content:center}.brand img{width:40px;height:40px}.brand-copy strong{font-size:.92rem}.hero-copy h1{margin-top:18px}.hero-copy p{font-size:.95rem}.hero-copy,.hero-visual,.install-main,.install-side{border-radius:28px;padding:20px}.section-title{font-size:1.7rem}.site-install-banner{align-items:flex-start}.site-install-actions{flex-direction:column;align-items:stretch;width:92px}.site-install-btn,.site-install-dismiss{width:100%}.site-install-banner .site-install-btn{height:42px;padding:0 10px}.site-install-dismiss{height:38px}}
 @media(display-mode:standalone){.site-install-banner{display:none!important}}
+
+/* v78 — bienvenida compacta: sin mockup/logo gigante */
+.hero-shell{grid-template-columns:minmax(0,1.2fr) minmax(340px,.8fr);gap:18px;align-items:stretch}
+.hero-copy{padding:42px 42px 34px;min-height:510px;display:flex;flex-direction:column;justify-content:center}
+.hero-copy h1{max-width:850px;margin:20px 0 16px;font-size:clamp(3.25rem,5.5vw,5.7rem)}
+.hero-copy p{max-width:760px}
+.benefits{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:30px}
+.benefits .benefit:nth-child(4){display:none}
+.kpi-strip{display:none}
+.hero-visual{padding:26px;min-height:510px;display:flex;flex-direction:column;gap:16px;justify-content:space-between}
+.visual-top{margin-bottom:0}
+.visual-grid{display:block;min-height:0}
+.icon-stage{min-height:0;height:auto;padding:0;border:0;background:none;display:block;overflow:visible}
+.icon-stage:after{display:none}
+.icon-stage img{width:86px;height:86px;object-fit:contain;border-radius:24px;filter:drop-shadow(0 18px 30px rgba(90,205,255,.20))}
+.side-stack{display:grid;grid-template-rows:auto auto;gap:12px;margin-top:18px}
+.side-stack>.mini-card:nth-child(2){display:none}
+.panel-card{padding:0;border:0;background:transparent;display:block}
+.panel-card h3{font-size:1.45rem;margin:0 0 8px}
+.panel-card p{font-size:.82rem;max-width:500px}
+.shortcut-grid{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:16px}
+.shortcut{padding:12px 13px;min-height:88px}.shortcut:nth-child(1){display:none}.shortcut b{margin-top:7px}.shortcut span{font-size:.66rem}
+.compact-app-head{display:flex;align-items:center;gap:16px;padding:8px 0 2px}.compact-app-head img{width:78px;height:78px;object-fit:contain;filter:drop-shadow(0 18px 32px rgba(88,206,255,.18))}.compact-app-head-copy{min-width:0}.compact-app-head-copy small{display:block;color:#7f8994;font-size:.65rem;font-weight:850;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}.compact-app-head-copy strong{display:block;font-size:1.45rem;letter-spacing:-.04em}.compact-app-head-copy span{display:block;margin-top:6px;color:#87919c;font-size:.76rem;line-height:1.45}
+.platform-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.platform-chip{display:inline-flex;align-items:center;gap:8px;padding:9px 11px;border-radius:12px;border:1px solid rgba(255,255,255,.07);background:#090b0e;color:#d9e0e6;font-size:.7rem;font-weight:720}.platform-chip i{color:var(--green)}
+.compact-install-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.compact-install-actions button{height:44px;border-radius:13px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.035);color:#e8edf2;font:inherit;font-size:.75rem;font-weight:820;cursor:pointer}.compact-install-actions button:first-child{background:#f3f5f7;color:#07090b;border-color:#f3f5f7}.compact-install-actions button:hover{transform:translateY(-1px)}
+.auto-forward{margin-top:18px;padding:12px 14px;border-radius:15px;border:1px solid rgba(131,223,255,.10);background:rgba(104,207,250,.045);display:flex;align-items:center;gap:11px;color:#9aa6b1;font-size:.72rem;line-height:1.35}.auto-forward i{color:var(--cyan);font-size:1rem}.auto-forward b{color:#dfe8ef;font-variant-numeric:tabular-nums}
+.install-shell,.footer-strip{display:none!important}
+.site-install-banner{display:none!important}
+@media(max-width:1180px){.hero-shell{grid-template-columns:1fr}.hero-copy,.hero-visual{min-height:auto}.hero-copy{padding:34px}.hero-visual{padding:24px}.benefits{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:860px){.hero-copy{padding:26px}.hero-copy h1{font-size:clamp(2.8rem,12vw,4.5rem)}.benefits{grid-template-columns:1fr}.hero-visual{padding:22px}.shortcut-grid{grid-template-columns:1fr}.compact-install-actions{grid-template-columns:1fr 1fr}}
+@media(max-width:540px){.hero-copy{padding:22px}.hero-copy h1{font-size:clamp(2.7rem,14vw,4rem)}.compact-install-actions{grid-template-columns:1fr}.compact-app-head img{width:66px;height:66px}.platform-row{gap:6px}.platform-chip{padding:8px 9px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
 <body>
 <main class="wrap">
   <header class="topbar glass">
-    <a class="brand" href="index.html" aria-label="Dingloft">
+    <a class="brand" href="/" aria-label="Dingloft">
       <img src="/img/pwa-liquid-192-v5.png?v=7" alt="Dingloft">
       <span class="brand-copy"><strong>DINGLOFT</strong><span>EVOLUTION GROUP</span></span>
     </a>
     <div class="nav-actions">
-      <a class="nav-link-ghost" href="ventas.html"><i class="bi bi-bag"></i><span>Ventas</span></a>
-      <a class="nav-link-ghost" href="account.html"><i class="bi bi-person"></i><span>Mi cuenta</span></a>
-      <a class="nav-link-solid" href="#instalar"><i class="bi bi-download"></i><span>Instalar app</span></a>
+      <a class="nav-link-ghost" href="/ventas"><i class="bi bi-bag"></i><span>Ventas</span></a>
+      <a class="nav-link-ghost" href="/account"><i class="bi bi-person"></i><span>Mi cuenta</span></a>
+      <a class="nav-link-solid" href="#app-install" id="topInstallLink"><i class="bi bi-download"></i><span>Instalar app</span></a>
     </div>
   </header>
 
   <section class="hero-shell">
     <div class="hero-copy glass">
       <div class="eyebrow">Dingloft App</div>
-      <h1>Tu tienda.<span>Ahora como app.</span></h1>
-      <p>Instala Dingloft en tu dispositivo para entrar más rápido a tu software, librerías, multitracks, carrito y cuenta, sin perder la experiencia premium del sitio.</p>
+      <h1>Bienvenido.<span>Todo Dingloft, en un lugar.</span></h1>
+      <p>Una entrada limpia para llegar rápido a tu tienda, Multitracks, compras y biblioteca. También puedes instalar Dingloft como app en tu dispositivo.</p>
 
       <div class="hero-cta">
-        <a class="primary" href="ventas.html"><i class="bi bi-bag-check"></i> Explorar ventas</a>
-        <a class="secondary" href="account.html"><i class="bi bi-person"></i> Mi cuenta</a>
+        <a class="primary" href="/ventas"><i class="bi bi-house"></i> Entrar al Home</a>
+        <a class="secondary" href="/account"><i class="bi bi-person"></i> Mi cuenta</a>
       </div>
 
       <div class="benefits">
@@ -116,81 +147,47 @@ a{text-decoration:none;color:inherit}
     </div>
 
     <div class="hero-visual glass">
-      <div class="visual-top">
-        <div class="tag"><i class="bi bi-stars"></i> instalación premium</div>
-        <div class="mini-note">Sin perder tu contenido</div>
-      </div>
-      <div class="visual-grid">
-        <div class="icon-stage"><img src="/img/pwa-liquid-512-v5.png?v=7" alt="Icono Dingloft"></div>
-        <div class="side-stack">
-          <div class="mini-card">
-            <div class="mini-head"><b>Disponible en</b><span>plataformas</span></div>
-            <div class="mini-list">
-              <div class="mini-pill"><i class="bi bi-apple"></i> iPhone / macOS</div>
-              <div class="mini-pill"><i class="bi bi-android2"></i> Android</div>
-              <div class="mini-pill"><i class="bi bi-windows"></i> Windows</div>
-            </div>
-          </div>
-          <div class="mini-card">
-            <div class="mini-head"><b>Acceso directo</b><span>después de instalar</span></div>
-            <div class="mini-list">
-              <div class="mini-pill"><i class="bi bi-bag"></i> Ventas y catálogo</div>
-              <div class="mini-pill"><i class="bi bi-download"></i> Biblioteca y descargas</div>
-            </div>
-          </div>
-          <div class="panel-card">
-            <h3>Qué verás al abrir la app</h3>
-            <p>Una entrada más limpia, rápida y enfocada para que el cliente vaya directo a comprar, descargar o revisar su cuenta.</p>
-            <div class="shortcut-grid">
-              <div class="shortcut"><i class="bi bi-house"></i><b>Inicio</b><span>Landing optimizada para instalación y acceso rápido.</span></div>
-              <div class="shortcut"><i class="bi bi-bag-check"></i><b>Ventas</b><span>Catálogo principal con productos, precios y compra.</span></div>
-              <div class="shortcut"><i class="bi bi-music-note-list"></i><b>Multitrack</b><span>Acceso rápido a la sección musical.</span></div>
-              <div class="shortcut"><i class="bi bi-person-circle"></i><b>Cuenta</b><span>Biblioteca del cliente y sus descargas.</span></div>
-            </div>
+      <div>
+        <div class="visual-top">
+          <div class="tag"><i class="bi bi-stars"></i> bienvenida Dingloft</div>
+          <div class="mini-note">Acceso rápido</div>
+        </div>
+
+        <div class="compact-app-head">
+          <img src="/img/pwa-liquid-192-v5.png?v=7" alt="Dingloft App">
+          <div class="compact-app-head-copy">
+            <small>Dingloft App</small>
+            <strong>Todo listo para entrar.</strong>
+            <span>Compra software, escucha Multitracks o abre tu biblioteca desde el mismo lugar.</span>
           </div>
         </div>
+
+        <div class="platform-row" aria-label="Plataformas compatibles">
+          <span class="platform-chip"><i class="bi bi-apple"></i> iPhone / macOS</span>
+          <span class="platform-chip"><i class="bi bi-android2"></i> Android</span>
+          <span class="platform-chip"><i class="bi bi-windows"></i> Windows</span>
+        </div>
+
+        <div class="compact-install-actions">
+          <button id="installApple" type="button"><i class="bi bi-apple"></i>&nbsp; Instalar en Apple</button>
+          <button id="installUniversal" type="button"><i class="bi bi-download"></i>&nbsp; Instalar app</button>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h3>¿Qué quieres hacer?</h3>
+        <p>Esta pantalla solo es una bienvenida. Puedes entrar directamente a cualquier área.</p>
+        <div class="shortcut-grid">
+          <a class="shortcut" href="/ventas"><i class="bi bi-house"></i><b>Home</b><span>Ir a la tienda principal.</span></a>
+          <a class="shortcut" href="/ventas"><i class="bi bi-bag-check"></i><b>Ventas</b><span>Software y librerías.</span></a>
+          <a class="shortcut" href="/multitrack"><i class="bi bi-music-note-list"></i><b>Multitracks</b><span>Catálogo y previews.</span></a>
+          <a class="shortcut" href="/account"><i class="bi bi-person-circle"></i><b>Cuenta</b><span>Compras y descargas.</span></a>
+        </div>
+        <div class="auto-forward" id="autoForward" aria-live="polite"><i class="bi bi-arrow-right-circle"></i><span>Sin actividad, entrando al Home en <b id="autoForwardSeconds">15 s</b>.</span></div>
       </div>
     </div>
   </section>
 
-  <section class="install-shell" id="instalar">
-    <div class="install-main glass">
-      <div class="section-kicker">Instalar Dingloft</div>
-      <h2 class="section-title">Listo para Apple, Android y escritorio.</h2>
-      <p class="section-text">Elige el acceso que corresponda a tu dispositivo. Si el navegador permite instalación directa, la app se instalará. Si no, te mostramos los pasos para hacerlo manualmente.</p>
-      <div class="install-row">
-        <button class="install-btn apple" id="installApple" type="button">
-          <span class="ico"><i class="bi bi-apple"></i></span>
-          <span class="labels"><small>MACOS / IPHONE</small><strong>Instalar Dingloft</strong></span>
-        </button>
-        <button class="install-btn android" id="installUniversal" type="button">
-          <span class="ico"><i class="bi bi-android2"></i></span>
-          <span class="labels"><small>ANDROID / WINDOWS</small><strong>Instalar Dingloft</strong></span>
-        </button>
-      </div>
-      <div class="install-meta">
-        <span>La instalación no cambia tu cuenta, pedidos ni biblioteca.</span>
-        <a href="ventas.html">Continuar sin instalar →</a>
-      </div>
-    </div>
-
-    <aside class="install-side glass">
-      <div class="section-kicker">Qué obtienes</div>
-      <h2 class="section-title">Una entrada más práctica.</h2>
-      <ul>
-        <li><i class="bi bi-lightning-charge"></i><div><b>Apertura inmediata</b><span>Menos pasos para entrar a comprar o revisar tu biblioteca.</span></div></li>
-        <li><i class="bi bi-cloud-check"></i><div><b>Todo sincronizado</b><span>Tu cuenta y tus compras siguen siendo exactamente las mismas.</span></div></li>
-        <li><i class="bi bi-window-sidebar"></i><div><b>Experiencia más limpia</b><span>Menos ruido y una navegación más tipo app en móvil y escritorio.</span></div></li>
-      </ul>
-    </aside>
-  </section>
-
-  <section class="footer-strip">
-    <div class="footer-card glass"><b>Software y librerías</b><span>Acceso centralizado a tu catálogo principal.</span></div>
-    <div class="footer-card glass"><b>Multitracks</b><span>Entrada rápida a tu sección musical.</span></div>
-    <div class="footer-card glass"><b>Mi cuenta</b><span>Revisa tu biblioteca, pedidos y descargas.</span></div>
-    <div class="footer-card glass"><b>Instalación guiada</b><span>Si no aparece el aviso, Dingloft te muestra los pasos.</span></div>
-  </section>
 </main>
 
 <div class="modal" id="guide" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
@@ -233,16 +230,45 @@ a{text-decoration:none;color:inherit}
     title.textContent=data.title;text.textContent=data.text;steps.innerHTML=data.steps.map((s,i)=>`<div class="step"><b>${i+1}</b><span>${s}</span></div>`).join('');guide.classList.add('show');guide.setAttribute('aria-hidden','false');
   };
   async function promptInstall(kind){
-    if(isStandalone()){ location.href='ventas.html?app=1#inicio'; return; }
+    if(isStandalone()){ location.href='/ventas?app=1#inicio'; return; }
     if(deferredPrompt){ const p=deferredPrompt; deferredPrompt=null; try{await p.prompt();await p.userChoice;return}catch(_){} }
     renderGuide(kind);
   }
   addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e});
-  addEventListener('appinstalled',()=>{location.href='ventas.html?app=1#inicio'});
+  addEventListener('appinstalled',()=>{location.href='/ventas?app=1#inicio'});
   document.getElementById('installApple').onclick=()=>promptInstall('apple');
   document.getElementById('installUniversal').onclick=()=>promptInstall('universal');
   const close=()=>{guide.classList.remove('show');guide.setAttribute('aria-hidden','true')};
   document.getElementById('closeGuide').onclick=close;document.getElementById('doneGuide').onclick=close;guide.onclick=e=>{if(e.target===guide)close()};
+
+  // Bienvenida v78: después de 15 s sin actividad, continúa al Home.
+  const AUTO_FORWARD_SECONDS = 15;
+  const autoSeconds = document.getElementById('autoForwardSeconds');
+  const autoBox = document.getElementById('autoForward');
+  const topInstallLink = document.getElementById('topInstallLink');
+  let autoDeadline = Date.now() + AUTO_FORWARD_SECONDS * 1000;
+  let autoTick = 0;
+  const homeTarget = () => isStandalone() ? '/ventas?app=1#inicio' : '/ventas#inicio';
+  const guideIsOpen = () => guide?.classList.contains('show') || document.getElementById('siteInstallGuide')?.classList.contains('show');
+  const paintAutoForward = () => {
+    const left = Math.max(0, Math.ceil((autoDeadline - Date.now()) / 1000));
+    if (autoSeconds) autoSeconds.textContent = `${left} s`;
+    if (left <= 0 && !guideIsOpen() && !document.hidden) location.replace(homeTarget());
+  };
+  const resetAutoForward = () => {
+    autoDeadline = Date.now() + AUTO_FORWARD_SECONDS * 1000;
+    paintAutoForward();
+  };
+  ['pointerdown','touchstart','keydown','wheel','scroll'].forEach(evt => addEventListener(evt, resetAutoForward, {passive:true}));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) resetAutoForward(); });
+  autoTick = setInterval(() => {
+    if (guideIsOpen() || document.hidden) { autoDeadline = Date.now() + AUTO_FORWARD_SECONDS * 1000; return; }
+    paintAutoForward();
+  }, 250);
+  topInstallLink?.addEventListener('click', e => { e.preventDefault(); resetAutoForward(); promptInstall(isIOS || isMac ? 'apple' : 'universal'); });
+  autoBox?.addEventListener('click', resetAutoForward);
+  paintAutoForward();
+
   // Service Worker registration is centralized in /pwa-runtime.js.
 })();
 </script>
