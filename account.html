@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head><script src="/dingloft-mobile-nav-v71.js" data-dingloft-mobile-chrome="71"></script>
+<script>try{if(window.top!==window.self)document.documentElement.classList.add("dingloft-shell-embedded-v83")}catch(_){}</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
   <title>Mi cuenta | Dingloft</title>
@@ -544,6 +545,49 @@ body{background:radial-gradient(circle at 14% 8%,rgba(78,196,255,.07),transparen
 @media(max-width:430px){.hero-actions-v80{grid-template-columns:1fr}.hero-signals-v80 span:nth-child(3){display:none}.profile-actions-v80{grid-template-columns:1fr}.profile-actions-v80 #btn-admin{grid-column:auto!important}.quick-links-v80{grid-template-columns:1fr 1fr}.account-welcome-v80 h1{font-size:2.65rem}.account-metrics-v80{grid-template-columns:1fr 1fr}.time-slots-container{grid-template-columns:1fr!important}}
 
 
+
+/* ===== v83 · Remote booking flow cleanup ===== */
+html.dingloft-shell-embedded-v83 #reservaModal{
+  top:88px!important;bottom:12px!important;left:0!important;right:0!important;height:auto!important;width:auto!important;
+  padding:10px 18px!important;place-items:center!important;align-items:center!important;
+}
+html.dingloft-shell-embedded-v83 #reservaModal .liquid-modal-card{
+  max-height:calc(100dvh - 110px)!important;
+}
+#reservaModal .liquid-close{
+  top:16px!important;right:16px!important;width:42px!important;height:42px!important;border-radius:14px!important;
+  display:grid!important;place-items:center!important;background:rgba(5,9,15,.88)!important;border:1px solid rgba(172,205,235,.14)!important;
+  color:#b8c8d8!important;box-shadow:0 10px 28px rgba(0,0,0,.28)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+#reservaModal .liquid-close:hover{background:rgba(255,255,255,.07)!important;color:#fff!important;border-color:rgba(117,221,255,.24)!important}
+#reservaModal .booking-modal-head{padding-right:74px!important}
+#reservaModal .booking-stepbar{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+#reservaModal .booking-step.completed{color:#aeeed0!important;border-color:rgba(96,229,171,.18)!important;background:rgba(96,229,171,.04)!important}
+#reservaModal .booking-step.completed b{background:rgba(96,229,171,.10)!important;color:#7ee7b4!important}
+#reservaModal .booking-footer{display:block!important;position:relative!important;bottom:auto!important;margin:16px 0 0!important;padding:16px 0 0!important;background:none!important}
+#reservaModal .booking-footer #modal-notif{margin:0 0 12px!important;width:100%!important}
+.booking-prepay-v83{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.72fr);gap:10px;align-items:stretch}
+.booking-pay-trigger-v83{min-height:50px;border:1px solid rgba(117,221,255,.18);border-radius:14px;background:#edf8fc;color:#061018;font:800 .78rem/1 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;transition:.2s ease}
+.booking-pay-trigger-v83:hover:not(:disabled){background:#fff;transform:translateY(-1px)}
+.booking-pay-trigger-v83:disabled{cursor:not-allowed;background:rgba(255,255,255,.035);border-color:rgba(172,205,235,.08);color:#667789}
+.booking-payment-v83{margin-top:12px;padding:15px;border:1px solid rgba(117,221,255,.13);border-radius:18px;background:linear-gradient(180deg,rgba(117,221,255,.035),rgba(255,255,255,.015));animation:bookingPayInV83 .28s cubic-bezier(.16,1,.3,1)}
+.booking-payment-v83[hidden]{display:none!important}
+@keyframes bookingPayInV83{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.booking-payment-head-v83{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(172,205,235,.08)}
+.booking-payment-head-v83>div{min-width:0}.booking-payment-head-v83 small{display:block;color:#66798c;font-size:.58rem;font-weight:850;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}.booking-payment-head-v83 strong{display:block;color:#eef8ff;font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.booking-payment-back-v83{flex:none;min-height:36px;padding:0 11px;border-radius:11px;border:1px solid rgba(172,205,235,.10);background:rgba(255,255,255,.025);color:#8fa1b4;font-size:.66rem;font-weight:800;cursor:pointer}.booking-payment-back-v83:hover{color:#dff6ff;border-color:rgba(117,221,255,.20)}
+#payment-buttons-container{min-height:0!important;display:block!important}
+#paypal-button-container:empty{display:none!important}
+.booking-pay-security-v83{display:flex;align-items:center;gap:7px;margin-top:10px;color:#64768a;font-size:.61rem}.booking-pay-security-v83 i{color:#62dfa9}
+@media(max-width:760px){
+  #reservaModal .booking-stepbar{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  #reservaModal .booking-step{min-width:0!important;padding:7px 3px!important;justify-content:center!important}.booking-step span{display:none!important}
+  #reservaModal .booking-modal-head{padding-right:62px!important}
+  #reservaModal .liquid-close{width:38px!important;height:38px!important;top:12px!important;right:12px!important;border-radius:12px!important}
+  .booking-prepay-v83{grid-template-columns:1fr!important}.booking-pay-trigger-v83{min-height:48px}
+  .booking-payment-v83{padding:12px;border-radius:16px}.booking-payment-head-v83{align-items:flex-start}.booking-payment-head-v83 strong{white-space:normal;line-height:1.35}
+}
+
 /* ===== v81 · Dingloft professional feedback system ===== */
 .dl-feedback-v81{
   --fb-accent:#67ddff;
@@ -713,9 +757,10 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
         <h3>Reserva tu sesión Dingloft</h3>
         <p>Elige una fecha y un horario disponible. El calendario se adapta a tu pantalla y la navegación de Dingloft siempre queda libre.</p>
         <div class="booking-stepbar" aria-label="Pasos para reservar">
-          <div class="booking-step active"><b>1</b><span>Fecha</span></div>
-          <div class="booking-step"><b>2</b><span>Horario</span></div>
-          <div class="booking-step"><b>3</b><span>Conexión</span></div>
+          <div class="booking-step active" data-booking-step="1"><b>1</b><span>Fecha</span></div>
+          <div class="booking-step" data-booking-step="2"><b>2</b><span>Horario</span></div>
+          <div class="booking-step" data-booking-step="3"><b>3</b><span>Detalles</span></div>
+          <div class="booking-step" data-booking-step="4"><b>4</b><span>Confirmar</span></div>
         </div>
       </div>
 
@@ -750,14 +795,23 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
 
         <div class="booking-footer">
           <div id="modal-notif"></div>
-          <div class="cupon-group"><input type="text" id="cuponInput" placeholder="CÓDIGO DE CUPÓN" class="liquid-input" style="text-transform:uppercase"><button type="button" class="liquid-btn-cupon" onclick="aplicarCupon()">Aplicar</button></div>
-          <div id="payment-buttons-container" style="width:100%;min-height:48px"><button id="btn-pagar-gratis" class="liquid-btn" style="display:none" onclick="procesarReservaGratis()"><i class="bi bi-check2-circle"></i> Reservar Gratis</button><div id="paypal-button-container" class="w-100"></div></div>
+          <div class="booking-prepay-v83">
+            <div class="cupon-group"><input type="text" id="cuponInput" placeholder="CÓDIGO DE CUPÓN" class="liquid-input" style="text-transform:uppercase"><button type="button" class="liquid-btn-cupon" onclick="aplicarCupon()">Aplicar</button></div>
+            <button type="button" id="btn-open-payment-v83" class="booking-pay-trigger-v83" onclick="abrirPagoReservaV83()" disabled><i class="bi bi-arrow-right-circle"></i><span>Selecciona fecha y horario</span></button>
+          </div>
+          <section id="booking-payment-v83" class="booking-payment-v83" hidden aria-hidden="true">
+            <div class="booking-payment-head-v83">
+              <div><small>Confirmación segura</small><strong id="booking-payment-summary-v83">Revisa tu sesión antes de continuar</strong></div>
+              <button type="button" class="booking-payment-back-v83" onclick="cerrarPagoReservaV83()"><i class="bi bi-pencil"></i> Editar</button>
+            </div>
+            <div id="payment-buttons-container" style="width:100%"><button id="btn-pagar-gratis" class="liquid-btn" style="display:none" onclick="procesarReservaGratis()"><i class="bi bi-check2-circle"></i> Confirmar reserva gratis</button><div id="paypal-button-container" class="w-100"></div></div>
+            <div class="booking-pay-security-v83"><i class="bi bi-shield-check"></i><span>El pago solo se carga en este paso y nunca antes.</span></div>
+          </section>
         </div>
       </div>
     </div>
   </div>
 
-  <iframe id="dingloft-download-frame-v82" name="dingloft-download-frame-v82" title="Descarga Dingloft" aria-hidden="true" tabindex="-1" style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;border:0;left:-9999px;top:-9999px"></iframe>
 
   <div class="dl-feedback-v81" id="account-feedback-v81" role="status" aria-live="polite" aria-atomic="true">
   <div class="dl-feedback-art-v81" id="account-feedback-art-v81"><i class="bi bi-arrow-down-circle"></i></div>
@@ -927,10 +981,27 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
     function actualizarResumenReserva(){
       const price=document.getElementById('booking-price');
       if(price) price.textContent=`$${Number(window.precioFinal||0).toFixed(2)}`;
-      const steps=[...document.querySelectorAll('.booking-step')];
-      steps[0]?.classList.toggle('active',true);
-      steps[1]?.classList.toggle('active',Boolean(window.diaSeleccionado));
-      steps[2]?.classList.toggle('active',Boolean(window.diaSeleccionado&&window.horaSeleccionada));
+      const hasDate=Boolean(window.diaSeleccionado);
+      const hasTime=Boolean(window.horaSeleccionada);
+      const paymentOpen=Boolean(window.bookingPaymentOpenV83);
+      const steps=[...document.querySelectorAll('#reservaModal .booking-step')];
+      steps.forEach((step,index)=>{step.classList.remove('active','completed');
+        if(index===0){step.classList.add(hasDate?'completed':'active');}
+        if(index===1){if(hasTime)step.classList.add('completed');else if(hasDate)step.classList.add('active');}
+        if(index===2){if(paymentOpen)step.classList.add('completed');else if(hasTime)step.classList.add('active');}
+        if(index===3 && paymentOpen)step.classList.add('active');
+      });
+      const trigger=document.getElementById('btn-open-payment-v83');
+      if(trigger){
+        trigger.disabled=!(hasDate&&hasTime);
+        const label=trigger.querySelector('span');
+        if(label)label.textContent=hasDate&&hasTime?'Continuar a confirmar':'Selecciona fecha y horario';
+      }
+      const summary=document.getElementById('booking-payment-summary-v83');
+      if(summary && hasDate && hasTime){
+        const date=window.diaSeleccionado.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'});
+        summary.textContent=`${date} · ${window.horaSeleccionada} · $${Number(window.precioFinal||0).toFixed(2)}`;
+      }
     }
 
     window.cambiarMes = function(delta) {
@@ -943,6 +1014,7 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
     }
 
     window.seleccionarDia = function(dia) {
+      if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
       window.diaSeleccionado = new Date(anoActual, mesActual, dia);
       window.horaSeleccionada = null;
       renderizarCalendario();
@@ -971,6 +1043,7 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
     }
 
     window.seleccionarHora = function(hora, elemento) {
+      if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
       window.horaSeleccionada = hora;
       document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
       elemento.classList.add('selected');
@@ -978,10 +1051,49 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
     }
 
     window.seleccionarSoftware = function(software, elemento) {
+      if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
       window.softwareSeleccionado = software;
       document.querySelectorAll('.software-btn').forEach(btn => btn.classList.remove('selected'));
       elemento.classList.add('selected');
     }
+
+    window.cerrarPagoReservaV83 = function(silencioso=false) {
+      window.bookingPaymentOpenV83 = false;
+      const shell=document.getElementById('booking-payment-v83');
+      if(shell){shell.hidden=true;shell.setAttribute('aria-hidden','true');}
+      const paypalBox=document.getElementById('paypal-button-container');
+      if(paypalBox)paypalBox.innerHTML='';
+      const freeBtn=document.getElementById('btn-pagar-gratis');
+      if(freeBtn)freeBtn.style.display='none';
+      actualizarResumenReserva();
+      if(!silencioso) document.getElementById('btn-open-payment-v83')?.focus({preventScroll:true});
+    };
+
+    window.abrirPagoReservaV83 = function() {
+      const comentario=(document.getElementById('reservaComentario')?.value||'').trim();
+      if(!window.diaSeleccionado || !window.horaSeleccionada){
+        window.mostrarAlertaModal('Selecciona una fecha y un horario disponible primero.',false);return;
+      }
+      if(!comentario){
+        window.mostrarAlertaModal('Cuéntanos brevemente qué necesitas configurar antes de continuar.',false);
+        document.getElementById('reservaComentario')?.focus();return;
+      }
+      window.bookingPaymentOpenV83=true;
+      const shell=document.getElementById('booking-payment-v83');
+      if(shell){shell.hidden=false;shell.setAttribute('aria-hidden','false');}
+      const freeBtn=document.getElementById('btn-pagar-gratis');
+      const paypalBox=document.getElementById('paypal-button-container');
+      if(window.precioFinal===0){
+        if(paypalBox){paypalBox.innerHTML='';paypalBox.style.display='none';}
+        if(freeBtn)freeBtn.style.display='flex';
+      }else{
+        if(freeBtn)freeBtn.style.display='none';
+        if(paypalBox)paypalBox.style.display='block';
+        if(typeof window.renderPayPalReserva==='function')window.renderPayPalReserva();
+      }
+      actualizarResumenReserva();
+      setTimeout(()=>shell?.scrollIntoView({behavior:'smooth',block:'nearest'}),40);
+    };
 
     window.aplicarCupon = function() {
       const codigo = document.getElementById('cuponInput').value.trim().toUpperCase();
@@ -999,13 +1111,20 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
         const btnGratis = document.getElementById('btn-pagar-gratis');
         const btnPaypal = document.getElementById('paypal-button-container');
 
-        if (window.precioFinal === 0) {
-           btnPaypal.style.display = 'none';
-           btnGratis.style.display = 'flex';
+        if (window.bookingPaymentOpenV83) {
+          if (window.precioFinal === 0) {
+             btnPaypal.innerHTML = '';
+             btnPaypal.style.display = 'none';
+             btnGratis.style.display = 'flex';
+          } else {
+             btnGratis.style.display = 'none';
+             btnPaypal.style.display = 'block';
+             if(typeof window.renderPayPalReserva === 'function') window.renderPayPalReserva();
+          }
         } else {
-           btnGratis.style.display = 'none';
-           btnPaypal.style.display = 'block';
-           if(typeof window.renderPayPalReserva === 'function') window.renderPayPalReserva();
+          btnGratis.style.display = 'none';
+          btnPaypal.innerHTML = '';
+          btnPaypal.style.display = 'none';
         }
 
         actualizarResumenReserva();
@@ -1027,15 +1146,20 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
 
     window.openReservaModal = function() {
       document.body.classList.add('no-scroll');
+      window.bookingPaymentOpenV83=false;
+      const payShell=document.getElementById('booking-payment-v83');
+      if(payShell){payShell.hidden=true;payShell.setAttribute('aria-hidden','true');}
+      const paypalBox=document.getElementById('paypal-button-container');
+      if(paypalBox){paypalBox.innerHTML='';paypalBox.style.display='none';}
+      const freeBtn=document.getElementById('btn-pagar-gratis');
+      if(freeBtn)freeBtn.style.display='none';
       document.getElementById('reservaModal').classList.add('active');
       renderizarCalendario();
       actualizarResumenReserva();
-      if(typeof window.renderPayPalReserva === 'function' && window.precioFinal > 0) {
-          window.renderPayPalReserva();
-      }
     };
 
     window.closeReservaModal = function() {
+      window.cerrarPagoReservaV83?.(true);
       document.getElementById('reservaModal').classList.remove('active');
       document.body.classList.remove('no-scroll');
     };
@@ -1048,6 +1172,14 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
       btn.classList.toggle('active');
       element.classList.toggle('active');
     };
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{
+      const comment=document.getElementById('reservaComentario');
+      comment?.addEventListener('input',()=>{if(window.bookingPaymentOpenV83)window.cerrarPagoReservaV83?.(true);});
+      document.getElementById('reservaModal')?.addEventListener('click',e=>{if(e.target?.id==='reservaModal')window.closeReservaModal?.();});
+    });
   </script>
 
   <script type="module">
@@ -1599,18 +1731,33 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
           document.getElementById('stat-programas').textContent = totalProgramas;
           document.getElementById('stat-descargas').textContent = totalDescargas;
 
-          const startProtectedDownloadV82 = (downloadUrl) => {
-            const frame = document.getElementById('dingloft-download-frame-v82');
-            if (!frame || !downloadUrl) return false;
+          const startProtectedDownloadV84 = (downloadUrl) => {
+            if (!downloadUrl) return false;
+            let target = downloadUrl;
             try {
               const u = new URL(downloadUrl, window.location.href);
-              u.searchParams.set('dlui', '82');
+              u.searchParams.set('dlui', '84');
               u.searchParams.set('_', String(Date.now()));
-              frame.src = u.toString();
+              target = u.toString();
+            } catch (_) {}
+
+            // v84: la descarga nace directamente del gesto del usuario.
+            // Los navegadores y Google Drive pueden bloquear descargas iniciadas
+            // dentro de iframes invisibles; una pestaña de descarga dedicada no.
+            try {
+              const opened = window.open(target, '_blank');
+              if (opened) {
+                try { opened.opener = null; } catch (_) {}
+                return true;
+              }
+            } catch (_) {}
+
+            // Fallback universal si el navegador bloquea ventanas nuevas.
+            try {
+              window.location.assign(target);
               return true;
             } catch (_) {
-              frame.src = downloadUrl;
-              return true;
+              return false;
             }
           };
 
@@ -1648,23 +1795,21 @@ html.dl-mobile-nav-v71 .dl-feedback-v81{bottom:calc(91px + env(safe-area-inset-b
                 duration: 0
               });
 
-              // v82: descarga en un contexto invisible para que Cuenta permanezca abierta.
-              // El Worker convierte Google Drive a su endpoint de descarga directa.
-              setTimeout(() => {
-                const started = startProtectedDownloadV82(url);
-                window.showAccountFeedbackV81?.({
-                  state: started ? 'success' : 'error',
-                  kicker: started ? 'Acceso verificado' : 'No pudimos iniciar',
-                  title: started ? 'Descarga enviada al navegador' : productName,
-                  detail: started
-                    ? `${productName} se está enviando a Descargas. Puedes seguir usando Dingloft.`
-                    : 'Vuelve a intentarlo. Tu acceso permanece protegido.',
-                  image,
-                  duration: started ? 7000 : 4500,
-                  actionLabel: started ? '¿No comenzó? Reintentar' : 'Reintentar descarga',
-                  onAction: () => startProtectedDownloadV82(url)
-                });
-              }, 420);
+              // v84: iniciar AHORA, dentro del click real. No retrasarlo con setTimeout:
+              // Chrome/Safari pueden retirar el permiso de descarga al perder el user gesture.
+              const started = startProtectedDownloadV84(url);
+              window.showAccountFeedbackV81?.({
+                state: started ? 'success' : 'error',
+                kicker: started ? 'Acceso verificado' : 'No pudimos iniciar',
+                title: started ? 'Descarga iniciada' : productName,
+                detail: started
+                  ? `${productName} fue enviado al navegador. Si Google necesita una confirmación adicional, aparecerá en la pestaña de descarga.`
+                  : 'El navegador bloqueó el inicio. Pulsa Reintentar descarga.',
+                image,
+                duration: started ? 6500 : 4500,
+                actionLabel: 'Reintentar descarga',
+                onAction: () => startProtectedDownloadV84(url)
+              });
 
               // Si el navegador mantiene esta página después de descargar, restauramos el botón.
               setTimeout(() => {
