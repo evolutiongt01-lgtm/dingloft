@@ -1,6 +1,6 @@
-/* Dingloft Mobile Nav v87 (served through the v71 filename for compatibility)
-   Global mobile chrome + scroll-lock recovery.
-   v87 prevents stale no-scroll/cart locks from freezing product pages after media/fullscreen. */
+/* Dingloft Mobile Nav v88 (served through the v71 filename for compatibility)
+   One mobile header + one mobile dock. Scroll is never globally frozen by Dingloft chrome.
+   Product videos remain untouched and use their original embeds. */
 (() => {
   'use strict';
 
@@ -14,6 +14,7 @@
   window.__DINGLOFT_MOBILE_CHROME_V71__ = true;
   window.__DINGLOFT_MOBILE_NAV_V71__ = true;
   window.__DINGLOFT_MOBILE_NAV_V72__ = true;
+  window.__DINGLOFT_MOBILE_NAV_V88__ = true;
 
   const HEADER_ID = 'dlMobileHeaderV71';
   const DOCK_ID = 'dlMobileDockV71';
@@ -37,7 +38,7 @@
       }
       html.dl-mobile-nav-v71{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior-x:none!important;touch-action:pan-y!important}
       html.dl-mobile-nav-v71 body{position:relative!important;height:auto!important;min-height:100dvh!important;max-height:none!important;overflow-x:hidden!important;overflow-y:visible!important;overscroll-behavior-x:none!important;touch-action:pan-y!important;padding-top:calc(68px + env(safe-area-inset-top,0px))!important;padding-bottom:calc(90px + env(safe-area-inset-bottom,0px))!important}
-      html.dl-mobile-nav-v71 body.cart-open,html.dl-mobile-nav-v71 body.no-scroll{height:100dvh!important;overflow:hidden!important;touch-action:none!important}
+      html.dl-mobile-nav-v71 body.cart-open,html.dl-mobile-nav-v71 body.no-scroll,html.dl-mobile-nav-v71 body.cart-open.no-scroll{position:relative!important;height:auto!important;min-height:100dvh!important;max-height:none!important;overflow-x:hidden!important;overflow-y:auto!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
       html.dl-mobile-nav-v71 body>.btn-floating-cart{position:fixed!important;left:-9999px!important;right:auto!important;bottom:0!important;width:1px!important;height:1px!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:none!important}
       html.dl-mobile-nav-v71 .mt-quickbar{top:0!important}
       html.dl-mobile-nav-v71 #progress.progress{display:none!important;opacity:0!important;visibility:hidden!important}
@@ -80,7 +81,7 @@
     if (overlay || drawer) {
       overlay?.classList.add('active');
       drawer?.classList.add('active');
-      document.body?.classList.add('cart-open','no-scroll');
+      /* v88: drawer may open, but global page scroll is never frozen here. */
     }
   }
 
@@ -227,11 +228,13 @@
   function installRuntimeGuards(){
     if (document.getElementById('dingloft-mobile-nav-v72-runtime')) return;
     const style=document.createElement('style');
-    style.id='dingloft-mobile-nav-v72-runtime';
+    style.id='dingloft-mobile-nav-v88-runtime';
     style.textContent=`
       @media(max-width:1024px){
         html.dl-mobile-nav-v71 #dlMobileHeaderV71,html.dl-mobile-nav-v71 #dlMobileDockV71{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
         html.dl-mobile-nav-v71 #progress.progress{display:none!important;visibility:hidden!important;opacity:0!important}
+        html.dl-mobile-nav-v71,html.dl-mobile-nav-v71 body,html.dl-mobile-nav-v71 body.no-scroll,html.dl-mobile-nav-v71 body.cart-open,html.dl-mobile-nav-v71 body.no-scroll.cart-open{height:auto!important;min-height:100%!important;max-height:none!important;overflow-y:auto!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
+        html.dl-mobile-nav-v71 body{min-height:100dvh!important;overflow-x:hidden!important}
         html.dl-mobile-nav-v71 .cart-footer{padding-bottom:calc(106px + env(safe-area-inset-bottom,0px))!important;scroll-padding-bottom:calc(106px + env(safe-area-inset-bottom,0px))!important;-webkit-overflow-scrolling:touch!important}
         html.dl-mobile-nav-v71 .cart-footer #paypal-container-wrapper,html.dl-mobile-nav-v71 .cart-footer #free-checkout-btn,html.dl-mobile-nav-v71 .cart-footer #continue-shopping-box{position:relative!important;z-index:2!important}
         html.dl-mobile-nav-v71 .success-modal-box{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))!important;scroll-padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))!important}
@@ -249,28 +252,6 @@
     });
   }
 
-  function hasRealScrollBlocker(){
-    if (document.fullscreenElement || document.webkitFullscreenElement) return true;
-    if (document.documentElement.classList.contains('dl-video-modal-open')) return true;
-    return Boolean(document.querySelector([
-      '.cart-overlay.active','#cart-overlay.active','.cart-drawer.active','#cart-drawer.active',
-      '.search-overlay-fullscreen.active','.side-menu-overlay.active','.side-menu-drawer.active',
-      '.success-modal-overlay.active','.liquid-modal-overlay.active','.modal.show',
-      '[data-dingloft-scroll-lock="1"]'
-    ].join(',')));
-  }
-
-  function healStaleScrollLock(){
-    const body=document.body;
-    if (!body || hasRealScrollBlocker()) return;
-    const hadLock=body.classList.contains('no-scroll') || body.classList.contains('cart-open');
-    if (hadLock) body.classList.remove('no-scroll','cart-open');
-    // Some browser/video flows leave inline lock styles even after the class is gone.
-    if (body.style.overflow === 'hidden') body.style.removeProperty('overflow');
-    if (body.style.touchAction === 'none') body.style.removeProperty('touch-action');
-    if (body.style.height === '100vh' || body.style.height === '100dvh') body.style.removeProperty('height');
-  }
-
   function sync(){
     if (!dockRoot) return;
     const route = activeRoute();
@@ -286,6 +267,15 @@
     if (!document.body || document.getElementById(HEADER_ID) || document.getElementById(DOCK_ID)) return;
     document.body.classList.add('dl-mobile-nav-v71');
     installRuntimeGuards();
+    // v88: clear only stale inline scroll locks left by older Dingloft versions.
+    ['overflow','overflow-y','height','max-height','touch-action','position','top'].forEach(prop=>{
+      const value=document.body.style.getPropertyValue(prop);
+      if ((prop==='overflow' && value==='hidden') || (prop==='overflow-y' && value==='hidden') ||
+          (prop==='touch-action' && value==='none') || (prop==='position' && value==='fixed') ||
+          (prop==='height' && /100(vh|dvh)/.test(value)) || (prop==='top' && /^-?\d+px$/.test(value))) {
+        document.body.style.removeProperty(prop);
+      }
+    });
     removeLegacy(document);
 
     headerHost = makeHost(HEADER_ID, 'header');
@@ -315,10 +305,8 @@
     });
     observer.observe(document.body,{childList:true,subtree:true});
 
-    // Same-tab cart writes do not emit a storage event. The same tiny timer also
-    // heals stale scroll locks left by fullscreen/video/browser transitions.
-    setInterval(()=>{ sync(); healStaleScrollLock(); }, 650);
-    requestAnimationFrame(()=>healStaleScrollLock());
+    // Same-tab cart writes do not emit a storage event, so keep this tiny sync timer.
+    setInterval(sync, 650);
   }
 
   ['pushState','replaceState'].forEach(name => {
@@ -343,12 +331,8 @@
     if (sameDoc && u.hash) return;
     beginHeaderLoading();
   }, true);
-  addEventListener('load',()=>{ finishHeaderLoading(320); setTimeout(healStaleScrollLock,80); },{once:true});
-  addEventListener('pageshow',()=>{ finishHeaderLoading(220); setTimeout(healStaleScrollLock,80); },{passive:true});
-  addEventListener('focus',()=>setTimeout(healStaleScrollLock,80),{passive:true});
-  addEventListener('fullscreenchange',()=>setTimeout(healStaleScrollLock,140),{passive:true});
-  addEventListener('webkitfullscreenchange',()=>setTimeout(healStaleScrollLock,140),{passive:true});
-  document.addEventListener('visibilitychange',()=>{ if(!document.hidden) setTimeout(healStaleScrollLock,100); },{passive:true});
+  addEventListener('load',()=>finishHeaderLoading(320),{once:true});
+  addEventListener('pageshow',()=>finishHeaderLoading(220),{passive:true});
 
   if (document.body) mount();
   else document.addEventListener('DOMContentLoaded', mount, {once:true});
