@@ -1,4 +1,4 @@
-/* Dingloft Persistent Mobile/Tablet App Shell · v93
+/* Dingloft Persistent Mobile/Tablet App Shell · v97 · Product Scroll Repair
    The shell never reloads between internal pages. Only the content iframe changes.
    Header/search/bottom nav/cart live in the top document and remain mounted. */
 const DINGLOFT_BOOT_STARTED = performance.now();
@@ -33,6 +33,7 @@ if(!MOBILE){
 }
 
 const stage=document.getElementById('stage');
+const SHELL_PRODUCT_FILES=new Set(['autocad','cinema4d','dual','esword','logic','mainstage','nord','office','producto','rhodes','sketchup','yamahakeys']);
 const progress=document.getElementById('progress');
 const count=document.getElementById('count');
 let active=null, token=0, activeKey='home';
@@ -72,7 +73,7 @@ function activeDock(key){
   document.body.dataset.appRoute=visual;
   document.querySelectorAll('[data-route]').forEach(a=>a.classList.toggle('active',a.dataset.route===visual));
   window.__dingloftRefreshAdminButton?.();
-  window.dispatchEvent(new CustomEvent('dingloft:shell-route',{detail:{key,visual,version:93}}));
+  window.dispatchEvent(new CustomEvent('dingloft:shell-route',{detail:{key,visual,version:97}}));
 }
 function cartCount(){
   let n=0;try{const c=JSON.parse(localStorage.getItem('dingloft_cart')||'[]');if(Array.isArray(c))n=c.reduce((s,x)=>s+Math.max(1,Number(x?.qty??x?.quantity??1)||1),0)}catch(_){}
@@ -108,15 +109,49 @@ function shellNavigateHref(href,{push=true}={}){
 function child(frame){try{
   const w=frame.contentWindow,d=w.document;
   if(!d||!d.documentElement)return;
+  const childFile=((w.location.pathname.split('/').filter(Boolean).pop()||'').toLowerCase().replace(/\.html$/,''));
+  const productView=SHELL_PRODUCT_FILES.has(childFile);
   d.documentElement.classList.add('dingloft-shell-view');
-  d.documentElement.dataset.dingloftShell='mobile-v93';
-  if(d.body){d.body.classList.add('dingloft-shell-view');d.body.dataset.dingloftShell='mobile-v93'}
+  // Keep the legacy value exactly "mobile": every program page already ships
+  // with an iOS/mobile scroll repair keyed to this attribute. v93 used
+  // "mobile-v93", so that repair never matched inside the persistent shell.
+  d.documentElement.dataset.dingloftShell='mobile';
+  d.documentElement.dataset.dingloftShellVersion='97';
+  if(d.body){d.body.classList.add('dingloft-shell-view');d.body.dataset.dingloftShell='mobile';d.body.dataset.dingloftShellVersion='97'}
   if(d.scrollingElement)d.scrollingElement.style.webkitOverflowScrolling='touch';
+  const unlockProductScroll=()=>{
+    if(!productView||!d.body)return;
+    // Local product drawers/search are hidden by the persistent shell. They must
+    // never be allowed to leave the embedded document with a stale scroll lock.
+    d.body.classList.remove('no-scroll','cart-open');
+    const html=d.documentElement,body=d.body;
+    html.style.setProperty('height','auto','important');
+    html.style.setProperty('min-height','100%','important');
+    html.style.setProperty('max-height','none','important');
+    html.style.setProperty('overflow-x','hidden','important');
+    html.style.setProperty('overflow-y','auto','important');
+    html.style.setProperty('touch-action','pan-y','important');
+    html.style.setProperty('-webkit-overflow-scrolling','touch','important');
+    body.style.setProperty('position','relative','important');
+    body.style.setProperty('top','auto','important');
+    body.style.setProperty('height','auto','important');
+    body.style.setProperty('min-height','100%','important');
+    body.style.setProperty('max-height','none','important');
+    body.style.setProperty('overflow-x','hidden','important');
+    body.style.setProperty('overflow-y','auto','important');
+    body.style.setProperty('touch-action','pan-y','important');
+    body.style.setProperty('-webkit-overflow-scrolling','touch','important');
+  };
+  unlockProductScroll();
   if(!d.getElementById('dl-shell-style-v93')){
     const s=d.createElement('style');s.id='dl-shell-style-v93';s.textContent=`
       @media(max-width:1024px){
-        html.dingloft-shell-view,html.dingloft-shell-view body{background:#05070a!important;width:100%!important;max-width:100%!important;overflow-x:hidden!important;overflow-y:auto!important;height:auto!important;min-height:100%!important;overscroll-behavior-x:none!important;overscroll-behavior-y:contain!important}
-        html.dingloft-shell-view body{padding-top:0!important;padding-bottom:24px!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
+        html.dingloft-shell-view,html.dingloft-shell-view body{background:#05070a!important;width:100%!important;max-width:100%!important;overflow-x:hidden!important;overflow-y:auto!important;height:auto!important;min-height:100%!important;max-height:none!important;overscroll-behavior-x:none!important;overscroll-behavior-y:auto!important}
+        html.dingloft-shell-view body{position:relative!important;top:auto!important;padding-top:0!important;padding-bottom:24px!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
+        /* v97: program pages must never inherit a hidden local-cart/search lock. */
+        html.dingloft-shell-view[data-dingloft-shell="mobile"] body.dingloft-shell-view.no-scroll,
+        html.dingloft-shell-view[data-dingloft-shell="mobile"] body.dingloft-shell-view.cart-open,
+        html.dingloft-shell-view[data-dingloft-shell="mobile"] body.dingloft-shell-view.no-scroll.cart-open{position:relative!important;top:auto!important;height:auto!important;min-height:100%!important;max-height:none!important;overflow-x:hidden!important;overflow-y:auto!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
         html.dingloft-shell-view #main-navbar,html.dingloft-shell-view nav.navbar-glass,html.dingloft-shell-view .navbar.navbar-glass,html.dingloft-shell-view nav.navbar.fixed-top,html.dingloft-shell-view .topbar,
         html.dingloft-shell-view #mobileAppDock,html.dingloft-shell-view nav.mobile-app-dock,html.dingloft-shell-view .mobile-app-dock,html.dingloft-shell-view .dingloft-direct-top,html.dingloft-shell-view #dingloftDirectTop,html.dingloft-shell-view #dlDirectTop,html.dingloft-shell-view #dlDirectDock,
         html.dingloft-shell-view #dlUniversalHeader,html.dingloft-shell-view #dlUniversalDock,html.dingloft-shell-view #dlGlobalChromeHost,
@@ -131,9 +166,15 @@ function child(frame){try{
       }`;
     d.head.appendChild(s);
   }
-  const killLegacy=()=>d.querySelectorAll('#main-navbar,nav.navbar-glass,.navbar.navbar-glass,#mobileAppDock,nav.mobile-app-dock,.mobile-app-dock,.dingloft-direct-top,#dingloftDirectTop,#dlDirectTop,#dlDirectDock,#dlUniversalHeader,#dlUniversalDock,#dlGlobalChromeHost,.btn-floating-cart,.floating-cart,.cart-fab,[data-floating-cart]').forEach(el=>{el.style.setProperty('display','none','important');el.style.setProperty('pointer-events','none','important')});
+  const killLegacy=()=>{
+    d.querySelectorAll('#main-navbar,nav.navbar-glass,.navbar.navbar-glass,#mobileAppDock,nav.mobile-app-dock,.mobile-app-dock,.dingloft-direct-top,#dingloftDirectTop,#dlDirectTop,#dlDirectDock,#dlUniversalHeader,#dlUniversalDock,#dlGlobalChromeHost,.btn-floating-cart,.floating-cart,.cart-fab,[data-floating-cart]').forEach(el=>{el.style.setProperty('display','none','important');el.style.setProperty('pointer-events','none','important')});
+    unlockProductScroll();
+  };
   killLegacy();
-  if(d.body&&!d.__dlShellV93Observer){d.__dlShellV93Observer=new w.MutationObserver(killLegacy);d.__dlShellV93Observer.observe(d.body,{childList:true,subtree:true})}
+  if(d.body&&!d.__dlShellV97Observer){
+    d.__dlShellV97Observer=new w.MutationObserver(killLegacy);
+    d.__dlShellV97Observer.observe(d.body,{childList:true,subtree:true,attributes:productView,attributeFilter:productView?['class','style']:undefined});
+  }
   if(!d.__dlPersistentBridgeV93){
     d.__dlPersistentBridgeV93=1;
     d.addEventListener('click',e=>{
@@ -147,6 +188,19 @@ function child(frame){try{
       if(m.external){window.top.location.href=m.url;return;}
       navigate(m.route,m,{push:true});
     },true);
+  }
+  if(productView&&!d.__dlProductCartBridgeV97){
+    d.__dlProductCartBridgeV97=1;
+    d.addEventListener('click',e=>{
+      const btn=e.target instanceof w.Element?e.target.closest('.btn-add-cart,[data-add-cart]'):null;
+      if(!btn)return;
+      // Let the page write the SKU to localStorage first, then release its old
+      // hidden drawer lock and open the one persistent cart owned by the shell.
+      setTimeout(()=>{
+        unlockProductScroll();
+        try{window.__dingloftOpenGlobalCart?.()}catch(_){}
+      },0);
+    },false);
   }
   if(IOS&&!w.__dlHorizontalLockV93){
     w.__dlHorizontalLockV93=1;let sx=0,sy=0,rail=null;
@@ -163,7 +217,7 @@ function navigate(route,params={},opt={}){
   if(progress)progress.classList.add('show');
   activeDock(i.key);
   const f=document.createElement('iframe');
-  f.className='frame in';f.allow='autoplay *; payment *; clipboard-read; clipboard-write';f.setAttribute('scrolling','yes');f.style.overflow='auto';f.style.webkitOverflowScrolling='touch';f.src=i.src;
+  f.className='frame in';f.allow='autoplay *; payment *; clipboard-read; clipboard-write';f.setAttribute('scrolling','yes');f.style.overflow='auto';f.style.webkitOverflowScrolling='touch';f.style.touchAction='pan-y';f.style.overscrollBehaviorY='auto';f.src=i.src;
   stage.appendChild(f);
   let firstLoad=true;
   f.addEventListener('load',()=>{
@@ -186,19 +240,21 @@ function navigate(route,params={},opt={}){
     history.replaceState(state,'',appUrl(loadedInfo));
     if(progress)progress.classList.remove('show');
     cartCount();dingloftSplashReady();
-    window.dispatchEvent(new CustomEvent('dingloft:shell-ready',{detail:{key:loadedInfo.key,version:93}}));
+    window.dispatchEvent(new CustomEvent('dingloft:shell-ready',{detail:{key:loadedInfo.key,version:97}}));
   });
   if(!opt.pop){const url=appUrl(i);if(opt.replace)history.replaceState({route:i.key,src:i.key==='page'?cleanPublicSrc(i.src):''},'',url);else if(opt.push!==false)history.pushState({route:i.key,src:i.key==='page'?cleanPublicSrc(i.src):''},'',url)}
 }
 
 window.DingloftPersistentShellV93={
-  version:93,
+  version:97,
   navigate:(route,params={})=>navigate(route,params,{push:true}),
   navigateHref:(href)=>shellNavigateHref(href,{push:true}),
   get activeKey(){return activeKey;},
   get activeFrame(){return active;}
 };
+window.DingloftPersistentShellV97=window.DingloftPersistentShellV93;
 window.__DINGLOFT_PERSISTENT_SHELL_V93__=true;
+window.__DINGLOFT_PERSISTENT_SHELL_V97__=true;
 
 if(IOS){let sx=0,sy=0;document.addEventListener('touchstart',e=>{if(e.touches?.length===1){sx=e.touches[0].clientX;sy=e.touches[0].clientY}},{passive:true});document.addEventListener('touchmove',e=>{if(e.touches?.length!==1)return;const dx=e.touches[0].clientX-sx,dy=e.touches[0].clientY-sy;if(Math.abs(dx)>Math.abs(dy)+3)e.preventDefault()},{passive:false})}
 addEventListener('message',e=>{if(e.origin!==location.origin||!e.data||e.data.type!=='dingloft:navigate')return;navigate(e.data.route||'page',{src:e.data.src||''},{push:true})});

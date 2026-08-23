@@ -1,4 +1,4 @@
-/* Dingloft Persistent Mobile Shell v93 (served through the v71 filename for compatibility)
+/* Dingloft Persistent Mobile Shell v97 (served through the v71 filename for compatibility)
    Header + search + bottom nav remain mounted while only the content frame changes.
    The independent mobile cart is loaded once and also remains mounted. Desktop stays on its persistent desktop shell. */
 (() => {
@@ -173,6 +173,9 @@
     try { sessionStorage.setItem(OPEN_CART_KEY, '1'); } catch (_) {}
     location.href = '/ventas?app=1#catalogo';
   }
+
+  // Used by embedded product pages: one cart lives in the persistent shell.
+  window.__dingloftOpenGlobalCart = openCart;
 
   const removeSelectors = [
     '#main-navbar','nav.navbar-glass','.navbar.navbar-glass',
