@@ -5,7 +5,7 @@
   :root{
     --dl-dock-left:max(10px, env(safe-area-inset-left));
     --dl-dock-right:max(10px, env(safe-area-inset-right));
-    --dl-dock-bottom:max(4px,calc(env(safe-area-inset-bottom) - 22px));
+    --dl-dock-bottom:max(0px,calc(env(safe-area-inset-bottom) - 33px));
     --dl-dock-height:66px;
     --dl-dock-radius:22px;
     --dl-dock-center:76px;
@@ -217,7 +217,7 @@
   }
 
   /* Stage reserves exactly the same physical dock space. */
-  #stage{bottom:calc(70px + max(4px,calc(env(safe-area-inset-bottom) - 22px)))!important}
+  #stage{bottom:calc(68px + max(0px,calc(env(safe-area-inset-bottom) - 33px)))!important}
   body.cart-sheet-open #stage{bottom:0!important}
 }
 

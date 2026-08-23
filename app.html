@@ -220,10 +220,10 @@ body.cart-sheet-open #stage{bottom:0!important}
 @media (max-width:1024px){
   :root{
     --dock:66px!important;
-    --dock-space:calc(70px + max(4px,calc(var(--safe-bottom) - 22px)))!important;
-    --dl-dock-bottom:max(4px,calc(var(--safe-bottom) - 22px));
+    --dock-space:calc(68px + max(0px,calc(var(--safe-bottom) - 33px)))!important;
+    --dl-dock-bottom:max(0px,calc(var(--safe-bottom) - 33px));
   }
-  #stage{bottom:calc(70px + max(4px,calc(var(--safe-bottom) - 22px)))!important;}
+  #stage{bottom:calc(68px + max(0px,calc(var(--safe-bottom) - 33px)))!important;}
   .dock{
     position:fixed!important;
     left:max(10px,var(--safe-left))!important;
@@ -242,11 +242,11 @@ body.cart-sheet-open #stage{bottom:0!important}
   .toast{bottom:calc(82px + var(--dl-dock-bottom))!important;}
 }
 @media (display-mode:standalone) and (max-width:1024px){
-  .dock{bottom:max(4px,calc(var(--safe-bottom) - 22px))!important;}
-  #stage{bottom:calc(70px + max(4px,calc(var(--safe-bottom) - 22px)))!important;}
+  .dock{bottom:max(0px,calc(var(--safe-bottom) - 33px))!important;}
+  #stage{bottom:calc(68px + max(0px,calc(var(--safe-bottom) - 33px)))!important;}
 }
 </style>
-<link rel="stylesheet" href="dingloft-mobile-dock.css?v=32">
+<link rel="stylesheet" href="dingloft-mobile-dock.css?v=34">
 
 <style id="dingloft-centered-mobile-header-v31">
 @media(max-width:1024px){
