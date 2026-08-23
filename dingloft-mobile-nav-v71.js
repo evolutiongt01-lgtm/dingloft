@@ -1,6 +1,6 @@
-/* Dingloft Mobile Nav v88 (served through the v71 filename for compatibility)
-   One mobile header + one mobile dock. Scroll is never globally frozen by Dingloft chrome.
-   Product videos remain untouched and use their original embeds. */
+/* Dingloft Mobile Shell v92 (served through the v71 filename for compatibility)
+   One independent mobile/tablet header + search + dock.
+   The independent mobile cart is loaded from dingloft-mobile-cart-v92.js. Desktop is untouched. */
 (() => {
   'use strict';
 
@@ -15,12 +15,15 @@
   window.__DINGLOFT_MOBILE_NAV_V71__ = true;
   window.__DINGLOFT_MOBILE_NAV_V72__ = true;
   window.__DINGLOFT_MOBILE_NAV_V88__ = true;
+  window.__DINGLOFT_MOBILE_SHELL_V92__ = true;
 
   const HEADER_ID = 'dlMobileHeaderV71';
   const DOCK_ID = 'dlMobileDockV71';
   const SEARCH_ID = 'dlMobileSearchV89';
   const CART_KEY = 'dingloft_cart';
   const OPEN_CART_KEY = 'dingloft_open_cart';
+  const MOBILE_CART_SRC = '/dingloft-mobile-cart-v92.js?v=92';
+  let mobileCartLoadPromise = null;
   const WORKER = String(window.DINGLOFT_WORKER_BASE || 'https://autumn-breeze-dfa0.evolutiongt01.workers.dev').replace(/\/$/, '');
   const PRODUCT_FILES = new Set([
     'autocad','cinema4d','dual','esword','logic','mainstage',
@@ -74,20 +77,38 @@
     return document.querySelector('.btn-floating-cart.cart-btn-global,#main-cart-btn,.cart-btn-global,.floating-cart,.cart-fab,[data-cart-open]');
   }
 
-  function openCart(){
+  function loadMobileCart(){
+    if (window.DingloftMobileCartV92?.open) return Promise.resolve(window.DingloftMobileCartV92);
+    if (mobileCartLoadPromise) return mobileCartLoadPromise;
+    mobileCartLoadPromise = new Promise(resolve => {
+      const existing = document.querySelector('script[data-dingloft-mobile-cart-v92]');
+      if (existing) {
+        let tries = 0;
+        const timer = setInterval(() => {
+          if (window.DingloftMobileCartV92?.open || ++tries > 80) {
+            clearInterval(timer);
+            resolve(window.DingloftMobileCartV92 || null);
+          }
+        }, 50);
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = MOBILE_CART_SRC;
+      script.async = true;
+      script.dataset.dingloftMobileCartV92 = '1';
+      script.onload = () => resolve(window.DingloftMobileCartV92 || null);
+      script.onerror = () => resolve(null);
+      (document.head || document.documentElement).appendChild(script);
+    }).finally(() => { mobileCartLoadPromise = null; });
+    return mobileCartLoadPromise;
+  }
+
+  async function openCart(){
+    const globalCart = await loadMobileCart();
+    if (globalCart?.open) { globalCart.open(); return; }
+    // Fail-safe only: old page cart is used if the independent component cannot load.
     const btn = legacyCartButton();
-    if (btn) {
-      try { btn.click(); return; } catch (_) {}
-    }
-    const overlay = document.querySelector('.cart-overlay,#cart-overlay');
-    const drawer = document.querySelector('.cart-drawer,#cart-drawer');
-    if (overlay || drawer) {
-      overlay?.classList.add('active');
-      drawer?.classList.add('active');
-      return;
-    }
-    // Generic/new Admin products use a direct checkout page and have no legacy drawer.
-    // Send the user to the shared store cart and ask v89 to open it automatically.
+    if (btn) { try { btn.click(); return; } catch (_) {} }
     try { sessionStorage.setItem(OPEN_CART_KEY, '1'); } catch (_) {}
     location.href = '/ventas?app=1#catalogo';
   }
@@ -354,7 +375,7 @@
   }
 
   function syncCartFocusChrome(){
-    const focused = document.documentElement.classList.contains('dl-cart-stage-lock') || document.body?.classList.contains('dl-cart-stage-open');
+    const focused = document.documentElement.classList.contains('dl-mobile-cart-focus') || document.body?.classList.contains('dl-mobile-cart-focus') || document.documentElement.classList.contains('dl-cart-stage-lock') || document.body?.classList.contains('dl-cart-stage-open');
     if (headerHost) {
       headerHost.style.setProperty('transform', focused ? 'translate3d(0,-125%,0)' : 'translate3d(0,0,0)','important');
       headerHost.style.setProperty('-webkit-transform', focused ? 'translate3d(0,-125%,0)' : 'translate3d(0,0,0)','important');
@@ -424,6 +445,9 @@
     searchRoot.querySelector('input')?.addEventListener('input', e => renderSearch(e.target.value));
     searchRoot.querySelector('.results')?.addEventListener('click', e => { const a=e.target.closest('a[href]');if(a){closeSearch();beginHeaderLoading();} });
     dockRoot.querySelector('.cart')?.addEventListener('click', e => { e.preventDefault(); openCart(); });
+    // Preload the single global cart after the shell is visible so the first tap is instant.
+    if ('requestIdleCallback' in window) requestIdleCallback(() => loadMobileCart(), {timeout:1200});
+    else setTimeout(() => loadMobileCart(), 350);
     wireLoadingLinks(headerRoot);
     wireLoadingLinks(dockRoot);
     if (hasRecentLoad()) setHeaderLoading(true);
@@ -458,6 +482,9 @@
   addEventListener('popstate', sync, {passive:true});
   addEventListener('hashchange', sync, {passive:true});
   addEventListener('storage', e => { if (e.key === CART_KEY) sync(); });
+  addEventListener('dingloft:cart-sync', sync);
+  addEventListener('dingloft:mobile-cart-updated', sync);
+  addEventListener('dingloft:mobile-cart-state', syncCartFocusChrome);
   addEventListener('pageshow', sync, {passive:true});
   addEventListener('focus', sync, {passive:true});
 
