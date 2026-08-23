@@ -116,8 +116,8 @@ function child(frame){try{
   // with an iOS/mobile scroll repair keyed to this attribute. v93 used
   // "mobile-v93", so that repair never matched inside the persistent shell.
   d.documentElement.dataset.dingloftShell='mobile';
-  d.documentElement.dataset.dingloftShellVersion='97';
-  if(d.body){d.body.classList.add('dingloft-shell-view');d.body.dataset.dingloftShell='mobile';d.body.dataset.dingloftShellVersion='97'}
+  d.documentElement.dataset.dingloftShellVersion='99';
+  if(d.body){d.body.classList.add('dingloft-shell-view');d.body.dataset.dingloftShell='mobile';d.body.dataset.dingloftShellVersion='99'}
   if(d.scrollingElement)d.scrollingElement.style.webkitOverflowScrolling='touch';
   const unlockProductScroll=()=>{
     if(!productView||!d.body)return;
@@ -143,8 +143,8 @@ function child(frame){try{
     body.style.setProperty('-webkit-overflow-scrolling','touch','important');
   };
   unlockProductScroll();
-  if(!d.getElementById('dl-shell-style-v93')){
-    const s=d.createElement('style');s.id='dl-shell-style-v93';s.textContent=`
+  if(!d.getElementById('dl-shell-style-v99')){
+    const s=d.createElement('style');s.id='dl-shell-style-v99';s.textContent=`
       @media(max-width:1024px){
         html.dingloft-shell-view,html.dingloft-shell-view body{background:#05070a!important;width:100%!important;max-width:100%!important;overflow-x:hidden!important;overflow-y:auto!important;height:auto!important;min-height:100%!important;max-height:none!important;overscroll-behavior-x:none!important;overscroll-behavior-y:auto!important}
         html.dingloft-shell-view body{position:relative!important;top:auto!important;padding-top:0!important;padding-bottom:24px!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
@@ -171,9 +171,35 @@ function child(frame){try{
     unlockProductScroll();
   };
   killLegacy();
-  if(d.body&&!d.__dlShellV97Observer){
-    d.__dlShellV97Observer=new w.MutationObserver(killLegacy);
-    d.__dlShellV97Observer.observe(d.body,{childList:true,subtree:true,attributes:productView,attributeFilter:productView?['class','style']:undefined});
+  // v99: never observe every style/class in the whole product document.
+  // v97 did that and killLegacy() itself writes styles, which could create a
+  // self-sustaining mutation loop while program pages were booting.
+  if(d.body&&!d.__dlShellV99Observer){
+    const chromeSelector='#main-navbar,nav.navbar-glass,.navbar.navbar-glass,#mobileAppDock,nav.mobile-app-dock,.mobile-app-dock,.dingloft-direct-top,#dingloftDirectTop,#dlDirectTop,#dlDirectDock,#dlUniversalHeader,#dlUniversalDock,#dlGlobalChromeHost,.btn-floating-cart,.floating-cart,.cart-fab,[data-floating-cart]';
+    const hideNode=node=>{
+      if(!(node instanceof w.Element))return;
+      const matches=[];
+      if(node.matches?.(chromeSelector))matches.push(node);
+      node.querySelectorAll?.(chromeSelector).forEach(el=>matches.push(el));
+      matches.forEach(el=>{
+        el.style.setProperty('display','none','important');
+        el.style.setProperty('pointer-events','none','important');
+      });
+    };
+    d.__dlShellV99Observer=new w.MutationObserver(records=>{
+      for(const rec of records){
+        for(const node of rec.addedNodes||[])hideNode(node);
+      }
+    });
+    d.__dlShellV99Observer.observe(d.body,{childList:true,subtree:true});
+  }
+  if(productView&&d.body&&!d.__dlShellV99BodyLockObserver){
+    d.__dlShellV99BodyLockObserver=new w.MutationObserver(()=>{
+      if(d.body.classList.contains('no-scroll')||d.body.classList.contains('cart-open')){
+        d.body.classList.remove('no-scroll','cart-open');
+      }
+    });
+    d.__dlShellV99BodyLockObserver.observe(d.body,{attributes:true,attributeFilter:['class']});
   }
   if(!d.__dlPersistentBridgeV93){
     d.__dlPersistentBridgeV93=1;
@@ -240,13 +266,13 @@ function navigate(route,params={},opt={}){
     history.replaceState(state,'',appUrl(loadedInfo));
     if(progress)progress.classList.remove('show');
     cartCount();dingloftSplashReady();
-    window.dispatchEvent(new CustomEvent('dingloft:shell-ready',{detail:{key:loadedInfo.key,version:97}}));
+    window.dispatchEvent(new CustomEvent('dingloft:shell-ready',{detail:{key:loadedInfo.key,version:99}}));
   });
   if(!opt.pop){const url=appUrl(i);if(opt.replace)history.replaceState({route:i.key,src:i.key==='page'?cleanPublicSrc(i.src):''},'',url);else if(opt.push!==false)history.pushState({route:i.key,src:i.key==='page'?cleanPublicSrc(i.src):''},'',url)}
 }
 
 window.DingloftPersistentShellV93={
-  version:97,
+  version:99,
   navigate:(route,params={})=>navigate(route,params,{push:true}),
   navigateHref:(href)=>shellNavigateHref(href,{push:true}),
   get activeKey(){return activeKey;},
