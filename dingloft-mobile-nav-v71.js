@@ -196,7 +196,7 @@
     document.getElementById(id)?.remove();
     const host = document.createElement('div');
     host.id = id;
-    host.setAttribute('data-dingloft-mobile-nav','71');
+    host.setAttribute('data-dingloft-mobile-nav','71-liquid-v98');
     host.style.setProperty('position','fixed','important');
     host.style.setProperty('z-index', where === 'header' ? '2147483646' : '2147483647','important');
     host.style.setProperty('margin','0','important');
@@ -372,15 +372,23 @@
     style.textContent = `
       :host{display:block;width:100%;height:100%;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,"Segoe UI",sans-serif;color-scheme:dark}
       *,*::before,*::after{box-sizing:border-box}
-      .dock{position:relative;width:100%;height:66px;padding:6px 7px;display:grid;grid-template-columns:1fr 1fr 76px 1fr 1fr;align-items:center;border:1px solid rgba(255,255,255,.11);border-radius:22px;background:linear-gradient(180deg,rgba(18,22,29,.97),rgba(8,10,14,.985));box-shadow:0 18px 55px rgba(0,0,0,.56),inset 0 1px 0 rgba(255,255,255,.07);overflow:visible}
-      .item{height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:0;border-radius:17px;background:transparent;color:#687384;text-decoration:none;font-size:.48rem;font-weight:760;line-height:1;-webkit-tap-highlight-color:transparent;transition:color .16s ease,background .16s ease,transform .10s ease}.item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.item.active{color:#eaf5ff;background:rgba(255,255,255,.05)}.item.active svg{color:#79dcff;filter:drop-shadow(0 0 8px rgba(109,214,255,.25))}.item:active{transform:scale(.92)}
-      .cart-slot{position:relative;height:52px;display:flex;align-items:center;justify-content:center}.cart{position:absolute;left:50%;top:-9px;width:60px;height:60px;margin:0;padding:0;border:1px solid rgba(255,255,255,.88);border-radius:20px;background:linear-gradient(145deg,#fbfdff,#eaf1f5);color:#080b0e;display:grid;place-items:center;transform:translateX(-50%);box-shadow:0 17px 43px rgba(0,0,0,.45);cursor:pointer;-webkit-tap-highlight-color:transparent}.cart:active{transform:translateX(-50%) scale(.92)}.cart svg{width:27px;height:27px;stroke:currentColor;fill:none;stroke-width:1.8}.count{position:absolute;top:-5px;right:-6px;min-width:25px;height:25px;padding:0 6px;border:2px solid #050608;border-radius:999px;background:#24aaf2;color:#fff;display:grid;place-items:center;font-size:.68rem;font-weight:850}.count.empty{display:none}
+      .dock{--liquid-x:7px;--liquid-w:64px;--liquid-glint:50%;position:relative;width:100%;height:66px;padding:6px 7px;display:grid;grid-template-columns:1fr 1fr 76px 1fr 1fr;align-items:center;border:1px solid rgba(255,255,255,.12);border-radius:22px;background:linear-gradient(180deg,rgba(18,22,29,.88),rgba(8,10,14,.94));box-shadow:0 18px 55px rgba(0,0,0,.56),inset 0 1px 0 rgba(255,255,255,.075);backdrop-filter:blur(28px) saturate(175%);-webkit-backdrop-filter:blur(28px) saturate(175%);overflow:visible;isolation:isolate;touch-action:pan-y}
+      .dock::before{content:"";position:absolute;inset:1px;border-radius:21px;pointer-events:none;z-index:0;background:linear-gradient(115deg,rgba(255,255,255,.055),transparent 32%,rgba(91,210,255,.035) 58%,transparent 76%),radial-gradient(180px 62px at 50% -12%,rgba(255,255,255,.09),transparent 72%)}
+      .liquid-lens{position:absolute;z-index:1;left:0;top:6px;width:var(--liquid-w);height:52px;border-radius:19px;pointer-events:none;overflow:hidden;opacity:.88;transform:translate3d(var(--liquid-x),0,0) scale(.985);transform-origin:center;transition:transform .58s cubic-bezier(.16,1,.22,1),width .48s cubic-bezier(.16,1,.22,1),opacity .24s ease,filter .24s ease;background:linear-gradient(145deg,rgba(255,255,255,.135),rgba(255,255,255,.025) 44%,rgba(97,218,255,.095) 100%);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -1px 0 rgba(91,211,255,.07),0 10px 26px rgba(0,0,0,.24),0 0 22px rgba(92,208,255,.055);backdrop-filter:blur(15px) saturate(205%) brightness(1.13);-webkit-backdrop-filter:blur(15px) saturate(205%) brightness(1.13)}
+      .liquid-lens::before{content:"";position:absolute;inset:-34% -18%;background:radial-gradient(circle at var(--liquid-glint) 24%,rgba(255,255,255,.76) 0 3%,rgba(255,255,255,.22) 8%,transparent 24%),radial-gradient(circle at calc(var(--liquid-glint) + 18%) 84%,rgba(100,222,255,.26),transparent 31%),linear-gradient(108deg,transparent 22%,rgba(255,255,255,.13) 43%,transparent 63%);filter:blur(.2px);transform:skewX(-8deg);opacity:.72;transition:opacity .2s ease}
+      .liquid-lens::after{content:"";position:absolute;inset:1px;border-radius:18px;border:1px solid rgba(255,255,255,.09);box-shadow:inset 7px 5px 16px rgba(255,255,255,.045),inset -7px -5px 14px rgba(0,0,0,.10)}
+      .dock.liquid-tracking .liquid-lens{opacity:1;transform:translate3d(var(--liquid-x),0,0) scale(1.055,1.035);transition:transform .055s linear,width .09s linear,opacity .12s ease;filter:brightness(1.08)}
+      .dock.liquid-tracking .liquid-lens::before{opacity:.96}
+      .item{position:relative;z-index:2;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:0;border-radius:17px;background:transparent;color:#687384;text-decoration:none;font-size:.48rem;font-weight:760;line-height:1;-webkit-tap-highlight-color:transparent;transition:color .18s ease,background .18s ease,transform .18s cubic-bezier(.16,1,.3,1),text-shadow .18s ease}.item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:filter .18s ease,transform .18s cubic-bezier(.16,1,.3,1)}.item.active{color:#edf8ff;background:rgba(255,255,255,.018)}.item.active svg{color:#79dcff;filter:drop-shadow(0 0 8px rgba(109,214,255,.25))}.item.liquid-hover{color:#f6fbff;text-shadow:0 0 14px rgba(197,239,255,.16);transform:translateY(-1px) scale(1.035)}.item.liquid-hover svg{filter:drop-shadow(0 0 10px rgba(111,220,255,.38));transform:scale(1.06)}.item:active{transform:scale(.92)}
+      .cart-slot{position:relative;z-index:3;height:52px;display:flex;align-items:center;justify-content:center}.cart{position:absolute;z-index:4;left:50%;top:-9px;width:60px;height:60px;margin:0;padding:0;border:1px solid rgba(255,255,255,.88);border-radius:20px;background:linear-gradient(145deg,#fbfdff,#eaf1f5);color:#080b0e;display:grid;place-items:center;transform:translateX(-50%);box-shadow:0 17px 43px rgba(0,0,0,.45);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .18s cubic-bezier(.16,1,.3,1),box-shadow .18s ease}.cart.liquid-hover{transform:translateX(-50%) translateY(-1px) scale(1.045);box-shadow:0 19px 48px rgba(0,0,0,.46),0 0 24px rgba(111,220,255,.18)}.cart:active{transform:translateX(-50%) scale(.92)}.cart svg{width:27px;height:27px;stroke:currentColor;fill:none;stroke-width:1.8}.count{position:absolute;top:-5px;right:-6px;min-width:25px;height:25px;padding:0 6px;border:2px solid #050608;border-radius:999px;background:#24aaf2;color:#fff;display:grid;place-items:center;font-size:.68rem;font-weight:850}.count.empty{display:none}
+      @media(prefers-reduced-motion:reduce){.liquid-lens,.item,.item svg,.cart{transition:none!important}.dock.liquid-tracking .liquid-lens{transform:translate3d(var(--liquid-x),0,0)!important}}
       @media(max-width:350px){.item span{display:none}}
     `;
     const dock = document.createElement('nav');
     dock.className = 'dock';
     dock.setAttribute('aria-label','Navegación Dingloft');
     dock.innerHTML = `
+      <span class="liquid-lens" aria-hidden="true"></span>
       <a class="item" href="/ventas?app=1#inicio" data-route="home" aria-label="Inicio"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5.5 9.5V21h13V9.5"></path></svg><span>Inicio</span></a>
       <a class="item" href="/ventas?app=1#catalogo" data-route="catalog" aria-label="Catálogo"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg><span>Catálogo</span></a>
       <span class="cart-slot"><button class="cart" type="button" aria-label="Abrir carrito"><svg viewBox="0 0 24 24"><path d="M6 8h12l1 13H5z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="count empty">0</span></button></span>
@@ -459,11 +467,91 @@
     if (searchHost && focused) searchHost.style.pointerEvents='none';
   }
 
+  const liquidDockState={tracking:false,pointerId:null,startX:0,startY:0,moved:false,suppressClick:false,hover:null};
+  function liquidDock(){return dockRoot?.querySelector('.dock')||null}
+  function liquidTargets(){const d=liquidDock();return d?[...d.querySelectorAll('.item[data-route],.cart')]:[]}
+  function liquidTargetMetrics(el){
+    const d=liquidDock();if(!d||!el)return null;
+    const dr=d.getBoundingClientRect(),r=el.getBoundingClientRect();
+    const isCart=el.classList.contains('cart');
+    const w=Math.max(58,Math.min(isCart?70:r.width-5,104));
+    const x=Math.max(4,Math.min(dr.width-w-4,(r.left-dr.left)+(r.width-w)/2));
+    return{x,w,center:r.left+r.width/2,dr};
+  }
+  function setLiquidHover(el){
+    if(liquidDockState.hover===el)return;
+    liquidDockState.hover?.classList.remove('liquid-hover');
+    liquidDockState.hover=el||null;
+    liquidDockState.hover?.classList.add('liquid-hover');
+  }
+  function placeLiquidOn(el,{tracking=false,clientX=null}={}){
+    const d=liquidDock(),m=liquidTargetMetrics(el);if(!d||!m)return;
+    let x=m.x,glint=50;
+    if(tracking&&Number.isFinite(clientX)){
+      x=Math.max(4,Math.min(m.dr.width-m.w-4,clientX-m.dr.left-m.w/2));
+      glint=Math.max(10,Math.min(90,50+((clientX-m.center)/Math.max(1,m.w))*72));
+    }
+    d.style.setProperty('--liquid-x',`${x.toFixed(2)}px`);
+    d.style.setProperty('--liquid-w',`${m.w.toFixed(2)}px`);
+    d.style.setProperty('--liquid-glint',`${glint.toFixed(1)}%`);
+  }
+  function nearestLiquidTarget(clientX){
+    const list=liquidTargets();let best=null,dist=Infinity;
+    for(const el of list){const r=el.getBoundingClientRect(),d=Math.abs(clientX-(r.left+r.width/2));if(d<dist){dist=d;best=el}}
+    return best;
+  }
+  function activeLiquidTarget(){
+    const d=liquidDock();if(!d)return null;
+    const route=activeRoute();return d.querySelector(`.item[data-route="${route}"]`)||d.querySelector('.item[data-route="home"]');
+  }
+  function snapLiquidToActive(){
+    if(liquidDockState.tracking)return;
+    const d=liquidDock(),target=activeLiquidTarget();if(!d||!target)return;
+    d.classList.remove('liquid-tracking');setLiquidHover(null);placeLiquidOn(target);
+  }
+  function setupLiquidDock(){
+    const d=liquidDock();if(!d||d.dataset.liquidReady==='1')return;
+    d.dataset.liquidReady='1';
+    const endTracking=()=>{
+      if(!liquidDockState.tracking)return;
+      liquidDockState.tracking=false;liquidDockState.pointerId=null;
+      d.classList.remove('liquid-tracking');setLiquidHover(null);
+      requestAnimationFrame(()=>snapLiquidToActive());
+    };
+    d.addEventListener('pointerdown',e=>{
+      if(e.pointerType==='mouse'&&e.button!==0)return;
+      const target=e.target.closest?.('.item[data-route],.cart');if(!target)return;
+      liquidDockState.tracking=true;liquidDockState.pointerId=e.pointerId;liquidDockState.startX=e.clientX;liquidDockState.startY=e.clientY;liquidDockState.moved=false;
+      try{d.setPointerCapture(e.pointerId)}catch(_){}
+      d.classList.add('liquid-tracking');setLiquidHover(target);placeLiquidOn(target,{tracking:true,clientX:e.clientX});
+    },{passive:true});
+    d.addEventListener('pointermove',e=>{
+      if(!liquidDockState.tracking||e.pointerId!==liquidDockState.pointerId)return;
+      const dx=e.clientX-liquidDockState.startX,dy=e.clientY-liquidDockState.startY;
+      if(Math.abs(dx)>7&&Math.abs(dx)>Math.abs(dy)*.65)liquidDockState.moved=true;
+      const target=nearestLiquidTarget(e.clientX)||activeLiquidTarget();setLiquidHover(target);placeLiquidOn(target,{tracking:true,clientX:e.clientX});
+    },{passive:true});
+    d.addEventListener('pointerup',e=>{
+      if(e.pointerId!==liquidDockState.pointerId)return;
+      if(liquidDockState.moved){liquidDockState.suppressClick=true;setTimeout(()=>{liquidDockState.suppressClick=false},90)}
+      endTracking();
+    },{passive:true});
+    d.addEventListener('pointercancel',endTracking,{passive:true});
+    d.addEventListener('lostpointercapture',endTracking,{passive:true});
+    d.addEventListener('click',e=>{
+      if(!liquidDockState.suppressClick)return;
+      e.preventDefault();e.stopImmediatePropagation();liquidDockState.suppressClick=false;
+    },true);
+    requestAnimationFrame(()=>snapLiquidToActive());
+    window.addEventListener('resize',()=>requestAnimationFrame(snapLiquidToActive),{passive:true});
+  }
+
   function sync(){
     syncCartFocusChrome();
     if (!dockRoot) return;
     const route = activeRoute();
     dockRoot.querySelectorAll('.item[data-route]').forEach(el => el.classList.toggle('active', el.dataset.route === route));
+    snapLiquidToActive();
     const count = countCart();
     const badge = dockRoot.querySelector('.count');
     if (badge) { badge.textContent = String(count); badge.classList.toggle('empty', count < 1); }
@@ -496,6 +584,7 @@
     searchRoot = searchHost.attachShadow({mode:'open'});
     headerMarkup(headerRoot);
     dockMarkup(dockRoot);
+    setupLiquidDock();
     searchMarkup(searchRoot);
 
     // Append as direct body children. Search is last so it can sit above the dock while open.
