@@ -1,4 +1,6 @@
-/* APP SPLASH v16 */
+/* Dingloft Persistent Mobile/Tablet App Shell · v93
+   The shell never reloads between internal pages. Only the content iframe changes.
+   Header/search/bottom nav/cart live in the top document and remain mounted. */
 const DINGLOFT_BOOT_STARTED = performance.now();
 let DINGLOFT_BOOT_DONE = false;
 function dingloftSplashReady(){
@@ -22,56 +24,198 @@ setTimeout(dingloftSplashReady,5200);
 'use strict';
 const ua=navigator.userAgent||'';
 const IOS=/iPhone|iPad|iPod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-const ANDROID=/Android/i.test(ua);
 const MOBILE=/Android|iPhone|iPad|iPod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)||(navigator.maxTouchPoints>0&&matchMedia('(max-width:1024px)').matches);
 const q=new URLSearchParams(location.search);
-if(!MOBILE){const route=q.get('route')||'home';const src=q.get('src')||'';const dest=src||(route==='catalog'?'ventas.html#catalogo':route==='multitrack'?'multitrack.html':route==='account'?'account.html':'ventas.html');location.replace(dest);return;}
-const stage=document.getElementById('stage'),progress=document.getElementById('progress'),count=document.getElementById('count'),toastEl=document.getElementById('toast');let active=null,token=0,activeKey='';
-const toast=s=>{if(!toastEl)return;toastEl.textContent=s;toastEl.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>toastEl.classList.remove('show'),1600)};
-const sanitizeSrc=(raw)=>{try{const u=new URL(raw||'',location.href);if(u.origin!==location.origin)return'';let file=u.pathname.split('/').filter(Boolean).pop()||'index.html';if(!/\./.test(file))file+= '.html';if(!/^[A-Za-z0-9_.-]+\.html$/i.test(file))return'';u.searchParams.set('embed','1');return `${file}${u.search}${u.hash}`;}catch(_){return'';}};
-function info(route,params={}){if(route==='catalog')return{key:'catalog',src:'ventas.html?embed=1#catalogo'};if(route==='multitrack')return{key:'multitrack',src:'multitrack.html?embed=1'};if(route==='account')return{key:'account',src:'account.html?embed=1'};if(route==='page'){const src=sanitizeSrc(params.src||'');return src?{key:'page',src}:{key:'catalog',src:'ventas.html?embed=1#catalogo'};}return{key:'home',src:'ventas.html?embed=1#inicio'};}
-function qRoute(){return new URLSearchParams(location.search).get('route')||'home'}
-function appUrl(i){const u=new URL('/app.html',location.origin);u.searchParams.set('route',i.key);if(i.key==='page')u.searchParams.set('src',i.src.replace(/([?&])embed=1&?/,'$1').replace(/[?&]embed=1(?=#|$)/,''));return `${u.pathname}${u.search}`;}
-function mobileDirectUrl(route,params={}){
-  try{
-    if(route==='home') return '/ventas?app=1#inicio';
-    if(route==='catalog') return '/ventas?app=1#catalogo';
-    if(route==='multitrack') return '/multitrack?app=1';
-    if(route==='account') return '/account?app=1';
-    if(route==='page'){
-      const clean=sanitizeSrc(params.src||'');
-      if(!clean) return '/ventas?app=1#catalogo';
-      const u=new URL(clean,location.origin);
-      u.searchParams.delete('embed');
-      u.searchParams.set('app','1');
-      return `${u.pathname}${u.search}${u.hash}`;
-    }
-  }catch(_){}
-  return '/ventas?app=1#inicio';
+if(!MOBILE){
+  const route=q.get('route')||'home',src=q.get('src')||'';
+  const dest=src||(route==='catalog'?'ventas.html#catalogo':route==='multitrack'?'multitrack.html':route==='account'?'account.html':'ventas.html');
+  const shell=new URL('/desktop-shell.html',location.origin);shell.searchParams.set('src',dest);location.replace(`${shell.pathname}${shell.search}`);return;
 }
-function activeDock(key){const visual=key==='page'?'catalog':key;document.body.dataset.appRoute=visual;document.querySelectorAll('[data-route]').forEach(a=>a.classList.toggle('active',a.dataset.route===visual));window.__dingloftRefreshAdminButton?.();}
-function cartCount(){let n=0;try{const c=JSON.parse(localStorage.getItem('dingloft_cart')||'[]');if(Array.isArray(c))n=c.reduce((s,x)=>s+Math.max(0,Number(x?.qty||1)),0)}catch(_){}if(count){const prev=Number(count.textContent||0);count.textContent=String(n);if(prev!==n){count.classList.remove('bump');void count.offsetWidth;count.classList.add('bump');document.getElementById('cart')?.classList.add('cart-pop');setTimeout(()=>document.getElementById('cart')?.classList.remove('cart-pop'),420)}}}
-function mapHref(href,base){let u;try{u=new URL(href,base)}catch(_){return null}if(u.origin!==location.origin)return null;let file=(u.pathname.split('/').filter(Boolean).pop()||'index').toLowerCase().replace(/\.html$/,'');if(file==='admin'||file==='commerce-admin')return{external:true,url:u.href};if(file==='index'||file==='ventas'||file==='tienda'||file===''){if((u.hash||'').toLowerCase()==='#catalogo')return{route:'catalog'};if((u.hash||'').toLowerCase()==='#multitrack')return{route:'multitrack'};return{route:'home'}}if(file==='multitrack')return{route:'multitrack'};if(file==='account')return{route:'account'};const src=`${file}.html${u.search}${u.hash}`;return{route:'page',src};}
-function child(frame){try{const w=frame.contentWindow,d=w.document;d.documentElement.classList.add('dingloft-shell-view');d.documentElement.dataset.dingloftShell='mobile';if(d.body){d.body.classList.add('dingloft-shell-view');d.body.dataset.dingloftShell='mobile'}if(d.scrollingElement){d.scrollingElement.style.webkitOverflowScrolling='touch'}if(!d.getElementById('dl-shell-style')){const s=d.createElement('style');s.id='dl-shell-style';s.textContent=`@media(max-width:1024px){html.dingloft-shell-view,html.dingloft-shell-view body{background:#05070a!important;width:100%!important;max-width:100%!important;overflow-x:hidden!important;overflow-y:auto!important;height:auto!important;min-height:100%!important;overscroll-behavior-x:none!important;overscroll-behavior-y:contain!important}html.dingloft-shell-view body{padding-bottom:118px!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}html.dingloft-shell-view .navbar-glass,html.dingloft-shell-view .navbar.fixed-top,html.dingloft-shell-view .mobile-app-dock,html.dingloft-shell-view #mobileAppDock,html.dingloft-shell-view .btn-floating-cart,html.dingloft-shell-view .floating-cart,html.dingloft-shell-view .cart-fab,html.dingloft-shell-view [data-floating-cart]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}html.dingloft-shell-view .hero-section,html.dingloft-shell-view .mt-hero{padding-top:22px!important}html.dingloft-shell-view .mt-quickbar{top:0!important}html.dingloft-shell-view main{padding-top:0!important}html.dingloft-shell-view .premium-footer{padding-bottom:26px!important}html.dingloft-shell-view .hero-proof,html.dingloft-shell-view .trust-bar,html.dingloft-shell-view .category-grid,html.dingloft-shell-view .category-section>.row,html.dingloft-shell-view .steps,html.dingloft-shell-view .mt-filter-row,html.dingloft-shell-view .mt-seo-artists,html.dingloft-shell-view [data-horizontal-scroll]{touch-action:pan-x pan-y!important;overscroll-behavior-x:contain!important;-webkit-overflow-scrolling:touch!important}html.dingloft-shell-view .auth-page,html.dingloft-shell-view .login-page{min-height:calc(100dvh - 105px)!important}
-/* Cart inside mobile App Shell: bottom sheet, never side drawer */
-html.dingloft-shell-view .cart-overlay{position:fixed!important;inset:0!important;width:100%!important;height:100%!important;background:rgba(0,0,0,.58)!important;backdrop-filter:blur(10px)!important;-webkit-backdrop-filter:blur(10px)!important;z-index:1048!important;opacity:0!important;visibility:hidden!important;transition:opacity .22s ease,visibility .22s ease!important}
-html.dingloft-shell-view .cart-overlay.active{opacity:1!important;visibility:visible!important}
-html.dingloft-shell-view .cart-drawer{position:fixed!important;left:10px!important;right:10px!important;top:auto!important;bottom:max(10px,env(safe-area-inset-bottom))!important;width:auto!important;max-width:none!important;height:min(82dvh,760px)!important;max-height:calc(100dvh - 24px - env(safe-area-inset-top))!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:28px!important;background:linear-gradient(155deg,rgba(18,23,30,.985),rgba(7,10,14,.995))!important;box-shadow:0 28px 90px rgba(0,0,0,.68),inset 0 1px 0 rgba(255,255,255,.07)!important;backdrop-filter:blur(28px) saturate(150%)!important;-webkit-backdrop-filter:blur(28px) saturate(150%)!important;z-index:1052!important;overflow:hidden!important;transform:translateY(calc(100% + 135px)) scale(.975)!important;opacity:.96!important;visibility:visible!important;transition:transform .34s cubic-bezier(.16,1,.3,1),opacity .22s ease!important;will-change:transform!important}
-html.dingloft-shell-view .cart-drawer::before{content:''!important;display:block!important;position:absolute!important;z-index:3!important;top:8px!important;left:50%!important;transform:translateX(-50%)!important;width:42px!important;height:4px!important;border-radius:999px!important;background:rgba(255,255,255,.18)!important;pointer-events:none!important}
-html.dingloft-shell-view .cart-drawer.active{left:10px!important;right:10px!important;transform:translateY(0) scale(1)!important;opacity:1!important}html.dingloft-shell-view.cart-focus .cart-drawer,html.dingloft-shell-view body.cart-focus .cart-drawer{bottom:max(10px,env(safe-area-inset-bottom))!important;height:min(82dvh,760px)!important}
-html.dingloft-shell-view .cart-header{padding-top:23px!important;background:rgba(255,255,255,.015)!important;border-bottom:1px solid rgba(255,255,255,.08)!important}
-html.dingloft-shell-view #dl-cart-x{position:absolute!important;z-index:12!important;top:14px!important;right:14px!important;width:38px!important;height:38px!important;border-radius:14px!important;border:1px solid rgba(255,255,255,.12)!important;background:rgba(8,11,15,.78)!important;color:#f5f8fb!important;display:grid!important;place-items:center!important;font-size:25px!important;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif!important;line-height:1!important;box-shadow:0 10px 28px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.06)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;cursor:pointer!important;-webkit-tap-highlight-color:transparent!important}html.dingloft-shell-view #dl-cart-x:active{transform:scale(.92)!important;background:rgba(255,255,255,.10)!important}
-html.dingloft-shell-view .cart-items-container{overflow-y:auto!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}
-html.dingloft-shell-view .cart-footer{background:rgba(7,10,14,.96)!important;border-top:1px solid rgba(255,255,255,.08)!important;padding-bottom:max(16px,env(safe-area-inset-bottom))!important}
-html.dingloft-shell-view body.no-scroll,html.dingloft-shell-view body.cart-open{overflow:hidden!important}
-}`;d.head.appendChild(s)}const killLegacyDock=()=>{d.querySelectorAll('.mobile-app-dock,#mobileAppDock,.btn-floating-cart,.floating-cart,.cart-fab,[data-floating-cart]').forEach(el=>{el.style.setProperty('display','none','important');el.style.setProperty('visibility','hidden','important');el.style.setProperty('opacity','0','important');el.style.setProperty('pointer-events','none','important')})};killLegacyDock();if(!d.__dlDockObserver&&d.body){d.__dlDockObserver=new w.MutationObserver(killLegacyDock);d.__dlDockObserver.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']})}if(!d.__dlBridge){d.__dlBridge=1;d.addEventListener('click',e=>{const a=e.target instanceof w.Element?e.target.closest('a[href]'):null;if(!a||a.target==='_blank'||a.hasAttribute('download'))return;const m=mapHref(a.getAttribute('href'),w.location.href);if(!m)return;e.preventDefault();e.stopPropagation();if(m.external){window.top.location.href=m.url;return;}navigate(m.route,m,{push:true})},true)}const syncCartSheet=()=>{const drawer=d.querySelector('.cart-drawer,#cart-drawer');const opened=!!drawer?.classList.contains('active');document.body.classList.toggle('cart-sheet-open',opened);d.documentElement.classList.toggle('cart-focus',opened);d.body?.classList.toggle('cart-focus',opened)};const drawer=d.querySelector('.cart-drawer,#cart-drawer');if(drawer&&!d.getElementById('dl-cart-x')){const x=d.createElement('button');x.id='dl-cart-x';x.type='button';x.setAttribute('aria-label','Cerrar carrito');x.innerHTML='×';drawer.appendChild(x);x.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const close=d.querySelector('#close-cart-btn,.btn-close-cart');if(close&&close!==x){close.click()}else{drawer.classList.remove('active');d.querySelector('.cart-overlay,#cart-overlay')?.classList.remove('active');d.body?.classList.remove('no-scroll','cart-open','cart-focus');d.documentElement.classList.remove('cart-focus')}setTimeout(()=>{document.body.classList.remove('cart-sheet-open')},40)})}if(drawer&&!drawer.__dlShellObserved){drawer.__dlShellObserved=1;new w.MutationObserver(syncCartSheet).observe(drawer,{attributes:true,attributeFilter:['class','style']});syncCartSheet()}d.querySelectorAll('.btn-close-cart,#close-cart-btn,.cart-overlay').forEach(el=>el.addEventListener('click',()=>setTimeout(syncCartSheet,30)));
-if(IOS&&!w.__dlHorizontalLock){w.__dlHorizontalLock=1;let sx=0,sy=0,rail=null;const rails='[data-horizontal-scroll],.hero-proof,.trust-bar,.category-grid,.category-section > .row,.steps,.mt-filter-row,.mt-seo-artists,.tabs-header,.mt-filters,.mt-chip-row,.filter-row,.category-scroll,.product-tabs,.nav-pills,.shortcut-row,.horizontal-scroll,.table-scroll,.cards-scroll';const getRail=t=>{const el=t instanceof w.Element?t:null;const r=el?.closest?.(rails)||null;return r&&r.scrollWidth>r.clientWidth+3?r:null};d.addEventListener('touchstart',e=>{if(e.touches?.length===1){sx=e.touches[0].clientX;sy=e.touches[0].clientY;rail=getRail(e.target)}},{passive:true});d.addEventListener('touchmove',e=>{if(e.touches?.length!==1)return;const dx=e.touches[0].clientX-sx,dy=e.touches[0].clientY-sy;if(Math.abs(dx)<=Math.abs(dy)+3)return;if(rail&&rail.scrollWidth>rail.clientWidth+3)return;e.preventDefault()},{passive:false});d.addEventListener('touchend',()=>rail=null,{passive:true});d.addEventListener('touchcancel',()=>rail=null,{passive:true})}if(!w.__dlZoomGuard){w.__dlZoomGuard=1;['gesturestart','gesturechange','gestureend'].forEach(type=>d.addEventListener(type,e=>e.preventDefault(),{passive:false}));w.addEventListener('wheel',e=>{if(e.ctrlKey)e.preventDefault()},{passive:false});w.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&['+','=','-','0'].includes(e.key))e.preventDefault()},{passive:false})}}catch(_){}}
-function navigate(route,params={},opt={}){if(MOBILE){const direct=mobileDirectUrl(route,params);if(direct){if(progress)progress.classList.remove('show');location.replace(direct);return;}}const i=info(route,params);const id=++token;if(progress)progress.classList.add('show');activeDock(i.key);const f=document.createElement('iframe');f.className='frame in';f.allow='autoplay *; payment *; clipboard-read; clipboard-write';f.setAttribute('scrolling','yes');f.style.overflow='auto';f.style.webkitOverflowScrolling='touch';f.src=i.src;stage.appendChild(f);const loaded=()=>{if(id!==token){f.remove();return}child(f);requestAnimationFrame(()=>{f.classList.remove('in');f.classList.add('active')});const old=active;active=f;activeKey=i.key;if(old&&old!==f){old.classList.add('out');setTimeout(()=>old.remove(),240)}if(progress)progress.classList.remove('show');cartCount();dingloftSplashReady()};f.addEventListener('load',loaded,{once:true});if(!opt.pop){const url=appUrl(i);if(opt.replace)history.replaceState({},'',url);else if(opt.push!==false)history.pushState({},'',url)}}
+
+const stage=document.getElementById('stage');
+const progress=document.getElementById('progress');
+const count=document.getElementById('count');
+let active=null, token=0, activeKey='home';
+
+const sanitizeSrc=(raw)=>{try{
+  const u=new URL(raw||'',location.href);
+  if(u.origin!==location.origin)return'';
+  let file=u.pathname.split('/').filter(Boolean).pop()||'index.html';
+  if(!/\./.test(file))file+='.html';
+  if(!/^[A-Za-z0-9_.-]+\.html$/i.test(file))return'';
+  u.searchParams.delete('app');u.searchParams.delete('direct');u.searchParams.set('embed','1');
+  return `${file}${u.search}${u.hash}`;
+}catch(_){return'';}};
+
+function info(route,params={}){
+  if(route==='catalog')return{key:'catalog',src:'ventas.html?embed=1#catalogo'};
+  if(route==='multitrack')return{key:'multitrack',src:'multitrack.html?embed=1'};
+  if(route==='account')return{key:'account',src:'account.html?embed=1'};
+  if(route==='page'){
+    const src=sanitizeSrc(params.src||'');
+    return src?{key:'page',src}:{key:'catalog',src:'ventas.html?embed=1#catalogo'};
+  }
+  return{key:'home',src:'ventas.html?embed=1#inicio'};
+}
+function qRoute(){return new URLSearchParams(location.search).get('route')||'home'}
+function cleanPublicSrc(src=''){
+  return String(src).replace(/([?&])embed=1&?/,'$1').replace(/[?&]embed=1(?=#|$)/,'').replace(/\?$/,'');
+}
+function appUrl(i){
+  const u=new URL('/app',location.origin);u.searchParams.set('route',i.key);
+  if(i.key==='page')u.searchParams.set('src',cleanPublicSrc(i.src));
+  return `${u.pathname}${u.search}`;
+}
+function activeDock(key){
+  const visual=key==='page'?'catalog':key;
+  activeKey=key;
+  document.body.dataset.appRoute=visual;
+  document.querySelectorAll('[data-route]').forEach(a=>a.classList.toggle('active',a.dataset.route===visual));
+  window.__dingloftRefreshAdminButton?.();
+  window.dispatchEvent(new CustomEvent('dingloft:shell-route',{detail:{key,visual,version:93}}));
+}
+function cartCount(){
+  let n=0;try{const c=JSON.parse(localStorage.getItem('dingloft_cart')||'[]');if(Array.isArray(c))n=c.reduce((s,x)=>s+Math.max(1,Number(x?.qty??x?.quantity??1)||1),0)}catch(_){}
+  if(count)count.textContent=String(n);
+}
+function mapHref(href,base){
+  let u;try{u=new URL(href,base)}catch(_){return null}
+  if(u.origin!==location.origin)return null;
+  let file=(u.pathname.split('/').filter(Boolean).pop()||'index').toLowerCase().replace(/\.html$/,'');
+  if(file==='app'){
+    const route=u.searchParams.get('route')||'home';
+    return{route,src:u.searchParams.get('src')||''};
+  }
+  if(file==='admin'||file==='commerce-admin')return{external:true,url:u.href};
+  if(file==='index'||file==='ventas'||file==='tienda'||file===''){
+    if((u.hash||'').toLowerCase()==='#catalogo')return{route:'catalog'};
+    if((u.hash||'').toLowerCase()==='#multitrack')return{route:'multitrack'};
+    return{route:'home'};
+  }
+  if(file==='multitrack'||file==='multitracks')return{route:'multitrack'};
+  if(file==='account'||file==='cuenta')return{route:'account'};
+  return{route:'page',src:`${file}.html${u.search}${u.hash}`};
+}
+
+function shellNavigateHref(href,{push=true}={}){
+  const m=mapHref(href,location.href);
+  if(!m)return false;
+  if(m.external){location.href=m.url;return true;}
+  navigate(m.route,m,{push});
+  return true;
+}
+
+function child(frame){try{
+  const w=frame.contentWindow,d=w.document;
+  if(!d||!d.documentElement)return;
+  d.documentElement.classList.add('dingloft-shell-view');
+  d.documentElement.dataset.dingloftShell='mobile-v93';
+  if(d.body){d.body.classList.add('dingloft-shell-view');d.body.dataset.dingloftShell='mobile-v93'}
+  if(d.scrollingElement)d.scrollingElement.style.webkitOverflowScrolling='touch';
+  if(!d.getElementById('dl-shell-style-v93')){
+    const s=d.createElement('style');s.id='dl-shell-style-v93';s.textContent=`
+      @media(max-width:1024px){
+        html.dingloft-shell-view,html.dingloft-shell-view body{background:#05070a!important;width:100%!important;max-width:100%!important;overflow-x:hidden!important;overflow-y:auto!important;height:auto!important;min-height:100%!important;overscroll-behavior-x:none!important;overscroll-behavior-y:contain!important}
+        html.dingloft-shell-view body{padding-top:0!important;padding-bottom:24px!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
+        html.dingloft-shell-view #main-navbar,html.dingloft-shell-view nav.navbar-glass,html.dingloft-shell-view .navbar.navbar-glass,html.dingloft-shell-view nav.navbar.fixed-top,html.dingloft-shell-view .topbar,
+        html.dingloft-shell-view #mobileAppDock,html.dingloft-shell-view nav.mobile-app-dock,html.dingloft-shell-view .mobile-app-dock,html.dingloft-shell-view .dingloft-direct-top,html.dingloft-shell-view #dingloftDirectTop,html.dingloft-shell-view #dlDirectTop,html.dingloft-shell-view #dlDirectDock,
+        html.dingloft-shell-view #dlUniversalHeader,html.dingloft-shell-view #dlUniversalDock,html.dingloft-shell-view #dlGlobalChromeHost,
+        html.dingloft-shell-view .btn-floating-cart,html.dingloft-shell-view .floating-cart,html.dingloft-shell-view .cart-fab,html.dingloft-shell-view [data-floating-cart],
+        html.dingloft-shell-view .cart-overlay,html.dingloft-shell-view #cart-overlay,html.dingloft-shell-view .cart-drawer,html.dingloft-shell-view #cart-drawer,html.dingloft-shell-view .cart-brand-watermark{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+        html.dingloft-shell-view .hero-section,html.dingloft-shell-view .mt-hero{padding-top:18px!important}
+        html.dingloft-shell-view .mt-quickbar{top:0!important}
+        html.dingloft-shell-view main{padding-top:0!important}
+        html.dingloft-shell-view .premium-footer{padding-bottom:26px!important}
+        html.dingloft-shell-view .hero-proof,html.dingloft-shell-view .trust-bar,html.dingloft-shell-view .category-grid,html.dingloft-shell-view .category-section>.row,html.dingloft-shell-view .steps,html.dingloft-shell-view .mt-filter-row,html.dingloft-shell-view .mt-seo-artists,html.dingloft-shell-view [data-horizontal-scroll]{touch-action:pan-x pan-y!important;overscroll-behavior-x:contain!important;-webkit-overflow-scrolling:touch!important}
+        html.dingloft-shell-view .auth-page,html.dingloft-shell-view .login-page{min-height:calc(100dvh - 110px)!important}
+      }`;
+    d.head.appendChild(s);
+  }
+  const killLegacy=()=>d.querySelectorAll('#main-navbar,nav.navbar-glass,.navbar.navbar-glass,#mobileAppDock,nav.mobile-app-dock,.mobile-app-dock,.dingloft-direct-top,#dingloftDirectTop,#dlDirectTop,#dlDirectDock,#dlUniversalHeader,#dlUniversalDock,#dlGlobalChromeHost,.btn-floating-cart,.floating-cart,.cart-fab,[data-floating-cart]').forEach(el=>{el.style.setProperty('display','none','important');el.style.setProperty('pointer-events','none','important')});
+  killLegacy();
+  if(d.body&&!d.__dlShellV93Observer){d.__dlShellV93Observer=new w.MutationObserver(killLegacy);d.__dlShellV93Observer.observe(d.body,{childList:true,subtree:true})}
+  if(!d.__dlPersistentBridgeV93){
+    d.__dlPersistentBridgeV93=1;
+    d.addEventListener('click',e=>{
+      const a=e.target instanceof w.Element?e.target.closest('a[href]'):null;
+      if(!a||a.target==='_blank'||a.hasAttribute('download')||a.getAttribute('href')?.startsWith('mailto:')||a.getAttribute('href')?.startsWith('tel:'))return;
+      const m=mapHref(a.getAttribute('href'),w.location.href);if(!m)return;
+      const current=new URL(w.location.href);
+      let target;try{target=new URL(a.getAttribute('href'),w.location.href)}catch(_){return}
+      if(target.pathname===current.pathname&&target.search===current.search&&target.hash&&target.hash!==current.hash)return;
+      e.preventDefault();e.stopPropagation();
+      if(m.external){window.top.location.href=m.url;return;}
+      navigate(m.route,m,{push:true});
+    },true);
+  }
+  if(IOS&&!w.__dlHorizontalLockV93){
+    w.__dlHorizontalLockV93=1;let sx=0,sy=0,rail=null;
+    const rails='[data-horizontal-scroll],.hero-proof,.trust-bar,.category-grid,.category-section > .row,.steps,.mt-filter-row,.mt-seo-artists,.tabs-header,.mt-filters,.mt-chip-row,.filter-row,.category-scroll,.product-tabs,.nav-pills,.shortcut-row,.horizontal-scroll,.table-scroll,.cards-scroll';
+    const getRail=t=>{const el=t instanceof w.Element?t:null;const r=el?.closest?.(rails)||null;return r&&r.scrollWidth>r.clientWidth+3?r:null};
+    d.addEventListener('touchstart',e=>{if(e.touches?.length===1){sx=e.touches[0].clientX;sy=e.touches[0].clientY;rail=getRail(e.target)}},{passive:true});
+    d.addEventListener('touchmove',e=>{if(e.touches?.length!==1)return;const dx=e.touches[0].clientX-sx,dy=e.touches[0].clientY-sy;if(Math.abs(dx)<=Math.abs(dy)+3)return;if(rail&&rail.scrollWidth>rail.clientWidth+3)return;e.preventDefault()},{passive:false});
+    d.addEventListener('touchend',()=>rail=null,{passive:true});d.addEventListener('touchcancel',()=>rail=null,{passive:true});
+  }
+}catch(_){}}
+
+function navigate(route,params={},opt={}){
+  const i=info(route,params);const id=++token;
+  if(progress)progress.classList.add('show');
+  activeDock(i.key);
+  const f=document.createElement('iframe');
+  f.className='frame in';f.allow='autoplay *; payment *; clipboard-read; clipboard-write';f.setAttribute('scrolling','yes');f.style.overflow='auto';f.style.webkitOverflowScrolling='touch';f.src=i.src;
+  stage.appendChild(f);
+  let firstLoad=true;
+  f.addEventListener('load',()=>{
+    if(id!==token){f.remove();return;}
+    child(f);
+    let loadedInfo=i;
+    try {
+      const currentHref=f.contentWindow?.location?.href||'';
+      const mapped=mapHref(currentHref,currentHref);
+      if(mapped&&!mapped.external) loadedInfo=info(mapped.route,mapped);
+    } catch (_) {}
+    activeDock(loadedInfo.key);
+    if(firstLoad){
+      firstLoad=false;
+      requestAnimationFrame(()=>{f.classList.remove('in');f.classList.add('active')});
+      const old=active;active=f;
+      if(old&&old!==f){old.classList.add('out');setTimeout(()=>old.remove(),240)}
+    }
+    const state={route:loadedInfo.key,src:loadedInfo.key==='page'?cleanPublicSrc(loadedInfo.src):''};
+    history.replaceState(state,'',appUrl(loadedInfo));
+    if(progress)progress.classList.remove('show');
+    cartCount();dingloftSplashReady();
+    window.dispatchEvent(new CustomEvent('dingloft:shell-ready',{detail:{key:loadedInfo.key,version:93}}));
+  });
+  if(!opt.pop){const url=appUrl(i);if(opt.replace)history.replaceState({route:i.key,src:i.key==='page'?cleanPublicSrc(i.src):''},'',url);else if(opt.push!==false)history.pushState({route:i.key,src:i.key==='page'?cleanPublicSrc(i.src):''},'',url)}
+}
+
+window.DingloftPersistentShellV93={
+  version:93,
+  navigate:(route,params={})=>navigate(route,params,{push:true}),
+  navigateHref:(href)=>shellNavigateHref(href,{push:true}),
+  get activeKey(){return activeKey;},
+  get activeFrame(){return active;}
+};
+window.__DINGLOFT_PERSISTENT_SHELL_V93__=true;
+
 if(IOS){let sx=0,sy=0;document.addEventListener('touchstart',e=>{if(e.touches?.length===1){sx=e.touches[0].clientX;sy=e.touches[0].clientY}},{passive:true});document.addEventListener('touchmove',e=>{if(e.touches?.length!==1)return;const dx=e.touches[0].clientX-sx,dy=e.touches[0].clientY-sy;if(Math.abs(dx)>Math.abs(dy)+3)e.preventDefault()},{passive:false})}
-document.addEventListener('click',e=>{const a=e.target.closest?.('[data-route]');if(!a)return;e.preventDefault();navigate(a.dataset.route,{},{push:true})});
-const cart=document.getElementById('cart');if(cart)cart.onclick=()=>{try{if(active){const d=active.contentWindow.document;const drawer=d.querySelector('.cart-drawer,#cart-drawer');if(drawer?.classList.contains('active')){const close=d.querySelector('#close-cart-btn,.btn-close-cart');if(close){close.click();return}drawer.classList.remove('active');d.querySelector('.cart-overlay,#cart-overlay')?.classList.remove('active');d.body?.classList.remove('no-scroll','cart-open');document.body.classList.remove('cart-sheet-open');return}const b=d.querySelector('.btn-floating-cart.cart-btn-global,.cart-btn-global,#main-cart-btn');if(b){document.body.classList.add('cart-sheet-open');b.click();setTimeout(()=>{const opened=!!d.querySelector('.cart-drawer.active,#cart-drawer.active');document.body.classList.toggle('cart-sheet-open',opened);d.documentElement.classList.toggle('cart-focus',opened);d.body?.classList.toggle('cart-focus',opened)},60);return}}}catch(_){}navigate('home',{}, {push:true});setTimeout(()=>{try{const d=active?.contentWindow?.document;document.body.classList.add('cart-sheet-open');d?.querySelector('.btn-floating-cart.cart-btn-global,.cart-btn-global,#main-cart-btn')?.click();setTimeout(()=>{const opened=!!d?.querySelector('.cart-drawer.active,#cart-drawer.active');document.body.classList.toggle('cart-sheet-open',opened);d?.documentElement?.classList.toggle('cart-focus',opened);d?.body?.classList.toggle('cart-focus',opened)},60)}catch(_){}},320)};
 addEventListener('message',e=>{if(e.origin!==location.origin||!e.data||e.data.type!=='dingloft:navigate')return;navigate(e.data.route||'page',{src:e.data.src||''},{push:true})});
-addEventListener('popstate',()=>{const p=new URLSearchParams(location.search);navigate(p.get('route')||'home',{src:p.get('src')||''},{pop:true,push:false})});addEventListener('storage',e=>{if(e.key==='dingloft_cart')cartCount()});setInterval(cartCount,1200);
-const initial=info(qRoute(),{src:q.get('src')||''});history.replaceState({},'',appUrl(initial));navigate(initial.key,{src:q.get('src')||''},{replace:true,push:false});cartCount();
+addEventListener('popstate',e=>{const state=e.state||{};const p=new URLSearchParams(location.search);navigate(state.route||p.get('route')||'home',{src:state.src||p.get('src')||''},{pop:true,push:false})});
+addEventListener('storage',e=>{if(e.key==='dingloft_cart')cartCount()});
+addEventListener('dingloft:cart-sync',cartCount);addEventListener('dingloft:mobile-cart-updated',cartCount);
+setInterval(cartCount,1200);
+
+const initial=info(qRoute(),{src:q.get('src')||''});
+history.replaceState({route:initial.key,src:initial.key==='page'?cleanPublicSrc(initial.src):''},'',appUrl(initial));
+navigate(initial.key,{src:q.get('src')||''},{replace:true,push:false});
+cartCount();
 })();
-(() => {const online=document.getElementById('onlineState');const paint=()=>{if(!online)return;const span=online.querySelector('span:last-child');if(span)span.textContent=navigator.onLine?'Store online':'Sin conexión';online.style.opacity=navigator.onLine?'1':'.55'};addEventListener('online',paint);addEventListener('offline',paint);paint();const vv=visualViewport;if(vv){let base=Math.max(vv.height,innerHeight);const keyboard=()=>{base=Math.max(base,innerHeight);document.body.classList.toggle('keyboard-open',vv.height<base*.72)};vv.addEventListener('resize',keyboard);vv.addEventListener('scroll',keyboard);addEventListener('orientationchange',()=>setTimeout(()=>{base=Math.max(vv.height,innerHeight);keyboard()},250))}})();
+
+(() => {
+  const online=document.getElementById('onlineState');
+  const paint=()=>{if(!online)return;const span=online.querySelector('span:last-child');if(span)span.textContent=navigator.onLine?'Store online':'Sin conexión';online.style.opacity=navigator.onLine?'1':'.55'};
+  addEventListener('online',paint);addEventListener('offline',paint);paint();
+  const vv=visualViewport;if(vv){let base=Math.max(vv.height,innerHeight);const keyboard=()=>{base=Math.max(base,innerHeight);document.body.classList.toggle('keyboard-open',vv.height<base*.72)};vv.addEventListener('resize',keyboard);vv.addEventListener('scroll',keyboard);addEventListener('orientationchange',()=>setTimeout(()=>{base=Math.max(vv.height,innerHeight);keyboard()},250))}
+})();

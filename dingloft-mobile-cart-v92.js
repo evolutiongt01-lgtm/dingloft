@@ -1,4 +1,4 @@
-/* Dingloft Mobile Cart · v92
+/* Dingloft Mobile Cart · v93 persistent-shell build
    One independent cart UI for phones + tablets only.
    Desktop keeps every existing page/cart untouched. */
 (() => {
@@ -10,7 +10,7 @@
   if (!mobileTablet || !matchMedia('(max-width:1024px)').matches || window.self !== window.top) return;
   if (window.DingloftMobileCartV92) return;
 
-  const VERSION = 92;
+  const VERSION = 93;
   const CART_KEY = 'dingloft_cart';
   const HOST_ID = 'dlMobileCartV92';
   const WORKER = String(
@@ -298,7 +298,7 @@
   async function ensureCommerce() {
     if (typeof window.renderPayPalStable === 'function') return true;
     if (commercePromise) return commercePromise;
-    commercePromise = import('/dingloft-commerce.js?v=2.2.0').then(()=>true).catch(()=>false).finally(()=>{commercePromise=null});
+    commercePromise = import('/dingloft-commerce.js?v=2.2.1-shell93').then(()=>true).catch(()=>false).finally(()=>{commercePromise=null});
     return commercePromise;
   }
 

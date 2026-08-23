@@ -75,15 +75,40 @@ const oneCopyStyle = document.createElement("style");
 oneCopyStyle.textContent = `.qty-controls .qty-btn{display:none!important}.qty-controls .qty-value{min-width:22px;text-align:center}`;
 document.head.appendChild(oneCopyStyle);
 
+function currentContentUrl() {
+  try {
+    const frame = window.DingloftPersistentShellV93?.activeFrame;
+    const href = frame?.contentWindow?.location?.href;
+    if (href) {
+      const u = new URL(href, location.origin);
+      if (u.origin === location.origin) {
+        u.searchParams.delete("embed");
+        const file = u.pathname.split("/").filter(Boolean).pop() || "account.html";
+        return `${file}${u.search}${u.hash}`;
+      }
+    }
+  } catch (_) {}
+  return `${location.pathname.split('/').pop() || 'account.html'}${location.search || ''}${location.hash || ''}`;
+}
+
 function loginUrl() {
-  const next = `${location.pathname.split('/').pop() || 'index.html'}${location.search || ''}${location.hash || ''}`;
-  return `login.html?next=${encodeURIComponent(next)}`;
+  return `login.html?next=${encodeURIComponent(currentContentUrl())}`;
+}
+
+function navigateInternal(href) {
+  try {
+    if (window.DingloftPersistentShellV93?.navigateHref) {
+      window.DingloftPersistentShellV93.navigateHref(href);
+      return;
+    }
+  } catch (_) {}
+  location.href = href;
 }
 
 async function requireUser() {
   const user = auth.currentUser;
   if (!user) {
-    location.href = loginUrl();
+    navigateInternal(loginUrl());
     throw new Error("AUTH_REDIRECT");
   }
   return user;
@@ -188,7 +213,7 @@ function successAndGo(orderNumber = "") {
   try { localStorage.removeItem("dingloft_cart"); } catch (_) {}
   const suffix = orderNumber ? ` (${orderNumber})` : "";
   showMessage(`Compra confirmada${suffix}. Tus archivos ya están en Mi cuenta.`, "success");
-  location.href = `account.html?purchase=success${orderNumber ? `&order=${encodeURIComponent(orderNumber)}` : ""}`;
+  navigateInternal(`account.html?purchase=success${orderNumber ? `&order=${encodeURIComponent(orderNumber)}` : ""}`);
 }
 
 async function createOrderOnServer() {

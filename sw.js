@@ -1,4 +1,4 @@
-const VERSION = '92';
+const VERSION = '93';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -8,6 +8,7 @@ const CORE = [
   '/offline.html',
   '/launch',
   '/app?route=home',
+  '/app.html?route=home',
   '/desktop-shell?src=ventas.html',
   '/ventas',
   '/ventas?app=1',
@@ -45,20 +46,22 @@ const CORE = [
   '/producto?app=1',
   '/tienda',
   '/dingloft-app.js',
+  '/dingloft-app.js?v=93',
   '/desktop-shell.js',
   '/desktop-shell.js?v=89',
   '/desktop-global-nav.js',
   '/dingloft-ui-guard.js?v=55',
   '/dingloft-presence.js?v=55',
   '/mobile-shell-redirect.js',
+  '/mobile-shell-redirect.js?v=93',
   '/pwa-install.js',
-  '/dingloft-commerce.js?v=2.2.0',
+  '/dingloft-commerce.js?v=2.2.1-shell93',
   '/dingloft-cart-sync.js?v=91',
   '/pwa-runtime.js?v=77',
-  '/dingloft-mobile-nav-v71.js?v=91',
-  '/dingloft-mobile-cart-v92.js?v=92',
+  '/dingloft-mobile-nav-v71.js?v=93',
+  '/dingloft-mobile-cart-v92.js?v=93',
   '/multitrack-worker-gate.js?v=73',
-  '/manifest.webmanifest?v=46',
+  '/manifest.webmanifest?v=93',
   '/img/pwa-liquid-rounded-192-v17.png',
   '/img/pwa-liquid-rounded-512-v17.png',
   '/img/pwa-liquid-192-v5.png',
@@ -175,7 +178,7 @@ self.addEventListener('fetch', event => {
   }
 
   // Installed-app startup paints from cache immediately on clean routes.
-  const isFastAppRoute = isDocument && (url.pathname === '/launch' || url.searchParams.get('app') === '1');
+  const isFastAppRoute = isDocument && (url.pathname === '/launch' || url.pathname === '/app' || url.pathname === '/app.html' || url.searchParams.get('app') === '1');
   if (isFastAppRoute) {
     event.respondWith(fastAppNavigation(req));
     return;

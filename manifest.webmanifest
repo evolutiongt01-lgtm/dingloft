@@ -44,7 +44,7 @@
     {
       "name": "Catálogo",
       "short_name": "Catálogo",
-      "url": "/ventas?app=1#catalogo",
+      "url": "/app?route=catalog",
       "icons": [
         {
           "src": "/img/pwa-liquid-192-v5.png",
@@ -56,7 +56,7 @@
     {
       "name": "Multitracks",
       "short_name": "Multitracks",
-      "url": "/multitrack?app=1",
+      "url": "/app?route=multitrack",
       "icons": [
         {
           "src": "/img/pwa-liquid-192-v5.png",
@@ -68,7 +68,7 @@
     {
       "name": "Mi cuenta",
       "short_name": "Cuenta",
-      "url": "/account?app=1",
+      "url": "/app?route=account",
       "icons": [
         {
           "src": "/img/pwa-liquid-192-v5.png",

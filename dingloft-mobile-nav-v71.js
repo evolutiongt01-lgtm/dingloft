@@ -1,6 +1,6 @@
-/* Dingloft Mobile Shell v92 (served through the v71 filename for compatibility)
-   One independent mobile/tablet header + search + dock.
-   The independent mobile cart is loaded from dingloft-mobile-cart-v92.js. Desktop is untouched. */
+/* Dingloft Persistent Mobile Shell v93 (served through the v71 filename for compatibility)
+   Header + search + bottom nav remain mounted while only the content frame changes.
+   The independent mobile cart is loaded once and also remains mounted. Desktop stays on its persistent desktop shell. */
 (() => {
   'use strict';
 
@@ -9,6 +9,28 @@
   const mobile = /Android|iPhone|iPad|iPod/i.test(ua) || iOS || (navigator.maxTouchPoints > 0 && matchMedia('(max-width:1024px)').matches);
   if (!mobile || window.self !== window.top) return;
 
+  // v93: direct mobile/tablet pages enter the persistent App Shell immediately.
+  // Once inside /app, navigation swaps only the content iframe; this script/header never remounts.
+  try {
+    const bootParams = new URLSearchParams(location.search);
+    const bootPart = (location.pathname.split('/').filter(Boolean).pop() || 'index').toLowerCase().replace(/\.html$/,'');
+    if (bootParams.get('embed') !== '1' && !['app','admin','commerce-admin','launch'].includes(bootPart)) {
+      let route='page', src='';
+      const hash=location.hash||'';
+      if (['index','tienda','ventas',''].includes(bootPart)) route=/#catalogo/i.test(hash)?'catalog':'home';
+      else if (bootPart==='multitrack'||bootPart==='multitracks') route='multitrack';
+      else if (bootPart==='account'||bootPart==='cuenta') route='account';
+      else {
+        const u=new URL(location.href);u.searchParams.delete('app');u.searchParams.delete('direct');u.searchParams.delete('embed');
+        src=`${bootPart}.html${u.search}${u.hash}`;
+      }
+      const shell=new URL('/app',location.origin);shell.searchParams.set('route',route);if(route==='page'&&src)shell.searchParams.set('src',src);
+      document.documentElement.style.visibility='hidden';
+      location.replace(`${shell.pathname}${shell.search}`);
+      return;
+    }
+  } catch (_) {}
+
   // Stop every older bootstrap from creating another mobile chrome later.
   window.__DINGLOFT_MOBILE_CHROME_V70__ = true;
   window.__DINGLOFT_MOBILE_CHROME_V71__ = true;
@@ -16,13 +38,14 @@
   window.__DINGLOFT_MOBILE_NAV_V72__ = true;
   window.__DINGLOFT_MOBILE_NAV_V88__ = true;
   window.__DINGLOFT_MOBILE_SHELL_V92__ = true;
+  window.__DINGLOFT_MOBILE_SHELL_V93__ = true;
 
   const HEADER_ID = 'dlMobileHeaderV71';
   const DOCK_ID = 'dlMobileDockV71';
   const SEARCH_ID = 'dlMobileSearchV89';
   const CART_KEY = 'dingloft_cart';
   const OPEN_CART_KEY = 'dingloft_open_cart';
-  const MOBILE_CART_SRC = '/dingloft-mobile-cart-v92.js?v=92';
+  const MOBILE_CART_SRC = '/dingloft-mobile-cart-v92.js?v=93';
   let mobileCartLoadPromise = null;
   const WORKER = String(window.DINGLOFT_WORKER_BASE || 'https://autumn-breeze-dfa0.evolutiongt01.workers.dev').replace(/\/$/, '');
   const PRODUCT_FILES = new Set([
@@ -58,11 +81,49 @@
 
   function activeRoute(){
     const file = pathKey();
+    if (file === 'app') {
+      const q = new URLSearchParams(location.search);
+      const route = String(q.get('route') || document.body?.dataset?.appRoute || 'home').toLowerCase();
+      if (route === 'multitrack') return 'multitrack';
+      if (route === 'account') return 'account';
+      if (route === 'catalog') return 'catalog';
+      if (route === 'page') {
+        const src = String(q.get('src') || '');
+        let page = '';
+        try { page = (new URL(src, location.origin).pathname.split('/').filter(Boolean).pop() || '').toLowerCase().replace(/\.html$/,''); } catch (_) {}
+        if (page === 'multitrack') return 'multitrack';
+        if (page === 'account' || page === 'login' || page === 'register') return 'account';
+        return 'catalog';
+      }
+      return 'home';
+    }
     if (file === 'multitrack') return 'multitrack';
     if (PRODUCT_FILES.has(file) || file === 'tienda') return 'catalog';
     if (file === 'account' || file === 'login' || file === 'register') return 'account';
     if ((file === 'ventas' || file === 'index' || file === 'launch' || file === '') && /catalogo/i.test(location.hash || '')) return 'catalog';
     return 'home';
+  }
+
+  function persistentNavigate(href){
+    const shell = window.DingloftPersistentShellV93;
+    if (!shell?.navigateHref) return false;
+    try { return shell.navigateHref(href) !== false; } catch (_) { return false; }
+  }
+
+  function interceptPersistentLink(event, {closeSearchFirst=false}={}){
+    if (event.defaultPrevented || event.button > 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return false;
+    const a = event.target?.closest?.('a[href]');
+    if (!a || a.target === '_blank' || a.hasAttribute('download')) return false;
+    let u; try { u = new URL(a.href, location.href); } catch (_) { return false; }
+    if (u.origin !== location.origin || !/^https?:$/.test(u.protocol)) return false;
+    const part=(u.pathname.split('/').filter(Boolean).pop()||'').toLowerCase().replace(/\.html$/,'');
+    if (part === 'admin' || part === 'commerce-admin') return false;
+    if (!window.DingloftPersistentShellV93?.navigateHref) return false;
+    event.preventDefault();event.stopPropagation();
+    if (closeSearchFirst) closeSearch();
+    beginHeaderLoading();
+    persistentNavigate(u.href);
+    return true;
   }
 
   function countCart(){
@@ -443,8 +504,13 @@
     searchRoot.querySelector('.close')?.addEventListener('click', e => { e.preventDefault(); closeSearch(); });
     searchRoot.querySelector('.overlay')?.addEventListener('click', e => { if(e.target===searchRoot.querySelector('.overlay')) closeSearch(); });
     searchRoot.querySelector('input')?.addEventListener('input', e => renderSearch(e.target.value));
-    searchRoot.querySelector('.results')?.addEventListener('click', e => { const a=e.target.closest('a[href]');if(a){closeSearch();beginHeaderLoading();} });
-    dockRoot.querySelector('.cart')?.addEventListener('click', e => { e.preventDefault(); openCart(); });
+    searchRoot.querySelector('.results')?.addEventListener('click', e => {
+      const a=e.target.closest('a[href]');if(!a)return;
+      if (!interceptPersistentLink(e,{closeSearchFirst:true})) { closeSearch();beginHeaderLoading(); }
+    });
+    headerRoot.addEventListener('click', e => { interceptPersistentLink(e); });
+    dockRoot.addEventListener('click', e => { interceptPersistentLink(e); });
+    dockRoot.querySelector('.cart')?.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); openCart(); });
     // Preload the single global cart after the shell is visible so the first tap is instant.
     if ('requestIdleCallback' in window) requestIdleCallback(() => loadMobileCart(), {timeout:1200});
     else setTimeout(() => loadMobileCart(), 350);
@@ -485,6 +551,8 @@
   addEventListener('dingloft:cart-sync', sync);
   addEventListener('dingloft:mobile-cart-updated', sync);
   addEventListener('dingloft:mobile-cart-state', syncCartFocusChrome);
+  addEventListener('dingloft:shell-route', sync);
+  addEventListener('dingloft:shell-ready', ()=>{ sync(); finishHeaderLoading(180); });
   addEventListener('pageshow', sync, {passive:true});
   addEventListener('focus', sync, {passive:true});
 
