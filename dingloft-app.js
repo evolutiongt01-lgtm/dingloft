@@ -112,12 +112,13 @@ function child(frame){try{
   const childFile=((w.location.pathname.split('/').filter(Boolean).pop()||'').toLowerCase().replace(/\.html$/,''));
   const productView=SHELL_PRODUCT_FILES.has(childFile);
   d.documentElement.classList.add('dingloft-shell-view');
+  d.documentElement.classList.toggle('dingloft-shell-product-view',productView);
   // Keep the legacy value exactly "mobile": every program page already ships
   // with an iOS/mobile scroll repair keyed to this attribute. v93 used
   // "mobile-v93", so that repair never matched inside the persistent shell.
   d.documentElement.dataset.dingloftShell='mobile';
-  d.documentElement.dataset.dingloftShellVersion='99';
-  if(d.body){d.body.classList.add('dingloft-shell-view');d.body.dataset.dingloftShell='mobile';d.body.dataset.dingloftShellVersion='99'}
+  d.documentElement.dataset.dingloftShellVersion='100';
+  if(d.body){d.body.classList.add('dingloft-shell-view');d.body.classList.toggle('dingloft-shell-product-view',productView);d.body.dataset.dingloftShell='mobile';d.body.dataset.dingloftShellVersion='100'}
   if(d.scrollingElement)d.scrollingElement.style.webkitOverflowScrolling='touch';
   const unlockProductScroll=()=>{
     if(!productView||!d.body)return;
@@ -125,33 +126,39 @@ function child(frame){try{
     // never be allowed to leave the embedded document with a stale scroll lock.
     d.body.classList.remove('no-scroll','cart-open');
     const html=d.documentElement,body=d.body;
-    html.style.setProperty('height','auto','important');
+    // v100: ONE scrolling root only. The iframe/document viewport stays fixed
+    // and the product body owns the vertical scroll. This removes the double
+    // iOS scroll indicators (outer document + inner body) seen on program pages.
+    html.style.setProperty('height','100%','important');
     html.style.setProperty('min-height','100%','important');
-    html.style.setProperty('max-height','none','important');
+    html.style.setProperty('max-height','100%','important');
     html.style.setProperty('overflow-x','hidden','important');
-    html.style.setProperty('overflow-y','auto','important');
+    html.style.setProperty('overflow-y','hidden','important');
     html.style.setProperty('touch-action','pan-y','important');
-    html.style.setProperty('-webkit-overflow-scrolling','touch','important');
     body.style.setProperty('position','relative','important');
     body.style.setProperty('top','auto','important');
-    body.style.setProperty('height','auto','important');
+    body.style.setProperty('height','100%','important');
     body.style.setProperty('min-height','100%','important');
-    body.style.setProperty('max-height','none','important');
+    body.style.setProperty('max-height','100%','important');
     body.style.setProperty('overflow-x','hidden','important');
     body.style.setProperty('overflow-y','auto','important');
+    body.style.setProperty('overscroll-behavior-y','contain','important');
     body.style.setProperty('touch-action','pan-y','important');
     body.style.setProperty('-webkit-overflow-scrolling','touch','important');
   };
   unlockProductScroll();
-  if(!d.getElementById('dl-shell-style-v99')){
-    const s=d.createElement('style');s.id='dl-shell-style-v99';s.textContent=`
+  if(!d.getElementById('dl-shell-style-v100')){
+    const s=d.createElement('style');s.id='dl-shell-style-v100';s.textContent=`
       @media(max-width:1024px){
-        html.dingloft-shell-view,html.dingloft-shell-view body{background:#05070a!important;width:100%!important;max-width:100%!important;overflow-x:hidden!important;overflow-y:auto!important;height:auto!important;min-height:100%!important;max-height:none!important;overscroll-behavior-x:none!important;overscroll-behavior-y:auto!important}
+        html.dingloft-shell-view,html.dingloft-shell-view body{background:#05070a!important;width:100%!important;max-width:100%!important;overflow-x:hidden!important;overscroll-behavior-x:none!important}
         html.dingloft-shell-view body{position:relative!important;top:auto!important;padding-top:0!important;padding-bottom:24px!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
+        /* v100 · Product pages have exactly one vertical scroll owner: body. */
+        html.dingloft-shell-view.dingloft-shell-product-view{height:100%!important;min-height:100%!important;max-height:100%!important;overflow-y:hidden!important;overscroll-behavior-y:none!important}
+        html.dingloft-shell-view.dingloft-shell-product-view body.dingloft-shell-product-view{height:100%!important;min-height:100%!important;max-height:100%!important;overflow-y:auto!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
         /* v97: program pages must never inherit a hidden local-cart/search lock. */
-        html.dingloft-shell-view[data-dingloft-shell="mobile"] body.dingloft-shell-view.no-scroll,
-        html.dingloft-shell-view[data-dingloft-shell="mobile"] body.dingloft-shell-view.cart-open,
-        html.dingloft-shell-view[data-dingloft-shell="mobile"] body.dingloft-shell-view.no-scroll.cart-open{position:relative!important;top:auto!important;height:auto!important;min-height:100%!important;max-height:none!important;overflow-x:hidden!important;overflow-y:auto!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
+        html.dingloft-shell-view.dingloft-shell-product-view[data-dingloft-shell="mobile"] body.dingloft-shell-view.no-scroll,
+        html.dingloft-shell-view.dingloft-shell-product-view[data-dingloft-shell="mobile"] body.dingloft-shell-view.cart-open,
+        html.dingloft-shell-view.dingloft-shell-product-view[data-dingloft-shell="mobile"] body.dingloft-shell-view.no-scroll.cart-open{position:relative!important;top:auto!important;height:100%!important;min-height:100%!important;max-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
         html.dingloft-shell-view #main-navbar,html.dingloft-shell-view nav.navbar-glass,html.dingloft-shell-view .navbar.navbar-glass,html.dingloft-shell-view nav.navbar.fixed-top,html.dingloft-shell-view .topbar,
         html.dingloft-shell-view #mobileAppDock,html.dingloft-shell-view nav.mobile-app-dock,html.dingloft-shell-view .mobile-app-dock,html.dingloft-shell-view .dingloft-direct-top,html.dingloft-shell-view #dingloftDirectTop,html.dingloft-shell-view #dlDirectTop,html.dingloft-shell-view #dlDirectDock,
         html.dingloft-shell-view #dlUniversalHeader,html.dingloft-shell-view #dlUniversalDock,html.dingloft-shell-view #dlGlobalChromeHost,
@@ -174,7 +181,7 @@ function child(frame){try{
   // v99: never observe every style/class in the whole product document.
   // v97 did that and killLegacy() itself writes styles, which could create a
   // self-sustaining mutation loop while program pages were booting.
-  if(d.body&&!d.__dlShellV99Observer){
+  if(d.body&&!d.__dlShellV100Observer){
     const chromeSelector='#main-navbar,nav.navbar-glass,.navbar.navbar-glass,#mobileAppDock,nav.mobile-app-dock,.mobile-app-dock,.dingloft-direct-top,#dingloftDirectTop,#dlDirectTop,#dlDirectDock,#dlUniversalHeader,#dlUniversalDock,#dlGlobalChromeHost,.btn-floating-cart,.floating-cart,.cart-fab,[data-floating-cart]';
     const hideNode=node=>{
       if(!(node instanceof w.Element))return;
@@ -186,20 +193,21 @@ function child(frame){try{
         el.style.setProperty('pointer-events','none','important');
       });
     };
-    d.__dlShellV99Observer=new w.MutationObserver(records=>{
+    d.__dlShellV100Observer=new w.MutationObserver(records=>{
       for(const rec of records){
         for(const node of rec.addedNodes||[])hideNode(node);
       }
     });
-    d.__dlShellV99Observer.observe(d.body,{childList:true,subtree:true});
+    d.__dlShellV100Observer.observe(d.body,{childList:true,subtree:true});
   }
-  if(productView&&d.body&&!d.__dlShellV99BodyLockObserver){
-    d.__dlShellV99BodyLockObserver=new w.MutationObserver(()=>{
+  if(productView&&d.body&&!d.__dlShellV100BodyLockObserver){
+    d.__dlShellV100BodyLockObserver=new w.MutationObserver(()=>{
       if(d.body.classList.contains('no-scroll')||d.body.classList.contains('cart-open')){
         d.body.classList.remove('no-scroll','cart-open');
       }
+      unlockProductScroll();
     });
-    d.__dlShellV99BodyLockObserver.observe(d.body,{attributes:true,attributeFilter:['class']});
+    d.__dlShellV100BodyLockObserver.observe(d.body,{attributes:true,attributeFilter:['class']});
   }
   if(!d.__dlPersistentBridgeV93){
     d.__dlPersistentBridgeV93=1;
@@ -243,7 +251,7 @@ function navigate(route,params={},opt={}){
   if(progress)progress.classList.add('show');
   activeDock(i.key);
   const f=document.createElement('iframe');
-  f.className='frame in';f.allow='autoplay *; payment *; clipboard-read; clipboard-write';f.setAttribute('scrolling','yes');f.style.overflow='auto';f.style.webkitOverflowScrolling='touch';f.style.touchAction='pan-y';f.style.overscrollBehaviorY='auto';f.src=i.src;
+  f.className='frame in';f.allow='autoplay *; payment *; clipboard-read; clipboard-write';f.setAttribute('scrolling','no');f.style.overflow='hidden';f.style.touchAction='pan-y';f.style.overscrollBehavior='none';f.src=i.src;
   stage.appendChild(f);
   let firstLoad=true;
   f.addEventListener('load',()=>{
@@ -266,7 +274,7 @@ function navigate(route,params={},opt={}){
     history.replaceState(state,'',appUrl(loadedInfo));
     if(progress)progress.classList.remove('show');
     cartCount();dingloftSplashReady();
-    window.dispatchEvent(new CustomEvent('dingloft:shell-ready',{detail:{key:loadedInfo.key,version:99}}));
+    window.dispatchEvent(new CustomEvent('dingloft:shell-ready',{detail:{key:loadedInfo.key,version:100}}));
   });
   if(!opt.pop){const url=appUrl(i);if(opt.replace)history.replaceState({route:i.key,src:i.key==='page'?cleanPublicSrc(i.src):''},'',url);else if(opt.push!==false)history.pushState({route:i.key,src:i.key==='page'?cleanPublicSrc(i.src):''},'',url)}
 }
