@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><script src="/dingloft-mobile-nav-v71.js" data-dingloft-mobile-chrome="71"></script>
+<head><script src="/dingloft-cart-sync.js?v=89"></script><script src="/dingloft-mobile-nav-v71.js" data-dingloft-mobile-chrome="71"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Pianos Legendarios SF2 | Dingloft</title>
@@ -1050,6 +1050,7 @@
       });
 
       let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
+      cart = window.DingloftCartSync ? window.DingloftCartSync.normalize(cart) : cart;
       let couponApplied = false;
       const cartBtns = document.querySelectorAll('.cart-btn-global, #main-cart-btn');
       const cartDrawer = document.getElementById('cart-drawer');
@@ -1107,7 +1108,7 @@
             }
             cartItemsContainer.insertAdjacentHTML('beforeend', `
               <div class="cart-item">
-                <div class="cart-item-img"><img src="img/${item.img}.png" alt="${item.name}"></div>
+                <div class="cart-item-img ${item.cover ? 'has-cover' : ''}"><img src="${item.cover || item.imageUrl || `img/${item.img}.png`}" alt="${item.name}" onerror="this.onerror=null;this.src='img/dingloft.png';this.closest('.cart-item-img')?.classList.remove('has-cover');"></div>
                 <div class="cart-item-info">
                   <h4 class="cart-item-title">${item.name}</h4>
                   <p class="cart-item-desc">${item.type}</p>
@@ -1220,8 +1221,9 @@
           const price = parseFloat(this.getAttribute('data-price'));
           const img = this.getAttribute('data-img');
           const type = this.getAttribute('data-type');
-          const existingItem = cart.find(item => String(item.id) === String(id));
-          if (!existingItem) cart.push({ id, sku, name, price, img, type, qty: 1 });
+          const incoming = { id, sku, name, price, img, type, qty:1 };
+          if (window.DingloftCartSync) cart = window.DingloftCartSync.addOrMerge(cart, incoming);
+          else if (!cart.some(item => String(item.sku || item.id) === String(sku))) cart.push(incoming);
           syncDualBonusCart();
           updateCartUI();
           openCart();
@@ -1245,6 +1247,14 @@
       setInterval(renderDualTrialTimer,1000);
       loadDualTrialStatus();
       syncDualBonusCart();
+
+      const syncCartFromSharedState = (event) => {
+        const incoming = event?.detail?.cart || (() => { try { return JSON.parse(localStorage.getItem('dingloft_cart') || '[]'); } catch (_) { return []; } })();
+        cart = window.DingloftCartSync ? window.DingloftCartSync.normalize(incoming) : (Array.isArray(incoming) ? incoming : []);
+        updateCartUI();
+      };
+      window.addEventListener('dingloft:cart-sync', syncCartFromSharedState);
+      window.addEventListener('storage', event => { if (event.key === 'dingloft_cart') syncCartFromSharedState(); });
       updateCartUI();
     });
   </script>

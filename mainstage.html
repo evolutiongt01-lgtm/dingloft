@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><script src="/dingloft-mobile-nav-v71.js" data-dingloft-mobile-chrome="71"></script>
+<head><script src="/dingloft-cart-sync.js?v=89"></script><script src="/dingloft-mobile-nav-v71.js" data-dingloft-mobile-chrome="71"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Montage 8 & Nord Stage 3 | Dingloft</title>
@@ -468,7 +468,7 @@
                   <span class="fw-bold" style="color: var(--orange-btn);">$27.00</span>
                 </div>
                 <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Sonidos ruteados listos para tocar en vivo sin latencia.</p>
-                <button class="btn-orange-custom w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="15" data-name="Montage 8 & Nord Stage 3" data-price="27" data-img="mainstage" data-type="Librería vitalicia">
+                <button class="btn-orange-custom w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="15" data-sku="montage-8-nord-stage-3" data-name="Montage 8 & Nord Stage 3" data-price="27" data-img="mainstage" data-type="Librería vitalicia">
                   <i class="bi bi-cart3"></i> AGREGAR PAQUETE
                 </button>
               </div>
@@ -985,6 +985,7 @@
       });
 
       let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
+      cart = window.DingloftCartSync ? window.DingloftCartSync.normalize(cart) : cart;
       let couponApplied = false;
       const cartBtns = document.querySelectorAll('.cart-btn-global, #main-cart-btn');
       const cartDrawer = document.getElementById('cart-drawer');
@@ -1040,11 +1041,11 @@
             totalItems += item.qty;
             totalPrice += (item.price * item.qty);
             for(let i=0; i<item.qty; i++) {
-              window.cartItemsList.push({ name: item.name, img: item.img, type: item.type, price: couponApplied ? 0 : item.price });
+              window.cartItemsList.push({ id:item.id, sku:item.sku || item.id, name:item.name, img:item.img, imageUrl:item.imageUrl || '', cover:item.cover || '', type:item.type, price:couponApplied ? 0 : item.price });
             }
             cartItemsContainer.insertAdjacentHTML('beforeend', `
               <div class="cart-item">
-                <div class="cart-item-img"><img src="img/${item.img}.png" alt="${item.name}"></div>
+                <div class="cart-item-img ${item.cover ? 'has-cover' : ''}"><img src="${item.cover || item.imageUrl || `img/${item.img}.png`}" alt="${item.name}" onerror="this.onerror=null;this.src='img/dingloft.png';this.closest('.cart-item-img')?.classList.remove('has-cover');"></div>
                 <div class="cart-item-info">
                   <h4 class="cart-item-title">${item.name}</h4>
                   <p class="cart-item-desc">${item.type}</p>
@@ -1104,19 +1105,31 @@
           e.preventDefault();
           if(this.disabled) return;
           const id = this.getAttribute('data-id');
+          const sku = this.getAttribute('data-sku') || id || this.getAttribute('data-name');
           const name = this.getAttribute('data-name');
           const price = parseFloat(this.getAttribute('data-price'));
           const img = this.getAttribute('data-img');
+          const cover = this.getAttribute('data-cover') || '';
           const type = this.getAttribute('data-type');
-          
-          const existingItem = cart.find(item => item.id === id);
-          if (existingItem) existingItem.qty += 1;
-          else cart.push({ id, name, price, img, type, qty: 1 });
+
+          const incoming = { id, sku, name, price, img, cover, type, qty:1 };
+          cart = window.DingloftCartSync
+            ? window.DingloftCartSync.addOrMerge(cart, incoming)
+            : cart;
+          if (!window.DingloftCartSync && !cart.some(item => String(item.sku || item.id) === String(sku))) cart.push(incoming);
           
           updateCartUI();
           openCart();
         });
       });
+
+      const syncCartFromSharedState = (event) => {
+        const incoming = event?.detail?.cart || (() => { try { return JSON.parse(localStorage.getItem('dingloft_cart') || '[]'); } catch (_) { return []; } })();
+        cart = window.DingloftCartSync ? window.DingloftCartSync.normalize(incoming) : (Array.isArray(incoming) ? incoming : []);
+        updateCartUI();
+      };
+      window.addEventListener('dingloft:cart-sync', syncCartFromSharedState);
+      window.addEventListener('storage', event => { if (event.key === 'dingloft_cart') syncCartFromSharedState(); });
       updateCartUI();
     });
   </script>

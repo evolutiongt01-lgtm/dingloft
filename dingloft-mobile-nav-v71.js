@@ -18,7 +18,10 @@
 
   const HEADER_ID = 'dlMobileHeaderV71';
   const DOCK_ID = 'dlMobileDockV71';
+  const SEARCH_ID = 'dlMobileSearchV89';
   const CART_KEY = 'dingloft_cart';
+  const OPEN_CART_KEY = 'dingloft_open_cart';
+  const WORKER = String(window.DINGLOFT_WORKER_BASE || 'https://autumn-breeze-dfa0.evolutiongt01.workers.dev').replace(/\/$/, '');
   const PRODUCT_FILES = new Set([
     'autocad','cinema4d','dual','esword','logic','mainstage',
     'nord','office','producto','rhodes','sketchup','yamahakeys'
@@ -81,8 +84,12 @@
     if (overlay || drawer) {
       overlay?.classList.add('active');
       drawer?.classList.add('active');
-      /* v88: drawer may open, but global page scroll is never frozen here. */
+      return;
     }
+    // Generic/new Admin products use a direct checkout page and have no legacy drawer.
+    // Send the user to the shared store cart and ask v89 to open it automatically.
+    try { sessionStorage.setItem(OPEN_CART_KEY, '1'); } catch (_) {}
+    location.href = '/ventas?app=1#catalogo';
   }
 
   const removeSelectors = [
@@ -92,7 +99,7 @@
     '#dlUniversalHeader','#dlUniversalDock','#dlGlobalChromeHost'
   ];
 
-  function isOurNode(node){ return node?.id === HEADER_ID || node?.id === DOCK_ID; }
+  function isOurNode(node){ return node?.id === HEADER_ID || node?.id === DOCK_ID || node?.id === SEARCH_ID; }
 
   function removeLegacy(root = document){
     for (const selector of removeSelectors) {
@@ -157,11 +164,13 @@
       .brand{height:68px;display:flex;align-items:center;justify-content:center;gap:11px;color:#fff;text-decoration:none;-webkit-tap-highlight-color:transparent}
       .brand img{width:36px;height:36px;border-radius:12px;object-fit:cover;display:block;box-shadow:0 7px 19px rgba(0,0,0,.30)}
       .copy{line-height:1}.copy strong{display:block;color:#f7fbff;font-size:.90rem;font-weight:850;letter-spacing:.18em;white-space:nowrap}.copy small{display:block;margin-top:6px;color:#66758a;font-size:.50rem;font-weight:750;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap}
+      .search{position:absolute;left:max(12px,env(safe-area-inset-left,0px));bottom:15px;width:38px;height:38px;padding:0;border:1px solid rgba(255,255,255,.09);border-radius:13px;background:#0b1016;color:#d9e8f4;display:grid;place-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent}.search:active{transform:scale(.92)}.search svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
       .admin{position:absolute;right:max(12px,env(safe-area-inset-right,0px));bottom:15px;height:38px;padding:0 10px;border:1px solid rgba(112,220,255,.18);border-radius:13px;background:#0b1117;color:#a8eaff;text-decoration:none;display:none;align-items:center;gap:6px;font-size:.54rem;font-weight:780}.admin.show{display:flex}.admin svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
     `;
     const bar = document.createElement('div');
     bar.className = 'bar';
     bar.innerHTML = `
+      <button class="search" type="button" aria-label="Buscar en Dingloft"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg></button>
       <a class="brand" href="/ventas?app=1#inicio" aria-label="Dingloft inicio">
         <img src="/img/pwa-liquid-rounded-192-v17.png" alt="Dingloft">
         <span class="copy"><strong>DINGLOFT</strong><small>Evolution Group</small></span>
@@ -181,6 +190,96 @@
       </span>`;
     root.append(style, bar);
   }
+
+  function searchMarkup(root){
+    const style=document.createElement('style');
+    style.textContent=`
+      :host{display:block;width:100%;height:100%;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,"Segoe UI",sans-serif;color-scheme:dark}
+      *,*::before,*::after{box-sizing:border-box}
+      .overlay{position:absolute;inset:0;padding:calc(76px + env(safe-area-inset-top,0px)) 10px calc(84px + env(safe-area-inset-bottom,0px));display:flex;align-items:flex-start;justify-content:center;background:rgba(1,3,6,.76);backdrop-filter:blur(18px) saturate(135%);-webkit-backdrop-filter:blur(18px) saturate(135%);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s ease,visibility .22s ease}
+      .overlay.show{opacity:1;visibility:visible;pointer-events:auto}
+      .panel{width:min(680px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(255,255,255,.115);border-radius:24px;background:radial-gradient(circle at 86% -4%,rgba(112,94,255,.12),transparent 20rem),linear-gradient(155deg,rgba(15,19,25,.985),rgba(6,8,12,.99));box-shadow:0 34px 100px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.055);transform:translateY(-10px) scale(.985);transition:transform .30s cubic-bezier(.16,1,.3,1)}
+      .overlay.show .panel{transform:none}
+      .head{padding:13px;display:grid;grid-template-columns:1fr 42px;gap:9px;border-bottom:1px solid rgba(255,255,255,.07)}
+      .inputbox{height:48px;display:flex;align-items:center;gap:10px;padding:0 14px;border:1px solid rgba(112,220,255,.16);border-radius:15px;background:rgba(255,255,255,.035)}.inputbox svg{width:18px;height:18px;stroke:#7cdfff;fill:none;stroke-width:1.8}.inputbox input{min-width:0;flex:1;border:0;outline:0;background:transparent;color:#f4f8fb;font-size:16px;font-weight:650}.inputbox input::placeholder{color:#657282}
+      .close{width:42px;height:42px;align-self:center;border:1px solid rgba(255,255,255,.08);border-radius:13px;background:rgba(255,255,255,.025);color:#a7b2bf;display:grid;place-items:center}.close svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}
+      .meta{padding:10px 15px 7px;color:#687688;font-size:.55rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+      .results{min-height:120px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:5px 10px 13px;scrollbar-width:none}.results::-webkit-scrollbar{display:none}
+      .result{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:12px;align-items:center;padding:9px;border:1px solid transparent;border-radius:16px;color:#eef5fa;text-decoration:none;-webkit-tap-highlight-color:transparent}.result:active{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.07)}
+      .art{width:58px;height:58px;overflow:hidden;display:grid;place-items:center;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(255,255,255,.035)}.art img{width:78%;height:78%;object-fit:contain}.art.cover img{width:100%;height:100%;object-fit:cover}.copy{min-width:0}.copy strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.76rem}.copy small{display:block;margin-top:5px;color:#748295;font-size:.57rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.price{color:#9be8ff;font-size:.68rem;font-weight:850;white-space:nowrap}.empty{padding:28px 18px 34px;text-align:center;color:#718093;font-size:.72rem;line-height:1.6}.empty b{display:block;color:#d6e0e8;font-size:.82rem;margin-bottom:5px}
+      @media(max-width:380px){.panel{border-radius:20px}.result{grid-template-columns:52px minmax(0,1fr)}.art{width:52px;height:52px}.price{grid-column:2;justify-self:start}.meta{padding-left:13px}}
+      @media(prefers-reduced-motion:reduce){.overlay,.panel{transition:none!important}}
+    `;
+    const overlay=document.createElement('div');
+    overlay.className='overlay';
+    overlay.innerHTML=`<section class="panel" role="dialog" aria-modal="true" aria-label="Buscar productos Dingloft"><div class="head"><label class="inputbox"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg><input type="search" inputmode="search" autocomplete="off" placeholder="Buscar productos, software o Multitracks…" aria-label="Buscar"></label><button class="close" type="button" aria-label="Cerrar búsqueda"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"></path></svg></button></div><div class="meta">Catálogo en vivo · Admin sincronizado</div><div class="results"><div class="empty"><b>Busca en todo Dingloft</b>Los productos nuevos del Admin aparecen aquí automáticamente.</div></div></section>`;
+    root.append(style,overlay);
+  }
+
+  const searchNorm=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+  const searchSlug=value=>searchNorm(value).replace(/\s+/g,'-');
+  const searchImage=item=>{
+    const raw=String(item.cover||item.imageUrl||item.imagePath||item.img||'dingloft').trim();
+    if(/^(?:https?:)?\/\//i.test(raw)||raw.startsWith('data:')||raw.startsWith('blob:'))return raw;
+    if(raw.startsWith('/'))return raw;
+    if(raw.startsWith('img/'))return `/${raw}`;
+    return `/img/${raw||'dingloft'}.png`;
+  };
+  const searchList=data=>Array.isArray(data)?data:(Array.isArray(data?.products)?data.products:(Array.isArray(data?.catalog)?data.catalog:(Array.isArray(data?.items)?data.items:[])));
+  let searchCatalog=[];
+  let searchLoading=null;
+
+  async function loadSearchCatalog(){
+    if(searchLoading)return searchLoading;
+    searchLoading=(async()=>{
+      const [pr,mr]=await Promise.allSettled([
+        fetch(`${WORKER}/products/public`,{cache:'no-store',headers:{Accept:'application/json'}}),
+        fetch(`${WORKER}/multitracks/catalog`,{cache:'no-store',headers:{Accept:'application/json'}})
+      ]);
+      const products=pr.status==='fulfilled'&&pr.value.ok?searchList(await pr.value.json().catch(()=>({}))):[];
+      const md=mr.status==='fulfilled'&&mr.value.ok?await mr.value.json().catch(()=>({})):{};
+      const multitracks=Array.isArray(md?.multitracks)?md.multitracks:[];
+      const out=[],seen=new Set();
+      for(const p of products){
+        if(!p||p.active===false||String(p.type||'').toLowerCase().includes('multitrack'))continue;
+        const sku=String(p.sku||p.slug||searchSlug(p.name)).trim();
+        const key=`p:${searchSlug(sku||p.name)}`;if(!sku||seen.has(key))continue;seen.add(key);
+        out.push({kind:'product',sku,name:String(p.name||sku),type:String(p.category||p.type||'Producto digital'),price:Number(p.priceUsd??p.price),img:searchImage(p),aliases:Array.isArray(p.aliases)?p.aliases:[]});
+      }
+      for(const mt of multitracks){
+        if(!mt||mt.active===false||!Number.isFinite(Number(mt.price??mt.priceUsd)))continue;
+        const id=String(mt.id||'').trim();const name=String(mt.title||mt.name||id).trim();if(!id||!name)continue;
+        const key=`m:${id.toUpperCase()}`;if(seen.has(key))continue;seen.add(key);
+        out.push({kind:'multitrack',id,sku:String(mt.commerceSku||mt.sku||searchSlug(name)),name,type:`${mt.artist||'Dingloft'} · Multitrack`,price:Number(mt.price??mt.priceUsd),img:searchImage({...mt,cover:mt.cover||''}),cover:Boolean(mt.cover),artist:String(mt.artist||'')});
+      }
+      searchCatalog=out.sort((a,b)=>a.name.localeCompare(b.name,'es',{sensitivity:'base'}));
+      return searchCatalog;
+    })().finally(()=>{searchLoading=null});
+    return searchLoading;
+  }
+
+  function renderSearch(term=''){
+    const results=searchRoot?.querySelector('.results');if(!results)return;
+    const q=searchNorm(term);
+    let rows=searchCatalog;
+    if(q)rows=rows.filter(item=>searchNorm([item.name,item.sku,item.type,item.artist,...(item.aliases||[])].join(' ')).includes(q));
+    rows=rows.slice(0,q?24:10);
+    if(!rows.length){results.innerHTML=`<div class="empty"><b>${q?'Sin resultados':'Catálogo listo'}</b>${q?'Prueba con otro nombre, categoría o artista.':'Escribe para buscar en todos los productos.'}</div>`;return;}
+    results.innerHTML=rows.map(item=>{
+      const href=item.kind==='multitrack'?`/multitrack?app=1#mt-${encodeURIComponent(item.id)}`:`/producto?slug=${encodeURIComponent(item.sku)}&app=1`;
+      const price=Number.isFinite(item.price)?(item.price===0?'Gratis':`$${item.price.toFixed(2)}`):'';
+      return `<a class="result" href="${href}"><span class="art ${item.cover?'cover':''}"><img src="${item.img}" alt="" loading="lazy" onerror="this.onerror=null;this.src='/img/dingloft.png'"></span><span class="copy"><strong>${item.name.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}</strong><small>${item.type.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}</small></span><span class="price">${price}</span></a>`;
+    }).join('');
+  }
+
+  async function openSearch(){
+    const overlay=searchRoot?.querySelector('.overlay');const input=searchRoot?.querySelector('input');const results=searchRoot?.querySelector('.results');if(!overlay)return;
+    overlay.classList.add('show');
+    if(results)results.innerHTML='<div class="empty"><b>Actualizando catálogo…</b>Buscando productos disponibles.</div>';
+    setTimeout(()=>input?.focus(),80);
+    try{await loadSearchCatalog();renderSearch(input?.value||'')}catch(_){if(results)results.innerHTML='<div class="empty"><b>No pudimos cargar el catálogo</b>Revisa tu conexión e inténtalo otra vez.</div>'}
+  }
+  function closeSearch(){searchRoot?.querySelector('.overlay')?.classList.remove('show')}
 
   function dockMarkup(root){
     const style = document.createElement('style');
@@ -204,7 +303,7 @@
     root.append(style, dock);
   }
 
-  let headerHost, dockHost, headerRoot, dockRoot;
+  let headerHost, dockHost, searchHost, headerRoot, dockRoot, searchRoot;
   const LOAD_KEY = 'dingloft_mobile_header_loading_v72';
   let loadStopTimer = 0;
 
@@ -280,13 +379,26 @@
 
     headerHost = makeHost(HEADER_ID, 'header');
     dockHost = makeHost(DOCK_ID, 'dock');
+    searchHost = document.createElement('div');
+    searchHost.id = SEARCH_ID;
+    searchHost.style.cssText = 'position:fixed;inset:0;z-index:2147483647;pointer-events:none;display:block;';
     headerRoot = headerHost.attachShadow({mode:'open'});
     dockRoot = dockHost.attachShadow({mode:'open'});
+    searchRoot = searchHost.attachShadow({mode:'open'});
     headerMarkup(headerRoot);
     dockMarkup(dockRoot);
+    searchMarkup(searchRoot);
 
-    // Append as direct body children. The HOSTS themselves are fixed; no full-screen parent is involved.
-    document.body.append(headerHost, dockHost);
+    // Append as direct body children. Search is last so it can sit above the dock while open.
+    document.body.append(headerHost, dockHost, searchHost);
+    const searchOverlay = searchRoot.querySelector('.overlay');
+    const searchObserver = new MutationObserver(() => { searchHost.style.pointerEvents = searchOverlay?.classList.contains('show') ? 'auto' : 'none'; });
+    if(searchOverlay) searchObserver.observe(searchOverlay,{attributes:true,attributeFilter:['class']});
+    headerRoot.querySelector('.search')?.addEventListener('click', e => { e.preventDefault(); openSearch(); });
+    searchRoot.querySelector('.close')?.addEventListener('click', e => { e.preventDefault(); closeSearch(); });
+    searchRoot.querySelector('.overlay')?.addEventListener('click', e => { if(e.target===searchRoot.querySelector('.overlay')) closeSearch(); });
+    searchRoot.querySelector('input')?.addEventListener('input', e => renderSearch(e.target.value));
+    searchRoot.querySelector('.results')?.addEventListener('click', e => { const a=e.target.closest('a[href]');if(a){closeSearch();beginHeaderLoading();} });
     dockRoot.querySelector('.cart')?.addEventListener('click', e => { e.preventDefault(); openCart(); });
     wireLoadingLinks(headerRoot);
     wireLoadingLinks(dockRoot);
@@ -315,6 +427,7 @@
       history[name] = function(...args){ const out = original.apply(this,args); queueMicrotask(sync); return out; };
     } catch (_) {}
   });
+  addEventListener('keydown', event => { if (event.key === 'Escape') closeSearch(); });
   addEventListener('popstate', sync, {passive:true});
   addEventListener('hashchange', sync, {passive:true});
   addEventListener('storage', e => { if (e.key === CART_KEY) sync(); });

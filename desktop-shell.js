@@ -40,7 +40,7 @@ function publicSrc(src){return src.replace(/([?&])embed=desktop&?/,'$1').replace
 function shellUrl(src){return prettyPathForSrc(src)}
 function classify(src){try{const u=new URL(src,location.origin);const file=(u.pathname.split('/').pop()||'index.html').toLowerCase();return{home:homeFiles.has(file),multitracks:file==='multitrack.html',account:file==='account.html'};}catch(_){return{}}}
 const navActions=document.getElementById('desktopNavActions'),navGlider=document.getElementById('navGlider');
-const navAdmin=document.getElementById('navAdmin');let adminSession=false,currentSrc='';const navButtons=[document.getElementById('navHome'),navAdmin,document.getElementById('navMultitracks'),document.getElementById('navAccount')].filter(Boolean);
+const navAdmin=document.getElementById('navAdmin'),navSearch=document.getElementById('navSearch');let adminSession=false,currentSrc='';const navButtons=[document.getElementById('navHome'),navSearch,navAdmin,document.getElementById('navMultitracks'),document.getElementById('navAccount')].filter(Boolean);
 function moveNavGlider(el){if(!navGlider||!el)return;navGlider.style.width=`${el.offsetWidth}px`;navGlider.style.transform=`translateX(${el.offsetLeft}px)`;navGlider.style.opacity='1'}
 function syncNavGlider(){const activeBtn=navButtons.find(btn=>btn.classList.contains('active'))||document.getElementById('navHome');requestAnimationFrame(()=>moveNavGlider(activeBtn))}
 navButtons.forEach(btn=>btn.addEventListener('pointerenter',()=>moveNavGlider(btn)));
@@ -57,6 +57,63 @@ if(!d.__dingloftDesktopBridge){d.__dingloftDesktopBridge=1;d.addEventListener('c
 const t=(d.title||'').trim();if(t)document.title=t.includes('Dingloft')?t:`${t} · Dingloft`;
 }catch(_){}}
 function navigate(raw,opt={}){const src=cleanSrc(raw);if(!src)return;const id=++seq;paint(src);const loadState=beginNavLoad();const f=document.createElement('iframe');f.className='frame';f.allow='autoplay *; payment *; clipboard-read; clipboard-write';f.src=src;stage.appendChild(f);f.addEventListener('load',()=>{if(id!==seq){f.remove();return}prepare(f);requestAnimationFrame(()=>f.classList.add('active'));hideDesktopSplash();const old=active;active=f;if(old&&old!==f){old.classList.add('out');setTimeout(()=>old.remove(),220)}endNavLoad(loadState)},{once:true});if(!opt.pop){const url=shellUrl(src);if(opt.replace)history.replaceState({src:publicSrc(src)},'',url);else if(opt.push!==false)history.pushState({src:publicSrc(src)},'',url)}}
+
+/* ===== Dynamic catalog search · v89 ===== */
+const SEARCH_WORKER=String(window.DINGLOFT_WORKER_BASE||'https://autumn-breeze-dfa0.evolutiongt01.workers.dev').replace(/\/$/,'');
+const searchOverlay=document.getElementById('desktopSearchOverlay'),searchInput=document.getElementById('desktopSearchInput'),searchResults=document.getElementById('desktopSearchResults'),searchClose=document.getElementById('desktopSearchClose');
+let searchCatalog=[],searchLoadPromise=null;
+const sNorm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+const sSlug=v=>sNorm(v).replace(/\s+/g,'-');
+const sEsc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sImage=item=>{const raw=String(item?.cover||item?.imageUrl||item?.imagePath||item?.img||'dingloft').trim();if(/^(?:https?:)?\/\//i.test(raw)||raw.startsWith('data:')||raw.startsWith('blob:'))return raw;if(raw.startsWith('/'))return raw;if(raw.startsWith('img/'))return `/${raw}`;return `/img/${raw||'dingloft'}.png`};
+const sList=data=>Array.isArray(data)?data:(Array.isArray(data?.products)?data.products:(Array.isArray(data?.catalog)?data.catalog:(Array.isArray(data?.items)?data.items:[])));
+async function loadDesktopSearchCatalog(){
+  if(searchLoadPromise)return searchLoadPromise;
+  searchLoadPromise=(async()=>{
+    const [pr,mr]=await Promise.allSettled([
+      fetch(`${SEARCH_WORKER}/products/public`,{cache:'no-store',headers:{Accept:'application/json'}}),
+      fetch(`${SEARCH_WORKER}/multitracks/catalog`,{cache:'no-store',headers:{Accept:'application/json'}})
+    ]);
+    const products=pr.status==='fulfilled'&&pr.value.ok?sList(await pr.value.json().catch(()=>({}))):[];
+    const md=mr.status==='fulfilled'&&mr.value.ok?await mr.value.json().catch(()=>({})):{};
+    const multitracks=Array.isArray(md?.multitracks)?md.multitracks:[];
+    const out=[],seen=new Set();
+    for(const p of products){
+      if(!p||p.active===false||String(p.type||'').toLowerCase().includes('multitrack'))continue;
+      const sku=String(p.sku||p.slug||sSlug(p.name)).trim(),key=`p:${sSlug(sku||p.name)}`;if(!sku||seen.has(key))continue;seen.add(key);
+      out.push({kind:'product',sku,name:String(p.name||sku),type:String(p.category||p.type||'Producto digital'),price:Number(p.priceUsd??p.price),img:sImage(p),aliases:Array.isArray(p.aliases)?p.aliases:[]});
+    }
+    for(const mt of multitracks){
+      if(!mt||mt.active===false||!Number.isFinite(Number(mt.price??mt.priceUsd)))continue;
+      const id=String(mt.id||'').trim(),name=String(mt.title||mt.name||id).trim();if(!id||!name)continue;const key=`m:${id.toUpperCase()}`;if(seen.has(key))continue;seen.add(key);
+      out.push({kind:'multitrack',id,sku:String(mt.commerceSku||mt.sku||sSlug(name)),name,type:`${mt.artist||'Dingloft'} · Multitrack`,artist:String(mt.artist||''),price:Number(mt.price??mt.priceUsd),img:sImage({...mt,cover:mt.cover||''}),cover:Boolean(mt.cover)});
+    }
+    searchCatalog=out.sort((a,b)=>a.name.localeCompare(b.name,'es',{sensitivity:'base'}));
+    return searchCatalog;
+  })().finally(()=>{searchLoadPromise=null});
+  return searchLoadPromise;
+}
+function renderDesktopSearch(term=''){
+  if(!searchResults)return;const q=sNorm(term);let rows=searchCatalog;
+  if(q)rows=rows.filter(item=>sNorm([item.name,item.sku,item.type,item.artist,...(item.aliases||[])].join(' ')).includes(q));
+  rows=rows.slice(0,q?30:12);
+  if(!rows.length){searchResults.innerHTML=`<div class="dl-search-empty"><b>${q?'Sin resultados':'Catálogo listo'}</b>${q?'Prueba con otro nombre, categoría o artista.':'Escribe para buscar en todos los productos.'}</div>`;return}
+  searchResults.innerHTML=rows.map((item,index)=>{const price=Number.isFinite(item.price)?(item.price===0?'Gratis':`$${item.price.toFixed(2)}`):'';return `<a class="dl-search-result" href="#" data-search-index="${index}" data-search-key="${sEsc(item.kind==='multitrack'?item.id:item.sku)}"><span class="dl-search-art ${item.cover?'cover':''}"><img src="${sEsc(item.img)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='/img/dingloft.png'"></span><span class="dl-search-copy"><strong>${sEsc(item.name)}</strong><small>${sEsc(item.type)}</small></span><span class="dl-search-price">${sEsc(price)}</span></a>`}).join('');
+  // Store current filtered rows on the container; DOM indices refer to this exact slice.
+  searchResults.__rows=rows;
+}
+async function openDesktopSearch(){
+  if(!searchOverlay)return;searchOverlay.classList.add('show');searchOverlay.setAttribute('aria-hidden','false');moveNavGlider(navSearch||document.getElementById('navHome'));if(searchResults)searchResults.innerHTML='<div class="dl-search-empty"><b>Actualizando catálogo…</b>Buscando productos disponibles.</div>';setTimeout(()=>searchInput?.focus(),70);
+  try{await loadDesktopSearchCatalog();renderDesktopSearch(searchInput?.value||'')}catch(_){if(searchResults)searchResults.innerHTML='<div class="dl-search-empty"><b>No pudimos cargar el catálogo</b>Revisa tu conexión e inténtalo otra vez.</div>'}
+}
+function closeDesktopSearch(){if(!searchOverlay)return;searchOverlay.classList.remove('show');searchOverlay.setAttribute('aria-hidden','true');syncNavGlider()}
+navSearch?.addEventListener('click',e=>{e.preventDefault();openDesktopSearch()});
+searchClose?.addEventListener('click',e=>{e.preventDefault();closeDesktopSearch()});
+searchInput?.addEventListener('input',e=>renderDesktopSearch(e.target.value));
+searchOverlay?.addEventListener('click',e=>{if(e.target===searchOverlay)closeDesktopSearch()});
+searchResults?.addEventListener('click',e=>{const a=e.target.closest?.('[data-search-index]');if(!a)return;e.preventDefault();const rows=searchResults.__rows||[];const item=rows[Number(a.dataset.searchIndex)];if(!item)return;closeDesktopSearch();navigate(item.kind==='multitrack'?`multitrack.html#mt-${encodeURIComponent(item.id)}`:`producto.html?slug=${encodeURIComponent(item.sku)}`,{push:true})});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&searchOverlay?.classList.contains('show'))closeDesktopSearch()});
+
 document.addEventListener('click',e=>{const a=e.target.closest?.('[data-shell-link]');if(!a)return;e.preventDefault();navigate(a.getAttribute('href'),{push:true})});
 addEventListener('message',e=>{if(e.origin!==location.origin||!e.data)return;if(e.data.type==='dingloft:admin-state'){adminSession=e.data.isAdmin===true;try{sessionStorage.setItem('dingloft_admin_nav',adminSession?'1':'0')}catch(_){}syncAdminNav();return}if(e.data.type==='dingloft:desktop-navigate')navigate(e.data.src||'index.html',{push:true})});try{adminSession=sessionStorage.getItem('dingloft_admin_nav')==='1'}catch(_){}
 addEventListener('popstate',e=>{const src=e.state?.src||fileFromPublicPath(location.pathname)||'ventas.html';navigate(src,{pop:true,push:false})});

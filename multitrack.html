@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="es">
-<head><script src="/dingloft-mobile-nav-v71.js" data-dingloft-mobile-chrome="71"></script>
+<head><script src="/dingloft-cart-sync.js?v=89"></script><script src="/dingloft-mobile-nav-v71.js" data-dingloft-mobile-chrome="71"></script>
 <script>try{if(new URLSearchParams(location.search).get('app')==='1')document.documentElement.classList.add('dingloft-direct-app')}catch(_){}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta charset="utf-8"/>
@@ -3276,6 +3276,7 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
   </script><script>
     document.addEventListener('DOMContentLoaded', () => {
       let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
+      cart = window.DingloftCartSync ? window.DingloftCartSync.normalize(cart) : cart;
       cart = cart.map(item => {
         const mt = (window.DINGLOFT_MULTITRACKS || []).find(track => track.id === item.id);
         if (mt?.cover) item.cover = mt.cover;
@@ -3399,13 +3400,14 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
                 sku: item.sku || mtCatalogItem?.sku || item.id,
                 name: item.name,
                 img: item.img,
+                imageUrl: item.imageUrl || '',
                 cover: item.cover || mtCatalogItem?.cover || '',
                 type: item.type,
                 price: couponApplied ? 0 : item.price
               });
             }
 
-            const cartImageSrc = item.cover || `img/${item.img}.png`;
+            const cartImageSrc = item.cover || item.imageUrl || `img/${item.img}.png`;
             const cartImageClass = item.cover ? 'has-cover' : '';
             const itemHTML = `
               <div class="cart-item">
@@ -3534,7 +3536,6 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
         } else {
           cart.push({ id, sku, name, price, img, cover, type, qty: 1 });
         }
-
         updateCartUI();
 
         cartBtns.forEach(btn => {
@@ -3561,6 +3562,15 @@ body.multitrack-page{--mt-panel:#0a0d12;--mt-line:rgba(255,255,255,.09);backgrou
           openCart();
         }, 450);
       });
+
+      const syncCartFromSharedState = (event) => {
+        const incoming = event?.detail?.cart || (() => { try { return JSON.parse(localStorage.getItem('dingloft_cart') || '[]'); } catch (_) { return []; } })();
+        cart = window.DingloftCartSync ? window.DingloftCartSync.normalize(incoming) : (Array.isArray(incoming) ? incoming : []);
+        updateCartUI();
+      };
+      window.addEventListener('dingloft:cart-sync', syncCartFromSharedState);
+      window.addEventListener('storage', event => { if (event.key === 'dingloft_cart') syncCartFromSharedState(); });
+      updateCartUI();
     });
   </script><script id="dingloft-v3-interactions">
     (() => {
