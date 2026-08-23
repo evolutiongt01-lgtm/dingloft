@@ -1,4 +1,4 @@
-/* Dingloft Persistent Mobile/Tablet App Shell · v97 · Product Scroll Repair
+/* Dingloft Persistent Mobile/Tablet App Shell · v101 · Route-Aware Scroll
    The shell never reloads between internal pages. Only the content iframe changes.
    Header/search/bottom nav/cart live in the top document and remain mounted. */
 const DINGLOFT_BOOT_STARTED = performance.now();
@@ -62,6 +62,12 @@ function qRoute(){return new URLSearchParams(location.search).get('route')||'hom
 function cleanPublicSrc(src=''){
   return String(src).replace(/([?&])embed=1&?/,'$1').replace(/[?&]embed=1(?=#|$)/,'').replace(/\?$/,'');
 }
+function isProductInfo(i={}){
+  if(i.key!=='page')return false;
+  const raw=String(i.src||'').split('#')[0].split('?')[0];
+  const file=(raw.split('/').filter(Boolean).pop()||'').toLowerCase().replace(/\.html$/,'');
+  return SHELL_PRODUCT_FILES.has(file);
+}
 function appUrl(i){
   const u=new URL('/app',location.origin);u.searchParams.set('route',i.key);
   if(i.key==='page')u.searchParams.set('src',cleanPublicSrc(i.src));
@@ -117,8 +123,8 @@ function child(frame){try{
   // with an iOS/mobile scroll repair keyed to this attribute. v93 used
   // "mobile-v93", so that repair never matched inside the persistent shell.
   d.documentElement.dataset.dingloftShell='mobile';
-  d.documentElement.dataset.dingloftShellVersion='100';
-  if(d.body){d.body.classList.add('dingloft-shell-view');d.body.classList.toggle('dingloft-shell-product-view',productView);d.body.dataset.dingloftShell='mobile';d.body.dataset.dingloftShellVersion='100'}
+  d.documentElement.dataset.dingloftShellVersion='101';
+  if(d.body){d.body.classList.add('dingloft-shell-view');d.body.classList.toggle('dingloft-shell-product-view',productView);d.body.dataset.dingloftShell='mobile';d.body.dataset.dingloftShellVersion='101'}
   if(d.scrollingElement)d.scrollingElement.style.webkitOverflowScrolling='touch';
   const unlockProductScroll=()=>{
     if(!productView||!d.body)return;
@@ -251,7 +257,21 @@ function navigate(route,params={},opt={}){
   if(progress)progress.classList.add('show');
   activeDock(i.key);
   const f=document.createElement('iframe');
-  f.className='frame in';f.allow='autoplay *; payment *; clipboard-read; clipboard-write';f.setAttribute('scrolling','no');f.style.overflow='hidden';f.style.touchAction='pan-y';f.style.overscrollBehavior='none';f.src=i.src;
+  const productRoute=isProductInfo(i);
+  f.className='frame in';f.allow='autoplay *; payment *; clipboard-read; clipboard-write';
+  // v101: product pages use the single internal body scroller from v100.
+  // Home, Catalog, Multitracks and Account keep normal iframe scrolling.
+  if(productRoute){
+    f.setAttribute('scrolling','no');
+    f.style.overflow='hidden';
+    f.style.overscrollBehavior='none';
+  }else{
+    f.setAttribute('scrolling','yes');
+    f.style.overflow='auto';
+    f.style.webkitOverflowScrolling='touch';
+    f.style.overscrollBehaviorY='auto';
+  }
+  f.style.touchAction='pan-y';f.src=i.src;
   stage.appendChild(f);
   let firstLoad=true;
   f.addEventListener('load',()=>{
@@ -274,13 +294,13 @@ function navigate(route,params={},opt={}){
     history.replaceState(state,'',appUrl(loadedInfo));
     if(progress)progress.classList.remove('show');
     cartCount();dingloftSplashReady();
-    window.dispatchEvent(new CustomEvent('dingloft:shell-ready',{detail:{key:loadedInfo.key,version:100}}));
+    window.dispatchEvent(new CustomEvent('dingloft:shell-ready',{detail:{key:loadedInfo.key,version:101}}));
   });
   if(!opt.pop){const url=appUrl(i);if(opt.replace)history.replaceState({route:i.key,src:i.key==='page'?cleanPublicSrc(i.src):''},'',url);else if(opt.push!==false)history.pushState({route:i.key,src:i.key==='page'?cleanPublicSrc(i.src):''},'',url)}
 }
 
 window.DingloftPersistentShellV93={
-  version:99,
+  version:101,
   navigate:(route,params={})=>navigate(route,params,{push:true}),
   navigateHref:(href)=>shellNavigateHref(href,{push:true}),
   get activeKey(){return activeKey;},
