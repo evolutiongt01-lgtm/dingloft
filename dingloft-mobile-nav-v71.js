@@ -45,7 +45,7 @@
   const SEARCH_ID = 'dlMobileSearchV89';
   const CART_KEY = 'dingloft_cart';
   const OPEN_CART_KEY = 'dingloft_open_cart';
-  const MOBILE_CART_SRC = '/dingloft-mobile-cart-v92.js?v=93';
+  const MOBILE_CART_SRC = '/dingloft-mobile-cart-v92.js?v=94';
   let mobileCartLoadPromise = null;
   const WORKER = String(window.DINGLOFT_WORKER_BASE || 'https://autumn-breeze-dfa0.evolutiongt01.workers.dev').replace(/\/$/, '');
   const PRODUCT_FILES = new Set([
@@ -221,7 +221,7 @@
       host.style.setProperty('top','auto','important');
       host.style.setProperty('left','max(10px,env(safe-area-inset-left,0px))','important');
       host.style.setProperty('right','max(10px,env(safe-area-inset-right,0px))','important');
-      host.style.setProperty('bottom','calc(5px + env(safe-area-inset-bottom,0px))','important');
+      host.style.setProperty('bottom','max(4px,calc(env(safe-area-inset-bottom,0px) - 22px))','important');
       host.style.setProperty('width','auto','important');
       host.style.setProperty('height','66px','important');
     }

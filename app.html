@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" style="background:#040609"><head><script src="/dingloft-mobile-nav-v71.js?v=93" data-dingloft-mobile-chrome="93"></script>
+<html lang="es" style="background:#040609"><head><script src="/dingloft-mobile-nav-v71.js?v=94" data-dingloft-mobile-chrome="94"></script>
 <style id="dl-ios-first-paint-v29">html,body{background:#05070a!important}</style>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <script id="dingloft-persistent-shell-v93-boot">(()=>{try{
@@ -29,7 +29,7 @@ const u=new URL('/desktop-shell.html',location.origin);u.searchParams.set('src',
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Dingloft">
 <meta name="application-name" content="Dingloft">
-<link rel="manifest" href="manifest.webmanifest?v=93">
+<link rel="manifest" href="manifest.webmanifest?v=94">
 <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon-liquid-v5.png?v=6">
 <link rel="apple-touch-icon-precomposed" sizes="180x180" href="img/apple-touch-icon-liquid-v5.png?v=6">
 
@@ -100,7 +100,7 @@ body.cart-sheet-open #stage{bottom:0!important}
 .dock{
   left:max(10px,var(--safe-left))!important;
   right:max(10px,var(--safe-right))!important;
-  bottom:calc(5px + var(--safe-bottom))!important;
+  bottom:max(4px,calc(var(--safe-bottom) - 22px))!important;
   height:var(--dock)!important;
   padding:5px 6px!important;
   grid-template-columns:1fr 1fr 76px 1fr 1fr!important;
@@ -220,10 +220,10 @@ body.cart-sheet-open #stage{bottom:0!important}
 @media (max-width:1024px){
   :root{
     --dock:66px!important;
-    --dock-space:calc(76px + var(--safe-bottom))!important;
-    --dl-dock-bottom:calc(5px + var(--safe-bottom));
+    --dock-space:calc(70px + max(4px,calc(var(--safe-bottom) - 22px)))!important;
+    --dl-dock-bottom:max(4px,calc(var(--safe-bottom) - 22px));
   }
-  #stage{bottom:calc(76px + var(--safe-bottom))!important;}
+  #stage{bottom:calc(70px + max(4px,calc(var(--safe-bottom) - 22px)))!important;}
   .dock{
     position:fixed!important;
     left:max(10px,var(--safe-left))!important;
@@ -242,11 +242,11 @@ body.cart-sheet-open #stage{bottom:0!important}
   .toast{bottom:calc(82px + var(--dl-dock-bottom))!important;}
 }
 @media (display-mode:standalone) and (max-width:1024px){
-  .dock{bottom:calc(5px + var(--safe-bottom))!important;}
-  #stage{bottom:calc(76px + var(--safe-bottom))!important;}
+  .dock{bottom:max(4px,calc(var(--safe-bottom) - 22px))!important;}
+  #stage{bottom:calc(70px + max(4px,calc(var(--safe-bottom) - 22px)))!important;}
 }
 </style>
-<link rel="stylesheet" href="dingloft-mobile-dock.css?v=31">
+<link rel="stylesheet" href="dingloft-mobile-dock.css?v=32">
 
 <style id="dingloft-centered-mobile-header-v31">
 @media(max-width:1024px){
@@ -274,7 +274,7 @@ body.cart-sheet-open #stage{bottom:0!important}
 <nav class="dock" id="dock" style="display:none!important"><a class="item" href="app.html?route=home" data-route="home"><svg viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5H15v-6H9v6H3.5a.5.5 0 0 1-.5-.5z"/></svg><span>Inicio</span></a><a class="item" href="app.html?route=catalog" data-route="catalog"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg><span>Catálogo</span></a><div class="cartslot"><button class="cart" id="cart"><svg viewBox="0 0 24 24"><path d="M6 8h12l1 13H5z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="count" id="count">0</span></button></div><a class="item" href="app.html?route=multitrack" data-route="multitrack"><svg viewBox="0 0 24 24"><path d="M4 13v-2M8 17V7M12 20V4M16 17V7M20 13v-2"/></svg><span>Multitrack</span></a><a class="item" href="app.html?route=account" data-route="account"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"/></svg><span>Cuenta</span></a></nav>
 <div class="install-card" id="installCard" role="dialog" aria-label="Instalar Dingloft"><button class="install-close" id="installCardClose" aria-label="Cerrar">×</button><div class="install-logo"><img src="img/pwa-liquid-192-v5.png?v=6" alt=""></div><div class="install-copy"><strong>Instala Dingloft</strong><span>Ábrelo como una app desde tu pantalla principal.</span></div><button class="install-action" id="installCardAction">Instalar</button></div>
 <div class="install-guide" id="installGuide"><div class="install-sheet"><div class="install-handle"></div><h2 id="installGuideTitle">Instala Dingloft</h2><p id="installGuideText">Añádelo a tu pantalla de inicio.</p><div id="installSteps"></div><button class="install-done" id="installGuideClose">Entendido</button></div></div>
-<div class="toast" id="toast"></div><script src="dingloft-app.js?v=93"></script><script src="pwa-install.js?v=18"></script><script src="dingloft-ui-guard.js?v=55"></script>
+<div class="toast" id="toast"></div><script src="dingloft-app.js?v=94"></script><script src="pwa-install.js?v=18"></script><script src="dingloft-ui-guard.js?v=55"></script>
 <script src="/pwa-runtime.js?v=77"></script>
 
 <script type="module" id="dingloft-home-admin-auth-v31">
