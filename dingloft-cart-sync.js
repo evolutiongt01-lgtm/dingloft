@@ -1,11 +1,11 @@
-/* Dingloft Unified Cart · v90
+/* Dingloft Unified Cart · v91
    One cart identity across every product page + Multitrack cover hydration.
    Product truth comes from the public Worker catalog; local aliases only migrate old carts. */
 (() => {
   'use strict';
-  if (window.DingloftCartSync?.version >= 90) return;
+  if (window.DingloftCartSync?.version >= 91) return;
 
-  const VERSION = 90;
+  const VERSION = 91;
   const CART_KEY = 'dingloft_cart';
   const OPEN_CART_KEY = 'dingloft_open_cart';
   const WORKER = String(
@@ -228,13 +228,13 @@
   function injectUnifiedCartStyle() {
     const old = document.getElementById('dingloft-unified-cart-v89');
     if (old) old.remove();
-    let style = document.getElementById('dingloft-unified-cart-v90');
+    let style = document.getElementById('dingloft-unified-cart-v91');
     if (!style) {
       style = document.createElement('style');
-      style.id = 'dingloft-unified-cart-v90';
+      style.id = 'dingloft-unified-cart-v91';
     }
     style.textContent = `
-      /* v90 · Multitracks geometry is now canonical everywhere. */
+      /* v91 · Lower mobile sheet + clean focus mode. */
       html.dl-cart-stage-lock,html.dl-cart-stage-lock body{overscroll-behavior:none!important}
       body.dl-cart-stage-open,body.dl-cart-stage-closing{overflow:hidden!important;overscroll-behavior:none!important}
       body.dl-cart-stage-open > :not(.cart-overlay):not(#cart-overlay):not(.cart-drawer):not(#cart-drawer):not(.cart-brand-watermark):not(script):not(style):not(link):not(template),
@@ -297,12 +297,12 @@
       .cart-drawer.active .cart-header,#cart-drawer.active .cart-header{opacity:1!important;transform:translate3d(0,0,0)!important;filter:blur(0)!important;transition-delay:.12s!important}
       .cart-drawer.active .cart-items-container,#cart-drawer.active .cart-items-container{opacity:1!important;transform:translate3d(0,0,0)!important;filter:blur(0)!important;transition-delay:.18s!important}
       .cart-drawer.active .cart-footer,#cart-drawer.active .cart-footer{opacity:1!important;transform:translate3d(0,0,0)!important;filter:blur(0)!important;transition-delay:.24s!important}
-      .cart-drawer.active .cart-item,#cart-drawer.active .cart-item{animation:dlCartItemInV90 .48s cubic-bezier(.16,1,.3,1) both!important}
+      .cart-drawer.active .cart-item,#cart-drawer.active .cart-item{animation:dlCartItemInV91 .48s cubic-bezier(.16,1,.3,1) both!important}
       .cart-drawer.active .cart-item:nth-child(1),#cart-drawer.active .cart-item:nth-child(1){animation-delay:.17s!important}
       .cart-drawer.active .cart-item:nth-child(2),#cart-drawer.active .cart-item:nth-child(2){animation-delay:.21s!important}
       .cart-drawer.active .cart-item:nth-child(3),#cart-drawer.active .cart-item:nth-child(3){animation-delay:.25s!important}
       .cart-drawer.active .cart-item:nth-child(4),#cart-drawer.active .cart-item:nth-child(4){animation-delay:.29s!important}
-      @keyframes dlCartItemInV90{from{opacity:0;transform:translate3d(18px,5px,0) scale(.975)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+      @keyframes dlCartItemInV91{from{opacity:0;transform:translate3d(18px,5px,0) scale(.975)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
 
       /* Tablet: side drawer with safe room for the shared mobile chrome. */
       @media (min-width:768px) and (max-width:1024px){
@@ -315,7 +315,7 @@
       @media (max-width:767px){
         .cart-drawer,#cart-drawer{
           top:auto!important;right:0!important;bottom:0!important;left:0!important;width:100%!important;max-width:none!important;
-          height:min(88dvh,780px)!important;max-height:min(88dvh,780px)!important;
+          height:min(80dvh,720px)!important;max-height:min(80dvh,720px)!important;
           border-radius:28px 28px 0 0!important;border-left:0!important;border-right:0!important;border-bottom:0!important;border-top:1px solid rgba(255,255,255,.115)!important;
           transform:translate3d(0,calc(100% + 30px),0) scale(.972)!important;transform-origin:center bottom!important;
           box-shadow:0 -34px 100px rgba(0,0,0,.72),inset 0 1px 0 rgba(255,255,255,.055)!important;
@@ -323,19 +323,21 @@
         .cart-drawer.active,#cart-drawer.active{right:0!important;transform:translate3d(0,0,0) scale(1)!important}
         .cart-drawer::after,#cart-drawer::after{display:none!important}
         .cart-drawer .cart-header,#cart-drawer .cart-header{position:relative!important;min-height:70px!important;padding:23px 58px 13px 17px!important}
+        .cart-drawer .btn-close-cart,#cart-drawer .btn-close-cart{display:grid!important;place-items:center!important;position:absolute!important;top:15px!important;right:14px!important;width:40px!important;height:40px!important;padding:0!important;margin:0!important;border:1px solid rgba(255,255,255,.105)!important;border-radius:13px!important;background:rgba(255,255,255,.045)!important;color:#f6f9fc!important;z-index:8!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:none!important}
+        .cart-drawer .btn-close-cart:hover,#cart-drawer .btn-close-cart:hover{background:rgba(255,255,255,.095)!important;border-color:rgba(255,255,255,.18)!important;transform:rotate(90deg) scale(1.04)!important}
         .cart-drawer .cart-header,#cart-drawer .cart-header,.cart-drawer .cart-items-container,#cart-drawer .cart-items-container,.cart-drawer .cart-footer,#cart-drawer .cart-footer{transform:translate3d(0,16px,0)!important}
         .cart-drawer.active .cart-header,#cart-drawer.active .cart-header,.cart-drawer.active .cart-items-container,#cart-drawer.active .cart-items-container,.cart-drawer.active .cart-footer,#cart-drawer.active .cart-footer{transform:translate3d(0,0,0)!important}
         .cart-drawer .cart-header::before,#cart-drawer .cart-header::before{content:""!important;position:absolute!important;top:8px!important;left:50%!important;width:40px!important;height:4px!important;border-radius:999px!important;transform:translateX(-50%)!important;background:rgba(255,255,255,.20)!important;box-shadow:0 0 18px rgba(121,184,255,.10)!important}
         .cart-drawer .cart-items-container,#cart-drawer .cart-items-container{padding:10px 12px!important}
-        .cart-drawer .cart-footer,#cart-drawer .cart-footer{padding:13px 14px calc(102px + env(safe-area-inset-bottom,0px))!important;max-height:47dvh!important;scroll-padding-bottom:calc(102px + env(safe-area-inset-bottom,0px))!important}
+        .cart-drawer .cart-footer,#cart-drawer .cart-footer{padding:13px 14px calc(18px + env(safe-area-inset-bottom,0px))!important;max-height:46dvh!important;scroll-padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))!important}
         .cart-drawer .cart-item,#cart-drawer .cart-item{grid-template-columns:58px minmax(0,1fr) 29px!important;gap:10px!important;padding:10px!important;border-radius:15px!important}
         .cart-drawer .cart-item-img,#cart-drawer .cart-item-img{width:58px!important;height:58px!important;border-radius:12px!important}
       }
       @media (max-width:480px){
-        .cart-drawer,#cart-drawer{height:min(88dvh,780px)!important;max-height:min(88dvh,780px)!important;border-radius:25px 25px 0 0!important}
+        .cart-drawer,#cart-drawer{height:min(80dvh,720px)!important;max-height:min(80dvh,720px)!important;border-radius:25px 25px 0 0!important}
         .cart-drawer .cart-header,#cart-drawer .cart-header{padding:22px 52px 12px 15px!important}
         .cart-drawer .cart-items-container,#cart-drawer .cart-items-container{padding:9px 10px!important}
-        .cart-drawer .cart-footer,#cart-drawer .cart-footer{padding:12px 12px calc(100px + env(safe-area-inset-bottom,0px))!important;max-height:48dvh!important}
+        .cart-drawer .cart-footer,#cart-drawer .cart-footer{padding:12px 12px calc(18px + env(safe-area-inset-bottom,0px))!important;max-height:47dvh!important}
         .cart-drawer .cart-item,#cart-drawer .cart-item{grid-template-columns:54px minmax(0,1fr) 28px!important;gap:9px!important;padding:9px!important;border-radius:14px!important}
         .cart-drawer .cart-item-img,#cart-drawer .cart-item-img{width:54px!important;height:54px!important;border-radius:11px!important}
       }
@@ -356,7 +358,7 @@
 
   function cartStageNodes() {
     if (!document.body) return [];
-    const excluded = '.cart-overlay,#cart-overlay,.cart-drawer,#cart-drawer,.cart-brand-watermark,script,style,link,template';
+    const excluded = '.cart-overlay,#cart-overlay,.cart-drawer,#cart-drawer,.cart-brand-watermark,#dlMobileHeaderV71,#dlMobileDockV71,#dlMobileSearchV71,script,style,link,template';
     return Array.from(document.body.children).filter(el => {
       if (!(el instanceof HTMLElement) || el.matches(excluded)) return false;
       const cs = getComputedStyle(el);
@@ -378,6 +380,22 @@
     }
   }
 
+  function setParentShellFocus(open){
+    try{
+      if(window.parent===window || !window.parent?.document) return;
+      const doc=window.parent.document;
+      const nav=doc.getElementById('shellNav') || doc.querySelector('.shell-nav');
+      const search=doc.getElementById('desktopSearchOverlay');
+      if(search?.classList.contains('show')) search.classList.remove('show');
+      if(!nav) return;
+      nav.style.setProperty('transition','transform .54s cubic-bezier(.16,1,.3,1), opacity .32s ease, filter .38s ease','important');
+      nav.style.setProperty('transform',open?'translateX(-50%) translateY(-135%) scale(.97)':'translateX(-50%) translateY(0) scale(1)','important');
+      nav.style.setProperty('opacity',open?'0':'1','important');
+      nav.style.setProperty('filter',open?'blur(7px)':'none','important');
+      nav.style.setProperty('pointer-events',open?'none':'auto','important');
+    }catch(_){}
+  }
+
   function animateStageOpen() {
     if (!document.body || cartStageOpen) return;
     cartStageOpen = true;
@@ -385,6 +403,7 @@
     document.documentElement.classList.add('dl-cart-stage-lock');
     document.body.classList.remove('dl-cart-stage-closing');
     document.body.classList.add('dl-cart-stage-open');
+    setParentShellFocus(true);
 
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     for (const el of cartStageNodes()) {
@@ -401,10 +420,10 @@
         ? 'translate3d(0,-115%,0)'
         : dir === 'dock'
           ? 'translate3d(0,145%,0) scale(.94)'
-          : 'translate3d(-18px,10px,0) scale(.968)';
+          : 'translate3d(-22px,12px,0) scale(.955)';
       const animation = el.animate([
         {opacity:original.opacity, transform:original.transform, filter:original.filter},
-        {opacity:'0', transform:endTransform, filter:dir === 'surface' ? 'blur(10px)' : 'blur(4px)'}
+        {opacity:'0', transform:endTransform, filter:dir === 'surface' ? 'blur(12px)' : 'blur(5px)'}
       ], {
         duration: dir === 'surface' ? 480 : 520,
         easing:'cubic-bezier(.16,1,.3,1)',
@@ -420,6 +439,7 @@
     clearTimeout(cartStageCloseTimer);
     document.body.classList.remove('dl-cart-stage-open');
     document.body.classList.add('dl-cart-stage-closing');
+    setParentShellFocus(false);
 
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     for (const [el, original] of Array.from(cartStageOriginals.entries())) {

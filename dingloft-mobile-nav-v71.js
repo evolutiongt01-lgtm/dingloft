@@ -127,6 +127,7 @@
     host.style.setProperty('display','block','important');
     host.style.setProperty('visibility','visible','important');
     host.style.setProperty('opacity','1','important');
+    host.style.setProperty('transition','transform .52s cubic-bezier(.16,1,.3,1), opacity .32s ease, filter .38s ease','important');
     if (where === 'header') {
       host.style.setProperty('top','0','important');
       host.style.setProperty('left','0','important');
@@ -334,7 +335,8 @@
         html.dl-mobile-nav-v71 #progress.progress{display:none!important;visibility:hidden!important;opacity:0!important}
         html.dl-mobile-nav-v71,html.dl-mobile-nav-v71 body,html.dl-mobile-nav-v71 body.no-scroll,html.dl-mobile-nav-v71 body.cart-open,html.dl-mobile-nav-v71 body.no-scroll.cart-open{height:auto!important;min-height:100%!important;max-height:none!important;overflow-y:auto!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
         html.dl-mobile-nav-v71 body{min-height:100dvh!important;overflow-x:hidden!important}
-        html.dl-mobile-nav-v71 .cart-footer{padding-bottom:calc(106px + env(safe-area-inset-bottom,0px))!important;scroll-padding-bottom:calc(106px + env(safe-area-inset-bottom,0px))!important;-webkit-overflow-scrolling:touch!important}
+        html.dl-mobile-nav-v71.dl-cart-stage-lock,html.dl-mobile-nav-v71.dl-cart-stage-lock body{overflow:hidden!important;overscroll-behavior:none!important;touch-action:none!important}
+        html.dl-mobile-nav-v71 .cart-footer{padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))!important;scroll-padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))!important;-webkit-overflow-scrolling:touch!important}
         html.dl-mobile-nav-v71 .cart-footer #paypal-container-wrapper,html.dl-mobile-nav-v71 .cart-footer #free-checkout-btn,html.dl-mobile-nav-v71 .cart-footer #continue-shopping-box{position:relative!important;z-index:2!important}
         html.dl-mobile-nav-v71 .success-modal-box{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))!important;scroll-padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))!important}
         html.dl-mobile-nav-v71 .checkout{margin-bottom:calc(18px + env(safe-area-inset-bottom,0px))!important}
@@ -351,7 +353,29 @@
     });
   }
 
+  function syncCartFocusChrome(){
+    const focused = document.documentElement.classList.contains('dl-cart-stage-lock') || document.body?.classList.contains('dl-cart-stage-open');
+    if (headerHost) {
+      headerHost.style.setProperty('transform', focused ? 'translate3d(0,-125%,0)' : 'translate3d(0,0,0)','important');
+      headerHost.style.setProperty('-webkit-transform', focused ? 'translate3d(0,-125%,0)' : 'translate3d(0,0,0)','important');
+      headerHost.style.setProperty('opacity', focused ? '0' : '1','important');
+      headerHost.style.setProperty('filter', focused ? 'blur(6px)' : 'none','important');
+      headerHost.style.setProperty('pointer-events', focused ? 'none' : 'auto','important');
+      headerHost.style.setProperty('z-index', focused ? '2147482000' : '2147483646','important');
+    }
+    if (dockHost) {
+      dockHost.style.setProperty('transform', focused ? 'translate3d(0,calc(100% + 42px),0) scale(.94)' : 'translate3d(0,0,0)','important');
+      dockHost.style.setProperty('-webkit-transform', focused ? 'translate3d(0,calc(100% + 42px),0) scale(.94)' : 'translate3d(0,0,0)','important');
+      dockHost.style.setProperty('opacity', focused ? '0' : '1','important');
+      dockHost.style.setProperty('filter', focused ? 'blur(5px)' : 'none','important');
+      dockHost.style.setProperty('pointer-events', focused ? 'none' : 'auto','important');
+      dockHost.style.setProperty('z-index', focused ? '2147482000' : '2147483647','important');
+    }
+    if (searchHost && focused) searchHost.style.pointerEvents='none';
+  }
+
   function sync(){
+    syncCartFocusChrome();
     if (!dockRoot) return;
     const route = activeRoute();
     dockRoot.querySelectorAll('.item[data-route]').forEach(el => el.classList.toggle('active', el.dataset.route === route));
@@ -404,6 +428,9 @@
     wireLoadingLinks(dockRoot);
     if (hasRecentLoad()) setHeaderLoading(true);
     sync();
+    const cartFocusObserver = new MutationObserver(syncCartFocusChrome);
+    cartFocusObserver.observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+    cartFocusObserver.observe(document.body,{attributes:true,attributeFilter:['class']});
 
     // Remove only newly-added legacy chrome nodes. No global high-frequency mutation loop.
     const observer = new MutationObserver(records => {
