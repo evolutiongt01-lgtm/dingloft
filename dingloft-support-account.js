@@ -1,4 +1,4 @@
-/* Dingloft Support · Customer realtime chat · v1.6 · White Premium UI + responsive desktop/mobile placement */
+/* Dingloft Support · Customer realtime chat · v1.7 · White Premium UI + expanded mobile sheet */
 import { getApps, getApp, initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, doc, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -55,7 +55,7 @@ function inject(){
   .dl-support-badge{position:absolute;right:-4px;top:-4px;min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:#111827;color:#fff;border:2px solid #fff;display:none;place-items:center;font-size:9px;font-weight:900}.dl-support-badge.show{display:grid}
   .dl-support-panel{position:fixed;right:28px;top:94px;bottom:auto;width:min(400px,calc(100vw - 40px));height:min(610px,calc(100dvh - 122px));border:1px solid rgba(15,23,42,.10);background:rgba(255,255,255,.985);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:24px;box-shadow:0 26px 80px rgba(0,0,0,.27);z-index:994;display:none;grid-template-rows:auto auto 1fr;overflow:hidden;color:#111827}.dl-support-panel.open{display:grid}.dl-support-root.desktop-shell .dl-support-panel{top:150px;height:min(590px,calc(100dvh - 176px))}
   .dl-support-head{padding:16px 16px 13px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #edf0f3;background:#fff}
-  .dl-support-headcopy{min-width:0;flex:1}.dl-support-headcopy b{display:block;color:#101828;font-size:15px;font-weight:850;letter-spacing:-.02em}.dl-support-headcopy small{display:block;color:#7a8492;font-size:10.5px;margin-top:3px}
+  .dl-support-headcopy{min-width:0;flex:1}.dl-support-headcopy b{display:block;color:#101828;font-size:15px;font-weight:850;letter-spacing:-.02em}.dl-support-headcopy small{display:flex;align-items:center;gap:5px;color:#7a8492;font-size:10.5px;margin-top:3px}.dl-support-headcopy small i{font-size:10px;color:#64748b}
   .dl-support-close{width:36px;height:36px;border:1px solid #edf0f3;border-radius:12px;background:#f7f8fa;color:#596474;cursor:pointer}.dl-support-close:hover{background:#eef1f4;color:#111827}
   .dl-support-team-avatars{width:48px;height:36px;position:relative;flex:0 0 48px}.dl-support-team-avatars .dl-support-agent-avatar{position:absolute;top:1px;width:34px;height:34px}.dl-support-team-avatars .dl-support-agent-avatar:first-child{left:0}.dl-support-team-avatars .dl-support-agent-avatar:last-child{right:0;z-index:2}
   .dl-support-agent-avatar{width:30px;height:30px;border-radius:50%;position:relative;display:grid;place-items:center;flex:0 0 auto;overflow:hidden;background:#f0f2f5;border:1px solid #e0e5ea;box-shadow:0 0 0 2px #fff;color:#344054;font-size:8px;font-weight:900;letter-spacing:.03em}.dl-support-agent-avatar>span{position:relative;z-index:1}.dl-support-agent-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;background:#eef1f4}
@@ -70,10 +70,12 @@ function inject(){
   .dl-support-typing{min-height:19px;padding:0 15px 5px;color:#667085;font-size:9px;background:#fff}.dl-support-compose{border-top:1px solid #e9edf1;padding:9px 11px 11px;background:#fafbfc}.dl-support-preview{display:none;gap:7px;margin-bottom:8px;overflow:auto;padding-top:2px}.dl-support-preview.show{display:flex}.dl-support-preview-item{position:relative;flex:0 0 60px;height:60px}.dl-support-preview-item img{width:100%;height:100%;object-fit:cover;border-radius:12px;border:1px solid #e1e6eb;background:#fff}.dl-support-preview-item button{position:absolute;right:-4px;top:-4px;width:21px;height:21px;border-radius:50%;border:2px solid #fff;background:#111827;color:#fff;font-size:11px;box-shadow:0 2px 7px rgba(0,0,0,.16)}
   .dl-support-row{display:grid;grid-template-columns:42px minmax(0,1fr) 44px;gap:7px;align-items:end}.dl-support-attach,.dl-support-send{height:42px;border-radius:13px;border:1px solid #e1e6eb;background:#fff;color:#475467;cursor:pointer}.dl-support-attach:hover{background:#f3f5f7}.dl-support-send{background:#111827;color:#fff;border-color:#111827}.dl-support-send:hover{background:#1f2937}.dl-support-send:disabled,.dl-support-attach:disabled{opacity:.4}.dl-support-input{width:100%;min-height:42px;max-height:108px;resize:none;overflow:auto;background:#fff;border:1px solid #dfe4e9;border-radius:14px;color:#101828;padding:10px 12px;outline:0;font:13px/1.4 Inter,system-ui,sans-serif}.dl-support-input::placeholder{color:#98a2b3}.dl-support-input:focus{border-color:#aab4bf;box-shadow:0 0 0 3px rgba(17,24,39,.04)}.dl-support-foot{margin-top:7px;color:#98a2b3;font-size:7.5px;text-align:center}.dl-support-file{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;overflow:hidden!important}
   .dl-exp-hero{padding:15px;border-radius:17px;background:#fff;border:1px solid #e5e9ed;box-shadow:0 1px 2px rgba(16,24,40,.03)}.dl-exp-hero small{display:block;color:#667085;font-size:8px;font-weight:850;letter-spacing:.13em;text-transform:uppercase}.dl-exp-score{display:flex;align-items:end;gap:9px;margin-top:7px}.dl-exp-score b{font-size:26px;color:#111827;letter-spacing:-.04em}.dl-exp-score span{color:#e8ad21;font-size:12px}.dl-exp-hero p{margin:6px 0 0;color:#667085;font-size:9px;line-height:1.45}
-  .dl-exp-list{display:grid;gap:9px}.dl-exp-card{padding:12px;border:1px solid #e5e9ed;border-radius:14px;background:#fff}.dl-exp-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.dl-exp-name{font-size:10px;font-weight:850;color:#101828}.dl-exp-verified{font-size:7px;color:#344054;border:1px solid #d9dee4;background:#f8fafc;padding:3px 5px;border-radius:999px}.dl-exp-stars{color:#e8ad21;font-size:9px;letter-spacing:1px;margin-top:5px}.dl-exp-comment{margin:8px 0 0;color:#475467;font-size:9.5px;line-height:1.55}.dl-exp-meta{margin-top:8px;color:#98a2b3;font-size:7.5px;display:flex;gap:7px;flex-wrap:wrap}.dl-exp-demo{color:#8a6b1e;border:1px solid #ead7a0;background:#fffaf0;padding:2px 5px;border-radius:999px}
+  .dl-exp-list{display:grid;gap:9px}.dl-exp-card{padding:12px;border:1px solid #e5e9ed;border-radius:14px;background:#fff}.dl-exp-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.dl-exp-name{font-size:10px;font-weight:850;color:#101828}.dl-exp-verified{font-size:7px;color:#344054;border:1px solid #d9dee4;background:#f8fafc;padding:3px 5px;border-radius:999px}.dl-exp-stars{color:#e8ad21;font-size:9px;letter-spacing:1px;margin-top:5px}.dl-exp-comment{margin:8px 0 0;color:#475467;font-size:9.5px;line-height:1.55}.dl-exp-meta{margin-top:8px;color:#98a2b3;font-size:7.5px;display:flex;gap:7px;flex-wrap:wrap}.dl-exp-demo{color:#7a5d16;border:1px solid #ead7a0;background:#fffaf0;padding:3px 6px;border-radius:999px;font-weight:800;letter-spacing:.04em}.dl-exp-section-title{padding:2px 2px 0;color:#667085;font-size:8px;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
   @media(max-width:700px){
     .dl-support-root{max-width:100vw;overflow-x:clip}.dl-support-launch{right:12px;bottom:72px;width:50px;height:50px;border-radius:17px}
-    .dl-support-panel{right:8px;left:8px;top:auto;bottom:72px;width:auto;height:min(560px,calc(100dvh - 170px));min-height:350px;max-height:76dvh;border-radius:22px;overscroll-behavior:contain}
+    /* Mobile: sheet anchored directly below Dingloft header and directly above the dock.
+       No duplicated safe-area math: the site chrome already owns those insets. */
+    .dl-support-panel{right:8px;left:8px;top:118px;bottom:72px;width:auto;height:auto;min-height:0;max-height:none;border-radius:24px;overscroll-behavior:contain}
     .dl-support-head{padding:12px 12px 10px;gap:9px}.dl-support-headcopy b{font-size:12.5px}.dl-support-headcopy small{font-size:8px}.dl-support-close{width:32px;height:32px;border-radius:10px}
     .dl-support-team-avatars{width:42px;height:32px;flex-basis:42px}.dl-support-team-avatars .dl-support-agent-avatar{width:30px;height:30px}.dl-support-tabs{padding:6px 8px;gap:5px}.dl-support-tab{height:31px;font-size:8.5px}
     .dl-support-context{padding:7px 9px 5px}.dl-support-context select{padding:8px 9px;font-size:9px;border-radius:10px}.dl-support-status-note{padding:0 9px 6px;font-size:7.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -81,7 +83,7 @@ function inject(){
     .dl-support-typing{min-height:16px;padding:0 11px 3px;font-size:8px}.dl-support-compose{padding:7px 8px 8px}.dl-support-row{grid-template-columns:39px minmax(0,1fr) 41px;gap:6px}.dl-support-attach,.dl-support-send{height:39px;border-radius:12px}.dl-support-input{min-height:39px;padding:9px 10px;font-size:16px;line-height:1.25;border-radius:12px}.dl-support-foot{display:none}
     .dl-support-experience-view{padding:10px}.dl-exp-hero{padding:12px}.dl-exp-list{gap:7px}.dl-exp-card{padding:10px}
   }
-  @media(max-width:380px){.dl-support-launch{right:10px;bottom:70px}.dl-support-panel{left:6px;right:6px;bottom:70px;height:min(510px,calc(100dvh - 160px));min-height:330px}.dl-support-context select{font-size:8.5px}.dl-support-headcopy small{max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+  @media(max-width:380px){.dl-support-launch{right:10px;bottom:70px}.dl-support-panel{left:6px;right:6px;top:114px;bottom:70px;height:auto;min-height:0;max-height:none}.dl-support-context select{font-size:8.5px}.dl-support-headcopy small{max-width:205px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
   `;
   document.head.appendChild(style);
 
@@ -95,7 +97,7 @@ function inject(){
     <section class="dl-support-panel" id="dlSupportPanel" aria-label="Soporte Dingloft">
       <div class="dl-support-head">
         <div class="dl-support-team-avatars">${avatarMarkup("Tony Bac")}${avatarMarkup("Cesar Matzar")}</div>
-        <div class="dl-support-headcopy"><b>Soporte Dingloft</b><small>Tony Bac · Cesar Matzar</small></div>
+        <div class="dl-support-headcopy"><b>Soporte Dingloft</b><small><i class="bi bi-shield-lock"></i> Canal privado · Protegido por Evolution Group</small></div>
         <button class="dl-support-close" id="dlSupportClose" aria-label="Cerrar soporte"><i class="bi bi-x-lg"></i></button>
       </div>
       <div class="dl-support-tabs" role="tablist">
@@ -376,26 +378,32 @@ async function loadExperiences(force=false){
   if(list)list.innerHTML='<div class="dl-support-empty">Cargando experiencias…</div>';
   try{
     const d=await api("/support/experiences");
-    let experiences=Array.isArray(d.experiences)?d.experiences:[];
-    let demo=false;
-    if(!experiences.length&&/^(localhost|127\.0\.0\.1)$/i.test(location.hostname)){
-      demo=true;
-      experiences=[
-        {customerName:"Cliente demo",rating:5,comment:"Me orientaron paso a paso para instalar SketchUp 2026. Servicio 10/10.",serviceLabel:"SketchUp Pro 2026",agentName:"Tony Bac",createdAt:new Date().toISOString(),verifiedPurchase:false},
-        {customerName:"Cliente demo",rating:5,comment:"Contraté soporte remoto y ellos hicieron toda la instalación. Muy buena atención y todo quedó funcionando.",serviceLabel:"Soporte remoto",agentName:"Cesar Matzar",createdAt:new Date().toISOString(),verifiedPurchase:false},
-        {customerName:"Cliente demo",rating:5,comment:"Tuve un problema con mi descarga y soporte lo resolvió rápido. Excelente seguimiento.",serviceLabel:"Soporte Dingloft",agentName:"Tony Bac",createdAt:new Date().toISOString(),verifiedPurchase:false}
-      ];
-    }
-    const count=demo?experiences.length:Number(d.count||experiences.length);
-    const average=demo?5:Number(d.average||0);
-    if(hero)hero.innerHTML=`<small>Experiencias ${demo?"de demostración":"verificadas"}</small><div class="dl-exp-score"><b>${count?average.toFixed(1):"—"}</b><span>${count?"★★★★★":"☆☆☆☆☆"}</span></div><p>${count?`${count} experiencia${count===1?"":"s"} ${demo?"para previsualizar el diseño.":"de clientes con compra verificada."}`:"Las experiencias reales aparecerán aquí después de que un cliente finalice y califique su soporte."}</p>`;
-    if(list)list.innerHTML=experiences.length?experiences.map(x=>`
+    const experiences=Array.isArray(d.experiences)?d.experiences:[];
+    const samples=[
+      {customerName:"Ejemplo · Cliente Dingloft",rating:5,comment:"Me orientaron paso a paso con la instalación de SketchUp 2026 y pude dejarlo funcionando sin complicaciones.",serviceLabel:"Instalación de software"},
+      {customerName:"Ejemplo · Soporte remoto",rating:5,comment:"En la sesión remota hicieron la configuración completa y al finalizar dejaron todo listo para usar.",serviceLabel:"Soporte remoto"},
+      {customerName:"Ejemplo · Cliente Dingloft",rating:5,comment:"Tenía un problema con una descarga y el equipo me guió hasta resolverlo. La atención fue clara y rápida.",serviceLabel:"Descargas"},
+      {customerName:"Ejemplo · Cliente Dingloft",rating:5,comment:"Me ayudaron con la activación y configuración del programa. Muy buena comunicación durante todo el proceso.",serviceLabel:"Asistencia técnica"},
+      {customerName:"Ejemplo · Soporte remoto",rating:5,comment:"Solicité ayuda remota y se encargaron de revisar la instalación completa. El proceso fue ordenado y profesional.",serviceLabel:"Soporte remoto"}
+    ];
+    const count=Number(d.count||experiences.length);
+    const average=Number(d.average||0);
+    if(hero)hero.innerHTML=`<small>Experiencias verificadas</small><div class="dl-exp-score"><b>${count?average.toFixed(1):"—"}</b><span>${count?"★★★★★":"☆☆☆☆☆"}</span></div><p>${count?`${count} experiencia${count===1?"":"s"} de clientes con compra verificada.`:"Las calificaciones verificadas aparecerán aquí después de que un cliente finalice y valore su soporte."}</p>`;
+    const realMarkup=experiences.map(x=>`
       <article class="dl-exp-card">
-        <div class="dl-exp-top"><span class="dl-exp-name">${esc(x.customerName||"Cliente Dingloft")}</span>${demo?'<span class="dl-exp-demo">DEMO</span>':(x.verifiedPurchase?'<span class="dl-exp-verified"><i class="bi bi-patch-check"></i> Compra verificada</span>':"")}</div>
+        <div class="dl-exp-top"><span class="dl-exp-name">${esc(x.customerName||"Cliente Dingloft")}</span>${x.verifiedPurchase?'<span class="dl-exp-verified"><i class="bi bi-patch-check"></i> Compra verificada</span>':""}</div>
         <div class="dl-exp-stars">${"★".repeat(Math.max(1,Math.min(5,Number(x.rating||5))))}</div>
         <p class="dl-exp-comment">${esc(x.comment||"")}</p>
-        <div class="dl-exp-meta"><span>${esc(x.serviceLabel||"Soporte Dingloft")}</span><span>Atendido por ${esc(x.agentName||"Equipo Dingloft")}</span><span>${dateLabel(x.createdAt)}</span></div>
-      </article>`).join(""):'<div class="dl-support-empty"><i class="bi bi-stars"></i><b style="display:block;color:#101828;margin-bottom:5px">Aún no hay experiencias publicadas</b>Las opiniones reales aparecerán aquí después de finalizar casos de soporte.</div>';
+        <div class="dl-exp-meta"><span>${esc(x.serviceLabel||"Soporte Dingloft")}</span><span>${dateLabel(x.createdAt)}</span></div>
+      </article>`).join("");
+    const sampleMarkup=`<div class="dl-exp-section-title">Ejemplos de comentarios</div>`+samples.map(x=>`
+      <article class="dl-exp-card">
+        <div class="dl-exp-top"><span class="dl-exp-name">${esc(x.customerName)}</span><span class="dl-exp-demo">EJEMPLO</span></div>
+        <div class="dl-exp-stars">★★★★★</div>
+        <p class="dl-exp-comment">${esc(x.comment)}</p>
+        <div class="dl-exp-meta"><span>${esc(x.serviceLabel)}</span><span>Vista de ejemplo</span></div>
+      </article>`).join("");
+    if(list)list.innerHTML=(realMarkup?`<div class="dl-exp-section-title">Opiniones de clientes</div>${realMarkup}`:"")+sampleMarkup;
     experiencesLoaded=true;
   }catch(e){
     if(list)list.innerHTML='<div class="dl-support-empty">No pudimos cargar las experiencias en este momento.</div>';
