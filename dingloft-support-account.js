@@ -1,4 +1,4 @@
-/* Dingloft Support · Customer realtime chat · v1.8 · White Premium UI + true mobile fullscreen modal */
+/* Dingloft Support · Customer realtime chat · v1.9 · White Premium UI + rounded mobile sheet + Apple-style motion */
 import { getApps, getApp, initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, doc, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -23,7 +23,7 @@ const AUTO_OPEN=PARAMS.get("support")==="1"||PARAMS.get("supportFeedback")==="1"
 let user=null,supportData=null,chatState={},chatExists=false,chatUnsub=null,msgUnsub=null,adminPresenceUnsub=null;
 let lastTypingWrite=0,typingTimer=null,typingIdleTimer=null,pendingImages=[],imageUrls=new Map();
 let feedbackRating=0,experiencesLoaded=false,experiencesLoading=false;
-let supportScrollLock=null;
+let supportScrollLock=null,supportCloseTimer=null;
 
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const time=v=>{if(!v)return"";const d=v?.toDate?v.toDate():new Date(v);return Number.isNaN(d.getTime())?"":d.toLocaleTimeString("es-GT",{hour:"2-digit",minute:"2-digit"})};
@@ -51,11 +51,11 @@ function inject(){
   style.id="dlSupportStyle";
   style.textContent=`
   .dl-support-root{position:relative;z-index:95;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#111827}
-  .dl-support-backdrop{position:fixed;inset:0;border:0;padding:0;margin:0;background:rgba(2,6,12,.58);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:993;display:none;cursor:default}.dl-support-root.panel-open .dl-support-backdrop{display:block}
+  .dl-support-backdrop{position:fixed;inset:0;border:0;padding:0;margin:0;background:rgba(2,6,12,.58);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:993;opacity:0;visibility:hidden;pointer-events:none;cursor:default;transition:opacity .22s ease,visibility 0s linear .34s}.dl-support-root.panel-open .dl-support-backdrop{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .24s ease,visibility 0s}
   .dl-support-launch{position:fixed;right:24px;bottom:24px;width:54px;height:54px;border-radius:18px;border:1px solid rgba(15,23,42,.12);background:#fff;color:#111827;display:none;place-items:center;font-size:21px;box-shadow:0 16px 46px rgba(0,0,0,.28),0 1px 0 rgba(255,255,255,.8) inset;z-index:995;transition:transform .18s ease,box-shadow .18s ease;cursor:pointer}
   .dl-support-launch:hover{transform:translateY(-2px);box-shadow:0 20px 52px rgba(0,0,0,.32)}.dl-support-launch.show{display:grid}.dl-support-root.panel-open .dl-support-launch{opacity:0;pointer-events:none;transform:translateY(8px)}
   .dl-support-badge{position:absolute;right:-4px;top:-4px;min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:#111827;color:#fff;border:2px solid #fff;display:none;place-items:center;font-size:9px;font-weight:900}.dl-support-badge.show{display:grid}
-  .dl-support-panel{position:fixed;right:28px;top:94px;bottom:auto;width:min(400px,calc(100vw - 40px));height:min(610px,calc(100dvh - 122px));border:1px solid rgba(15,23,42,.10);background:rgba(255,255,255,.985);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:24px;box-shadow:0 26px 80px rgba(0,0,0,.27);z-index:994;display:none;grid-template-rows:auto auto 1fr;overflow:hidden;color:#111827}.dl-support-panel.open{display:grid}.dl-support-root.desktop-shell .dl-support-panel{top:150px;height:min(590px,calc(100dvh - 176px))}
+  .dl-support-panel{position:fixed;right:28px;top:94px;bottom:auto;width:min(400px,calc(100vw - 40px));height:min(610px,calc(100dvh - 122px));border:1px solid rgba(15,23,42,.10);background:rgba(255,255,255,.985);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:24px;box-shadow:0 26px 80px rgba(0,0,0,.27);z-index:994;display:grid;grid-template-rows:auto auto 1fr;overflow:hidden;color:#111827;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(12px) scale(.975);transform-origin:100% 20%;will-change:transform,opacity;transition:opacity .20s ease,transform .26s cubic-bezier(.4,0,1,1),visibility 0s linear .28s}.dl-support-panel.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1);transition:opacity .22s ease,transform .42s cubic-bezier(.16,1,.3,1),visibility 0s}.dl-support-root.desktop-shell .dl-support-panel{top:150px;height:min(590px,calc(100dvh - 176px))}
   .dl-support-head{padding:16px 16px 13px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #edf0f3;background:#fff}
   .dl-support-headcopy{min-width:0;flex:1}.dl-support-headcopy b{display:block;color:#101828;font-size:15px;font-weight:850;letter-spacing:-.02em}.dl-support-headcopy small{display:flex;align-items:center;gap:5px;color:#7a8492;font-size:10.5px;margin-top:3px}.dl-support-headcopy small i{font-size:10px;color:#64748b}
   .dl-support-close{width:36px;height:36px;border:1px solid #edf0f3;border-radius:12px;background:#f7f8fa;color:#596474;cursor:pointer}.dl-support-close:hover{background:#eef1f4;color:#111827}
@@ -78,9 +78,9 @@ function inject(){
     /* Mobile: soporte se comporta como una vista nativa a pantalla completa.
        Cubre el contenido de Cuenta y el dock para que nada del fondo se mueva o se asome. */
     .dl-support-root.panel-open{position:fixed;inset:0;z-index:2147483000;pointer-events:none}
-    .dl-support-root.panel-open .dl-support-backdrop{display:block;z-index:2147483001;pointer-events:auto;background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none}
-    .dl-support-panel{left:0!important;right:0!important;top:0!important;bottom:0!important;width:100%!important;height:100dvh!important;min-height:100dvh!important;max-height:100dvh!important;border:0!important;border-radius:0!important;box-shadow:none!important;z-index:2147483002!important;overscroll-behavior:contain;pointer-events:auto;background:#fff}
-    .dl-support-panel.open{display:grid}
+    .dl-support-root.panel-open .dl-support-backdrop{z-index:2147483001;pointer-events:auto;background:rgba(2,6,12,.58);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+    .dl-support-panel{left:6px!important;right:6px!important;top:6px!important;bottom:6px!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;border:1px solid rgba(15,23,42,.10)!important;border-radius:30px!important;box-shadow:0 28px 90px rgba(0,0,0,.34),0 1px 0 rgba(255,255,255,.72) inset!important;z-index:2147483002!important;overscroll-behavior:contain;pointer-events:none;background:#fff;transform:translateY(34px) scale(.965);transform-origin:50% 100%;opacity:0;visibility:hidden;transition:opacity .18s ease,transform .25s cubic-bezier(.4,0,1,1),visibility 0s linear .28s}
+    .dl-support-panel.open{pointer-events:auto;opacity:1;visibility:visible;transform:translateY(0) scale(1);transition:opacity .22s ease,transform .46s cubic-bezier(.16,1,.3,1),visibility 0s}
     .dl-support-head{padding-top:max(14px,env(safe-area-inset-top,0px))}
     .dl-support-head{padding:12px 12px 10px;gap:9px}.dl-support-headcopy b{font-size:12.5px}.dl-support-headcopy small{font-size:8px}.dl-support-close{width:32px;height:32px;border-radius:10px}
     .dl-support-team-avatars{width:42px;height:32px;flex-basis:42px}.dl-support-team-avatars .dl-support-agent-avatar{width:30px;height:30px}.dl-support-tabs{padding:6px 8px;gap:5px}.dl-support-tab{height:31px;font-size:8.5px}
@@ -89,6 +89,7 @@ function inject(){
     .dl-support-typing{min-height:16px;padding:0 11px 3px;font-size:8px}.dl-support-compose{padding:7px 8px 8px}.dl-support-row{grid-template-columns:39px minmax(0,1fr) 41px;gap:6px}.dl-support-attach,.dl-support-send{height:39px;border-radius:12px}.dl-support-input{min-height:39px;padding:9px 10px;font-size:16px;line-height:1.25;border-radius:12px}.dl-support-foot{display:none}
     .dl-support-experience-view{padding:10px}.dl-exp-hero{padding:12px}.dl-exp-list{gap:7px}.dl-exp-card{padding:10px}
   }
+  @media(prefers-reduced-motion:reduce){.dl-support-panel,.dl-support-panel.open,.dl-support-backdrop,.dl-support-root.panel-open .dl-support-backdrop,.dl-support-launch{transition:none!important;animation:none!important}}
   @media(max-width:380px){.dl-support-launch{right:10px;bottom:70px}.dl-support-context select{font-size:8.5px}.dl-support-headcopy small{max-width:205px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
   `;
   document.head.appendChild(style);
@@ -178,11 +179,22 @@ function unlockSupportBackground(){
   requestAnimationFrame(()=>window.scrollTo(0,s.y));
 }
 function togglePanel(open){
-  const p=document.getElementById("dlSupportPanel");if(!p)return;
-  p.classList.toggle("open",open);
-  document.getElementById("dlSupportRoot")?.classList.toggle("panel-open",open);
-  if(open){lockSupportBackground();startConversationListeners();markRead();if(PARAMS.get("supportFeedback")==="1")switchTab("chat");if(!mobileSupportMode())setTimeout(()=>document.getElementById("dlSupportInput")?.focus(),100)}
-  else{unlockSupportBackground();stopMessageListeners();setTyping(false,"")}
+  const p=document.getElementById("dlSupportPanel"),root=document.getElementById("dlSupportRoot");if(!p||!root)return;
+  if(supportCloseTimer){clearTimeout(supportCloseTimer);supportCloseTimer=null}
+  if(open){
+    root.classList.add("panel-open");
+    lockSupportBackground();
+    requestAnimationFrame(()=>requestAnimationFrame(()=>p.classList.add("open")));
+    startConversationListeners();markRead();
+    if(PARAMS.get("supportFeedback")==="1")switchTab("chat");
+    if(!mobileSupportMode())setTimeout(()=>document.getElementById("dlSupportInput")?.focus(),180);
+    return;
+  }
+  p.classList.remove("open");
+  stopMessageListeners();setTyping(false,"");
+  const finishClose=()=>{root.classList.remove("panel-open");unlockSupportBackground();supportCloseTimer=null};
+  if(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches)finishClose();
+  else supportCloseTimer=setTimeout(finishClose,mobileSupportMode()?290:280);
 }
 function switchTab(tab){
   const experiences=tab==="experiences";
