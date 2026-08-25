@@ -1,4 +1,4 @@
-/* Dingloft Support · Customer realtime chat · v1.2 · Premium Support + Experiences */
+/* Dingloft Support · Customer realtime chat · v1.3 · Mobile compact + Premium Support + Experiences */
 import { getApps, getApp, initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, doc, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -71,7 +71,19 @@ function inject(){
   .dl-support-row{display:grid;grid-template-columns:40px minmax(0,1fr) 42px;gap:7px;align-items:end}.dl-support-attach,.dl-support-send{height:40px;border-radius:12px;border:1px solid rgba(141,181,218,.14);background:#0e1720;color:#9fb4c5;cursor:pointer}.dl-support-send{background:#dff8ff;color:#051017;border-color:#dff8ff}.dl-support-send:disabled,.dl-support-attach:disabled{opacity:.4}.dl-support-input{width:100%;min-height:40px;max-height:105px;resize:none;overflow:auto;background:#0d151e;border:1px solid rgba(141,181,218,.13);border-radius:13px;color:#eef7fc;padding:10px 11px;outline:0;font:11px/1.4 Inter,system-ui,sans-serif}.dl-support-input:focus{border-color:rgba(83,221,255,.32)}.dl-support-foot{margin-top:6px;color:#566a7c;font-size:7.5px;text-align:center}.dl-support-file{display:none}
   .dl-exp-hero{padding:15px;border-radius:17px;background:linear-gradient(145deg,rgba(82,218,255,.075),rgba(255,255,255,.018));border:1px solid rgba(82,218,255,.13)}.dl-exp-hero small{display:block;color:#70dff7;font-size:8px;font-weight:850;letter-spacing:.13em;text-transform:uppercase}.dl-exp-score{display:flex;align-items:end;gap:9px;margin-top:7px}.dl-exp-score b{font-size:26px;color:#f2fbff;letter-spacing:-.04em}.dl-exp-score span{color:#ffd56b;font-size:12px}.dl-exp-hero p{margin:6px 0 0;color:#758a9e;font-size:9px;line-height:1.45}
   .dl-exp-list{display:grid;gap:9px}.dl-exp-card{padding:12px;border:1px solid rgba(255,255,255,.065);border-radius:14px;background:#0a1017}.dl-exp-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.dl-exp-name{font-size:10px;font-weight:850;color:#eaf5fb}.dl-exp-verified{font-size:7px;color:#72dff8;border:1px solid rgba(83,221,255,.16);padding:3px 5px;border-radius:999px}.dl-exp-stars{color:#ffd56b;font-size:9px;letter-spacing:1px;margin-top:5px}.dl-exp-comment{margin:8px 0 0;color:#a5b5c3;font-size:9.5px;line-height:1.55}.dl-exp-meta{margin-top:8px;color:#586d80;font-size:7.5px;display:flex;gap:7px;flex-wrap:wrap}.dl-exp-demo{color:#d6b56a;border:1px solid rgba(255,210,103,.2);padding:2px 5px;border-radius:999px}
-  @media(max-width:700px){.dl-support-launch{right:13px;bottom:calc(92px + env(safe-area-inset-bottom,0px));width:52px;height:52px;border-radius:16px}.dl-support-panel{right:8px;left:8px;bottom:calc(151px + env(safe-area-inset-bottom,0px));width:auto;height:min(590px,calc(100vh - 235px));border-radius:22px}}
+  @media(max-width:700px){
+    .dl-support-root{max-width:100vw;overflow-x:clip}
+    .dl-support-launch{right:12px;bottom:calc(92px + env(safe-area-inset-bottom,0px));width:50px;height:50px;border-radius:16px}
+    .dl-support-panel{right:8px;left:8px;bottom:calc(150px + env(safe-area-inset-bottom,0px));width:auto;height:min(520px,calc(100dvh - 285px));min-height:350px;max-height:62dvh;border-radius:20px;overscroll-behavior:contain}
+    .dl-support-head{padding:11px 12px 9px;gap:9px}.dl-support-headcopy b{font-size:12px}.dl-support-headcopy small{font-size:8px}.dl-support-close{width:32px;height:32px;border-radius:10px}
+    .dl-support-team-avatars{width:42px;height:32px;flex-basis:42px}.dl-support-team-avatars .dl-support-agent-avatar{width:30px;height:30px}
+    .dl-support-tabs{padding:6px 8px;gap:5px}.dl-support-tab{height:30px;font-size:8.5px}
+    .dl-support-context{padding:7px 9px 5px}.dl-support-context select{padding:8px 9px;font-size:9px;border-radius:10px}.dl-support-status-note{padding:0 9px 6px;font-size:7.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .dl-support-messages{padding:10px 10px 8px;gap:9px;overscroll-behavior:contain}.dl-support-msg{max-width:88%}.dl-support-bubble{padding:8px 10px;font-size:10.5px}.dl-support-who{font-size:7.5px}.dl-support-time{font-size:7px}
+    .dl-support-typing{min-height:16px;padding:0 11px 3px;font-size:8px}.dl-support-compose{padding:7px 8px 8px}.dl-support-row{grid-template-columns:38px minmax(0,1fr) 40px;gap:6px}.dl-support-attach,.dl-support-send{height:38px;border-radius:11px}.dl-support-input{min-height:38px;padding:9px 10px;font-size:16px;line-height:1.25;border-radius:12px}.dl-support-foot{display:none}
+    .dl-support-experience-view{padding:10px}.dl-exp-hero{padding:12px}.dl-exp-list{gap:7px}.dl-exp-card{padding:10px}
+  }
+  @media(max-width:380px){.dl-support-panel{left:6px;right:6px;bottom:calc(145px + env(safe-area-inset-bottom,0px));height:min(470px,calc(100dvh - 270px));min-height:330px}.dl-support-context select{font-size:8.5px}.dl-support-headcopy small{max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
   `;
   document.head.appendChild(style);
 
