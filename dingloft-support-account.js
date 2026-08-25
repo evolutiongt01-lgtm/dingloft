@@ -379,13 +379,6 @@ async function loadExperiences(force=false){
   try{
     const d=await api("/support/experiences");
     const experiences=Array.isArray(d.experiences)?d.experiences:[];
-    const samples=[
-      {customerName:"Ejemplo · Cliente Dingloft",rating:5,comment:"Me orientaron paso a paso con la instalación de SketchUp 2026 y pude dejarlo funcionando sin complicaciones.",serviceLabel:"Instalación de software"},
-      {customerName:"Ejemplo · Soporte remoto",rating:5,comment:"En la sesión remota hicieron la configuración completa y al finalizar dejaron todo listo para usar.",serviceLabel:"Soporte remoto"},
-      {customerName:"Ejemplo · Cliente Dingloft",rating:5,comment:"Tenía un problema con una descarga y el equipo me guió hasta resolverlo. La atención fue clara y rápida.",serviceLabel:"Descargas"},
-      {customerName:"Ejemplo · Cliente Dingloft",rating:5,comment:"Me ayudaron con la activación y configuración del programa. Muy buena comunicación durante todo el proceso.",serviceLabel:"Asistencia técnica"},
-      {customerName:"Ejemplo · Soporte remoto",rating:5,comment:"Solicité ayuda remota y se encargaron de revisar la instalación completa. El proceso fue ordenado y profesional.",serviceLabel:"Soporte remoto"}
-    ];
     const count=Number(d.count||experiences.length);
     const average=Number(d.average||0);
     if(hero)hero.innerHTML=`<small>Experiencias verificadas</small><div class="dl-exp-score"><b>${count?average.toFixed(1):"—"}</b><span>${count?"★★★★★":"☆☆☆☆☆"}</span></div><p>${count?`${count} experiencia${count===1?"":"s"} de clientes con compra verificada.`:"Las calificaciones verificadas aparecerán aquí después de que un cliente finalice y valore su soporte."}</p>`;
@@ -396,14 +389,9 @@ async function loadExperiences(force=false){
         <p class="dl-exp-comment">${esc(x.comment||"")}</p>
         <div class="dl-exp-meta"><span>${esc(x.serviceLabel||"Soporte Dingloft")}</span><span>${dateLabel(x.createdAt)}</span></div>
       </article>`).join("");
-    const sampleMarkup=`<div class="dl-exp-section-title">Ejemplos de comentarios</div>`+samples.map(x=>`
-      <article class="dl-exp-card">
-        <div class="dl-exp-top"><span class="dl-exp-name">${esc(x.customerName)}</span><span class="dl-exp-demo">EJEMPLO</span></div>
-        <div class="dl-exp-stars">★★★★★</div>
-        <p class="dl-exp-comment">${esc(x.comment)}</p>
-        <div class="dl-exp-meta"><span>${esc(x.serviceLabel)}</span><span>Vista de ejemplo</span></div>
-      </article>`).join("");
-    if(list)list.innerHTML=(realMarkup?`<div class="dl-exp-section-title">Opiniones de clientes</div>${realMarkup}`:"")+sampleMarkup;
+    if(list)list.innerHTML=realMarkup
+      ? `<div class="dl-exp-section-title">Opiniones verificadas de clientes</div>${realMarkup}`
+      : `<div class="dl-support-empty"><i class="bi bi-patch-check" style="font-size:24px;display:block;margin-bottom:10px"></i><b style="display:block;color:#111827;margin-bottom:6px">Aún no hay experiencias verificadas</b>Las opiniones aparecerán aquí cuando un cliente con compra verificada finalice su soporte y envíe su calificación.</div>`;
     experiencesLoaded=true;
   }catch(e){
     if(list)list.innerHTML='<div class="dl-support-empty">No pudimos cargar las experiencias en este momento.</div>';
