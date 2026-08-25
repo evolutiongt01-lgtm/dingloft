@@ -1,4 +1,4 @@
-/* Dingloft Support · Customer realtime chat · v2.0 · robust mobile image picker + upload */
+/* Dingloft Support · Customer realtime chat · v2.1 · native file input + multipart upload */
 import { getApps, getApp, initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, doc, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -70,7 +70,7 @@ function inject(){
   .dl-support-who{font-size:9.5px;color:#8b95a3;padding:0 4px}.dl-support-msg.customer .dl-support-who{text-align:right}.dl-support-bubble{padding:10px 12px;border-radius:16px;font-size:12.5px;line-height:1.45;word-break:break-word;box-shadow:0 1px 1px rgba(16,24,40,.03)}.dl-support-msg.customer .dl-support-bubble{background:#111827;color:#fff;border-bottom-right-radius:5px}.dl-support-msg.admin .dl-support-bubble{background:#f3f5f7;color:#1d2939;border:1px solid #e8ebef;border-bottom-left-radius:5px}.dl-support-time{font-size:8.5px;color:#a2abb6;padding:0 4px}.dl-support-msg.customer .dl-support-time{text-align:right}
   .dl-support-images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-bottom:7px}.dl-support-images img{display:block;width:100%;max-height:145px;object-fit:cover;border-radius:11px;background:#e9edf1;cursor:zoom-in}.dl-support-images img:only-child{grid-column:1/-1;max-height:205px}
   .dl-support-typing{min-height:19px;padding:0 15px 5px;color:#667085;font-size:9px;background:#fff}.dl-support-compose{border-top:1px solid #e9edf1;padding:9px 11px 11px;background:#fafbfc}.dl-support-preview{display:none;gap:7px;margin-bottom:8px;overflow:auto;padding-top:2px}.dl-support-preview.show{display:flex}.dl-support-preview-item{position:relative;flex:0 0 60px;height:60px}.dl-support-preview-item img{width:100%;height:100%;object-fit:cover;border-radius:12px;border:1px solid #e1e6eb;background:#fff}.dl-support-preview-item button{position:absolute;right:-4px;top:-4px;width:21px;height:21px;border-radius:50%;border:2px solid #fff;background:#111827;color:#fff;font-size:11px;box-shadow:0 2px 7px rgba(0,0,0,.16)}
-  .dl-support-row{display:grid;grid-template-columns:42px minmax(0,1fr) 44px;gap:7px;align-items:end}.dl-support-attach,.dl-support-send{height:42px;border-radius:13px;border:1px solid #e1e6eb;background:#fff;color:#475467;cursor:pointer}.dl-support-attach:hover{background:#f3f5f7}.dl-support-send{background:#111827;color:#fff;border-color:#111827}.dl-support-send:hover{background:#1f2937}.dl-support-send:disabled,.dl-support-attach:disabled{opacity:.4}.dl-support-input{width:100%;min-height:42px;max-height:108px;resize:none;overflow:auto;background:#fff;border:1px solid #dfe4e9;border-radius:14px;color:#101828;padding:10px 12px;outline:0;font:13px/1.4 Inter,system-ui,sans-serif}.dl-support-input::placeholder{color:#98a2b3}.dl-support-input:focus{border-color:#aab4bf;box-shadow:0 0 0 3px rgba(17,24,39,.04)}.dl-support-foot{margin-top:7px;color:#98a2b3;font-size:7.5px;text-align:center}.dl-support-file{position:fixed!important;left:-10000px!important;top:auto!important;width:1px!important;height:1px!important;opacity:0!important;overflow:hidden!important}.dl-support-attach{display:grid;place-items:center;text-decoration:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+  .dl-support-row{display:grid;grid-template-columns:42px minmax(0,1fr) 44px;gap:7px;align-items:end}.dl-support-attach,.dl-support-send{height:42px;border-radius:13px;border:1px solid #e1e6eb;background:#fff;color:#475467;cursor:pointer}.dl-support-attach:hover{background:#f3f5f7}.dl-support-send{background:#111827;color:#fff;border-color:#111827}.dl-support-send:hover{background:#1f2937}.dl-support-send:disabled,.dl-support-attach:disabled{opacity:.4}.dl-support-input{width:100%;min-height:42px;max-height:108px;resize:none;overflow:auto;background:#fff;border:1px solid #dfe4e9;border-radius:14px;color:#101828;padding:10px 12px;outline:0;font:13px/1.4 Inter,system-ui,sans-serif}.dl-support-input::placeholder{color:#98a2b3}.dl-support-input:focus{border-color:#aab4bf;box-shadow:0 0 0 3px rgba(17,24,39,.04)}.dl-support-foot{margin-top:7px;color:#98a2b3;font-size:7.5px;text-align:center}.dl-support-attach{position:relative;display:grid;place-items:center;text-decoration:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;overflow:hidden}.dl-support-file{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;opacity:0!important;cursor:pointer!important;font-size:100px!important;z-index:3!important}.dl-support-attach>i{pointer-events:none;position:relative;z-index:1}
   .dl-exp-hero{padding:15px;border-radius:17px;background:#fff;border:1px solid #e5e9ed;box-shadow:0 1px 2px rgba(16,24,40,.03)}.dl-exp-hero small{display:block;color:#667085;font-size:8px;font-weight:850;letter-spacing:.13em;text-transform:uppercase}.dl-exp-score{display:flex;align-items:end;gap:9px;margin-top:7px}.dl-exp-score b{font-size:26px;color:#111827;letter-spacing:-.04em}.dl-exp-score span{color:#e8ad21;font-size:12px}.dl-exp-hero p{margin:6px 0 0;color:#667085;font-size:9px;line-height:1.45}
   .dl-exp-list{display:grid;gap:9px}.dl-exp-card{padding:12px;border:1px solid #e5e9ed;border-radius:14px;background:#fff}.dl-exp-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.dl-exp-name{font-size:10px;font-weight:850;color:#101828}.dl-exp-verified{font-size:7px;color:#344054;border:1px solid #d9dee4;background:#f8fafc;padding:3px 5px;border-radius:999px}.dl-exp-stars{color:#e8ad21;font-size:9px;letter-spacing:1px;margin-top:5px}.dl-exp-comment{margin:8px 0 0;color:#475467;font-size:9.5px;line-height:1.55}.dl-exp-meta{margin-top:8px;color:#98a2b3;font-size:7.5px;display:flex;gap:7px;flex-wrap:wrap}.dl-exp-demo{color:#7a5d16;border:1px solid #ead7a0;background:#fffaf0;padding:3px 6px;border-radius:999px;font-weight:800;letter-spacing:.04em}.dl-exp-section-title{padding:2px 2px 0;color:#667085;font-size:8px;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
   @media(max-width:700px){
@@ -126,11 +126,10 @@ function inject(){
           <div class="dl-support-compose">
             <div class="dl-support-preview" id="dlSupportPreview"></div>
             <div class="dl-support-row">
-              <label class="dl-support-attach" id="dlSupportAttach" for="dlSupportFile" role="button" tabindex="0" aria-label="Adjuntar imagen"><i class="bi bi-image"></i></label>
+              <label class="dl-support-attach" id="dlSupportAttach" aria-label="Adjuntar imagen"><i class="bi bi-image"></i><input class="dl-support-file" id="dlSupportFile" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif" multiple aria-label="Seleccionar imágenes"></label>
               <textarea class="dl-support-input" id="dlSupportInput" maxlength="2000" placeholder="Escribe tu mensaje…"></textarea>
               <button class="dl-support-send" id="dlSupportSend" aria-label="Enviar"><i class="bi bi-arrow-up"></i></button>
             </div>
-            <input class="dl-support-file" id="dlSupportFile" type="file" accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif" multiple>
             <div class="dl-support-foot">Soporte privado para clientes Dingloft · Capturas protegidas</div>
           </div>
         </div>
@@ -147,9 +146,8 @@ function inject(){
   document.getElementById("dlSupportClose").addEventListener("click",()=>togglePanel(false));
   document.getElementById("dlSupportBackdrop").addEventListener("click",()=>togglePanel(false));
   const attachLabel=document.getElementById("dlSupportAttach"),fileInput=document.getElementById("dlSupportFile");
-  // The native <label for=file> path is intentionally used on touch devices.
-  // iOS Safari/PWA can ignore programmatic .click() calls on visually-hidden file inputs.
-  attachLabel.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();fileInput.click()}});
+  // The real file input covers the visible attachment control. This keeps the tap
+  // as a native user gesture on iOS Safari/PWA instead of relying on input.click().
   fileInput.addEventListener("change",handleFiles);
   document.getElementById("dlSupportSend").addEventListener("click",sendMessage);
   root.querySelectorAll("[data-support-tab]").forEach(btn=>btn.addEventListener("click",()=>switchTab(btn.dataset.supportTab)));
@@ -358,12 +356,14 @@ async function uploadImage(file){
   const doUpload=async(forceRefresh=false)=>{
     const token=await user.getIdToken(forceRefresh);
     const controller=new AbortController();
-    const timer=setTimeout(()=>controller.abort(),45000);
+    const timer=setTimeout(()=>controller.abort(),60000);
+    const form=new FormData();
+    form.append("file",file,file.name||"captura.jpg");
     try{
       return await fetch(WORKER+"/support/image",{
         method:"POST",
-        headers:{Authorization:`Bearer ${token}`,"content-type":uploadType,"x-file-name":encodeURIComponent(file.name||"captura.jpg")},
-        body:file,
+        headers:{Authorization:`Bearer ${token}`},
+        body:form,
         cache:"no-store",
         signal:controller.signal
       });
@@ -374,7 +374,6 @@ async function uploadImage(file){
     if(err?.name==="AbortError")throw new Error("La imagen tardó demasiado en subir. Revisa tu conexión e inténtalo de nuevo.");
     throw new Error("No pudimos conectar con el servidor para subir la imagen.");
   }
-  // A stale Firebase token is common after an app has been left open for a long time.
   if(r.status===401){try{r=await doUpload(true)}catch(err){if(err?.name==="AbortError")throw new Error("La imagen tardó demasiado en subir.");throw err}}
   const d=await r.json().catch(()=>({}));
   if(!r.ok||d.ok===false){
@@ -389,17 +388,26 @@ async function sendMessage(){
   const input=document.getElementById("dlSupportInput"),btn=document.getElementById("dlSupportSend"),attach=document.getElementById("dlSupportAttach");
   const text=String(input.value||"").trim().slice(0,MAX_TEXT);
   if(!text&&!pendingImages.length)return;
-  btn.disabled=true;if(attach){attach.setAttribute("aria-disabled","true");attach.style.pointerEvents="none";attach.style.opacity=".45"}
+  btn.disabled=true;const filePicker=document.getElementById("dlSupportFile");if(filePicker)filePicker.disabled=true;if(attach){attach.setAttribute("aria-disabled","true");attach.style.pointerEvents="none";attach.style.opacity=".45"}
   try{
     const attachments=[];
-    for(const item of pendingImages)attachments.push(await uploadImage(item.file));
+    for(let i=0;i<pendingImages.length;i++){
+      const status=document.getElementById("dlSupportStatusNote");
+      if(status)status.textContent=`Subiendo imagen ${i+1} de ${pendingImages.length}…`;
+      attachments.push(await uploadImage(pendingImages[i].file));
+    }
     const ctx=selectedContext();
     await api("/support/message",{method:"POST",body:{text,attachments,relatedPurchaseId:ctx?.purchaseId||"",relatedProductSku:ctx?.productSku||"",relatedProductName:ctx?.productName||"",orderNumber:ctx?.orderNumber||""}});
     input.value="";autoSize(input);
     pendingImages.forEach(x=>URL.revokeObjectURL(x.url));pendingImages=[];renderPreviews();
     await setTyping(false,"");
   }catch(e){feedback(e.message||"No se pudo enviar el mensaje")}
-  finally{btn.disabled=false;if(attach){attach.removeAttribute("aria-disabled");attach.style.pointerEvents="";attach.style.opacity=""}}
+  finally{
+    btn.disabled=false;
+    const status=document.getElementById("dlSupportStatusNote");if(status)status.textContent="Tu conversación queda vinculada a tu cuenta Dingloft.";
+    const fileInput=document.getElementById("dlSupportFile");if(fileInput)fileInput.disabled=false;
+    if(attach){attach.removeAttribute("aria-disabled");attach.style.pointerEvents="";attach.style.opacity=""}
+  }
 }
 async function markRead(){if(!user||!document.getElementById("dlSupportPanel")?.classList.contains("open"))return;api("/support/read",{method:"POST",body:{}}).catch(()=>{})}
 
