@@ -1,4 +1,4 @@
-/* Dingloft Support · Customer realtime chat · v1.7 · White Premium UI + expanded mobile sheet */
+/* Dingloft Support · Customer realtime chat · v1.8 · White Premium UI + true mobile fullscreen modal */
 import { getApps, getApp, initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, doc, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -23,6 +23,7 @@ const AUTO_OPEN=PARAMS.get("support")==="1"||PARAMS.get("supportFeedback")==="1"
 let user=null,supportData=null,chatState={},chatExists=false,chatUnsub=null,msgUnsub=null,adminPresenceUnsub=null;
 let lastTypingWrite=0,typingTimer=null,typingIdleTimer=null,pendingImages=[],imageUrls=new Map();
 let feedbackRating=0,experiencesLoaded=false,experiencesLoading=false;
+let supportScrollLock=null;
 
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const time=v=>{if(!v)return"";const d=v?.toDate?v.toDate():new Date(v);return Number.isNaN(d.getTime())?"":d.toLocaleTimeString("es-GT",{hour:"2-digit",minute:"2-digit"})};
@@ -50,6 +51,7 @@ function inject(){
   style.id="dlSupportStyle";
   style.textContent=`
   .dl-support-root{position:relative;z-index:95;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#111827}
+  .dl-support-backdrop{position:fixed;inset:0;border:0;padding:0;margin:0;background:rgba(2,6,12,.58);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:993;display:none;cursor:default}.dl-support-root.panel-open .dl-support-backdrop{display:block}
   .dl-support-launch{position:fixed;right:24px;bottom:24px;width:54px;height:54px;border-radius:18px;border:1px solid rgba(15,23,42,.12);background:#fff;color:#111827;display:none;place-items:center;font-size:21px;box-shadow:0 16px 46px rgba(0,0,0,.28),0 1px 0 rgba(255,255,255,.8) inset;z-index:995;transition:transform .18s ease,box-shadow .18s ease;cursor:pointer}
   .dl-support-launch:hover{transform:translateY(-2px);box-shadow:0 20px 52px rgba(0,0,0,.32)}.dl-support-launch.show{display:grid}.dl-support-root.panel-open .dl-support-launch{opacity:0;pointer-events:none;transform:translateY(8px)}
   .dl-support-badge{position:absolute;right:-4px;top:-4px;min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:#111827;color:#fff;border:2px solid #fff;display:none;place-items:center;font-size:9px;font-weight:900}.dl-support-badge.show{display:grid}
@@ -73,9 +75,13 @@ function inject(){
   .dl-exp-list{display:grid;gap:9px}.dl-exp-card{padding:12px;border:1px solid #e5e9ed;border-radius:14px;background:#fff}.dl-exp-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.dl-exp-name{font-size:10px;font-weight:850;color:#101828}.dl-exp-verified{font-size:7px;color:#344054;border:1px solid #d9dee4;background:#f8fafc;padding:3px 5px;border-radius:999px}.dl-exp-stars{color:#e8ad21;font-size:9px;letter-spacing:1px;margin-top:5px}.dl-exp-comment{margin:8px 0 0;color:#475467;font-size:9.5px;line-height:1.55}.dl-exp-meta{margin-top:8px;color:#98a2b3;font-size:7.5px;display:flex;gap:7px;flex-wrap:wrap}.dl-exp-demo{color:#7a5d16;border:1px solid #ead7a0;background:#fffaf0;padding:3px 6px;border-radius:999px;font-weight:800;letter-spacing:.04em}.dl-exp-section-title{padding:2px 2px 0;color:#667085;font-size:8px;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
   @media(max-width:700px){
     .dl-support-root{max-width:100vw;overflow-x:clip}.dl-support-launch{right:12px;bottom:72px;width:50px;height:50px;border-radius:17px}
-    /* Mobile: sheet anchored directly below Dingloft header and directly above the dock.
-       No duplicated safe-area math: the site chrome already owns those insets. */
-    .dl-support-panel{right:8px;left:8px;top:118px;bottom:72px;width:auto;height:auto;min-height:0;max-height:none;border-radius:24px;overscroll-behavior:contain}
+    /* Mobile: soporte se comporta como una vista nativa a pantalla completa.
+       Cubre el contenido de Cuenta y el dock para que nada del fondo se mueva o se asome. */
+    .dl-support-root.panel-open{position:fixed;inset:0;z-index:2147483000;pointer-events:none}
+    .dl-support-root.panel-open .dl-support-backdrop{display:block;z-index:2147483001;pointer-events:auto;background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none}
+    .dl-support-panel{left:0!important;right:0!important;top:0!important;bottom:0!important;width:100%!important;height:100dvh!important;min-height:100dvh!important;max-height:100dvh!important;border:0!important;border-radius:0!important;box-shadow:none!important;z-index:2147483002!important;overscroll-behavior:contain;pointer-events:auto;background:#fff}
+    .dl-support-panel.open{display:grid}
+    .dl-support-head{padding-top:max(14px,env(safe-area-inset-top,0px))}
     .dl-support-head{padding:12px 12px 10px;gap:9px}.dl-support-headcopy b{font-size:12.5px}.dl-support-headcopy small{font-size:8px}.dl-support-close{width:32px;height:32px;border-radius:10px}
     .dl-support-team-avatars{width:42px;height:32px;flex-basis:42px}.dl-support-team-avatars .dl-support-agent-avatar{width:30px;height:30px}.dl-support-tabs{padding:6px 8px;gap:5px}.dl-support-tab{height:31px;font-size:8.5px}
     .dl-support-context{padding:7px 9px 5px}.dl-support-context select{padding:8px 9px;font-size:9px;border-radius:10px}.dl-support-status-note{padding:0 9px 6px;font-size:7.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -83,7 +89,7 @@ function inject(){
     .dl-support-typing{min-height:16px;padding:0 11px 3px;font-size:8px}.dl-support-compose{padding:7px 8px 8px}.dl-support-row{grid-template-columns:39px minmax(0,1fr) 41px;gap:6px}.dl-support-attach,.dl-support-send{height:39px;border-radius:12px}.dl-support-input{min-height:39px;padding:9px 10px;font-size:16px;line-height:1.25;border-radius:12px}.dl-support-foot{display:none}
     .dl-support-experience-view{padding:10px}.dl-exp-hero{padding:12px}.dl-exp-list{gap:7px}.dl-exp-card{padding:10px}
   }
-  @media(max-width:380px){.dl-support-launch{right:10px;bottom:70px}.dl-support-panel{left:6px;right:6px;top:114px;bottom:70px;height:auto;min-height:0;max-height:none}.dl-support-context select{font-size:8.5px}.dl-support-headcopy small{max-width:205px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+  @media(max-width:380px){.dl-support-launch{right:10px;bottom:70px}.dl-support-context select{font-size:8.5px}.dl-support-headcopy small{max-width:205px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
   `;
   document.head.appendChild(style);
 
@@ -91,6 +97,7 @@ function inject(){
   root.id="dlSupportRoot";
   root.className=`dl-support-root${window.top!==window.self?" desktop-shell":""}`;
   root.innerHTML=`
+    <button class="dl-support-backdrop" id="dlSupportBackdrop" aria-label="Cerrar soporte" tabindex="-1"></button>
     <button class="dl-support-launch" id="dlSupportLaunch" aria-label="Abrir soporte">
       <i class="bi bi-chat-dots"></i><span class="dl-support-badge" id="dlSupportBadge">0</span>
     </button>
@@ -137,6 +144,7 @@ function inject(){
 
   document.getElementById("dlSupportLaunch").addEventListener("click",()=>togglePanel(true));
   document.getElementById("dlSupportClose").addEventListener("click",()=>togglePanel(false));
+  document.getElementById("dlSupportBackdrop").addEventListener("click",()=>togglePanel(false));
   document.getElementById("dlSupportAttach").addEventListener("click",()=>document.getElementById("dlSupportFile").click());
   document.getElementById("dlSupportFile").addEventListener("change",handleFiles);
   document.getElementById("dlSupportSend").addEventListener("click",sendMessage);
@@ -154,12 +162,27 @@ function fillContexts(){
   sel.innerHTML='<option value="">Selecciona una compra (opcional)</option>';
   for(const c of supportData?.contexts||[]){const o=document.createElement("option");o.value=c.key;o.textContent=`${c.productName} · ${c.orderNumber}`;sel.appendChild(o)}
 }
+function mobileSupportMode(){return window.matchMedia?.("(max-width:700px)")?.matches===true}
+function lockSupportBackground(){
+  if(!mobileSupportMode()||supportScrollLock)return;
+  const body=document.body,html=document.documentElement,y=Math.max(0,window.scrollY||window.pageYOffset||0);
+  supportScrollLock={y,bodyPosition:body.style.position,bodyTop:body.style.top,bodyLeft:body.style.left,bodyRight:body.style.right,bodyWidth:body.style.width,bodyOverflow:body.style.overflow,htmlOverflow:html.style.overflow,htmlOverscroll:html.style.overscrollBehavior};
+  html.style.overflow="hidden";html.style.overscrollBehavior="none";
+  body.style.position="fixed";body.style.top=`-${y}px`;body.style.left="0";body.style.right="0";body.style.width="100%";body.style.overflow="hidden";
+}
+function unlockSupportBackground(){
+  if(!supportScrollLock)return;
+  const body=document.body,html=document.documentElement,s=supportScrollLock;supportScrollLock=null;
+  body.style.position=s.bodyPosition;body.style.top=s.bodyTop;body.style.left=s.bodyLeft;body.style.right=s.bodyRight;body.style.width=s.bodyWidth;body.style.overflow=s.bodyOverflow;
+  html.style.overflow=s.htmlOverflow;html.style.overscrollBehavior=s.htmlOverscroll;
+  requestAnimationFrame(()=>window.scrollTo(0,s.y));
+}
 function togglePanel(open){
   const p=document.getElementById("dlSupportPanel");if(!p)return;
   p.classList.toggle("open",open);
   document.getElementById("dlSupportRoot")?.classList.toggle("panel-open",open);
-  if(open){startConversationListeners();markRead();if(PARAMS.get("supportFeedback")==="1")switchTab("chat");setTimeout(()=>document.getElementById("dlSupportInput")?.focus(),100)}
-  else{stopMessageListeners();setTyping(false,"")}
+  if(open){lockSupportBackground();startConversationListeners();markRead();if(PARAMS.get("supportFeedback")==="1")switchTab("chat");if(!mobileSupportMode())setTimeout(()=>document.getElementById("dlSupportInput")?.focus(),100)}
+  else{unlockSupportBackground();stopMessageListeners();setTyping(false,"")}
 }
 function switchTab(tab){
   const experiences=tab==="experiences";
@@ -442,3 +465,5 @@ onAuthStateChanged(auth,async u=>{
     if(AUTO_OPEN)setTimeout(()=>togglePanel(true),180);
   }catch(e){console.warn("Dingloft Support:",e?.message||e)}
 });
+window.addEventListener("pagehide",unlockSupportBackground);
+window.addEventListener("beforeunload",unlockSupportBackground);
