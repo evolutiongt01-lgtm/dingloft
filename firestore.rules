@@ -1,0 +1,189 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function authEmail() {
+      return signedIn() ? request.auth.token.get('email', '') : '';
+    }
+
+    function isAdmin() {
+      return signedIn() && (
+        authEmail() == 'evolutiongt01@gmail.com' ||
+        authEmail() == 'tepaz2025@gmail.com' ||
+        authEmail() == 'matzarcesar01@hotmail.com'
+      );
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function hasSupportAccess(uid) {
+      return isOwner(uid)
+        && exists(/databases/$(database)/documents/supportEntitlements/$(uid))
+        && get(/databases/$(database)/documents/supportEntitlements/$(uid)).data.get('eligible', false) == true;
+    }
+
+    function isCommentCollection(name) {
+      return name in [
+        'nord_comments_final',
+        'esword_comments_v1',
+        'sketchup_comments_final',
+        'product_comments_pianos_v5',
+        'logic_comments_final',
+        'yamahakeys_comments_final',
+        'rhodes_comments_final',
+        'mainstage_comments_final',
+        'cinema4d_comments_final',
+        'autocad_comments_final',
+        'office_comments_final'
+      ];
+    }
+
+    // Administración conserva el panel existente.
+    match /{document=**} {
+      allow read, write: if isAdmin();
+    }
+
+    // Perfil del cliente. Los campos de compra NO pueden falsificarse desde navegador.
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+
+      allow create: if isOwner(uid)
+        && request.resource.data.get('uid', uid) == uid
+        && request.resource.data.get('email', authEmail()) == authEmail();
+
+      allow update: if isOwner(uid)
+        && request.resource.data.get('uid', uid) == resource.data.get('uid', uid)
+        && request.resource.data.get('email', authEmail()) == resource.data.get('email', authEmail())
+        && request.resource.data.get('email', authEmail()) == authEmail()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'uid', 'email', 'displayName', 'photoURL', 'lastLogin', 'createdAt'
+        ]);
+
+      allow delete: if false;
+    }
+
+    // ============================================================
+    // COMERCIO DIGITAL
+    // ============================================================
+    // Solo el Worker (Service Account / IAM) crea o cambia compras pagadas.
+    // El cliente únicamente puede leer SUS compras.
+    match /purchases/{purchaseId} {
+      allow read: if signedIn() && resource.data.get('uid', '') == request.auth.uid;
+      allow create, update, delete: if false;
+    }
+
+    // Documentos internos del backend. Nunca son accesibles desde el navegador.
+    match /paypalOrders/{orderId} {
+      allow read, write: if false;
+    }
+
+    match /paypalTransactions/{transactionId} {
+      allow read, write: if false;
+    }
+
+    match /digitalProducts/{sku} {
+      allow read, write: if false;
+    }
+
+    // ============================================================
+    // SOPORTE DINGLOFT
+    // ============================================================
+    // El Worker crea/revoca este permiso tras comprobar compras reales.
+    match /supportEntitlements/{uid} {
+      allow read: if isOwner(uid);
+      allow create, update, delete: if false;
+    }
+
+    // El cliente puede LEER únicamente su propia conversación.
+    // Los mensajes y metadatos permanentes se escriben solo desde el Worker.
+    match /supportChats/{uid} {
+      allow read: if hasSupportAccess(uid);
+      allow create, update, delete: if false;
+
+      match /messages/{messageId} {
+        allow read: if hasSupportAccess(uid);
+        allow create, update, delete: if false;
+      }
+
+      // Única escritura directa del cliente: su estado temporal de escritura.
+      // El borrador se limita a 500 caracteres y el timestamp debe ser del servidor.
+      match /presence/{presenceId} {
+        allow read: if hasSupportAccess(uid);
+
+        allow create, update: if hasSupportAccess(uid)
+          && presenceId == 'customer'
+          && request.resource.data.keys().hasOnly(['typing', 'draft', 'updatedAt'])
+          && request.resource.data.get('typing', false) is bool
+          && request.resource.data.get('draft', '') is string
+          && request.resource.data.get('draft', '').size() <= 500
+          && request.resource.data.get('updatedAt', null) == request.time;
+
+        allow delete: if hasSupportAccess(uid) && presenceId == 'customer';
+      }
+    }
+
+    // Experiencias de soporte. El cliente las consume mediante el Worker,
+    // que elimina UID/correo y devuelve únicamente el perfil público.
+    // Solo Administración puede acceder al documento completo desde Firestore.
+    match /supportExperiences/{experienceId} {
+      allow read, write: if false;
+    }
+
+    // Reservas de instalación remota: se conserva la funcionalidad existente.
+    match /reservas/{reservaId} {
+      allow read: if signedIn() && resource.data.get('uid', '') == request.auth.uid;
+
+      allow create: if signedIn()
+        && request.resource.data.get('uid', '') == request.auth.uid
+        && request.resource.data.get('email', authEmail()) == authEmail()
+        && request.resource.data.get('estado', '') == 'pendiente';
+
+      // El cliente solo puede enviar/cambiar su código de acceso.
+      allow update: if signedIn()
+        && resource.data.get('uid', '') == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['codigoAcceso']);
+
+      allow delete: if signedIn() && resource.data.get('uid', '') == request.auth.uid;
+    }
+
+    // Notas del panel: únicamente Administración (cubierto por regla global admin).
+    match /admin_notes/{noteId} {
+      allow read, write: if false;
+    }
+
+    // Reseñas públicas: cualquiera puede leer; un usuario autenticado puede crear.
+    // En actualizaciones solo se permite la mecánica de likes existente.
+    match /{commentCollection}/{commentId} {
+      allow read: if isCommentCollection(commentCollection);
+
+      allow create: if isCommentCollection(commentCollection)
+        && signedIn()
+        && request.resource.data.keys().hasOnly([
+          'name', 'rating', 'text', 'likes', 'likedBy', 'createdAt'
+        ])
+        && request.resource.data.get('name', '') is string
+        && request.resource.data.get('text', '') is string
+        && request.resource.data.get('rating', 0) is int
+        && request.resource.data.get('rating', 0) >= 1
+        && request.resource.data.get('rating', 0) <= 5
+        && request.resource.data.get('likes', 0) == 0
+        && request.resource.data.get('likedBy', []) is list;
+
+      allow update: if isCommentCollection(commentCollection)
+        && signedIn()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'likedBy'])
+        && request.resource.data.get('likes', 0) is int
+        && request.resource.data.get('likes', 0) >= 0
+        && request.resource.data.get('likedBy', []) is list;
+
+      allow delete: if false;
+    }
+  }
+}
