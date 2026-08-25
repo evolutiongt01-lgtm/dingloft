@@ -1212,7 +1212,7 @@ html.dingloft-shell-embedded-v83 .account-page.account-v80{padding-top:124px!imp
   </script>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { getFirestore, collection, query, where, getDocs, addDoc, doc, updateDoc, deleteDoc, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -1226,7 +1226,7 @@ html.dingloft-shell-embedded-v83 .account-page.account-v80{padding-top:124px!imp
       measurementId: "G-R9SGZCDN13"
     };
 
-    const app = initializeApp(firebaseConfig);
+    const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
@@ -1830,6 +1830,7 @@ html.dingloft-shell-embedded-v83 .account-page.account-v80{padding-top:124px!imp
       try { await signOut(auth); window.location.replace('login.html?loggedout=1'); } catch (error) { console.error(error); }
     });
   </script>
+<script type="module" src="dingloft-support-account.js?v=3"></script>
 <script src="dingloft-ui-guard.js?v=55"></script>
 </body>
 </html>
