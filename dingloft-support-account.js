@@ -381,14 +381,16 @@ async function loadExperiences(force=false){
     const experiences=Array.isArray(d.experiences)?d.experiences:[];
     const count=Number(d.count||experiences.length);
     const average=Number(d.average||0);
-    if(hero)hero.innerHTML=`<small>Experiencias verificadas</small><div class="dl-exp-score"><b>${count?average.toFixed(1):"—"}</b><span>${count?"★★★★★":"☆☆☆☆☆"}</span></div><p>${count?`${count} experiencia${count===1?"":"s"} de clientes con compra verificada.`:"Las calificaciones verificadas aparecerán aquí después de que un cliente finalice y valore su soporte."}</p>`;
-    const realMarkup=experiences.map(x=>`
+    if(hero)hero.innerHTML=`<small>Experiencias verificadas</small><div class="dl-exp-score"><b>${count?average.toFixed(1):"—"}</b><span>${count?"★★★★★":"☆☆☆☆☆"}</span></div><p>${count?`${count} experiencia${count===1?"":"s"} reales y verificadas de nuestros clientes.`:"Las calificaciones verificadas aparecerán aquí después de que un cliente finalice y valore su soporte."}</p>`;
+    const realMarkup=experiences.map(x=>{
+      const verified=x.verifiedPurchase?'<span class="dl-exp-verified"><i class="bi bi-patch-check"></i> Compra verificada</span>':x.verifiedLegacy?'<span class="dl-exp-verified"><i class="bi bi-patch-check"></i> Cliente verificado</span>':'';
+      return `
       <article class="dl-exp-card">
-        <div class="dl-exp-top"><span class="dl-exp-name">${esc(x.customerName||"Cliente Dingloft")}</span>${x.verifiedPurchase?'<span class="dl-exp-verified"><i class="bi bi-patch-check"></i> Compra verificada</span>':""}</div>
+        <div class="dl-exp-top"><span class="dl-exp-name">${esc(x.customerName||"Cliente Dingloft")}</span>${verified}</div>
         <div class="dl-exp-stars">${"★".repeat(Math.max(1,Math.min(5,Number(x.rating||5))))}</div>
         <p class="dl-exp-comment">${esc(x.comment||"")}</p>
         <div class="dl-exp-meta"><span>${esc(x.serviceLabel||"Soporte Dingloft")}</span><span>${dateLabel(x.createdAt)}</span></div>
-      </article>`).join("");
+      </article>`}).join("");
     if(list)list.innerHTML=realMarkup
       ? `<div class="dl-exp-section-title">Opiniones verificadas de clientes</div>${realMarkup}`
       : `<div class="dl-support-empty"><i class="bi bi-patch-check" style="font-size:24px;display:block;margin-bottom:10px"></i><b style="display:block;color:#111827;margin-bottom:6px">Aún no hay experiencias verificadas</b>Las opiniones aparecerán aquí cuando un cliente con compra verificada finalice su soporte y envíe su calificación.</div>`;
