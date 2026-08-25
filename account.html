@@ -1464,8 +1464,7 @@ html,body{
         await updateProfile(activeAccountUser, { displayName: newName });
         await setDoc(doc(db, 'users', activeAccountUser.uid), {
           displayName: newName,
-          email: activeAccountUser.email || '',
-          profileUpdatedAt: serverTimestamp()
+          email: activeAccountUser.email || ''
         }, { merge: true });
         syncVisibleName(newName);
         profileNameMessage.textContent = 'Nombre actualizado.';
@@ -2003,7 +2002,7 @@ html,body{
       try { await signOut(auth); window.location.replace('login.html?loggedout=1'); } catch (error) { console.error(error); }
     });
   </script>
-<script type="module" src="dingloft-support-account.js?v=3"></script>
+<script type="module" src="dingloft-support-account.js?v=5"></script>
 <script src="dingloft-ui-guard.js?v=55"></script>
 </body>
 </html>
