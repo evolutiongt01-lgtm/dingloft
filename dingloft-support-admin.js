@@ -1,4 +1,4 @@
-/* Dingloft Support · Admin realtime inbox · v1.6 · iOS PWA root-SW + FCM FID push */
+/* Dingloft Support · Admin realtime inbox · v1.7 · iOS user-gesture-safe FCM FID push */
 import { getApps,getApp,initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore,collection,doc,limit,onSnapshot,orderBy,query,serverTimestamp,setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -12,6 +12,7 @@ const WORKER=String(window.DINGLOFT_WORKER_BASE||"https://autumn-breeze-dfa0.evo
 const AGENTS={"tepaz2025@gmail.com":{name:"Tony Bac",role:"Asistente Técnico",avatar:"/img/tony-bac.webp"},"evolutiongt01@gmail.com":{name:"Cesar Matzar",role:"Desarrollador Técnico",avatar:"/img/cesar-matzar.webp"},"matzarcesar01@hotmail.com":{name:"Evolution Group",role:"Dirección y Seguridad",avatar:"/img/evolution-group.webp"}};
 let user=null,agent=null,chats=[],selectedId="",chatsUnsub=null,msgUnsub=null,presenceUnsub=null,lastTyping=0,typingTimer=null,typingIdle=null,imageUrls=new Map();
 let pushMessaging=null,pushTarget="",pushTargetType="",pushRegistration=null,pushForegroundUnsub=null,pushRegisteredUnsub=null,pushUnregisteredUnsub=null,pushConfigured=false,pushBusy=false;
+let pushInfra=null,pushInfraPromise=null;
 let pendingPushChatId=cleanChatId(new URLSearchParams(location.search).get("supportChat")||"");
 const $=id=>document.getElementById(id),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function cleanChatId(v){return String(v||"").replace(/[^A-Za-z0-9_-]/g,"").slice(0,180)}
@@ -61,26 +62,87 @@ function isAbort20(error){const x=pushErrorInfo(error);return Number(x.code)===2
 function pushFriendlyError(error){const x=pushErrorInfo(error),raw=x.raw;if(isAbort20(error))return'iPhone abortó la suscripción con el servicio push (AbortError 20). Ya limpié el registro aislado anterior; cierra Dingloft por completo, vuelve a abrirlo desde su icono y toca Reintentar avisos una vez más.';if(/unsupported-browser|not supported|no compatible/i.test(raw))return isIOSDevice()?'iPhone no habilitó Web Push para esta instalación. Abre Dingloft desde su icono de la pantalla de inicio y vuelve a intentarlo.':'Este navegador no admite Firebase Web Push.';if(/permission|denied|blocked|NotAllowedError/i.test(raw))return'Las notificaciones están bloqueadas para Dingloft en Ajustes del sistema.';if(/indexeddb/i.test(raw))return'iOS no pudo abrir el almacenamiento de notificaciones. Cierra Dingloft por completo, vuelve a abrirlo y reintenta.';if(/register|registration|subscribe|subscription|token|push service/i.test(raw))return'No se pudo registrar este iPhone con el servicio push. Cierra Dingloft, vuelve a abrir la app y toca Activar avisos otra vez.';return raw||'No se pudieron activar las notificaciones.'}
 function waitForFid(messaging,timeoutMs=15000){return new Promise((resolve,reject)=>{let off=null;const timer=setTimeout(()=>{off?.();reject(Error('Firebase no devolvió el identificador de este dispositivo.'))},timeoutMs);off=onRegistered(messaging,fid=>{const value=String(fid||'').trim();if(!value)return;clearTimeout(timer);off?.();resolve(value)})})}
 async function showForegroundPush(data={}){if(Notification.permission!=="granted")return;try{const reg=pushRegistration||await ensurePushRegistration();await reg.showNotification(data.title||'Dingloft · Soporte',{body:data.body||'Nuevo mensaje de soporte',icon:'/img/favicon.png',badge:'/img/favicon.png',tag:`dingloft-support-${data.chatId||'new'}`,renotify:true,data:{url:data.url||'/admin.html#support',chatId:data.chatId||''}})}catch(_){}}
+async function preparePushInfrastructure(){
+  if(pushInfra)return pushInfra;
+  if(pushInfraPromise)return pushInfraPromise;
+  pushInfraPromise=(async()=>{
+    if(isIOSDevice()&&!isStandaloneApp())return{ok:false,reason:'standalone'};
+    if(!('Notification'in window)||!('serviceWorker'in navigator))return{ok:false,reason:'unsupported'};
+    if(!(await isSupported()))return{ok:false,reason:'unsupported'};
+    const cfg=await supportPushConfig();
+    pushConfigured=cfg.enabled===true&&Boolean(cfg.vapidKey);
+    if(!pushConfigured)return{ok:false,reason:'config'};
+    const reg=await ensurePushRegistration();
+    pushMessaging=pushMessaging||getMessaging(pushApp);
+    pushInfra={ok:true,cfg,reg,messaging:pushMessaging};
+    return pushInfra;
+  })().catch(error=>({ok:false,reason:'error',error})).finally(()=>{pushInfraPromise=null});
+  return pushInfraPromise;
+}
+async function primePushInfrastructure(){
+  if(!user)return;
+  if(isIOSDevice()&&!isStandaloneApp()){setPushButton('blocked','Abre la app instalada','En iPhone los avisos funcionan al abrir Dingloft desde el icono de la pantalla de inicio.');return}
+  setPushButton('busy','Preparando avisos…');
+  const infra=await preparePushInfrastructure();
+  if(!infra?.ok){
+    if(infra?.reason==='config')setPushButton('blocked','Falta configurar','Agrega FCM_VAPID_PUBLIC_KEY al Worker.');
+    else if(infra?.reason==='standalone')setPushButton('blocked','Abre la app instalada','Abre Dingloft desde su icono de la pantalla de inicio.');
+    else if(infra?.reason==='unsupported')setPushButton('blocked','No compatible','Esta instalación no expone Web Push.');
+    else setPushButton('ready','Reintentar avisos',pushFriendlyError(infra?.error));
+    return;
+  }
+  if(Notification.permission==='denied'){setPushButton('blocked','Avisos bloqueados','Activa Dingloft en Ajustes → Notificaciones.');return}
+  if(isIOSDevice()){
+    // IMPORTANT: iOS requires the actual Push subscription to originate from a
+    // direct user gesture. We intentionally DO NOT auto-register here.
+    setPushButton('ready',Notification.permission==='granted'?'Activar avisos':'Activar avisos','Toca para vincular este iPhone con los avisos de soporte.');
+    return;
+  }
+  if(Notification.permission==='granted')registerPushNotifications({ask:false}).catch(()=>{});
+  else setPushButton('ready','Activar avisos','Recibe una notificación cuando un cliente solicite soporte.');
+}
 async function registerPushNotifications({ask=false}={}){
-  if(pushBusy||!user)return;pushBusy=true;setPushButton('busy','Configurando…');
+  if(pushBusy||!user)return;
+  pushBusy=true;setPushButton('busy','Configurando…');
   try{
     if(isIOSDevice()&&!isStandaloneApp()){setPushButton('blocked','Abre la app instalada','En iPhone los avisos funcionan al abrir Dingloft desde el icono de la pantalla de inicio.');return}
-    if(!('Notification'in window)||!('serviceWorker'in navigator)||!(await isSupported())){setPushButton('blocked','No compatible',isIOSDevice()?'Esta instalación de iPhone no expone Web Push. Abre Dingloft desde el icono instalado.':'Este navegador no admite Firebase Web Push.');return}
-    const cfg=await supportPushConfig();pushConfigured=cfg.enabled===true&&Boolean(cfg.vapidKey);if(!pushConfigured){setPushButton('blocked','Falta configurar','Agrega FCM_VAPID_PUBLIC_KEY al Worker.');return}
-    let permission=Notification.permission;if(permission==='default'&&ask)permission=await Notification.requestPermission();
+
+    // The infrastructure (VAPID + active root SW + Firebase Messaging) is
+    // prepared BEFORE the tap. This avoids losing iOS transient user activation
+    // while waiting on a network request or service-worker update.
+    const infra=pushInfra;
+    if(!infra?.ok){
+      setPushButton('ready','Preparando avisos…','Espera un momento y vuelve a tocar el botón.');
+      primePushInfrastructure().catch(()=>{});
+      return;
+    }
+
+    let permission=Notification.permission;
+    if(permission==='default'&&ask){
+      // Keep the permission request directly attached to the user's tap.
+      permission=await Notification.requestPermission();
+    }
     if(permission==='denied'){setPushButton('blocked','Avisos bloqueados','Activa Dingloft en Ajustes → Notificaciones.');return}
     if(permission!=='granted'){setPushButton('ready','Activar avisos','Recibe una notificación cuando un cliente solicite soporte.');return}
-    const reg=await ensurePushRegistration();
-    pushMessaging=getMessaging(pushApp);
-    const fidPromise=waitForFid(pushMessaging);
-    await registerMessaging(pushMessaging,{vapidKey:cfg.vapidKey,serviceWorkerRegistration:reg});
+
+    const messaging=infra.messaging,reg=infra.reg,cfg=infra.cfg;
+    const fidPromise=waitForFid(messaging,20000);
+
+    // No fetch/update/cleanup occurs between the tap and register(). On iOS the
+    // SDK can now reach PushManager.subscribe() from the same interaction path.
+    await registerMessaging(messaging,{vapidKey:cfg.vapidKey,serviceWorkerRegistration:reg});
     const fid=await fidPromise;
     pushTarget=fid;pushTargetType='fid';
     await api('/admin/support/push/register',{method:'POST',body:{fid,targetType:'fid',platform:platformLabel(),userAgent:navigator.userAgent||''}});
-    pushForegroundUnsub?.();pushForegroundUnsub=onMessage(pushMessaging,payload=>{const data=payload?.data||{};showForegroundPush(data);if(data.chatId){pendingPushChatId=cleanChatId(data.chatId);const c=chats.find(x=>x.id===pendingPushChatId);if(c&&document.visibilityState==='visible')openChat(pendingPushChatId)}});
-    pushUnregisteredUnsub?.();pushUnregisteredUnsub=onUnregistered(pushMessaging,oldFid=>{api('/admin/support/push/unregister',{method:'POST',body:{fid:String(oldFid||'')}}).catch(()=>{});if(String(oldFid||'')===pushTarget){pushTarget='';pushTargetType='';setPushButton('ready','Activar avisos','Este dispositivo ya no está registrado para avisos.')}});
-    setPushButton('active','Avisos activos',isIOSDevice()?'Este iPhone ya recibirá alertas de soporte.':'Este dispositivo recibirá alertas de soporte. Toca para desactivarlas.')
-  }catch(e){if(isAbort20(e)&&isIOSDevice()){pushRegistration=null;await removeLegacyPushWorker().catch(()=>{})}const msg=pushFriendlyError(e);console.warn('Support push',e);setPushButton('ready','Reintentar avisos',msg);if(ask)alert(msg)}finally{pushBusy=false}
+    pushForegroundUnsub?.();pushForegroundUnsub=onMessage(messaging,payload=>{const data=payload?.data||{};showForegroundPush(data);if(data.chatId){pendingPushChatId=cleanChatId(data.chatId);const c=chats.find(x=>x.id===pendingPushChatId);if(c&&document.visibilityState==='visible')openChat(pendingPushChatId)}});
+    pushUnregisteredUnsub?.();pushUnregisteredUnsub=onUnregistered(messaging,oldFid=>{api('/admin/support/push/unregister',{method:'POST',body:{fid:String(oldFid||'')}}).catch(()=>{});if(String(oldFid||'')===pushTarget){pushTarget='';pushTargetType='';setPushButton('ready','Activar avisos','Este dispositivo ya no está registrado para avisos.')}});
+    setPushButton('active','Avisos activos',isIOSDevice()?'Este iPhone ya recibirá alertas de soporte.':'Este dispositivo recibirá alertas de soporte. Toca para desactivarlas.');
+  }catch(e){
+    const msg=isAbort20(e)&&isIOSDevice()
+      ?'iOS todavía rechazó la suscripción Push (AbortError 20). Si este mensaje aparece después del v107, elimina Dingloft de la pantalla de inicio y vuelve a instalarlo una sola vez para regenerar la identidad Push de iOS.'
+      :pushFriendlyError(e);
+    console.warn('Support push',e);setPushButton('ready','Reintentar avisos',msg);if(ask)alert(msg);
+  }finally{pushBusy=false}
 }
 async function disablePushNotifications(){if(pushBusy)return;pushBusy=true;setPushButton('busy','Desactivando…');try{if(pushTarget)await api('/admin/support/push/unregister',{method:'POST',body:{[pushTargetType==='fid'?'fid':'token']:pushTarget}}).catch(()=>{});if(pushMessaging)await unregisterMessaging(pushMessaging).catch(()=>{});pushTarget='';pushTargetType='';pushForegroundUnsub?.();pushForegroundUnsub=null;pushRegisteredUnsub?.();pushRegisteredUnsub=null;pushUnregisteredUnsub?.();pushUnregisteredUnsub=null;setPushButton('ready','Activar avisos','Las notificaciones están desactivadas en este dispositivo.')}finally{pushBusy=false}}
 async function togglePushNotifications(){if(pushTarget){if(confirm('¿Desactivar las notificaciones de soporte en este dispositivo?'))await disablePushNotifications();return}await registerPushNotifications({ask:true})}
@@ -99,6 +161,6 @@ async function deleteChat(){if(!selectedId)return;const c=chats.find(x=>x.id===s
 function typingChanged(draft){clearTimeout(typingIdle);typingIdle=setTimeout(()=>setTyping(false,''),2400);const wait=Math.max(0,700-(Date.now()-lastTyping));clearTimeout(typingTimer);typingTimer=setTimeout(()=>setTyping(true,String(draft||'').slice(0,500)),wait)}
 async function setTyping(typing,draft){if(!selectedId||!agent)return;lastTyping=Date.now();try{await setDoc(doc(db,'supportChats',selectedId,'presence','admin'),{typing:typing===true,draft:'',agentName:agent.name,agentRole:agent.role,updatedAt:serverTimestamp()},{merge:true})}catch(_){}}
 function bind(){const input=$('supportReply');input?.addEventListener('input',()=>{input.style.height='42px';input.style.height=Math.min(120,input.scrollHeight)+'px';typingChanged(input.value)});input?.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});input?.addEventListener('blur',()=>setTyping(false,''));$('supportSend')?.addEventListener('click',send);$('supportSearch')?.addEventListener('input',renderList);$('supportFilter')?.addEventListener('change',renderList);$('supportRefresh')?.addEventListener('click',()=>api('/admin/support/cleanup',{method:'POST',body:{}}).catch(()=>{}));$('supportPushBtn')?.addEventListener('click',togglePushNotifications)}
-function start(){bind();api('/admin/support/cleanup',{method:'POST',body:{}}).catch(()=>{});registerPushNotifications({ask:false}).catch(()=>{});chatsUnsub=onSnapshot(query(collection(db,'supportChats'),orderBy('updatedAt','desc'),limit(250)),s=>{chats=s.docs.map(d=>({id:d.id,...d.data()}));badgeUpdate();renderList();consumePendingPushChat();if(selectedId){const c=chats.find(x=>x.id===selectedId);if(c)renderHeader(c);else{selectedId='';renderHeader(null)}}},e=>{console.warn('Support chats',e);$('supportConversationList').innerHTML='<div class="support-admin-empty">Firestore rechazó la lectura. Revisa las Rules de soporte.</div>'})}
-function stop(){chatsUnsub?.();msgUnsub?.();presenceUnsub?.();pushForegroundUnsub?.();pushRegisteredUnsub?.();pushUnregisteredUnsub?.();pushForegroundUnsub=pushRegisteredUnsub=pushUnregisteredUnsub=null;chatsUnsub=msgUnsub=presenceUnsub=null;clearTimeout(typingTimer);clearTimeout(typingIdle);for(const u of imageUrls.values())URL.revokeObjectURL(u);imageUrls.clear()}
+function start(){bind();api('/admin/support/cleanup',{method:'POST',body:{}}).catch(()=>{});primePushInfrastructure().catch(()=>{});chatsUnsub=onSnapshot(query(collection(db,'supportChats'),orderBy('updatedAt','desc'),limit(250)),s=>{chats=s.docs.map(d=>({id:d.id,...d.data()}));badgeUpdate();renderList();consumePendingPushChat();if(selectedId){const c=chats.find(x=>x.id===selectedId);if(c)renderHeader(c);else{selectedId='';renderHeader(null)}}},e=>{console.warn('Support chats',e);$('supportConversationList').innerHTML='<div class="support-admin-empty">Firestore rechazó la lectura. Revisa las Rules de soporte.</div>'})}
+function stop(){chatsUnsub?.();msgUnsub?.();presenceUnsub?.();pushForegroundUnsub?.();pushRegisteredUnsub?.();pushUnregisteredUnsub?.();pushForegroundUnsub=pushRegisteredUnsub=pushUnregisteredUnsub=null;pushInfra=null;pushInfraPromise=null;chatsUnsub=msgUnsub=presenceUnsub=null;clearTimeout(typingTimer);clearTimeout(typingIdle);for(const u of imageUrls.values())URL.revokeObjectURL(u);imageUrls.clear()}
 onAuthStateChanged(auth,u=>{stop();user=u;agent=AGENTS[String(u?.email||'').toLowerCase()]||null;if(u&&agent)start()});
