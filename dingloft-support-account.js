@@ -1,4 +1,4 @@
-/* Dingloft Support · Customer realtime chat · v2.2 · avatar header layout */
+/* Dingloft Support · Customer realtime chat · v2.5 · Independent agent identities + Messenger avatars + seen receipt */
 import { getApps, getApp, initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, doc, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -16,11 +16,11 @@ const app=getApps().length?getApp():initializeApp(firebaseConfig);
 const auth=getAuth(app),db=getFirestore(app);
 const WORKER=String(window.DINGLOFT_WORKER_BASE||"https://autumn-breeze-dfa0.evolutiongt01.workers.dev").replace(/\/$/,"");
 const MAX_IMAGES=3,MAX_IMAGE_BYTES=5*1024*1024,MAX_TEXT=2000,TYPING_THROTTLE=700,TYPING_IDLE=2400;
-const SUPPORT_AVATARS={"Tony Bac":"/img/tony-bac.webp","Cesar Matzar":"/img/cesar-matzar.webp"};
+const SUPPORT_AVATARS={"Tony Bac":"/img/tony-bac.webp","Cesar Matzar":"/img/cesar-matzar.webp","Evolution Group":"/img/evolution-group.webp"};
 const PARAMS=new URLSearchParams(location.search);
 const AUTO_OPEN=PARAMS.get("support")==="1"||PARAMS.get("supportFeedback")==="1";
 
-let user=null,supportData=null,chatState={},chatExists=false,chatUnsub=null,msgUnsub=null,adminPresenceUnsub=null;
+let user=null,supportData=null,chatState={},chatExists=false,chatUnsub=null,msgUnsub=null,adminPresenceUnsub=null,lastMessages=[];
 let lastTypingWrite=0,typingTimer=null,typingIdleTimer=null,pendingImages=[],imageUrls=new Map();
 let feedbackRating=0,experiencesLoaded=false,experiencesLoading=false;
 let supportScrollLock=null,supportCloseTimer=null;
@@ -29,8 +29,49 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const time=v=>{if(!v)return"";const d=v?.toDate?v.toDate():new Date(v);return Number.isNaN(d.getTime())?"":d.toLocaleTimeString("es-GT",{hour:"2-digit",minute:"2-digit"})};
 const dateLabel=v=>{if(!v)return"";const d=v?.toDate?v.toDate():new Date(v);return Number.isNaN(d.getTime())?"":d.toLocaleDateString("es-GT",{day:"numeric",month:"short",year:"numeric"})};
 const initials=name=>String(name||"Soporte").trim().split(/\s+/).slice(0,2).map(x=>x.charAt(0)).join("").toUpperCase()||"DS";
-function avatarMarkup(name,extra=""){const src=SUPPORT_AVATARS[String(name||"")]||"";return `<span class="dl-support-agent-avatar ${extra}" aria-hidden="true"><span>${esc(initials(name))}</span>${src?`<img data-support-avatar src="${esc(src)}" alt="">`:""}</span>`}
+function avatarMarkup(name,extra="",hidden=false){const src=SUPPORT_AVATARS[String(name||"")]||"";return `<span class="dl-support-agent-avatar dl-support-message-avatar ${extra}${hidden?" avatar-spacer":""}" title="${esc(name||"Soporte Dingloft")}" aria-label="${esc(name||"Soporte Dingloft")}"><span>${esc(initials(name))}</span>${src?`<img data-support-avatar src="${esc(src)}" alt="${esc(name||"Soporte Dingloft")}">`:""}</span>`}
+function customerIdentity(){
+  const name=String(user?.displayName||supportData?.displayName||user?.email?.split("@")[0]||"Cliente Dingloft").trim()||"Cliente Dingloft";
+  const src=String(user?.photoURL||supportData?.photoURL||"").trim();
+  return {name,src};
+}
+function customerAvatarMarkup(hidden=false){
+  const {name,src}=customerIdentity();
+  return `<span class="dl-support-agent-avatar dl-support-message-avatar customer-avatar${hidden?" avatar-spacer":""}" title="${esc(name)}" aria-label="${esc(name)}"><span>${esc(initials(name))}</span>${src?`<img data-support-avatar src="${esc(src)}" alt="${esc(name)}" referrerpolicy="no-referrer">`:""}</span>`;
+}
 function hydrateAvatars(root=document){root.querySelectorAll?.("img[data-support-avatar]").forEach(img=>img.addEventListener("error",()=>img.remove(),{once:true}))}
+function timestampMs(v){
+  if(!v)return 0;
+  if(typeof v?.toMillis==="function")return Number(v.toMillis())||0;
+  if(typeof v?.toDate==="function")return Number(v.toDate().getTime())||0;
+  const d=new Date(v);return Number.isNaN(d.getTime())?0:d.getTime();
+}
+function seenAvatarMarkup(name,role=""){
+  const safeName=String(name||"Soporte Dingloft");
+  const src=SUPPORT_AVATARS[safeName]||String(chatState?.adminLastReadByAvatar||"").trim();
+  const title=`Visto por ${safeName}${role?` · ${role}`:""}`;
+  return `<span class="dl-support-seen-avatar" title="${esc(title)}" aria-label="${esc(title)}"><span>${esc(initials(safeName))}</span>${src?`<img data-support-avatar src="${esc(src)}" alt="${esc(safeName)}">`:""}</span>`;
+}
+function updateSeenReceipt(){
+  const box=document.getElementById("dlSupportMessages");if(!box)return;
+  box.querySelectorAll(".dl-support-seen").forEach(el=>el.remove());
+  const readAt=timestampMs(chatState?.adminLastReadAt);if(!readAt||!lastMessages.length)return;
+  let seenIndex=-1;
+  for(let i=0;i<lastMessages.length;i++){
+    const m=lastMessages[i];
+    if(m?.senderType!=="customer")continue;
+    const created=timestampMs(m?.createdAt);
+    if(created&&created<=readAt+1000)seenIndex=i;
+  }
+  if(seenIndex<0)return;
+  const m=lastMessages[seenIndex];
+  const row=box.querySelector(`[data-support-message-id="${CSS.escape(String(m.id||""))}"]`);if(!row)return;
+  const name=String(chatState?.adminLastReadByName||chatState?.assignedAgentName||"Soporte Dingloft");
+  const role=String(chatState?.adminLastReadByRole||chatState?.assignedAgentRole||"");
+  const seen=document.createElement("div");seen.className="dl-support-seen";
+  seen.innerHTML=seenAvatarMarkup(name,role);
+  row.appendChild(seen);hydrateAvatars(seen);
+}
 
 async function api(path,{method="GET",body,raw,headers={}}={}){
   if(!user)throw new Error("Sesión no válida");
@@ -66,7 +107,7 @@ function inject(){
   .dl-support-context-wrap{border-bottom:1px solid #edf0f3;background:#fff}.dl-support-context{padding:10px 12px 7px;display:flex;gap:8px;align-items:center}.dl-support-context select{width:100%;min-width:0;background:#f8fafc;border:1px solid #e2e7ec;color:#344054;border-radius:12px;padding:10px 11px;font-size:12px;outline:0}.dl-support-context select:focus{border-color:#b9c2cc;box-shadow:0 0 0 3px rgba(17,24,39,.04)}.dl-support-status-note{padding:0 12px 9px;color:#98a2b3;font-size:9.5px;text-align:center}
   .dl-support-feedback{display:none;margin:2px 10px 10px;padding:13px;border-radius:16px;background:#f7f8fa;border:1px solid #e7eaee}.dl-support-feedback.show{display:block}.dl-support-feedback b{display:block;color:#101828;font-size:11px}.dl-support-feedback p{margin:5px 0 10px;color:#667085;font-size:9px;line-height:1.5}.dl-support-stars{display:flex;gap:4px;margin-bottom:9px}.dl-support-star{width:31px;height:31px;border:1px solid #e4e7ec;border-radius:9px;background:#fff;color:#c2c8d0;font-size:15px;cursor:pointer}.dl-support-star.active{color:#e8ad21;border-color:#f0d99e;background:#fffaf0}.dl-support-feedback textarea{width:100%;min-height:68px;max-height:100px;resize:vertical;box-sizing:border-box;border:1px solid #e1e6eb;border-radius:11px;background:#fff;color:#101828;padding:9px;font:10px/1.45 Inter,system-ui,sans-serif;outline:0}.dl-support-feedback button.dl-feedback-submit{width:100%;height:36px;margin-top:8px;border-radius:10px;border:1px solid #111827;background:#111827;color:#fff;font-size:9px;font-weight:900;cursor:pointer}.dl-support-feedback button:disabled{opacity:.45}.dl-feedback-thanks{display:flex;align-items:center;gap:9px;color:#667085;font-size:9px;line-height:1.45}.dl-feedback-thanks i{font-size:17px;color:#111827}
   .dl-support-messages{overflow:auto;padding:16px 14px 13px;display:flex;flex-direction:column;gap:12px;-webkit-overflow-scrolling:touch;background:#fff}.dl-support-empty{margin:auto;text-align:center;max-width:270px;color:#667085;font-size:12px;line-height:1.55}.dl-support-empty i{display:grid;width:46px;height:46px;margin:0 auto 10px;place-items:center;border-radius:15px;background:#f4f6f8;border:1px solid #e7eaee;color:#344054;font-size:18px}
-  .dl-support-msg{max-width:84%;display:grid;gap:4px}.dl-support-msg.customer{align-self:flex-end}.dl-support-msg.admin{align-self:flex-start}.dl-support-msg-row{display:flex;align-items:flex-end;gap:8px;min-width:0}.dl-support-msg.customer .dl-support-msg-row{justify-content:flex-end}.dl-support-msg-body{display:grid;gap:4px;min-width:0}.dl-support-msg.admin .dl-support-msg-body{max-width:calc(100% - 38px)}
+  .dl-support-msg{max-width:88%;display:grid;gap:4px}.dl-support-msg.customer{align-self:flex-end}.dl-support-msg.admin{align-self:flex-start}.dl-support-msg-row{display:flex;align-items:flex-end;gap:8px;min-width:0}.dl-support-msg.customer .dl-support-msg-row{justify-content:flex-end}.dl-support-msg-body{display:grid;gap:4px;min-width:0}.dl-support-msg.admin .dl-support-msg-body,.dl-support-msg.customer .dl-support-msg-body{max-width:calc(100% - 38px)}.dl-support-message-avatar{width:30px;height:30px;flex:0 0 30px;box-shadow:0 0 0 2px #fff,0 2px 8px rgba(15,23,42,.10)}.dl-support-message-avatar.customer-avatar{background:#111827;color:#fff;border-color:#253041}.dl-support-message-avatar.avatar-spacer{visibility:hidden;box-shadow:none}.dl-support-seen{display:flex;justify-content:flex-end;align-items:center;height:17px;margin-top:-2px;padding-right:1px}.dl-support-seen-avatar{width:15px;height:15px;border-radius:50%;position:relative;display:grid;place-items:center;overflow:hidden;flex:0 0 15px;background:#eef1f4;border:1px solid #d9dfe6;box-shadow:0 0 0 2px #fff;color:#475467;font-size:5px;font-weight:900;cursor:default}.dl-support-seen-avatar>span{position:relative;z-index:1}.dl-support-seen-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;background:#eef1f4}.dl-support-msg.grouped .dl-support-who{display:none}.dl-support-msg.grouped{margin-top:-7px}
   .dl-support-who{font-size:9.5px;color:#8b95a3;padding:0 4px}.dl-support-msg.customer .dl-support-who{text-align:right}.dl-support-bubble{padding:10px 12px;border-radius:16px;font-size:12.5px;line-height:1.45;word-break:break-word;box-shadow:0 1px 1px rgba(16,24,40,.03)}.dl-support-msg.customer .dl-support-bubble{background:#111827;color:#fff;border-bottom-right-radius:5px}.dl-support-msg.admin .dl-support-bubble{background:#f3f5f7;color:#1d2939;border:1px solid #e8ebef;border-bottom-left-radius:5px}.dl-support-time{font-size:8.5px;color:#a2abb6;padding:0 4px}.dl-support-msg.customer .dl-support-time{text-align:right}
   .dl-support-images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-bottom:7px}.dl-support-images img{display:block;width:100%;max-height:145px;object-fit:cover;border-radius:11px;background:#e9edf1;cursor:zoom-in}.dl-support-images img:only-child{grid-column:1/-1;max-height:205px}
   .dl-support-typing{min-height:19px;padding:0 15px 5px;color:#667085;font-size:9px;background:#fff}.dl-support-compose{border-top:1px solid #e9edf1;padding:9px 11px 11px;background:#fafbfc}.dl-support-preview{display:none;gap:7px;margin-bottom:8px;overflow:auto;padding-top:2px}.dl-support-preview.show{display:flex}.dl-support-preview-item{position:relative;flex:0 0 60px;height:60px}.dl-support-preview-item img{width:100%;height:100%;object-fit:cover;border-radius:12px;border:1px solid #e1e6eb;background:#fff}.dl-support-preview-item button{position:absolute;right:-4px;top:-4px;width:21px;height:21px;border-radius:50%;border:2px solid #fff;background:#111827;color:#fff;font-size:11px;box-shadow:0 2px 7px rgba(0,0,0,.16)}
@@ -85,7 +126,7 @@ function inject(){
     .dl-support-head{padding:12px 12px 10px;gap:9px}.dl-support-headcopy b{font-size:12.5px}.dl-support-headcopy small{font-size:8px}.dl-support-close{width:32px;height:32px;border-radius:10px}
     .dl-support-team-avatars{width:58px;height:35px;flex-basis:58px}.dl-support-team-avatars .dl-support-agent-avatar{width:34px;height:34px}.dl-support-team-avatars .dl-support-agent-avatar:last-child{left:24px}.dl-support-tabs{padding:6px 8px;gap:5px}.dl-support-tab{height:31px;font-size:8.5px}
     .dl-support-context{padding:7px 9px 5px}.dl-support-context select{padding:8px 9px;font-size:9px;border-radius:10px}.dl-support-status-note{padding:0 9px 6px;font-size:7.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .dl-support-messages{padding:11px 10px 9px;gap:9px;overscroll-behavior:contain}.dl-support-msg{max-width:88%}.dl-support-bubble{padding:8px 10px;font-size:10.5px}.dl-support-who{font-size:7.5px}.dl-support-time{font-size:7px}.dl-support-images img{max-height:120px}.dl-support-images img:only-child{max-height:175px}
+    .dl-support-messages{padding:11px 10px 9px;gap:9px;overscroll-behavior:contain}.dl-support-msg{max-width:92%}.dl-support-message-avatar{width:27px;height:27px;flex-basis:27px}.dl-support-seen-avatar{width:14px;height:14px;flex-basis:14px}.dl-support-bubble{padding:8px 10px;font-size:10.5px}.dl-support-who{font-size:7.5px}.dl-support-time{font-size:7px}.dl-support-images img{max-height:120px}.dl-support-images img:only-child{max-height:175px}
     .dl-support-typing{min-height:16px;padding:0 11px 3px;font-size:8px}.dl-support-compose{padding:7px 8px 8px}.dl-support-row{grid-template-columns:39px minmax(0,1fr) 41px;gap:6px}.dl-support-attach,.dl-support-send{height:39px;border-radius:12px}.dl-support-input{min-height:39px;padding:9px 10px;font-size:16px;line-height:1.25;border-radius:12px}.dl-support-foot{display:none}
     .dl-support-experience-view{padding:10px}.dl-exp-hero{padding:12px}.dl-exp-list{gap:7px}.dl-exp-card{padding:10px}
   }
@@ -222,6 +263,7 @@ function startBaseListeners(){
       else note.textContent="Tu conversación queda vinculada a tu cuenta Dingloft.";
     }
     renderFeedback();
+    updateSeenReceipt();
   },()=>{});
 
   adminPresenceUnsub?.();
@@ -244,20 +286,28 @@ function startConversationListeners(){
 function stopMessageListeners(){msgUnsub?.();msgUnsub=null}
 
 function renderMessages(messages){
+  lastMessages=Array.isArray(messages)?messages:[];
   const box=document.getElementById("dlSupportMessages");if(!box)return;
   if(!messages.length){
     box.innerHTML='<div class="dl-support-empty"><i class="bi bi-chat-heart"></i><b style="display:block;color:#101828;margin-bottom:5px">¿En qué podemos ayudarte?</b>Cuéntanos qué ocurre con tu compra. Puedes adjuntar hasta 3 capturas.</div>';
     return;
   }
-  box.innerHTML=messages.map(m=>{
+  box.innerHTML=messages.map((m,index)=>{
     const admin=m.senderType==="admin";
     const name=m.senderName||"Soporte Dingloft";
-    const who=admin?`${esc(name)}${m.senderRole?` · ${esc(m.senderRole)}`:""}`:"Tú";
+    const next=messages[index+1]||null;
+    const sameNext=!!next && next.senderType===m.senderType && (!admin || (next.senderName||"Soporte Dingloft")===name);
+    const prev=messages[index-1]||null;
+    const grouped=!!prev && prev.senderType===m.senderType && (!admin || (prev.senderName||"Soporte Dingloft")===name);
+    const customerName=customerIdentity().name;
+    const who=admin?`${esc(name)}${m.senderRole?` · ${esc(m.senderRole)}`:""}`:esc(customerName);
     const imgs=(Array.isArray(m.attachments)?m.attachments:[]).map((a,i)=>`<img data-support-key="${esc(a.key||"")}" alt="Captura adjunta ${i+1}">`).join("");
     const body=`<div class="dl-support-msg-body"><div class="dl-support-who">${who}</div><div class="dl-support-bubble">${imgs?`<div class="dl-support-images">${imgs}</div>`:""}${m.text?esc(m.text).replace(/\n/g,"<br>"):""}</div><div class="dl-support-time">${time(m.createdAt)}</div></div>`;
-    return`<div class="dl-support-msg ${admin?"admin":"customer"}"><div class="dl-support-msg-row">${admin?avatarMarkup(name):""}${body}</div></div>`;
+    const avatar=admin?avatarMarkup(name,"",sameNext):customerAvatarMarkup(sameNext);
+    return`<div class="dl-support-msg ${admin?"admin":"customer"}${grouped?" grouped":""}" data-support-message-id="${esc(m.id||"")}"><div class="dl-support-msg-row">${admin?avatar:""}${body}${admin?"":avatar}</div></div>`;
   }).join("");
   hydrateAvatars(box);
+  updateSeenReceipt();
   box.querySelectorAll("img[data-support-key]").forEach(loadImage);
   requestAnimationFrame(()=>{box.scrollTop=box.scrollHeight});
   markRead();
