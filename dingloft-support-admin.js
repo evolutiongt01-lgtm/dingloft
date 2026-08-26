@@ -63,7 +63,7 @@ async function syncExistingSubscription(){
   if(actual&&!sameBytes(actual,expected)){try{await sub.unsubscribe()}catch(_){};return false}
   pushSubscription=sub;
   await api('/admin/support/push/register',{method:'POST',body:{subscription:subscriptionBody(sub),platform:platformLabel(),userAgent:navigator.userAgent||''}});
-  setPushButton('active','Avisos activos','Este dispositivo recibirá alertas cuando llegue una solicitud de soporte. Toca para desactivarlas.');
+  setPushButton('active','Avisos activos','Este dispositivo recibirá alertas de ventas, comentarios y soporte. Toca para desactivarlas.');
   return true
 }
 async function primePushInfrastructure(){
@@ -76,7 +76,7 @@ async function primePushInfrastructure(){
     await getPreparedPush();
     if(Notification.permission==='granted'&&await syncExistingSubscription())return;
     if(!isIOSDevice()&&Notification.permission==='granted'){await registerPushNotifications({ask:false});return}
-    setPushButton('ready','Activar avisos','Recibe una notificación cuando un cliente solicite soporte.');
+    setPushButton('ready','Activar avisos','Recibe avisos de ventas, comentarios nuevos y solicitudes de soporte.');
   }catch(e){if(e?.code==='IOS_STANDALONE_REQUIRED')setPushButton('blocked','Abre la app instalada',e.message);else setPushButton('ready','Reintentar avisos',pushFriendlyError(e))}
 }
 async function registerPushNotifications({ask=false}={}){
@@ -96,7 +96,7 @@ async function registerPushNotifications({ask=false}={}){
     pushSubscription=sub;
     await api('/admin/support/push/register',{method:'POST',body:{subscription:subscriptionBody(sub),platform:platformLabel(),userAgent:navigator.userAgent||'',sendTest:true}});
     try{localStorage.setItem(PUSH_NATIVE_MARK,'1')}catch(_){}
-    setPushButton('active','Avisos activos','Este dispositivo recibirá alertas de soporte. Toca para desactivarlas.');
+    setPushButton('active','Avisos activos','Este dispositivo recibirá alertas de ventas, comentarios y soporte. Toca para desactivarlas.');
   }catch(e){console.warn('Dingloft Web Push',e);if(e?.code==='IOS_STANDALONE_REQUIRED')setPushButton('blocked','Abre la app instalada',e.message);else{setPushButton('ready','Reintentar avisos',pushFriendlyError(e));alert(pushFriendlyError(e))}}
   finally{pushBusy=false}
 }
@@ -105,7 +105,7 @@ async function disablePushNotifications(){
   try{const reg=pushRegistration||await navigator.serviceWorker.getRegistration('/').catch(()=>null);const sub=pushSubscription||await reg?.pushManager?.getSubscription?.();if(sub){await api('/admin/support/push/unregister',{method:'POST',body:{endpoint:sub.endpoint}}).catch(()=>{});try{await sub.unsubscribe()}catch(_){}}pushSubscription=null;setPushButton('ready','Activar avisos','Las notificaciones están desactivadas en este dispositivo.')}finally{pushBusy=false}
 }
 async function togglePushNotifications(){if(pushSubscription||$('supportPushBtn')?.dataset.state==='active')return disablePushNotifications();return registerPushNotifications({ask:true})}
-function bindPushMessages(){if(pushMessageBound||!navigator.serviceWorker)return;pushMessageBound=true;navigator.serviceWorker.addEventListener('message',event=>{const msg=event.data||{};if(msg.type!=='DINGLOFT_SUPPORT_PUSH')return;const data=msg.data||{};if(data.chatId){pendingPushChatId=cleanChatId(data.chatId);const c=chats.find(x=>x.id===pendingPushChatId);if(c&&document.visibilityState==='visible')openChat(pendingPushChatId)}})}
+function bindPushMessages(){if(pushMessageBound||!navigator.serviceWorker)return;pushMessageBound=true;navigator.serviceWorker.addEventListener('message',event=>{const msg=event.data||{};if(msg.type!=='DINGLOFT_ADMIN_PUSH'&&msg.type!=='DINGLOFT_SUPPORT_PUSH')return;const data=msg.data||{};if(msg.type==='DINGLOFT_SUPPORT_PUSH'&&data.chatId){pendingPushChatId=cleanChatId(data.chatId);const c=chats.find(x=>x.id===pendingPushChatId);if(c&&document.visibilityState==='visible')openChat(pendingPushChatId);return}if(msg.type==='DINGLOFT_ADMIN_PUSH'&&document.visibilityState==='visible'){try{window.toast?.(`${data.title||'Dingloft'} · ${data.body||'Nueva actividad'}`)}catch(_){}}})}
 function consumePendingPushChat(){if(!pendingPushChatId)return;const id=pendingPushChatId;if(!chats.some(c=>c.id===id))return;pendingPushChatId='';openChat(id)}
 function badgeUpdate(){const n=chats.reduce((s,c)=>s+Math.max(0,Number(c.unreadAdmin||0)),0);document.querySelectorAll('[data-view="support"]').forEach(b=>{let x=b.querySelector('.support-nav-count');if(!x){x=document.createElement('span');x.className='support-nav-count';b.appendChild(x)}x.textContent=n>99?'99+':String(n);x.style.display=n?'inline-grid':'none'})}
 function statusLabel(s){return s==='resolved'?'Resuelto':s==='in_attention'?'En atención':'Abierto'}

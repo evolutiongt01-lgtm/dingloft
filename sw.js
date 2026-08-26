@@ -1,4 +1,4 @@
-const VERSION = '103';
+const VERSION = '109';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -208,49 +208,55 @@ self.addEventListener('fetch', event => {
 
 
 /* ==========================================================================
-   Dingloft Support Universal Web Push · v108
-   Uses the SAME root Service Worker as the installed PWA. This is important
-   on iPhone/iPad Home Screen apps: the push subscription stays attached to
-   the PWA registration instead of a second /fcm-support/ scope.
+   Dingloft Admin Universal Web Push · v109
+   Soporte + ventas + comentarios/experiencias usando el mismo registro PWA.
    ========================================================================== */
-function dingloftSupportPushPayload(event){
+function dingloftAdminPushPayload(event){
   if(!event.data)return null;
   try{
     const payload=event.data.json();
     const data=payload?.data&&typeof payload.data==='object'?payload.data:payload||{};
     const notification=payload?.notification||{};
-    if(data.kind!=='dingloft_support'&&!notification.title&&!data.title)return null;
+    if(!String(data.kind||'').startsWith('dingloft_')&&!notification.title&&!data.title)return null;
     return{data,notification};
   }catch(_){return null}
 }
 
 self.addEventListener('push',event=>{
-  const parsed=dingloftSupportPushPayload(event);
+  const parsed=dingloftAdminPushPayload(event);
   if(!parsed)return;
   const{data,notification}=parsed;
-  const title=data.title||notification.title||'Dingloft · Soporte';
-  const body=data.body||notification.body||'Nuevo mensaje de soporte.';
+  const kind=String(data.kind||'dingloft_admin');
+  const title=data.title||notification.title||'Dingloft';
+  const body=data.body||notification.body||'Nueva actividad en Dingloft.';
   const chatId=String(data.chatId||'');
-  const url=data.url||`/admin.html${chatId?`?supportChat=${encodeURIComponent(chatId)}`:''}#support`;
+  const eventId=String(data.eventId||data.purchaseId||data.reviewId||chatId||'new');
+  const fallback=kind==='dingloft_sale'?'/admin#orders':kind==='dingloft_review'?'/admin#reviews':'/admin#support';
+  const url=data.url||fallback;
   event.waitUntil((async()=>{
-    // Safari/iOS requires a visible notification for every received Web Push.
     await self.registration.showNotification(title,{
       body,
       icon:'/img/favicon.png',
       badge:'/img/favicon.png',
-      tag:`dingloft-support-${chatId||'new'}`,
+      tag:`${kind}-${eventId}`.slice(0,180),
       renotify:true,
-      data:{url,chatId,kind:'dingloft_support'}
+      data:{url,chatId,kind,eventId}
     });
     const windows=await self.clients.matchAll({type:'window',includeUncontrolled:true});
-    for(const client of windows){try{client.postMessage({type:'DINGLOFT_SUPPORT_PUSH',data})}catch(_){}}
+    for(const client of windows){
+      try{
+        client.postMessage({type:'DINGLOFT_ADMIN_PUSH',data});
+        if(kind==='dingloft_support')client.postMessage({type:'DINGLOFT_SUPPORT_PUSH',data});
+      }catch(_){}
+    }
   })());
 });
 
 self.addEventListener('notificationclick',event=>{
-  if(event.notification?.data?.kind!=='dingloft_support')return;
+  const kind=String(event.notification?.data?.kind||'');
+  if(!kind.startsWith('dingloft_'))return;
   event.notification.close();
-  const target=new URL(event.notification?.data?.url||'/admin.html#support',self.location.origin).href;
+  const target=new URL(event.notification?.data?.url||'/admin',self.location.origin).href;
   event.waitUntil((async()=>{
     const windows=await self.clients.matchAll({type:'window',includeUncontrolled:true});
     for(const client of windows){
