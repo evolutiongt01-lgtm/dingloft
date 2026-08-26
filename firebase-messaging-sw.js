@@ -1,44 +1,59 @@
-/* Dingloft Support Push Service Worker · FCM v1 */
-importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js');
+/* Dingloft Support Push Service Worker · v105
+   Standards-based push handler for iOS/iPadOS PWA + desktop.
+   FCM registration happens in admin page; this worker only receives and displays.
+*/
 
-firebase.initializeApp({
-  apiKey: 'AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA',
-  authDomain: 'login-dingloft.firebaseapp.com',
-  projectId: 'login-dingloft',
-  storageBucket: 'login-dingloft.firebasestorage.app',
-  messagingSenderId: '549466738202',
-  appId: '1:549466738202:web:8bf305fe2c753e9d76cba3'
-});
+function supportPayload(event) {
+  if (!event.data) return null;
+  try {
+    const payload = event.data.json();
+    const data = payload?.data || {};
+    const notification = payload?.notification || {};
+    if (data.kind !== 'dingloft_support' && !notification.title && !data.title) return null;
+    return { payload, data, notification };
+  } catch (_) {
+    return null;
+  }
+}
 
-const messaging = firebase.messaging();
+self.addEventListener('push', event => {
+  const parsed = supportPayload(event);
+  if (!parsed) return;
 
-messaging.onBackgroundMessage((payload) => {
-  const data = payload?.data || {};
-  const title = data.title || 'Dingloft · Soporte';
-  const options = {
-    body: data.body || 'Nuevo mensaje de soporte.',
-    icon: '/img/favicon.png',
-    badge: '/img/favicon.png',
-    tag: `dingloft-support-${data.chatId || 'new'}`,
-    renotify: true,
-    data: {
-      url: data.url || '/admin.html#support',
-      chatId: data.chatId || ''
+  const { data, notification } = parsed;
+  const title = data.title || notification.title || 'Dingloft · Soporte';
+  const body = data.body || notification.body || 'Nuevo mensaje de soporte.';
+  const chatId = String(data.chatId || '');
+  const url = data.url || `/admin.html${chatId ? `?supportChat=${encodeURIComponent(chatId)}` : ''}#support`;
+
+  event.waitUntil((async () => {
+    // WebKit requires every received push to result in a visible notification.
+    await self.registration.showNotification(title, {
+      body,
+      icon: '/img/favicon.png',
+      badge: '/img/favicon.png',
+      tag: `dingloft-support-${chatId || 'new'}`,
+      renotify: true,
+      data: { url, chatId, kind: 'dingloft_support' }
+    });
+
+    // Inform any open admin windows as a convenience; notification remains visible on iOS.
+    const windows = await self.clients.matchAll({ type:'window', includeUncontrolled:true });
+    for (const client of windows) {
+      try { client.postMessage({ type:'DINGLOFT_SUPPORT_PUSH', data }); } catch (_) {}
     }
-  };
-  return self.registration.showNotification(title, options);
+  })());
 });
 
-self.addEventListener('notificationclick', (event) => {
+self.addEventListener('notificationclick', event => {
   event.notification.close();
   const target = new URL(event.notification?.data?.url || '/admin.html#support', self.location.origin).href;
   event.waitUntil((async () => {
-    const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    const windows = await self.clients.matchAll({ type:'window', includeUncontrolled:true });
     for (const client of windows) {
       try {
         const current = new URL(client.url);
-        if (current.origin === self.location.origin && current.pathname.endsWith('/admin.html')) {
+        if (current.origin === self.location.origin && /\/admin(?:\.html)?$/i.test(current.pathname)) {
           await client.focus();
           if ('navigate' in client) await client.navigate(target);
           return;
