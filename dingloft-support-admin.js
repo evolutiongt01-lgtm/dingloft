@@ -1,18 +1,14 @@
-/* Dingloft Support · Admin realtime inbox · v1.7 · iOS user-gesture-safe FCM FID push */
+/* Dingloft Support · Admin realtime inbox · v1.8 · Universal Web Push */
 import { getApps,getApp,initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore,collection,doc,limit,onSnapshot,orderBy,query,serverTimestamp,setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getApps as getPushApps,initializeApp as initializePushApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-import { getMessaging,isSupported,onMessage,onRegistered,onUnregistered,register as registerMessaging,unregister as unregisterMessaging } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-messaging.js";
 const firebaseConfig={apiKey:"AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",authDomain:"login-dingloft.firebaseapp.com",projectId:"login-dingloft",storageBucket:"login-dingloft.firebasestorage.app",messagingSenderId:"549466738202",appId:"1:549466738202:web:8bf305fe2c753e9d76cba3",measurementId:"G-R9SGZCDN13"};
 const app=getApps().length?getApp():initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
-const PUSH_APP_NAME="dingloft-support-push-v106";
-const pushApp=getPushApps().find(x=>x.name===PUSH_APP_NAME)||initializePushApp(firebaseConfig,PUSH_APP_NAME);
 const WORKER=String(window.DINGLOFT_WORKER_BASE||"https://autumn-breeze-dfa0.evolutiongt01.workers.dev").replace(/\/$/,"");
 const AGENTS={"tepaz2025@gmail.com":{name:"Tony Bac",role:"Asistente Técnico",avatar:"/img/tony-bac.webp"},"evolutiongt01@gmail.com":{name:"Cesar Matzar",role:"Desarrollador Técnico",avatar:"/img/cesar-matzar.webp"},"matzarcesar01@hotmail.com":{name:"Evolution Group",role:"Dirección y Seguridad",avatar:"/img/evolution-group.webp"}};
 let user=null,agent=null,chats=[],selectedId="",chatsUnsub=null,msgUnsub=null,presenceUnsub=null,lastTyping=0,typingTimer=null,typingIdle=null,imageUrls=new Map();
-let pushMessaging=null,pushTarget="",pushTargetType="",pushRegistration=null,pushForegroundUnsub=null,pushRegisteredUnsub=null,pushUnregisteredUnsub=null,pushConfigured=false,pushBusy=false;
-let pushInfra=null,pushInfraPromise=null;
+let pushRegistration=null,pushSubscription=null,pushConfigured=false,pushBusy=false,pushConfig=null,pushPreparePromise=null,pushMessageBound=false;
+const PUSH_NATIVE_MARK='dingloft_support_webpush_v108';
 let pendingPushChatId=cleanChatId(new URLSearchParams(location.search).get("supportChat")||"");
 const $=id=>document.getElementById(id),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function cleanChatId(v){return String(v||"").replace(/[^A-Za-z0-9_-]/g,"").slice(0,180)}
@@ -26,127 +22,91 @@ function setPushButton(state,label,title=""){const b=$("supportPushBtn");if(!b)r
 async function supportPushConfig(){return api('/admin/support/push/config')}
 function isIOSDevice(){const ua=navigator.userAgent||"";return /iPhone|iPad|iPod/i.test(ua)||(navigator.platform==="MacIntel"&&Number(navigator.maxTouchPoints||0)>1)}
 function isStandaloneApp(){return window.matchMedia?.('(display-mode: standalone)')?.matches===true||window.navigator.standalone===true}
-async function removeLegacyPushWorker(){
-  try{
-    const regs=await navigator.serviceWorker.getRegistrations();
-    for(const r of regs){
-      if(!String(r.scope||'').includes('/fcm-support/'))continue;
-      try{const sub=await r.pushManager?.getSubscription?.();if(sub)await sub.unsubscribe()}catch(_){}
-      try{await r.unregister()}catch(_){}
-    }
-  }catch(_){}
-}
+function platformLabel(){const ua=navigator.userAgent||'';if(isIOSDevice())return'iOS';if(/Android/i.test(ua))return'Android';if(/Mac/i.test(ua))return'macOS';if(/Win/i.test(ua))return'Windows';return'Web'}
+function base64UrlBytes(value=''){const s=String(value||'').replace(/-/g,'+').replace(/_/g,'/');const padded=s+'='.repeat((4-s.length%4)%4);const raw=atob(padded);const out=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);return out}
+function sameBytes(a,b){try{const x=a instanceof Uint8Array?a:new Uint8Array(a||0),y=b instanceof Uint8Array?b:new Uint8Array(b||0);if(x.length!==y.length)return false;for(let i=0;i<x.length;i++)if(x[i]!==y[i])return false;return true}catch(_){return false}}
+function pushErrorInfo(error){const code=error?.code??'';const name=String(error?.name||'');const message=String(error?.message||'');return{code,name,message,raw:[name,message,code].filter(v=>String(v).trim()).join(' · ')||String(error||'')}}
+function pushFriendlyError(error){const x=pushErrorInfo(error),raw=x.raw;if(/NotAllowedError|permission|denied|blocked/i.test(raw))return'Las notificaciones están bloqueadas para Dingloft. Actívalas en Ajustes → Notificaciones.';if(/AbortError|abort/i.test(raw))return'iPhone no pudo crear la suscripción Web Push. Cierra Dingloft por completo, vuelve a abrirlo desde su icono y toca Activar avisos otra vez.';if(/InvalidAccess|applicationServerKey|vapid/i.test(raw))return'La clave Web Push no pudo aplicarse. Recarga Dingloft y vuelve a intentarlo.';if(/not supported|unsupported|PushManager/i.test(raw))return'Este navegador no expone Web Push para esta instalación.';return raw||'No se pudieron activar las notificaciones.'}
 async function ensurePushRegistration(){
   if(pushRegistration?.active)return pushRegistration;
-  // iOS Home Screen Web Push is tied to the installed PWA. Reuse Dingloft's
-  // existing root service worker instead of creating a second isolated scope.
-  await removeLegacyPushWorker();
   pushRegistration=await navigator.serviceWorker.getRegistration('/').catch(()=>null);
-  if(!pushRegistration){
-    try{pushRegistration=await navigator.serviceWorker.ready}catch(_){}
-  }
-  if(!pushRegistration){
-    // Recovery only: pwa-runtime normally owns this registration.
-    pushRegistration=await navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'});
-  }
+  if(!pushRegistration){try{pushRegistration=await navigator.serviceWorker.ready}catch(_){}}
+  if(!pushRegistration)pushRegistration=await navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'});
   try{await pushRegistration.update()}catch(_){}
   if(pushRegistration.active)return pushRegistration;
   const sw=pushRegistration.installing||pushRegistration.waiting;
-  if(sw)await new Promise((resolve,reject)=>{let finished=false;const timer=setTimeout(()=>{if(!finished){finished=true;reject(Error('El servicio de notificaciones tardó demasiado en activarse.'))}},12000);const done=()=>{if(finished)return;if(sw.state==='activated'){finished=true;clearTimeout(timer);sw.removeEventListener('statechange',done);resolve()}else if(sw.state==='redundant'){finished=true;clearTimeout(timer);sw.removeEventListener('statechange',done);reject(Error('El servicio de notificaciones no pudo activarse.'))}};sw.addEventListener('statechange',done);done()});
+  if(sw)await new Promise((resolve,reject)=>{let done=false;const timer=setTimeout(()=>{if(!done){done=true;reject(Error('El servicio de notificaciones tardó demasiado en activarse.'))}},12000);const changed=()=>{if(done)return;if(sw.state==='activated'){done=true;clearTimeout(timer);sw.removeEventListener('statechange',changed);resolve()}else if(sw.state==='redundant'){done=true;clearTimeout(timer);sw.removeEventListener('statechange',changed);reject(Error('El servicio de notificaciones no pudo activarse.'))}};sw.addEventListener('statechange',changed);changed()});
   if(!pushRegistration.active)throw Error('El servicio de notificaciones no quedó activo.');
   return pushRegistration
 }
-function platformLabel(){const ua=navigator.userAgent||'';if(isIOSDevice())return'iOS';if(/Android/i.test(ua))return'Android';if(/Mac/i.test(ua))return'macOS';if(/Win/i.test(ua))return'Windows';return'Web'}
-function pushErrorInfo(error){const code=error?.code??'';const name=String(error?.name||'');const message=String(error?.message||'');return{code,name,message,raw:[name,message,code].filter(v=>String(v).trim()).join(' · ')||String(error||'')}}
-function isAbort20(error){const x=pushErrorInfo(error);return Number(x.code)===20||/AbortError/i.test(x.name)||/abort/i.test(x.message)}
-function pushFriendlyError(error){const x=pushErrorInfo(error),raw=x.raw;if(isAbort20(error))return'iPhone abortó la suscripción con el servicio push (AbortError 20). Ya limpié el registro aislado anterior; cierra Dingloft por completo, vuelve a abrirlo desde su icono y toca Reintentar avisos una vez más.';if(/unsupported-browser|not supported|no compatible/i.test(raw))return isIOSDevice()?'iPhone no habilitó Web Push para esta instalación. Abre Dingloft desde su icono de la pantalla de inicio y vuelve a intentarlo.':'Este navegador no admite Firebase Web Push.';if(/permission|denied|blocked|NotAllowedError/i.test(raw))return'Las notificaciones están bloqueadas para Dingloft en Ajustes del sistema.';if(/indexeddb/i.test(raw))return'iOS no pudo abrir el almacenamiento de notificaciones. Cierra Dingloft por completo, vuelve a abrirlo y reintenta.';if(/register|registration|subscribe|subscription|token|push service/i.test(raw))return'No se pudo registrar este iPhone con el servicio push. Cierra Dingloft, vuelve a abrir la app y toca Activar avisos otra vez.';return raw||'No se pudieron activar las notificaciones.'}
-function waitForFid(messaging,timeoutMs=15000){return new Promise((resolve,reject)=>{let off=null;const timer=setTimeout(()=>{off?.();reject(Error('Firebase no devolvió el identificador de este dispositivo.'))},timeoutMs);off=onRegistered(messaging,fid=>{const value=String(fid||'').trim();if(!value)return;clearTimeout(timer);off?.();resolve(value)})})}
-async function showForegroundPush(data={}){if(Notification.permission!=="granted")return;try{const reg=pushRegistration||await ensurePushRegistration();await reg.showNotification(data.title||'Dingloft · Soporte',{body:data.body||'Nuevo mensaje de soporte',icon:'/img/favicon.png',badge:'/img/favicon.png',tag:`dingloft-support-${data.chatId||'new'}`,renotify:true,data:{url:data.url||'/admin.html#support',chatId:data.chatId||''}})}catch(_){}}
-async function preparePushInfrastructure(){
-  if(pushInfra)return pushInfra;
-  if(pushInfraPromise)return pushInfraPromise;
-  pushInfraPromise=(async()=>{
-    if(isIOSDevice()&&!isStandaloneApp())return{ok:false,reason:'standalone'};
-    if(!('Notification'in window)||!('serviceWorker'in navigator))return{ok:false,reason:'unsupported'};
-    if(!(await isSupported()))return{ok:false,reason:'unsupported'};
-    const cfg=await supportPushConfig();
-    pushConfigured=cfg.enabled===true&&Boolean(cfg.vapidKey);
-    if(!pushConfigured)return{ok:false,reason:'config'};
-    const reg=await ensurePushRegistration();
-    pushMessaging=pushMessaging||getMessaging(pushApp);
-    pushInfra={ok:true,cfg,reg,messaging:pushMessaging};
-    return pushInfra;
-  })().catch(error=>({ok:false,reason:'error',error})).finally(()=>{pushInfraPromise=null});
-  return pushInfraPromise;
+function subscriptionBody(sub){const j=sub?.toJSON?.()||{};return{endpoint:String(j.endpoint||sub?.endpoint||''),expirationTime:j.expirationTime??sub?.expirationTime??null,keys:{p256dh:String(j.keys?.p256dh||''),auth:String(j.keys?.auth||'')}}}
+async function getPreparedPush(){
+  if(pushConfig&&pushRegistration?.active)return{cfg:pushConfig,reg:pushRegistration};
+  if(pushPreparePromise)return pushPreparePromise;
+  pushPreparePromise=(async()=>{
+    if(isIOSDevice()&&!isStandaloneApp())throw Object.assign(Error('Abre Dingloft desde el icono instalado en tu pantalla de inicio.'),{code:'IOS_STANDALONE_REQUIRED'});
+    if(!('Notification'in window)||!('serviceWorker'in navigator)||!('PushManager'in window))throw Error('Web Push no está disponible en esta instalación.');
+    const [cfg,reg]=await Promise.all([supportPushConfig(),ensurePushRegistration()]);
+    if(cfg.enabled!==true||!cfg.vapidKey)throw Error('Web Push todavía no está listo en el servidor.');
+    pushConfigured=true;pushConfig=cfg;return{cfg,reg};
+  })().finally(()=>{pushPreparePromise=null});
+  return pushPreparePromise;
+}
+async function syncExistingSubscription(){
+  const{cfg,reg}=await getPreparedPush();
+  let sub=await reg.pushManager.getSubscription();
+  let migrated=false;try{migrated=localStorage.getItem(PUSH_NATIVE_MARK)==='1'}catch(_){}
+  if(sub&&!migrated){try{await sub.unsubscribe()}catch(_){};sub=null}
+
+  if(!sub)return false;
+  const expected=base64UrlBytes(cfg.vapidKey),actual=sub.options?.applicationServerKey?new Uint8Array(sub.options.applicationServerKey):null;
+  if(actual&&!sameBytes(actual,expected)){try{await sub.unsubscribe()}catch(_){};return false}
+  pushSubscription=sub;
+  await api('/admin/support/push/register',{method:'POST',body:{subscription:subscriptionBody(sub),platform:platformLabel(),userAgent:navigator.userAgent||''}});
+  setPushButton('active','Avisos activos','Este dispositivo recibirá alertas cuando llegue una solicitud de soporte. Toca para desactivarlas.');
+  return true
 }
 async function primePushInfrastructure(){
   if(!user)return;
-  if(isIOSDevice()&&!isStandaloneApp()){setPushButton('blocked','Abre la app instalada','En iPhone los avisos funcionan al abrir Dingloft desde el icono de la pantalla de inicio.');return}
-  setPushButton('busy','Preparando avisos…');
-  const infra=await preparePushInfrastructure();
-  if(!infra?.ok){
-    if(infra?.reason==='config')setPushButton('blocked','Falta configurar','Agrega FCM_VAPID_PUBLIC_KEY al Worker.');
-    else if(infra?.reason==='standalone')setPushButton('blocked','Abre la app instalada','Abre Dingloft desde su icono de la pantalla de inicio.');
-    else if(infra?.reason==='unsupported')setPushButton('blocked','No compatible','Esta instalación no expone Web Push.');
-    else setPushButton('ready','Reintentar avisos',pushFriendlyError(infra?.error));
-    return;
-  }
+  if(isIOSDevice()&&!isStandaloneApp()){setPushButton('blocked','Abre la app instalada','En iPhone abre Dingloft desde el icono de la pantalla de inicio.');return}
+  if(!('Notification'in window)){setPushButton('blocked','No compatible','Este navegador no expone notificaciones Web Push.');return}
   if(Notification.permission==='denied'){setPushButton('blocked','Avisos bloqueados','Activa Dingloft en Ajustes → Notificaciones.');return}
-  if(isIOSDevice()){
-    // IMPORTANT: iOS requires the actual Push subscription to originate from a
-    // direct user gesture. We intentionally DO NOT auto-register here.
-    setPushButton('ready',Notification.permission==='granted'?'Activar avisos':'Activar avisos','Toca para vincular este iPhone con los avisos de soporte.');
-    return;
-  }
-  if(Notification.permission==='granted')registerPushNotifications({ask:false}).catch(()=>{});
-  else setPushButton('ready','Activar avisos','Recibe una notificación cuando un cliente solicite soporte.');
+  setPushButton('busy','Preparando avisos…');
+  try{
+    await getPreparedPush();
+    if(Notification.permission==='granted'&&await syncExistingSubscription())return;
+    if(!isIOSDevice()&&Notification.permission==='granted'){await registerPushNotifications({ask:false});return}
+    setPushButton('ready','Activar avisos','Recibe una notificación cuando un cliente solicite soporte.');
+  }catch(e){if(e?.code==='IOS_STANDALONE_REQUIRED')setPushButton('blocked','Abre la app instalada',e.message);else setPushButton('ready','Reintentar avisos',pushFriendlyError(e))}
 }
 async function registerPushNotifications({ask=false}={}){
-  if(pushBusy||!user)return;
-  pushBusy=true;setPushButton('busy','Configurando…');
+  if(pushBusy||!user)return;pushBusy=true;setPushButton('busy','Configurando…');
   try{
-    if(isIOSDevice()&&!isStandaloneApp()){setPushButton('blocked','Abre la app instalada','En iPhone los avisos funcionan al abrir Dingloft desde el icono de la pantalla de inicio.');return}
-
-    // The infrastructure (VAPID + active root SW + Firebase Messaging) is
-    // prepared BEFORE the tap. This avoids losing iOS transient user activation
-    // while waiting on a network request or service-worker update.
-    const infra=pushInfra;
-    if(!infra?.ok){
-      setPushButton('ready','Preparando avisos…','Espera un momento y vuelve a tocar el botón.');
-      primePushInfrastructure().catch(()=>{});
-      return;
-    }
-
+    if(isIOSDevice()&&!isStandaloneApp())throw Object.assign(Error('En iPhone abre Dingloft desde el icono instalado en la pantalla de inicio.'),{code:'IOS_STANDALONE_REQUIRED'});
+    if(!('Notification'in window)||!('PushManager'in window))throw Error('Web Push no está disponible en este navegador.');
     let permission=Notification.permission;
-    if(permission==='default'&&ask){
-      // Keep the permission request directly attached to the user's tap.
-      permission=await Notification.requestPermission();
-    }
+    if(permission==='default'&&ask)permission=await Notification.requestPermission();
     if(permission==='denied'){setPushButton('blocked','Avisos bloqueados','Activa Dingloft en Ajustes → Notificaciones.');return}
-    if(permission!=='granted'){setPushButton('ready','Activar avisos','Recibe una notificación cuando un cliente solicite soporte.');return}
-
-    const messaging=infra.messaging,reg=infra.reg,cfg=infra.cfg;
-    const fidPromise=waitForFid(messaging,20000);
-
-    // No fetch/update/cleanup occurs between the tap and register(). On iOS the
-    // SDK can now reach PushManager.subscribe() from the same interaction path.
-    await registerMessaging(messaging,{vapidKey:cfg.vapidKey,serviceWorkerRegistration:reg});
-    const fid=await fidPromise;
-    pushTarget=fid;pushTargetType='fid';
-    await api('/admin/support/push/register',{method:'POST',body:{fid,targetType:'fid',platform:platformLabel(),userAgent:navigator.userAgent||''}});
-    pushForegroundUnsub?.();pushForegroundUnsub=onMessage(messaging,payload=>{const data=payload?.data||{};showForegroundPush(data);if(data.chatId){pendingPushChatId=cleanChatId(data.chatId);const c=chats.find(x=>x.id===pendingPushChatId);if(c&&document.visibilityState==='visible')openChat(pendingPushChatId)}});
-    pushUnregisteredUnsub?.();pushUnregisteredUnsub=onUnregistered(messaging,oldFid=>{api('/admin/support/push/unregister',{method:'POST',body:{fid:String(oldFid||'')}}).catch(()=>{});if(String(oldFid||'')===pushTarget){pushTarget='';pushTargetType='';setPushButton('ready','Activar avisos','Este dispositivo ya no está registrado para avisos.')}});
-    setPushButton('active','Avisos activos',isIOSDevice()?'Este iPhone ya recibirá alertas de soporte.':'Este dispositivo recibirá alertas de soporte. Toca para desactivarlas.');
-  }catch(e){
-    const msg=isAbort20(e)&&isIOSDevice()
-      ?'iOS todavía rechazó la suscripción Push (AbortError 20). Si este mensaje aparece después del v107, elimina Dingloft de la pantalla de inicio y vuelve a instalarlo una sola vez para regenerar la identidad Push de iOS.'
-      :pushFriendlyError(e);
-    console.warn('Support push',e);setPushButton('ready','Reintentar avisos',msg);if(ask)alert(msg);
-  }finally{pushBusy=false}
+    if(permission!=='granted'){setPushButton('ready','Activar avisos','Toca para permitir las notificaciones.');return}
+    const{cfg,reg}=await getPreparedPush();
+    const expected=base64UrlBytes(cfg.vapidKey);
+    let sub=await reg.pushManager.getSubscription();
+    if(sub){const actual=sub.options?.applicationServerKey?new Uint8Array(sub.options.applicationServerKey):null;if(actual&&!sameBytes(actual,expected)){try{await sub.unsubscribe()}catch(_){};sub=null}}
+    if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:expected});
+    pushSubscription=sub;
+    await api('/admin/support/push/register',{method:'POST',body:{subscription:subscriptionBody(sub),platform:platformLabel(),userAgent:navigator.userAgent||'',sendTest:true}});
+    try{localStorage.setItem(PUSH_NATIVE_MARK,'1')}catch(_){}
+    setPushButton('active','Avisos activos','Este dispositivo recibirá alertas de soporte. Toca para desactivarlas.');
+  }catch(e){console.warn('Dingloft Web Push',e);if(e?.code==='IOS_STANDALONE_REQUIRED')setPushButton('blocked','Abre la app instalada',e.message);else{setPushButton('ready','Reintentar avisos',pushFriendlyError(e));alert(pushFriendlyError(e))}}
+  finally{pushBusy=false}
 }
-async function disablePushNotifications(){if(pushBusy)return;pushBusy=true;setPushButton('busy','Desactivando…');try{if(pushTarget)await api('/admin/support/push/unregister',{method:'POST',body:{[pushTargetType==='fid'?'fid':'token']:pushTarget}}).catch(()=>{});if(pushMessaging)await unregisterMessaging(pushMessaging).catch(()=>{});pushTarget='';pushTargetType='';pushForegroundUnsub?.();pushForegroundUnsub=null;pushRegisteredUnsub?.();pushRegisteredUnsub=null;pushUnregisteredUnsub?.();pushUnregisteredUnsub=null;setPushButton('ready','Activar avisos','Las notificaciones están desactivadas en este dispositivo.')}finally{pushBusy=false}}
-async function togglePushNotifications(){if(pushTarget){if(confirm('¿Desactivar las notificaciones de soporte en este dispositivo?'))await disablePushNotifications();return}await registerPushNotifications({ask:true})}
-function consumePendingPushChat(){if(!pendingPushChatId)return;const c=chats.find(x=>x.id===pendingPushChatId);if(!c)return;const id=pendingPushChatId;pendingPushChatId='';openChat(id);try{history.replaceState(null,'',`${location.pathname}#support`)}catch(_){}}
+async function disablePushNotifications(){
+  if(pushBusy)return;pushBusy=true;setPushButton('busy','Desactivando…');
+  try{const reg=pushRegistration||await navigator.serviceWorker.getRegistration('/').catch(()=>null);const sub=pushSubscription||await reg?.pushManager?.getSubscription?.();if(sub){await api('/admin/support/push/unregister',{method:'POST',body:{endpoint:sub.endpoint}}).catch(()=>{});try{await sub.unsubscribe()}catch(_){}}pushSubscription=null;setPushButton('ready','Activar avisos','Las notificaciones están desactivadas en este dispositivo.')}finally{pushBusy=false}
+}
+async function togglePushNotifications(){if(pushSubscription||$('supportPushBtn')?.dataset.state==='active')return disablePushNotifications();return registerPushNotifications({ask:true})}
+function bindPushMessages(){if(pushMessageBound||!navigator.serviceWorker)return;pushMessageBound=true;navigator.serviceWorker.addEventListener('message',event=>{const msg=event.data||{};if(msg.type!=='DINGLOFT_SUPPORT_PUSH')return;const data=msg.data||{};if(data.chatId){pendingPushChatId=cleanChatId(data.chatId);const c=chats.find(x=>x.id===pendingPushChatId);if(c&&document.visibilityState==='visible')openChat(pendingPushChatId)}})}
+function consumePendingPushChat(){if(!pendingPushChatId)return;const id=pendingPushChatId;if(!chats.some(c=>c.id===id))return;pendingPushChatId='';openChat(id)}
 function badgeUpdate(){const n=chats.reduce((s,c)=>s+Math.max(0,Number(c.unreadAdmin||0)),0);document.querySelectorAll('[data-view="support"]').forEach(b=>{let x=b.querySelector('.support-nav-count');if(!x){x=document.createElement('span');x.className='support-nav-count';b.appendChild(x)}x.textContent=n>99?'99+':String(n);x.style.display=n?'inline-grid':'none'})}
 function statusLabel(s){return s==='resolved'?'Resuelto':s==='in_attention'?'En atención':'Abierto'}
 function statusClass(s){return s==='resolved'?'resolved':s==='in_attention'?'attention':'open'}
@@ -160,7 +120,7 @@ async function setStatus(status){if(!selectedId)return;try{await api('/admin/sup
 async function deleteChat(){if(!selectedId)return;const c=chats.find(x=>x.id===selectedId);if(!confirm(`¿Eliminar definitivamente la conversación de ${c?.customerName||c?.customerEmail||'este cliente'}? También se borrarán sus imágenes de R2.`))return;try{await api('/admin/support/delete',{method:'POST',body:{chatId:selectedId}});selectedId='';msgUnsub?.();presenceUnsub?.();renderHeader(null)}catch(e){alert(e.message)}}
 function typingChanged(draft){clearTimeout(typingIdle);typingIdle=setTimeout(()=>setTyping(false,''),2400);const wait=Math.max(0,700-(Date.now()-lastTyping));clearTimeout(typingTimer);typingTimer=setTimeout(()=>setTyping(true,String(draft||'').slice(0,500)),wait)}
 async function setTyping(typing,draft){if(!selectedId||!agent)return;lastTyping=Date.now();try{await setDoc(doc(db,'supportChats',selectedId,'presence','admin'),{typing:typing===true,draft:'',agentName:agent.name,agentRole:agent.role,updatedAt:serverTimestamp()},{merge:true})}catch(_){}}
-function bind(){const input=$('supportReply');input?.addEventListener('input',()=>{input.style.height='42px';input.style.height=Math.min(120,input.scrollHeight)+'px';typingChanged(input.value)});input?.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});input?.addEventListener('blur',()=>setTyping(false,''));$('supportSend')?.addEventListener('click',send);$('supportSearch')?.addEventListener('input',renderList);$('supportFilter')?.addEventListener('change',renderList);$('supportRefresh')?.addEventListener('click',()=>api('/admin/support/cleanup',{method:'POST',body:{}}).catch(()=>{}));$('supportPushBtn')?.addEventListener('click',togglePushNotifications)}
+function bind(){bindPushMessages();const input=$('supportReply');input?.addEventListener('input',()=>{input.style.height='42px';input.style.height=Math.min(120,input.scrollHeight)+'px';typingChanged(input.value)});input?.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});input?.addEventListener('blur',()=>setTyping(false,''));$('supportSend')?.addEventListener('click',send);$('supportSearch')?.addEventListener('input',renderList);$('supportFilter')?.addEventListener('change',renderList);$('supportRefresh')?.addEventListener('click',()=>api('/admin/support/cleanup',{method:'POST',body:{}}).catch(()=>{}));$('supportPushBtn')?.addEventListener('click',togglePushNotifications)}
 function start(){bind();api('/admin/support/cleanup',{method:'POST',body:{}}).catch(()=>{});primePushInfrastructure().catch(()=>{});chatsUnsub=onSnapshot(query(collection(db,'supportChats'),orderBy('updatedAt','desc'),limit(250)),s=>{chats=s.docs.map(d=>({id:d.id,...d.data()}));badgeUpdate();renderList();consumePendingPushChat();if(selectedId){const c=chats.find(x=>x.id===selectedId);if(c)renderHeader(c);else{selectedId='';renderHeader(null)}}},e=>{console.warn('Support chats',e);$('supportConversationList').innerHTML='<div class="support-admin-empty">Firestore rechazó la lectura. Revisa las Rules de soporte.</div>'})}
-function stop(){chatsUnsub?.();msgUnsub?.();presenceUnsub?.();pushForegroundUnsub?.();pushRegisteredUnsub?.();pushUnregisteredUnsub?.();pushForegroundUnsub=pushRegisteredUnsub=pushUnregisteredUnsub=null;pushInfra=null;pushInfraPromise=null;chatsUnsub=msgUnsub=presenceUnsub=null;clearTimeout(typingTimer);clearTimeout(typingIdle);for(const u of imageUrls.values())URL.revokeObjectURL(u);imageUrls.clear()}
+function stop(){chatsUnsub?.();msgUnsub?.();presenceUnsub?.();pushPreparePromise=null;pushConfig=null;pushConfigured=false;pushRegistration=null;pushSubscription=null;chatsUnsub=msgUnsub=presenceUnsub=null;clearTimeout(typingTimer);clearTimeout(typingIdle);for(const u of imageUrls.values())URL.revokeObjectURL(u);imageUrls.clear()}
 onAuthStateChanged(auth,u=>{stop();user=u;agent=AGENTS[String(u?.email||'').toLowerCase()]||null;if(u&&agent)start()});

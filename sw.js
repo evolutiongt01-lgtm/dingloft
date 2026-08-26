@@ -1,4 +1,4 @@
-const VERSION = '102';
+const VERSION = '103';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -208,7 +208,7 @@ self.addEventListener('fetch', event => {
 
 
 /* ==========================================================================
-   Dingloft Support Web Push · v106
+   Dingloft Support Universal Web Push · v108
    Uses the SAME root Service Worker as the installed PWA. This is important
    on iPhone/iPad Home Screen apps: the push subscription stays attached to
    the PWA registration instead of a second /fcm-support/ scope.
@@ -217,7 +217,7 @@ function dingloftSupportPushPayload(event){
   if(!event.data)return null;
   try{
     const payload=event.data.json();
-    const data=payload?.data||{};
+    const data=payload?.data&&typeof payload.data==='object'?payload.data:payload||{};
     const notification=payload?.notification||{};
     if(data.kind!=='dingloft_support'&&!notification.title&&!data.title)return null;
     return{data,notification};
