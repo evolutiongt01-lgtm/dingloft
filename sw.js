@@ -208,8 +208,8 @@ self.addEventListener('fetch', event => {
 
 
 /* ==========================================================================
-   Dingloft Admin Universal Web Push · v109
-   Soporte + ventas + comentarios/experiencias usando el mismo registro PWA.
+   Dingloft Admin Universal Web Push · v110
+   Soporte + ventas + comentarios/experiencias + reservas pagadas.
    ========================================================================== */
 function dingloftAdminPushPayload(event){
   if(!event.data)return null;
@@ -230,8 +230,8 @@ self.addEventListener('push',event=>{
   const title=data.title||notification.title||'Dingloft';
   const body=data.body||notification.body||'Nueva actividad en Dingloft.';
   const chatId=String(data.chatId||'');
-  const eventId=String(data.eventId||data.purchaseId||data.reviewId||chatId||'new');
-  const fallback=kind==='dingloft_sale'?'/admin#orders':kind==='dingloft_review'?'/admin#reviews':'/admin#support';
+  const eventId=String(data.eventId||data.purchaseId||data.reviewId||data.reservationId||chatId||'new');
+  const fallback=kind==='dingloft_sale'?'/admin#orders':kind==='dingloft_review'?'/admin#reviews':kind==='dingloft_reservation_paid'?'/admin#reservations':'/admin#support';
   const url=data.url||fallback;
   event.waitUntil((async()=>{
     await self.registration.showNotification(title,{

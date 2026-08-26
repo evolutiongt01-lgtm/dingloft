@@ -1744,9 +1744,10 @@ html,body{
           let timestampCalculado = new Date(isoString).getTime();
 
           try {
-            await addDoc(collection(db, "reservas"), {
+            const reservaRef = await addDoc(collection(db, "reservas"), {
               uid: user.uid,
               email: user.email,
+              payerName: payerName || user.displayName || "",
               fecha: fechaFormateada,
               hora: window.horaSeleccionada,
               software: window.softwareSeleccionado,
@@ -1757,6 +1758,34 @@ html,body{
               paypalOrderId: paypalOrderId || "GRATIS",
               creado: serverTimestamp()
             });
+
+            // Si hubo pago real, el Worker consulta PayPal directamente antes de
+            // avisar a Administración. El navegador nunca decide que está pagada.
+            if (paypalOrderId && paypalOrderId !== "GRATIS" && Number(window.precioFinal || 0) > 0) {
+              void (async () => {
+                for (let intento = 0; intento < 3; intento++) {
+                  try {
+                    const token = await user.getIdToken(intento > 0);
+                    const response = await fetch(WORKER + "/reservations/verify-paid", {
+                      method: "POST",
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                        "content-type": "application/json",
+                        Accept: "application/json"
+                      },
+                      body: JSON.stringify({ reservationId: reservaRef.id, paypalOrderId }),
+                      cache: "no-store"
+                    });
+                    const result = await response.json().catch(() => ({}));
+                    if (response.ok && result?.ok !== false) return;
+                    console.warn("Reserva pagada: verificación pendiente", result?.code || response.status);
+                  } catch (error) {
+                    console.warn("Reserva pagada: no se pudo avisar todavía", error);
+                  }
+                  await new Promise(resolve => setTimeout(resolve, 800 * (intento + 1)));
+                }
+              })();
+            }
 
             window.closeReservaModal();
             window.mostrarAlertaModal(`¡Reserva creada con éxito!`, true);

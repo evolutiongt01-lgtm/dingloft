@@ -63,7 +63,7 @@ async function syncExistingSubscription(){
   if(actual&&!sameBytes(actual,expected)){try{await sub.unsubscribe()}catch(_){};return false}
   pushSubscription=sub;
   await api('/admin/support/push/register',{method:'POST',body:{subscription:subscriptionBody(sub),platform:platformLabel(),userAgent:navigator.userAgent||''}});
-  setPushButton('active','Avisos activos','Este dispositivo recibirá alertas de ventas, comentarios y soporte. Toca para desactivarlas.');
+  setPushButton('active','Avisos activos','Este dispositivo recibirá alertas de ventas, comentarios, reservas pagadas y soporte. Toca para desactivarlas.');
   return true
 }
 async function primePushInfrastructure(){
@@ -96,7 +96,7 @@ async function registerPushNotifications({ask=false}={}){
     pushSubscription=sub;
     await api('/admin/support/push/register',{method:'POST',body:{subscription:subscriptionBody(sub),platform:platformLabel(),userAgent:navigator.userAgent||'',sendTest:true}});
     try{localStorage.setItem(PUSH_NATIVE_MARK,'1')}catch(_){}
-    setPushButton('active','Avisos activos','Este dispositivo recibirá alertas de ventas, comentarios y soporte. Toca para desactivarlas.');
+    setPushButton('active','Avisos activos','Este dispositivo recibirá alertas de ventas, comentarios, reservas pagadas y soporte. Toca para desactivarlas.');
   }catch(e){console.warn('Dingloft Web Push',e);if(e?.code==='IOS_STANDALONE_REQUIRED')setPushButton('blocked','Abre la app instalada',e.message);else{setPushButton('ready','Reintentar avisos',pushFriendlyError(e));alert(pushFriendlyError(e))}}
   finally{pushBusy=false}
 }
