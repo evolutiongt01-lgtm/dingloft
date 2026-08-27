@@ -40,3 +40,82 @@ html[data-dl-theme="light"] .shell-nav :is(.brand,.brand-copy strong){color:#172
 html[data-dl-theme="light"] #desktopSplash,html[data-dl-theme="light"] #appSplash{background:#f2f6f9!important}html[data-dl-theme="light"] :is(.desktop-splash-brand,.splash-brand){color:#172633!important}
 @media(max-width:700px){.dl-theme-floating{right:12px;top:max(12px,env(safe-area-inset-top));width:40px;height:40px}.dl-theme-nav-action{width:38px;height:38px}}
 @media(prefers-reduced-motion:reduce){.dl-theme-toggle,.dl-theme-toggle svg{transition:none!important}}
+
+/* v2 — Light mode with deliberate contrast instead of blanket recoloring */
+html[data-dl-theme="light"]{
+  --white:#fff;
+  --text:#172633;
+  --text-main:#172633;
+}
+
+/* White utility text must remain white on intentionally dark surfaces. */
+html[data-dl-theme="light"] .text-white{color:#fff!important}
+html[data-dl-theme="light"] :is(.hero-visual,.mt-card,.mt-studio-panel,.site-install-banner,.site-install-sheet,.sheet) [style*="color: #fff"],
+html[data-dl-theme="light"] :is(.hero-visual,.mt-card,.mt-studio-panel,.site-install-banner,.site-install-sheet,.sheet) [style*="color:#fff"]{color:#fff!important}
+
+/* The product/workspace preview stays as a refined dark feature island. */
+html[data-dl-theme="light"] .hero-visual{
+  background:linear-gradient(145deg,#17212c,#0c1118)!important;
+  border-color:rgba(23,38,51,.18)!important;
+  box-shadow:0 28px 70px rgba(31,55,73,.22),inset 0 1px rgba(255,255,255,.08)!important;
+  color:#edf5fa!important;
+}
+html[data-dl-theme="light"] .hero-visual :is(h1,h2,h3,h4,h5,h6,strong,b,.title,.headline){color:#edf5fa!important}
+html[data-dl-theme="light"] .hero-visual :is(p,small,span,.muted){color:#91a1af}
+html[data-dl-theme="light"] .hero-visual :is(.mini-card,.panel-card,.shortcut,.platform-chip,.icon-stage){
+  background-color:rgba(255,255,255,.035)!important;
+  background-image:none!important;
+  border-color:rgba(255,255,255,.09)!important;
+  box-shadow:none!important;
+}
+
+/* Multitracks: light toolbar, dark album cards, readable type. */
+html[data-dl-theme="light"] .mt-quickbar{
+  background:rgba(246,250,252,.88)!important;
+  border-color:rgba(31,55,73,.11)!important;
+  box-shadow:0 14px 34px rgba(31,55,73,.10)!important;
+}
+html[data-dl-theme="light"] .mt-search input{
+  background:#fff!important;color:#203341!important;border-color:rgba(31,55,73,.14)!important;
+}
+html[data-dl-theme="light"] .mt-filter{background:#fff!important;color:#687b8a!important;border-color:rgba(31,55,73,.12)!important}
+html[data-dl-theme="light"] .mt-filter:hover,
+html[data-dl-theme="light"] .mt-filter.active{background:#edf5fb!important;color:#31506a!important;border-color:rgba(88,108,196,.25)!important}
+html[data-dl-theme="light"] .mt-card{
+  background:linear-gradient(145deg,#151922,#080b10)!important;
+  border-color:rgba(20,35,48,.18)!important;
+  box-shadow:0 18px 42px rgba(31,55,73,.16)!important;
+  color:#edf2f7!important;
+}
+html[data-dl-theme="light"] .mt-card :is(h1,h2,h3,h4,h5,h6,strong,b,.mt-card-title){color:#f4f1fb!important}
+html[data-dl-theme="light"] .mt-card :is(p,small,.muted,.mt-card-artist){color:#8793a3!important}
+html[data-dl-theme="light"] .mt-card :is(input,textarea,select){background:#0d1219!important;color:#eef3f7!important;border-color:rgba(255,255,255,.10)!important}
+
+/* Admin is a complete light workspace, not a dark panel pasted onto a white page. */
+html[data-dl-theme="light"] body:has(.app){
+  --bg:#edf3f7;--side:#fff;--panel:#fff;--panel2:#f6f9fb;--line:#d9e3ea;--text:#172633;--muted:#6b7e8e;
+  background:#edf3f7!important;color:#172633!important;
+}
+html[data-dl-theme="light"] body:has(.app) .side{background:#fff!important;border-color:#d9e3ea!important;box-shadow:10px 0 35px rgba(31,55,73,.06)}
+html[data-dl-theme="light"] body:has(.app) .top{background:rgba(255,255,255,.88)!important;border-color:#d9e3ea!important;box-shadow:0 8px 28px rgba(31,55,73,.06)}
+html[data-dl-theme="light"] body:has(.app) .nav button{color:#647787!important}
+html[data-dl-theme="light"] body:has(.app) .nav button:hover,
+html[data-dl-theme="light"] body:has(.app) .nav button.active{background:#edf5fa!important;color:#163445!important}
+html[data-dl-theme="light"] body:has(.app) :is(.stat,.panel,.editor,.mt-admin-list){
+  background:#fff!important;background-image:none!important;border-color:#d9e3ea!important;
+  box-shadow:0 12px 32px rgba(31,55,73,.07)!important;color:#172633!important;
+}
+html[data-dl-theme="light"] body:has(.app) :is(.stat,.panel,.editor,.mt-admin-list) :is(h1,h2,h3,h4,h5,h6,strong,b){color:#172633!important}
+html[data-dl-theme="light"] body:has(.app) :is(.stat,.panel,.editor,.mt-admin-list) :is(p,small,.muted,.k,.delta){color:#708291!important}
+html[data-dl-theme="light"] body:has(.app) :is(.field,input,textarea,select){background:#f7fafc!important;color:#172633!important;border-color:#d5e0e7!important}
+html[data-dl-theme="light"] body:has(.app) :is(th,.table-wrap){background:#f5f8fa!important;color:#586c7c!important;border-color:#d9e3ea!important}
+html[data-dl-theme="light"] body:has(.app) td{border-color:#e2e9ee!important;color:#263b49!important}
+html[data-dl-theme="light"] body:has(.app) .btn:not(.primary):not(.accent):not(.danger){background:#fff!important;color:#294150!important;border-color:#d3dfe7!important}
+html[data-dl-theme="light"] body:has(.app) .btn.primary{background:#132c3c!important;color:#fff!important;border-color:#132c3c!important}
+html[data-dl-theme="light"] body:has(.app) .logout{background:#f7fafc!important;color:#405766!important;border-color:#d9e3ea!important}
+
+@media(max-width:700px){
+  html[data-dl-theme="light"] .mt-quickbar-inner{align-items:stretch;flex-direction:column;padding:10px 0}
+  html[data-dl-theme="light"] .mt-search{max-width:none;width:100%}
+  html[data-dl-theme="light"] .mt-filter-row{width:100%;padding-bottom:2px}
+}

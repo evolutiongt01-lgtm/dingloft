@@ -1,8 +1,8 @@
 /* Dingloft Theme System v1 · synchronized light/dark appearance */
 (() => {
   'use strict';
-  if (window.__DINGLOFT_THEME_V1__) return;
-  window.__DINGLOFT_THEME_V1__ = true;
+  if (window.__DINGLOFT_THEME_V2__) return;
+  window.__DINGLOFT_THEME_V2__ = true;
 
   const KEY = 'dingloft_theme';
   const LIGHT = 'light';
@@ -15,7 +15,7 @@
   function resolved(value=stored()){ return value || (media.matches ? LIGHT : DARK); }
   function ensureCss(doc=document){
     if(doc.getElementById('dingloft-theme-css')) return;
-    const link=doc.createElement('link'); link.id='dingloft-theme-css'; link.rel='stylesheet'; link.href='/dingloft-theme.css?v=1';
+    const link=doc.createElement('link'); link.id='dingloft-theme-css'; link.rel='stylesheet'; link.href='/dingloft-theme.css?v=2';
     (doc.head||doc.documentElement).appendChild(link);
   }
   function updateMeta(theme,doc=document){
@@ -68,7 +68,9 @@
   }
   function mountFloating(){
     if(!document.body||window!==top||document.querySelector('[data-dl-theme-toggle]')||document.getElementById('desktopNavActions')||document.getElementById('dlMobileHeaderV71'))return false;
-    const file=(location.pathname.split('/').pop()||'').toLowerCase();if(['desktop-shell.html','app.html','launch.html'].includes(file))return false;
+    const file=(location.pathname.split('/').pop()||'').toLowerCase();
+    const standalone=new Set(['login.html','register.html','404.html','offline.html']);
+    if(!standalone.has(file))return false;
     const b=button('dl-theme-floating');(document.body||document.documentElement).appendChild(b);updateButtons();return true;
   }
   function mountButtons(){if(window===top){mountDesktop();mountMobile();mountFloating()}}
