@@ -821,6 +821,13 @@ html,body{
   #reservaModal .time-slots-container{grid-template-columns:1fr!important;}
 }
 
+/* DINGLOFT EXPERIENCE v1 */
+.experience-overlay{--xp:#ffb45e;position:fixed;z-index:5100;inset:0;display:grid;place-items:center;padding:20px;background:rgba(2,6,12,.78);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);opacity:0;visibility:hidden;pointer-events:none;transition:.35s ease}
+.experience-overlay.active{opacity:1;visibility:visible;pointer-events:auto}.experience-card{position:relative;width:min(480px,100%);overflow:hidden;padding:34px 32px 28px;border-radius:30px;border:1px solid color-mix(in srgb,var(--xp) 30%,rgba(255,255,255,.08));background:radial-gradient(circle at 50% -10%,color-mix(in srgb,var(--xp) 24%,transparent),transparent 48%),linear-gradient(160deg,#101722,#070b12);box-shadow:0 38px 110px rgba(0,0,0,.6);text-align:center;transition:.45s ease}
+.experience-close{position:absolute;right:16px;top:16px;width:36px;height:36px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);color:#92a2b6;cursor:pointer}.experience-kicker{color:var(--xp);font-size:.64rem;font-weight:850;letter-spacing:.18em;text-transform:uppercase;transition:.35s}.experience-face{width:128px;height:128px;margin:18px auto;position:relative;border-radius:42px;background:color-mix(in srgb,var(--xp) 19%,#101925);border:1px solid color-mix(in srgb,var(--xp) 35%,transparent);box-shadow:0 20px 45px color-mix(in srgb,var(--xp) 13%,transparent);transition:.4s cubic-bezier(.2,.8,.2,1)}
+.experience-face.is-changing{transform:scale(.92) rotate(-3deg)}.xp-eye{position:absolute;top:43px;width:12px;height:15px;border-radius:50%;background:#edf8fc;transition:.35s}.xp-eye.left{left:34px}.xp-eye.right{right:34px}.xp-mouth{position:absolute;left:50%;top:76px;width:44px;height:20px;transform:translateX(-50%);border:5px solid #edf8fc;border-top:0;border-radius:0 0 30px 30px;transition:.35s}.experience-face[data-score="1"] .xp-mouth,.experience-face[data-score="2"] .xp-mouth{top:82px;border-top:5px solid #edf8fc;border-bottom:0;border-radius:30px 30px 0 0}.experience-face[data-score="3"] .xp-mouth{height:0;top:84px;border:0;border-top:5px solid #edf8fc;border-radius:99px}.experience-face[data-score="5"] .xp-eye{height:10px;border-radius:50% 50% 30% 30%}.experience-title{margin:0;color:#f4f9fc;font-size:1.55rem;letter-spacing:-.045em}.experience-sub{margin:8px auto 22px;max-width:340px;color:#8fa0b4;font-size:.82rem;line-height:1.5}.experience-range{width:100%;height:8px;appearance:none;border-radius:99px;background:linear-gradient(90deg,#ff6f7d,#ffb45e,#ffd96b,#7ddcb0,#55e3aa);outline:none}.experience-range::-webkit-slider-thumb{appearance:none;width:30px;height:30px;border-radius:50%;background:#f5fbff;border:6px solid var(--xp);box-shadow:0 5px 18px rgba(0,0,0,.4);cursor:grab;transition:border-color .35s,transform .2s}.experience-range::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.12)}.experience-scale{display:flex;justify-content:space-between;margin:11px 2px 20px;color:#68798d;font-size:.63rem;font-weight:750}.experience-comment{width:100%;min-height:78px;resize:vertical;padding:13px 14px;border-radius:15px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);color:#edf7fb;font:inherit;font-size:.8rem;outline:none}.experience-comment:focus{border-color:color-mix(in srgb,var(--xp) 45%,transparent)}.experience-submit{width:100%;height:49px;margin-top:12px;border:0;border-radius:15px;background:var(--xp);color:#071018;font-weight:850;cursor:pointer;transition:.25s}.experience-submit:hover{filter:brightness(1.08);transform:translateY(-1px)}.experience-submit:disabled{opacity:.6;cursor:wait;transform:none}.experience-test{margin-top:9px!important;background:transparent!important;color:#8ee6ff!important;border:1px solid rgba(85,216,255,.18)!important}.experience-session-btn{width:100%;margin-top:14px;padding:11px;border-radius:12px;border:1px solid rgba(85,216,255,.2);background:rgba(85,216,255,.06);color:#aeeeff;font-weight:750;cursor:pointer}
+@media(max-width:520px){.experience-overlay{align-items:end;padding:0}.experience-card{border-radius:28px 28px 0 0;padding:29px 20px calc(22px + env(safe-area-inset-bottom,0px))}.experience-face{width:112px;height:112px;margin:14px auto}.xp-eye{top:37px}.xp-eye.left{left:30px}.xp-eye.right{right:30px}.xp-mouth{top:68px}.experience-face[data-score="1"] .xp-mouth,.experience-face[data-score="2"] .xp-mouth{top:74px}.experience-face[data-score="3"] .xp-mouth{top:76px}}
+
 </style>
 
   <script>window.__DINGLOFT_COMMERCE_V1__ = true;</script>
@@ -906,6 +913,7 @@ html,body{
             <span><i class="bi bi-check2-circle"></i> Validación antes de terminar</span>
           </div>
           <button class="side-cta support-cta-v80" type="button" onclick="openReservaModal()"><i class="bi bi-calendar2-plus"></i> Elegir fecha y hora</button>
+          <button class="side-cta experience-test" type="button" onclick="openExperienceModal()"><i class="bi bi-emoji-smile"></i> Calificar experiencia</button>
         </article>
 
         <article class="side-card quick-v80">
@@ -1012,6 +1020,21 @@ html,body{
         </div>
       </div>
     </div>
+  </div>
+
+
+  <div class="experience-overlay" id="experienceModal" aria-hidden="true">
+    <section class="experience-card" role="dialog" aria-modal="true" aria-labelledby="experienceTitle">
+      <button class="experience-close" type="button" onclick="closeExperienceModal()" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+      <div class="experience-kicker"><i class="bi bi-stars"></i> Tu experiencia Dingloft</div>
+      <div class="experience-face" id="experienceFace" data-score="3" aria-hidden="true"><span class="xp-eye left"></span><span class="xp-eye right"></span><span class="xp-mouth"></span></div>
+      <h2 class="experience-title" id="experienceTitle">¿Cómo te fue?</h2>
+      <p class="experience-sub" id="experienceSubtitle">Tu opinión nos ayuda a mejorar cada sesión.</p>
+      <input class="experience-range" id="experienceRange" type="range" min="1" max="5" step="1" value="3" aria-label="Calificación de 1 a 5">
+      <div class="experience-scale"><span>Mala</span><span>Regular</span><span>Excelente</span></div>
+      <textarea class="experience-comment" id="experienceComment" maxlength="600" placeholder="Agregar comentario (opcional)"></textarea>
+      <button class="experience-submit" id="experienceSubmit" type="button"><i class="bi bi-send-check"></i> Enviar experiencia</button>
+    </section>
   </div>
 
 
@@ -1404,6 +1427,43 @@ html,body{
     const db = getFirestore(app);
 
     let activeAccountUser = null;
+    let activeExperienceReservationId = null;
+    const experienceStates = {
+      1:{color:'#ff6f7d',title:'Lo sentimos',sub:'Cuéntanos qué salió mal para poder ayudarte.'},
+      2:{color:'#ff9a68',title:'Podemos hacerlo mejor',sub:'Tu comentario nos ayudará a corregir la experiencia.'},
+      3:{color:'#ffd166',title:'Experiencia regular',sub:'Gracias. Queremos que la próxima sea mucho mejor.'},
+      4:{color:'#80d9ad',title:'¡Muy buena experiencia!',sub:'Nos alegra saber que todo salió bien.'},
+      5:{color:'#55e3aa',title:'¡Excelente experiencia!',sub:'Gracias por confiar en Dingloft.'}
+    };
+    window.updateExperienceUI = function(value){
+      const score = Math.max(1,Math.min(5,Number(value)||3));
+      const state = experienceStates[score];
+      const modal=document.getElementById('experienceModal'),face=document.getElementById('experienceFace');
+      modal?.style.setProperty('--xp',state.color); if(face){face.classList.add('is-changing');face.dataset.score=String(score);setTimeout(()=>face.classList.remove('is-changing'),180)}
+      document.getElementById('experienceTitle').textContent=state.title;
+      document.getElementById('experienceSubtitle').textContent=state.sub;
+    };
+    window.openExperienceModal = function(reservationId=null){
+      activeExperienceReservationId=reservationId||null;
+      const modal=document.getElementById('experienceModal'),range=document.getElementById('experienceRange');
+      range.value='3';document.getElementById('experienceComment').value='';window.updateExperienceUI(3);
+      modal.classList.add('active');modal.setAttribute('aria-hidden','false');document.body.classList.add('no-scroll');
+    };
+    window.closeExperienceModal = function(){const modal=document.getElementById('experienceModal');modal?.classList.remove('active');modal?.setAttribute('aria-hidden','true');document.body.classList.remove('no-scroll')};
+    document.getElementById('experienceRange')?.addEventListener('input',e=>window.updateExperienceUI(e.target.value));
+    document.getElementById('experienceModal')?.addEventListener('click',e=>{if(e.target?.id==='experienceModal')window.closeExperienceModal()});
+    document.getElementById('experienceSubmit')?.addEventListener('click',async()=>{
+      if(!activeAccountUser)return;
+      const button=document.getElementById('experienceSubmit'),score=Number(document.getElementById('experienceRange').value),state=experienceStates[score];
+      button.disabled=true;button.innerHTML='<i class="bi bi-arrow-repeat"></i> Enviando...';
+      try{
+        const payload={uid:activeAccountUser.uid,email:activeAccountUser.email||'',rating:score,label:state.title,comment:document.getElementById('experienceComment').value.trim(),reservationId:activeExperienceReservationId||null,source:'account',createdAt:serverTimestamp()};
+        if(activeExperienceReservationId) await setDoc(doc(db,'experiencias',`${activeAccountUser.uid}_${activeExperienceReservationId}`),payload,{merge:true});
+        else await addDoc(collection(db,'experiencias'),payload);
+        window.closeExperienceModal();window.showAccountFeedbackV81?.({state:'success',kicker:'Experiencia enviada',title:'¡Gracias por tu opinión!',detail:'Tu respuesta quedó guardada correctamente.',icon:'bi bi-heart-fill',duration:3800});
+      }catch(error){console.error('No se pudo guardar la experiencia:',error);window.showAccountFeedbackV81?.({state:'error',kicker:'Envío pendiente',title:'No pudimos guardar tu opinión',detail:'Revisa tu conexión e inténtalo nuevamente.',icon:'bi bi-cloud-slash',duration:4300})}
+      finally{button.disabled=false;button.innerHTML='<i class="bi bi-send-check"></i> Enviar experiencia'}
+    });
     const profileNameModal = document.getElementById('profileNameModal');
     const profileNameInput = document.getElementById('profile-name-input');
     const profileNameMessage = document.getElementById('profile-name-message');
@@ -1676,6 +1736,8 @@ html,body{
                             </div>
                           `;
                       }
+                  } else {
+                      baseHTML += `<button class="experience-session-btn" type="button" onclick="openExperienceModal('${miReservaId}')"><i class="bi bi-stars"></i> Calificar esta experiencia</button>`;
                   }
 
                   baseHTML += `${btnEliminar}</div>`;
