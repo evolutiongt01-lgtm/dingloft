@@ -1,4 +1,4 @@
-const VERSION = '109';
+const VERSION = '110';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -50,6 +50,8 @@ const CORE = [
   '/desktop-shell.js',
   '/desktop-shell.js?v=89',
   '/desktop-global-nav.js',
+  '/dingloft-theme.js?v=1',
+  '/dingloft-theme.css?v=1',
   '/dingloft-ui-guard.js?v=55',
   '/dingloft-presence.js?v=55',
   '/mobile-shell-redirect.js',
