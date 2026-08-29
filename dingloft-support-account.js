@@ -164,7 +164,7 @@ function inject(){
       <div class="dl-support-view dl-support-chat-view active" id="dlSupportViewChat">
         <div class="dl-support-context-wrap">
           <div class="dl-support-context"><select id="dlSupportProduct" aria-label="Compra relacionada"><option value="">Selecciona una compra (opcional)</option></select></div>
-          <div class="dl-support-status-note" id="dlSupportStatusNote">Tu conversación queda vinculada a tu cuenta Dingloft.</div>
+          <div class="dl-support-status-note" id="dlSupportStatusNote">Tu conversación privada queda vinculada a tu cuenta Dingloft. No necesitas haber comprado.</div>
           <div class="dl-support-feedback" id="dlSupportFeedback"></div>
         </div>
         <div class="dl-support-messages" id="dlSupportMessages">
@@ -179,7 +179,7 @@ function inject(){
               <textarea class="dl-support-input" id="dlSupportInput" maxlength="2000" placeholder="Escribe tu mensaje…"></textarea>
               <button class="dl-support-send" id="dlSupportSend" aria-label="Enviar"><i class="bi bi-arrow-up"></i></button>
             </div>
-            <div class="dl-support-foot">Soporte privado para clientes Dingloft · Capturas protegidas</div>
+          <div class="dl-support-foot">Soporte privado para cuentas Dingloft · Capturas protegidas</div>
           </div>
         </div>
       </div>

@@ -41,22 +41,22 @@ let active=null, token=0, activeKey='home';
 const sanitizeSrc=(raw)=>{try{
   const u=new URL(raw||'',location.href);
   if(u.origin!==location.origin)return'';
-  let file=u.pathname.split('/').filter(Boolean).pop()||'index.html';
-  if(!/\./.test(file))file+='.html';
-  if(!/^[A-Za-z0-9_.-]+\.html$/i.test(file))return'';
+  let file=u.pathname.split('/').filter(Boolean).pop()||'index';
+  file=file.replace(/\.html$/i,'');
+  if(!/^[A-Za-z0-9_.-]+$/i.test(file))return'';
   u.searchParams.delete('app');u.searchParams.delete('direct');u.searchParams.set('embed','1');
-  return `${file}${u.search}${u.hash}`;
+  return `/${file}${u.search}${u.hash}`;
 }catch(_){return'';}};
 
 function info(route,params={}){
-  if(route==='catalog')return{key:'catalog',src:'ventas.html?embed=1#catalogo'};
-  if(route==='multitrack')return{key:'multitrack',src:'multitrack.html?embed=1'};
-  if(route==='account')return{key:'account',src:'account.html?embed=1'};
+  if(route==='catalog')return{key:'catalog',src:'/ventas?embed=1#catalogo'};
+  if(route==='multitrack')return{key:'multitrack',src:'/multitrack?embed=1'};
+  if(route==='account')return{key:'account',src:'/account?embed=1'};
   if(route==='page'){
     const src=sanitizeSrc(params.src||'');
-    return src?{key:'page',src}:{key:'catalog',src:'ventas.html?embed=1#catalogo'};
+    return src?{key:'page',src}:{key:'catalog',src:'/ventas?embed=1#catalogo'};
   }
-  return{key:'home',src:'ventas.html?embed=1#inicio'};
+  return{key:'home',src:'/ventas?embed=1#inicio'};
 }
 function qRoute(){return new URLSearchParams(location.search).get('route')||'home'}
 function cleanPublicSrc(src=''){
@@ -327,5 +327,5 @@ cartCount();
   const online=document.getElementById('onlineState');
   const paint=()=>{if(!online)return;const span=online.querySelector('span:last-child');if(span)span.textContent=navigator.onLine?'Store online':'Sin conexión';online.style.opacity=navigator.onLine?'1':'.55'};
   addEventListener('online',paint);addEventListener('offline',paint);paint();
-  const vv=visualViewport;if(vv){let base=Math.max(vv.height,innerHeight);const keyboard=()=>{base=Math.max(base,innerHeight);document.body.classList.toggle('keyboard-open',vv.height<base*.72)};vv.addEventListener('resize',keyboard);vv.addEventListener('scroll',keyboard);addEventListener('orientationchange',()=>setTimeout(()=>{base=Math.max(vv.height,innerHeight);keyboard()},250))}
+  const vv=window.visualViewport;if(vv){let base=Math.max(vv.height,innerHeight);const keyboard=()=>{base=Math.max(base,innerHeight);document.body.classList.toggle('keyboard-open',vv.height<base*.72)};vv.addEventListener('resize',keyboard);vv.addEventListener('scroll',keyboard);addEventListener('orientationchange',()=>setTimeout(()=>{base=Math.max(vv.height,innerHeight);keyboard()},250))}
 })();

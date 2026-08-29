@@ -394,7 +394,8 @@
   }
 
   function currentAppFrame(){
-    return document.querySelector('#stage iframe.active') || [...document.querySelectorAll('#stage iframe')].at(-1) || null;
+    const frames=document.querySelectorAll('#stage iframe');
+    return document.querySelector('#stage iframe.active') || frames[frames.length-1] || null;
   }
 
   function openLegacyCart(){

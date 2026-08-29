@@ -24,9 +24,7 @@ service cloud.firestore {
     }
 
     function hasSupportAccess(uid) {
-      return isOwner(uid)
-        && exists(/databases/$(database)/documents/supportEntitlements/$(uid))
-        && get(/databases/$(database)/documents/supportEntitlements/$(uid)).data.get('eligible', false) == true;
+      return isOwner(uid);
     }
 
     function isCommentCollection(name) {
@@ -95,7 +93,8 @@ service cloud.firestore {
     // ============================================================
     // SOPORTE DINGLOFT
     // ============================================================
-    // El Worker crea/revoca este permiso tras comprobar compras reales.
+    // Metadato interno conservado por compatibilidad. El acceso al chat ya depende
+    // de que la cuenta sea propietaria de su UID, no de haber comprado.
     match /supportEntitlements/{uid} {
       allow read: if isOwner(uid);
       allow create, update, delete: if false;

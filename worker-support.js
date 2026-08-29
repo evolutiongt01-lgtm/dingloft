@@ -1,4 +1,4 @@
-/* Dingloft Commerce Worker · v3.7.6 · Independent Support Identities + Safe Historical Reviews Merge + Support Chat + Dual Trial Fix + Safe Checkout + Presence + Account Review + Multitrack Admin */
+/* Dingloft Commerce Worker · v3.7.8 · Authenticated Support + Support Activity Context + Safe Historical Reviews Merge + Safe Checkout + Presence + Account Review + Multitrack Admin */
 
 const DEFAULT_FIREBASE_PROJECT_ID = "login-dingloft";
 const DEFAULT_FIREBASE_WEB_API_KEY = "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA";
@@ -2832,7 +2832,8 @@ async function adminRecoverLegacyPayPalRoute(request, env, origin) {
 
 // ============================================================================
 // DINGLOFT SUPPORT · Firestore realtime + private R2 screenshots · v1.2
-// Customer chat is available only to customers with a non-free paid/manual order.
+// Customer chat is available to every authenticated Dingloft account. A purchase
+// remains optional context and never changes commerce/download entitlements.
 // Firestore handles realtime reads/presence; Worker remains authority for messages,
 // agent identity, R2 files, offline email notifications, support experiences,
 // entitlement and retention cleanup.
@@ -3403,7 +3404,7 @@ function supportPurchaseIsEligible(purchase = {}) {
 async function supportEligibilityForUser(env, user, { sync = true } = {}) {
   const owned = await purchasesForAuthenticatedUser(env, user);
   const eligibleRows = owned.purchases.filter(row => supportPurchaseIsEligible(row.data || {}));
-  const eligible = eligibleRows.length > 0;
+  const eligible = Boolean(user?.uid);
   if (sync) {
     if (eligible) {
       const existing = await adminGetDocument(env, ["supportEntitlements", user.uid], true).catch(() => ({ exists:false, data:{} }));
@@ -3423,8 +3424,6 @@ async function supportEligibilityForUser(env, user, { sync = true } = {}) {
         const changed = current.eligible !== true || clean(current.uid || "", 180) !== user.uid || validEmail(current.email || "") !== validEmail(user.email || "") || Number(current.purchaseCount || 0) !== eligibleRows.length;
         if (changed) await adminPatchDocument(env, ["supportEntitlements", user.uid], payload);
       }
-    } else {
-      await adminDeleteDocument(env, ["supportEntitlements", user.uid]).catch(() => false);
     }
   }
   return { eligible, eligibleRows, repaired: owned.repaired || 0 };
@@ -3466,7 +3465,6 @@ async function supportMeRoute(request, env, origin) {
   try {
     const user = await requireFirebaseUser(request, env);
     const state = await supportEligibilityForUser(env, user, { sync: true });
-    if (!state.eligible) return json(env, { ok:true, eligible:false, contexts:[] }, 200, origin);
     return json(env, {
       ok:true,
       eligible:true,
@@ -3515,7 +3513,7 @@ async function supportMessageRoute(request, env, origin) {
   try {
     const user = await requireFirebaseUser(request, env);
     const state = await supportEligibilityForUser(env, user, { sync:true });
-    if (!state.eligible) throw new Error("SUPPORT_PURCHASE_REQUIRED");
+    if (!state.eligible) throw new Error("AUTH_INVALID");
     const body = await request.json().catch(() => ({}));
     const text = clean(body.text || "", 2000);
     const attachments = normalizeSupportAttachments(body.attachments, user.uid);
@@ -3547,6 +3545,8 @@ async function supportMessageRoute(request, env, origin) {
       lastSenderType:"customer",
       unreadAdmin:Math.max(0, Number(current.unreadAdmin || 0)) + 1,
       unreadCustomer:Math.max(0, Number(current.unreadCustomer || 0)),
+      customerLastSeenAt:current.customerLastSeenAt || null,
+      customerLastPage:clean(current.customerLastPage || "", 500),
       resolvedAt:null,
       deleteAfter:null,
       ...(wasResolved && current.feedbackStatus === "pending" ? {
@@ -3572,7 +3572,7 @@ async function supportMessageRoute(request, env, origin) {
 async function supportReadRoute(request, env, origin) {
   try {
     const user = await requireFirebaseUser(request, env);
-    if (!await supportEntitlementActive(env, user.uid)) throw new Error("SUPPORT_PURCHASE_REQUIRED");
+    if (!await supportEntitlementActive(env, user.uid)) await supportEligibilityForUser(env, user, { sync:true });
     const snap = await adminGetDocument(env, ["supportChats", user.uid], true);
     if (snap.exists) await adminPatchDocument(env, ["supportChats", user.uid], { unreadCustomer:0, customerLastReadAt:new Date() }).catch(() => {});
     return json(env, { ok:true }, 200, origin);
@@ -3583,7 +3583,7 @@ async function supportImageUploadRoute(request, env, origin) {
   try {
     const user = await requireFirebaseUser(request, env);
     const state = await supportEligibilityForUser(env, user, { sync:true });
-    if (!state.eligible) throw new Error("SUPPORT_PURCHASE_REQUIRED");
+    if (!state.eligible) throw new Error("AUTH_INVALID");
     if (!env.DIGITAL_FILES) throw new Error("DIGITAL_FILES_R2_MISSING");
     const type = clean(request.headers.get("content-type") || "", 100).toLowerCase();
     if (!["image/jpeg", "image/png", "image/webp"].includes(type)) throw new Error("SUPPORT_IMAGE_TYPE_INVALID");
@@ -3612,7 +3612,7 @@ async function supportImageReadRoute(request, env, origin, url) {
     const admin = Boolean(user.email && ADMIN_EMAILS.has(user.email));
     if (!admin) {
       if (!key.startsWith(`support/chats/${user.uid}/`)) throw new Error("SUPPORT_ATTACHMENT_FORBIDDEN");
-      if (!await supportEntitlementActive(env, user.uid)) throw new Error("SUPPORT_PURCHASE_REQUIRED");
+      if (!await supportEntitlementActive(env, user.uid)) await supportEligibilityForUser(env, user, { sync:true });
     }
     const object = await env.DIGITAL_FILES.get(key);
     if (!object) return new Response("Not found", { status:404, headers:corsHeaders(env, origin) });
@@ -3797,7 +3797,7 @@ async function supportFeedbackRoute(request, env, origin) {
   try {
     const user = await requireFirebaseUser(request, env);
     const state = await supportEligibilityForUser(env, user, { sync:true });
-    if (!state.eligible) throw new Error("SUPPORT_PURCHASE_REQUIRED");
+    if (!state.eligible) throw new Error("AUTH_INVALID");
     const body = await request.json().catch(() => ({}));
     const rating = Math.round(Number(body.rating || 0));
     const comment = clean(body.comment || "", SUPPORT_EXPERIENCE_MAX_COMMENT);
@@ -3825,7 +3825,7 @@ async function supportFeedbackRoute(request, env, origin) {
       productName:clean(chat.relatedProductName || "", 180),
       agentName:clean(chat.assignedAgentName || chat.resolvedByName || "Equipo Dingloft", 160),
       agentRole:clean(chat.assignedAgentRole || "Soporte técnico", 160),
-      verifiedPurchase:true,
+      verifiedPurchase:state.eligibleRows.length > 0,
       published:true,
       createdAt:now,
       updatedAt:now
@@ -4252,6 +4252,18 @@ async function presenceHeartbeatRoute(request, env, origin) {
         lastPresenceSessionId: sessionId,
         updatedAt: now
       }).catch(() => {});
+      const supportChat = await adminGetDocument(env, ["supportChats", user.uid], true).catch(() => ({ exists:false }));
+      if (supportChat.exists) {
+        await adminPatchDocument(env, ["supportChats", user.uid], {
+          customerLastSeenAt: now,
+          customerLastPage: path,
+          customerLastPageTitle: title,
+          customerPresenceDevice: presence.device,
+          customerPresenceBrowser: presence.browser,
+          customerPresenceOnline: body.visible !== false,
+          customerPresenceUpdatedAt: now
+        }).catch(() => {});
+      }
     }
     return json(env, {
       ok: true,
