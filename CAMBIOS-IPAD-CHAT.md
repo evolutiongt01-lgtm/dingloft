@@ -10,6 +10,7 @@ El shell móvil cargaba páginas `*.html` dentro de un iframe. El Service Worker
 - `dingloft-mobile-chrome.js`: reemplaza `Array.at(-1)` por acceso compatible al último elemento.
 - `account.html` y `dingloft-support-account.js`: el chat se presenta a cualquier cuenta autenticada y la compra queda como contexto opcional.
 - `dingloft-support-admin.js`: muestra estado en línea/última conexión, última página y cuándo el cliente leyó el último mensaje.
+- `dingloft-support-admin.js`: corrige Activar avisos obteniendo y registrando un token de Firebase Messaging, el formato que utiliza el Worker.
 - `firestore.rules`: una cuenta autenticada puede leer su propio chat y escribir únicamente su presencia temporal permitida. No amplía acceso a compras ni a conversaciones ajenas.
 - `sw.js` y `pwa-runtime.js`: versiones incrementadas para entregar el shell corregido y renovar la caché PWA.
 
@@ -23,7 +24,7 @@ Desplegar `worker-support.js` como reemplazo del Worker actual. El cambio:
 - conserva `customerLastReadAt` al abrir/leer el chat;
 - marca una experiencia como compra verificada solo cuando la cuenta realmente tiene una compra elegible.
 
-También hay que publicar `firestore.rules` en Firebase. El Worker usa los mismos bindings y variables existentes; no agrega secretos ni migraciones destructivas.
+También hay que publicar `firestore.rules` en Firebase. El Worker usa los mismos bindings y variables existentes; no agrega secretos ni migraciones destructivas. Para los avisos, `FCM_VAPID_PUBLIC_KEY` debe contener la clave Web Push pública del mismo proyecto Firebase `login-dingloft`.
 
 ## Despliegue recomendado
 

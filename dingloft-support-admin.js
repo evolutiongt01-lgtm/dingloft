@@ -2,12 +2,13 @@
 import { getApps,getApp,initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore,collection,doc,limit,onSnapshot,orderBy,query,serverTimestamp,setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { deleteToken,getMessaging,getToken,isSupported as isMessagingSupported } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
 const firebaseConfig={apiKey:"AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",authDomain:"login-dingloft.firebaseapp.com",projectId:"login-dingloft",storageBucket:"login-dingloft.firebasestorage.app",messagingSenderId:"549466738202",appId:"1:549466738202:web:8bf305fe2c753e9d76cba3",measurementId:"G-R9SGZCDN13"};
 const app=getApps().length?getApp():initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
 const WORKER=String(window.DINGLOFT_WORKER_BASE||"https://autumn-breeze-dfa0.evolutiongt01.workers.dev").replace(/\/$/,"");
 const AGENTS={"tepaz2025@gmail.com":{name:"Tony Bac",role:"Asistente Técnico",avatar:"/img/tony-bac.webp"},"evolutiongt01@gmail.com":{name:"Cesar Matzar",role:"Desarrollador Técnico",avatar:"/img/cesar-matzar.webp"},"matzarcesar01@hotmail.com":{name:"Evolution Group",role:"Dirección y Seguridad",avatar:"/img/evolution-group.webp"}};
 let user=null,agent=null,chats=[],selectedId="",chatsUnsub=null,msgUnsub=null,presenceUnsub=null,lastTyping=0,typingTimer=null,typingIdle=null,imageUrls=new Map();
-let pushRegistration=null,pushSubscription=null,pushConfigured=false,pushBusy=false,pushConfig=null,pushPreparePromise=null,pushMessageBound=false;
+let pushRegistration=null,pushSubscription=null,pushConfigured=false,pushBusy=false,pushConfig=null,pushPreparePromise=null,pushMessageBound=false,pushMessaging=null;
 const PUSH_NATIVE_MARK='dingloft_support_webpush_v108';
 let pendingPushChatId=cleanChatId(new URLSearchParams(location.search).get("supportChat")||"");
 const $=id=>document.getElementById(id),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -40,30 +41,24 @@ async function ensurePushRegistration(){
   if(!pushRegistration.active)throw Error('El servicio de notificaciones no quedó activo.');
   return pushRegistration
 }
-function subscriptionBody(sub){const j=sub?.toJSON?.()||{};return{endpoint:String(j.endpoint||sub?.endpoint||''),expirationTime:j.expirationTime??sub?.expirationTime??null,keys:{p256dh:String(j.keys?.p256dh||''),auth:String(j.keys?.auth||'')}}}
 async function getPreparedPush(){
   if(pushConfig&&pushRegistration?.active)return{cfg:pushConfig,reg:pushRegistration};
   if(pushPreparePromise)return pushPreparePromise;
   pushPreparePromise=(async()=>{
     if(isIOSDevice()&&!isStandaloneApp())throw Object.assign(Error('Abre Dingloft desde el icono instalado en tu pantalla de inicio.'),{code:'IOS_STANDALONE_REQUIRED'});
-    if(!('Notification'in window)||!('serviceWorker'in navigator)||!('PushManager'in window))throw Error('Web Push no está disponible en esta instalación.');
+    if(!('Notification'in window)||!('serviceWorker'in navigator)||!('PushManager'in window)||!await isMessagingSupported())throw Error('Firebase Messaging no está disponible en esta instalación.');
     const [cfg,reg]=await Promise.all([supportPushConfig(),ensurePushRegistration()]);
     if(cfg.enabled!==true||!cfg.vapidKey)throw Error('Web Push todavía no está listo en el servidor.');
-    pushConfigured=true;pushConfig=cfg;return{cfg,reg};
+    pushMessaging=pushMessaging||getMessaging(app);pushConfigured=true;pushConfig=cfg;return{cfg,reg,messaging:pushMessaging};
   })().finally(()=>{pushPreparePromise=null});
   return pushPreparePromise;
 }
 async function syncExistingSubscription(){
-  const{cfg,reg}=await getPreparedPush();
-  let sub=await reg.pushManager.getSubscription();
-  let migrated=false;try{migrated=localStorage.getItem(PUSH_NATIVE_MARK)==='1'}catch(_){}
-  if(sub&&!migrated){try{await sub.unsubscribe()}catch(_){};sub=null}
-
-  if(!sub)return false;
-  const expected=base64UrlBytes(cfg.vapidKey),actual=sub.options?.applicationServerKey?new Uint8Array(sub.options.applicationServerKey):null;
-  if(actual&&!sameBytes(actual,expected)){try{await sub.unsubscribe()}catch(_){};return false}
-  pushSubscription=sub;
-  await api('/admin/support/push/register',{method:'POST',body:{subscription:subscriptionBody(sub),platform:platformLabel(),userAgent:navigator.userAgent||''}});
+  const{cfg,reg,messaging}=await getPreparedPush();
+  const token=await getToken(messaging,{vapidKey:cfg.vapidKey,serviceWorkerRegistration:reg});
+  if(!token)return false;
+  pushSubscription=token;
+  await api('/admin/support/push/register',{method:'POST',body:{token,platform:platformLabel(),userAgent:navigator.userAgent||''}});
   setPushButton('active','Avisos activos','Este dispositivo recibirá alertas de ventas, comentarios, reservas pagadas y soporte. Toca para desactivarlas.');
   return true
 }
@@ -89,13 +84,11 @@ async function registerPushNotifications({ask=false}={}){
     if(permission==='default'&&ask)permission=await Notification.requestPermission();
     if(permission==='denied'){setPushButton('blocked','Avisos bloqueados','Activa Dingloft en Ajustes → Notificaciones.');return}
     if(permission!=='granted'){setPushButton('ready','Activar avisos','Toca para permitir las notificaciones.');return}
-    const{cfg,reg}=await getPreparedPush();
-    const expected=base64UrlBytes(cfg.vapidKey);
-    let sub=await reg.pushManager.getSubscription();
-    if(sub){const actual=sub.options?.applicationServerKey?new Uint8Array(sub.options.applicationServerKey):null;if(actual&&!sameBytes(actual,expected)){try{await sub.unsubscribe()}catch(_){};sub=null}}
-    if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:expected});
-    pushSubscription=sub;
-    await api('/admin/support/push/register',{method:'POST',body:{subscription:subscriptionBody(sub),platform:platformLabel(),userAgent:navigator.userAgent||'',sendTest:true}});
+    const{cfg,reg,messaging}=await getPreparedPush();
+    const token=await getToken(messaging,{vapidKey:cfg.vapidKey,serviceWorkerRegistration:reg});
+    if(!token)throw Error('Firebase no devolvió un token de notificaciones.');
+    pushSubscription=token;
+    await api('/admin/support/push/register',{method:'POST',body:{token,platform:platformLabel(),userAgent:navigator.userAgent||'',sendTest:true}});
     try{localStorage.setItem(PUSH_NATIVE_MARK,'1')}catch(_){}
     setPushButton('active','Avisos activos','Este dispositivo recibirá alertas de ventas, comentarios, reservas pagadas y soporte. Toca para desactivarlas.');
   }catch(e){console.warn('Dingloft Web Push',e);if(e?.code==='IOS_STANDALONE_REQUIRED')setPushButton('blocked','Abre la app instalada',e.message);else{setPushButton('ready','Reintentar avisos',pushFriendlyError(e));alert(pushFriendlyError(e))}}
@@ -103,7 +96,7 @@ async function registerPushNotifications({ask=false}={}){
 }
 async function disablePushNotifications(){
   if(pushBusy)return;pushBusy=true;setPushButton('busy','Desactivando…');
-  try{const reg=pushRegistration||await navigator.serviceWorker.getRegistration('/').catch(()=>null);const sub=pushSubscription||await reg?.pushManager?.getSubscription?.();if(sub){await api('/admin/support/push/unregister',{method:'POST',body:{endpoint:sub.endpoint}}).catch(()=>{});try{await sub.unsubscribe()}catch(_){}}pushSubscription=null;setPushButton('ready','Activar avisos','Las notificaciones están desactivadas en este dispositivo.')}finally{pushBusy=false}
+  try{const token=typeof pushSubscription==='string'?pushSubscription:'';if(token)await api('/admin/support/push/unregister',{method:'POST',body:{token}}).catch(()=>{});if(pushMessaging)try{await deleteToken(pushMessaging)}catch(_){}pushSubscription=null;setPushButton('ready','Activar avisos','Las notificaciones están desactivadas en este dispositivo.')}finally{pushBusy=false}
 }
 async function togglePushNotifications(){if(pushSubscription||$('supportPushBtn')?.dataset.state==='active')return disablePushNotifications();return registerPushNotifications({ask:true})}
 function bindPushMessages(){if(pushMessageBound||!navigator.serviceWorker)return;pushMessageBound=true;navigator.serviceWorker.addEventListener('message',event=>{const msg=event.data||{};if(msg.type!=='DINGLOFT_ADMIN_PUSH'&&msg.type!=='DINGLOFT_SUPPORT_PUSH')return;const data=msg.data||{};if(msg.type==='DINGLOFT_SUPPORT_PUSH'&&data.chatId){pendingPushChatId=cleanChatId(data.chatId);const c=chats.find(x=>x.id===pendingPushChatId);if(c&&document.visibilityState==='visible')openChat(pendingPushChatId);return}if(msg.type==='DINGLOFT_ADMIN_PUSH'&&document.visibilityState==='visible'){try{window.toast?.(`${data.title||'Dingloft'} · ${data.body||'Nueva actividad'}`)}catch(_){}}})}
