@@ -27,8 +27,23 @@ function isStandaloneApp(){return window.matchMedia?.('(display-mode: standalone
 function platformLabel(){const ua=navigator.userAgent||'';if(isIOSDevice())return'iOS';if(/Android/i.test(ua))return'Android';if(/Mac/i.test(ua))return'macOS';if(/Win/i.test(ua))return'Windows';return'Web'}
 function base64UrlBytes(value=''){const s=String(value||'').replace(/-/g,'+').replace(/_/g,'/');const padded=s+'='.repeat((4-s.length%4)%4);const raw=atob(padded);const out=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);return out}
 function sameBytes(a,b){try{const x=a instanceof Uint8Array?a:new Uint8Array(a||0),y=b instanceof Uint8Array?b:new Uint8Array(b||0);if(x.length!==y.length)return false;for(let i=0;i<x.length;i++)if(x[i]!==y[i])return false;return true}catch(_){return false}}
+function validVapidKey(value){try{const bytes=base64UrlBytes(String(value||'').trim());return bytes.length===65&&bytes[0]===4}catch(_){return false}}
+async function firebasePushToken(messaging,reg,vapidKey=''){
+  const key=String(vapidKey||'').trim();
+  const options={serviceWorkerRegistration:reg};
+  if(validVapidKey(key))options.vapidKey=key;
+  try{return await getToken(messaging,options)}catch(error){
+    const raw=pushErrorInfo(error).raw;
+    if(!/InvalidAccess|applicationServerKey|vapid|push-subscribe/i.test(raw))throw error;
+    // A subscription created by an older build/different VAPID key cannot be
+    // reused. Remove it, then let Firebase create a clean registration.
+    const stale=await reg.pushManager?.getSubscription?.().catch(()=>null);
+    if(stale)try{await stale.unsubscribe()}catch(_){}
+    return getToken(messaging,{serviceWorkerRegistration:reg});
+  }
+}
 function pushErrorInfo(error){const code=error?.code??'';const name=String(error?.name||'');const message=String(error?.message||'');return{code,name,message,raw:[name,message,code].filter(v=>String(v).trim()).join(' · ')||String(error||'')}}
-function pushFriendlyError(error){const x=pushErrorInfo(error),raw=x.raw;if(/NotAllowedError|permission|denied|blocked/i.test(raw))return'Las notificaciones están bloqueadas para Dingloft. Actívalas en Ajustes → Notificaciones.';if(/AbortError|abort/i.test(raw))return'iPhone no pudo crear la suscripción Web Push. Cierra Dingloft por completo, vuelve a abrirlo desde su icono y toca Activar avisos otra vez.';if(/InvalidAccess|applicationServerKey|vapid/i.test(raw))return'La clave Web Push no pudo aplicarse. Recarga Dingloft y vuelve a intentarlo.';if(/not supported|unsupported|PushManager/i.test(raw))return'Este navegador no expone Web Push para esta instalación.';return raw||'No se pudieron activar las notificaciones.'}
+function pushFriendlyError(error){const x=pushErrorInfo(error),raw=x.raw;if(/NotAllowedError|permission|denied|blocked/i.test(raw))return'Las notificaciones están bloqueadas para Dingloft. Actívalas en Ajustes → Notificaciones.';if(/AbortError|abort/i.test(raw))return'iPhone no pudo crear la suscripción Web Push. Cierra Dingloft por completo, vuelve a abrirlo desde su icono y toca Activar avisos otra vez.';if(/InvalidAccess|applicationServerKey|vapid/i.test(raw))return`La clave Web Push configurada no es válida. Detalle: ${raw}`;if(/not supported|unsupported|PushManager/i.test(raw))return'Este navegador no expone Web Push para esta instalación.';return raw||'No se pudieron activar las notificaciones.'}
 async function ensurePushRegistration(){
   if(pushRegistration?.active)return pushRegistration;
   pushRegistration=await navigator.serviceWorker.getRegistration('/').catch(()=>null);
@@ -55,7 +70,7 @@ async function getPreparedPush(){
 }
 async function syncExistingSubscription(){
   const{cfg,reg,messaging}=await getPreparedPush();
-  const token=await getToken(messaging,{vapidKey:cfg.vapidKey,serviceWorkerRegistration:reg});
+  const token=await firebasePushToken(messaging,reg,cfg.vapidKey);
   if(!token)return false;
   pushSubscription=token;
   await api('/admin/support/push/register',{method:'POST',body:{token,platform:platformLabel(),userAgent:navigator.userAgent||''}});
@@ -85,7 +100,7 @@ async function registerPushNotifications({ask=false}={}){
     if(permission==='denied'){setPushButton('blocked','Avisos bloqueados','Activa Dingloft en Ajustes → Notificaciones.');return}
     if(permission!=='granted'){setPushButton('ready','Activar avisos','Toca para permitir las notificaciones.');return}
     const{cfg,reg,messaging}=await getPreparedPush();
-    const token=await getToken(messaging,{vapidKey:cfg.vapidKey,serviceWorkerRegistration:reg});
+    const token=await firebasePushToken(messaging,reg,cfg.vapidKey);
     if(!token)throw Error('Firebase no devolvió un token de notificaciones.');
     pushSubscription=token;
     await api('/admin/support/push/register',{method:'POST',body:{token,platform:platformLabel(),userAgent:navigator.userAgent||'',sendTest:true}});
