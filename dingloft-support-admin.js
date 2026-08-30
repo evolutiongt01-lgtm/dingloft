@@ -30,8 +30,8 @@ function sameBytes(a,b){try{const x=a instanceof Uint8Array?a:new Uint8Array(a||
 function validVapidKey(value){try{const bytes=base64UrlBytes(String(value||'').trim());return bytes.length===65&&bytes[0]===4}catch(_){return false}}
 async function firebasePushToken(messaging,reg,vapidKey=''){
   const key=String(vapidKey||'').trim();
-  const options={serviceWorkerRegistration:reg};
-  if(validVapidKey(key))options.vapidKey=key;
+  if(!validVapidKey(key))throw Error('FCM_VAPID_PUBLIC_KEY_INVALID');
+  const options={serviceWorkerRegistration:reg,vapidKey:key};
   try{return await getToken(messaging,options)}catch(error){
     const raw=pushErrorInfo(error).raw;
     if(!/InvalidAccess|applicationServerKey|vapid|push-subscribe/i.test(raw))throw error;
@@ -39,11 +39,11 @@ async function firebasePushToken(messaging,reg,vapidKey=''){
     // reused. Remove it, then let Firebase create a clean registration.
     const stale=await reg.pushManager?.getSubscription?.().catch(()=>null);
     if(stale)try{await stale.unsubscribe()}catch(_){}
-    return getToken(messaging,{serviceWorkerRegistration:reg});
+    return getToken(messaging,options);
   }
 }
 function pushErrorInfo(error){const code=error?.code??'';const name=String(error?.name||'');const message=String(error?.message||'');return{code,name,message,raw:[name,message,code].filter(v=>String(v).trim()).join(' · ')||String(error||'')}}
-function pushFriendlyError(error){const x=pushErrorInfo(error),raw=x.raw;if(/NotAllowedError|permission|denied|blocked/i.test(raw))return'Las notificaciones están bloqueadas para Dingloft. Actívalas en Ajustes → Notificaciones.';if(/AbortError|abort/i.test(raw))return'iPhone no pudo crear la suscripción Web Push. Cierra Dingloft por completo, vuelve a abrirlo desde su icono y toca Activar avisos otra vez.';if(/InvalidAccess|applicationServerKey|vapid/i.test(raw))return`La clave Web Push configurada no es válida. Detalle: ${raw}`;if(/not supported|unsupported|PushManager/i.test(raw))return'Este navegador no expone Web Push para esta instalación.';return raw||'No se pudieron activar las notificaciones.'}
+function pushFriendlyError(error){const x=pushErrorInfo(error),raw=x.raw;if(/FCM_VAPID_PUBLIC_KEY_INVALID/i.test(raw))return'Configuración pendiente: FCM_VAPID_PUBLIC_KEY no contiene la clave pública Web Push válida de Firebase.';if(/NotAllowedError|permission|denied|blocked/i.test(raw))return'Las notificaciones están bloqueadas para Dingloft. Actívalas en Ajustes → Notificaciones.';if(/AbortError|abort/i.test(raw))return'iPhone no pudo crear la suscripción Web Push. Cierra Dingloft por completo, vuelve a abrirlo desde su icono y toca Activar avisos otra vez.';if(/InvalidAccess|applicationServerKey|vapid/i.test(raw))return`La suscripción anterior usa otra clave Web Push. Se intentó renovarla. Detalle: ${raw}`;if(/not supported|unsupported|PushManager/i.test(raw))return'Este navegador no expone Web Push para esta instalación.';return raw||'No se pudieron activar las notificaciones.'}
 async function ensurePushRegistration(){
   if(pushRegistration?.active)return pushRegistration;
   pushRegistration=await navigator.serviceWorker.getRegistration('/').catch(()=>null);
@@ -64,6 +64,7 @@ async function getPreparedPush(){
     if(!('Notification'in window)||!('serviceWorker'in navigator)||!('PushManager'in window)||!await isMessagingSupported())throw Error('Firebase Messaging no está disponible en esta instalación.');
     const [cfg,reg]=await Promise.all([supportPushConfig(),ensurePushRegistration()]);
     if(cfg.enabled!==true||!cfg.vapidKey)throw Error('Web Push todavía no está listo en el servidor.');
+    if(!validVapidKey(cfg.vapidKey))throw Error('FCM_VAPID_PUBLIC_KEY_INVALID');
     pushMessaging=pushMessaging||getMessaging(app);pushConfigured=true;pushConfig=cfg;return{cfg,reg,messaging:pushMessaging};
   })().finally(()=>{pushPreparePromise=null});
   return pushPreparePromise;
