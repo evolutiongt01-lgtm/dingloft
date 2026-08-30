@@ -58,7 +58,7 @@ async function ensurePushRegistration(){
   return pushRegistration
 }
 async function getPreparedPush(){
-  if(pushConfig&&pushRegistration?.active)return{cfg:pushConfig,reg:pushRegistration};
+  if(pushConfig&&pushRegistration?.active&&pushMessaging)return{cfg:pushConfig,reg:pushRegistration,messaging:pushMessaging};
   if(pushPreparePromise)return pushPreparePromise;
   pushPreparePromise=(async()=>{
     if(isIOSDevice()&&!isStandaloneApp())throw Object.assign(Error('Abre Dingloft desde el icono instalado en tu pantalla de inicio.'),{code:'IOS_STANDALONE_REQUIRED'});
