@@ -5,6 +5,7 @@ import { getFirestore,collection,doc,limit,onSnapshot,orderBy,query,serverTimest
 import { deleteToken,getMessaging,getToken,isSupported as isMessagingSupported } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
 const firebaseConfig={apiKey:"AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",authDomain:"login-dingloft.firebaseapp.com",projectId:"login-dingloft",storageBucket:"login-dingloft.firebasestorage.app",messagingSenderId:"549466738202",appId:"1:549466738202:web:8bf305fe2c753e9d76cba3",measurementId:"G-R9SGZCDN13"};
 const app=getApps().length?getApp():initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const pushApp=getApps().find(x=>x.name==='dingloft-push')||initializeApp(firebaseConfig,'dingloft-push');
 const WORKER=String(window.DINGLOFT_WORKER_BASE||"https://autumn-breeze-dfa0.evolutiongt01.workers.dev").replace(/\/$/,"");
 const AGENTS={"tepaz2025@gmail.com":{name:"Tony Bac",role:"Asistente Técnico",avatar:"/img/tony-bac.webp"},"evolutiongt01@gmail.com":{name:"Cesar Matzar",role:"Desarrollador Técnico",avatar:"/img/cesar-matzar.webp"},"matzarcesar01@hotmail.com":{name:"Evolution Group",role:"Dirección y Seguridad",avatar:"/img/evolution-group.webp"}};
 let user=null,agent=null,chats=[],selectedId="",chatsUnsub=null,msgUnsub=null,presenceUnsub=null,lastTyping=0,typingTimer=null,typingIdle=null,imageUrls=new Map();
@@ -65,7 +66,7 @@ async function getPreparedPush(){
     const [cfg,reg]=await Promise.all([supportPushConfig(),ensurePushRegistration()]);
     if(cfg.enabled!==true||!cfg.vapidKey)throw Error('Web Push todavía no está listo en el servidor.');
     if(!validVapidKey(cfg.vapidKey))throw Error('FCM_VAPID_PUBLIC_KEY_INVALID');
-    pushMessaging=pushMessaging||getMessaging(app);pushConfigured=true;pushConfig=cfg;return{cfg,reg,messaging:pushMessaging};
+    pushMessaging=pushMessaging||getMessaging(pushApp);if(!pushMessaging)throw Error('FIREBASE_MESSAGING_INIT_FAILED');pushConfigured=true;pushConfig=cfg;return{cfg,reg,messaging:pushMessaging};
   })().finally(()=>{pushPreparePromise=null});
   return pushPreparePromise;
 }
