@@ -211,6 +211,7 @@ async function secureQuote() {
 function successAndGo(orderNumber = "") {
   if (typeof window.clearCart === "function") window.clearCart();
   try { localStorage.removeItem("dingloft_cart"); } catch (_) {}
+  try { window.dispatchEvent(new CustomEvent('dingloft:cart-sync',{detail:{cart:[],source:'checkout-success'}})); } catch (_) {}
   const suffix = orderNumber ? ` (${orderNumber})` : "";
   showMessage(`Compra confirmada${suffix}. Tus archivos ya están en Mi cuenta.`, "success");
   navigateInternal(`account.html?purchase=success${orderNumber ? `&order=${encodeURIComponent(orderNumber)}` : ""}`);
@@ -386,4 +387,3 @@ document.addEventListener("click", (event) => {
     }
   } catch (_) {}
 }, true);
-

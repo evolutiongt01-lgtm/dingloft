@@ -109,6 +109,11 @@
     script.dataset.dingloftPresence='55';
     document.head.appendChild(script);
   }
+  function loadCustomerPush(){
+    if(/^\/(?:admin|admin\.html)(?:\/|$)/i.test(location.pathname))return;
+    if(document.querySelector('script[data-dingloft-customer-push]'))return;
+    const script=document.createElement('script');script.type='module';script.src='/dingloft-customer-push.js?v=1';script.dataset.dingloftCustomerPush='1';document.head.appendChild(script);
+  }
 
   // v71: mobile header/nav are loaded directly by each customer page from
   // /dingloft-mobile-nav-v71.js. UI Guard no longer creates, positions or bootstraps navigation.
@@ -118,8 +123,8 @@
   // Start the isolated overlay immediately so legacy page navbars never get a chance to take control.
   if (document.readyState === 'loading') {
     loadMobileChrome();
-    document.addEventListener('DOMContentLoaded', () => { markInstalled(); loadPresence(); }, {once:true});
-  } else { markInstalled(); loadPresence(); loadMobileChrome(); }
+    document.addEventListener('DOMContentLoaded', () => { markInstalled(); loadPresence(); loadCustomerPush(); }, {once:true});
+  } else { markInstalled(); loadPresence(); loadCustomerPush(); loadMobileChrome(); }
   addEventListener('appinstalled', () => { localStorage.setItem('dingloft_installed_at', String(Date.now())); markInstalled(); });
   matchMedia('(display-mode: standalone)').addEventListener?.('change', markInstalled);
 })();

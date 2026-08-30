@@ -1,4 +1,4 @@
-const VERSION = '112';
+const VERSION = '113';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -52,8 +52,9 @@ const CORE = [
   '/desktop-global-nav.js',
   '/dingloft-theme.js?v=2',
   '/dingloft-theme.css?v=2',
-  '/dingloft-ui-guard.js?v=55',
+  '/dingloft-ui-guard.js?v=56',
   '/dingloft-presence.js?v=55',
+  '/dingloft-customer-push.js?v=1',
   '/mobile-shell-redirect.js',
   '/mobile-shell-redirect.js?v=94',
   '/pwa-install.js',
@@ -233,12 +234,13 @@ self.addEventListener('push',event=>{
   const body=data.body||notification.body||'Nueva actividad en Dingloft.';
   const chatId=String(data.chatId||'');
   const eventId=String(data.eventId||data.purchaseId||data.reviewId||data.reservationId||chatId||'new');
-  const fallback=kind==='dingloft_sale'?'/admin#orders':kind==='dingloft_review'?'/admin#reviews':kind==='dingloft_reservation_paid'?'/admin#reservations':'/admin#support';
+  const customer=kind==='dingloft_cart'||kind==='dingloft_customer'||kind==='dingloft_customer_support';
+  const fallback=customer?'/account?cart=1':kind==='dingloft_sale'?'/admin#orders':kind==='dingloft_review'?'/admin#reviews':kind==='dingloft_reservation_paid'?'/admin#reservations':'/admin#support';
   const url=data.url||fallback;
   event.waitUntil((async()=>{
     await self.registration.showNotification(title,{
       body,
-      icon:'/img/favicon.png',
+      icon:'/img/pwa-liquid-rounded-192-v17.png',
       badge:'/img/favicon.png',
       tag:`${kind}-${eventId}`.slice(0,180),
       renotify:true,
@@ -264,7 +266,7 @@ self.addEventListener('notificationclick',event=>{
     for(const client of windows){
       try{
         const current=new URL(client.url);
-        if(current.origin===self.location.origin&&/\/admin(?:\.html)?$/i.test(current.pathname)){
+        if(current.origin===self.location.origin&&(kind==='dingloft_cart'||kind==='dingloft_customer'||kind==='dingloft_customer_support'||/\/admin(?:\.html)?$/i.test(current.pathname))){
           await client.focus();
           if('navigate'in client)await client.navigate(target);
           return;

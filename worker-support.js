@@ -1,4 +1,4 @@
-/* Dingloft Commerce Worker · v3.7.8 · Authenticated Support + Support Activity Context + Safe Historical Reviews Merge + Safe Checkout + Presence + Account Review + Multitrack Admin */
+/* Dingloft Commerce Worker · v3.8.0 · Customer Push + Abandoned Cart + Authenticated Support + Safe Checkout + Presence */
 
 const DEFAULT_FIREBASE_PROJECT_ID = "login-dingloft";
 const DEFAULT_FIREBASE_WEB_API_KEY = "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA";
@@ -3162,6 +3162,58 @@ async function adminSupportPushUnregisterRoute(request, env, origin) {
   } catch (error) { return commerceError(env, error, origin); }
 }
 
+// --------------------------------------------------------------------------
+// CUSTOMER PUSH · explicit opt-in + abandoned-cart reminders
+// --------------------------------------------------------------------------
+async function customerPushConfigRoute(request, env, origin) {
+  try {
+    await requireFirebaseUser(request, env);
+    const cfg=supportPushPublicConfig(env);
+    if(!cfg.enabled) throw new Error("FCM_VAPID_MISSING");
+    return json(env,{ok:true,vapidKey:cfg.vapidKey},200,origin);
+  } catch(error){ return commerceError(env,error,origin); }
+}
+
+async function customerPushRegisterRoute(request, env, origin) {
+  try {
+    const user=await requireFirebaseUser(request,env),body=await request.json().catch(()=>({}));
+    const token=clean(body.token||"",5000);if(token.length<40)throw new Error("SUPPORT_PUSH_TOKEN_REQUIRED");
+    const tokenId=await supportPushTokenId(token),now=new Date();
+    await adminSetDocument(env,["customerPushTokens",tokenId],{token,tokenId,uid:user.uid,email:user.email||"",enabled:true,marketingConsent:true,platform:clean(body.platform||"web",80),userAgent:clean(body.userAgent||"",500),createdAt:now,updatedAt:now,lastRegisteredAt:now});
+    return json(env,{ok:true,tokenId},200,origin);
+  } catch(error){return commerceError(env,error,origin);}
+}
+
+function customerCartItems(raw){return(Array.isArray(raw)?raw:[]).slice(0,30).map(x=>({sku:clean(x?.sku||"",180),name:clean(x?.name||"Producto Dingloft",180)||"Producto Dingloft",quantity:Math.max(1,Math.min(99,Number(x?.quantity||1))),priceUsd:moneyNumber(x?.priceUsd||0)})).filter(x=>x.sku||x.name);}
+async function customerCartRoute(request,env,origin){
+  try{
+    const user=await requireFirebaseUser(request,env),body=await request.json().catch(()=>({})),items=customerCartItems(body.items),now=new Date();
+    const snap=await adminGetDocument(env,["customerCarts",user.uid],true).catch(()=>({exists:false,data:{}})),prev=snap.exists?(snap.data||{}):{};
+    const signature=clean(JSON.stringify(items.map(x=>[x.sku,x.quantity,x.priceUsd])),4000);
+    const changed=signature!==clean(prev.signature||"",4000);
+    const data={uid:user.uid,email:user.email||"",items,signature,active:items.length>0,lastPath:clean(body.path||"",500),lastActivityAt:changed||!items.length?now:(prev.lastActivityAt||now),updatedAt:now,...(changed?{reminderCount:0,lastReminderAt:null}:{reminderCount:Math.max(0,Number(prev.reminderCount||0)),lastReminderAt:prev.lastReminderAt||null})};
+    if(!snap.exists)data.createdAt=now;await adminSetDocument(env,["customerCarts",user.uid],data);
+    return json(env,{ok:true,active:data.active,count:items.length},200,origin);
+  }catch(error){return commerceError(env,error,origin);}
+}
+
+async function sendCustomerPush(env,row,payload){
+  const token=clean(row?.data?.token||"",5000);if(!token)return false;
+  const accessToken=await googleFirestoreAccessToken(env),projectId=firebaseProjectId(env);
+  const response=await fetch(`https://fcm.googleapis.com/v1/projects/${encodeURIComponent(projectId)}/messages:send`,{method:"POST",headers:{Authorization:`Bearer ${accessToken}`,"content-type":"application/json"},body:JSON.stringify({message:{token,data:{kind:"dingloft_cart",title:clean(payload.title,120),body:clean(payload.body,240),url:"https://www.dingloft.com/account?cart=1",eventId:clean(payload.eventId,180)},webpush:{headers:{Urgency:"normal",TTL:"86400"},fcm_options:{link:"https://www.dingloft.com/account?cart=1"}}}})});
+  if(response.ok)return true;const data=await response.json().catch(()=>({})),stale=response.status===404||/UNREGISTERED|not valid/i.test(clean(data?.error?.message||"",500));if(stale)await adminDeleteDocument(env,["customerPushTokens",row.id]).catch(()=>false);return false;
+}
+
+async function processAbandonedCarts(env){
+  const carts=await adminRunQuery(env,{from:[{collectionId:"customerCarts"}],where:{fieldFilter:{field:{fieldPath:"active"},op:"EQUAL",value:{booleanValue:true}}},limit:500}).catch(()=>[]),now=Date.now();let sent=0;
+  for(const row of carts){const c=row.data||{},age=now-(Date.parse(c.lastActivityAt||c.updatedAt||0)||now),count=Math.max(0,Number(c.reminderCount||0));if((count===0&&age<2*3600000)||(count===1&&age<24*3600000)||count>=2)continue;
+    const tokens=(await adminRunQuery(env,{from:[{collectionId:"customerPushTokens"}],where:{fieldFilter:{field:{fieldPath:"uid"},op:"EQUAL",value:{stringValue:clean(c.uid||row.id,180)}}},limit:8}).catch(()=>[])).filter(token=>token?.data?.enabled!==false);if(!tokens.length)continue;
+    const cartItems=customerCartItems(c.items),item=cartItems[0],more=Math.max(0,cartItems.length-1),title=count===0?"Tu carrito sigue esperándote":"¿Aún te interesa tu carrito?",body=item?`${item.name}${more?` y ${more} producto${more===1?"":"s"} más`:""} siguen guardados en Dingloft.`:"Tus productos siguen guardados en Dingloft.";
+    let delivered=false;for(const token of tokens)delivered=(await sendCustomerPush(env,token,{title,body,eventId:`cart-${row.id}-${count+1}`}))||delivered;
+    if(delivered){sent++;await adminPatchDocument(env,["customerCarts",row.id],{reminderCount:count+1,lastReminderAt:new Date(),updatedAt:new Date()}).catch(()=>{});}
+  }return{sent};
+}
+
 async function supportActivePushTokens(env) {
   return adminRunQuery(env, {
     from:[{ collectionId:"supportPushTokens" }],
@@ -4417,6 +4469,9 @@ export default {
     if (url.pathname === "/support/image" && request.method === "GET") return supportImageReadRoute(request, env, origin, url);
     if (url.pathname === "/support/feedback" && request.method === "POST") return supportFeedbackRoute(request, env, origin);
     if (url.pathname === "/support/experiences" && request.method === "GET") return supportExperiencesRoute(request, env, origin);
+    if (url.pathname === "/push/customer/config" && request.method === "POST") return customerPushConfigRoute(request, env, origin);
+    if (url.pathname === "/push/customer/register" && request.method === "POST") return customerPushRegisterRoute(request, env, origin);
+    if (url.pathname === "/push/customer/cart" && request.method === "POST") return customerCartRoute(request, env, origin);
     if (url.pathname === "/download" && request.method === "GET") return downloadRoute(request, env);
     if (url.pathname === "/webhooks/paypal" && request.method === "POST") return paypalWebhookRoute(request, env);
     if (url.pathname === "/admin/reviews" && request.method === "GET") return adminReviewsRoute(request, env, origin, url);
@@ -4453,6 +4508,9 @@ export default {
     return json(env, { ok: false, error: "Not found" }, 404, origin);
   },
   async scheduled(controller, env, ctx) {
-    ctx.waitUntil(cleanupExpiredSupportChats(env, 120).catch(error => console.error("Support cleanup", error?.message || error)));
+    ctx.waitUntil(Promise.all([
+      cleanupExpiredSupportChats(env,120).catch(error=>console.error("Support cleanup",error?.message||error)),
+      processAbandonedCarts(env).catch(error=>console.error("Cart reminders",error?.message||error))
+    ]));
   }
 };
