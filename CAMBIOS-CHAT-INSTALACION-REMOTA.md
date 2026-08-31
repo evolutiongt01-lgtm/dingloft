@@ -3,6 +3,8 @@
 ## Funciones nuevas
 
 - El panel de Soporte conserva el envío de mensajes directos en tiempo real.
+- `Nuevo mensaje` permite buscar cualquier cliente registrado e iniciar la conversación desde Administración.
+- Si el cliente está desconectado, Zoho le envía un correo con acceso directo al chat.
 - Cada conversación permite agendar una instalación remota con fecha, hora, servicio y herramienta sugerida.
 - La sesión también se registra en la colección `reservas`, enlazada al chat.
 - El cliente ve una cuenta regresiva dentro del chat.

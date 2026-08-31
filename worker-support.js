@@ -1,4 +1,4 @@
-/* Dingloft Commerce Worker · v3.10.0 · Owner-managed Staff + Remote Session Billing + Miami Scheduling */
+/* Dingloft Commerce Worker · v3.10.1 · Proactive Customer Messaging + Staff + Miami Sessions */
 
 const DEFAULT_FIREBASE_PROJECT_ID = "login-dingloft";
 const DEFAULT_FIREBASE_WEB_API_KEY = "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA";
@@ -3926,6 +3926,23 @@ async function adminSupportMessageRoute(request, env, origin) {
   } catch (error) { return commerceError(env, error, origin); }
 }
 
+async function adminSupportStartRoute(request, env, origin) {
+  try {
+    const admin=await requireFirebaseAdmin(request,env),agent=supportAgentFor(admin),body=await request.json().catch(()=>({}));
+    const uid=clean(body.uid||"",180),text=clean(body.text||"",2000);if(!uid||!text)throw new Error("SUPPORT_MESSAGE_EMPTY");
+    const userSnap=await adminGetDocument(env,["users",uid],true);if(!userSnap.exists)throw new Error("CUSTOMER_ACCOUNT_NOT_FOUND");
+    const customer=userSnap.data||{},email=validEmail(customer.email||""),name=clean(customer.displayName||(email?email.split("@")[0]:"Cliente Dingloft"),160)||"Cliente Dingloft";
+    const chatPath=["supportChats",uid],chatSnap=await adminGetDocument(env,chatPath,true).catch(()=>({exists:false,data:{}})),current=chatSnap.data||{},now=new Date();
+    const messageId=`msg_${Date.now()}_${crypto.randomUUID().replace(/-/g,"").slice(0,14)}`;
+    await adminSetDocument(env,["supportChats",uid,"messages",messageId],{chatId:uid,senderType:"admin",senderName:agent.name,senderRole:agent.role,senderAvatar:agent.avatar||"",text,attachments:[],createdAt:now});
+    const patch={customerUid:uid,customerEmail:email,customerName:name,status:"in_attention",assignedAgentName:agent.name,assignedAgentRole:agent.role,assignedAgentAvatar:agent.avatar||"",assignedAt:now,updatedAt:now,lastMessageAt:now,lastMessage:text,lastSenderType:"admin",unreadCustomer:Math.max(0,Number(current.unreadCustomer||0))+1,unreadAdmin:0,resolvedAt:null,deleteAfter:null};
+    if(chatSnap.exists)await adminPatchDocument(env,chatPath,patch);else await adminSetDocument(env,chatPath,{...patch,createdAt:now});
+    const presence=await supportCustomerOnlineState(env,uid),mail=presence.online?{status:"customer-online",messageId:""}:await sendSupportReplyNotificationSafely(env,{...current,...patch},agent,text);
+    await adminPatchDocument(env,chatPath,{lastOfflineReplyEmailAt:now,lastOfflineReplyEmailStatus:mail.status,lastOfflineReplyEmailMessageId:mail.messageId||""}).catch(()=>{});
+    return json(env,{ok:true,chatId:uid,messageId,emailNotification:{status:mail.status,sent:mail.status==="sent"}},200,origin);
+  }catch(error){return commerceError(env,error,origin)}
+}
+
 async function adminSupportClaimRoute(request, env, origin) {
   try {
     const admin = await requireFirebaseAdmin(request, env);
@@ -4608,7 +4625,7 @@ async function healthRoute(env, origin) {
   return json(env, {
     ok: true,
     service: "Dingloft Commerce Worker",
-    version: "3.10.0",
+    version: "3.10.1",
     firebaseProjectId: firebaseProjectId(env),
     firebaseAdminConfigured,
     paypalConfigured: Boolean(env.PAYPAL_CLIENT_ID && env.PAYPAL_CLIENT_SECRET),
@@ -4695,6 +4712,7 @@ export default {
     if (url.pathname === "/admin/support/push/register" && request.method === "POST") return adminSupportPushRegisterRoute(request, env, origin);
     if (url.pathname === "/admin/support/push/unregister" && request.method === "POST") return adminSupportPushUnregisterRoute(request, env, origin);
     if (url.pathname === "/admin/support/message" && request.method === "POST") return adminSupportMessageRoute(request, env, origin);
+    if (url.pathname === "/admin/support/start" && request.method === "POST") return adminSupportStartRoute(request, env, origin);
     if (url.pathname === "/admin/support/remote-session" && request.method === "POST") return adminSupportRemoteSessionRoute(request, env, origin);
     if (url.pathname === "/admin/support/claim" && request.method === "POST") return adminSupportClaimRoute(request, env, origin);
     if (url.pathname === "/admin/support/read" && request.method === "POST") return adminSupportReadRoute(request, env, origin);
