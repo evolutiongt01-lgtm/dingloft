@@ -15,7 +15,12 @@ service cloud.firestore {
       return signedIn() && (
         authEmail() == 'evolutiongt01@gmail.com' ||
         authEmail() == 'tepaz2025@gmail.com' ||
-        authEmail() == 'matzarcesar01@hotmail.com'
+        authEmail() == 'matzarcesar01@hotmail.com' ||
+        (
+          exists(/databases/$(database)/documents/supportStaff/$(request.auth.uid)) &&
+          get(/databases/$(database)/documents/supportStaff/$(request.auth.uid)).data.active == true &&
+          get(/databases/$(database)/documents/supportStaff/$(request.auth.uid)).data.email == authEmail()
+        )
       );
     }
 
@@ -44,8 +49,15 @@ service cloud.firestore {
     }
 
     // Administración conserva el panel existente.
-    match /{document=**} {
-      allow read, write: if isAdmin();
+    match /{collection}/{document} {
+      allow read, write: if isAdmin() && collection != 'supportStaff';
+    }
+
+    // El equipo puede consultar perfiles para asignar reservas. Solo el Worker,
+    // después de verificar al propietario, puede crear o modificar empleados.
+    match /supportStaff/{uid} {
+      allow read: if isAdmin();
+      allow create, update, delete: if false;
     }
 
     // Perfil del cliente. Los campos de compra NO pueden falsificarse desde navegador.
@@ -103,28 +115,30 @@ service cloud.firestore {
     // El cliente puede LEER únicamente su propia conversación.
     // Los mensajes y metadatos permanentes se escriben solo desde el Worker.
     match /supportChats/{uid} {
-      allow read: if hasSupportAccess(uid);
+      allow read: if hasSupportAccess(uid) || isAdmin();
       allow create, update, delete: if false;
 
       match /messages/{messageId} {
-        allow read: if hasSupportAccess(uid);
-        allow create, update, delete: if false;
+        allow read: if hasSupportAccess(uid) || isAdmin();
+        allow create, update, delete: if isAdmin();
       }
 
       // Única escritura directa del cliente: su estado temporal de escritura.
       // El borrador se limita a 500 caracteres y el timestamp debe ser del servidor.
       match /presence/{presenceId} {
-        allow read: if hasSupportAccess(uid);
+        allow read: if hasSupportAccess(uid) || isAdmin();
 
-        allow create, update: if hasSupportAccess(uid)
+        allow create, update: if isAdmin() || (
+          hasSupportAccess(uid)
           && presenceId == 'customer'
           && request.resource.data.keys().hasOnly(['typing', 'draft', 'updatedAt'])
           && request.resource.data.get('typing', false) is bool
           && request.resource.data.get('draft', '') is string
           && request.resource.data.get('draft', '').size() <= 500
-          && request.resource.data.get('updatedAt', null) == request.time;
+          && request.resource.data.get('updatedAt', null) == request.time
+        );
 
-        allow delete: if hasSupportAccess(uid) && presenceId == 'customer';
+        allow delete: if (hasSupportAccess(uid) && presenceId == 'customer') || isAdmin();
       }
     }
 

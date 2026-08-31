@@ -419,14 +419,14 @@ function renderReservations(){$('reservationsList').innerHTML=reservations.lengt
 $('refreshAll').onclick=async()=>{toast('Actualizando…');try{await loadAll();toast(Object.keys(loadErrors).length?'Panel actualizado con avisos':'Panel actualizado')}catch(e){toast(e.message||'No se pudo actualizar')}};$('logout').onclick=()=>signOut(auth);onAuthStateChanged(auth,async u=>{
   if(!u){location.href='login.html';return}
   const email=String(u.email||'').toLowerCase();
-  if(!ADMIN.has(email)){location.href='account.html';return}
-  $('adminEmail').textContent=email;$('adminName').textContent=email==='tepaz2025@gmail.com'?'Antonio · Admin':'César · Admin';
+  let adminSession;try{adminSession=await api('/admin/session')}catch(_){location.href='account.html';return}
+  $('adminEmail').textContent=email;$('adminName').textContent=adminSession?.profile?.name||u.displayName||'Equipo Dingloft';
   hideAdminIntro();
   // Nunca bloquear el panel por limpiezas/tareas secundarias.
   loadAll().catch(e=>{console.error('Admin loadAll',e);renderSyncHealth();toast(e?.message||'No se pudo sincronizar el panel')});
   purgeResolvedJuniorReviews().catch(()=>{});
   const h=location.hash.replace('#','');if(h&&$(`view-${h}`))showView(h);
 });blankProduct();
-</script><script type="module" src="dingloft-support-admin.js?v=28"></script>
+</script><script type="module" src="dingloft-staff-admin.js?v=1"></script><script type="module" src="dingloft-support-admin.js?v=30"></script>
 <script src="dingloft-ui-guard.js?v=56"></script>
 </body></html>

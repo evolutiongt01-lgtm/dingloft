@@ -1534,10 +1534,11 @@ html,body{
         document.documentElement.classList.remove('account-auth-pending');
         document.documentElement.classList.add('account-auth-ready');
         let isAdmin = false;
-        if (['evolutiongt01@gmail.com','tepaz2025@gmail.com','matzarcesar01@hotmail.com'].includes((user.email || '').toLowerCase())) {
+        try {
+          await commerceApi(user, '/admin/session');
           document.getElementById('btn-admin').style.display = 'flex';
           isAdmin = true;
-        }
+        } catch (_) {}
 
         let displayName = user.displayName || (user.email ? user.email.split('@')[0] : 'Cliente Dingloft');
         let firstName = displayName.split(' ')[0] || 'Cliente';
@@ -2031,7 +2032,7 @@ html,body{
       try { await signOut(auth); window.location.replace('login.html?loggedout=1'); } catch (error) { console.error(error); }
     });
   </script>
-<script type="module" src="dingloft-support-account.js?v=19"></script>
+<script type="module" src="dingloft-support-account.js?v=21"></script>
 <script src="dingloft-ui-guard.js?v=56"></script>
 </body>
 </html>

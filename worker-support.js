@@ -1,8 +1,9 @@
-/* Dingloft Commerce Worker · v3.8.0 · Customer Push + Abandoned Cart + Authenticated Support + Safe Checkout + Presence */
+/* Dingloft Commerce Worker · v3.10.0 · Owner-managed Staff + Remote Session Billing + Miami Scheduling */
 
 const DEFAULT_FIREBASE_PROJECT_ID = "login-dingloft";
 const DEFAULT_FIREBASE_WEB_API_KEY = "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA";
 const ADMIN_EMAILS = new Set(["evolutiongt01@gmail.com", "tepaz2025@gmail.com", "matzarcesar01@hotmail.com"]);
+const OWNER_EMAIL = "evolutiongt01@gmail.com";
 
 const DEFAULT_ALLOWED_ORIGINS = [
   "https://dingloft.com",
@@ -176,7 +177,21 @@ async function requireFirebaseUser(request, env) {
 
 async function requireFirebaseAdmin(request, env) {
   const user = await lookupFirebaseUser(request, env);
-  if (!user.email || !ADMIN_EMAILS.has(user.email)) throw new Error("ADMIN_ONLY");
+  if (user.email && ADMIN_EMAILS.has(user.email)) {
+    user.staffProfile = { name:user.displayName || user.email.split("@")[0], role:user.email === OWNER_EMAIL ? "Propietario" : "Administrador", photoURL:"", active:true, owner:user.email === OWNER_EMAIL };
+    return user;
+  }
+  const staff = await adminGetDocument(env, ["supportStaff", user.uid], true).catch(() => ({ exists:false, data:{} }));
+  const profile = staff.exists ? (staff.data || {}) : {};
+  if (profile.active !== true || validEmail(profile.email || "") !== user.email) throw new Error("ADMIN_ONLY");
+  user.staffProfile = { name:clean(profile.name || user.displayName || user.email.split("@")[0],160), role:clean(profile.role || "Empleado",120), photoURL:safeUrl(profile.photoURL || ""), active:true, owner:false };
+  return user;
+}
+
+async function requireFirebaseOwner(request, env) {
+  const user = await lookupFirebaseUser(request, env);
+  if (user.email !== OWNER_EMAIL) throw new Error("OWNER_ONLY");
+  user.staffProfile = { name:user.displayName || "Cesar Matzar", role:"Propietario", photoURL:"", active:true, owner:true };
   return user;
 }
 
@@ -3087,7 +3102,11 @@ async function ensureLegacySupportExperiences(env) {
 
 function supportAgentFor(user) {
   const email = validEmail(user?.email || "");
-  const agent = SUPPORT_AGENTS[email];
+  const agent = user?.staffProfile?.active === true ? {
+    name:clean(user.staffProfile.name || user.displayName || email.split("@")[0],160),
+    role:clean(user.staffProfile.role || "Empleado",120),
+    avatar:safeUrl(user.staffProfile.photoURL || "")
+  } : SUPPORT_AGENTS[email];
   if (!agent) throw new Error("ADMIN_ONLY");
   return { ...agent };
 }
@@ -3661,7 +3680,8 @@ async function supportImageReadRoute(request, env, origin, url) {
     const user = await requireFirebaseUser(request, env);
     const key = clean(url.searchParams.get("key") || "", 900);
     if (!key.startsWith("support/chats/")) throw new Error("SUPPORT_ATTACHMENT_INVALID");
-    const admin = Boolean(user.email && ADMIN_EMAILS.has(user.email));
+    const staffSnap = !ADMIN_EMAILS.has(user.email||"") ? await adminGetDocument(env,["supportStaff",user.uid],true).catch(()=>({exists:false,data:{}})) : null;
+    const admin = Boolean(user.email && (ADMIN_EMAILS.has(user.email) || (staffSnap?.exists && staffSnap.data?.active===true && validEmail(staffSnap.data?.email||"")===user.email)));
     if (!admin) {
       if (!key.startsWith(`support/chats/${user.uid}/`)) throw new Error("SUPPORT_ATTACHMENT_FORBIDDEN");
       if (!await supportEntitlementActive(env, user.uid)) await supportEligibilityForUser(env, user, { sync:true });
@@ -3673,6 +3693,168 @@ async function supportImageReadRoute(request, env, origin, url) {
     headers.set("cache-control", "private, no-store");
     headers.set("content-disposition", "inline");
     return new Response(object.body, { status:200, headers });
+  } catch (error) { return commerceError(env, error, origin); }
+}
+
+async function adminSessionRoute(request, env, origin) {
+  try { const user=await requireFirebaseAdmin(request,env); return json(env,{ok:true,owner:user.email===OWNER_EMAIL,email:user.email,profile:user.staffProfile||{}},200,origin); }
+  catch(error){ return commerceError(env,error,origin); }
+}
+
+async function adminStaffListRoute(request, env, origin) {
+  try {
+    await requireFirebaseAdmin(request,env);
+    const rows=await adminRunQuery(env,{from:[{collectionId:"supportStaff"}],limit:200}).catch(()=>[]);
+    const staff=rows.map(row=>({uid:row.id,...row.data}));
+    for(const email of ADMIN_EMAILS){if(!staff.some(x=>validEmail(x.email||"")===email))staff.push({uid:`legacy_${slugify(email)}`,email,name:SUPPORT_AGENTS[email]?.name||email.split("@")[0],role:email===OWNER_EMAIL?"Propietario":SUPPORT_AGENTS[email]?.role||"Administrador",photoURL:SUPPORT_AGENTS[email]?.avatar||"",active:true,owner:email===OWNER_EMAIL,legacy:true})}
+    return json(env,{ok:true,staff:staff.sort((a,b)=>Number(b.owner)-Number(a.owner)||String(a.name||"").localeCompare(String(b.name||"")))},200,origin);
+  } catch(error){return commerceError(env,error,origin)}
+}
+
+async function adminStaffCreateRoute(request, env, origin) {
+  try {
+    const owner=await requireFirebaseOwner(request,env),body=await request.json().catch(()=>({}));
+    const email=validEmail(body.email||""),password=String(body.password||""),name=clean(body.name||"",160),role=clean(body.role||"Empleado",120),photoURL=safeUrl(body.photoURL||"");
+    if(!email||!name||password.length<8||password.length>128)throw new Error("STAFF_INVALID");
+    if(ADMIN_EMAILS.has(email))throw new Error("STAFF_ALREADY_ADMIN");
+    const response=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${encodeURIComponent(firebaseWebApiKey(env))}`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email,password,displayName:name,returnSecureToken:false})});
+    const result=await response.json().catch(()=>({}));if(!response.ok||!result.localId)throw new Error(result?.error?.message==="EMAIL_EXISTS"?"STAFF_EMAIL_EXISTS":"STAFF_CREATE_FAILED");
+    const now=new Date(),profile={uid:result.localId,email,name,role,photoURL,active:true,owner:false,createdAt:now,createdBy:owner.email,updatedAt:now};
+    await adminSetDocument(env,["supportStaff",result.localId],profile);
+    return json(env,{ok:true,staff:profile},200,origin);
+  }catch(error){return commerceError(env,error,origin)}
+}
+
+async function adminStaffUpdateRoute(request, env, origin) {
+  try {
+    const owner=await requireFirebaseOwner(request,env),body=await request.json().catch(()=>({})),uid=clean(body.uid||"",180);
+    if(!uid||uid.startsWith("legacy_"))throw new Error("STAFF_INVALID");
+    const snap=await adminGetDocument(env,["supportStaff",uid],true);if(!snap.exists)throw new Error("STAFF_NOT_FOUND");
+    const patch={name:clean(body.name||snap.data?.name||"",160),role:clean(body.role||snap.data?.role||"Empleado",120),photoURL:safeUrl(body.photoURL??snap.data?.photoURL??""),active:body.active!==false,updatedAt:new Date(),updatedBy:owner.email};
+    await adminPatchDocument(env,["supportStaff",uid],patch);return json(env,{ok:true},200,origin);
+  }catch(error){return commerceError(env,error,origin)}
+}
+
+function normalizeRemoteTool(value) {
+  const tool = clean(value || "", 40).toLowerCase();
+  if (!tool) return "";
+  if (!["anydesk", "google_remote"].includes(tool)) throw new Error("REMOTE_SESSION_TOOL_INVALID");
+  return tool;
+}
+
+function remoteSessionPublicShape(raw = {}) {
+  return {
+    id:clean(raw.id || "", 180), reservationId:clean(raw.reservationId || raw.id || "", 180), status:clean(raw.status || "scheduled", 40),
+    startsAt:raw.startsAt || null, serviceLabel:clean(raw.serviceLabel || "Instalación remota", 180),
+    preferredTool:normalizeRemoteTool(raw.preferredTool || ""), accessCode:clean(raw.accessCode || "", 120),
+    amountUsd:moneyNumber(raw.amountUsd||0),paymentMethod:clean(raw.paymentMethod||"courtesy",40),paymentMethodLabel:clean(raw.paymentMethodLabel||"Gratis / cortesía",100),paymentStatus:clean(raw.paymentStatus||"pending",40),
+    assignedStaffName:clean(raw.assignedStaffName||"Equipo Dingloft",160),assignedStaffRole:clean(raw.assignedStaffRole||"Soporte",120),timeZone:"America/New_York",
+    createdByName:clean(raw.createdByName || "Soporte Dingloft", 160), updatedAt:raw.updatedAt || null
+  };
+}
+
+async function supportRemoteSessionRoute(request, env, origin) {
+  try {
+    const user = await requireFirebaseUser(request, env);
+    const body = await request.json().catch(() => ({}));
+    const chatSnap = await adminGetDocument(env, ["supportChats", user.uid], true);
+    if (!chatSnap.exists) throw new Error("SUPPORT_CHAT_NOT_FOUND");
+    const current = chatSnap.data || {};
+    const rawSession = current.remoteSession || {};
+    const session = remoteSessionPublicShape(rawSession);
+    if (!session.id || !["scheduled", "ready", "active"].includes(session.status)) throw new Error("REMOTE_SESSION_NOT_ACTIVE");
+    const preferredTool = normalizeRemoteTool(body.preferredTool || session.preferredTool);
+    const accessCode = clean(body.accessCode || "", 120);
+    if (!preferredTool) throw new Error("REMOTE_SESSION_TOOL_REQUIRED");
+    if (accessCode && !/^[A-Za-z0-9\-\s]{4,120}$/.test(accessCode)) throw new Error("REMOTE_SESSION_CODE_INVALID");
+    const now = new Date();
+    const next = { ...rawSession, preferredTool, accessCode, status:accessCode ? "ready" : "scheduled", updatedAt:now };
+    await adminPatchDocument(env, ["supportChats", user.uid], { remoteSession:next, updatedAt:now });
+    if (next.reservationId) await adminPatchDocument(env, ["reservas", next.reservationId], {
+      metodoRemoto:preferredTool, codigoAcceso:accessCode, estado:accessCode ? "listo" : "pendiente", updatedAt:now
+    }).catch(() => {});
+    return json(env, { ok:true, remoteSession:remoteSessionPublicShape(next) }, 200, origin);
+  } catch (error) { return commerceError(env, error, origin); }
+}
+
+async function resolveAssignedStaff(env, body = {}, fallbackAdmin = {}) {
+  const uid=clean(body.assignedStaffUid||"",180),email=validEmail(body.assignedStaffEmail||fallbackAdmin.email||"");
+  if(uid&&!uid.startsWith("legacy_")){
+    const snap=await adminGetDocument(env,["supportStaff",uid],true).catch(()=>({exists:false,data:{}})),p=snap.data||{};
+    if(snap.exists&&p.active===true)return{uid,email:validEmail(p.email||""),name:clean(p.name||"Empleado",160),role:clean(p.role||"Empleado",120),photoURL:safeUrl(p.photoURL||"")};
+  }
+  if(email&&ADMIN_EMAILS.has(email)){const a=SUPPORT_AGENTS[email]||{};return{uid:"",email,name:clean(a.name||email.split("@")[0],160),role:email===OWNER_EMAIL?"Propietario":clean(a.role||"Administrador",120),photoURL:safeUrl(a.avatar||"")}}
+  throw new Error("REMOTE_SESSION_STAFF_INVALID");
+}
+
+async function sendRemoteAssignmentMail(env, session = {}, chat = {}) {
+  const email=validEmail(session.assignedStaffEmail||"");if(!email)return{status:"skipped"};
+  try{const start=new Date(session.startsAt),when=start.toLocaleString("es-US",{timeZone:"America/New_York",dateStyle:"full",timeStyle:"short"});const content=buildDingloftDarkMail({badge:"Nueva asignación",micro:"Dingloft · Instalación remota",microText:"Tienes una nueva sesión asignada.",title1:"Tienes una",title2:"sesión programada.",greeting:`Hola <strong>${htmlEscape(session.assignedStaffName||"Equipo")}</strong>,`,message:`Se te asignó una instalación remota con <strong>${htmlEscape(chat.customerName||"Cliente Dingloft")}</strong>.`,details:[["Fecha y hora",`${when} · Miami`],["Servicio",session.serviceLabel],["Importe",session.amountUsd>0?`$${moneyText(session.amountUsd)} USD`:"Cortesía · $0"],["Método",session.paymentMethodLabel]],cta:"Abrir panel",ctaUrl:"https://www.dingloft.com/admin.html?supportChat="+encodeURIComponent(chat.customerUid||"")+"#support",noticeTitle:"Asignación interna",noticeText:"Entra al chat para ver el código temporal cuando el cliente lo comparta."});return await sendZohoHtmlMail(env,{toAddress:email,subject:`Nueva instalación remota · ${when} (Miami)`,content})}catch(error){console.error("remote assignment email",error?.message||error);return{status:"failed"}}
+}
+
+async function adminSupportRemoteSessionRoute(request, env, origin) {
+  try {
+    const admin = await requireFirebaseAdmin(request, env);
+    const agent = supportAgentFor(admin);
+    const body = await request.json().catch(() => ({}));
+    const chatId = clean(body.chatId || "", 180);
+    const action = clean(body.action || "schedule", 40).toLowerCase();
+    if (!chatId || !["schedule", "complete", "cancel"].includes(action)) throw new Error("REMOTE_SESSION_INVALID");
+    const chatSnap = await adminGetDocument(env, ["supportChats", chatId], true);
+    if (!chatSnap.exists) throw new Error("SUPPORT_CHAT_NOT_FOUND");
+    const current = chatSnap.data || {};
+    const now = new Date();
+    let session;
+    if (action === "schedule") {
+      const startsAt = new Date(body.startsAt || "");
+      if (Number.isNaN(startsAt.getTime()) || startsAt.getTime() < now.getTime() - 5 * 60 * 1000 || startsAt.getTime() > now.getTime() + 180 * 24 * 60 * 60 * 1000) throw new Error("REMOTE_SESSION_DATE_INVALID");
+      const amountUsd=moneyNumber(body.amountUsd||0),method=clean(body.paymentMethod||"courtesy",40).toLowerCase();
+      if(amountUsd<0||amountUsd>10000||!["courtesy","paypal","bank_transfer","cash","other"].includes(method))throw new Error("REMOTE_SESSION_PAYMENT_INVALID");
+      const paymentMethod=amountUsd===0?"courtesy":method;if(amountUsd>0&&paymentMethod==="courtesy")throw new Error("REMOTE_SESSION_PAYMENT_REQUIRED");
+      const paymentLabels={courtesy:"Gratis / cortesía",paypal:"PayPal",bank_transfer:"Transferencia bancaria",cash:"Efectivo",other:"Otro método"};
+      const assigned=await resolveAssignedStaff(env,body,admin);
+      const sessionId = `remote_${Date.now()}_${crypto.randomUUID().replace(/-/g, "").slice(0, 10)}`;
+      session = {
+        id:sessionId, reservationId:sessionId,
+        status:"scheduled", startsAt, serviceLabel:clean(body.serviceLabel || "Instalación remota", 180) || "Instalación remota",
+        preferredTool:normalizeRemoteTool(body.preferredTool || ""), accessCode:"",
+        timeZone:"America/New_York",amountUsd,paymentMethod,paymentMethodLabel:paymentLabels[paymentMethod],paymentStatus:amountUsd===0?"paid":"pending",
+        assignedStaffUid:assigned.uid,assignedStaffEmail:assigned.email,assignedStaffName:assigned.name,assignedStaffRole:assigned.role,assignedStaffPhotoURL:assigned.photoURL,
+        createdByName:agent.name, createdByRole:agent.role, createdAt:now, updatedAt:now
+      };
+    } else {
+      const existing = remoteSessionPublicShape(current.remoteSession || {});
+      if (!existing.id) throw new Error("REMOTE_SESSION_NOT_FOUND");
+      session = { ...(current.remoteSession || {}), status:action === "complete" ? "completed" : "cancelled", updatedAt:now, closedByName:agent.name, closedAt:now };
+    }
+    if (action === "schedule") {
+      const starts = new Date(session.startsAt);
+      await adminSetDocument(env, ["reservas", session.reservationId], {
+        uid:chatId, email:clean(current.customerEmail || "", 240), nombre:clean(current.customerName || "Cliente Dingloft", 160),
+        software:session.serviceLabel, fecha:starts.toLocaleDateString("es-US", { timeZone:"America/New_York" }),
+        hora:starts.toLocaleTimeString("es-US", { timeZone:"America/New_York", hour:"2-digit", minute:"2-digit" }),zonaHoraria:"America/New_York",
+        precio:session.amountUsd,metodoPago:session.paymentMethod,estadoPago:session.paymentStatus,empleadoUid:session.assignedStaffUid,empleadoEmail:session.assignedStaffEmail,empleadoNombre:session.assignedStaffName,
+        startsAt:session.startsAt, estado:"pendiente", metodoRemoto:session.preferredTool, codigoAcceso:"",
+        source:"support_chat", supportChatId:chatId, remoteSessionId:session.id, createdAt:now, updatedAt:now
+      });
+      session.assignmentEmail=(await sendRemoteAssignmentMail(env,session,{...current,customerUid:chatId})).status;
+    } else if (session.reservationId) {
+      await adminPatchDocument(env, ["reservas", session.reservationId], {
+        estado:action === "complete" ? "completado" : "cancelado", updatedAt:now
+      }).catch(() => {});
+    }
+    const label = action === "schedule" ? `Sesión remota programada: ${session.serviceLabel}` : action === "complete" ? "Sesión remota completada" : "Sesión remota cancelada";
+    const messageId = `evt_${Date.now()}_${crypto.randomUUID().replace(/-/g, "").slice(0, 12)}`;
+    await adminSetDocument(env, ["supportChats", chatId, "messages", messageId], {
+      chatId, senderType:"admin", senderName:agent.name, senderRole:agent.role, senderAvatar:agent.avatar || "", text:label,
+      eventType:"remote_session", remoteSession:session, attachments:[], createdAt:now
+    });
+    await adminPatchDocument(env, ["supportChats", chatId], {
+      remoteSession:session, status:action === "schedule" ? "in_attention" : clean(current.status || "in_attention", 40),
+      assignedAgentName:session.assignedStaffName || agent.name, assignedAgentRole:session.assignedStaffRole || agent.role, assignedAgentAvatar:session.assignedStaffPhotoURL || agent.avatar || "", updatedAt:now,
+      lastMessageAt:now, lastMessage:label, lastSenderType:"admin", unreadCustomer:Math.max(0, Number(current.unreadCustomer || 0)) + 1
+    });
+    return json(env, { ok:true, remoteSession:session }, 200, origin);
   } catch (error) { return commerceError(env, error, origin); }
 }
 
@@ -3694,6 +3876,7 @@ async function adminSupportMessageRoute(request, env, origin) {
       senderType:"admin",
       senderName:agent.name,
       senderRole:agent.role,
+      senderAvatar:agent.avatar || "",
       text,
       attachments:[],
       createdAt:now
@@ -3702,6 +3885,7 @@ async function adminSupportMessageRoute(request, env, origin) {
       status:"in_attention",
       assignedAgentName:agent.name,
       assignedAgentRole:agent.role,
+      assignedAgentAvatar:agent.avatar || "",
       assignedAt:now,
       updatedAt:now,
       lastMessageAt:now,
@@ -3755,6 +3939,7 @@ async function adminSupportClaimRoute(request, env, origin) {
     await adminPatchDocument(env, ["supportChats", chatId], {
       assignedAgentName:agent.name,
       assignedAgentRole:agent.role,
+      assignedAgentAvatar:agent.avatar || "",
       assignedAt:new Date(),
       status:status === "resolved" ? "resolved" : "in_attention"
     });
@@ -4070,6 +4255,14 @@ function publicError(error) {
     AUTH_MISSING: "Debes iniciar sesión antes de pagar.",
     AUTH_INVALID: "Tu sesión no es válida. Inicia sesión nuevamente.",
     ADMIN_ONLY: "Solo Administración puede realizar esta acción.",
+    OWNER_ONLY: "Solo el propietario puede administrar empleados.",
+    STAFF_INVALID: "Completa nombre, correo y una contraseña temporal de al menos 8 caracteres.",
+    STAFF_EMAIL_EXISTS: "Ya existe una cuenta con ese correo.",
+    STAFF_CREATE_FAILED: "Firebase no pudo crear la cuenta del empleado.",
+    STAFF_NOT_FOUND: "No encontramos ese empleado.",
+    REMOTE_SESSION_STAFF_INVALID: "Selecciona un empleado activo para esta sesión.",
+    REMOTE_SESSION_PAYMENT_INVALID: "El monto o el método de pago no es válido.",
+    REMOTE_SESSION_PAYMENT_REQUIRED: "Selecciona un método de pago para este monto.",
     ACCOUNT_REVIEW: "Tu cuenta se encuentra temporalmente en revisión.",
     ADMIN_BLOCK_FORBIDDEN: "No puedes bloquear una cuenta administrativa.",
     CART_INVALID: "El carrito está vacío o no es válido.",
@@ -4131,7 +4324,7 @@ function commerceError(env, error, origin) {
   console.error("Dingloft commerce", code, error?.productName || "");
   let status = 400;
   if (["AUTH_MISSING", "AUTH_INVALID"].includes(code)) status = 401;
-  if (code === "ADMIN_ONLY") status = 403;
+  if (["ADMIN_ONLY","OWNER_ONLY"].includes(code)) status = 403;
   if (code === "ACCOUNT_REVIEW") status = 423;
   if (code === "ADMIN_BLOCK_FORBIDDEN") status = 403;
   if (["SUPPORT_PURCHASE_REQUIRED", "SUPPORT_ATTACHMENT_FORBIDDEN"].includes(code)) status = 403;
@@ -4228,7 +4421,8 @@ async function presenceHeartbeatRoute(request, env, origin) {
 
     const geoNow = presenceGeo(request);
     const geo = presenceGeoUseful(geoNow) ? geoNow : (prev.geo && typeof prev.geo === "object" ? prev.geo : geoNow);
-    const isAdminNow = Boolean(user?.email && ADMIN_EMAILS.has(user.email));
+    let isAdminNow = Boolean(user?.email && ADMIN_EMAILS.has(user.email));
+    if(user?.uid&&!isAdminNow){const staff=await adminGetDocument(env,["supportStaff",user.uid],true).catch(()=>({exists:false,data:{}}));isAdminNow=staff.exists&&staff.data?.active===true&&validEmail(staff.data?.email||"")===user.email}
     const authenticated = Boolean(user?.uid) || prev.authenticated === true;
     const isAdmin = isAdminNow || prev.isAdmin === true;
     const uid = user?.uid || clean(prev.uid || "", 180);
@@ -4414,7 +4608,7 @@ async function healthRoute(env, origin) {
   return json(env, {
     ok: true,
     service: "Dingloft Commerce Worker",
-    version: "3.7.0",
+    version: "3.10.0",
     firebaseProjectId: firebaseProjectId(env),
     firebaseAdminConfigured,
     paypalConfigured: Boolean(env.PAYPAL_CLIENT_ID && env.PAYPAL_CLIENT_SECRET),
@@ -4465,6 +4659,7 @@ export default {
     if (url.pathname === "/support/me" && request.method === "GET") return supportMeRoute(request, env, origin);
     if (url.pathname === "/support/message" && request.method === "POST") return supportMessageRoute(request, env, origin);
     if (url.pathname === "/support/read" && request.method === "POST") return supportReadRoute(request, env, origin);
+    if (url.pathname === "/support/remote-session" && request.method === "POST") return supportRemoteSessionRoute(request, env, origin);
     if (url.pathname === "/support/image" && request.method === "POST") return supportImageUploadRoute(request, env, origin);
     if (url.pathname === "/support/image" && request.method === "GET") return supportImageReadRoute(request, env, origin, url);
     if (url.pathname === "/support/feedback" && request.method === "POST") return supportFeedbackRoute(request, env, origin);
@@ -4475,6 +4670,10 @@ export default {
     if (url.pathname === "/download" && request.method === "GET") return downloadRoute(request, env);
     if (url.pathname === "/webhooks/paypal" && request.method === "POST") return paypalWebhookRoute(request, env);
     if (url.pathname === "/admin/reviews" && request.method === "GET") return adminReviewsRoute(request, env, origin, url);
+    if (url.pathname === "/admin/session" && request.method === "GET") return adminSessionRoute(request, env, origin);
+    if (url.pathname === "/admin/staff" && request.method === "GET") return adminStaffListRoute(request, env, origin);
+    if (url.pathname === "/admin/staff/create" && request.method === "POST") return adminStaffCreateRoute(request, env, origin);
+    if (url.pathname === "/admin/staff/update" && request.method === "POST") return adminStaffUpdateRoute(request, env, origin);
     if (url.pathname === "/admin/reviews/delete" && request.method === "POST") return adminDeleteReviewRoute(request, env, origin);
     if (url.pathname === "/admin/reviews/purge-user" && request.method === "POST") return adminPurgeReviewsByUserRoute(request, env, origin);
     if (url.pathname === "/admin/orders" && request.method === "GET") return adminOrdersRoute(request, env, origin, url);
@@ -4496,6 +4695,7 @@ export default {
     if (url.pathname === "/admin/support/push/register" && request.method === "POST") return adminSupportPushRegisterRoute(request, env, origin);
     if (url.pathname === "/admin/support/push/unregister" && request.method === "POST") return adminSupportPushUnregisterRoute(request, env, origin);
     if (url.pathname === "/admin/support/message" && request.method === "POST") return adminSupportMessageRoute(request, env, origin);
+    if (url.pathname === "/admin/support/remote-session" && request.method === "POST") return adminSupportRemoteSessionRoute(request, env, origin);
     if (url.pathname === "/admin/support/claim" && request.method === "POST") return adminSupportClaimRoute(request, env, origin);
     if (url.pathname === "/admin/support/read" && request.method === "POST") return adminSupportReadRoute(request, env, origin);
     if (url.pathname === "/admin/support/status" && request.method === "POST") return adminSupportStatusRoute(request, env, origin);

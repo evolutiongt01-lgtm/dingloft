@@ -15,7 +15,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   const authContainerGlobal = document.getElementById('auth-container-global');
   const sideMenuLinks = document.querySelector('.side-menu-drawer .d-flex.flex-column');
 
@@ -40,8 +40,10 @@ onAuthStateChanged(auth, (user) => {
       `;
     }
 
-    // VALIDACIÓN ESTRICTA: Si es César o Antonio, inyectar el botón de Modo Admin automáticamente en el menú lateral
-    if (user.email === 'evolutiongt01@gmail.com' || user.email === 'tepaz2025@gmail.com') {
+    // El Worker valida propietarios, administradores históricos y empleados activos.
+    let adminAllowed=false;
+    try{const token=await user.getIdToken(false),r=await fetch('https://autumn-breeze-dfa0.evolutiongt01.workers.dev/admin/session',{headers:{Authorization:`Bearer ${token}`},cache:'no-store'});adminAllowed=r.ok}catch(_){}
+    if (adminAllowed) {
       if (sideMenuLinks && !document.getElementById('admin-sidebar-link')) {
         const adminLinkHTML = `
           <a href="admin.html" id="admin-sidebar-link" class="side-menu-link" style="background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.3); margin-top: 5px;">
