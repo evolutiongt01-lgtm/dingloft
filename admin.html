@@ -85,6 +85,62 @@ body.admin-ready .view.active{animation:viewEnter .38s cubic-bezier(.2,.75,.25,1
 #backHome{border-color:rgba(52,214,255,.22);background:linear-gradient(145deg,rgba(52,214,255,.08),rgba(255,255,255,.025));transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
 #backHome:hover{transform:translateY(-1px);border-color:rgba(52,214,255,.45);box-shadow:0 8px 24px rgba(52,214,255,.08)}
 </style>
+<style id="support-mobile-v2">
+@media(max-width:900px){
+  html,body{max-width:100%;overflow-x:hidden}
+  #view-support,.support-layout,.support-list-panel,.support-chat-panel{width:100%;max-width:100%;min-width:0}
+  #view-support .head{gap:12px;margin-bottom:14px}
+  .support-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+  .support-list-panel,.support-chat-panel{border-radius:14px;overflow:hidden}
+  .support-conversations{max-height:285px}
+  .support-conversation{grid-template-columns:40px minmax(0,1fr) auto;padding:11px 10px;gap:9px}
+  .support-chat-head{display:grid!important;grid-template-columns:minmax(0,1fr)!important;align-items:start!important;justify-content:stretch!important;width:100%;min-width:0;min-height:0;padding:12px;gap:11px;overflow:hidden}
+  .support-customer-head{width:100%;min-width:0;align-items:flex-start}
+  .support-customer-head>div{min-width:0;max-width:100%}
+  .support-customer-head b{font-size:12px;line-height:1.3;white-space:normal;overflow-wrap:anywhere}
+  .support-customer-head small{overflow-wrap:anywhere}
+  .support-avatar.big{width:40px;height:40px;flex:0 0 40px}
+  .support-meta{width:100%;gap:5px}
+  .support-meta span{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+  .support-head-actions{width:100%;min-width:0;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start;flex-wrap:wrap;gap:7px}
+  .support-head-actions>div{display:flex;gap:7px;flex-wrap:wrap}
+  .support-assigned-agent{max-width:100%}
+  .support-remote-admin{width:100%!important;max-width:100%!important;min-width:0!important;flex:none!important;margin:0!important;padding:10px!important;overflow:hidden}
+  .support-remote-title{width:100%;min-width:0;align-items:flex-start;flex-wrap:wrap}
+  .support-remote-title b{min-width:0;overflow-wrap:anywhere}
+  .support-remote-admin>small{display:block;white-space:normal;overflow-wrap:anywhere;line-height:1.45;margin-top:5px}
+  .support-remote-payment{max-width:100%;overflow-wrap:anywhere}
+  .support-remote-code{width:100%;min-width:0;display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:stretch!important}
+  .support-remote-code code{display:block;width:100%;min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;overflow:hidden}
+  .support-remote-actions{width:100%;display:grid!important;grid-template-columns:1fr 1fr;gap:7px}
+  .support-remote-actions .btn{min-width:0;justify-content:center;white-space:normal;text-align:center}
+  .support-remote-form{width:100%;min-width:0;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+  .support-remote-form>*{width:100%;max-width:100%;min-width:0}
+  .support-remote-form button{grid-column:1/-1!important;justify-content:center}
+  .support-messages{width:100%;min-width:0;box-sizing:border-box;padding:13px 10px;min-height:360px;max-height:62dvh;overflow-x:hidden}
+  .support-admin-msg{max-width:92%;min-width:0}
+  .support-admin-msg-row,.support-admin-msg-body{min-width:0;max-width:100%}
+  .support-admin-bubble{font-size:10.5px;overflow-wrap:anywhere}
+  .support-compose{width:100%;min-width:0;box-sizing:border-box}
+  .support-reply-row{grid-template-columns:minmax(0,1fr) 42px}
+}
+@media(max-width:520px){
+  .content{padding:12px!important}
+  #view-support .head h1{font-size:25px}
+  .support-head-tools{display:grid;grid-template-columns:1fr 1fr;width:100%}
+  .support-head-tools .btn{width:100%;min-width:0;padding:9px 7px;font-size:10px}
+  .support-summary{gap:5px}
+  .support-summary div{padding:8px 7px}
+  .support-list-head{padding:9px}
+  .support-remote-form{grid-template-columns:minmax(0,1fr)!important}
+  .support-remote-form button{grid-column:1!important}
+  .support-remote-code{grid-template-columns:minmax(0,1fr)!important}
+  .support-remote-code .btn{width:100%;justify-content:center}
+  .support-remote-actions{grid-template-columns:minmax(0,1fr)!important}
+  .support-admin-msg{max-width:96%}
+  .support-agent-avatar{width:27px;height:27px;flex-basis:27px}
+}
+</style>
 </head><body><div class="admin-intro" id="adminIntro" aria-hidden="true"><div class="admin-intro-card"><div class="admin-intro-logo"><img src="/img/pwa-liquid-rounded-192-v17.png" alt=""></div><div class="admin-intro-title">DINGLOFT</div><div class="admin-intro-sub">ADMIN CONTROL CENTER</div><div class="admin-intro-loader"></div><div class="admin-intro-status"><span class="admin-intro-dot"></span>Sincronizando panel seguro</div></div></div>
 <div class="app"><aside class="side"><a class="brand" href="index.html"><b>D</b>ingloft</a><div class="label">COMERCIO</div><nav class="nav">
 <button class="active" data-view="dashboard"><i class="bi bi-grid"></i><span>Resumen</span></button><button data-view="orders"><i class="bi bi-receipt"></i><span>Pedidos</span></button><button data-view="products"><i class="bi bi-box-seam"></i><span>Productos</span></button><button data-view="multitracks"><i class="bi bi-music-note-list"></i><span>Multitracks</span></button><button data-view="customers"><i class="bi bi-people"></i><span>Clientes</span></button><button data-view="ghosts"><i class="bi bi-incognito"></i><span>Fantasmas</span></button><button data-view="reviews"><i class="bi bi-chat-square-text"></i><span>Reseñas</span></button><button data-view="finance"><i class="bi bi-graph-up"></i><span>Finanzas</span></button><div class="label">OPERACIÓN</div><button data-view="reservations"><i class="bi bi-headset"></i><span>Reservas</span></button><button data-view="support"><i class="bi bi-chat-dots"></i><span>Soporte</span></button></nav><div class="profile"><strong id="adminName">Administrador</strong><small id="adminEmail">...</small><button class="logout" id="logout"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</button></div></aside>
