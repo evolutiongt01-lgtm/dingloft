@@ -121,7 +121,7 @@
     if (!document.querySelector('link[data-dingloft-support-icons],link[href*="bootstrap-icons"]')) {
       const icons=document.createElement('link');icons.rel='stylesheet';icons.href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css';icons.dataset.dingloftSupportIcons='1';document.head.appendChild(icons);
     }
-    const script=document.createElement('script');script.type='module';script.src='/dingloft-support-account.js?v=24';script.dataset.dingloftGlobalSupport='24';document.head.appendChild(script);
+    const script=document.createElement('script');script.type='module';script.src='/dingloft-support-account.js?v=25';script.dataset.dingloftGlobalSupport='25';document.head.appendChild(script);
   }
 
   // v71: mobile header/nav are loaded directly by each customer page from

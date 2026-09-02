@@ -1,4 +1,4 @@
-/* Dingloft Persistent Mobile Shell v97 (served through the v71 filename for compatibility)
+/* Dingloft Persistent Mobile Shell v99 (served through the v71 filename for compatibility)
    Header + search + bottom nav remain mounted while only the content frame changes.
    The independent mobile cart is loaded once and also remains mounted. Desktop stays on its persistent desktop shell. */
 (() => {
@@ -196,7 +196,7 @@
     document.getElementById(id)?.remove();
     const host = document.createElement('div');
     host.id = id;
-    host.setAttribute('data-dingloft-mobile-nav','71-liquid-v98');
+    host.setAttribute('data-dingloft-mobile-nav','71-liquid-v99');
     host.style.setProperty('position','fixed','important');
     host.style.setProperty('z-index', where === 'header' ? '2147483646' : '2147483647','important');
     host.style.setProperty('margin','0','important');
@@ -447,7 +447,8 @@
   }
 
   function syncCartFocusChrome(){
-    const focused = document.documentElement.classList.contains('dl-mobile-cart-focus') || document.body?.classList.contains('dl-mobile-cart-focus') || document.documentElement.classList.contains('dl-cart-stage-lock') || document.body?.classList.contains('dl-cart-stage-open');
+    const supportFocused = document.documentElement.classList.contains('dl-support-open') || document.body?.classList.contains('dl-support-open');
+    const focused = supportFocused || document.documentElement.classList.contains('dl-mobile-cart-focus') || document.body?.classList.contains('dl-mobile-cart-focus') || document.documentElement.classList.contains('dl-cart-stage-lock') || document.body?.classList.contains('dl-cart-stage-open');
     if (headerHost) {
       headerHost.style.setProperty('transform', focused ? 'translate3d(0,-125%,0)' : 'translate3d(0,0,0)','important');
       headerHost.style.setProperty('-webkit-transform', focused ? 'translate3d(0,-125%,0)' : 'translate3d(0,0,0)','important');
@@ -464,7 +465,13 @@
       dockHost.style.setProperty('pointer-events', focused ? 'none' : 'auto','important');
       dockHost.style.setProperty('z-index', focused ? '2147482000' : '2147483647','important');
     }
-    if (searchHost && focused) searchHost.style.pointerEvents='none';
+    if (searchHost) {
+      const searchOpen=searchRoot?.querySelector('.overlay')?.classList.contains('show')===true;
+      searchHost.style.setProperty('opacity',supportFocused?'0':'1','important');
+      searchHost.style.setProperty('visibility',supportFocused?'hidden':'visible','important');
+      if(supportFocused)searchHost.style.setProperty('pointer-events','none','important');
+      else{searchHost.style.removeProperty('pointer-events');searchHost.style.pointerEvents=focused?'none':searchOpen?'auto':'none'}
+    }
   }
 
   const liquidDockState={tracking:false,pointerId:null,startX:0,startY:0,moved:false,suppressClick:false,hover:null};
