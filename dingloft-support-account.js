@@ -1,4 +1,4 @@
-/* Dingloft Support · Customer realtime chat · v2.9 · Pro confirmation motion */
+/* Dingloft Support · Customer realtime chat · v3.0 · Persistent global shell */
 import { getApps, getApp, initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, doc, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -19,6 +19,8 @@ const MAX_IMAGES=3,MAX_IMAGE_BYTES=5*1024*1024,MAX_TEXT=2000,TYPING_THROTTLE=700
 const SUPPORT_AVATARS={"Tony Bac":"/img/tony-bac.webp","Cesar Matzar":"/img/cesar-matzar.webp","Evolution Group":"/img/evolution-group.webp"};
 const PARAMS=new URLSearchParams(location.search);
 const AUTO_OPEN=PARAMS.get("support")==="1"||PARAMS.get("supportFeedback")==="1";
+const SHELL_FILE=(location.pathname.split("/").filter(Boolean).pop()||"").toLowerCase().replace(/\.html$/i,"");
+const PERSISTENT_SHELL=window.top===window.self&&(SHELL_FILE==="app"||SHELL_FILE==="desktop-shell");
 
 let user=null,supportData=null,chatState={},chatExists=false,chatUnsub=null,msgUnsub=null,adminPresenceUnsub=null,lastMessages=[],remoteCountdownTimer=null,remoteEditingCode=false;
 let lastTypingWrite=0,typingTimer=null,typingIdleTimer=null,pendingImages=[],imageUrls=new Map();
@@ -123,8 +125,11 @@ function inject(){
   .dl-remote-code-sent{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:9px;align-items:center;margin-top:8px;padding:10px;border:1px solid #bcebd2;border-radius:12px;background:#effcf5;transform-origin:50% 0;animation:dlRemoteSent .68s cubic-bezier(.16,1,.3,1) both,dlRemoteGlow 1.45s .12s cubic-bezier(.16,1,.3,1) both}.dl-remote-sent-icon{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#24a866;color:#fff;font-size:18px;position:relative;isolation:isolate;animation:dlRemoteCheck .74s .08s cubic-bezier(.16,1.35,.3,1) both}.dl-remote-sent-icon:before,.dl-remote-sent-icon:after{content:"";position:absolute;inset:-1px;border:1px solid rgba(36,168,102,.48);border-radius:50%;z-index:-1;animation:dlRemoteRing 1.05s .22s cubic-bezier(.16,1,.3,1) both}.dl-remote-sent-icon:after{animation-delay:.38s}.dl-remote-sent-icon i{animation:dlRemoteTick .52s .25s cubic-bezier(.2,1.5,.4,1) both}.dl-remote-code-sent>div{animation:dlRemoteCopy .55s .16s cubic-bezier(.16,1,.3,1) both}.dl-remote-code-sent b{display:block;color:#17643f;font-size:10px}.dl-remote-code-sent small{display:block;color:#56806b;font-size:7.5px;margin-top:3px;line-height:1.35}.dl-remote-code-sent button{border:1px solid #b5ddc7;border-radius:9px;background:#fff;color:#17643f;padding:7px 8px;font-size:8px;font-weight:850;cursor:pointer;animation:dlRemoteEditIn .52s .28s cubic-bezier(.16,1,.3,1) both;transition:transform .18s ease,box-shadow .18s ease}.dl-remote-code-sent button:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(23,100,63,.12)}.dl-remote-code-sent button:active{transform:scale(.96)}@keyframes dlRemoteSent{0%{opacity:0;transform:translateY(12px) scale(.965);filter:blur(3px)}55%{filter:blur(0)}100%{opacity:1;transform:none;filter:none}}@keyframes dlRemoteGlow{0%{box-shadow:0 0 0 rgba(36,168,102,0)}38%{box-shadow:0 10px 28px rgba(36,168,102,.18)}100%{box-shadow:0 5px 16px rgba(36,168,102,.07)}}@keyframes dlRemoteCheck{0%{transform:scale(.2) rotate(-32deg);opacity:0}64%{transform:scale(1.12) rotate(3deg);opacity:1}100%{transform:scale(1);opacity:1}}@keyframes dlRemoteTick{0%{transform:scale(.2) rotate(-20deg);opacity:0}100%{transform:scale(1);opacity:1}}@keyframes dlRemoteRing{0%{opacity:.7;transform:scale(.7)}100%{opacity:0;transform:scale(1.75)}}@keyframes dlRemoteCopy{from{opacity:0;transform:translateX(-7px)}to{opacity:1;transform:none}}@keyframes dlRemoteEditIn{from{opacity:0;transform:translateX(8px) scale(.92)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){.dl-remote-code-sent,.dl-remote-sent-icon,.dl-remote-sent-icon:before,.dl-remote-sent-icon:after,.dl-remote-sent-icon i,.dl-remote-code-sent>div,.dl-remote-code-sent button{animation:none!important;transition:none!important}}
   .dl-exp-hero{padding:15px;border-radius:17px;background:#fff;border:1px solid #e5e9ed;box-shadow:0 1px 2px rgba(16,24,40,.03)}.dl-exp-hero small{display:block;color:#667085;font-size:8px;font-weight:850;letter-spacing:.13em;text-transform:uppercase}.dl-exp-score{display:flex;align-items:end;gap:9px;margin-top:7px}.dl-exp-score b{font-size:26px;color:#111827;letter-spacing:-.04em}.dl-exp-score span{color:#e8ad21;font-size:12px}.dl-exp-hero p{margin:6px 0 0;color:#667085;font-size:9px;line-height:1.45}
   .dl-exp-list{display:grid;gap:9px}.dl-exp-card{padding:12px;border:1px solid #e5e9ed;border-radius:14px;background:#fff}.dl-exp-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.dl-exp-name{font-size:10px;font-weight:850;color:#101828}.dl-exp-verified{font-size:7px;color:#344054;border:1px solid #d9dee4;background:#f8fafc;padding:3px 5px;border-radius:999px}.dl-exp-stars{color:#e8ad21;font-size:9px;letter-spacing:1px;margin-top:5px}.dl-exp-comment{margin:8px 0 0;color:#475467;font-size:9.5px;line-height:1.55}.dl-exp-meta{margin-top:8px;color:#98a2b3;font-size:7.5px;display:flex;gap:7px;flex-wrap:wrap}.dl-exp-demo{color:#7a5d16;border:1px solid #ead7a0;background:#fffaf0;padding:3px 6px;border-radius:999px;font-weight:800;letter-spacing:.04em}.dl-exp-section-title{padding:2px 2px 0;color:#667085;font-size:8px;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
+  @media(max-width:1024px){.dl-support-root.persistent-shell .dl-support-launch{right:14px;bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
   @media(max-width:700px){
     .dl-support-root{max-width:100vw;overflow-x:clip}.dl-support-launch{right:12px;bottom:72px;width:50px;height:50px;border-radius:17px}
+    .dl-support-root.persistent-shell .dl-support-launch{right:12px;bottom:calc(82px + env(safe-area-inset-bottom,0px))}
+    body.dl-support-open>#dlMobileHeaderV71,body.dl-support-open>#dlMobileDockV71,body.dl-support-open>#dlMobileSearchV89,body.dl-support-open>#dlGlobalChromeHost{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
     /* Mobile: soporte se comporta como una vista nativa a pantalla completa.
        Cubre el contenido de Cuenta y el dock para que nada del fondo se mueva o se asome. */
     .dl-support-root.panel-open{position:fixed;inset:0;z-index:2147483000;pointer-events:none}
@@ -147,7 +152,7 @@ function inject(){
 
   const root=document.createElement("div");
   root.id="dlSupportRoot";
-  root.className=`dl-support-root${window.top!==window.self?" desktop-shell":""}`;
+  root.className=`dl-support-root${window.top!==window.self?" desktop-shell":""}${PERSISTENT_SHELL?" persistent-shell":""}`;
   root.innerHTML=`
     <button class="dl-support-backdrop" id="dlSupportBackdrop" aria-label="Cerrar soporte" tabindex="-1"></button>
     <button class="dl-support-launch" id="dlSupportLaunch" aria-label="Abrir soporte">
@@ -236,6 +241,7 @@ function togglePanel(open){
   if(supportCloseTimer){clearTimeout(supportCloseTimer);supportCloseTimer=null}
   if(open){
     root.classList.add("panel-open");
+    document.body.classList.add("dl-support-open");
     lockSupportBackground();
     requestAnimationFrame(()=>requestAnimationFrame(()=>p.classList.add("open")));
     startConversationListeners();markRead();
@@ -245,7 +251,7 @@ function togglePanel(open){
   }
   p.classList.remove("open");
   stopMessageListeners();setTyping(false,"");
-  const finishClose=()=>{root.classList.remove("panel-open");unlockSupportBackground();supportCloseTimer=null};
+  const finishClose=()=>{root.classList.remove("panel-open");document.body.classList.remove("dl-support-open");unlockSupportBackground();supportCloseTimer=null};
   if(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches)finishClose();
   else supportCloseTimer=setTimeout(finishClose,mobileSupportMode()?290:280);
 }
@@ -622,9 +628,11 @@ function feedback(message){
 }
 function cleanup(){
   chatUnsub?.();msgUnsub?.();adminPresenceUnsub?.();chatUnsub=msgUnsub=adminPresenceUnsub=null;
+  if(supportCloseTimer){clearTimeout(supportCloseTimer);supportCloseTimer=null}
   clearTimeout(typingTimer);clearTimeout(typingIdleTimer);
   for(const u of imageUrls.values())URL.revokeObjectURL(u);imageUrls.clear();
   pendingImages.forEach(x=>URL.revokeObjectURL(x.url));pendingImages=[];
+  document.body?.classList.remove("dl-support-open");unlockSupportBackground();
   document.getElementById("dlSupportRoot")?.remove();document.getElementById("dlSupportStyle")?.remove();
   supportData=null;chatState={};chatExists=false;experiencesLoaded=false;experiencesLoading=false;feedbackRating=0;
 }

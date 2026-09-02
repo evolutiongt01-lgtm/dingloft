@@ -114,6 +114,15 @@
     if(document.querySelector('script[data-dingloft-customer-push]'))return;
     const script=document.createElement('script');script.type='module';script.src='/dingloft-customer-push.js?v=1';script.dataset.dingloftCustomerPush='1';document.head.appendChild(script);
   }
+  function loadGlobalSupport(){
+    // The top-level persistent shell owns the chat. Embedded pages must never
+    // create another copy, otherwise every route change would remount it.
+    if (window.self !== window.top || document.querySelector('script[data-dingloft-global-support]')) return;
+    if (!document.querySelector('link[data-dingloft-support-icons],link[href*="bootstrap-icons"]')) {
+      const icons=document.createElement('link');icons.rel='stylesheet';icons.href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css';icons.dataset.dingloftSupportIcons='1';document.head.appendChild(icons);
+    }
+    const script=document.createElement('script');script.type='module';script.src='/dingloft-support-account.js?v=24';script.dataset.dingloftGlobalSupport='24';document.head.appendChild(script);
+  }
 
   // v71: mobile header/nav are loaded directly by each customer page from
   // /dingloft-mobile-nav-v71.js. UI Guard no longer creates, positions or bootstraps navigation.
@@ -123,8 +132,8 @@
   // Start the isolated overlay immediately so legacy page navbars never get a chance to take control.
   if (document.readyState === 'loading') {
     loadMobileChrome();
-    document.addEventListener('DOMContentLoaded', () => { markInstalled(); loadPresence(); loadCustomerPush(); }, {once:true});
-  } else { markInstalled(); loadPresence(); loadCustomerPush(); loadMobileChrome(); }
+    document.addEventListener('DOMContentLoaded', () => { markInstalled(); loadPresence(); loadCustomerPush(); loadGlobalSupport(); }, {once:true});
+  } else { markInstalled(); loadPresence(); loadCustomerPush(); loadGlobalSupport(); loadMobileChrome(); }
   addEventListener('appinstalled', () => { localStorage.setItem('dingloft_installed_at', String(Date.now())); markInstalled(); });
   matchMedia('(display-mode: standalone)').addEventListener?.('change', markInstalled);
 })();
