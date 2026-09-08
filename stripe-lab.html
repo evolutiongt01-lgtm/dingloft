@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#05070a" />
+  <title>Dingloft · Stripe Lab</title>
+  <script src="https://js.stripe.com/clover/stripe.js"></script>
+  <style>
+    :root{--bg:#030507;--panel:rgba(12,16,22,.78);--panel2:rgba(18,24,32,.72);--line:rgba(151,220,255,.14);--line2:rgba(151,220,255,.25);--text:#f6fbff;--muted:#80909f;--cyan:#77e2ff;--blue:#7f8cff;--green:#77f2b8;--red:#ff7f8e;--shadow:0 30px 90px rgba(0,0,0,.55)}
+    *{box-sizing:border-box}html,body{min-height:100%}body{margin:0;background:radial-gradient(circle at 15% 5%,rgba(57,177,255,.12),transparent 28%),radial-gradient(circle at 90% 12%,rgba(118,88,255,.12),transparent 27%),linear-gradient(180deg,#05080c 0%,#020304 70%,#000 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:46px 46px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.55),transparent 72%)}
+    .orb{position:fixed;border-radius:999px;filter:blur(70px);opacity:.3;pointer-events:none;animation:float 12s ease-in-out infinite}.orb.a{width:280px;height:280px;background:#1fbfff;left:-100px;top:18%}.orb.b{width:320px;height:320px;background:#6658ff;right:-120px;top:8%;animation-delay:-4s}@keyframes float{50%{transform:translate3d(0,30px,0) scale(1.08)}}
+    .shell{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:24px 0 58px;position:relative;z-index:1}.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 4px 24px}.brand{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;border-radius:14px;border:1px solid var(--line2);background:linear-gradient(145deg,rgba(255,255,255,.1),rgba(255,255,255,.025));display:grid;place-items:center;font-weight:900;box-shadow:inset 0 1px rgba(255,255,255,.08),0 10px 30px rgba(0,0,0,.25)}.brand-title{font-weight:850;letter-spacing:2.8px;font-size:14px}.brand-sub{font-size:10px;color:var(--muted);letter-spacing:1.4px;margin-top:3px;text-transform:uppercase}.lab-pill{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;border:1px solid rgba(119,242,184,.22);background:rgba(29,108,76,.12);color:#a9ffd2;font-size:11px;font-weight:800;letter-spacing:.7px}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 15px var(--green)}
+    .hero{padding:28px 0 30px}.eyebrow{display:inline-flex;gap:8px;align-items:center;color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase}.hero h1{font-size:clamp(42px,7vw,76px);line-height:.96;letter-spacing:-3.5px;margin:14px 0 16px;max-width:780px}.hero h1 span{background:linear-gradient(90deg,#fff 10%,#86e7ff 55%,#9b98ff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:#9aa9b6;font-size:16px;line-height:1.65;max-width:680px;margin:0}.hero strong{color:#e9f8ff}
+    .grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr);gap:18px;align-items:start}.card{border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 56%,rgba(80,210,255,.035)),var(--panel);box-shadow:var(--shadow);backdrop-filter:blur(28px) saturate(140%);-webkit-backdrop-filter:blur(28px) saturate(140%);border-radius:26px;overflow:hidden}.card-head{padding:22px 24px 18px;border-bottom:1px solid rgba(255,255,255,.055);display:flex;align-items:center;justify-content:space-between}.card-title{font-size:14px;font-weight:850;letter-spacing:.2px}.secure{font-size:10px;color:#8c9aa7;display:flex;gap:7px;align-items:center}.secure i{font-style:normal;color:var(--green)}.body{padding:24px}.selector-label{font-size:10px;color:#748391;font-weight:850;letter-spacing:1.25px;text-transform:uppercase;margin-bottom:10px}.select-wrap{position:relative}.select-wrap:after{content:"⌄";position:absolute;right:15px;top:50%;transform:translateY(-56%);pointer-events:none;color:#8696a5}select{width:100%;appearance:none;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);color:white;border-radius:15px;padding:15px 44px 15px 15px;font:inherit;outline:none;transition:.2s}select:focus{border-color:rgba(119,226,255,.45);box-shadow:0 0 0 4px rgba(119,226,255,.07)}select option{background:#0a0d11;color:white}
+    .product-preview{margin:14px 0 18px;padding:16px;border-radius:18px;border:1px solid rgba(119,226,255,.1);background:linear-gradient(135deg,rgba(119,226,255,.06),rgba(127,140,255,.035));display:flex;justify-content:space-between;gap:16px;align-items:center}.product-name{font-weight:800;font-size:14px}.product-type{font-size:11px;color:#7f8e9c;margin-top:5px}.amount{font-size:24px;font-weight:900;letter-spacing:-1px;white-space:nowrap}.amount small{font-size:10px;color:#7f8e9c;letter-spacing:.7px;margin-left:3px}.btn{border:0;cursor:pointer;width:100%;border-radius:16px;padding:16px 18px;font-size:14px;font-weight:900;letter-spacing:.15px;transition:transform .18s ease,box-shadow .18s ease,opacity .18s}.btn:active{transform:scale(.985)}.btn:disabled{opacity:.45;cursor:not-allowed}.btn-primary{background:linear-gradient(180deg,#f9fdff,#dff6ff);color:#061018;box-shadow:0 12px 30px rgba(96,214,255,.13)}.btn-primary:hover:not(:disabled){box-shadow:0 17px 38px rgba(96,214,255,.2);transform:translateY(-1px)}.btn-ghost{background:rgba(255,255,255,.045);color:#dce8ef;border:1px solid rgba(255,255,255,.08);margin-top:10px}.test-note{margin-top:14px;font-size:10px;color:#687987;line-height:1.55;text-align:center}
+    #checkout-zone{display:none}.checkout-product{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px}.mini-product{display:flex;align-items:center;gap:12px}.cube{width:46px;height:46px;border-radius:14px;background:linear-gradient(145deg,rgba(119,226,255,.18),rgba(127,140,255,.12));border:1px solid rgba(119,226,255,.18);display:grid;place-items:center;color:#a8eeff;font-weight:900}.checkout-name{font-size:13px;font-weight:850}.checkout-meta{color:#71818f;font-size:10px;margin-top:4px}.checkout-price{font-size:18px;font-weight:900}.wallet-wrap{min-height:0;transition:.3s;overflow:hidden}.wallet-wrap.hidden{height:0;opacity:0;margin:0}.wallet-caption{font-size:10px;color:#738492;margin:4px 0 10px}.divider{display:flex;align-items:center;gap:12px;color:#586975;font-size:9px;letter-spacing:1.4px;text-transform:uppercase;font-weight:850;margin:18px 0}.divider:before,.divider:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12))}.divider:after{background:linear-gradient(90deg,rgba(255,255,255,.12),transparent)}#payment-element{min-height:120px}.stripe-error{min-height:18px;margin-top:12px;color:#ff9aa5;font-size:11px;line-height:1.45}.payline{margin-top:18px}.processing{display:none;align-items:center;justify-content:center;gap:9px}.spin{width:14px;height:14px;border-radius:50%;border:2px solid rgba(0,0,0,.2);border-top-color:#061018;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+    .side{display:grid;gap:18px}.status-list{display:grid;gap:11px}.step{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:12px 13px;border-radius:15px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05)}.step-icon{width:28px;height:28px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.045);color:#60717f;font-size:11px;font-weight:900}.step.done .step-icon{background:rgba(52,198,132,.1);color:var(--green);border:1px solid rgba(119,242,184,.14)}.step.active .step-icon{color:var(--cyan);border:1px solid rgba(119,226,255,.2);box-shadow:0 0 20px rgba(119,226,255,.07)}.step-name{font-size:11px;font-weight:800}.step-sub{font-size:9px;color:#657684;margin-top:3px}.step-state{font-size:8px;text-transform:uppercase;letter-spacing:1px;color:#53636f}.step.done .step-state{color:#78d9aa}.step.active .step-state{color:#7ddff8}
+    .cards-title{font-size:10px;color:#738391;font-weight:850;letter-spacing:1.3px;text-transform:uppercase;margin-bottom:12px}.test-card{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 13px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);margin-top:8px}.test-card code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#dcebf2}.scenario{font-size:9px;color:#6f808d;margin-top:4px}.copy{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#8ea0ad;border-radius:10px;padding:7px 9px;font-size:9px;cursor:pointer}.warning{margin-top:16px;padding:13px;border-radius:14px;border:1px solid rgba(255,195,80,.12);background:rgba(255,195,80,.045);font-size:9.5px;color:#9b8c70;line-height:1.55}.warning b{color:#e4c88d}.result{display:none;text-align:center;padding:12px 0 6px}.result-icon{width:72px;height:72px;margin:0 auto 17px;border-radius:23px;display:grid;place-items:center;font-size:30px;background:rgba(67,215,151,.09);border:1px solid rgba(119,242,184,.2);box-shadow:0 0 50px rgba(67,215,151,.08);color:var(--green)}.result h2{font-size:25px;letter-spacing:-.7px;margin:0 0 8px}.result p{font-size:11px;color:#7d8d99;line-height:1.6;margin:0 auto 18px;max-width:440px}.receipt{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left;margin:18px 0}.receipt div{padding:12px;border-radius:13px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05)}.receipt span{display:block;color:#62727f;font-size:8px;text-transform:uppercase;letter-spacing:1px;font-weight:850;margin-bottom:5px}.receipt b{font-size:10px;word-break:break-all}.footer{text-align:center;color:#4f5e69;font-size:9px;letter-spacing:.5px;margin-top:26px}
+    .auth-lock{display:none;text-align:center;padding:42px 24px}.auth-lock h2{margin:12px 0 8px}.auth-lock p{color:#7f909d;font-size:11px;line-height:1.6;max-width:420px;margin:0 auto}.loading-screen{padding:55px 24px;text-align:center}.pulse{width:52px;height:52px;border-radius:17px;margin:0 auto 15px;background:linear-gradient(145deg,rgba(119,226,255,.14),rgba(127,140,255,.1));border:1px solid var(--line);display:grid;place-items:center;animation:pulse 1.5s ease-in-out infinite}@keyframes pulse{50%{transform:scale(1.05);box-shadow:0 0 30px rgba(119,226,255,.12)}}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}.hero h1{letter-spacing:-2.6px}.side{grid-template-columns:1fr 1fr}.side .card:last-child{grid-column:1/-1}}@media(max-width:620px){.shell{width:min(100% - 18px,1180px);padding-top:10px}.topbar{padding:8px 2px 14px}.brand-sub{display:none}.lab-pill{font-size:9px;padding:8px 10px}.hero{padding:20px 4px 24px}.hero h1{font-size:43px;letter-spacing:-2.4px}.hero p{font-size:13px}.card{border-radius:21px}.card-head,.body{padding-left:17px;padding-right:17px}.side{grid-template-columns:1fr}.receipt{grid-template-columns:1fr}.product-preview{align-items:flex-start}.amount{font-size:20px}}
+  </style>
+</head>
+<body>
+  <div class="orb a"></div><div class="orb b"></div>
+  <main class="shell">
+    <div class="topbar">
+      <div class="brand"><div class="logo">D</div><div><div class="brand-title">DINGLOFT</div><div class="brand-sub">Evolution Group · Payments Lab</div></div></div>
+      <div class="lab-pill"><span class="dot"></span> STRIPE SANDBOX</div>
+    </div>
+    <section class="hero">
+      <div class="eyebrow">◆ Payment architecture · v1</div>
+      <h1>Checkout <span>Dingloft.</span><br>Motor Stripe.</h1>
+      <p>Laboratorio aislado para probar <strong>tarjetas, Apple Pay y Google Pay</strong> con el precio validado por tu Worker. Aquí no se habilitan descargas, no se crean compras reales y PayPal sigue intacto.</p>
+    </section>
+
+    <div class="grid">
+      <section class="card" id="main-card">
+        <div class="card-head"><div class="card-title">Pago seguro · TEST</div><div class="secure"><i>●</i> Cifrado por Stripe</div></div>
+        <div id="loading" class="loading-screen"><div class="pulse">D</div><div style="font-weight:800;font-size:12px">Verificando acceso administrativo…</div></div>
+        <div id="auth-lock" class="auth-lock"><div class="result-icon" style="color:#ff9aa5;background:rgba(255,90,110,.07);border-color:rgba(255,90,110,.15)">×</div><h2>Acceso restringido</h2><p>Stripe Lab solo funciona con una cuenta administrativa de Dingloft. Inicia sesión como administrador y vuelve a cargar esta página.</p></div>
+        <div class="body" id="lab-body" style="display:none">
+          <div id="setup-zone">
+            <div class="selector-label">Producto para la simulación</div>
+            <div class="select-wrap"><select id="product-select"></select></div>
+            <div class="product-preview"><div><div class="product-name" id="preview-name">—</div><div class="product-type" id="preview-type">Producto digital · 1 unidad</div></div><div class="amount" id="preview-price">$0.00 <small>USD</small></div></div>
+            <button class="btn btn-primary" id="prepare-btn">Preparar pago de prueba →</button>
+            <div class="test-note">El monto se vuelve a calcular desde el catálogo seguro del Worker. El navegador nunca decide cuánto cobrar.</div>
+          </div>
+
+          <div id="checkout-zone">
+            <div class="checkout-product"><div class="mini-product"><div class="cube">D</div><div><div class="checkout-name" id="checkout-name">Producto</div><div class="checkout-meta">Stripe Sandbox · USD · entrega bloqueada</div></div></div><div class="checkout-price" id="checkout-price">$0.00</div></div>
+            <div class="wallet-wrap hidden" id="wallet-wrap"><div class="wallet-caption">Pago rápido disponible en este dispositivo</div><div id="express-checkout-element"></div></div>
+            <div class="divider">o paga con tarjeta</div>
+            <div id="payment-element"></div>
+            <div class="stripe-error" id="stripe-error"></div>
+            <div class="payline"><button class="btn btn-primary" id="pay-btn" disabled><span id="pay-label">Pagar</span><span id="processing" class="processing"><span class="spin"></span> Procesando…</span></button></div>
+            <button class="btn btn-ghost" id="cancel-btn">Cambiar producto</button>
+          </div>
+
+          <div class="result" id="result-zone">
+            <div class="result-icon">✓</div><h2>Pago de prueba confirmado.</h2>
+            <p>Stripe procesó el pago y el Worker recibió el webhook firmado. Esta operación quedó únicamente en las colecciones del laboratorio.</p>
+            <div class="receipt"><div><span>Sesión Stripe</span><b id="r-session">—</b></div><div><span>Payment Intent</span><b id="r-transaction">—</b></div><div><span>Total</span><b id="r-total">—</b></div><div><span>Fulfillment</span><b>Bloqueado · LAB only</b></div></div>
+            <button class="btn btn-primary" id="new-test-btn">Hacer otra prueba</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side">
+        <section class="card"><div class="card-head"><div class="card-title">Telemetría del flujo</div><div class="secure">Live status</div></div><div class="body"><div class="status-list">
+          <div class="step" data-step="auth"><div class="step-icon">1</div><div><div class="step-name">Administrador verificado</div><div class="step-sub">Firebase → Worker</div></div><div class="step-state">espera</div></div>
+          <div class="step" data-step="session"><div class="step-icon">2</div><div><div class="step-name">Checkout Session</div><div class="step-sub">Precio autorizado por servidor</div></div><div class="step-state">espera</div></div>
+          <div class="step" data-step="elements"><div class="step-icon">3</div><div><div class="step-name">Stripe Elements</div><div class="step-sub">Tarjeta / wallets</div></div><div class="step-state">espera</div></div>
+          <div class="step" data-step="payment"><div class="step-icon">4</div><div><div class="step-name">Pago confirmado</div><div class="step-sub">Checkout Session paid</div></div><div class="step-state">espera</div></div>
+          <div class="step" data-step="webhook"><div class="step-icon">5</div><div><div class="step-name">Webhook firmado</div><div class="step-sub">checkout.session.completed</div></div><div class="step-state">espera</div></div>
+        </div></div></section>
+        <section class="card"><div class="card-head"><div class="card-title">Tarjetas de laboratorio</div><div class="secure">Solo TEST</div></div><div class="body"><div class="cards-title">Escenarios rápidos</div>
+          <div class="test-card"><div><code>4242 4242 4242 4242</code><div class="scenario">Pago aprobado</div></div><button class="copy" data-copy="4242424242424242">Copiar</button></div>
+          <div class="test-card"><div><code>4000 0025 0000 3155</code><div class="scenario">Requiere 3D Secure</div></div><button class="copy" data-copy="4000002500003155">Copiar</button></div>
+          <div class="test-card"><div><code>4000 0000 0000 9995</code><div class="scenario">Fondos insuficientes</div></div><button class="copy" data-copy="4000000000009995">Copiar</button></div>
+          <div class="warning"><b>No uses tarjetas reales aquí.</b> Fecha: cualquier fecha futura · CVC: cualquier 3 dígitos. Apple Pay/Google Pay solo aparecen si Stripe, el dominio y el dispositivo son compatibles.</div>
+        </div></section>
+      </aside>
+    </div>
+    <div class="footer">DINGLOFT · STRIPE LAB · NINGÚN PAGO DE ESTA PÁGINA ENTREGA PRODUCTOS REALES</div>
+  </main>
+
+<script type="module">
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const FIREBASE_CONFIG={apiKey:"AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",authDomain:"login-dingloft.firebaseapp.com",projectId:"login-dingloft",storageBucket:"login-dingloft.firebasestorage.app",messagingSenderId:"549466738202",appId:"1:549466738202:web:8bf305fe2c753e9d76cba3",measurementId:"G-R9SGZCDN13"};
+const WORKER="https://autumn-breeze-dfa0.evolutiongt01.workers.dev";
+const app=getApps().length?getApp():initializeApp(FIREBASE_CONFIG),auth=getAuth(app);
+const $=s=>document.querySelector(s);let token="",config=null,checkout=null,actions=null,paymentElement=null,expressElement=null,currentSessionId="",currentProduct=null,pollTimer=null;
+
+function step(name,state="done"){const el=document.querySelector(`[data-step="${name}"]`);if(!el)return;el.classList.remove("done","active");if(state)el.classList.add(state);const st=el.querySelector('.step-state');st.textContent=state==='done'?'ok':state==='active'?'activo':'espera'}
+function money(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(v||0))}
+function setError(msg=""){$('#stripe-error').textContent=msg}
+async function api(path,{method='GET',body}={}){const headers={Accept:'application/json',Authorization:`Bearer ${token}`};if(body!==undefined)headers['content-type']='application/json';const r=await fetch(WORKER+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),cache:'no-store'});const d=await r.json().catch(()=>({}));if(!r.ok||d.ok===false)throw new Error(d.error||`Error ${r.status}`);return d}
+function updatePreview(){const sku=$('#product-select').value;currentProduct=config.products.find(p=>p.sku===sku)||config.products[0];if(!currentProduct)return;$('#preview-name').textContent=currentProduct.name;$('#preview-type').textContent=`${currentProduct.type||'Producto digital'} · entrega configurada`;$('#preview-price').innerHTML=`${money(currentProduct.priceUsd)} <small>USD</small>`}
+async function loadConfig(){config=await api('/checkout/stripe-test/config');step('auth','done');$('#product-select').innerHTML=config.products.map(p=>`<option value="${p.sku}">${p.name} · ${money(p.priceUsd)}</option>`).join('');if(config.defaultSku)$('#product-select').value=config.defaultSku;updatePreview();$('#loading').style.display='none';$('#lab-body').style.display='block'}
+
+async function prepare(){setError('');$('#prepare-btn').disabled=true;step('session','active');try{currentProduct=config.products.find(p=>p.sku===$('#product-select').value);const created=await api('/checkout/stripe-test/create',{method:'POST',body:{sku:currentProduct.sku}});currentSessionId=created.sessionId;step('session','done');$('#checkout-name').textContent=created.item.name;$('#checkout-price').textContent=money(created.amountUsd);$('#setup-zone').style.display='none';$('#checkout-zone').style.display='block';await mountStripe(created.clientSecret);startPolling()}catch(e){step('session','');setError(e.message);$('#prepare-btn').disabled=false}}
+
+async function mountStripe(clientSecret){step('elements','active');const stripe=window.Stripe(config.publishableKey);const appearance={theme:'night',labels:'floating',variables:{colorPrimary:'#77e2ff',colorBackground:'#0a0e13',colorText:'#f4f9fc',colorDanger:'#ff7f8e',colorTextSecondary:'#82919d',borderRadius:'14px',fontFamily:'-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif',spacingUnit:'4px'},rules:{'.Input':{border:'1px solid rgba(151,220,255,.14)',boxShadow:'none'},'.Input:focus':{border:'1px solid rgba(119,226,255,.48)',boxShadow:'0 0 0 3px rgba(119,226,255,.06)'},'.Tab':{border:'1px solid rgba(151,220,255,.10)'},'.Tab--selected':{border:'1px solid rgba(119,226,255,.35)'}}};
+  const initOptions={clientSecret,elementsOptions:{appearance}};
+  checkout=await stripe.initCheckout(initOptions);
+  const loaded=await checkout.loadActions();if(loaded.type!=='success')throw new Error(loaded.error?.message||'Stripe no pudo iniciar Elements.');actions=loaded.actions;
+  paymentElement=checkout.createPaymentElement({layout:'tabs'});paymentElement.mount('#payment-element');
+  if(typeof checkout.createExpressCheckoutElement==='function'){
+    try{expressElement=checkout.createExpressCheckoutElement({buttonHeight:52,buttonTheme:{applePay:'white-outline'},buttonType:{applePay:'check-out',googlePay:'checkout'},layout:{maxColumns:2,maxRows:1,overflow:'auto'}});expressElement.on('ready',({availablePaymentMethods})=>{if(availablePaymentMethods){$('#wallet-wrap').classList.remove('hidden')}});expressElement.on('confirm',async ev=>{setProcessing(true);step('payment','active');const result=await actions.confirm({expressCheckoutConfirmEvent:ev});if(result?.type==='error'){setProcessing(false);step('payment','');setError(result.error?.message||'No se pudo confirmar el pago.')}else{startPolling(true)}});expressElement.mount('#express-checkout-element')}catch(e){console.warn('Express Checkout no disponible',e)}
+  checkout.on('change',session=>{$('#pay-btn').disabled=!session.canConfirm});step('elements','done');
+}
+
+function setProcessing(on){$('#pay-btn').disabled=on;$('#pay-label').style.display=on?'none':'inline';$('#processing').style.display=on?'inline-flex':'none'}
+async function pay(){if(!actions)return;setError('');setProcessing(true);step('payment','active');try{const result=await actions.confirm();if(result?.type==='error'){throw new Error(result.error?.message||'Stripe rechazó el pago.')}startPolling(true)}catch(e){setProcessing(false);step('payment','');setError(e.message)}}
+async function status(){if(!currentSessionId)return null;return api(`/checkout/stripe-test/status?session_id=${encodeURIComponent(currentSessionId)}`)}
+function startPolling(fast=false){clearInterval(pollTimer);let tries=0;const tick=async()=>{tries++;try{const s=await status();if(s.stripePaymentStatus==='paid'||s.paymentStatus==='paid')step('payment','done');if(s.webhookReceived){step('webhook','done');showResult(s);clearInterval(pollTimer);return}}catch(e){console.warn(e)}if(tries>(fast?40:24))clearInterval(pollTimer)};tick();pollTimer=setInterval(tick,fast?750:1250)}
+function showResult(s){setProcessing(false);$('#checkout-zone').style.display='none';$('#setup-zone').style.display='none';$('#result-zone').style.display='block';$('#r-session').textContent=s.sessionId||'—';$('#r-transaction').textContent=s.transactionId||'—';$('#r-total').textContent=`${money(s.amountUsd)} USD`}
+function reset(){clearInterval(pollTimer);location.href='stripe-lab.html'}
+
+$('#product-select').addEventListener('change',updatePreview);$('#prepare-btn').addEventListener('click',prepare);$('#pay-btn').addEventListener('click',pay);$('#cancel-btn').addEventListener('click',reset);$('#new-test-btn').addEventListener('click',reset);document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(b.dataset.copy);const old=b.textContent;b.textContent='Copiado';setTimeout(()=>b.textContent=old,900)}catch(_){}}));
+
+onAuthStateChanged(auth,async user=>{if(!user){$('#loading').style.display='none';$('#auth-lock').style.display='block';return}try{token=await user.getIdToken(false);await loadConfig();const returned=new URLSearchParams(location.search).get('session_id');if(returned){currentSessionId=returned;step('session','done');$('#setup-zone').style.display='none';$('#checkout-zone').style.display='none';const s=await status();if(s.stripePaymentStatus==='paid'||s.paymentStatus==='paid')step('payment','done');if(s.webhookReceived){step('webhook','done');showResult(s)}else{startPolling(true)}}}catch(e){console.error(e);$('#loading').style.display='none';$('#lab-body').style.display='none';$('#auth-lock').style.display='block';$('#auth-lock p').textContent=e.message||'No se pudo verificar el acceso administrativo.'}});
+</script>
+</body>
+</html>
