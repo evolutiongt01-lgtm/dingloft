@@ -311,119 +311,251 @@
     .mini-price{font-size:13px;font-weight:700;white-space:nowrap}
 
 
-    .donation-card{
-      margin:18px 0 2px;
-      padding:17px;
+    .solidarity-card{
+      margin:20px 0 4px;
+      padding:20px;
       border:1px solid #e4e4e1;
-      border-radius:14px;
-      background:#fafaf9;
+      border-radius:18px;
+      background:#fff;
+      box-shadow:0 10px 28px rgba(0,0,0,.035);
     }
-    .donation-head{
+    .solidarity-kicker{
       display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:14px;
-    }
-    .donation-title{
-      color:#171717;
-      font-size:11px;
+      align-items:center;
+      gap:8px;
+      color:#8b8b90;
+      font-size:8px;
       font-weight:700;
-      letter-spacing:-.1px;
+      letter-spacing:1.5px;
     }
-    .donation-title span{
-      display:inline-block;
-      margin-left:5px;
-      padding:3px 6px;
-      border:1px solid #e5e5e2;
-      border-radius:999px;
-      color:#8a8a90;
-      background:#fff;
-      font-size:7px;
-      font-weight:600;
-      vertical-align:1px;
-    }
-    .donation-copy{
-      max-width:410px;
-      margin-top:5px;
-      color:#85858b;
-      font-size:9px;
-      line-height:1.5;
-    }
-    .donation-heart{
-      flex:0 0 auto;
-      width:32px;height:32px;
-      border-radius:10px;
+    .solidarity-kicker-icon{
+      width:24px;height:24px;
+      border-radius:50%;
       display:grid;place-items:center;
-      background:#fff;
-      border:1px solid #e6e6e3;
-      color:#111;
-      font-size:20px;
-      line-height:1;
+      background:#111;
+      color:#fff;
+      font-size:14px;
+      letter-spacing:0;
     }
-    .donation-presets{
+    .solidarity-heading{margin-top:15px}
+    .solidarity-heading h3{
+      margin:0;
+      max-width:430px;
+      font-size:24px;
+      line-height:1.06;
+      letter-spacing:-.8px;
+      font-weight:730;
+      color:#171717;
+    }
+    .solidarity-heading h3 strong{
+      display:block;
+      color:#c63838;
+      font-weight:760;
+    }
+    .solidarity-heading p{
+      margin:10px 0 0;
+      max-width:470px;
+      color:#8b8b90;
+      font-size:9.5px;
+      line-height:1.55;
+    }
+    .solidarity-modes{
       display:grid;
-      grid-template-columns:1.4fr repeat(4,1fr);
-      gap:7px;
-      margin-top:14px;
+      gap:9px;
+      margin-top:18px;
     }
-    .donation-chip{
-      height:37px;
-      border-radius:10px;
-      border:1px solid #dfdfdc;
-      background:#fff;
-      color:#707076;
-      font-size:9px;
-      font-weight:650;
+    .solidarity-mode{
+      width:100%;
+      min-height:68px;
+      display:grid;
+      grid-template-columns:38px 1fr 20px;
+      align-items:center;
+      gap:12px;
+      text-align:left;
+      padding:12px 14px;
+      border:1px solid #e3e3e0;
+      border-radius:13px;
+      background:#fafafa;
+      color:#606066;
       cursor:pointer;
       transition:.16s ease;
     }
-    .donation-chip:hover{border-color:#c7c7c3;color:#111}
-    .donation-chip.active{
-      border-color:#111;
-      color:#111;
-      box-shadow:0 0 0 1px #111 inset;
-    }
-    .donation-custom{
-      display:flex;
-      align-items:center;
-      gap:7px;
-      margin-top:8px;
-      height:42px;
-      padding:0 11px;
-      border:1px solid #dfdfdc;
-      border-radius:10px;
+    .solidarity-mode:hover{
+      border-color:#d0d0cc;
       background:#fff;
     }
-    .donation-custom>span{
-      font-size:12px;font-weight:700;color:#111
+    .solidarity-mode.active{
+      border-color:#c63838;
+      background:#fff8f8;
+      box-shadow:0 0 0 1px rgba(198,56,56,.06);
+      color:#171717;
     }
-    .donation-custom input{
-      flex:1;
+    .solidarity-mode-icon{
+      width:38px;height:38px;
+      border-radius:11px;
+      display:grid;place-items:center;
+      background:#f0f0ee;
+      color:#8c8c91;
+      font-size:18px;
+    }
+    .solidarity-mode.active .solidarity-mode-icon{
+      background:#c63838;
+      color:#fff;
+    }
+    .solidarity-mode-copy{
+      display:flex;
+      flex-direction:column;
       min-width:0;
+    }
+    .solidarity-mode-copy b{
+      font-size:10.5px;
+      font-weight:700;
+      color:inherit;
+    }
+    .solidarity-mode-copy small{
+      margin-top:4px;
+      color:#9a9aa0;
+      font-size:8px;
+    }
+    .solidarity-mode-arrow{
+      color:#a9a9ae;
+      font-size:21px;
+      line-height:1;
+    }
+    .solidarity-panel{
+      margin-top:14px;
+      padding:22px 18px 18px;
+      border:1px solid #e6e6e3;
+      border-radius:14px;
+      background:#fafafa;
+    }
+    .solidarity-panel-label{
+      text-align:center;
+      color:#a0a0a5;
+      font-size:7.5px;
+      font-weight:700;
+      letter-spacing:1.3px;
+    }
+    .solidarity-counter{
+      display:grid;
+      grid-template-columns:54px 1fr 54px;
+      align-items:center;
+      gap:18px;
+      width:min(330px,100%);
+      margin:22px auto 0;
+    }
+    .solidarity-counter-btn{
+      width:54px;height:54px;
+      border-radius:50%;
+      border:1px solid #ddddda;
+      background:#fff;
+      color:#505056;
+      font-size:24px;
+      font-weight:400;
+      cursor:pointer;
+      transition:.16s ease;
+    }
+    .solidarity-counter-btn:hover{
+      border-color:#bfbfbb;
+      color:#111;
+      transform:translateY(-1px);
+    }
+    .solidarity-counter-value{text-align:center}
+    .solidarity-counter-value strong{
+      display:block;
+      font-size:46px;
+      line-height:.95;
+      letter-spacing:-1.8px;
+      color:#111;
+      font-weight:720;
+    }
+    .solidarity-counter-value span{
+      display:block;
+      margin-top:9px;
+      color:#9b9ba0;
+      font-size:7.5px;
+      letter-spacing:.7px;
+    }
+    .solidarity-free-amount{
+      width:min(340px,100%);
+      height:62px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin:20px auto 0;
+      padding:0 16px;
+      border:1px solid #ddddda;
+      border-radius:13px;
+      background:#fff;
+    }
+    .solidarity-free-amount>span{
+      font-size:24px;
+      color:#55555a;
+      font-weight:650;
+    }
+    .solidarity-free-amount input{
+      min-width:0;
+      flex:1;
       border:0;
       outline:0;
       background:transparent;
       color:#111;
       font:inherit;
-      font-size:10px;
+      font-size:25px;
+      font-weight:680;
+      letter-spacing:-.6px;
     }
-    .donation-custom small{
-      color:#a0a0a5;
+    .solidarity-free-amount small{
+      color:#9c9ca1;
+      font-size:8px;
+      font-weight:650;
+    }
+    .solidarity-panel-total{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      margin-top:22px;
+      color:#87878c;
+      font-size:9px;
+    }
+    .solidarity-panel-total b{
+      color:#c63838;
+      font-size:17px;
+      font-weight:760;
+    }
+    .solidarity-footer{
+      display:flex;
+      align-items:flex-start;
+      gap:9px;
+      margin-top:12px;
+    }
+    .solidarity-footer>span{
+      flex:0 0 auto;
+      padding:4px 7px;
+      border-radius:999px;
+      background:#f1f1ef;
+      color:#77777c;
       font-size:7px;
-      white-space:nowrap;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.4px;
     }
-    .donation-note{
-      margin-top:9px;
-      color:#a0a0a5;
+    .solidarity-footer p{
+      margin:2px 0 0;
+      color:#9b9ba0;
       font-size:7.5px;
-      line-height:1.45;
+      line-height:1.5;
     }
     @media(max-width:560px){
-      .donation-card{padding:14px}
-      .donation-presets{grid-template-columns:repeat(3,1fr)}
-      .donation-presets .donation-chip:first-child{grid-column:span 2}
-      .donation-custom small{display:none}
+      .solidarity-card{padding:16px;border-radius:16px}
+      .solidarity-heading h3{font-size:22px}
+      .solidarity-mode{min-height:64px}
+      .solidarity-counter{grid-template-columns:50px 1fr 50px;gap:12px}
+      .solidarity-counter-btn{width:50px;height:50px}
+      .solidarity-counter-value strong{font-size:42px}
     }
+
     .total-row{
       display:flex;align-items:end;justify-content:space-between;
       padding:18px 0 0;
@@ -693,30 +825,71 @@
               </div>
 
 
-              <div class="donation-card">
-                <div class="donation-head">
-                  <div>
-                    <div class="donation-title">Aporte solidario <span>Opcional</span></div>
-                    <div class="donation-copy">Si deseas, puedes agregar unos dólares a tu compra para apoyar iniciativas destinadas a personas de escasos recursos y centros de adultos mayores.</div>
+              <section class="solidarity-card" aria-labelledby="solidarity-title">
+                <div class="solidarity-kicker">
+                  <span class="solidarity-kicker-icon">♡</span>
+                  <span>DINGLOFT SOLIDARIO</span>
+                </div>
+
+                <div class="solidarity-heading">
+                  <h3 id="solidarity-title">Tu aporte <strong>puede hacer la diferencia</strong></h3>
+                  <p>Si deseas, agrega un aporte voluntario a tu compra para apoyar iniciativas dirigidas a personas de escasos recursos y centros de adultos mayores.</p>
+                </div>
+
+                <div class="solidarity-modes" role="tablist" aria-label="Tipo de aporte">
+                  <button type="button" class="solidarity-mode active" data-donation-mode="units" role="tab" aria-selected="true">
+                    <span class="solidarity-mode-icon">♡</span>
+                    <span class="solidarity-mode-copy">
+                      <b>Aporte sugerido</b>
+                      <small>US$5 por aporte · tú eliges cuántos</small>
+                    </span>
+                    <span class="solidarity-mode-arrow">›</span>
+                  </button>
+
+                  <button type="button" class="solidarity-mode" data-donation-mode="custom" role="tab" aria-selected="false">
+                    <span class="solidarity-mode-icon">◎</span>
+                    <span class="solidarity-mode-copy">
+                      <b>Monto libre</b>
+                      <small>Aporta la cantidad que prefieras</small>
+                    </span>
+                    <span class="solidarity-mode-arrow">›</span>
+                  </button>
+                </div>
+
+                <div class="solidarity-panel active" id="solidarity-units-panel" data-donation-panel="units">
+                  <div class="solidarity-panel-label">NÚMERO DE APORTES</div>
+                  <div class="solidarity-counter">
+                    <button type="button" class="solidarity-counter-btn" id="donation-minus" aria-label="Disminuir aporte">−</button>
+                    <div class="solidarity-counter-value">
+                      <strong id="donation-units">0</strong>
+                      <span id="donation-units-label">SIN APORTE</span>
+                    </div>
+                    <button type="button" class="solidarity-counter-btn" id="donation-plus" aria-label="Aumentar aporte">+</button>
                   </div>
-                  <div class="donation-heart" aria-hidden="true">♡</div>
+                  <div class="solidarity-panel-total">
+                    <span>Total del aporte</span>
+                    <b id="donation-units-total">$0.00</b>
+                  </div>
                 </div>
 
-                <div class="donation-presets" aria-label="Seleccionar aporte">
-                  <button type="button" class="donation-chip active" data-donation="0">Sin aporte</button>
-                  <button type="button" class="donation-chip" data-donation="1">$1</button>
-                  <button type="button" class="donation-chip" data-donation="3">$3</button>
-                  <button type="button" class="donation-chip" data-donation="5">$5</button>
-                  <button type="button" class="donation-chip" data-donation="10">$10</button>
+                <div class="solidarity-panel" id="solidarity-custom-panel" data-donation-panel="custom" hidden>
+                  <div class="solidarity-panel-label">MONTO LIBRE</div>
+                  <div class="solidarity-free-amount">
+                    <span>$</span>
+                    <input id="donation-custom" type="number" min="0" max="100" step="1" inputmode="decimal" placeholder="0.00" aria-label="Monto libre en dólares">
+                    <small>USD</small>
+                  </div>
+                  <div class="solidarity-panel-total">
+                    <span>Total del aporte</span>
+                    <b id="donation-custom-total">$0.00</b>
+                  </div>
                 </div>
 
-                <div class="donation-custom">
-                  <span>$</span>
-                  <input id="donation-custom" type="number" min="0" max="100" step="1" inputmode="decimal" placeholder="Otro monto">
-                  <small>USD · máximo $100</small>
+                <div class="solidarity-footer">
+                  <span>Opcional</span>
+                  <p>El aporte se suma a la misma transacción de PayPal y aparece separado en tu comprobante de Dingloft.</p>
                 </div>
-                <div class="donation-note">El aporte es totalmente voluntario y se cobra junto con tu compra en la misma transacción de PayPal.</div>
-              </div>
+              </section>
 
               <div class="total-row">
                 <div class="total-copy"><span>Total estimado</span><b>Importe del pedido</b></div>
@@ -845,6 +1018,10 @@ async function api(path,{method="GET",body,authRequired=false}={}){
 }
 
 
+const DONATION_UNIT_USD=5;
+let donationMode="units";
+let donationUnits=0;
+
 function clampDonation(value){
   const n=Number(value||0);
   if(!Number.isFinite(n)||n<=0)return 0;
@@ -871,24 +1048,53 @@ function paintDonation(){
   const leftTotal=$("#left-total");
   if(leftTotal)leftTotal.textContent=`${money(total)} USD`;
 
-  document.querySelectorAll(".donation-chip").forEach(btn=>{
-    const amount=Number(btn.dataset.donation||0);
-    btn.classList.toggle("active",Math.abs(amount-donationUsd)<0.001 && !$("#donation-custom")?.value);
-  });
+  const unitsTotal=$("#donation-units-total");
+  if(unitsTotal)unitsTotal.textContent=money(donationUnits*DONATION_UNIT_USD);
+
+  const customTotal=$("#donation-custom-total");
+  if(customTotal)customTotal.textContent=money(
+    donationMode==="custom" ? donationUsd : clampDonation($("#donation-custom")?.value||0)
+  );
 }
 
-function chooseDonation(value,{custom=false}={}){
-  donationUsd=clampDonation(value);
+function updateDonationMode(mode){
+  donationMode=mode==="custom"?"custom":"units";
 
-  const input=$("#donation-custom");
-  if(input&&!custom)input.value="";
-
-  document.querySelectorAll(".donation-chip").forEach(btn=>{
-    btn.classList.toggle(
-      "active",
-      !custom && Math.abs(Number(btn.dataset.donation||0)-donationUsd)<0.001
-    );
+  document.querySelectorAll("[data-donation-mode]").forEach(btn=>{
+    const active=btn.dataset.donationMode===donationMode;
+    btn.classList.toggle("active",active);
+    btn.setAttribute("aria-selected",active?"true":"false");
   });
+
+  const unitsPanel=$("#solidarity-units-panel");
+  const customPanel=$("#solidarity-custom-panel");
+
+  if(unitsPanel)unitsPanel.hidden=donationMode!=="units";
+  if(customPanel)customPanel.hidden=donationMode!=="custom";
+
+  if(donationMode==="units"){
+    donationUsd=clampDonation(donationUnits*DONATION_UNIT_USD);
+  }else{
+    donationUsd=clampDonation($("#donation-custom")?.value||0);
+  }
+
+  paintDonation();
+}
+
+function setDonationUnits(next){
+  donationUnits=Math.max(0,Math.min(20,Number(next)||0));
+  donationUsd=clampDonation(donationUnits*DONATION_UNIT_USD);
+
+  const units=$("#donation-units");
+  const label=$("#donation-units-label");
+
+  if(units)units.textContent=String(donationUnits);
+  if(label){
+    label.textContent=
+      donationUnits===0 ? "SIN APORTE" :
+      donationUnits===1 ? "1 APORTE" :
+      `${donationUnits} APORTES`;
+  }
 
   paintDonation();
 }
@@ -1122,18 +1328,20 @@ async function prepare(){
 function reset(){ location.reload(); }
 
 
-document.querySelectorAll(".donation-chip").forEach(btn=>{
-  btn.addEventListener("click",()=>chooseDonation(btn.dataset.donation));
+document.querySelectorAll("[data-donation-mode]").forEach(btn=>{
+  btn.addEventListener("click",()=>updateDonationMode(btn.dataset.donationMode));
 });
 
+$("#donation-minus")?.addEventListener("click",()=>setDonationUnits(donationUnits-1));
+$("#donation-plus")?.addEventListener("click",()=>setDonationUnits(donationUnits+1));
+
 $("#donation-custom")?.addEventListener("input",event=>{
-  const raw=event.target.value;
-  if(raw===""){
-    chooseDonation(0,{custom:true});
-    return;
-  }
-  chooseDonation(raw,{custom:true});
+  donationUsd=clampDonation(event.target.value);
+  paintDonation();
 });
+
+setDonationUnits(0);
+updateDonationMode("units");
 
 $("#product-select")?.addEventListener("change",updatePreview);
 $("#prepare-btn")?.addEventListener("click",prepare);
