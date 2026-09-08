@@ -184,7 +184,7 @@
       fill:none;stroke:currentColor;stroke-width:1.6;
       stroke-linecap:round;stroke-linejoin:round;
     }
-    .step-checkoutel{
+    .step-label{
       margin-top:7px;
       font-size:7px;
       color:#939399;
@@ -199,11 +199,11 @@
       border-color:rgba(31,143,95,.28);
       background:#f4fbf7;
     }
-    .step.done .step-checkoutel{color:#6c8b7b}
+    .step.done .step-label{color:#6c8b7b}
     .step.active .step-icon{
       color:#111;border-color:#111;background:#fff
     }
-    .step.active .step-checkoutel{color:#111}
+    .step.active .step-label{color:#111}
 
     .pay-card{
       background:var(--surface);
@@ -227,7 +227,7 @@
 
     .pay-body{padding:24px 28px 28px}
 
-    .quick-checkoutel{
+    .quick-label{
       font-size:10px;
       font-weight:650;
       margin-bottom:10px;
@@ -248,7 +248,7 @@
 
     .method-switch{
       display:grid;
-      grid-template-columns:repeat(4,1fr);
+      grid-template-columns:repeat(3,1fr);
       gap:8px;
       margin-bottom:18px;
     }
@@ -270,7 +270,7 @@
       background:#fff;
     }
 
-    .field-checkoutel{
+    .field-label{
       font-size:10px;color:#626268;font-weight:600;margin:0 0 8px
     }
     .select-wrap{position:relative}
@@ -374,92 +374,6 @@
     .card-shell{background:#fafaf9}
     #paypal-card-button-container,
     #paypal-button-container{max-width:440px;margin:0 auto}
-
-    .embedded-card-shell{
-      padding:2px 0 0;
-    }
-    .card-intro h3{
-      margin:0 0 5px;
-      font-size:15px;
-      letter-spacing:-.25px;
-    }
-    .card-intro p{
-      margin:0 0 18px;
-      color:#8a8a90;
-      font-size:9px;
-      line-height:1.5;
-    }
-    .card-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-    .card-field-wide{grid-column:1/-1}
-    .card-field-block{
-      display:block;
-      min-width:0;
-    }
-    .card-field-block>span{
-      display:block;
-      margin:0 0 7px;
-      color:#626268;
-      font-size:9px;
-      font-weight:600;
-    }
-    .paypal-card-field{
-      height:50px;
-      border:1px solid #dfdfdc;
-      border-radius:12px;
-      background:#fff;
-      overflow:hidden;
-      transition:border-color .15s,box-shadow .15s;
-    }
-    .paypal-card-field:focus-within{
-      border-color:#111;
-      box-shadow:0 0 0 2px rgba(0,0,0,.035);
-    }
-    @media(max-width:560px){
-      .card-grid{gap:10px}
-      .paypal-card-field{height:49px}
-    }
-
-    .card-v6-loading{
-      min-height:54px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      color:#8a8a90;
-      font-size:9px;
-    }
-    .card-v6-spinner{
-      width:16px;
-      height:16px;
-      border-radius:50%;
-      border:2px solid #e4e4e1;
-      border-top-color:#111;
-      animation:checkoutSpin .72s linear infinite;
-    }
-    .card-v6-unavailable{
-      padding:13px 14px;
-      border:1px solid #f0d9d7;
-      background:#fff8f7;
-      color:#b33b35;
-      border-radius:11px;
-      font-size:9px;
-      line-height:1.5;
-      margin-bottom:12px;
-    }
-    #paypal-v6-button-wrap{
-      width:100%;
-      min-height:48px;
-    }
-    paypal-button{
-      width:100%;
-      --paypal-button-width:100%;
-      --paypal-button-height:48px;
-      --paypal-button-border-radius:11px;
-    }
     .paypal-shell{
       padding:24px 18px;
       border:1px solid #e3e3e0;
@@ -472,40 +386,6 @@
     #paypal-button-container{max-width:420px;margin:0 auto}
     .sandbox-note{margin-top:10px;color:#a0a0a5;font-size:8px}
 
-
-    .airtm-shell{
-      min-height:260px;
-      border:1px solid #e3e3e0;
-      border-radius:14px;
-      background:#fafaf9;
-      padding:28px 22px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-    }
-    .airtm-mark{
-      width:64px;height:64px;border-radius:18px;
-      display:grid;place-items:center;
-      background:#fff;
-      border:1px solid #e7e7e4;
-      font-size:20px;font-weight:800;letter-spacing:-1px;
-      margin-bottom:15px;
-      box-shadow:0 8px 24px rgba(0,0,0,.05);
-    }
-    .airtm-shell h3{margin:0 0 6px;font-size:17px}
-    .airtm-shell p{max-width:390px;margin:0 0 17px;color:#85858b;font-size:10px;line-height:1.55}
-    .airtm-amount{
-      margin-bottom:15px;
-      padding:10px 13px;
-      border:1px solid #e6e6e3;
-      border-radius:11px;
-      background:#fff;
-      font-size:11px;color:#6e6e73
-    }
-    .airtm-amount b{color:#111;font-size:14px;margin-left:5px}
-    .airtm-note{margin-top:10px;color:#9a9aa0;font-size:8px;line-height:1.45}
     .binance-shell{
       min-height:330px;
       display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -618,7 +498,7 @@
       .summary-card{border-radius:13px}
       .status-card{padding:14px 10px;border-radius:14px}
       .step-icon{width:29px;height:29px}
-      .step-checkoutel{font-size:6.5px}
+      .step-label{font-size:6.5px}
       .status-track:before{top:14px;left:9%;right:9%}
       .method-switch{gap:6px}
       .method-btn{min-height:45px;font-size:9px}
@@ -628,14 +508,12 @@
       .qr-frame{width:184px;height:184px}
     }
   </style>
-
-  <script async src="https://www.paypal.com/web-sdk/v6/core"></script>
 </head>
 <body>
 <div class="page">
   <main class="shell">
     <div id="loading" class="loading-wrap">
-      <div class="checkout-loader" aria-checkoutel="Cargando checkout">
+      <div class="checkout-loader" aria-label="Cargando checkout">
         <span class="checkout-loader-ring"></span>
       </div>
     </div>
@@ -644,7 +522,7 @@
       <p>Inicia sesión para continuar con el pago.</p>
     </div>
 
-    <div id="checkout-body" style="display:none">
+    <div id="lab-body" style="display:none">
       <div class="checkout-layout">
 
         <section class="order-side">
@@ -671,11 +549,11 @@
           <div class="status-card">
             <div class="status-title"><span>Estado del pago</span><small>En tiempo real</small></div>
             <div class="status-track">
-              <div class="step" data-step="auth"><div class="step-icon"><svg viewBox="0 0 24 24"><path d="M12 3.5a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm-7 16c.6-4 3.3-6 7-6s6.4 2 7 6"/></svg></div><div class="step-checkoutel">Cuenta</div><div class="step-state">espera</div></div>
-              <div class="step" data-step="session"><div class="step-icon"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2.5"/><path d="M3.5 10h17"/></svg></div><div class="step-checkoutel">Pedido</div><div class="step-state">espera</div></div>
-              <div class="step" data-step="elements"><div class="step-icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M7.5 9h9M7.5 13h4.5"/></svg></div><div class="step-checkoutel">Método</div><div class="step-state">espera</div></div>
-              <div class="step" data-step="payment"><div class="step-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.3 12.2 2.3 2.3 5.2-5.4"/></svg></div><div class="step-checkoutel">Pagado</div><div class="step-state">espera</div></div>
-              <div class="step" data-step="webhook"><div class="step-icon"><svg viewBox="0 0 24 24"><path d="M7 8.5h10M7 15.5h10"/><circle cx="6" cy="8.5" r="2"/><circle cx="18" cy="15.5" r="2"/></svg></div><div class="step-checkoutel">Entregado</div><div class="step-state">espera</div></div>
+              <div class="step" data-step="auth"><div class="step-icon"><svg viewBox="0 0 24 24"><path d="M12 3.5a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm-7 16c.6-4 3.3-6 7-6s6.4 2 7 6"/></svg></div><div class="step-label">Cuenta</div><div class="step-state">espera</div></div>
+              <div class="step" data-step="session"><div class="step-icon"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2.5"/><path d="M3.5 10h17"/></svg></div><div class="step-label">Pedido</div><div class="step-state">espera</div></div>
+              <div class="step" data-step="elements"><div class="step-icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M7.5 9h9M7.5 13h4.5"/></svg></div><div class="step-label">Método</div><div class="step-state">espera</div></div>
+              <div class="step" data-step="payment"><div class="step-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.3 12.2 2.3 2.3 5.2-5.4"/></svg></div><div class="step-label">Pagado</div><div class="step-state">espera</div></div>
+              <div class="step" data-step="webhook"><div class="step-icon"><svg viewBox="0 0 24 24"><path d="M7 8.5h10M7 15.5h10"/><circle cx="6" cy="8.5" r="2"/><circle cx="18" cy="15.5" r="2"/></svg></div><div class="step-label">Entregado</div><div class="step-state">espera</div></div>
             </div>
           </div>
         </section>
@@ -688,7 +566,7 @@
 
           <div class="pay-body">
             <div id="setup-zone">
-              <div class="field-checkoutel">Producto</div>
+              <div class="field-label">Producto</div>
               <div class="select-wrap"><select id="product-select"></select></div>
 
               <div class="mini-order">
@@ -718,109 +596,17 @@
                 </div>
                 <div class="mini-price" id="checkout-price">$0.00</div>
               </div>
-              <div class="divider">Elige un método de pago</div>
-<div class="method-switch">
-                <button class="method-btn active" type="button" data-method="card">Tarjeta</button>
-                <button class="method-btn" type="button" data-method="paypal">PayPal</button>
-                <button class="method-btn" type="button" data-method="airtm">Airtm</button>
-                <button class="method-btn" type="button" data-method="binance">Binance</button>
-              </div>
-
-              <div id="card-method-panel">
-                <div class="embedded-card-shell">
-                  <div class="card-intro">
-                    <h3>Tarjeta de crédito o débito</h3>
-                    <p>Ingresa los datos de tu tarjeta sin salir de Dingloft.</p>
-                  </div>
-
-                  <div id="card-v6-loading" class="card-v6-loading">
-                    <span class="card-v6-spinner"></span>
-                    <span>Preparando formulario seguro…</span>
-                  </div>
-
-                  <div id="card-v6-unavailable" class="card-v6-unavailable" hidden>
-                    El pago directo con tarjeta no está disponible para esta cuenta o transacción. Puedes continuar con PayPal.
-                  </div>
-
-                  <div id="card-v6-fields" class="card-grid" hidden>
-                    <label class="card-field-block card-field-wide">
-                      <span>Número de tarjeta</span>
-                      <div class="paypal-card-field" id="paypal-card-number"></div>
-                    </label>
-
-                    <label class="card-field-block">
-                      <span>Vencimiento</span>
-                      <div class="paypal-card-field" id="paypal-card-expiry"></div>
-                    </label>
-
-                    <label class="card-field-block">
-                      <span>CVV</span>
-                      <div class="paypal-card-field" id="paypal-card-cvv"></div>
-                    </label>
-
-                    <label class="card-field-block card-field-wide">
-                      <span>Nombre en la tarjeta</span>
-                      <div class="paypal-card-field" id="paypal-card-name"></div>
-                    </label>
-                  </div>
-
-                  <div class="payment-message" id="card-payment-message"></div>
-
-                  <button class="primary-btn" id="paypal-card-submit" type="button" hidden disabled>
-                    <span id="paypal-card-submit-label">Pagar con tarjeta</span>
-                    <span class="processing" id="paypal-card-processing">
-                      <span class="spinner"></span> Procesando…
-                    </span>
-                  </button>
-
-                  <button class="ghost-btn" id="cancel-btn" type="button">Cambiar producto</button>
-                  <div class="fineprint">Los datos de tu tarjeta viajan directamente por los campos seguros de PayPal y no se almacenan en Dingloft.</div>
-                </div>
-              </div>
-
-              <div class="alt-method-panel" id="paypal-method-panel">
+              <div class="divider">Paga de forma segura con PayPal</div>
+<div class="alt-method-panel active" id="paypal-method-panel">
                 <div class="paypal-shell">
                   <h3>Paga con PayPal</h3>
-                  <p>Continúa con tu cuenta PayPal usando el nuevo SDK v6.</p>
-
-                  <div id="paypal-v6-loading" class="card-v6-loading">
-                    <span class="card-v6-spinner"></span>
-                    <span>Preparando PayPal…</span>
-                  </div>
-
-                  <div id="paypal-v6-button-wrap" hidden>
-                    <paypal-button id="paypal-v6-button" type="pay"></paypal-button>
-                  </div>
-
+                  <p>Continúa con tu cuenta PayPal desde una ventana segura.</p>
+                  <div id="paypal-button-container"></div>
                   <div class="payment-message" id="paypal-payment-message"></div>
                 </div>
               </div>
 
-              <div class="alt-method-panel" id="airtm-method-panel">
-                <div class="airtm-shell">
-                  <div class="airtm-mark">A</div>
-                  <h3>Paga con Airtm</h3>
-                  <p>Te enviaremos al checkout seguro de Airtm para confirmar el pago con tu saldo Airtm. Después regresarás automáticamente a Dingloft.</p>
-                  <div class="airtm-amount">Total <b id="airtm-total">$0.00 USD</b></div>
-                  <button class="primary-btn" id="airtm-pay-btn" type="button">Continuar con Airtm</button>
-                  <div class="payment-message" id="airtm-payment-message"></div>
-                  <div class="airtm-note">Airtm procesa pay-ins entre cuentas Airtm en USD/USDC. No es un formulario de tarjeta.</div>
-                </div>
-              </div>
-
-              <div class="alt-method-panel" id="binance-method-panel">
-                <div class="binance-shell">
-                  <div class="qr-frame">
-                    <img id="binance-qr" src="/img/binance-pay-qr.png" alt="QR Binance de Evolution Desing">
-                    <div class="qr-fallback" id="binance-qr-fallback">QR</div>
-                  </div>
-                  <div class="binance-name">Evolution Desing</div>
-                  <div class="binance-sub">Binance Pay</div>
-                </div>
-              </div>
-</div>
-
-            <div id="result-zone" class="result">
+              <div id="result-zone" class="result">
               <div class="result-icon">✓</div>
               <h2>Pago completado</h2>
               <p>La transacción de prueba fue confirmada correctamente.</p>
@@ -829,7 +615,7 @@
                 <div><span>Transacción</span><b id="r-transaction">—</b></div>
                 <div><span>Total</span><b id="r-total">—</b></div>
               </div>
-              <button class="primary-btn" id="new-test-btn">Nueva prueba</button>
+              <button class="primary-btn" id="new-test-btn">Volver al checkout</button>
             </div>
           </div>
         </section>
@@ -867,21 +653,11 @@ let token="";
 let config=null;
 let currentProduct=null;
 let currentQuote=null;
-let activeMethod="card";
-
-let paypalSdkInstance=null;
-let paypalMethods=null;
-let paypalCardSession=null;
-let paypalPaymentSession=null;
-let paypalV6InitPromise=null;
-let cardFieldsMounted=false;
-let paypalButtonBound=false;
+let paypalSdkPromise=null;
+let paypalRendered=false;
 
 function money(v){
-  return new Intl.NumberFormat("en-US",{
-    style:"currency",
-    currency:"USD"
-  }).format(Number(v||0));
+  return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(Number(v||0));
 }
 
 function step(name,state="done"){
@@ -889,35 +665,13 @@ function step(name,state="done"){
   if(!el)return;
   el.classList.remove("done","active");
   if(state)el.classList.add(state);
-  const st=el.querySelector(".step-state");
-  if(st)st.textContent=state==="done"?"ok":state==="active"?"activo":"espera";
 }
 
-function setError(msg=""){
-  const setup=$("#setup-error");
-  const payment=$("#payment-error");
-  if(setup)setup.textContent=msg;
-  if(payment)payment.textContent=msg;
-}
-
-function setMethodMessage(method,msg="",error=false){
-  const selector =
-    method==="card" ? "#card-payment-message" :
-    method==="airtm" ? "#airtm-payment-message" :
-    "#paypal-payment-message";
-  const el=$(selector);
+function setMessage(msg="",error=false){
+  const el=$("#paypal-payment-message");
   if(!el)return;
   el.textContent=msg;
   el.classList.toggle("error",Boolean(error));
-}
-
-function setCardProcessing(on){
-  const btn=$("#paypal-card-submit");
-  const label=$("#paypal-card-submit-label");
-  const processing=$("#paypal-card-processing");
-  if(btn)btn.disabled=Boolean(on);
-  if(label)label.style.display=on?"none":"inline";
-  if(processing)processing.style.display=on?"inline-flex":"none";
 }
 
 async function api(path,{method="GET",body,authRequired=false}={}){
@@ -936,9 +690,7 @@ async function api(path,{method="GET",body,authRequired=false}={}){
   });
 
   const d=await r.json().catch(()=>({}));
-  if(!r.ok||d.ok===false){
-    throw new Error(d.error||d.code||`Error ${r.status}`);
-  }
+  if(!r.ok||d.ok===false)throw new Error(d.error||d.code||`Error ${r.status}`);
   return d;
 }
 
@@ -977,14 +729,8 @@ async function loadConfig(){
 
   if(!products.length)throw new Error("No hay productos disponibles.");
 
-  config={
-    products,
-    paypalClientId:String(paypalCfg.clientId||"").trim()
-  };
-
-  if(!config.paypalClientId){
-    throw new Error("PayPal no está configurado.");
-  }
+  config={products,paypalClientId:String(paypalCfg.clientId||"").trim()};
+  if(!config.paypalClientId)throw new Error("PayPal no está configurado.");
 
   const select=$("#product-select");
   select.innerHTML=products
@@ -997,68 +743,36 @@ async function loadConfig(){
 
   updatePreview();
   step("auth","done");
-
   $("#loading").style.display="none";
-  $("#checkout-body").style.display="block";
+  const body=$("#lab-body")||$("#checkout-body");
+  if(body)body.style.display="block";
 }
 
-function waitForPayPalV6(timeoutMs=12000){
-  if(window.paypal?.createInstance)return Promise.resolve(window.paypal);
+async function loadPayPalSDK(){
+  if(window.paypal?.Buttons)return window.paypal;
+  if(paypalSdkPromise)return paypalSdkPromise;
 
-  return new Promise((resolve,reject)=>{
-    const started=Date.now();
-    const timer=setInterval(()=>{
-      if(window.paypal?.createInstance){
-        clearInterval(timer);
-        resolve(window.paypal);
-        return;
-      }
-      if(Date.now()-started>timeoutMs){
-        clearInterval(timer);
-        reject(new Error("PayPal v6 tardó demasiado en cargar."));
-      }
-    },80);
-  });
-}
+  paypalSdkPromise=new Promise((resolve,reject)=>{
+    const s=document.createElement("script");
+    const url=new URL("https://www.paypal.com/sdk/js");
+    url.searchParams.set("client-id",config.paypalClientId);
+    url.searchParams.set("currency","USD");
+    url.searchParams.set("intent","capture");
+    url.searchParams.set("commit","true");
+    url.searchParams.set("components","buttons");
 
-async function initPayPalV6(){
-  if(paypalSdkInstance)return paypalSdkInstance;
-  if(paypalV6InitPromise)return paypalV6InitPromise;
-
-  paypalV6InitPromise=(async()=>{
-    if(!config?.paypalClientId)throw new Error("PayPal no está configurado.");
-
-    const paypal=await waitForPayPalV6();
-
-    const sdk=await paypal.createInstance({
-      clientId:config.paypalClientId,
-      components:["card-fields","paypal-payments"],
-      pageType:"checkout",
-      locale:"es-GT",
-      clientMetadataId:
-        (globalThis.crypto?.randomUUID?.()||`dingloft-${Date.now()}`)
-    });
-
-    paypalSdkInstance=sdk;
-    return sdk;
-  })().catch(error=>{
-    paypalV6InitPromise=null;
+    s.src=url.href;
+    s.async=true;
+    s.defer=true;
+    s.onload=()=>window.paypal?.Buttons?resolve(window.paypal):reject(new Error("PayPal no terminó de cargar."));
+    s.onerror=()=>reject(new Error("No se pudo cargar PayPal."));
+    document.head.appendChild(s);
+  }).catch(error=>{
+    paypalSdkPromise=null;
     throw error;
   });
 
-  return paypalV6InitPromise;
-}
-
-async function refreshEligibility(){
-  const sdk=await initPayPalV6();
-  const amount=Number(currentQuote?.totalUsd||currentProduct?.priceUsd||0).toFixed(2);
-
-  paypalMethods=await sdk.findEligibleMethods({
-    currencyCode:"USD",
-    amount
-  });
-
-  return paypalMethods;
+  return paypalSdkPromise;
 }
 
 async function secureQuote(){
@@ -1071,21 +785,14 @@ async function secureQuote(){
   });
 }
 
-async function createOrderId(){
+async function createOrder(){
   const item=cartItem();
   const result=await api("/checkout/paypal/create",{
     method:"POST",
     authRequired:true,
     body:{items:[item],couponCode:""}
   });
-
-  if(!result?.orderId)throw new Error("PayPal no devolvió una orden válida.");
   return result.orderId;
-}
-
-async function createOrderPromiseV6(){
-  const orderId=await createOrderId();
-  return {orderId};
 }
 
 async function captureOrder(orderId){
@@ -1096,384 +803,64 @@ async function captureOrder(orderId){
   });
 }
 
-function showSuccess(result,method){
+function showSuccess(result){
   step("payment","done");
   step("webhook","done");
-
   $("#checkout-zone").style.display="none";
   $("#setup-zone").style.display="none";
   $("#result-zone").style.display="block";
-
-  $("#r-session").textContent=
-    method==="card" ? "Tarjeta vía PayPal v6" :
-    method==="airtm" ? "Airtm" :
-    "PayPal v6";
-  $("#r-transaction").textContent=
-    result?.captureId||result?.orderId||result?.orderNumber||"Confirmado";
-  $("#r-total").textContent=
-    `${money(currentQuote?.totalUsd||currentProduct?.priceUsd)} USD`;
+  $("#r-session").textContent="PayPal";
+  $("#r-transaction").textContent=result?.captureId||result?.orderNumber||"Confirmado";
+  $("#r-total").textContent=`${money(currentQuote?.totalUsd||currentProduct?.priceUsd)} USD`;
 }
 
-async function setupCardFieldsV6(){
-  const loading=$("#card-v6-loading");
-  const fields=$("#card-v6-fields");
-  const unavailable=$("#card-v6-unavailable");
-  const submit=$("#paypal-card-submit");
+async function renderPayPal(){
+  if(paypalRendered)return;
+  const host=$("#paypal-button-container");
+  if(!host)return;
 
-  if(loading)loading.hidden=false;
-  if(fields)fields.hidden=true;
-  if(unavailable)unavailable.hidden=true;
-  if(submit)submit.hidden=true;
+  setMessage("Cargando PayPal…");
+  const paypal=await loadPayPalSDK();
+  host.innerHTML="";
 
-  try{
-    const sdk=await initPayPalV6();
-    const methods=await refreshEligibility();
-
-    const eligible=Boolean(methods?.isEligible?.("advanced_cards"));
-
-    if(!eligible){
-      if(loading)loading.hidden=true;
-      if(unavailable)unavailable.hidden=false;
-      step("elements","");
-      setMethodMessage("card","");
-      return;
-    }
-
-    if(!paypalCardSession){
-      paypalCardSession=sdk.createCardFieldsOneTimePaymentSession();
-    }
-
-    if(!cardFieldsMounted){
-      const style={
-        input:{
-          fontSize:"15px",
-          lineHeight:"22px",
-          fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif",
-          color:"#171717",
-          padding:"13px 12px",
-          background:"#ffffff"
-        },
-        ".invalid":{
-          color:"#c9342f"
-        }
-      };
-
-      const number=paypalCardSession.createCardFieldsComponent({
-        type:"number",
-        placeholder:"1234 5678 9012 3456",
-        style
-      });
-      const expiry=paypalCardSession.createCardFieldsComponent({
-        type:"expiry",
-        placeholder:"MM/AA",
-        style
-      });
-      const cvv=paypalCardSession.createCardFieldsComponent({
-        type:"cvv",
-        placeholder:"CVV",
-        style
-      });
-      const name=paypalCardSession.createCardFieldsComponent({
-        type:"name",
-        placeholder:"Nombre completo",
-        style
-      });
-
-      $("#paypal-card-number").appendChild(number);
-      $("#paypal-card-expiry").appendChild(expiry);
-      $("#paypal-card-cvv").appendChild(cvv);
-      $("#paypal-card-name").appendChild(name);
-
-      cardFieldsMounted=true;
-    }
-
-    if(loading)loading.hidden=true;
-    if(fields)fields.hidden=false;
-    if(submit){
-      submit.hidden=false;
-      submit.disabled=false;
-    }
-
-    step("elements","done");
-    setMethodMessage("card","");
-  }catch(error){
-    console.error("PayPal v6 card setup",error);
-    if(loading)loading.hidden=true;
-    if(unavailable)unavailable.hidden=false;
-    if(unavailable){
-      unavailable.textContent=
-        "No se pudo preparar el formulario de tarjeta. Puedes continuar con PayPal.";
-    }
-    step("elements","");
-    setMethodMessage("card",error?.message||"No se pudo cargar el formulario.",true);
-  }
-}
-
-async function submitCardV6(){
-  if(!paypalCardSession)return;
-
-  setCardProcessing(true);
-  setMethodMessage("card","");
-  step("payment","active");
-
-  try{
-    const orderId=await createOrderId();
-
-    const {data,state}=await paypalCardSession.submit(orderId);
-
-    if(state==="succeeded"){
-      const confirmedOrderId=data?.orderId||orderId;
-      const result=await captureOrder(confirmedOrderId);
-      showSuccess(result,"card");
-      return;
-    }
-
-    if(state==="canceled"){
+  const buttons=paypal.Buttons({
+    style:{layout:"vertical",color:"gold",shape:"rect",label:"paypal",height:48},
+    createOrder:async()=>{
+      step("session","active");
+      setMessage("Preparando el pago…");
+      const id=await createOrder();
+      step("session","done");
+      return id;
+    },
+    onApprove:async data=>{
+      try{
+        step("payment","active");
+        setMessage("Pago aprobado. Habilitando tu compra…");
+        const result=await captureOrder(data.orderID);
+        showSuccess(result);
+      }catch(error){
+        step("payment","");
+        setMessage(error?.message||"El pago fue aprobado, pero no se pudo confirmar la entrega.",true);
+      }
+    },
+    onCancel:()=>{
       step("payment","");
-      setMethodMessage(
-        "card",
-        "La autenticación de la tarjeta fue cancelada. Puedes intentarlo nuevamente."
-      );
-      return;
-    }
-
-    if(state==="failed"){
+      setMessage("Pago cancelado. No se realizó ningún cobro.");
+    },
+    onError:error=>{
+      console.error("Dingloft PayPal",error);
       step("payment","");
-      setMethodMessage(
-        "card",
-        data?.message||"No se pudo procesar la tarjeta. Revisa los datos e inténtalo nuevamente.",
-        true
-      );
-      return;
+      setMessage("No se pudo abrir PayPal. Inténtalo nuevamente.",true);
     }
-
-    step("payment","");
-    setMethodMessage("card","El pago quedó pendiente. Inténtalo nuevamente.",true);
-  }catch(error){
-    console.error("PayPal v6 CardFields submit",error);
-    step("payment","");
-    setMethodMessage(
-      "card",
-      error?.message||"No se pudo procesar la tarjeta. Inténtalo nuevamente.",
-      true
-    );
-  }finally{
-    setCardProcessing(false);
-  }
-}
-
-async function setupPayPalV6(){
-  const loading=$("#paypal-v6-loading");
-  const wrap=$("#paypal-v6-button-wrap");
-  const button=$("#paypal-v6-button");
-
-  if(loading)loading.hidden=false;
-  if(wrap)wrap.hidden=true;
-
-  try{
-    const sdk=await initPayPalV6();
-    const methods=await refreshEligibility();
-
-    if(methods?.isEligible&&methods.isEligible("paypal")===false){
-      if(loading)loading.hidden=true;
-      setMethodMessage("paypal","PayPal no está disponible para esta transacción.",true);
-      return;
-    }
-
-    if(!paypalPaymentSession){
-      paypalPaymentSession=sdk.createPayPalOneTimePaymentSession({
-        onApprove:async ({orderId})=>{
-          try{
-            step("payment","active");
-            setMethodMessage("paypal","Pago aprobado. Habilitando tu compra…");
-            const result=await captureOrder(orderId);
-            showSuccess(result,"paypal");
-          }catch(error){
-            step("payment","");
-            setMethodMessage(
-              "paypal",
-              error?.message||"PayPal aprobó el pago, pero no se pudo confirmar la entrega.",
-              true
-            );
-            throw error;
-          }
-        },
-        onCancel:()=>{
-          step("payment","");
-          setMethodMessage("paypal","Pago cancelado. No se realizó ningún cobro.");
-        },
-        onError:error=>{
-          console.error("PayPal v6 payment",error);
-          step("payment","");
-          setMethodMessage(
-            "paypal",
-            error?.message||"No se pudo iniciar PayPal. Inténtalo nuevamente.",
-            true
-          );
-        }
-      });
-    }
-
-    if(button&&!paypalButtonBound){
-      button.addEventListener("click",async()=>{
-        step("session","active");
-        setMethodMessage("paypal","Preparando PayPal…");
-
-        try{
-          const orderPromise=createOrderPromiseV6();
-          step("session","done");
-          await paypalPaymentSession.start(
-            {presentationMode:"auto"},
-            orderPromise
-          );
-        }catch(error){
-          console.error("PayPal v6 start",error);
-          step("payment","");
-          setMethodMessage(
-            "paypal",
-            error?.message||"No se pudo abrir PayPal.",
-            true
-          );
-        }
-      });
-
-      paypalButtonBound=true;
-    }
-
-    if(loading)loading.hidden=true;
-    if(wrap)wrap.hidden=false;
-    step("elements","done");
-    setMethodMessage("paypal","");
-  }catch(error){
-    console.error("PayPal v6 setup",error);
-    if(loading)loading.hidden=true;
-    setMethodMessage(
-      "paypal",
-      error?.message||"No se pudo cargar PayPal.",
-      true
-    );
-    step("elements","");
-  }
-}
-
-
-async function startAirtmCheckout(){
-  const btn=$("#airtm-pay-btn");
-  if(!btn)return;
-
-  btn.disabled=true;
-  const original=btn.textContent;
-  btn.textContent="Preparando Airtm…";
-  setMethodMessage("airtm","");
-  step("payment","active");
-
-  try{
-    const item=cartItem();
-    if(!item?.name)throw new Error("Producto inválido.");
-
-    const result=await api("/checkout/airtm/create",{
-      method:"POST",
-      authRequired:true,
-      body:{items:[item],couponCode:""}
-    });
-
-    if(!result?.checkoutUrl)throw new Error("Airtm no devolvió una URL de pago.");
-
-    sessionStorage.setItem("dingloft_airtm_code",String(result.code||""));
-    sessionStorage.setItem("dingloft_airtm_purchase_id",String(result.purchaseId||""));
-    location.href=result.checkoutUrl;
-  }catch(error){
-    console.error("Dingloft Airtm",error);
-    step("payment","");
-    setMethodMessage("airtm",error?.message||"No se pudo iniciar Airtm.",true);
-    btn.disabled=false;
-    btn.textContent=original;
-  }
-}
-
-async function verifyAirtmReturn(){
-  const qs=new URLSearchParams(location.search);
-  const state=qs.get("airtm");
-  if(!state)return;
-
-  const code=qs.get("code")||qs.get("airtm_code")||sessionStorage.getItem("dingloft_airtm_code")||"";
-  if(state==="canceled"){
-    setMethodMessage("airtm","Pago cancelado. No se realizó ningún cobro.");
-    return;
-  }
-
-  if(state!=="confirmed")return;
-
-  step("payment","active");
-  setMethodMessage("airtm","Verificando el pago con Airtm…");
-
-  try{
-    const result=await api("/checkout/airtm/status",{
-      method:"POST",
-      authRequired:true,
-      body:{code}
-    });
-
-    const status=String(result?.status||"").toLowerCase();
-
-    if(status==="confirmed" && result?.fulfilled){
-      showSuccess(result,"airtm");
-      return;
-    }
-
-    if(status==="confirmed"){
-      setMethodMessage("airtm","Pago confirmado. Estamos terminando la entrega…");
-      setTimeout(()=>location.reload(),1400);
-      return;
-    }
-
-    if(status==="canceled"){
-      step("payment","");
-      setMethodMessage("airtm","El pago fue cancelado.");
-      return;
-    }
-
-    if(status==="failed"){
-      step("payment","");
-      setMethodMessage("airtm","Airtm indicó que el pago falló.",true);
-      return;
-    }
-
-    setMethodMessage("airtm","El pago aún está pendiente de confirmación.");
-  }catch(error){
-    console.error("Airtm verify",error);
-    step("payment","");
-    setMethodMessage("airtm",error?.message||"No se pudo verificar Airtm.",true);
-  }
-}
-
-function selectPaymentMethod(method){
-  activeMethod=method;
-
-  document.querySelectorAll("[data-method]").forEach(btn=>{
-    btn.classList.toggle("active",btn.dataset.method===method);
   });
 
-  $("#card-method-panel")?.classList.toggle("hidden-method",method!=="card");
-  $("#paypal-method-panel")?.classList.toggle("active",method==="paypal");
-  $("#airtm-method-panel")?.classList.toggle("active",method==="airtm");
-  $("#binance-method-panel")?.classList.toggle("active",method==="binance");
-
-  if(method==="card"){
-    setupCardFieldsV6();
-  }else if(method==="paypal"){
-    setupPayPalV6();
-  }else if(method==="airtm"){
-    $("#airtm-total").textContent=`${money(currentQuote?.totalUsd||currentProduct?.priceUsd)} USD`;
-    step("elements","done");
-  }else{
-    step("elements","done");
-  }
+  await buttons.render("#paypal-button-container");
+  paypalRendered=true;
+  step("elements","done");
+  setMessage("");
 }
 
 async function prepare(){
-  setError("");
-
   const btn=$("#prepare-btn");
   btn.disabled=true;
   const original=btn.textContent;
@@ -1494,39 +881,21 @@ async function prepare(){
     step("session","done");
     $("#setup-zone").style.display="none";
     $("#checkout-zone").style.display="block";
-
-    selectPaymentMethod("card");
+    await renderPayPal();
   }catch(error){
     console.error(error);
     step("session","");
-    setError(error?.message||"No se pudo preparar el pedido.");
+    const setup=$("#setup-error");
+    if(setup)setup.textContent=error?.message||"No se pudo preparar el pedido.";
     btn.disabled=false;
     btn.textContent=original;
   }
 }
 
-function reset(){
-  location.href="checkout.html";
-}
-
-document.querySelectorAll("[data-method]").forEach(btn=>{
-  btn.addEventListener("click",()=>selectPaymentMethod(btn.dataset.method));
-});
-
-const qrImg=$("#binance-qr");
-const qrFallback=$("#binance-qr-fallback");
-if(qrImg){
-  qrImg.addEventListener("error",()=>{
-    qrImg.style.display="none";
-    if(qrFallback)qrFallback.style.display="grid";
-  });
-}
+function reset(){ location.reload(); }
 
 $("#product-select")?.addEventListener("change",updatePreview);
 $("#prepare-btn")?.addEventListener("click",prepare);
-$("#paypal-card-submit")?.addEventListener("click",submitCardV6);
-$("#airtm-pay-btn")?.addEventListener("click",startAirtmCheckout);
-$("#cancel-btn")?.addEventListener("click",reset);
 $("#new-test-btn")?.addEventListener("click",reset);
 
 onAuthStateChanged(auth,async user=>{
@@ -1539,14 +908,13 @@ onAuthStateChanged(auth,async user=>{
   try{
     token=await user.getIdToken(false);
     await loadConfig();
-    await verifyAirtmReturn();
   }catch(error){
     console.error(error);
     $("#loading").style.display="none";
-    $("#checkout-body").style.display="none";
+    const body=$("#lab-body")||$("#checkout-body");
+    if(body)body.style.display="none";
     $("#auth-lock").style.display="grid";
-    $("#auth-lock p").textContent=
-      error?.message||"No se pudo preparar el checkout.";
+    $("#auth-lock p").textContent=error?.message||"No se pudo preparar el checkout.";
   }
 });
 </script>
