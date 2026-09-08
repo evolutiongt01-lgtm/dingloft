@@ -441,6 +441,23 @@
       box-shadow:var(--shadow)
     }
     .loading-wrap p,.auth-lock p{max-width:420px;padding:0 22px;color:#838389;font-size:11px;line-height:1.55}
+
+    .checkout-loader{
+      display:grid;
+      place-items:center;
+    }
+    .checkout-loader-ring{
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      border:3px solid #e7e7e4;
+      border-top-color:#111;
+      animation:checkoutSpin .78s linear infinite;
+    }
+    @keyframes checkoutSpin{
+      to{transform:rotate(360deg)}
+    }
+
     .auth-lock{display:none}
 
     .footer{
@@ -485,7 +502,9 @@
 <div class="page">
   <main class="shell">
     <div id="loading" class="loading-wrap">
-      <p>Preparando tu checkout…</p>
+      <div class="checkout-loader" aria-label="Cargando checkout">
+        <span class="checkout-loader-ring"></span>
+      </div>
     </div>
 
     <div id="auth-lock" class="auth-lock">
