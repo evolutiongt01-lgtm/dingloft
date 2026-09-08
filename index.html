@@ -1161,12 +1161,26 @@ body{
 }
 
 
-/* Global Dingloft navbar replaces this local header only on iPad + desktop */
-@media (min-width:768px){
-  body > .header{display:none !important;}
 }
 
 </style>
+
+<style id="dingloft-nav-replace-safety">
+@media (min-width:768px){
+  body > header:not(.mobile-header):not(.phone-header),
+  body > nav:not(#dingloftGlobalNav):not(.mobile-app-dock),
+  .site-header,
+  .main-navbar,
+  .desktop-navbar,
+  .navbar:not(.mobile-app-dock),
+  .top-nav,
+  .global-header,
+  .app-header:not(.mobile-header){
+    display:none !important;
+  }
+}
+</style>
+
 </head>
 
 <body>

@@ -21,6 +21,31 @@
   }
 
   @media (min-width:768px){
+
+    /*
+      IMPORTANT:
+      This navbar REPLACES the old desktop/tablet navbar.
+      Phone/mobile dock is preserved.
+    */
+    body > header:not(.mobile-header):not(.phone-header),
+    body > nav:not(#dingloftGlobalNav):not(.mobile-app-dock),
+    .site-header,
+    .main-navbar,
+    .desktop-navbar,
+    .navbar:not(.mobile-app-dock),
+    .top-nav,
+    .global-header,
+    .app-header:not(.mobile-header){
+      display:none !important;
+    }
+
+    /* Preserve mobile-only navigation structures if they happen to exist */
+    .mobile-app-dock,
+    .mobile-nav,
+    .mobile-bottom-nav{
+      display:none !important;
+    }
+
     .dingloft-global-nav{
       position:fixed;
       z-index:99990;
@@ -283,6 +308,30 @@
   `;
 
   document.body.prepend(nav);
+
+  // Remove/hide legacy desktop/tablet navigation so both systems never stack.
+  const legacySelectors = [
+    "body > header:not(.mobile-header):not(.phone-header)",
+    "body > nav:not(#dingloftGlobalNav):not(.mobile-app-dock)",
+    ".site-header",
+    ".main-navbar",
+    ".desktop-navbar",
+    ".navbar:not(.mobile-app-dock)",
+    ".top-nav",
+    ".global-header",
+    ".app-header:not(.mobile-header)"
+  ];
+
+  if (window.matchMedia("(min-width:768px)").matches) {
+    legacySelectors.forEach(selector => {
+      document.querySelectorAll(selector).forEach(el => {
+        if (el.id === "dingloftGlobalNav") return;
+        if (el.closest("#dingloftGlobalNav")) return;
+        el.dataset.dingloftLegacyNavHidden = "true";
+        el.style.setProperty("display", "none", "important");
+      });
+    });
+  }
 
   const current = file || "index.html";
   const hash = location.hash.toLowerCase();
