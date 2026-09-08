@@ -404,6 +404,133 @@
       margin-top:13px;text-align:center;
       color:#66666d;font-size:9px;line-height:1.55
     }
+
+    .method-switch{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+      margin:2px 0 18px;
+      padding:5px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      background:rgba(0,0,0,.18);
+    }
+    .method-btn{
+      min-height:48px;
+      border:1px solid transparent;
+      border-radius:14px;
+      background:transparent;
+      color:#7f7f86;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-size:10px;
+      font-weight:650;
+      transition:.18s ease;
+    }
+    .method-btn:hover{color:#d6d6da;background:rgba(255,255,255,.035)}
+    .method-btn.active{
+      color:#fff;
+      border-color:rgba(255,255,255,.13);
+      background:rgba(255,255,255,.07);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 8px 18px rgba(0,0,0,.10);
+    }
+    .method-icon{
+      width:20px;height:20px;
+      display:grid;place-items:center;
+      color:currentColor;
+    }
+    .method-icon svg{
+      width:18px;height:18px;
+      fill:none;stroke:currentColor;stroke-width:1.6;
+      stroke-linecap:round;stroke-linejoin:round
+    }
+    .paypal-word{
+      font-size:11px;font-weight:750;letter-spacing:-.25px;color:inherit
+    }
+    .binance-mark{
+      width:13px;height:13px;position:relative;transform:rotate(45deg);
+      border:1.7px solid currentColor;border-radius:2px
+    }
+    .binance-mark:before{
+      content:"";position:absolute;inset:3px;border:1px solid currentColor;border-radius:1px
+    }
+
+    .alt-method-panel{display:none}
+    .alt-method-panel.active{display:block}
+    #stripe-method-panel.hidden-method{display:none}
+
+    .paypal-shell{
+      padding:22px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px;
+      background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.018));
+      text-align:center;
+    }
+    .paypal-shell h3{
+      margin:0 0 7px;
+      font-size:18px;font-weight:650;letter-spacing:-.35px
+    }
+    .paypal-shell p{
+      max-width:430px;margin:0 auto 18px;
+      color:#7d7d84;font-size:10px;line-height:1.55
+    }
+    #paypal-button-container{
+      max-width:420px;margin:0 auto;
+      min-height:48px
+    }
+    .sandbox-note{
+      margin-top:12px;color:#5f5f66;font-size:8px;line-height:1.5
+    }
+
+    .binance-shell{
+      min-height:350px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:30px 20px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:22px;
+      background:
+        radial-gradient(circle at 50% 20%,rgba(240,185,11,.06),transparent 32%),
+        rgba(255,255,255,.018);
+    }
+    .qr-frame{
+      width:214px;height:214px;
+      padding:12px;
+      border-radius:26px;
+      background:#fff;
+      box-shadow:0 20px 55px rgba(0,0,0,.28);
+      display:grid;place-items:center;
+      overflow:hidden;
+    }
+    .qr-frame img{
+      width:100%;height:100%;
+      object-fit:contain;display:block
+    }
+    .qr-fallback{
+      width:100%;height:100%;
+      display:none;place-items:center;
+      background:
+        linear-gradient(90deg,#111 10px,transparent 10px) 0 0/24px 24px,
+        linear-gradient(#111 10px,transparent 10px) 0 0/24px 24px,
+        #fff;
+      color:#111;
+      font-size:13px;font-weight:800;letter-spacing:1px
+    }
+    .binance-name{
+      margin-top:20px;
+      font-size:15px;font-weight:650;letter-spacing:-.2px;
+      color:#f5f5f7
+    }
+    .binance-sub{
+      margin-top:6px;
+      font-size:9px;color:#64646b
+    }
     .stripe-error{
       min-height:15px;margin-top:10px;
       color:var(--danger);font-size:10px;line-height:1.45
@@ -535,6 +662,9 @@
       .product-visual{margin:18px 18px 0;min-height:190px;border-radius:22px}
       .product-name{font-size:19px}
       .product-price{font-size:30px}
+      .method-switch{gap:5px;padding:4px;border-radius:16px}
+      .method-btn{min-height:45px;border-radius:12px;font-size:9px;gap:6px}
+      .qr-frame{width:190px;height:190px}
     }
   </style>
 </head>
@@ -670,7 +800,24 @@
                 </div>
                 <div class="mini-price" id="checkout-price">$0.00</div>
               </div>
+              <div class="method-switch" aria-label="Método de pago">
+                <button class="method-btn active" type="button" data-method="stripe">
+                  <span class="method-icon">
+                    <svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2.5"/><path d="M3.5 10h17"/></svg>
+                  </span>
+                  Tarjeta
+                </button>
+                <button class="method-btn" type="button" data-method="paypal">
+                  <span class="paypal-word">PayPal</span>
+                </button>
+                <button class="method-btn" type="button" data-method="binance">
+                  <span class="binance-mark"></span>
+                  Binance
+                </button>
+              </div>
 
+
+              <div id="stripe-method-panel">
               <div class="wallet-wrap hidden" id="wallet-wrap">
                 <div class="wallet-label">Pago rápido</div>
                 <div id="express-checkout-element"></div>
@@ -686,6 +833,27 @@
               </button>
               <button class="ghost-btn" id="cancel-btn">Cambiar producto</button>
               <div class="fineprint">Tus datos financieros no se almacenan en Dingloft.</div>
+              </div>
+
+              <div class="alt-method-panel" id="paypal-method-panel">
+                <div class="paypal-shell">
+                  <h3>Paga con PayPal</h3>
+                  <p>Continúa con tu cuenta PayPal desde una ventana segura.</p>
+                  <div id="paypal-button-container"></div>
+                  <div class="sandbox-note">Este checkout usa PayPal Sandbox mientras el laboratorio está activo.</div>
+                </div>
+              </div>
+
+              <div class="alt-method-panel" id="binance-method-panel">
+                <div class="binance-shell">
+                  <div class="qr-frame">
+                    <img id="binance-qr" src="/img/binance-pay-qr.png" alt="QR Binance de Evolution Desing">
+                    <div class="qr-fallback" id="binance-qr-fallback">QR</div>
+                  </div>
+                  <div class="binance-name">Evolution Desing</div>
+                  <div class="binance-sub">Binance Pay</div>
+                </div>
+              </div>
             </div>
 
             <div id="result-zone" class="result">
@@ -725,7 +893,7 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 const FIREBASE_CONFIG={apiKey:"AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",authDomain:"login-dingloft.firebaseapp.com",projectId:"login-dingloft",storageBucket:"login-dingloft.firebasestorage.app",messagingSenderId:"549466738202",appId:"1:549466738202:web:8bf305fe2c753e9d76cba3",measurementId:"G-R9SGZCDN13"};
 const WORKER="https://autumn-breeze-dfa0.evolutiongt01.workers.dev";
 const app=getApps().length?getApp():initializeApp(FIREBASE_CONFIG),auth=getAuth(app);
-const $=s=>document.querySelector(s);let token="",config=null,checkout=null,actions=null,paymentElement=null,expressElement=null,currentSessionId="",currentProduct=null,pollTimer=null;
+const $=s=>document.querySelector(s);let token="",config=null,checkout=null,actions=null,paymentElement=null,expressElement=null,currentSessionId="",currentProduct=null,pollTimer=null,activeMethod="stripe",paypalRendered=false;
 
 function step(name,state="done"){const el=document.querySelector(`[data-step="${name}"]`);if(!el)return;el.classList.remove("done","active");if(state)el.classList.add(state);const st=el.querySelector('.step-state');st.textContent=state==='done'?'ok':state==='active'?'activo':'espera'}
 function money(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(v||0))}
@@ -734,9 +902,9 @@ async function api(path,{method='GET',body}={}){const headers={Accept:'applicati
 function updatePreview(){const sku=$('#product-select').value;currentProduct=config.products.find(p=>p.sku===sku)||config.products[0];if(!currentProduct)return;$('#preview-name').textContent=currentProduct.name;$('#preview-type').textContent=`${currentProduct.type||'Producto digital'} · entrega configurada`;$('#preview-price').innerHTML=`${money(currentProduct.priceUsd)} <small>USD</small>`}
 async function loadConfig(){config=await api('/checkout/stripe-test/config');step('auth','done');$('#product-select').innerHTML=config.products.map(p=>`<option value="${p.sku}">${p.name} · ${money(p.priceUsd)}</option>`).join('');if(config.defaultSku)$('#product-select').value=config.defaultSku;updatePreview();$('#loading').style.display='none';$('#lab-body').style.display='block'}
 
-async function prepare(){setError('');const btn=$('#prepare-btn');btn.disabled=true;const original=btn.textContent;btn.textContent='Creando sesión segura…';step('session','active');try{currentProduct=config.products.find(p=>p.sku===$('#product-select').value);if(!currentProduct)throw new Error('Selecciona un producto válido.');const created=await api('/checkout/stripe-test/create',{method:'POST',body:{sku:currentProduct.sku}});currentSessionId=created.sessionId;step('session','done');$('#checkout-name').textContent=created.item.name;$('#checkout-price').textContent=money(created.amountUsd);$('#setup-zone').style.display='none';$('#checkout-zone').style.display='block';await mountStripe(created.clientSecret);startPolling()}catch(e){console.error('Stripe Lab prepare',e);step('session','');setError(e.message||'No se pudo preparar el pago de prueba.');btn.disabled=false;btn.textContent=original}}
+async function prepare(){setError('');paypalRendered=false;const btn=$('#prepare-btn');btn.disabled=true;const original=btn.textContent;btn.textContent='Creando sesión segura…';step('session','active');try{currentProduct=config.products.find(p=>p.sku===$('#product-select').value);if(!currentProduct)throw new Error('Selecciona un producto válido.');const created=await api('/checkout/stripe-test/create',{method:'POST',body:{sku:currentProduct.sku}});currentSessionId=created.sessionId;step('session','done');$('#checkout-name').textContent=created.item.name;$('#checkout-price').textContent=money(created.amountUsd);$('#setup-zone').style.display='none';$('#checkout-zone').style.display='block';selectPaymentMethod('stripe');await mountStripe(created.clientSecret);startPolling()}catch(e){console.error('Stripe Lab prepare',e);step('session','');setError(e.message||'No se pudo preparar el pago de prueba.');btn.disabled=false;btn.textContent=original}}
 
-async function mountStripe(clientSecret){step('elements','active');if(typeof window.Stripe!=='function')throw new Error('El módulo seguro de pago no cargó. Recarga la página e inténtalo de nuevo.');const stripe=window.Stripe(config.publishableKey);const appearance={theme:'night',labels:'floating',variables:{colorPrimary:'#ffffff',colorBackground:'#17171a',colorText:'#f7f7f8',colorDanger:'#ff8a8a',colorTextSecondary:'#a6a6ad',borderRadius:'14px',fontFamily:'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif',spacingUnit:'4px'},rules:{'.Input':{border:'1px solid rgba(255,255,255,.10)',boxShadow:'none',backgroundColor:'#17171a'},'.Input:hover':{border:'1px solid rgba(255,255,255,.17)'},'.Input:focus':{border:'1px solid rgba(255,255,255,.32)',boxShadow:'0 0 0 3px rgba(255,255,255,.05)'},'.Label':{color:'#b8b8bf'},'.Tab':{border:'1px solid rgba(255,255,255,.10)',backgroundColor:'#141416'},'.Tab:hover':{border:'1px solid rgba(255,255,255,.18)'},'.Tab--selected':{border:'1px solid rgba(255,255,255,.28)',backgroundColor:'#1b1b1f'},'.Block':{backgroundColor:'#17171a'}}};
+async function mountStripe(clientSecret){step('elements','active');if(typeof window.Stripe!=='function')throw new Error('El módulo seguro de pago no cargó. Recarga la página e inténtalo de nuevo.');const stripe=window.Stripe(config.publishableKey);const appearance={theme:'night',labels:'floating',variables:{colorPrimary:'#ffffff',colorBackground:'#0d0d0f',colorText:'#f5f5f7',colorDanger:'#ff6961',colorTextSecondary:'#a1a1a6',borderRadius:'16px',fontFamily:'-apple-system,BlinkMacSystemFont,SF Pro Text,Segoe UI,Roboto,Helvetica,Arial,sans-serif',spacingUnit:'4px'},rules:{'.Input':{border:'1px solid rgba(255,255,255,.11)',boxShadow:'none',backgroundColor:'#0f0f11'},'.Input:hover':{border:'1px solid rgba(255,255,255,.18)',backgroundColor:'#101012'},'.Input:focus':{border:'1px solid rgba(255,255,255,.30)',boxShadow:'0 0 0 3px rgba(255,255,255,.045)',backgroundColor:'#101012'},'.Label':{color:'#b8b8bd'},'.Tab':{border:'1px solid rgba(255,255,255,.10)',backgroundColor:'#0f0f11',boxShadow:'none'},'.Tab:hover':{border:'1px solid rgba(255,255,255,.18)',backgroundColor:'#111113'},'.Tab--selected':{border:'1px solid rgba(255,255,255,.28)',backgroundColor:'#0b0b0d',boxShadow:'0 0 0 2px rgba(255,255,255,.035)'},'.Block':{backgroundColor:'#0d0d0f',border:'1px solid rgba(255,255,255,.08)',boxShadow:'none'}}};
   const initOptions={clientSecret,elementsOptions:{appearance}};
   checkout=stripe.initCheckoutElementsSdk(initOptions);
   const loaded=await checkout.loadActions();if(loaded.type!=='success')throw new Error(loaded.error?.message||'No se pudo iniciar el formulario seguro de pago.');actions=loaded.actions;
@@ -745,6 +913,85 @@ async function mountStripe(clientSecret){step('elements','active');if(typeof win
     try{expressElement=checkout.createExpressCheckoutElement({buttonHeight:52,buttonTheme:{applePay:'white-outline'},buttonType:{applePay:'check-out',googlePay:'checkout'},layout:{maxColumns:2,maxRows:1,overflow:'auto'}});expressElement.on('ready',({availablePaymentMethods})=>{if(availablePaymentMethods){$('#wallet-wrap').classList.remove('hidden')}});expressElement.on('confirm',async ev=>{setProcessing(true);step('payment','active');const result=await actions.confirm({expressCheckoutConfirmEvent:ev});if(result?.type==='error'){setProcessing(false);step('payment','');setError(result.error?.message||'No se pudo confirmar el pago.')}else{startPolling(true)}});expressElement.mount('#express-checkout-element')}catch(e){console.warn('Express Checkout no disponible',e)}
   }
   checkout.on('change',session=>{$('#pay-btn').disabled=!session.canConfirm});step('elements','done');
+}
+
+
+function selectPaymentMethod(method){
+  activeMethod=method;
+  document.querySelectorAll('[data-method]').forEach(btn=>btn.classList.toggle('active',btn.dataset.method===method));
+  const stripePanel=$('#stripe-method-panel');
+  const paypalPanel=$('#paypal-method-panel');
+  const binancePanel=$('#binance-method-panel');
+  stripePanel?.classList.toggle('hidden-method',method!=='stripe');
+  paypalPanel?.classList.toggle('active',method==='paypal');
+  binancePanel?.classList.toggle('active',method==='binance');
+
+  if(method==='paypal') ensurePayPalSandbox().catch(err=>{
+    console.error('PayPal Sandbox',err);
+    setError('No se pudo cargar PayPal Sandbox.');
+  });
+
+  if(method==='binance'){
+    setError('');
+  }
+}
+
+function loadExternalScript(src,id){
+  return new Promise((resolve,reject)=>{
+    if(id && document.getElementById(id)) return resolve();
+    const s=document.createElement('script');
+    if(id)s.id=id;
+    s.src=src;s.async=true;
+    s.onload=()=>resolve();
+    s.onerror=()=>reject(new Error('No se pudo cargar el módulo de pago.'));
+    document.head.appendChild(s);
+  });
+}
+
+async function ensurePayPalSandbox(){
+  if(paypalRendered)return;
+  await loadExternalScript('https://www.paypal.com/sdk/js?client-id=sb&currency=USD&components=buttons','paypal-sandbox-sdk');
+  if(!window.paypal?.Buttons)throw new Error('PayPal Sandbox no disponible.');
+  const amount=Number(currentProduct?.priceUsd||0).toFixed(2);
+  await window.paypal.Buttons({
+    fundingSource:window.paypal.FUNDING.PAYPAL,
+    style:{layout:'vertical',color:'black',shape:'pill',label:'paypal',height:48},
+    createOrder:(data,actions)=>actions.order.create({
+      purchase_units:[{
+        description:currentProduct?.name||'Dingloft',
+        amount:{currency_code:'USD',value:amount}
+      }]
+    }),
+    onApprove:async(data,actions)=>{
+      const order=await actions.order.capture();
+      step('payment','done');
+      step('webhook','done');
+      $('#checkout-zone').style.display='none';
+      $('#setup-zone').style.display='none';
+      $('#result-zone').style.display='block';
+      $('#r-session').textContent='PayPal Sandbox';
+      $('#r-transaction').textContent=order?.id||data?.orderID||'—';
+      $('#r-total').textContent=`${money(amount)} USD`;
+    },
+    onCancel:()=>{},
+    onError:err=>{
+      console.error('PayPal Sandbox',err);
+      setError('No se pudo completar la prueba con PayPal.');
+    }
+  }).render('#paypal-button-container');
+  paypalRendered=true;
+}
+
+document.querySelectorAll('[data-method]').forEach(btn=>{
+  btn.addEventListener('click',()=>selectPaymentMethod(btn.dataset.method));
+});
+
+const qrImg=$('#binance-qr'),qrFallback=$('#binance-qr-fallback');
+if(qrImg){
+  qrImg.addEventListener('error',()=>{
+    qrImg.style.display='none';
+    if(qrFallback)qrFallback.style.display='grid';
+  });
 }
 
 function setProcessing(on){$('#pay-btn').disabled=on;$('#pay-label').style.display=on?'none':'inline';$('#processing').style.display=on?'inline-flex':'none'}
