@@ -108,7 +108,7 @@ async function prepare(){setError('');const btn=$('#prepare-btn');btn.disabled=t
 
 async function mountStripe(clientSecret){step('elements','active');if(typeof window.Stripe!=='function')throw new Error('Stripe.js no cargó. Recarga la página y verifica que el navegador no esté bloqueando js.stripe.com.');const stripe=window.Stripe(config.publishableKey);const appearance={theme:'night',labels:'floating',variables:{colorPrimary:'#77e2ff',colorBackground:'#0a0e13',colorText:'#f4f9fc',colorDanger:'#ff7f8e',colorTextSecondary:'#82919d',borderRadius:'14px',fontFamily:'-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif',spacingUnit:'4px'},rules:{'.Input':{border:'1px solid rgba(151,220,255,.14)',boxShadow:'none'},'.Input:focus':{border:'1px solid rgba(119,226,255,.48)',boxShadow:'0 0 0 3px rgba(119,226,255,.06)'},'.Tab':{border:'1px solid rgba(151,220,255,.10)'},'.Tab--selected':{border:'1px solid rgba(119,226,255,.35)'}}};
   const initOptions={clientSecret,elementsOptions:{appearance}};
-  checkout=stripe.initCheckout(initOptions);
+  checkout=stripe.initCheckoutElementsSdk(initOptions);
   const loaded=await checkout.loadActions();if(loaded.type!=='success')throw new Error(loaded.error?.message||'Stripe no pudo iniciar Elements.');actions=loaded.actions;
   paymentElement=checkout.createPaymentElement({layout:'tabs'});paymentElement.mount('#payment-element');
   if(typeof checkout.createExpressCheckoutElement==='function'){
