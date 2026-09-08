@@ -1,1530 +1,1323 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#ffffff">
-  <title>Dingloft · Instala la app</title>
-
-  <link rel="icon" href="img/favicon.png" type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --ink:#111214;
-      --muted:#747a83;
-      --line:#e7e9ec;
-      --soft:#f5f5f7;
-      --blue:#56bfe9;
-      --violet:#7769dc;
-      --scroll-p:0;
-      --phone-y:52vh;
-      --phone-scale:.96;
-      --intro-y:0px;
-      --intro-opacity:1;
-      --hero-opacity:1;
-    }
-
-    *{box-sizing:border-box}
-    html,body{
-      margin:0;
-      min-height:100%;
-      background:#fff;
-      color:var(--ink);
-      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      overflow-x:hidden;
-    }
-
-    body{min-height:100vh}
-    a{text-decoration:none;color:inherit}
-    button{font:inherit}
-
-    /* ========================================================
-       HEADER
-       ======================================================== */
-    .site-header{
-      position:fixed;
-      z-index:100;
-      top:16px;
-      left:50%;
-      width:min(1200px,calc(100% - 32px));
-      height:64px;
-      transform:translateX(-50%);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      padding:9px 10px 9px 13px;
-      border:1px solid var(--line);
-      border-radius:21px;
-      background:rgba(255,255,255,.92);
-      backdrop-filter:blur(18px) saturate(145%);
-      box-shadow:0 12px 34px rgba(18,23,30,.055);
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
-    }
-
-    .brand img{
-      width:40px;
-      height:40px;
-      object-fit:contain;
-      border-radius:12px;
-      background:#0b0d10;
-    }
-
-    .brand strong{
-      display:block;
-      font-size:.78rem;
-      font-weight:800;
-      letter-spacing:.19em;
-      line-height:1;
-    }
-
-    .brand small{
-      display:block;
-      margin-top:5px;
-      color:#9ca1aa;
-      font-size:.44rem;
-      letter-spacing:.17em;
-    }
-
-    .header-actions{
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .header-actions a,
-    .header-actions button{
-      min-height:41px;
-      padding:0 14px;
-      border:1px solid #e3e6e9;
-      border-radius:12px;
-      background:#fff;
-      color:#373b42;
-      font-size:.68rem;
-      font-weight:750;
-      cursor:pointer;
-    }
-
-    .header-actions .primary{
-      border-color:#111318;
-      background:#111318;
-      color:#fff;
-    }
-
-    /* ========================================================
-       OSMO-LIKE PINNED SEQUENCE
-       ======================================================== */
-    .motion-section{
-      position:relative;
-      height:210vh;
-      background:#fff;
-    }
-
-    .motion-pin{
-      position:sticky;
-      top:0;
-      height:100vh;
-      min-height:720px;
-      overflow:hidden;
-      background:
-        radial-gradient(760px 390px at 50% 76%,rgba(86,191,233,.075),transparent 72%),
-        #fff;
-      isolation:isolate;
-    }
-
-    /* círculo fijo detrás: no viaja con el teléfono */
-    .orbit{
-      position:absolute;
-      z-index:0;
-      left:50%;
-      top:57%;
-      width:min(1240px,91vw);
-      aspect-ratio:1;
-      transform:translate(-50%,-50%);
-      border:1.35px solid rgba(57,157,203,.50);
-      border-radius:50%;
-      pointer-events:none;
-    }
-
-    .orbit::before{
-      content:"";
-      position:absolute;
-      inset:8%;
-      border:1px solid rgba(119,105,220,.11);
-      border-radius:inherit;
-    }
-
-    .orbit::after{
-      content:"";
-      position:absolute;
-      inset:16%;
-      border:1px solid rgba(17,18,20,.045);
-      border-radius:inherit;
-    }
-
-    .orbit-glow{
-      position:absolute;
-      z-index:0;
-      left:50%;
-      top:71%;
-      width:min(860px,68vw);
-      height:330px;
-      transform:translate(-50%,-50%);
-      border-radius:50%;
-      background:rgba(86,191,233,.10);
-      filter:blur(100px);
-      pointer-events:none;
-    }
-
-    /* encabezado superior: se desplaza y desaparece primero */
-    .intro{
-      position:absolute;
-      z-index:8;
-      top:112px;
-      left:50%;
-      width:min(890px,calc(100% - 38px));
-      transform:translate(-50%,var(--intro-y));
-      opacity:var(--intro-opacity);
-      text-align:center;
-      will-change:transform,opacity;
-    }
-
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:7px;
-      padding:7px 10px;
-      border:1px solid #e3e6e9;
-      border-radius:999px;
-      background:rgba(255,255,255,.90);
-      color:#767c85;
-      font-size:.56rem;
-      font-weight:800;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-
-    .eyebrow i{
-      width:7px;
-      height:7px;
-      border-radius:50%;
-      background:linear-gradient(145deg,var(--blue),var(--violet));
-      box-shadow:0 0 0 5px rgba(86,191,233,.10);
-    }
-
-    .intro h1{
-      margin:14px 0 0;
-      font-size:clamp(2.75rem,5.15vw,5.2rem);
-      line-height:.92;
-      letter-spacing:-.063em;
-      font-weight:800;
-      text-transform:uppercase;
-    }
-
-    .intro p{
-      width:min(690px,92%);
-      margin:14px auto 0;
-      color:#747a83;
-      font-size:.83rem;
-      line-height:1.6;
-    }
-
-    .intro button{
-      min-height:44px;
-      margin-top:16px;
-      padding:0 16px;
-      border:0;
-      border-radius:12px;
-      background:#111318;
-      color:#fff;
-      font-size:.69rem;
-      font-weight:800;
-      cursor:pointer;
-      box-shadow:0 14px 28px rgba(17,19,24,.13);
-    }
-
-    /* equivalente a OSMO BUSINESS: permanece fijo */
-    .hero-word{
-      position:absolute;
-      z-index:2;
-      left:50%;
-      top:53%;
-      width:100%;
-      transform:translate(-50%,-50%);
-      opacity:var(--hero-opacity);
-      text-align:center;
-      white-space:nowrap;
-      pointer-events:none;
-      font-size:clamp(4.6rem,8.8vw,9rem);
-      line-height:.84;
-      letter-spacing:-.072em;
-      font-weight:800;
-      color:#111318;
-      text-transform:uppercase;
-    }
-
-    .hero-word span{
-      display:block;
-      margin-top:2px;
-      background:linear-gradient(100deg,#111318 0%,#3b91b8 47%,#776bdc 100%);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-    }
-
-    /* el teléfono es lo que realmente atraviesa la escena */
-    .phone-wrap{
-      position:absolute;
-      z-index:6;
-      left:50%;
-      top:50%;
-      width:420px;
-      height:768px;
-      transform:
-        translate3d(-50%,calc(-50% + var(--phone-y)),0)
-        scale(var(--phone-scale));
-      transform-origin:center;
-      will-change:transform;
-    }
-
-    .phone{
-      width:100%;
-      height:100%;
-      padding:11px;
-      border-radius:68px;
-      background:linear-gradient(145deg,#51555b,#131518 22%,#050607 72%,#4d5258);
-      box-shadow:
-        0 54px 105px rgba(18,26,34,.22),
-        inset 0 1px 0 rgba(255,255,255,.48);
-    }
-
-    .screen{
-      position:relative;
-      height:100%;
-      overflow:hidden;
-      border-radius:58px;
-      background:#fff;
-    }
-
-    .island{
-      position:absolute;
-      z-index:5;
-      top:15px;
-      left:50%;
-      width:140px;
-      height:38px;
-      transform:translateX(-50%);
-      border-radius:999px;
-      background:#050505;
-    }
-
-    .phone-ui{
-      height:100%;
-      padding:75px 24px 28px;
-    }
-
-    .phone-nav{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding-bottom:20px;
-      border-bottom:1px solid #edf0f2;
-    }
-
-    .phone-brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .phone-brand img{
-      width:39px;
-      height:39px;
-      object-fit:contain;
-      border-radius:12px;
-      background:#0d0f12;
-    }
-
-    .phone-brand strong{
-      display:block;
-      font-size:.79rem;
-      letter-spacing:.08em;
-    }
-
-    .phone-brand small{
-      display:block;
-      margin-top:3px;
-      color:#9da3ab;
-      font-size:.48rem;
-    }
-
-    .bag{
-      width:38px;
-      height:38px;
-      display:grid;
-      place-items:center;
-      border-radius:11px;
-      background:#f3f5f6;
-      color:#34383e;
-      font-size:.95rem;
-    }
-
-    .phone-hero{
-      padding:31px 2px 21px;
-    }
-
-    .phone-hero small{
-      color:#3b94be;
-      font-size:.52rem;
-      font-weight:800;
-      letter-spacing:.1em;
-      text-transform:uppercase;
-    }
-
-    .phone-hero h3{
-      margin:9px 0 8px;
-      font-size:1.7rem;
-      line-height:1.02;
-      letter-spacing:-.045em;
-    }
-
-    .phone-hero h3 span{color:#8b929c}
-
-    .phone-hero p{
-      margin:0;
-      color:#9298a1;
-      font-size:.59rem;
-      line-height:1.55;
-    }
-
-    .offer-card{
-      position:relative;
-      overflow:hidden;
-      padding:16px;
-      border:1px solid #deeaef;
-      border-radius:19px;
-      background:linear-gradient(145deg,#f7fcff,#f8f8ff);
-    }
-
-    .offer-card::after{
-      content:"15%";
-      position:absolute;
-      right:-10px;
-      bottom:-23px;
-      color:rgba(40,100,132,.05);
-      font-size:5rem;
-      line-height:1;
-      font-weight:900;
-      letter-spacing:-.1em;
-    }
-
-    .offer-head{
-      position:relative;
-      z-index:2;
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .offer-icon{
-      width:48px;
-      height:48px;
-      display:grid;
-      place-items:center;
-      border-radius:14px;
-      background:linear-gradient(145deg,#75dfff,#8a7fff);
-      font-size:1.2rem;
-    }
-
-    .offer-head strong{
-      display:block;
-      font-size:.76rem;
-    }
-
-    .offer-head small{
-      display:block;
-      margin-top:3px;
-      color:#9298a1;
-      font-size:.50rem;
-    }
-
-    .offer-button{
-      position:relative;
-      z-index:2;
-      min-height:38px;
-      margin-top:15px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:11px;
-      background:#111318;
-      color:#fff;
-      font-size:.57rem;
-      font-weight:800;
-    }
-
-    .mini-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-top:12px;
-    }
-
-    .mini{
-      min-height:98px;
-      padding:11px;
-      border:1px solid #eaedf0;
-      border-radius:16px;
-      background:#fbfcfd;
-    }
-
-    .mini img{
-      width:34px;
-      height:34px;
-      object-fit:contain;
-      margin-bottom:8px;
-    }
-
-    .mini strong{
-      display:block;
-      font-size:.55rem;
-    }
-
-    .mini span{
-      display:block;
-      margin-top:3px;
-      color:#a0a5ac;
-      font-size:.42rem;
-    }
-
-    .homebar{
-      position:absolute;
-      left:50%;
-      bottom:10px;
-      width:125px;
-      height:4px;
-      transform:translateX(-50%);
-      border-radius:999px;
-      background:#111318;
-    }
-
-    .corner-badge{
-      position:absolute;
-      z-index:8;
-      right:5%;
-      bottom:6%;
-      padding:10px 12px;
-      border:1px solid #e4e7ea;
-      border-radius:13px;
-      background:rgba(255,255,255,.90);
-      backdrop-filter:blur(18px);
-      box-shadow:0 13px 32px rgba(18,24,31,.055);
-    }
-
-    .corner-badge small{
-      display:block;
-      color:#969ca5;
-      font-size:.43rem;
-      letter-spacing:.07em;
-      text-transform:uppercase;
-    }
-
-    .corner-badge strong{
-      display:block;
-      margin-top:3px;
-      font-size:.62rem;
-    }
-
-    .corner-badge span{color:#2e8db9}
-
-    /* ========================================================
-       SEAMLESS CONTINUATION AFTER THE PIN
-       ======================================================== */
-    .continuation{
-      position:relative;
-      z-index:5;
-      background:#fff;
-      padding:88px 0 120px;
-    }
-
-    .continuation-inner{
-      width:min(1160px,calc(100% - 34px));
-      margin:0 auto;
-    }
-
-    .continuation-kicker{
-      color:#767c85;
-      font-size:.66rem;
-      font-weight:800;
-      letter-spacing:.13em;
-      text-transform:uppercase;
-    }
-
-    .continuation h2{
-      margin:13px 0 0;
-      max-width:900px;
-      font-size:clamp(3rem,6vw,6.2rem);
-      line-height:.94;
-      letter-spacing:-.064em;
-      font-weight:800;
-    }
-
-    .continuation h2 span{
-      color:#858c95;
-    }
-
-    .continuation-copy{
-      width:min(690px,100%);
-      margin:22px 0 0;
-      color:#747b84;
-      font-size:.95rem;
-      line-height:1.68;
-    }
-
-    .apple-grid{
-      display:grid;
-      grid-template-columns:1.15fr .85fr;
-      gap:16px;
-      margin-top:40px;
-    }
-
-    .apple-card{
-      position:relative;
-      min-height:405px;
-      padding:32px;
-      overflow:hidden;
-      border-radius:30px;
-      background:#f5f5f7;
-    }
-
-    .apple-card.dark{
-      background:#111214;
-      color:#fff;
-    }
-
-    .card-label{
-      color:#838992;
-      font-size:.62rem;
-      font-weight:800;
-      letter-spacing:.1em;
-      text-transform:uppercase;
-    }
-
-    .apple-card.dark .card-label{color:#a9b0ba}
-
-    .apple-card h3{
-      max-width:520px;
-      margin:13px 0 0;
-      font-size:clamp(2rem,3.2vw,3.55rem);
-      line-height:1;
-      letter-spacing:-.055em;
-      font-weight:800;
-    }
-
-    .apple-card p{
-      max-width:475px;
-      margin:15px 0 0;
-      color:#777e88;
-      font-size:.86rem;
-      line-height:1.62;
-    }
-
-    .apple-card.dark p{color:#a6acb4}
-
-    .features{
-      display:grid;
-      gap:10px;
-      margin-top:28px;
-    }
-
-    .feature{
-      min-height:60px;
-      display:flex;
-      align-items:center;
-      gap:11px;
-      padding:0 15px;
-      border:1px solid #e6e8eb;
-      border-radius:17px;
-      background:#fff;
-    }
-
-    .feature i{
-      width:35px;
-      height:35px;
-      flex:0 0 auto;
-      display:grid;
-      place-items:center;
-      border-radius:11px;
-      background:#edf8fc;
-      color:#318eb8;
-      font-style:normal;
-      font-size:.75rem;
-      font-weight:800;
-    }
-
-    .feature strong{
-      display:block;
-      font-size:.73rem;
-    }
-
-    .feature span{
-      display:block;
-      margin-top:2px;
-      color:#8b9199;
-      font-size:.56rem;
-    }
-
-    .giant-15{
-      position:absolute;
-      right:18px;
-      bottom:-30px;
-      color:rgba(117,216,250,.085);
-      font-size:clamp(8rem,15vw,14rem);
-      line-height:1;
-      letter-spacing:-.1em;
-      font-weight:900;
-      pointer-events:none;
-    }
-
-    .devices{
-      padding:118px 0 80px;
-      text-align:center;
-    }
-
-    .devices h2{
-      margin:0 auto;
-      max-width:900px;
-    }
-
-    .devices .continuation-copy{
-      margin-left:auto;
-      margin-right:auto;
-    }
-
-    .device-row{
-      display:flex;
-      align-items:flex-end;
-      justify-content:center;
-      gap:18px;
-      min-height:330px;
-      margin-top:38px;
-    }
-
-    .device{
-      width:175px;
-      height:290px;
-      padding:6px;
-      border-radius:30px;
-      background:linear-gradient(145deg,#53585e,#15171a 22%,#050607 72%,#4c5157);
-      box-shadow:0 24px 54px rgba(18,24,31,.14);
-    }
-
-    .device.main{
-      width:205px;
-      height:335px;
-    }
-
-    .device-screen{
-      height:100%;
-      padding:24px 13px;
-      border-radius:25px;
-      background:
-        radial-gradient(150px 100px at 50% 10%,rgba(86,191,233,.12),transparent 72%),
-        #fff;
-    }
-
-    .device-screen img{
-      width:36px;
-      height:36px;
-      display:block;
-      margin:0 auto;
-      object-fit:contain;
-      border-radius:10px;
-      background:#0d0f12;
-    }
-
-    .device-screen strong{
-      display:block;
-      margin-top:17px;
-      text-align:center;
-      font-size:.7rem;
-    }
-
-    .device-screen span{
-      display:block;
-      margin-top:5px;
-      text-align:center;
-      color:#8f959d;
-      font-size:.48rem;
-      line-height:1.4;
-    }
-
-    .final-cta{
-      min-height:450px;
-      margin-top:40px;
-      padding:50px 24px;
-      display:grid;
-      place-items:center;
-      text-align:center;
-      border-radius:34px;
-      background:
-        radial-gradient(620px 300px at 50% 100%,rgba(86,191,233,.14),transparent 70%),
-        #f5f5f7;
-    }
-
-    .final-cta h2{
-      margin:0 auto;
-      max-width:900px;
-    }
-
-    .final-cta p{
-      width:min(650px,92%);
-      margin:18px auto 0;
-      color:#737a84;
-      font-size:.9rem;
-      line-height:1.65;
-    }
-
-    .final-cta button{
-      min-height:49px;
-      margin-top:21px;
-      padding:0 18px;
-      border:0;
-      border-radius:14px;
-      background:#111318;
-      color:#fff;
-      font-size:.73rem;
-      font-weight:800;
-      cursor:pointer;
-      box-shadow:0 14px 31px rgba(17,19,24,.14);
-    }
-
-    footer{
-      margin-top:90px;
-      padding:26px 18px calc(26px + env(safe-area-inset-bottom));
-      border-top:1px solid #eceef0;
-      color:#9aa0a8;
-      text-align:center;
-      font-size:.61rem;
-    }
-
-    /* ========================================================
-       INSTALL MODAL
-       ======================================================== */
-    .install-help{
-      position:fixed;
-      z-index:200;
-      inset:0;
-      display:none;
-      place-items:center;
-      padding:18px;
-      background:rgba(8,10,14,.38);
-      backdrop-filter:blur(12px);
-    }
-
-    .install-help.show{display:grid}
-
-    .help-card{
-      width:min(430px,100%);
-      padding:22px;
-      border:1px solid #e7e9ec;
-      border-radius:24px;
-      background:#fff;
-      box-shadow:0 28px 90px rgba(16,20,26,.22);
-    }
-
-    .help-card h3{
-      margin:0;
-      font-size:1.3rem;
-      letter-spacing:-.03em;
-    }
-
-    .help-card p{
-      margin:8px 0 0;
-      color:#747a84;
-      font-size:.84rem;
-      line-height:1.55;
-    }
-
-    .help-steps{
-      display:grid;
-      gap:8px;
-      margin-top:16px;
-    }
-
-    .help-step{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      padding:11px;
-      border-radius:14px;
-      background:#f5f7f8;
-      color:#4f555e;
-      font-size:.78rem;
-    }
-
-    .help-step b{
-      flex:0 0 auto;
-      width:25px;
-      height:25px;
-      display:grid;
-      place-items:center;
-      border-radius:50%;
-      background:#111318;
-      color:#fff;
-      font-size:.65rem;
-    }
-
-    .help-close{
-      width:100%;
-      min-height:44px;
-      margin-top:14px;
-      border:0;
-      border-radius:12px;
-      background:#111318;
-      color:#fff;
-      font-weight:800;
-      cursor:pointer;
-    }
-
-    /* ========================================================
-       MOBILE
-       ======================================================== */
-    @media(max-width:760px){
-      .site-header{
-        top:10px;
-        width:calc(100% - 20px);
-        height:58px;
-        padding:7px 8px 7px 10px;
-        border-radius:19px;
-      }
-
-      .brand img{
-        width:35px;
-        height:35px;
-        border-radius:10px;
-      }
-
-      .brand strong{font-size:.66rem}
-      .brand small{font-size:.38rem;margin-top:4px}
-
-      .header-actions a{display:none}
-
-      .header-actions button{
-        min-height:39px;
-        padding:0 11px;
-        font-size:.61rem;
-      }
-
-      .motion-section{height:190vh}
-      .motion-pin{min-height:680px}
-
-      .intro{
-        top:90px;
-        width:calc(100% - 22px);
-      }
-
-      .eyebrow{
-        padding:6px 9px;
-        font-size:.49rem;
-      }
-
-      .intro h1{
-        margin-top:11px;
-        font-size:clamp(2.05rem,10.3vw,3.3rem);
-        line-height:.94;
-      }
-
-      .intro p{
-        margin-top:11px;
-        font-size:.69rem;
-        line-height:1.5;
-      }
-
-      .intro button{
-        min-height:41px;
-        margin-top:12px;
-        font-size:.63rem;
-      }
-
-      .orbit{
-        top:58%;
-        width:730px;
-      }
-
-      .orbit-glow{
-        top:72%;
-        width:500px;
-        height:250px;
-      }
-
-      .hero-word{
-        top:52%;
-        font-size:clamp(3.25rem,13.4vw,5rem);
-        line-height:.86;
-        white-space:normal;
-      }
-
-      .phone-wrap{
-        width:260px;
-        height:475px;
-      }
-
-      .phone{
-        padding:7px;
-        border-radius:43px;
-      }
-
-      .screen{border-radius:36px}
-
-      .island{
-        top:10px;
-        width:88px;
-        height:24px;
-      }
-
-      .phone-ui{padding:48px 14px 18px}
-      .phone-nav{padding-bottom:12px}
-      .phone-brand img{width:25px;height:25px;border-radius:8px}
-      .phone-brand strong{font-size:.51rem}
-      .phone-brand small{font-size:.31rem}
-      .bag{width:25px;height:25px;border-radius:8px;font-size:.6rem}
-      .phone-hero{padding:18px 1px 11px}
-      .phone-hero small{font-size:.31rem}
-      .phone-hero h3{margin:5px 0;font-size:1.02rem}
-      .phone-hero p{font-size:.35rem}
-      .offer-card{padding:10px;border-radius:12px}
-      .offer-icon{width:29px;height:29px;border-radius:9px;font-size:.73rem}
-      .offer-head strong{font-size:.45rem}
-      .offer-head small{font-size:.30rem}
-      .offer-button{min-height:24px;margin-top:8px;border-radius:7px;font-size:.35rem}
-      .mini{min-height:62px;padding:6px;border-radius:10px}
-      .mini img{width:21px;height:21px;margin-bottom:4px}
-      .mini strong{font-size:.33rem}
-      .mini span{font-size:.26rem}
-      .homebar{width:78px;height:3px}
-
-      .corner-badge{
-        right:8px;
-        bottom:8px;
-        padding:8px 9px;
-      }
-
-      .corner-badge small{font-size:.34rem}
-      .corner-badge strong{font-size:.48rem}
-
-      .continuation{
-        padding:70px 0 80px;
-      }
-
-      .continuation-inner{
-        width:calc(100% - 20px);
-      }
-
-      .continuation-kicker{
-        font-size:.55rem;
-      }
-
-      .continuation h2{
-        margin-top:10px;
-        font-size:clamp(2.45rem,10.8vw,4rem);
-      }
-
-      .continuation-copy{
-        margin-top:16px;
-        font-size:.78rem;
-      }
-
-      .apple-grid{
-        grid-template-columns:1fr;
-        gap:10px;
-        margin-top:28px;
-      }
-
-      .apple-card{
-        min-height:330px;
-        padding:23px;
-        border-radius:24px;
-      }
-
-      .apple-card h3{
-        font-size:clamp(1.85rem,8vw,2.8rem);
-      }
-
-      .apple-card p{
-        font-size:.75rem;
-      }
-
-      .feature{
-        min-height:56px;
-        border-radius:15px;
-      }
-
-      .devices{
-        padding:78px 0 50px;
-      }
-
-      .device-row{
-        min-height:230px;
-        gap:8px;
-        margin-top:30px;
-      }
-
-      .device{
-        width:116px;
-        height:202px;
-        border-radius:23px;
-      }
-
-      .device.main{
-        width:132px;
-        height:232px;
-      }
-
-      .device-screen{
-        padding:16px 8px;
-        border-radius:18px;
-      }
-
-      .device-screen img{
-        width:28px;height:28px
-      }
-
-      .device-screen strong{font-size:.52rem}
-      .device-screen span{font-size:.36rem}
-
-      .final-cta{
-        min-height:380px;
-        margin-top:30px;
-        padding:38px 17px;
-        border-radius:26px;
-      }
-
-      .final-cta p{
-        font-size:.76rem;
-      }
-    }
-
-    @media(max-width:390px){
-      .hero-word{
-        font-size:clamp(3rem,12.8vw,4.5rem);
-      }
-
-      .phone-wrap{
-        width:238px;
-        height:435px;
-      }
-
-      .corner-badge{display:none}
-
-      .device-row{gap:5px}
-      .device{width:105px;height:186px}
-      .device.main{width:120px;height:215px}
-    }
-
-    @media(prefers-reduced-motion:reduce){
-      .phone-wrap,.intro{
-        will-change:auto;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Dingloft · Instala la app</title>
+<link rel="icon" href="img/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#101114;
+  --muted:#757b84;
+  --line:#e7e9ec;
+  --soft:#f5f5f7;
+  --cyan:#58c2ea;
+  --violet:#786bdd;
+
+  --phone-y:56vh;
+  --phone-scale:.94;
+  --intro-y:0px;
+  --intro-o:1;
+}
+
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  background:#fff;
+  color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  overflow-x:hidden;
+}
+a{text-decoration:none;color:inherit}
+button{font:inherit}
+
+/* ============================================================
+   NAV · minimalismo del checkout
+   ============================================================ */
+.navbar{
+  position:fixed;
+  z-index:100;
+  left:50%;
+  top:16px;
+  transform:translateX(-50%);
+  width:min(1190px,calc(100% - 32px));
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:9px 10px 9px 13px;
+  border:1px solid var(--line);
+  border-radius:21px;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(18px) saturate(145%);
+  box-shadow:0 12px 34px rgba(17,22,29,.05);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.brand-mark{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:#0e1013;
+  color:#fff;
+  font-size:1rem;
+  font-weight:800;
+}
+.brand-copy strong{
+  display:block;
+  font-size:.77rem;
+  line-height:1;
+  letter-spacing:.19em;
+  font-weight:800;
+}
+.brand-copy span{
+  display:block;
+  margin-top:5px;
+  color:#9ca1aa;
+  font-size:.43rem;
+  letter-spacing:.17em;
+}
+.nav-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.nav-actions a,.nav-actions button{
+  min-height:41px;
+  padding:0 14px;
+  border:1px solid #e3e6e9;
+  border-radius:12px;
+  background:#fff;
+  color:#373b42;
+  font-size:.67rem;
+  font-weight:750;
+  cursor:pointer;
+}
+.nav-actions .primary{
+  border-color:#111318;
+  background:#111318;
+  color:#fff;
+}
+
+/* ============================================================
+   SECUENCIA OSMO
+   - círculo y título gigante: FIJOS
+   - texto superior: sale primero
+   - teléfono: cruza de abajo hacia arriba
+   ============================================================ */
+.osmo-sequence{
+  position:relative;
+  height:230vh;
+  background:#fff;
+}
+.osmo-pin{
+  position:sticky;
+  top:0;
+  height:100vh;
+  min-height:720px;
+  overflow:hidden;
+  background:
+    radial-gradient(820px 410px at 50% 73%,rgba(88,194,234,.07),transparent 72%),
+    #fff;
+  isolation:isolate;
+}
+
+/* texto superior: zona propia, sin tocar el título gigante */
+.hero-copy{
+  position:absolute;
+  z-index:8;
+  top:112px;
+  left:50%;
+  width:min(900px,calc(100% - 40px));
+  transform:translate(-50%,var(--intro-y));
+  opacity:var(--intro-o);
+  text-align:center;
+  will-change:transform,opacity;
+}
+.hero-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:7px 10px;
+  border:1px solid #e3e6e9;
+  border-radius:999px;
+  background:rgba(255,255,255,.9);
+  color:#737982;
+  font-size:.55rem;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.hero-pill i{
+  width:7px;height:7px;border-radius:50%;
+  background:linear-gradient(145deg,var(--cyan),var(--violet));
+  box-shadow:0 0 0 5px rgba(88,194,234,.10);
+}
+.hero-copy h1{
+  margin:14px 0 0;
+  font-size:clamp(2.7rem,5vw,5rem);
+  line-height:.92;
+  letter-spacing:-.063em;
+  font-weight:800;
+  text-transform:uppercase;
+}
+.hero-copy p{
+  width:min(690px,92%);
+  margin:14px auto 0;
+  color:#777d86;
+  font-size:.82rem;
+  line-height:1.58;
+}
+.hero-copy button{
+  min-height:44px;
+  margin-top:16px;
+  padding:0 16px;
+  border:0;
+  border-radius:12px;
+  background:#111318;
+  color:#fff;
+  font-size:.68rem;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 14px 28px rgba(17,19,24,.13);
+}
+
+/* el círculo ocupa su propia zona media/baja */
+.orbit{
+  position:absolute;
+  z-index:0;
+  left:50%;
+  top:60%;
+  width:min(1240px,91vw);
+  aspect-ratio:1;
+  transform:translate(-50%,-50%);
+  border:1.3px solid rgba(58,158,204,.50);
+  border-radius:50%;
+  pointer-events:none;
+}
+.orbit::before,.orbit::after{
+  content:"";
+  position:absolute;
+  border-radius:inherit;
+}
+.orbit::before{
+  inset:8%;
+  border:1px solid rgba(120,105,221,.11);
+}
+.orbit::after{
+  inset:16%;
+  border:1px solid rgba(17,18,20,.045);
+}
+.orbit-glow{
+  position:absolute;
+  z-index:0;
+  left:50%;
+  top:73%;
+  width:min(850px,68vw);
+  height:330px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:rgba(88,194,234,.10);
+  filter:blur(100px);
+  pointer-events:none;
+}
+
+/* CLAVE: una sola línea como OSMO BUSINESS */
+.big-word{
+  position:absolute;
+  z-index:2;
+  left:50%;
+  top:57%;
+  width:100%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  white-space:nowrap;
+  pointer-events:none;
+  font-size:clamp(4.4rem,8.3vw,8.5rem);
+  line-height:.84;
+  letter-spacing:-.075em;
+  font-weight:800;
+  text-transform:uppercase;
+  color:#111318;
+}
+.big-word span{
+  background:linear-gradient(100deg,#111318 0%,#318bb5 50%,#776bdd 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+/* teléfono grande, como en Osmo */
+.phone-wrap{
+  position:absolute;
+  z-index:6;
+  left:50%;
+  top:50%;
+  width:390px;
+  height:714px;
+  transform:
+    translate3d(-50%,calc(-50% + var(--phone-y)),0)
+    scale(var(--phone-scale));
+  transform-origin:center;
+  will-change:transform;
+}
+.phone{
+  width:100%;
+  height:100%;
+  padding:10px;
+  border-radius:63px;
+  background:linear-gradient(145deg,#51555b,#131518 22%,#050607 72%,#4d5258);
+  box-shadow:
+    0 52px 100px rgba(18,26,34,.22),
+    inset 0 1px 0 rgba(255,255,255,.48);
+}
+.phone-screen{
+  position:relative;
+  height:100%;
+  overflow:hidden;
+  border-radius:53px;
+  background:#fff;
+}
+.dynamic-island{
+  position:absolute;
+  z-index:5;
+  top:14px;
+  left:50%;
+  width:130px;
+  height:36px;
+  transform:translateX(-50%);
+  border-radius:999px;
+  background:#050505;
+}
+.phone-content{
+  height:100%;
+  padding:70px 23px 27px;
+}
+.phone-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom:18px;
+  border-bottom:1px solid #edf0f2;
+}
+.phone-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.phone-logo{
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:#0e1013;
+  color:#fff;
+  font-size:.85rem;
+  font-weight:800;
+}
+.phone-brand strong{
+  display:block;
+  font-size:.73rem;
+  letter-spacing:.08em;
+}
+.phone-brand small{
+  display:block;
+  margin-top:3px;
+  color:#9da3ab;
+  font-size:.45rem;
+}
+.phone-bag{
+  width:36px;height:36px;
+  display:grid;place-items:center;
+  border-radius:11px;
+  background:#f3f5f6;
+  color:#34383e;
+  font-size:.9rem;
+}
+.phone-hero{
+  padding:29px 2px 20px;
+}
+.phone-hero small{
+  color:#3b94be;
+  font-size:.48rem;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.phone-hero h3{
+  margin:8px 0 7px;
+  font-size:1.56rem;
+  line-height:1.02;
+  letter-spacing:-.045em;
+}
+.phone-hero h3 span{color:#8b929c}
+.phone-hero p{
+  margin:0;
+  color:#9298a1;
+  font-size:.55rem;
+  line-height:1.55;
+}
+.install-card{
+  position:relative;
+  overflow:hidden;
+  padding:15px;
+  border:1px solid #deeaef;
+  border-radius:18px;
+  background:linear-gradient(145deg,#f7fcff,#f8f8ff);
+}
+.install-card::after{
+  content:"15%";
+  position:absolute;
+  right:-10px;
+  bottom:-21px;
+  color:rgba(40,100,132,.05);
+  font-size:4.8rem;
+  font-weight:900;
+  letter-spacing:-.1em;
+}
+.install-head{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+.install-icon{
+  width:45px;height:45px;
+  display:grid;place-items:center;
+  border-radius:14px;
+  background:linear-gradient(145deg,#75dfff,#8a7fff);
+  font-size:1.1rem;
+}
+.install-head strong{
+  display:block;
+  font-size:.7rem;
+}
+.install-head small{
+  display:block;
+  margin-top:3px;
+  color:#9298a1;
+  font-size:.47rem;
+}
+.install-card-btn{
+  position:relative;
+  z-index:2;
+  min-height:36px;
+  margin-top:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  background:#111318;
+  color:#fff;
+  font-size:.53rem;
+  font-weight:800;
+}
+.phone-mini-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:11px;
+}
+.phone-mini{
+  min-height:92px;
+  padding:10px;
+  border:1px solid #eaedf0;
+  border-radius:15px;
+  background:#fbfcfd;
+}
+.mini-symbol{
+  width:32px;height:32px;
+  display:grid;place-items:center;
+  margin-bottom:7px;
+  border-radius:9px;
+  background:#f0f3f5;
+  color:#3b8dab;
+  font-size:.75rem;
+  font-weight:800;
+}
+.phone-mini strong{
+  display:block;
+  font-size:.51rem;
+}
+.phone-mini span{
+  display:block;
+  margin-top:3px;
+  color:#a0a5ac;
+  font-size:.39rem;
+}
+.homebar{
+  position:absolute;
+  left:50%;
+  bottom:9px;
+  width:116px;
+  height:4px;
+  transform:translateX(-50%);
+  border-radius:999px;
+  background:#111318;
+}
+
+.corner-note{
+  position:absolute;
+  z-index:8;
+  right:5%;
+  bottom:5%;
+  padding:10px 12px;
+  border:1px solid #e4e7ea;
+  border-radius:13px;
+  background:rgba(255,255,255,.90);
+  backdrop-filter:blur(18px);
+  box-shadow:0 13px 32px rgba(18,24,31,.055);
+}
+.corner-note small{
+  display:block;
+  color:#969ca5;
+  font-size:.42rem;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+.corner-note strong{
+  display:block;
+  margin-top:3px;
+  font-size:.61rem;
+}
+.corner-note span{color:#2e8db9}
+
+/* ============================================================
+   DESPUÉS DE LA ANIMACIÓN · limpio, estilo Apple
+   ============================================================ */
+.after{
+  position:relative;
+  z-index:10;
+  background:#fff;
+  padding:86px 0 120px;
+}
+.after-inner{
+  width:min(1160px,calc(100% - 34px));
+  margin:0 auto;
+}
+.section-kicker{
+  color:#777d86;
+  font-size:.65rem;
+  font-weight:800;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+.after h2{
+  margin:13px 0 0;
+  max-width:900px;
+  font-size:clamp(3rem,6vw,6.1rem);
+  line-height:.94;
+  letter-spacing:-.064em;
+  font-weight:800;
+}
+.after h2 span{color:#858c95}
+.section-copy{
+  width:min(690px,100%);
+  margin:22px 0 0;
+  color:#747b84;
+  font-size:.94rem;
+  line-height:1.68;
+}
+
+.apple-grid{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:16px;
+  margin-top:40px;
+}
+.apple-card{
+  position:relative;
+  min-height:390px;
+  padding:31px;
+  overflow:hidden;
+  border-radius:30px;
+  background:#f5f5f7;
+}
+.apple-card.dark{
+  background:#111214;
+  color:#fff;
+}
+.apple-card-label{
+  color:#838992;
+  font-size:.61rem;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.apple-card.dark .apple-card-label{color:#a9b0ba}
+.apple-card h3{
+  max-width:510px;
+  margin:13px 0 0;
+  font-size:clamp(2rem,3.2vw,3.5rem);
+  line-height:1;
+  letter-spacing:-.055em;
+  font-weight:800;
+}
+.apple-card p{
+  max-width:470px;
+  margin:15px 0 0;
+  color:#777e88;
+  font-size:.84rem;
+  line-height:1.62;
+}
+.apple-card.dark p{color:#a6acb4}
+.feature-list{
+  display:grid;
+  gap:10px;
+  margin-top:27px;
+}
+.feature{
+  min-height:59px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:0 14px;
+  border:1px solid #e6e8eb;
+  border-radius:16px;
+  background:#fff;
+}
+.feature-icon{
+  width:34px;height:34px;
+  display:grid;place-items:center;
+  border-radius:10px;
+  background:#edf8fc;
+  color:#318eb8;
+  font-size:.72rem;
+  font-weight:800;
+}
+.feature strong{display:block;font-size:.71rem}
+.feature span{
+  display:block;
+  margin-top:2px;
+  color:#8b9199;
+  font-size:.54rem;
+}
+.big-15{
+  position:absolute;
+  right:18px;
+  bottom:-30px;
+  color:rgba(117,216,250,.085);
+  font-size:clamp(8rem,15vw,14rem);
+  line-height:1;
+  letter-spacing:-.1em;
+  font-weight:900;
+}
+
+.device-section{
+  padding:112px 0 70px;
+  text-align:center;
+}
+.device-section h2{
+  margin-left:auto;
+  margin-right:auto;
+}
+.device-section .section-copy{
+  margin-left:auto;
+  margin-right:auto;
+}
+.devices{
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap:18px;
+  min-height:320px;
+  margin-top:38px;
+}
+.device{
+  width:170px;
+  height:285px;
+  padding:6px;
+  border-radius:29px;
+  background:linear-gradient(145deg,#53585e,#15171a 22%,#050607 72%,#4c5157);
+  box-shadow:0 24px 54px rgba(18,24,31,.14);
+}
+.device.main{
+  width:200px;
+  height:330px;
+}
+.device-screen{
+  height:100%;
+  padding:24px 13px;
+  border-radius:24px;
+  background:
+    radial-gradient(150px 100px at 50% 10%,rgba(86,191,233,.12),transparent 72%),
+    #fff;
+}
+.device-mark{
+  width:36px;height:36px;
+  display:grid;place-items:center;
+  margin:0 auto;
+  border-radius:10px;
+  background:#0e1013;
+  color:#fff;
+  font-size:.8rem;
+  font-weight:800;
+}
+.device-screen strong{
+  display:block;
+  margin-top:17px;
+  text-align:center;
+  font-size:.69rem;
+}
+.device-screen span{
+  display:block;
+  margin-top:5px;
+  text-align:center;
+  color:#8f959d;
+  font-size:.47rem;
+  line-height:1.4;
+}
+
+.final-cta{
+  min-height:440px;
+  margin-top:38px;
+  padding:48px 24px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  border-radius:33px;
+  background:
+    radial-gradient(620px 300px at 50% 100%,rgba(86,191,233,.14),transparent 70%),
+    #f5f5f7;
+}
+.final-cta h2{
+  margin:0 auto;
+  max-width:900px;
+}
+.final-cta p{
+  width:min(650px,92%);
+  margin:18px auto 0;
+  color:#737a84;
+  font-size:.89rem;
+  line-height:1.65;
+}
+.final-cta button{
+  min-height:49px;
+  margin-top:21px;
+  padding:0 18px;
+  border:0;
+  border-radius:14px;
+  background:#111318;
+  color:#fff;
+  font-size:.72rem;
+  font-weight:800;
+  cursor:pointer;
+}
+footer{
+  margin-top:88px;
+  padding:25px 18px calc(25px + env(safe-area-inset-bottom));
+  border-top:1px solid #eceef0;
+  color:#9aa0a8;
+  text-align:center;
+  font-size:.60rem;
+}
+
+/* modal */
+.install-help{
+  position:fixed;
+  z-index:200;
+  inset:0;
+  display:none;
+  place-items:center;
+  padding:18px;
+  background:rgba(8,10,14,.38);
+  backdrop-filter:blur(12px);
+}
+.install-help.show{display:grid}
+.help-card{
+  width:min(430px,100%);
+  padding:22px;
+  border:1px solid #e7e9ec;
+  border-radius:24px;
+  background:#fff;
+  box-shadow:0 28px 90px rgba(16,20,26,.22);
+}
+.help-card h3{
+  margin:0;
+  font-size:1.3rem;
+  letter-spacing:-.03em;
+}
+.help-card p{
+  margin:8px 0 0;
+  color:#747a84;
+  font-size:.84rem;
+  line-height:1.55;
+}
+.help-steps{
+  display:grid;
+  gap:8px;
+  margin-top:16px;
+}
+.help-step{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding:11px;
+  border-radius:14px;
+  background:#f5f7f8;
+  color:#4f555e;
+  font-size:.78rem;
+}
+.help-step b{
+  flex:0 0 auto;
+  width:25px;height:25px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:#111318;
+  color:#fff;
+  font-size:.65rem;
+}
+.help-close{
+  width:100%;
+  min-height:44px;
+  margin-top:14px;
+  border:0;
+  border-radius:12px;
+  background:#111318;
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+@media(max-width:760px){
+  .navbar{
+    top:10px;
+    width:calc(100% - 20px);
+    height:58px;
+    padding:7px 8px 7px 10px;
+    border-radius:19px;
+  }
+  .brand-mark{width:35px;height:35px;border-radius:10px}
+  .brand-copy strong{font-size:.65rem}
+  .brand-copy span{font-size:.37rem;margin-top:4px}
+  .nav-actions a{display:none}
+  .nav-actions button{
+    min-height:39px;
+    padding:0 11px;
+    font-size:.60rem;
+  }
+
+  .osmo-sequence{height:205vh}
+  .osmo-pin{min-height:680px}
+
+  .hero-copy{
+    top:88px;
+    width:calc(100% - 22px);
+  }
+  .hero-pill{font-size:.48rem}
+  .hero-copy h1{
+    margin-top:10px;
+    font-size:clamp(1.95rem,9.8vw,3.15rem);
+    line-height:.94;
+  }
+  .hero-copy p{
+    margin-top:10px;
+    font-size:.67rem;
+    line-height:1.48;
+  }
+  .hero-copy button{
+    min-height:40px;
+    margin-top:11px;
+    font-size:.61rem;
+  }
+
+  .orbit{
+    top:62%;
+    width:730px;
+  }
+  .orbit-glow{
+    top:75%;
+    width:500px;
+    height:250px;
+  }
+  .big-word{
+    top:59%;
+    font-size:clamp(3.2rem,12.6vw,4.9rem);
+    white-space:nowrap;
+  }
+
+  .phone-wrap{
+    width:245px;
+    height:448px;
+  }
+  .phone{
+    padding:7px;
+    border-radius:42px;
+  }
+  .phone-screen{border-radius:35px}
+  .dynamic-island{
+    top:10px;
+    width:84px;
+    height:23px;
+  }
+  .phone-content{padding:45px 13px 17px}
+  .phone-top{padding-bottom:11px}
+  .phone-logo{width:24px;height:24px;border-radius:7px;font-size:.55rem}
+  .phone-brand strong{font-size:.47rem}
+  .phone-brand small{font-size:.29rem}
+  .phone-bag{width:24px;height:24px;border-radius:7px;font-size:.58rem}
+  .phone-hero{padding:17px 1px 10px}
+  .phone-hero small{font-size:.30rem}
+  .phone-hero h3{margin:5px 0;font-size:.95rem}
+  .phone-hero p{font-size:.33rem}
+  .install-card{padding:9px;border-radius:12px}
+  .install-icon{width:28px;height:28px;border-radius:8px;font-size:.70rem}
+  .install-head strong{font-size:.43rem}
+  .install-head small{font-size:.28rem}
+  .install-card-btn{min-height:23px;margin-top:8px;border-radius:7px;font-size:.33rem}
+  .phone-mini{min-height:60px;padding:6px;border-radius:9px}
+  .mini-symbol{width:20px;height:20px;margin-bottom:4px;border-radius:6px;font-size:.45rem}
+  .phone-mini strong{font-size:.31rem}
+  .phone-mini span{font-size:.25rem}
+  .homebar{width:76px;height:3px}
+
+  .corner-note{
+    right:8px;
+    bottom:8px;
+    padding:8px 9px;
+  }
+  .corner-note small{font-size:.33rem}
+  .corner-note strong{font-size:.47rem}
+
+  .after{padding:68px 0 80px}
+  .after-inner{width:calc(100% - 20px)}
+  .section-kicker{font-size:.54rem}
+  .after h2{
+    margin-top:10px;
+    font-size:clamp(2.35rem,10.4vw,3.9rem);
+  }
+  .section-copy{
+    margin-top:15px;
+    font-size:.76rem;
+  }
+  .apple-grid{
+    grid-template-columns:1fr;
+    gap:10px;
+    margin-top:27px;
+  }
+  .apple-card{
+    min-height:320px;
+    padding:22px;
+    border-radius:23px;
+  }
+  .apple-card h3{
+    font-size:clamp(1.8rem,7.8vw,2.7rem);
+  }
+  .apple-card p{font-size:.73rem}
+  .feature{
+    min-height:55px;
+    border-radius:15px;
+  }
+  .device-section{padding:76px 0 50px}
+  .devices{
+    min-height:225px;
+    gap:7px;
+    margin-top:28px;
+  }
+  .device{
+    width:112px;
+    height:198px;
+    border-radius:22px;
+  }
+  .device.main{
+    width:128px;
+    height:226px;
+  }
+  .device-screen{
+    padding:15px 8px;
+    border-radius:17px;
+  }
+  .device-mark{width:27px;height:27px;border-radius:8px;font-size:.55rem}
+  .device-screen strong{font-size:.50rem}
+  .device-screen span{font-size:.35rem}
+  .final-cta{
+    min-height:370px;
+    padding:37px 17px;
+    border-radius:25px;
+  }
+  .final-cta p{font-size:.74rem}
+}
+
+@media(max-width:390px){
+  .big-word{font-size:clamp(2.9rem,12vw,4.3rem)}
+  .phone-wrap{width:230px;height:420px}
+  .corner-note{display:none}
+  .devices{gap:4px}
+  .device{width:102px;height:180px}
+  .device.main{width:116px;height:208px}
+}
+</style>
 </head>
 
 <body>
 
-  <header class="site-header">
-    <a href="index.html" class="brand" aria-label="Dingloft">
-      <img src="img/dingloft.png" onerror="this.src='img/favicon.png'" alt="Dingloft">
-      <span>
-        <strong>DINGLOFT</strong>
-        <small>EVOLUTION GROUP</small>
-      </span>
-    </a>
+<header class="navbar">
+  <a href="index.html" class="brand">
+    <span class="brand-mark">D</span>
+    <span class="brand-copy">
+      <strong>DINGLOFT</strong>
+      <span>EVOLUTION GROUP</span>
+    </span>
+  </a>
 
-    <nav class="header-actions" aria-label="Navegación">
-      <a href="index.html">Home</a>
-      <a href="account.html">Cuenta</a>
-      <button type="button" class="primary" id="topInstall">Instalar app</button>
-    </nav>
-  </header>
+  <nav class="nav-actions">
+    <a href="index.html">Home</a>
+    <a href="account.html">Cuenta</a>
+    <button type="button" class="primary" id="topInstall">Instalar app</button>
+  </nav>
+</header>
 
-  <!-- SECUENCIA PRINCIPAL -->
-  <main class="motion-section" id="motionSection">
-    <section class="motion-pin">
+<main class="osmo-sequence" id="sequence">
+  <section class="osmo-pin">
 
-      <div class="orbit" aria-hidden="true"></div>
-      <div class="orbit-glow" aria-hidden="true"></div>
+    <div class="orbit" aria-hidden="true"></div>
+    <div class="orbit-glow" aria-hidden="true"></div>
 
-      <div class="intro">
-        <div class="eyebrow"><i></i>Dingloft App</div>
-        <h1>Instala Dingloft<br>y obtén 15% OFF</h1>
-        <p>
-          Accede más rápido a tu catálogo, compras, Multitracks y biblioteca.
-          Instala Dingloft como app y recibe un beneficio especial para tu próxima compra.
-        </p>
-        <button type="button" id="heroInstall">Instalar Dingloft</button>
-      </div>
+    <div class="hero-copy">
+      <div class="hero-pill"><i></i>Dingloft App</div>
+      <h1>Instala Dingloft<br>Obtén 15% de descuento</h1>
+      <p>
+        Accede más rápido a tu catálogo, compras, Multitracks y biblioteca.
+        Instala Dingloft como app y recibe un beneficio especial para tu próxima compra.
+      </p>
+      <button type="button" id="heroInstall">Instalar Dingloft</button>
+    </div>
 
-      <div class="hero-word" aria-hidden="true">
-        DINGLOFT
-        <span>APP</span>
-      </div>
+    <!-- una sola línea, igual que OSMO BUSINESS -->
+    <div class="big-word" aria-hidden="true"><span>DINGLOFT APP</span></div>
 
-      <div class="phone-wrap" aria-hidden="true">
-        <div class="phone">
-          <div class="screen">
+    <div class="phone-wrap" aria-hidden="true">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="dynamic-island"></div>
 
-            <div class="island"></div>
-
-            <div class="phone-ui">
-              <div class="phone-nav">
-                <div class="phone-brand">
-                  <img src="img/dingloft.png" onerror="this.src='img/favicon.png'" alt="">
-                  <div>
-                    <strong>DINGLOFT</strong>
-                    <small>EVOLUTION GROUP</small>
-                  </div>
-                </div>
-                <div class="bag">⌑</div>
-              </div>
-
-              <div class="phone-hero">
-                <small>Dingloft App</small>
-                <h3>Todo Dingloft.<br><span>En un lugar.</span></h3>
-                <p>Software, Multitracks, compras, biblioteca y soporte desde una experiencia más rápida.</p>
-              </div>
-
-              <div class="offer-card">
-                <div class="offer-head">
-                  <div class="offer-icon">✦</div>
-                  <div>
-                    <strong>Beneficio de instalación</strong>
-                    <small>15% de descuento disponible</small>
-                  </div>
-                </div>
-                <div class="offer-button">OBTENER BENEFICIO</div>
-              </div>
-
-              <div class="mini-grid">
-                <div class="mini">
-                  <img src="img/autocad.png" onerror="this.src='img/favicon.png'" alt="">
-                  <strong>Software</strong>
-                  <span>Catálogo Dingloft</span>
-                </div>
-
-                <div class="mini">
-                  <img src="img/favicon.png" alt="">
-                  <strong>Multitracks</strong>
-                  <span>Catálogo y previews</span>
+          <div class="phone-content">
+            <div class="phone-top">
+              <div class="phone-brand">
+                <span class="phone-logo">D</span>
+                <div>
+                  <strong>DINGLOFT</strong>
+                  <small>EVOLUTION GROUP</small>
                 </div>
               </div>
+              <span class="phone-bag">⌑</span>
             </div>
 
-            <div class="homebar"></div>
+            <div class="phone-hero">
+              <small>Dingloft App</small>
+              <h3>Todo Dingloft.<br><span>En un lugar.</span></h3>
+              <p>Software, Multitracks, compras, biblioteca y soporte desde una experiencia más rápida.</p>
+            </div>
+
+            <div class="install-card">
+              <div class="install-head">
+                <span class="install-icon">✦</span>
+                <div>
+                  <strong>Beneficio de instalación</strong>
+                  <small>15% de descuento disponible</small>
+                </div>
+              </div>
+              <div class="install-card-btn">OBTENER BENEFICIO</div>
+            </div>
+
+            <div class="phone-mini-grid">
+              <div class="phone-mini">
+                <span class="mini-symbol">S</span>
+                <strong>Software</strong>
+                <span>Catálogo Dingloft</span>
+              </div>
+              <div class="phone-mini">
+                <span class="mini-symbol">♪</span>
+                <strong>Multitracks</strong>
+                <span>Catálogo y previews</span>
+              </div>
+            </div>
           </div>
+
+          <div class="homebar"></div>
         </div>
       </div>
+    </div>
 
-      <div class="corner-badge" aria-hidden="true">
-        <small>Beneficio exclusivo</small>
-        <strong>Próxima compra <span>-15%</span></strong>
-      </div>
+    <div class="corner-note" aria-hidden="true">
+      <small>Beneficio exclusivo</small>
+      <strong>Próxima compra <span>-15%</span></strong>
+    </div>
 
-    </section>
-  </main>
+  </section>
+</main>
 
-  <!-- CONTINUACIÓN APPLE-LIKE -->
-  <section class="continuation">
-    <div class="continuation-inner">
+<section class="after">
+  <div class="after-inner">
 
-      <div class="continuation-kicker">Una sola experiencia</div>
-      <h2>Todo Dingloft.<br><span>Más simple, más rápido.</span></h2>
-      <p class="continuation-copy">
-        La instalación mantiene intactas tu cuenta, compras y biblioteca.
-        Solo te da una forma más directa de entrar a todo lo que ya tienes en Dingloft.
+    <div class="section-kicker">Una sola experiencia</div>
+    <h2>Todo Dingloft.<br><span>Más simple, más rápido.</span></h2>
+    <p class="section-copy">
+      La instalación mantiene intactas tu cuenta, compras y biblioteca.
+      Solo te da una forma más directa de entrar a todo lo que ya tienes en Dingloft.
+    </p>
+
+    <div class="apple-grid">
+      <article class="apple-card">
+        <div class="apple-card-label">Acceso directo</div>
+        <h3>Tu biblioteca siempre a mano.</h3>
+        <p>Abre tus compras, descargas y Multitracks sin volver a buscar una pestaña.</p>
+
+        <div class="feature-list">
+          <div class="feature">
+            <span class="feature-icon">↓</span>
+            <div>
+              <strong>Compras y descargas</strong>
+              <span>Vinculadas a tu misma cuenta Dingloft.</span>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">♪</span>
+            <div>
+              <strong>Multitracks</strong>
+              <span>Acceso rápido al catálogo y previews.</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="apple-card dark">
+        <div class="apple-card-label">Beneficio de instalación</div>
+        <h3>15% para tu próxima compra.</h3>
+        <p>Instala Dingloft y activa el beneficio de bienvenida asociado a esta experiencia.</p>
+        <div class="big-15">15%</div>
+      </article>
+    </div>
+
+    <section class="device-section">
+      <div class="section-kicker">En tus dispositivos</div>
+      <h2>Se siente como app.<br><span>Porque lo es.</span></h2>
+      <p class="section-copy">
+        Dingloft puede abrirse como una aplicación independiente en dispositivos y navegadores compatibles.
       </p>
 
-      <div class="apple-grid">
-        <article class="apple-card">
-          <div class="card-label">Acceso directo</div>
-          <h3>Tu biblioteca siempre a mano.</h3>
-          <p>
-            Abre tus compras, descargas y Multitracks desde una experiencia limpia y sin tener que buscar una pestaña abierta.
-          </p>
-
-          <div class="features">
-            <div class="feature">
-              <i>↓</i>
-              <div>
-                <strong>Compras y descargas</strong>
-                <span>Vinculadas a tu misma cuenta Dingloft.</span>
-              </div>
-            </div>
-
-            <div class="feature">
-              <i>♪</i>
-              <div>
-                <strong>Multitracks</strong>
-                <span>Acceso rápido al catálogo y previews.</span>
-              </div>
-            </div>
+      <div class="devices" aria-hidden="true">
+        <div class="device">
+          <div class="device-screen">
+            <span class="device-mark">D</span>
+            <strong>Dingloft</strong>
+            <span>Tu catálogo y biblioteca.</span>
           </div>
-        </article>
+        </div>
 
-        <article class="apple-card dark">
-          <div class="card-label">Beneficio de instalación</div>
-          <h3>15% para tu próxima compra.</h3>
-          <p>
-            Instala Dingloft y activa el beneficio de bienvenida asociado a esta experiencia.
-          </p>
-          <div class="giant-15">15%</div>
-        </article>
+        <div class="device main">
+          <div class="device-screen">
+            <span class="device-mark">D</span>
+            <strong>Todo en un lugar</strong>
+            <span>Software, Multitracks, compras y soporte.</span>
+          </div>
+        </div>
+
+        <div class="device">
+          <div class="device-screen">
+            <span class="device-mark">D</span>
+            <strong>Acceso rápido</strong>
+            <span>Menos pasos para llegar a lo tuyo.</span>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <section class="devices">
-        <div class="continuation-kicker">En tus dispositivos</div>
-        <h2>Se siente como app.<br><span>Porque lo es.</span></h2>
-        <p class="continuation-copy">
-          En dispositivos y navegadores compatibles, Dingloft puede abrirse como una aplicación independiente.
-        </p>
+    <section class="final-cta">
+      <div>
+        <h2>Instala Dingloft.<br><span>Obtén 15% OFF.</span></h2>
+        <p>Una experiencia más rápida y minimalista, manteniendo intacta tu cuenta.</p>
+        <button type="button" id="bottomInstall">Instalar Dingloft</button>
+      </div>
+    </section>
 
-        <div class="device-row" aria-hidden="true">
-          <div class="device">
-            <div class="device-screen">
-              <img src="img/favicon.png" alt="">
-              <strong>Dingloft</strong>
-              <span>Tu catálogo y biblioteca.</span>
-            </div>
-          </div>
-
-          <div class="device main">
-            <div class="device-screen">
-              <img src="img/favicon.png" alt="">
-              <strong>Todo en un lugar</strong>
-              <span>Software, Multitracks, compras y soporte.</span>
-            </div>
-          </div>
-
-          <div class="device">
-            <div class="device-screen">
-              <img src="img/favicon.png" alt="">
-              <strong>Acceso rápido</strong>
-              <span>Menos pasos para llegar a lo tuyo.</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="final-cta">
-        <div>
-          <h2>Instala Dingloft.<br><span>Obtén 15% OFF.</span></h2>
-          <p>
-            Una experiencia más rápida y minimalista manteniendo todo lo que ya tienes en tu cuenta.
-          </p>
-          <button type="button" id="bottomInstall">Instalar Dingloft</button>
-        </div>
-      </section>
-
-      <footer>Dingloft · Evolution Group © 2026</footer>
-    </div>
-  </section>
-
-  <!-- MODAL DE INSTALACIÓN -->
-  <div class="install-help" id="installHelp" aria-hidden="true">
-    <div class="help-card">
-      <h3>Instalar Dingloft</h3>
-      <p id="helpText">Tu navegador puede instalar Dingloft como una app independiente.</p>
-      <div class="help-steps" id="helpSteps"></div>
-      <button type="button" class="help-close" id="helpClose">Entendido</button>
-    </div>
+    <footer>Dingloft · Evolution Group © 2026</footer>
   </div>
+</section>
 
-  <script>
-    (() => {
-      const section = document.getElementById('motionSection');
-      const topInstall = document.getElementById('topInstall');
-      const heroInstall = document.getElementById('heroInstall');
-      const bottomInstall = document.getElementById('bottomInstall');
+<div class="install-help" id="installHelp" aria-hidden="true">
+  <div class="help-card">
+    <h3>Instalar Dingloft</h3>
+    <p id="helpText">Tu navegador puede instalar Dingloft como una app independiente.</p>
+    <div class="help-steps" id="helpSteps"></div>
+    <button type="button" class="help-close" id="helpClose">Entendido</button>
+  </div>
+</div>
 
-      const help = document.getElementById('installHelp');
-      const helpText = document.getElementById('helpText');
-      const helpSteps = document.getElementById('helpSteps');
-      const helpClose = document.getElementById('helpClose');
+<script>
+(() => {
+  const sequence = document.getElementById('sequence');
 
-      let deferredPrompt = null;
+  const topInstall = document.getElementById('topInstall');
+  const heroInstall = document.getElementById('heroInstall');
+  const bottomInstall = document.getElementById('bottomInstall');
 
-      const clamp = (v,min=0,max=1) => Math.min(max,Math.max(min,v));
-      const map = (v,a,b,c,d) => c + (d-c) * clamp((v-a)/(b-a));
+  const help = document.getElementById('installHelp');
+  const helpText = document.getElementById('helpText');
+  const helpSteps = document.getElementById('helpSteps');
+  const helpClose = document.getElementById('helpClose');
 
-      const standalone = () =>
-        window.matchMedia('(display-mode: standalone)').matches ||
-        navigator.standalone === true;
+  let deferredPrompt = null;
 
-      const isIOS = () =>
-        /iphone|ipad|ipod/i.test(navigator.userAgent) ||
-        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const clamp=(v,min=0,max=1)=>Math.min(max,Math.max(min,v));
+  const map=(v,a,b,c,d)=>c+(d-c)*clamp((v-a)/(b-a));
 
-      const isMac = () => /Macintosh|Mac OS X/i.test(navigator.userAgent);
+  const standalone=()=>window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+  const isIOS=()=>/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const isMac=()=>/Macintosh|Mac OS X/i.test(navigator.userAgent);
 
-      function openHelp(kind){
-        if(kind === 'ios'){
-          helpText.textContent = 'En iPhone o iPad, instala Dingloft desde Safari.';
-          helpSteps.innerHTML = `
-            <div class="help-step"><b>1</b><span>Abre Dingloft en <strong>Safari</strong>.</span></div>
-            <div class="help-step"><b>2</b><span>Toca <strong>Compartir</strong>.</span></div>
-            <div class="help-step"><b>3</b><span>Selecciona <strong>Añadir a pantalla de inicio</strong>.</span></div>`;
-        }else if(kind === 'mac'){
-          helpText.textContent = 'En Mac puedes instalar Dingloft como app desde Safari, Chrome o Edge según tu versión.';
-          helpSteps.innerHTML = `
-            <div class="help-step"><b>1</b><span>En Safari abre el menú <strong>Archivo</strong>.</span></div>
-            <div class="help-step"><b>2</b><span>Selecciona <strong>Añadir al Dock</strong>.</span></div>
-            <div class="help-step"><b>3</b><span>Confirma la instalación de <strong>Dingloft</strong>.</span></div>`;
-        }else{
-          helpText.textContent = 'Tu navegador puede instalar Dingloft como una aplicación independiente.';
-          helpSteps.innerHTML = `
-            <div class="help-step"><b>1</b><span>Abre el menú de tu navegador.</span></div>
-            <div class="help-step"><b>2</b><span>Busca <strong>Instalar app</strong> o <strong>Añadir a pantalla de inicio</strong>.</span></div>
-            <div class="help-step"><b>3</b><span>Confirma la instalación.</span></div>`;
-        }
+  function openHelp(kind){
+    if(kind==='ios'){
+      helpText.textContent='En iPhone o iPad, instala Dingloft desde Safari.';
+      helpSteps.innerHTML=`
+        <div class="help-step"><b>1</b><span>Abre Dingloft en <strong>Safari</strong>.</span></div>
+        <div class="help-step"><b>2</b><span>Toca <strong>Compartir</strong>.</span></div>
+        <div class="help-step"><b>3</b><span>Selecciona <strong>Añadir a pantalla de inicio</strong>.</span></div>`;
+    }else if(kind==='mac'){
+      helpText.textContent='En Mac puedes instalar Dingloft como app desde Safari, Chrome o Edge según tu versión.';
+      helpSteps.innerHTML=`
+        <div class="help-step"><b>1</b><span>En Safari abre <strong>Archivo</strong>.</span></div>
+        <div class="help-step"><b>2</b><span>Selecciona <strong>Añadir al Dock</strong>.</span></div>
+        <div class="help-step"><b>3</b><span>Confirma la instalación.</span></div>`;
+    }else{
+      helpText.textContent='Tu navegador puede instalar Dingloft como una aplicación independiente.';
+      helpSteps.innerHTML=`
+        <div class="help-step"><b>1</b><span>Abre el menú de tu navegador.</span></div>
+        <div class="help-step"><b>2</b><span>Busca <strong>Instalar app</strong> o <strong>Añadir a pantalla de inicio</strong>.</span></div>
+        <div class="help-step"><b>3</b><span>Confirma la instalación.</span></div>`;
+    }
+    help.classList.add('show');
+    help.setAttribute('aria-hidden','false');
+  }
 
-        help.classList.add('show');
-        help.setAttribute('aria-hidden','false');
-      }
+  function closeHelp(){
+    help.classList.remove('show');
+    help.setAttribute('aria-hidden','true');
+  }
 
-      function closeHelp(){
-        help.classList.remove('show');
-        help.setAttribute('aria-hidden','true');
-      }
+  async function install(){
+    if(standalone()){
+      openHelp(isIOS()?'ios':isMac()?'mac':'other');
+      helpText.textContent='Dingloft ya está abierta en modo app.';
+      return;
+    }
 
-      async function install(){
-        if(standalone()){
-          openHelp(isIOS() ? 'ios' : isMac() ? 'mac' : 'other');
-          helpText.textContent = 'Dingloft ya está abierta en modo app.';
-          return;
-        }
+    if(deferredPrompt){
+      try{
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+      }catch(_){}
+      deferredPrompt=null;
+      return;
+    }
 
-        if(deferredPrompt){
-          try{
-            deferredPrompt.prompt();
-            await deferredPrompt.userChoice;
-          }catch(_){}
-          deferredPrompt = null;
-          return;
-        }
+    openHelp(isIOS()?'ios':isMac()?'mac':'other');
+  }
 
-        openHelp(isIOS() ? 'ios' : isMac() ? 'mac' : 'other');
-      }
+  window.addEventListener('beforeinstallprompt',e=>{
+    e.preventDefault();
+    deferredPrompt=e;
+  });
 
-      window.addEventListener('beforeinstallprompt',event => {
-        event.preventDefault();
-        deferredPrompt = event;
-      });
+  window.addEventListener('appinstalled',()=>{
+    deferredPrompt=null;
+    [topInstall,heroInstall,bottomInstall].forEach(b=>{
+      if(b)b.textContent='Dingloft instalada';
+    });
+  });
 
-      window.addEventListener('appinstalled',() => {
-        deferredPrompt = null;
-        topInstall.textContent = 'Instalada';
-        heroInstall.textContent = 'Dingloft instalada';
-        bottomInstall.textContent = 'Dingloft instalada';
-      });
+  [topInstall,heroInstall,bottomInstall].forEach(b=>b?.addEventListener('click',install));
+  helpClose.addEventListener('click',closeHelp);
+  help.addEventListener('click',e=>{if(e.target===help)closeHelp()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeHelp()});
 
-      [topInstall,heroInstall,bottomInstall].forEach(btn => {
-        btn?.addEventListener('click',install);
-      });
+  /*
+    La referencia real fue una captura de 457 frames (~57 fps, 7.95 s).
+    El patrón que replica este código:
+    - 0–~20%: texto superior visible; teléfono empieza por debajo.
+    - ~20–42%: texto superior sale; teléfono entra hasta quedar COMPLETO.
+    - ~42–75%: DINGLOFT APP y círculo siguen quietos; teléfono continúa subiendo.
+    - ~75–100%: teléfono sale por arriba; termina la sección sticky.
+  */
+  function paint(p){
+    p=clamp(p);
 
-      helpClose.addEventListener('click',closeHelp);
+    let phoneY;
 
-      help.addEventListener('click',event => {
-        if(event.target === help) closeHelp();
-      });
+    if(p < .16){
+      phoneY=map(p,0,.16,62,42);
+    }else if(p < .42){
+      phoneY=map(p,.16,.42,42,0);
+    }else{
+      phoneY=map(p,.42,1,0,-108);
+    }
 
-      document.addEventListener('keydown',event => {
-        if(event.key === 'Escape') closeHelp();
-      });
+    const phoneScale=
+      p < .42
+        ? map(p,0,.42,.94,1)
+        : map(p,.42,1,1,.985);
 
-      /*
-       * Timing basado en el comportamiento del video de Osmo:
-       * - el círculo y "DINGLOFT APP" quedan fijos;
-       * - el texto superior sale primero;
-       * - el teléfono nace parcialmente abajo, queda COMPLETO en el centro,
-       *   y continúa hasta salir por arriba;
-       * - si se hace scroll hacia arriba todo vuelve exactamente en reversa.
-       */
-      function paint(progress){
-        const p = clamp(progress);
+    const introO=
+      p < .12 ? 1 :
+      p < .28 ? map(p,.12,.28,1,0) :
+      0;
 
-        let phoneY;
-        if(p < .08){
-          phoneY = map(p,0,.08,55,42);       // parte inferior asomando
-        }else if(p < .45){
-          phoneY = map(p,.08,.45,42,0);      // entra completo al centro
-        }else{
-          phoneY = map(p,.45,1,0,-105);      // cruza y sale por arriba
-        }
+    const introY=
+      p < .12 ? 0 :
+      p < .28 ? map(p,.12,.28,0,-78) :
+      -78;
 
-        const phoneScale =
-          p < .45
-            ? map(p,0,.45,.94,1)
-            : map(p,.45,1,1,.98);
+    sequence.style.setProperty('--phone-y',`${phoneY.toFixed(2)}vh`);
+    sequence.style.setProperty('--phone-scale',phoneScale.toFixed(4));
+    sequence.style.setProperty('--intro-o',introO.toFixed(4));
+    sequence.style.setProperty('--intro-y',`${introY.toFixed(1)}px`);
+  }
 
-        const introOpacity =
-          p < .10 ? 1 :
-          p < .30 ? map(p,.10,.30,1,0) :
-          0;
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        const introY =
-          p < .10 ? 0 :
-          p < .30 ? map(p,.10,.30,0,-64) :
-          -64;
+  if(reduced){
+    paint(.42);
+  }else{
+    let ticking=false;
 
-        const heroOpacity =
-          p < .76 ? 1 :
-          map(p,.76,1,1,.25);
+    function update(){
+      const rect=sequence.getBoundingClientRect();
+      const distance=Math.max(1,sequence.offsetHeight-window.innerHeight);
+      const travelled=Math.min(distance,Math.max(0,-rect.top));
+      paint(travelled/distance);
+    }
 
-        section.style.setProperty('--scroll-p',p.toFixed(4));
-        section.style.setProperty('--phone-y',`${phoneY.toFixed(2)}vh`);
-        section.style.setProperty('--phone-scale',phoneScale.toFixed(4));
-        section.style.setProperty('--intro-opacity',introOpacity.toFixed(4));
-        section.style.setProperty('--intro-y',`${introY.toFixed(1)}px`);
-        section.style.setProperty('--hero-opacity',heroOpacity.toFixed(4));
-      }
-
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      if(reduced){
-        paint(.45);
-      }else{
-        let ticking = false;
-
-        function update(){
-          const rect = section.getBoundingClientRect();
-          const scrollable = Math.max(1,section.offsetHeight - window.innerHeight);
-          const travelled = Math.min(scrollable,Math.max(0,-rect.top));
-          paint(travelled/scrollable);
-        }
-
-        function requestUpdate(){
-          if(ticking) return;
-          ticking = true;
-          requestAnimationFrame(() => {
-            update();
-            ticking = false;
-          });
-        }
-
-        window.addEventListener('scroll',requestUpdate,{passive:true});
-        window.addEventListener('resize',requestUpdate,{passive:true});
+    function requestUpdate(){
+      if(ticking)return;
+      ticking=true;
+      requestAnimationFrame(()=>{
         update();
-      }
-    })();
-  </script>
+        ticking=false;
+      });
+    }
+
+    window.addEventListener('scroll',requestUpdate,{passive:true});
+    window.addEventListener('resize',requestUpdate,{passive:true});
+    update();
+  }
+})();
+</script>
 </body>
 </html>
