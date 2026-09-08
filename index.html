@@ -778,6 +778,150 @@ body{
   .big-word{font-size:clamp(2.75rem,11.6vw,4.1rem)}
   .phone-wrap{width:205px;height:375px}
 }
+
+/* =========================================================
+   PC RESET — desktop composition rebuilt from scratch
+   ========================================================= */
+@media (min-width: 761px){
+
+  .sequence{
+    height:235vh !important;
+  }
+
+  .pin{
+    height:100vh !important;
+    min-height:720px !important;
+    overflow:visible !important;
+  }
+
+  .header{
+    top:20px !important;
+    width:min(1180px,calc(100% - 64px)) !important;
+    height:62px !important;
+    border-radius:20px !important;
+  }
+
+  .intro{
+    top:112px !important;
+    width:min(820px,calc(100% - 120px)) !important;
+  }
+
+  .intro h1{
+    font-size:clamp(2.8rem,4vw,4.35rem) !important;
+    line-height:.95 !important;
+  }
+
+  .intro p{
+    width:min(620px,90%) !important;
+    font-size:.84rem !important;
+  }
+
+  .orbit{
+    top:63% !important;
+    width:min(1040px,74vw) !important;
+  }
+
+  .orbit-glow{
+    top:70% !important;
+    width:min(700px,50vw) !important;
+  }
+
+  /* Text starts in the upper-middle area */
+  .center-anchor{
+    top:43% !important;
+    width:100% !important;
+  }
+
+  .big-word{
+    font-size:clamp(4.4rem,6vw,6.8rem) !important;
+    line-height:.86 !important;
+    letter-spacing:-.07em !important;
+  }
+
+  /* Button remains visibly between title and phone */
+  .center-install{
+    margin-top:18px !important;
+    min-height:48px !important;
+    padding:0 21px !important;
+    border-radius:14px !important;
+    font-size:.72rem !important;
+  }
+
+  /* Phone is much more restrained on desktop */
+  .phone-wrap{
+    top:52% !important;
+    width:282px !important;
+    height:516px !important;
+  }
+
+  .phone{
+    border-radius:46px !important;
+    padding:8px !important;
+  }
+
+  .screen{
+    border-radius:39px !important;
+  }
+
+  .island{
+    width:94px !important;
+    height:26px !important;
+  }
+
+  .phone-ui{
+    padding:50px 16px 18px !important;
+  }
+}
+
+
+/* ===== Desktop final composition fix ===== */
+@media (min-width:761px){
+  .intro{
+    top:108px !important;
+  }
+
+  .intro h1{
+    font-size:clamp(2.75rem,3.85vw,4.15rem) !important;
+    line-height:.96 !important;
+  }
+
+  .intro p{
+    width:min(680px,88%) !important;
+    margin-top:16px !important;
+    font-size:.84rem !important;
+  }
+
+  /* Empieza DESPUÉS del párrafo, no encima */
+  .center-anchor{
+    top:64% !important;
+  }
+
+  .big-word{
+    font-size:clamp(4.2rem,5.7vw,6.25rem) !important;
+    line-height:.86 !important;
+  }
+
+  .center-install{
+    margin-top:18px !important;
+  }
+
+  /* El móvil arranca pegado debajo del botón */
+  .phone-wrap{
+    top:52% !important;
+    width:282px !important;
+    height:516px !important;
+  }
+
+  .orbit{
+    top:69% !important;
+    width:min(1050px,74vw) !important;
+  }
+
+  .orbit-glow{
+    top:74% !important;
+  }
+}
+
 </style>
 </head>
 
@@ -1002,10 +1146,70 @@ body{
     const mobile=window.matchMedia('(max-width:760px)').matches;
     const vh=window.innerHeight;
 
+    if(!mobile){
+      /*
+        ESCRITORIO:
+        Estado inicial:
+          DINGLOFT APP
+          botón
+          teléfono inmediatamente debajo
+
+        Scroll:
+          teléfono SUBE
+          DINGLOFT APP BAJA detrás del teléfono
+          botón queda fijo y luego desaparece
+      */
+
+      // El teléfono empieza justo debajo del botón.
+      const phoneY =
+        p < .16 ? map(p,0,.16,58,50) :
+        p < .68 ? map(p,.16,.68,50,-10) :
+        map(p,.68,1,-10,-16);
+
+      const phoneScale =
+        p < .68 ? map(p,0,.68,.96,1) : map(p,.68,1,1,.985);
+
+      // DINGLOFT APP baja claramente pero sin salirse demasiado.
+      const wp =
+        p < .12 ? 0 :
+        p > .82 ? 1 :
+        (p-.12)/.70;
+
+      const eased = easeInOutCubic(wp);
+      const wordY = 145 * eased;
+      const wordScale = 1 - (.012 * wp);
+
+      // Botón NO baja: se queda en su lugar y desaparece al cruce.
+      const buttonO =
+        p < .22 ? 1 :
+        p < .42 ? map(p,.22,.42,1,0) :
+        0;
+
+      const introO =
+        p < .10 ? 1 :
+        p < .28 ? map(p,.10,.28,1,0) :
+        0;
+
+      const introY =
+        p < .10 ? 0 :
+        p < .28 ? map(p,.10,.28,0,-76) :
+        -76;
+
+      phoneWrap.style.transform =
+        `translate3d(-50%,calc(-50% + ${phoneY.toFixed(2)}vh),0) scale(${phoneScale.toFixed(4)})`;
+
+      wordTrack.style.transform =
+        `translate3d(0,${wordY.toFixed(1)}px,0) scale(${wordScale.toFixed(4)})`;
+
+      heroInstall.style.opacity = buttonO.toFixed(4);
+
+      sequence.style.setProperty('--intro-o',introO.toFixed(4));
+      sequence.style.setProperty('--intro-y',`${introY.toFixed(1)}px`);
+      return;
+    }
+
     /*
-      1. TELÉFONO SUBE.
-      Conservamos el arranque de la versión que ya te gustaba:
-      empieza debajo del botón y sube hasta quedar visible arriba.
+      MOBILE: preserve existing behavior.
     */
     let phoneY;
     if(p < .18){
@@ -1017,62 +1221,45 @@ body{
     }
 
     const phoneScale=
-      p < .60
-        ? map(p,0,.60,.95,.99)
-        : .99;
+      p < .60 ? map(p,0,.60,.95,.99) : .99;
 
-    /*
-      2. DINGLOFT APP BAJA.
-      No movemos el botón. Calculamos el destino usando el borde inferior
-      REAL del teléfono en su posición final.
-    */
-    const phoneBaseCenter=(mobile ? .47 : .50) * vh;
-    const finalPhoneCenter=phoneBaseCenter + (-.13 * vh);
-    const finalPhoneHeight=(phoneWrap?.offsetHeight || (mobile ? 402 : 626)) * .99;
-    const finalPhoneBottom=finalPhoneCenter + finalPhoneHeight/2;
+    const phoneBaseCenter=.47*vh;
+    const finalPhoneCenter=phoneBaseCenter+(-.13*vh);
+    const finalPhoneHeight=(phoneWrap?.offsetHeight||402)*.99;
+    const finalPhoneBottom=finalPhoneCenter+finalPhoneHeight/2;
 
-    const anchorBaseCenter=(mobile ? .49 : .48) * vh;
-    const anchorHeight=centerAnchor?.offsetHeight || (mobile ? 110 : 170);
-    const anchorTop=anchorBaseCenter - anchorHeight/2;
-    const wordHeight=wordTrack?.offsetHeight || (mobile ? 58 : 104);
-    const baseWordCenter=anchorTop + wordHeight/2;
+    const anchorBaseCenter=.49*vh;
+    const anchorHeight=centerAnchor?.offsetHeight||110;
+    const anchorTop=anchorBaseCenter-anchorHeight/2;
+    const wordHeight=wordTrack?.offsetHeight||58;
+    const baseWordCenter=anchorTop+wordHeight/2;
 
-    const gap=mobile ? 14 : 20;
-    const desiredWordCenter=finalPhoneBottom + gap + wordHeight/2;
+    const desiredWordCenter=finalPhoneBottom+14+wordHeight/2;
     const finalWordY=Math.max(0,desiredWordCenter-baseWordCenter);
 
     const wp=
-      p <= .10 ? 0 :
-      p >= .82 ? 1 :
+      p<=.10?0:
+      p>=.82?1:
       (p-.10)/(.82-.10);
 
-    const wordY=finalWordY * easeInOutCubic(wp);
-    const wordScale=1 - (.012 * wp);
+    const wordY=finalWordY*easeInOutCubic(wp);
+    const wordScale=1-(.012*wp);
 
-    /*
-      3. El botón NO BAJA.
-      Solo desaparece cuando el teléfono entra en su zona,
-      para no tapar la animación.
-    */
     const buttonO=
-      p < .20 ? 1 :
-      p < .38 ? map(p,.20,.38,1,0) :
+      p<.20?1:
+      p<.38?map(p,.20,.38,1,0):
       0;
 
-    /*
-      4. Intro superior sale antes del cruce.
-    */
     const introO=
-      p < .10 ? 1 :
-      p < .27 ? map(p,.10,.27,1,0) :
+      p<.10?1:
+      p<.27?map(p,.10,.27,1,0):
       0;
 
     const introY=
-      p < .10 ? 0 :
-      p < .27 ? map(p,.10,.27,0,-72) :
+      p<.10?0:
+      p<.27?map(p,.10,.27,0,-72):
       -72;
 
-    // Aplicamos transform DIRECTAMENTE a cada elemento.
     phoneWrap.style.transform=
       `translate3d(-50%,calc(-50% + ${phoneY.toFixed(2)}vh),0) scale(${phoneScale.toFixed(4)})`;
 
