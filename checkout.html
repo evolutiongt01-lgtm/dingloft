@@ -374,6 +374,54 @@
     .card-shell{background:#fafaf9}
     #paypal-card-button-container,
     #paypal-button-container{max-width:440px;margin:0 auto}
+
+    .embedded-card-shell{
+      padding:2px 0 0;
+    }
+    .card-intro h3{
+      margin:0 0 5px;
+      font-size:15px;
+      letter-spacing:-.25px;
+    }
+    .card-intro p{
+      margin:0 0 18px;
+      color:#8a8a90;
+      font-size:9px;
+      line-height:1.5;
+    }
+    .card-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .card-field-wide{grid-column:1/-1}
+    .card-field-block{
+      display:block;
+      min-width:0;
+    }
+    .card-field-block>span{
+      display:block;
+      margin:0 0 7px;
+      color:#626268;
+      font-size:9px;
+      font-weight:600;
+    }
+    .paypal-card-field{
+      height:50px;
+      border:1px solid #dfdfdc;
+      border-radius:12px;
+      background:#fff;
+      overflow:hidden;
+      transition:border-color .15s,box-shadow .15s;
+    }
+    .paypal-card-field:focus-within{
+      border-color:#111;
+      box-shadow:0 0 0 2px rgba(0,0,0,.035);
+    }
+    @media(max-width:560px){
+      .card-grid{gap:10px}
+      .paypal-card-field{height:49px}
+    }
     .paypal-shell{
       padding:24px 18px;
       border:1px solid #e3e3e0;
@@ -604,11 +652,45 @@
               </div>
 
               <div id="card-method-panel">
-                <div class="paypal-shell card-shell">
-                  <h3>Paga con tarjeta</h3>
-                  <p>Usa tu tarjeta de crédito o débito mediante el mismo sistema seguro de PayPal que ya utiliza Dingloft.</p>
-                  <div id="paypal-card-button-container"></div>
+                <div class="embedded-card-shell">
+                  <div class="card-intro">
+                    <h3>Tarjeta de crédito o débito</h3>
+                    <p>Ingresa los datos de tu tarjeta sin salir de Dingloft.</p>
+                  </div>
+
+                  <div class="card-grid">
+                    <label class="card-field-block card-field-wide">
+                      <span>Número de tarjeta</span>
+                      <div class="paypal-card-field" id="paypal-card-number"></div>
+                    </label>
+
+                    <label class="card-field-block">
+                      <span>Vencimiento</span>
+                      <div class="paypal-card-field" id="paypal-card-expiry"></div>
+                    </label>
+
+                    <label class="card-field-block">
+                      <span>CVV</span>
+                      <div class="paypal-card-field" id="paypal-card-cvv"></div>
+                    </label>
+
+                    <label class="card-field-block card-field-wide">
+                      <span>Nombre en la tarjeta</span>
+                      <div class="paypal-card-field" id="paypal-card-name"></div>
+                    </label>
+                  </div>
+
                   <div class="payment-message" id="card-payment-message"></div>
+
+                  <button class="primary-btn" id="paypal-card-submit" type="button" disabled>
+                    <span id="paypal-card-submit-label">Pagar con tarjeta</span>
+                    <span class="processing" id="paypal-card-processing">
+                      <span class="spinner"></span> Procesando…
+                    </span>
+                  </button>
+
+                  <button class="ghost-btn" id="cancel-btn" type="button">Cambiar producto</button>
+                  <div class="fineprint">Los datos de la tarjeta son procesados directamente por PayPal y no se almacenan en Dingloft.</div>
                 </div>
               </div>
 
@@ -683,6 +765,7 @@ let currentQuote=null;
 let activeMethod="card";
 let paypalSdkPromise=null;
 let renderedMethod="";
+let cardFieldsInstance=null;
 
 function money(v){
   return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(v||0));
@@ -795,8 +878,7 @@ async function loadPayPalSDK(){
     url.searchParams.set('currency','USD');
     url.searchParams.set('intent','capture');
     url.searchParams.set('commit','true');
-    url.searchParams.set('components','buttons,funding-eligibility');
-    url.searchParams.set('enable-funding','card');
+    url.searchParams.set('components','buttons,card-fields,funding-eligibility');
     url.searchParams.set('disable-funding','paylater,venmo');
 
     s.src=url.href;
@@ -857,77 +939,183 @@ function showSuccess(result,method){
 async function renderPayPalMethod(method){
   activeMethod=method;
   step('elements','active');
-  setMethodMessage(method,'Cargando método seguro…');
 
   const paypal=await loadPayPalSDK();
-  const hostId=method==='card'?'#paypal-card-button-container':'#paypal-button-container';
-  const host=$(hostId);
+
+  if(method==='card'){
+    setMethodMessage('card','Preparando campos seguros…');
+
+    if(!paypal.CardFields){
+      setMethodMessage('card','El pago embebido con tarjeta no está disponible en esta cuenta de PayPal.',true);
+      step('elements','');
+      return;
+    }
+
+    if(cardFieldsInstance){
+      setMethodMessage('card','');
+      step('elements','done');
+      return;
+    }
+
+    const style={
+      input:{
+        'font-size':'15px',
+        'font-family':'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif',
+        'font-weight':'400',
+        'color':'#171717',
+        'background':'#ffffff',
+        'padding':'14px 12px'
+      },
+      ':focus':{'color':'#111111'},
+      '.invalid':{'color':'#c9342f'}
+    };
+
+    const cardFields=paypal.CardFields({
+      createOrder:async()=>{
+        try{
+          setMethodMessage('card','Preparando el pago…');
+          step('session','active');
+          const id=await createOrder();
+          step('session','done');
+          return id;
+        }catch(e){
+          setMethodMessage('card',e.message||'No se pudo preparar el pago.',true);
+          throw e;
+        }
+      },
+      onApprove:async data=>{
+        try{
+          step('payment','active');
+          setMethodMessage('card','Pago aprobado. Habilitando tu compra…');
+          const result=await captureOrder(data.orderID);
+          showSuccess(result,'card');
+        }catch(e){
+          step('payment','');
+          setMethodMessage('card',e.message||'El pago fue aprobado, pero no se pudo confirmar la entrega.',true);
+        }finally{
+          setCardProcessing(false);
+        }
+      },
+      onError:error=>{
+        console.error('Dingloft PayPal CardFields',error);
+        step('payment','');
+        setMethodMessage('card','No se pudo procesar la tarjeta. Revisa los datos e inténtalo nuevamente.',true);
+        setCardProcessing(false);
+      },
+      style
+    });
+
+    if(typeof cardFields.isEligible==='function' && !cardFields.isEligible()){
+      setMethodMessage(
+        'card',
+        'PayPal no habilitó el formulario directo de tarjeta para esta cuenta, navegador o ubicación. Puedes usar la pestaña PayPal.',
+        true
+      );
+      step('elements','');
+      return;
+    }
+
+    await Promise.all([
+      cardFields.NumberField({style,placeholder:'1234 5678 9012 3456'}).render('#paypal-card-number'),
+      cardFields.ExpiryField({style,placeholder:'MM/AA'}).render('#paypal-card-expiry'),
+      cardFields.CVVField({style,placeholder:'CVV'}).render('#paypal-card-cvv'),
+      cardFields.NameField({style,placeholder:'Nombre completo'}).render('#paypal-card-name')
+    ]);
+
+    cardFieldsInstance=cardFields;
+
+    const submit=$('#paypal-card-submit');
+    if(submit){
+      submit.disabled=false;
+      submit.onclick=async()=>{
+        setCardProcessing(true);
+        setMethodMessage('card','');
+        step('payment','active');
+        try{
+          await cardFieldsInstance.submit();
+        }catch(e){
+          console.error('PayPal CardFields submit',e);
+          step('payment','');
+          setMethodMessage('card',e?.message||'Revisa los datos de la tarjeta e inténtalo nuevamente.',true);
+          setCardProcessing(false);
+        }
+      };
+    }
+
+    setMethodMessage('card','');
+    step('elements','done');
+    renderedMethod='card';
+    return;
+  }
+
+  setMethodMessage('paypal','Cargando PayPal…');
+  const host=$('#paypal-button-container');
   if(!host)return;
   host.innerHTML='';
 
-  const fundingSource=method==='card'?paypal.FUNDING.CARD:paypal.FUNDING.PAYPAL;
-
   const buttons=paypal.Buttons({
-    fundingSource,
+    fundingSource:paypal.FUNDING.PAYPAL,
     style:{
       layout:'vertical',
-      color:method==='card'?'black':'gold',
+      color:'gold',
       shape:'rect',
-      checkoutel:method==='card'?'pay':'paypal',
+      label:'paypal',
       height:48
     },
     createOrder:async()=>{
       try{
-        setMethodMessage(method,'Preparando el pago…');
+        setMethodMessage('paypal','Preparando el pago…');
         step('session','active');
         const id=await createOrder();
         step('session','done');
         return id;
       }catch(e){
-        setMethodMessage(method,e.message||'No se pudo preparar el pago.',true);
+        setMethodMessage('paypal',e.message||'No se pudo preparar el pago.',true);
         throw e;
       }
     },
     onApprove:async data=>{
       try{
         step('payment','active');
-        setMethodMessage(method,'Pago aprobado. Habilitando tu compra…');
+        setMethodMessage('paypal','Pago aprobado. Habilitando tu compra…');
         const result=await captureOrder(data.orderID);
-        showSuccess(result,method);
+        showSuccess(result,'paypal');
       }catch(e){
         step('payment','');
-        setMethodMessage(method,e.message||'El pago fue aprobado, pero no se pudo confirmar la entrega.',true);
+        setMethodMessage('paypal',e.message||'El pago fue aprobado, pero no se pudo confirmar la entrega.',true);
       }
     },
     onCancel:()=>{
       step('payment','');
-      setMethodMessage(method,'Pago cancelado. No se realizó ningún cobro.');
+      setMethodMessage('paypal','Pago cancelado. No se realizó ningún cobro.');
     },
     onError:error=>{
       console.error('Dingloft PayPal checkout',error);
       step('payment','');
-      setMethodMessage(method,'No se pudo abrir el método de pago. Inténtalo nuevamente.',true);
+      setMethodMessage('paypal','No se pudo abrir PayPal. Inténtalo nuevamente.',true);
     }
   });
 
   if(typeof buttons.isEligible==='function' && !buttons.isEligible()){
-    setMethodMessage(
-      method,
-      method==='card'
-        ? 'El pago directo con tarjeta no está disponible para este navegador o ubicación. Puedes usar PayPal.'
-        : 'PayPal no está disponible en este navegador.',
-      true
-    );
+    setMethodMessage('paypal','PayPal no está disponible en este navegador.',true);
     step('elements','');
     return;
   }
 
-  await buttons.render(hostId);
-  setMethodMessage(method,'');
+  await buttons.render('#paypal-button-container');
+  setMethodMessage('paypal','');
   step('elements','done');
-  renderedMethod=method;
+  renderedMethod='paypal';
 }
 
+function setCardProcessing(on){
+  const btn=$('#paypal-card-submit');
+  const label=$('#paypal-card-submit-label');
+  const processing=$('#paypal-card-processing');
+  if(btn)btn.disabled=Boolean(on);
+  if(label)label.style.display=on?'none':'inline';
+  if(processing)processing.style.display=on?'inline-flex':'none';
+}
 function selectPaymentMethod(method){
   activeMethod=method;
   document.querySelectorAll('[data-method]').forEach(btn=>{
@@ -997,6 +1185,7 @@ if(qrImg){
 
 $('#product-select').addEventListener('change',updatePreview);
 $('#prepare-btn').addEventListener('click',prepare);
+$('#cancel-btn')?.addEventListener('click',()=>location.href='checkout.html');
 $('#new-test-btn').addEventListener('click',reset);
 
 onAuthStateChanged(auth,async user=>{
