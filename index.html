@@ -5,20 +5,28 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
   <title>Dingloft · Instala la app</title>
+
   <link rel="icon" href="img/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
 
+  <style>
     :root{
-      --bg:#ffffff;
-      --ink:#0d0f12;
-      --muted:#747a84;
-      --line:#e6e9ed;
-      --accent:#4ebef2;
-      --accent2:#786bde;
-      --progress:0;
+      --ink:#111214;
+      --muted:#777d86;
+      --line:#e7e9ec;
+      --soft:#f6f7f8;
+      --accent:#5fc6ef;
+      --accent2:#8174e8;
+      --p:0;
+      --phone-y:0px;
+      --phone-scale:1;
+      --benefit-opacity:0;
+      --benefit-y:30px;
+      --intro-opacity:1;
+      --intro-y:0px;
+      --word-opacity:1;
     }
 
     *{box-sizing:border-box}
@@ -30,286 +38,294 @@
       font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       overflow-x:hidden;
     }
-    body{min-height:100vh}
+
     a{text-decoration:none;color:inherit}
     button{font:inherit}
 
     .page{
+      min-height:300vh;
       position:relative;
-      min-height:150vh;
-      background:
-        radial-gradient(760px 380px at 50% 78%,rgba(78,190,242,.075),transparent 72%),
-        #fff;
-      overflow:clip;
-      isolation:isolate;
+      background:#fff;
     }
 
-    .stage{
+    .scene{
       position:sticky;
       top:0;
       height:100vh;
-      min-height:760px;
+      min-height:720px;
       overflow:hidden;
+      background:
+        radial-gradient(800px 420px at 50% 72%,rgba(95,198,239,.075),transparent 72%),
+        #fff;
+      isolation:isolate;
     }
 
+    /* ------------------------------------------------
+       Minimal top bar, matching the checkout language
+       ------------------------------------------------ */
     .topbar{
-      width:min(1180px,calc(100% - 36px));
-      height:66px;
-      margin:18px auto 0;
+      position:absolute;
+      z-index:30;
+      top:18px;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(1180px,calc(100% - 32px));
+      height:64px;
+      padding:9px 11px 9px 13px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:16px;
-      padding:9px 11px 9px 13px;
-      border:1px solid #e4e8ec;
-      border-radius:22px;
-      background:rgba(255,255,255,.92);
-      backdrop-filter:blur(18px) saturate(140%);
-      box-shadow:0 12px 34px rgba(17,22,30,.055);
-      position:relative;
-      z-index:30;
+      gap:14px;
+      border:1px solid var(--line);
+      border-radius:21px;
+      background:rgba(255,255,255,.90);
+      backdrop-filter:blur(18px) saturate(145%);
+      box-shadow:0 12px 34px rgba(18,23,30,.05);
     }
 
     .brand{
       display:flex;
       align-items:center;
-      gap:11px;
+      gap:10px;
       min-width:0;
     }
+
     .brand img{
-      width:42px;
-      height:42px;
+      width:40px;
+      height:40px;
       object-fit:contain;
-      border-radius:13px;
+      border-radius:12px;
       background:#0c0e11;
     }
+
     .brand-copy strong{
       display:block;
-      font-size:.82rem;
-      letter-spacing:.2em;
-      font-weight:800;
+      font-size:.78rem;
+      letter-spacing:.19em;
       line-height:1;
+      font-weight:800;
     }
+
     .brand-copy span{
       display:block;
       margin-top:5px;
-      color:#9ca1aa;
-      font-size:.47rem;
-      letter-spacing:.18em;
+      color:#9ca1a9;
+      font-size:.44rem;
+      letter-spacing:.17em;
     }
 
-    .top-actions{
+    .nav{
       display:flex;
       align-items:center;
       gap:8px;
     }
-    .nav-btn{
-      min-height:42px;
-      padding:0 15px;
+
+    .nav a,
+    .nav button{
+      min-height:41px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:0 14px;
+      border:1px solid #e3e6e9;
       border-radius:12px;
-      border:1px solid #e3e6ea;
       background:#fff;
-      color:#353a42;
-      font-size:.7rem;
+      color:#373b42;
+      font-size:.68rem;
       font-weight:750;
       cursor:pointer;
     }
-    .nav-btn.primary{
+
+    .nav .primary{
       border-color:#111318;
       background:#111318;
       color:#fff;
     }
 
-    .orb{
+    /* ------------------------------------------------
+       Scroll scene
+       ------------------------------------------------ */
+    .ring{
+      position:absolute;
+      z-index:0;
+      left:50%;
+      top:54%;
+      width:min(1220px,91vw);
+      aspect-ratio:1;
+      transform:translate(-50%,-50%);
+      border-radius:50%;
+      border:1.25px solid rgba(57,158,205,.52);
+      pointer-events:none;
+    }
+
+    .ring::before,
+    .ring::after{
+      content:"";
+      position:absolute;
+      border-radius:inherit;
+      pointer-events:none;
+    }
+
+    .ring::before{
+      inset:7.5%;
+      border:1px solid rgba(129,116,232,.12);
+    }
+
+    .ring::after{
+      inset:15%;
+      border:1px solid rgba(17,18,20,.045);
+    }
+
+    .ring-glow{
       position:absolute;
       z-index:0;
       left:50%;
       top:68%;
-      width:min(1380px,96vw);
-      aspect-ratio:1;
-      border-radius:50%;
-      border:1.25px solid rgba(63,170,220,.52);
-      transform:
-        translate3d(-50%,calc(-50% + (var(--progress) * 170px)),0)
-        scale(calc(.96 + (var(--progress) * .055)));
-      transform-origin:center;
-      will-change:transform;
-      pointer-events:none;
-    }
-    .orb::before{
-      content:"";
-      position:absolute;
-      inset:8%;
-      border-radius:inherit;
-      border:1px solid rgba(120,107,222,.10);
-    }
-    .orb::after{
-      content:"";
-      position:absolute;
-      inset:16%;
-      border-radius:inherit;
-      border:1px solid rgba(13,15,18,.045);
-    }
-
-    .glow{
-      position:absolute;
-      z-index:0;
-      left:50%;
-      top:78%;
-      width:min(920px,74vw);
-      height:330px;
+      width:min(900px,70vw);
+      height:350px;
       transform:translate(-50%,-50%);
       border-radius:50%;
-      background:rgba(78,190,242,.10);
-      filter:blur(105px);
-      opacity:calc(.35 + (var(--progress) * .28));
+      background:rgba(95,198,239,.10);
+      filter:blur(100px);
       pointer-events:none;
     }
 
-    .hero{
-      position:relative;
-      z-index:5;
-      width:min(1040px,calc(100% - 40px));
-      margin:0 auto;
-      padding-top:64px;
+    .intro{
+      position:absolute;
+      z-index:8;
+      left:50%;
+      top:118px;
+      width:min(900px,calc(100% - 40px));
+      transform:translate(-50%,var(--intro-y));
       text-align:center;
+      opacity:var(--intro-opacity);
+      will-change:transform,opacity;
     }
 
-    .kicker{
+    .eyebrow{
       display:inline-flex;
       align-items:center;
-      gap:8px;
-      padding:8px 11px;
-      border:1px solid #e2e6ea;
+      gap:7px;
+      padding:7px 10px;
+      border:1px solid #e3e6e9;
       border-radius:999px;
-      background:rgba(255,255,255,.88);
-      color:#727781;
-      font-size:.61rem;
+      background:rgba(255,255,255,.86);
+      color:#747a83;
+      font-size:.56rem;
       font-weight:800;
-      letter-spacing:.13em;
+      letter-spacing:.12em;
       text-transform:uppercase;
     }
-    .kicker-dot{
+
+    .eyebrow-dot{
       width:7px;
       height:7px;
       border-radius:50%;
       background:linear-gradient(145deg,var(--accent),var(--accent2));
-      box-shadow:0 0 0 5px rgba(78,190,242,.10);
+      box-shadow:0 0 0 5px rgba(95,198,239,.10);
     }
 
-    .title{
-      margin:18px auto 0;
-      max-width:980px;
-      font-size:clamp(3.4rem,6.05vw,6.15rem);
+    .intro h1{
+      margin:15px 0 0;
+      font-size:clamp(2.7rem,5.2vw,5.3rem);
       line-height:.92;
       letter-spacing:-.064em;
       font-weight:800;
       text-transform:uppercase;
     }
-    .title > span{
+
+    .intro p{
+      width:min(700px,92%);
+      margin:16px auto 0;
+      color:#777d86;
+      font-size:.86rem;
+      line-height:1.62;
+    }
+
+    .intro .cta{
+      margin-top:18px;
+      min-height:46px;
+      padding:0 17px;
+      border:0;
+      border-radius:13px;
+      background:#111318;
+      color:#fff;
+      font-weight:800;
+      font-size:.72rem;
+      cursor:pointer;
+      box-shadow:0 14px 30px rgba(17,19,24,.14);
+    }
+
+    /* Giant word behind the phone, like the reference */
+    .hero-word{
+      position:absolute;
+      z-index:1;
+      left:50%;
+      top:47%;
+      transform:translate(-50%,-50%);
+      width:100%;
+      text-align:center;
+      font-size:clamp(4rem,9vw,9.2rem);
+      line-height:.83;
+      letter-spacing:-.072em;
+      font-weight:800;
+      color:#111318;
+      text-transform:uppercase;
+      opacity:var(--word-opacity);
+      white-space:nowrap;
+      pointer-events:none;
+    }
+
+    .hero-word span{
       display:block;
-      margin-top:4px;
-      background:linear-gradient(100deg,#1d668e 0%,#328fc1 38%,#776bdc 100%);
+      margin-top:2px;
+      background:linear-gradient(100deg,#111318 0%,#3b91b8 48%,#776bdc 100%);
       -webkit-background-clip:text;
       background-clip:text;
       color:transparent;
     }
 
-    .lead{
-      width:min(720px,90%);
-      margin:20px auto 0;
-      color:#747a84;
-      font-size:.94rem;
-      line-height:1.68;
-    }
-
-    .actions{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:22px;
-    }
-    .install-btn{
-      min-height:48px;
-      padding:0 18px;
-      border:0;
-      border-radius:13px;
-      background:#111318;
-      color:#fff;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      font-size:.76rem;
-      font-weight:800;
-      cursor:pointer;
-      box-shadow:0 14px 32px rgba(17,19,24,.15);
-      transition:transform .2s ease,box-shadow .2s ease;
-    }
-    .install-btn:hover{
-      transform:translateY(-2px);
-      box-shadow:0 18px 38px rgba(17,19,24,.20);
-    }
-    .benefit{
-      min-height:48px;
-      padding:0 15px;
-      border:1px solid #dde3e8;
-      border-radius:13px;
-      background:rgba(255,255,255,.94);
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      color:#777d86;
-      font-size:.66rem;
-      font-weight:760;
-    }
-    .benefit strong{
-      color:#111318;
-      font-size:.84rem;
-    }
-
+    /* Phone enters from bottom and leaves through the top */
     .phone-wrap{
       position:absolute;
-      z-index:4;
+      z-index:5;
       left:50%;
-      bottom:-430px;
-      width:332px;
-      height:607px;
+      top:50%;
+      width:310px;
+      height:566px;
       transform:
-        translate3d(-50%,calc(var(--progress) * -205px),0)
-        scale(calc(.96 + (var(--progress) * .055)));
-      transform-origin:center bottom;
+        translate3d(-50%,calc(-50% + var(--phone-y)),0)
+        scale(var(--phone-scale));
+      transform-origin:center;
       will-change:transform;
     }
 
     .phone{
       width:100%;
       height:100%;
-      padding:9px;
-      border-radius:54px;
-      background:linear-gradient(145deg,#4c5055,#121418 23%,#050607 72%,#4b4f55);
+      padding:8px;
+      border-radius:51px;
+      background:linear-gradient(145deg,#4c5055,#111318 22%,#050607 72%,#4b4f55);
       box-shadow:
-        0 48px 100px rgba(20,27,34,.20),
-        inset 0 1px 0 rgba(255,255,255,.46);
+        0 46px 92px rgba(19,26,34,.21),
+        inset 0 1px 0 rgba(255,255,255,.45);
     }
 
     .screen{
-      height:100%;
       position:relative;
+      height:100%;
       overflow:hidden;
-      border-radius:45px;
+      border-radius:43px;
       background:#fff;
-      border:1px solid rgba(255,255,255,.14);
     }
 
     .island{
       position:absolute;
-      z-index:4;
-      top:12px;
+      z-index:5;
+      top:11px;
       left:50%;
-      width:108px;
-      height:30px;
+      width:104px;
+      height:29px;
       transform:translateX(-50%);
       border-radius:999px;
       background:#050505;
@@ -317,212 +333,306 @@
 
     .phone-ui{
       height:100%;
-      padding:58px 19px 23px;
-      display:flex;
-      flex-direction:column;
+      padding:55px 18px 21px;
     }
 
     .phone-nav{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding-bottom:16px;
+      padding-bottom:15px;
       border-bottom:1px solid #edf0f2;
     }
+
     .phone-brand{
       display:flex;
       align-items:center;
       gap:8px;
     }
+
     .phone-brand img{
-      width:30px;
-      height:30px;
+      width:29px;
+      height:29px;
       object-fit:contain;
       border-radius:9px;
-      background:#0d0f12;
+      background:#0c0e11;
     }
+
     .phone-brand strong{
       display:block;
-      font-size:.64rem;
+      font-size:.61rem;
       letter-spacing:.08em;
     }
+
     .phone-brand small{
       display:block;
       margin-top:2px;
-      color:#a0a4ab;
-      font-size:.39rem;
+      color:#9da3ab;
+      font-size:.37rem;
     }
+
     .bag{
-      width:29px;
-      height:29px;
+      width:28px;
+      height:28px;
       display:grid;
       place-items:center;
-      border-radius:9px;
+      border-radius:8px;
       background:#f3f5f6;
-      color:#31353a;
-      font-size:.78rem;
+      color:#34383e;
+      font-size:.75rem;
     }
 
     .phone-hero{
-      padding:25px 2px 17px;
+      padding:24px 2px 16px;
     }
+
     .phone-hero small{
-      color:#4198c4;
-      font-size:.42rem;
+      color:#3b94be;
+      font-size:.39rem;
       font-weight:800;
-      letter-spacing:.11em;
+      letter-spacing:.1em;
       text-transform:uppercase;
     }
+
     .phone-hero h3{
-      margin:8px 0 7px;
-      font-size:1.34rem;
+      margin:7px 0 6px;
+      font-size:1.25rem;
       line-height:1.02;
       letter-spacing:-.045em;
     }
-    .phone-hero h3 span{
-      color:#88909b;
-    }
+
+    .phone-hero h3 span{color:#8b929c}
+
     .phone-hero p{
       margin:0;
-      color:#9399a2;
-      font-size:.47rem;
-      line-height:1.55;
+      color:#9298a1;
+      font-size:.44rem;
+      line-height:1.52;
     }
 
-    .extension-card{
+    .offer-card{
       position:relative;
-      margin-top:4px;
-      padding:13px;
-      border:1px solid #dfe9ee;
-      border-radius:16px;
-      background:linear-gradient(145deg,#f7fcff,#f8f8ff);
       overflow:hidden;
+      margin-top:2px;
+      padding:12px;
+      border:1px solid #deeaef;
+      border-radius:15px;
+      background:linear-gradient(145deg,#f7fcff,#f8f8ff);
     }
-    .extension-card::after{
+
+    .offer-card::after{
       content:"15%";
       position:absolute;
-      right:-6px;
+      right:-7px;
       bottom:-17px;
-      color:rgba(44,91,128,.05);
-      font-size:4rem;
+      color:rgba(40,100,132,.05);
+      font-size:3.8rem;
       font-weight:900;
-      letter-spacing:-.09em;
+      letter-spacing:-.1em;
     }
-    .extension-row{
+
+    .offer-head{
       position:relative;
       z-index:2;
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:9px;
     }
-    .extension-icon{
-      width:37px;
-      height:37px;
-      border-radius:11px;
+
+    .offer-icon{
+      width:36px;
+      height:36px;
       display:grid;
       place-items:center;
+      border-radius:11px;
       background:linear-gradient(145deg,#75dfff,#8a7fff);
-      font-size:1rem;
+      font-size:.95rem;
     }
-    .extension-row strong{
+
+    .offer-head strong{
       display:block;
-      font-size:.61rem;
+      font-size:.57rem;
     }
-    .extension-row small{
+
+    .offer-head small{
       display:block;
       margin-top:2px;
       color:#9298a1;
-      font-size:.41rem;
+      font-size:.38rem;
     }
-    .extension-cta{
+
+    .offer-button{
       position:relative;
       z-index:2;
-      min-height:31px;
-      margin-top:12px;
-      border-radius:9px;
-      background:#111319;
-      color:#fff;
+      min-height:29px;
+      margin-top:11px;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:.47rem;
+      border-radius:8px;
+      background:#111318;
+      color:#fff;
+      font-size:.43rem;
       font-weight:800;
     }
 
-    .mini-products{
+    .mini-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:8px;
-      margin-top:10px;
+      gap:7px;
+      margin-top:9px;
     }
-    .mini-product{
-      min-height:78px;
-      padding:9px;
+
+    .mini{
+      min-height:72px;
+      padding:8px;
       border:1px solid #eaedf0;
-      border-radius:13px;
+      border-radius:12px;
       background:#fbfcfd;
     }
-    .mini-product img{
-      width:28px;
-      height:28px;
+
+    .mini img{
+      width:25px;
+      height:25px;
       object-fit:contain;
-      margin-bottom:7px;
+      margin-bottom:6px;
     }
-    .mini-product strong{
+
+    .mini strong{
       display:block;
-      font-size:.46rem;
+      font-size:.4rem;
     }
-    .mini-product span{
+
+    .mini span{
       display:block;
-      margin-top:3px;
-      color:#9ca1a8;
-      font-size:.37rem;
+      margin-top:2px;
+      color:#a0a5ac;
+      font-size:.32rem;
     }
+
     .homebar{
       position:absolute;
       left:50%;
-      bottom:8px;
-      width:104px;
-      height:4px;
-      border-radius:999px;
+      bottom:7px;
+      width:92px;
+      height:3px;
       transform:translateX(-50%);
-      background:#161719;
+      border-radius:999px;
+      background:#111318;
     }
 
-    .float-note{
+    /* Second stage revealed after phone passes upward */
+    .benefits{
       position:absolute;
-      z-index:5;
-      right:calc(50% - 355px);
-      bottom:11%;
-      min-width:176px;
-      padding:10px 12px;
-      border:1px solid #e2e6ea;
-      border-radius:13px;
-      background:rgba(255,255,255,.90);
-      backdrop-filter:blur(18px);
-      box-shadow:0 14px 36px rgba(20,26,34,.07);
-      transform:translateY(calc(24px - (var(--progress) * 42px)));
-      opacity:calc(.68 + (var(--progress) * .32));
+      z-index:7;
+      left:50%;
+      top:52%;
+      width:min(880px,calc(100% - 42px));
+      transform:translate(-50%,var(--benefit-y));
+      text-align:center;
+      opacity:var(--benefit-opacity);
+      will-change:transform,opacity;
+      pointer-events:none;
     }
-    .float-note small{
-      display:block;
-      color:#969ca5;
-      font-size:.46rem;
+
+    .benefits h2{
+      margin:0;
+      font-size:clamp(2.4rem,5vw,5rem);
+      line-height:.94;
+      letter-spacing:-.058em;
+      font-weight:800;
       text-transform:uppercase;
-      letter-spacing:.08em;
     }
-    .float-note strong{
+
+    .benefits h2 span{
+      display:block;
+      color:#5f6a75;
+    }
+
+    .benefits p{
+      width:min(650px,92%);
+      margin:15px auto 0;
+      color:#7b818a;
+      font-size:.84rem;
+      line-height:1.6;
+    }
+
+    .benefit-grid{
+      width:min(720px,100%);
+      margin:23px auto 0;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:9px;
+    }
+
+    .benefit-card{
+      min-height:96px;
+      padding:14px 10px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      border:1px solid #e5e8eb;
+      border-radius:15px;
+      background:rgba(255,255,255,.90);
+      box-shadow:0 12px 30px rgba(18,24,31,.04);
+    }
+
+    .benefit-icon{
+      width:34px;
+      height:34px;
+      display:grid;
+      place-items:center;
+      border-radius:11px;
+      background:#f3f5f6;
+      font-size:.9rem;
+    }
+
+    .benefit-card strong{
+      font-size:.66rem;
+    }
+
+    .benefit-card span{
+      color:#9298a1;
+      font-size:.48rem;
+      line-height:1.35;
+    }
+
+    .floating-note{
+      position:absolute;
+      z-index:9;
+      right:6%;
+      bottom:7%;
+      padding:10px 12px;
+      border:1px solid #e3e7ea;
+      border-radius:13px;
+      background:rgba(255,255,255,.88);
+      backdrop-filter:blur(18px);
+      box-shadow:0 14px 34px rgba(20,27,34,.06);
+      opacity:calc(.45 + (var(--p) * .55));
+    }
+
+    .floating-note small{
+      display:block;
+      color:#959ba4;
+      font-size:.43rem;
+      letter-spacing:.07em;
+      text-transform:uppercase;
+    }
+
+    .floating-note strong{
       display:block;
       margin-top:3px;
-      font-size:.65rem;
-    }
-    .float-note strong span{
-      color:#328fbd;
+      font-size:.62rem;
     }
 
+    .floating-note strong span{color:#2e8db9}
+
+    /* Install modal */
     .install-help{
       position:fixed;
-      z-index:50;
+      z-index:100;
       inset:0;
       display:none;
       place-items:center;
@@ -530,7 +640,9 @@
       background:rgba(8,10,14,.38);
       backdrop-filter:blur(12px);
     }
+
     .install-help.show{display:grid}
+
     .help-card{
       width:min(430px,100%);
       padding:22px;
@@ -539,9 +651,26 @@
       border:1px solid #e7e9ec;
       box-shadow:0 28px 90px rgba(16,20,26,.22);
     }
-    .help-card h3{margin:0;font-size:1.3rem;letter-spacing:-.03em}
-    .help-card p{margin:8px 0 0;color:#747a84;font-size:.84rem;line-height:1.55}
-    .help-steps{display:grid;gap:8px;margin-top:16px}
+
+    .help-card h3{
+      margin:0;
+      font-size:1.3rem;
+      letter-spacing:-.03em;
+    }
+
+    .help-card p{
+      margin:8px 0 0;
+      color:#747a84;
+      font-size:.84rem;
+      line-height:1.55;
+    }
+
+    .help-steps{
+      display:grid;
+      gap:8px;
+      margin-top:16px;
+    }
+
     .help-step{
       display:flex;
       gap:10px;
@@ -552,181 +681,208 @@
       font-size:.78rem;
       color:#4f555e;
     }
+
     .help-step b{
       flex:0 0 auto;
       width:25px;
       height:25px;
-      border-radius:50%;
       display:grid;
       place-items:center;
-      background:#111319;
+      border-radius:50%;
+      background:#111318;
       color:#fff;
       font-size:.65rem;
     }
+
     .help-close{
       width:100%;
       min-height:44px;
       margin-top:14px;
       border:0;
       border-radius:12px;
-      background:#111319;
+      background:#111318;
       color:#fff;
       font-weight:800;
       cursor:pointer;
     }
 
-    @media(max-width:960px){
-      .hero{padding-top:72px}
-      .title{font-size:clamp(3rem,8.2vw,5.4rem)}
-      .phone-wrap{width:292px;height:534px;bottom:-360px}
-      .orb{width:1060px}
-      .float-note{right:5%}
+    @media(max-width:900px){
+      .intro{top:116px}
+      .intro h1{font-size:clamp(2.7rem,7.4vw,4.8rem)}
+      .hero-word{font-size:clamp(4rem,11vw,7.2rem)}
+      .phone-wrap{width:285px;height:520px}
+      .ring{width:980px}
+      .benefit-grid{grid-template-columns:repeat(2,1fr)}
     }
 
     @media(max-width:620px){
-      .page{min-height:132vh}
-      .stage{min-height:700px}
+      .page{min-height:260vh}
+      .scene{min-height:680px}
 
       .topbar{
+        top:10px;
         width:calc(100% - 20px);
         height:58px;
-        margin-top:10px;
-        padding:7px 8px 7px 10px;
         border-radius:19px;
+        padding:7px 8px 7px 10px;
       }
+
       .brand img{
-        width:35px;
-        height:35px;
-        border-radius:10px;
+        width:35px;height:35px;border-radius:10px;
       }
-      .brand-copy strong{font-size:.67rem}
-      .brand-copy span{font-size:.39rem;margin-top:4px}
-      .top-actions .nav-btn:not(.primary){display:none}
-      .nav-btn.primary{
+
+      .brand-copy strong{font-size:.66rem}
+      .brand-copy span{font-size:.38rem;margin-top:4px}
+      .nav a{display:none}
+      .nav button{
         min-height:39px;
         padding:0 11px;
-        font-size:.62rem;
+        font-size:.61rem;
       }
 
-      .hero{
-        width:calc(100% - 24px);
-        padding-top:64px;
+      .intro{
+        top:92px;
+        width:calc(100% - 22px);
       }
-      .kicker{
-        padding:7px 10px;
-        font-size:.52rem;
+
+      .eyebrow{
+        padding:6px 9px;
+        font-size:.5rem;
       }
-      .title{
-        margin-top:14px;
-        font-size:clamp(2.55rem,12.4vw,4rem);
+
+      .intro h1{
+        margin-top:11px;
+        font-size:clamp(2rem,10.5vw,3.35rem);
         line-height:.94;
-        letter-spacing:-.058em;
       }
-      .title > span{
-        margin-top:6px;
-      }
-      .lead{
-        width:min(94%,450px);
-        margin-top:15px;
-        font-size:.74rem;
-        line-height:1.58;
-      }
-      .actions{
-        margin-top:16px;
-        gap:8px;
-      }
-      .install-btn{
-        min-height:44px;
-        padding:0 14px;
-        font-size:.68rem;
-      }
-      .benefit{
-        min-height:44px;
-        padding:0 11px;
-        font-size:.57rem;
-      }
-      .benefit strong{font-size:.71rem}
 
-      .orb{
-        top:71%;
-        width:760px;
-        transform:
-          translate3d(-50%,calc(-50% + (var(--progress) * 128px)),0)
-          scale(calc(.96 + (var(--progress) * .04)));
+      .intro p{
+        margin-top:11px;
+        font-size:.7rem;
+        line-height:1.52;
       }
-      .glow{
-        top:82%;
-        width:520px;
+
+      .intro .cta{
+        min-height:42px;
+        margin-top:13px;
+        padding:0 14px;
+        font-size:.65rem;
+      }
+
+      .ring{
+        top:55%;
+        width:720px;
+      }
+
+      .ring-glow{
+        top:68%;
+        width:500px;
         height:250px;
       }
 
-      .phone-wrap{
-        width:224px;
-        height:409px;
-        bottom:-286px;
-        transform:
-          translate3d(-50%,calc(var(--progress) * -152px),0)
-          scale(calc(.97 + (var(--progress) * .035)));
+      .hero-word{
+        top:46%;
+        font-size:clamp(3.2rem,14vw,5rem);
+        line-height:.86;
+        white-space:normal;
       }
+
+      .phone-wrap{
+        width:218px;
+        height:398px;
+      }
+
       .phone{
         padding:7px;
         border-radius:40px;
       }
+
       .screen{border-radius:33px}
-      .island{
-        top:9px;
-        width:80px;
-        height:22px;
-      }
-      .phone-ui{padding:42px 12px 17px}
+      .island{top:9px;width:79px;height:22px}
+
+      .phone-ui{padding:42px 12px 16px}
       .phone-nav{padding-bottom:10px}
       .phone-brand img{width:22px;height:22px;border-radius:7px}
-      .phone-brand strong{font-size:.46rem}
-      .phone-brand small{font-size:.3rem}
-      .bag{width:23px;height:23px;border-radius:7px;font-size:.57rem}
+      .phone-brand strong{font-size:.45rem}
+      .phone-brand small{font-size:.28rem}
+      .bag{width:23px;height:23px;border-radius:7px;font-size:.55rem}
       .phone-hero{padding:16px 1px 10px}
-      .phone-hero small{font-size:.3rem}
-      .phone-hero h3{margin:5px 0;font-size:.94rem}
-      .phone-hero p{font-size:.34rem}
-      .extension-card{padding:9px;border-radius:12px}
-      .extension-icon{width:28px;height:28px;border-radius:8px;font-size:.72rem}
-      .extension-row strong{font-size:.43rem}
-      .extension-row small{font-size:.29rem}
-      .extension-cta{min-height:23px;margin-top:8px;border-radius:7px;font-size:.34rem}
-      .mini-product{min-height:59px;padding:6px;border-radius:9px}
-      .mini-product img{width:21px;height:21px;margin-bottom:4px}
-      .mini-product strong{font-size:.32rem}
-      .mini-product span{font-size:.27rem}
-      .homebar{width:76px;height:3px}
+      .phone-hero small{font-size:.29rem}
+      .phone-hero h3{margin:5px 0;font-size:.91rem}
+      .phone-hero p{font-size:.32rem}
+      .offer-card{padding:9px;border-radius:11px}
+      .offer-icon{width:27px;height:27px;border-radius:8px;font-size:.7rem}
+      .offer-head strong{font-size:.41rem}
+      .offer-head small{font-size:.28rem}
+      .offer-button{min-height:22px;margin-top:8px;border-radius:7px;font-size:.32rem}
+      .mini{min-height:56px;padding:6px;border-radius:9px}
+      .mini img{width:20px;height:20px;margin-bottom:4px}
+      .mini strong{font-size:.3rem}
+      .mini span{font-size:.24rem}
+      .homebar{width:74px;height:3px}
 
-      .float-note{
+      .benefits{
+        top:48%;
+        width:calc(100% - 24px);
+      }
+
+      .benefits h2{
+        font-size:clamp(2rem,10vw,3.1rem);
+      }
+
+      .benefits p{
+        font-size:.7rem;
+      }
+
+      .benefit-grid{
+        grid-template-columns:1fr 1fr;
+        gap:7px;
+        margin-top:17px;
+      }
+
+      .benefit-card{
+        min-height:82px;
+        padding:10px 7px;
+        border-radius:12px;
+      }
+
+      .benefit-icon{
+        width:30px;height:30px;border-radius:9px;font-size:.78rem
+      }
+
+      .benefit-card strong{font-size:.58rem}
+      .benefit-card span{font-size:.42rem}
+
+      .floating-note{
         right:8px;
-        bottom:8%;
-        min-width:128px;
+        bottom:7px;
         padding:8px 9px;
       }
-      .float-note small{font-size:.35rem}
-      .float-note strong{font-size:.48rem}
+
+      .floating-note small{font-size:.34rem}
+      .floating-note strong{font-size:.48rem}
     }
 
     @media(max-width:390px){
-      .benefit{display:none}
-      .hero{padding-top:58px}
-      .title{font-size:clamp(2.35rem,12vw,3.55rem)}
-      .lead{font-size:.69rem}
-      .phone-wrap{width:208px;height:380px;bottom:-265px}
-      .float-note{display:none}
+      .floating-note{display:none}
+      .intro h1{font-size:clamp(1.9rem,10vw,2.9rem)}
+      .phone-wrap{width:204px;height:373px}
     }
 
     @media(prefers-reduced-motion:reduce){
-      .orb,.phone-wrap,.float-note{transform:none!important}
+      .phone-wrap,
+      .intro,
+      .benefits{
+        transition:none!important;
+      }
     }
-
   </style>
 </head>
+
 <body>
-  <main class="page" id="extensionPage">
-    <div class="stage">
+  <main class="page" id="page">
+    <section class="scene">
+
       <header class="topbar">
         <a class="brand" href="index.html" aria-label="Dingloft">
           <img src="img/dingloft.png" alt="Dingloft">
@@ -736,40 +892,36 @@
           </span>
         </a>
 
-        <div class="top-actions">
-          <a class="nav-btn" href="index.html">Home</a>
-          <a class="nav-btn" href="account.html">Cuenta</a>
-          <button class="nav-btn primary" id="topInstallBtn" type="button">Instalar app</button>
-        </div>
+        <nav class="nav" aria-label="Navegación">
+          <a href="index.html">Home</a>
+          <a href="account.html">Cuenta</a>
+          <button class="primary" id="navInstall" type="button">Instalar app</button>
+        </nav>
       </header>
 
-      <div class="orb" aria-hidden="true"></div>
-      <div class="glow" aria-hidden="true"></div>
+      <div class="ring" aria-hidden="true"></div>
+      <div class="ring-glow" aria-hidden="true"></div>
 
-      <section class="hero">
-        <div class="kicker"><span class="kicker-dot"></span>Dingloft App</div>
+      <div class="intro">
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          Dingloft App
+        </div>
 
-        <h1 class="title">
-          Instala Dingloft
-          <span>Obtén 15% de descuento</span>
-        </h1>
+        <h1>Instala Dingloft.<br>Obtén 15% de descuento.</h1>
 
-        <p class="lead">
+        <p>
           Accede más rápido a tu catálogo, compras, Multitracks y biblioteca.
-          Instala Dingloft como app y desbloquea un beneficio especial del 15% para tu próxima compra.
+          Instálala como app y desbloquea un beneficio especial para tu próxima compra.
         </p>
 
-        <div class="actions">
-          <button class="install-btn" id="installBtn" type="button">
-            <span>↓</span>
-            Instalar Dingloft
-          </button>
+        <button class="cta" id="installBtn" type="button">Instalar Dingloft</button>
+      </div>
 
-          <div class="benefit">
-            BENEFICIO DE INSTALACIÓN <strong>15% OFF</strong>
-          </div>
-        </div>
-      </section>
+      <div class="hero-word" aria-hidden="true">
+        DINGLOFT
+        <span>APP</span>
+      </div>
 
       <div class="phone-wrap" aria-hidden="true">
         <div class="phone">
@@ -790,28 +942,29 @@
 
               <div class="phone-hero">
                 <small>Dingloft App</small>
-                <h3>Tu catálogo.<br><span>Siempre contigo.</span></h3>
-                <p>Compras, biblioteca, Multitracks y soporte desde una experiencia más rápida.</p>
+                <h3>Todo Dingloft.<br><span>En un lugar.</span></h3>
+                <p>Software, Multitracks, compras, biblioteca y soporte desde una experiencia más rápida.</p>
               </div>
 
-              <div class="extension-card">
-                <div class="extension-row">
-                  <div class="extension-icon">✦</div>
+              <div class="offer-card">
+                <div class="offer-head">
+                  <div class="offer-icon">✦</div>
                   <div>
                     <strong>Beneficio de instalación</strong>
                     <small>15% de descuento disponible</small>
                   </div>
                 </div>
-                <div class="extension-cta">INSTALAR DINGLOFT</div>
+                <div class="offer-button">OBTENER BENEFICIO</div>
               </div>
 
-              <div class="mini-products">
-                <div class="mini-product">
+              <div class="mini-grid">
+                <div class="mini">
                   <img src="img/autocad.png" alt="">
                   <strong>Software</strong>
                   <span>Catálogo Dingloft</span>
                 </div>
-                <div class="mini-product">
+
+                <div class="mini">
                   <img src="img/dingloft.png" alt="">
                   <strong>Multitracks</strong>
                   <span>Escucha y compra</span>
@@ -824,37 +977,74 @@
         </div>
       </div>
 
-      <div class="float-note" aria-hidden="true">
+      <section class="benefits" aria-label="Beneficios">
+        <h2>Más rápido.<br><span>Todo en Dingloft.</span></h2>
+        <p>
+          Instalar la app no cambia tu cuenta ni tus compras. Solo te da una forma más directa de entrar a tu ecosistema Dingloft.
+        </p>
+
+        <div class="benefit-grid">
+          <div class="benefit-card">
+            <div class="benefit-icon">⌂</div>
+            <strong>Tienda</strong>
+            <span>Software y librerías</span>
+          </div>
+
+          <div class="benefit-card">
+            <div class="benefit-icon">♪</div>
+            <strong>Multitracks</strong>
+            <span>Catálogo y previews</span>
+          </div>
+
+          <div class="benefit-card">
+            <div class="benefit-icon">↓</div>
+            <strong>Biblioteca</strong>
+            <span>Compras y descargas</span>
+          </div>
+
+          <div class="benefit-card">
+            <div class="benefit-icon">15</div>
+            <strong>15% OFF</strong>
+            <span>Beneficio de instalación</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="floating-note" aria-hidden="true">
         <small>Beneficio exclusivo</small>
         <strong>Próxima compra <span>-15%</span></strong>
       </div>
-    </div>
+
+    </section>
   </main>
 
   <div class="install-help" id="installHelp" aria-hidden="true">
     <div class="help-card">
       <h3>Instalar Dingloft</h3>
-      <p id="installHelpText">Tu navegador puede instalar Dingloft como una app independiente.</p>
-      <div class="help-steps" id="installSteps"></div>
-      <button class="help-close" id="installClose" type="button">Entendido</button>
+      <p id="helpText">Tu navegador puede instalar Dingloft como una app independiente.</p>
+      <div class="help-steps" id="helpSteps"></div>
+      <button class="help-close" id="helpClose" type="button">Entendido</button>
     </div>
   </div>
 
   <script>
     (() => {
-      const page = document.getElementById('extensionPage');
+      const page = document.getElementById('page');
       const installBtn = document.getElementById('installBtn');
-      const topInstallBtn = document.getElementById('topInstallBtn');
+      const navInstall = document.getElementById('navInstall');
       const help = document.getElementById('installHelp');
-      const helpText = document.getElementById('installHelpText');
-      const steps = document.getElementById('installSteps');
-      const close = document.getElementById('installClose');
+      const helpText = document.getElementById('helpText');
+      const helpSteps = document.getElementById('helpSteps');
+      const helpClose = document.getElementById('helpClose');
 
       let deferredPrompt = null;
 
+      const clamp = (v,min=0,max=1) => Math.min(max,Math.max(min,v));
+      const map = (v,a,b,c,d) => c + (d-c) * clamp((v-a)/(b-a));
+
       const standalone = () =>
         window.matchMedia('(display-mode: standalone)').matches ||
-        window.navigator.standalone === true;
+        navigator.standalone === true;
 
       const isIOS = () =>
         /iphone|ipad|ipod/i.test(navigator.userAgent) ||
@@ -862,95 +1052,152 @@
 
       const isMac = () => /Macintosh|Mac OS X/i.test(navigator.userAgent);
 
-      const openHelp = (kind) => {
-        if (kind === 'ios') {
-          helpText.textContent = 'En iPhone o iPad, Safari permite añadir Dingloft a tu pantalla de inicio.';
-          steps.innerHTML = `
+      function openHelp(kind){
+        if(kind === 'ios'){
+          helpText.textContent = 'En iPhone o iPad, instala Dingloft desde Safari.';
+          helpSteps.innerHTML = `
             <div class="help-step"><b>1</b><span>Abre Dingloft en <strong>Safari</strong>.</span></div>
             <div class="help-step"><b>2</b><span>Toca <strong>Compartir</strong>.</span></div>
             <div class="help-step"><b>3</b><span>Selecciona <strong>Añadir a pantalla de inicio</strong>.</span></div>`;
-        } else if (kind === 'mac') {
+        }else if(kind === 'mac'){
           helpText.textContent = 'En Mac puedes instalar Dingloft como app desde Safari, Chrome o Edge según tu versión.';
-          steps.innerHTML = `
+          helpSteps.innerHTML = `
             <div class="help-step"><b>1</b><span>En Safari abre el menú <strong>Archivo</strong>.</span></div>
             <div class="help-step"><b>2</b><span>Selecciona <strong>Añadir al Dock</strong>.</span></div>
             <div class="help-step"><b>3</b><span>Confirma la instalación de <strong>Dingloft</strong>.</span></div>`;
-        } else {
+        }else{
           helpText.textContent = 'Tu navegador puede instalar Dingloft como una aplicación independiente.';
-          steps.innerHTML = `
+          helpSteps.innerHTML = `
             <div class="help-step"><b>1</b><span>Abre el menú de tu navegador.</span></div>
             <div class="help-step"><b>2</b><span>Busca <strong>Instalar app</strong> o <strong>Añadir a pantalla de inicio</strong>.</span></div>
             <div class="help-step"><b>3</b><span>Confirma la instalación.</span></div>`;
         }
+
         help.classList.add('show');
         help.setAttribute('aria-hidden','false');
-      };
+      }
 
-      const closeHelp = () => {
+      function closeHelp(){
         help.classList.remove('show');
         help.setAttribute('aria-hidden','true');
-      };
+      }
 
-      const install = async () => {
-        if (standalone()) {
+      async function install(){
+        if(standalone()){
           openHelp(isIOS() ? 'ios' : isMac() ? 'mac' : 'other');
           helpText.textContent = 'Dingloft ya está abierta en modo app.';
           return;
         }
 
-        if (deferredPrompt) {
-          deferredPrompt.prompt();
-          try { await deferredPrompt.userChoice; } catch (_) {}
+        if(deferredPrompt){
+          try{
+            deferredPrompt.prompt();
+            await deferredPrompt.userChoice;
+          }catch(_){}
           deferredPrompt = null;
           return;
         }
 
         openHelp(isIOS() ? 'ios' : isMac() ? 'mac' : 'other');
-      };
+      }
 
-      window.addEventListener('beforeinstallprompt', event => {
+      window.addEventListener('beforeinstallprompt',event => {
         event.preventDefault();
         deferredPrompt = event;
       });
 
-      window.addEventListener('appinstalled', () => {
+      window.addEventListener('appinstalled',() => {
         deferredPrompt = null;
         installBtn.textContent = 'Dingloft instalada';
-        topInstallBtn.textContent = 'Instalada';
+        navInstall.textContent = 'Instalada';
       });
 
-      installBtn.addEventListener('click', install);
-      topInstallBtn.addEventListener('click', install);
-      close.addEventListener('click', closeHelp);
-      help.addEventListener('click', event => {
-        if (event.target === help) closeHelp();
-      });
-      document.addEventListener('keydown', event => {
-        if (event.key === 'Escape') closeHelp();
+      installBtn.addEventListener('click',install);
+      navInstall.addEventListener('click',install);
+      helpClose.addEventListener('click',closeHelp);
+
+      help.addEventListener('click',event => {
+        if(event.target === help) closeHelp();
       });
 
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.addEventListener('keydown',event => {
+        if(event.key === 'Escape') closeHelp();
+      });
+
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function paint(progress){
+        const p = clamp(progress);
+
+        /*
+          Reference-like timing:
+          0.00 - 0.12 : phone starts mostly below viewport
+          0.12 - 0.42 : phone rises through center
+          0.42 - 0.70 : phone keeps moving and exits above
+          0.58 - 1.00 : benefit content fades in underneath
+        */
+
+        const phoneY =
+          p < .12
+            ? map(p,0,.12,470,370)
+            : p < .42
+              ? map(p,.12,.42,370,20)
+              : map(p,.42,1,20,-720);
+
+        const phoneScale =
+          p < .42
+            ? map(p,0,.42,.88,1)
+            : map(p,.42,1,1,.94);
+
+        const introOpacity =
+          p < .22 ? 1 : map(p,.22,.38,1,0);
+
+        const introY =
+          p < .22 ? 0 : map(p,.22,.38,0,-26);
+
+        const wordOpacity =
+          p < .58 ? 1 : map(p,.58,.72,1,.18);
+
+        const benefitOpacity =
+          p < .52 ? 0 : p < .70 ? map(p,.52,.70,0,1) : 1;
+
+        const benefitY =
+          p < .52 ? 42 : map(p,.52,.74,42,0);
+
+        page.style.setProperty('--p',p.toFixed(4));
+        page.style.setProperty('--phone-y',`${phoneY.toFixed(1)}px`);
+        page.style.setProperty('--phone-scale',phoneScale.toFixed(4));
+        page.style.setProperty('--intro-opacity',introOpacity.toFixed(4));
+        page.style.setProperty('--intro-y',`${introY.toFixed(1)}px`);
+        page.style.setProperty('--word-opacity',wordOpacity.toFixed(4));
+        page.style.setProperty('--benefit-opacity',benefitOpacity.toFixed(4));
+        page.style.setProperty('--benefit-y',`${benefitY.toFixed(1)}px`);
+      }
+
+      if(reduced){
+        paint(.72);
+      }else{
         let ticking = false;
-        const update = () => {
+
+        function update(){
           const rect = page.getBoundingClientRect();
-          const max = Math.max(1, page.offsetHeight - window.innerHeight);
-          const passed = Math.min(max, Math.max(0, -rect.top));
-          const progress = Math.min(1, Math.max(0, passed / max));
-          page.style.setProperty('--progress', progress.toFixed(4));
-        };
-        const request = () => {
-          if (ticking) return;
+          const max = Math.max(1,page.offsetHeight - window.innerHeight);
+          const passed = Math.min(max,Math.max(0,-rect.top));
+          paint(passed/max);
+        }
+
+        function requestUpdate(){
+          if(ticking) return;
           ticking = true;
           requestAnimationFrame(() => {
             update();
             ticking = false;
           });
-        };
-        window.addEventListener('scroll', request, { passive:true });
-        window.addEventListener('resize', request, { passive:true });
+        }
+
+        window.addEventListener('scroll',requestUpdate,{passive:true});
+        window.addEventListener('resize',requestUpdate,{passive:true});
         update();
-      } else {
-        page.style.setProperty('--progress','1');
       }
     })();
   </script>
