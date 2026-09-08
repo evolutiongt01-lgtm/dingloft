@@ -564,7 +564,107 @@ body{
 
 
 @supports not (height:100dvh){
-  @media(max-width:760px){
+  
+/* ===== Desktop polish ===== */
+@media (min-width: 761px){
+  .header{
+    top:22px;
+    width:min(1120px,calc(100% - 56px));
+    height:66px;
+    padding:10px 12px 10px 15px;
+    border-radius:22px;
+  }
+
+  .intro{
+    top:126px;
+    width:min(860px,calc(100% - 80px));
+  }
+
+  .intro h1{
+    font-size:clamp(3.2rem,4.35vw,4.9rem);
+    line-height:.95;
+    letter-spacing:-.055em;
+  }
+
+  .intro p{
+    width:min(660px,90%);
+    font-size:.86rem;
+    line-height:1.62;
+  }
+
+  .orbit{
+    top:62%;
+    width:min(1120px,82vw);
+  }
+
+  .orbit-glow{
+    top:73%;
+    width:min(760px,58vw);
+    height:280px;
+  }
+
+  .big-word-track{
+    top:47%;
+  }
+
+  .big-word{
+    font-size:clamp(4.9rem,7.2vw,7.7rem);
+    letter-spacing:-.068em;
+  }
+
+  .center-install{
+    top:61%;
+    min-height:48px;
+    padding:0 20px;
+    border-radius:14px;
+    font-size:.72rem;
+  }
+
+  .phone-wrap{
+    top:54%;
+    width:min(300px,22vw);
+    height:auto;
+    aspect-ratio:342 / 626;
+  }
+
+  .phone{
+    border-radius:49px;
+  }
+
+  .screen{
+    border-radius:41px;
+  }
+
+  .island{
+    top:11px;
+    width:101px;
+    height:28px;
+  }
+
+  .phone-ui{
+    padding:54px 17px 20px;
+  }
+}
+
+@media (min-width: 1180px){
+  .intro{
+    top:132px;
+  }
+
+  .orbit{
+    width:min(1180px,78vw);
+  }
+
+  .big-word{
+    font-size:clamp(5.2rem,6.5vw,7.9rem);
+  }
+
+  .phone-wrap{
+    width:min(315px,21vw);
+  }
+}
+
+@media(max-width:760px){
     .sequence{height:230vh}
     .pin{
       height:100vh;
