@@ -14,19 +14,17 @@
   <style>
     :root{
       --ink:#111214;
-      --muted:#777d86;
+      --muted:#747a83;
       --line:#e7e9ec;
-      --soft:#f6f7f8;
-      --accent:#5fc6ef;
-      --accent2:#8174e8;
-      --p:0;
-      --phone-y:0px;
-      --phone-scale:1;
-      --benefit-opacity:0;
-      --benefit-y:30px;
-      --intro-opacity:1;
+      --soft:#f5f5f7;
+      --blue:#56bfe9;
+      --violet:#7769dc;
+      --scroll-p:0;
+      --phone-y:52vh;
+      --phone-scale:.96;
       --intro-y:0px;
-      --word-opacity:1;
+      --intro-opacity:1;
+      --hero-opacity:1;
     }
 
     *{box-sizing:border-box}
@@ -39,48 +37,31 @@
       overflow-x:hidden;
     }
 
+    body{min-height:100vh}
     a{text-decoration:none;color:inherit}
     button{font:inherit}
 
-    .page{
-      min-height:300vh;
-      position:relative;
-      background:#fff;
-    }
-
-    .scene{
-      position:sticky;
-      top:0;
-      height:100vh;
-      min-height:720px;
-      overflow:hidden;
-      background:
-        radial-gradient(800px 420px at 50% 72%,rgba(95,198,239,.075),transparent 72%),
-        #fff;
-      isolation:isolate;
-    }
-
-    /* ------------------------------------------------
-       Minimal top bar, matching the checkout language
-       ------------------------------------------------ */
-    .topbar{
-      position:absolute;
-      z-index:30;
-      top:18px;
+    /* ========================================================
+       HEADER
+       ======================================================== */
+    .site-header{
+      position:fixed;
+      z-index:100;
+      top:16px;
       left:50%;
-      transform:translateX(-50%);
-      width:min(1180px,calc(100% - 32px));
+      width:min(1200px,calc(100% - 32px));
       height:64px;
-      padding:9px 11px 9px 13px;
+      transform:translateX(-50%);
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:14px;
+      gap:16px;
+      padding:9px 10px 9px 13px;
       border:1px solid var(--line);
       border-radius:21px;
-      background:rgba(255,255,255,.90);
+      background:rgba(255,255,255,.92);
       backdrop-filter:blur(18px) saturate(145%);
-      box-shadow:0 12px 34px rgba(18,23,30,.05);
+      box-shadow:0 12px 34px rgba(18,23,30,.055);
     }
 
     .brand{
@@ -95,37 +76,34 @@
       height:40px;
       object-fit:contain;
       border-radius:12px;
-      background:#0c0e11;
+      background:#0b0d10;
     }
 
-    .brand-copy strong{
+    .brand strong{
       display:block;
       font-size:.78rem;
+      font-weight:800;
       letter-spacing:.19em;
       line-height:1;
-      font-weight:800;
     }
 
-    .brand-copy span{
+    .brand small{
       display:block;
       margin-top:5px;
-      color:#9ca1a9;
+      color:#9ca1aa;
       font-size:.44rem;
       letter-spacing:.17em;
     }
 
-    .nav{
+    .header-actions{
       display:flex;
       align-items:center;
       gap:8px;
     }
 
-    .nav a,
-    .nav button{
+    .header-actions a,
+    .header-actions button{
       min-height:41px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
       padding:0 14px;
       border:1px solid #e3e6e9;
       border-radius:12px;
@@ -136,69 +114,87 @@
       cursor:pointer;
     }
 
-    .nav .primary{
+    .header-actions .primary{
       border-color:#111318;
       background:#111318;
       color:#fff;
     }
 
-    /* ------------------------------------------------
-       Scroll scene
-       ------------------------------------------------ */
-    .ring{
+    /* ========================================================
+       OSMO-LIKE PINNED SEQUENCE
+       ======================================================== */
+    .motion-section{
+      position:relative;
+      height:210vh;
+      background:#fff;
+    }
+
+    .motion-pin{
+      position:sticky;
+      top:0;
+      height:100vh;
+      min-height:720px;
+      overflow:hidden;
+      background:
+        radial-gradient(760px 390px at 50% 76%,rgba(86,191,233,.075),transparent 72%),
+        #fff;
+      isolation:isolate;
+    }
+
+    /* círculo fijo detrás: no viaja con el teléfono */
+    .orbit{
       position:absolute;
       z-index:0;
       left:50%;
-      top:54%;
-      width:min(1220px,91vw);
+      top:57%;
+      width:min(1240px,91vw);
       aspect-ratio:1;
       transform:translate(-50%,-50%);
+      border:1.35px solid rgba(57,157,203,.50);
       border-radius:50%;
-      border:1.25px solid rgba(57,158,205,.52);
       pointer-events:none;
     }
 
-    .ring::before,
-    .ring::after{
+    .orbit::before{
       content:"";
       position:absolute;
+      inset:8%;
+      border:1px solid rgba(119,105,220,.11);
       border-radius:inherit;
-      pointer-events:none;
     }
 
-    .ring::before{
-      inset:7.5%;
-      border:1px solid rgba(129,116,232,.12);
-    }
-
-    .ring::after{
-      inset:15%;
+    .orbit::after{
+      content:"";
+      position:absolute;
+      inset:16%;
       border:1px solid rgba(17,18,20,.045);
+      border-radius:inherit;
     }
 
-    .ring-glow{
+    .orbit-glow{
       position:absolute;
       z-index:0;
       left:50%;
-      top:68%;
-      width:min(900px,70vw);
-      height:350px;
+      top:71%;
+      width:min(860px,68vw);
+      height:330px;
       transform:translate(-50%,-50%);
       border-radius:50%;
-      background:rgba(95,198,239,.10);
+      background:rgba(86,191,233,.10);
       filter:blur(100px);
       pointer-events:none;
     }
 
+    /* encabezado superior: se desplaza y desaparece primero */
     .intro{
       position:absolute;
       z-index:8;
+      top:112px;
       left:50%;
-      top:118px;
-      width:min(900px,calc(100% - 40px));
+      width:min(890px,calc(100% - 38px));
       transform:translate(-50%,var(--intro-y));
-      text-align:center;
       opacity:var(--intro-opacity);
+      text-align:center;
       will-change:transform,opacity;
     }
 
@@ -209,90 +205,90 @@
       padding:7px 10px;
       border:1px solid #e3e6e9;
       border-radius:999px;
-      background:rgba(255,255,255,.86);
-      color:#747a83;
+      background:rgba(255,255,255,.90);
+      color:#767c85;
       font-size:.56rem;
       font-weight:800;
       letter-spacing:.12em;
       text-transform:uppercase;
     }
 
-    .eyebrow-dot{
+    .eyebrow i{
       width:7px;
       height:7px;
       border-radius:50%;
-      background:linear-gradient(145deg,var(--accent),var(--accent2));
-      box-shadow:0 0 0 5px rgba(95,198,239,.10);
+      background:linear-gradient(145deg,var(--blue),var(--violet));
+      box-shadow:0 0 0 5px rgba(86,191,233,.10);
     }
 
     .intro h1{
-      margin:15px 0 0;
-      font-size:clamp(2.7rem,5.2vw,5.3rem);
+      margin:14px 0 0;
+      font-size:clamp(2.75rem,5.15vw,5.2rem);
       line-height:.92;
-      letter-spacing:-.064em;
+      letter-spacing:-.063em;
       font-weight:800;
       text-transform:uppercase;
     }
 
     .intro p{
-      width:min(700px,92%);
-      margin:16px auto 0;
-      color:#777d86;
-      font-size:.86rem;
-      line-height:1.62;
+      width:min(690px,92%);
+      margin:14px auto 0;
+      color:#747a83;
+      font-size:.83rem;
+      line-height:1.6;
     }
 
-    .intro .cta{
-      margin-top:18px;
-      min-height:46px;
-      padding:0 17px;
+    .intro button{
+      min-height:44px;
+      margin-top:16px;
+      padding:0 16px;
       border:0;
-      border-radius:13px;
+      border-radius:12px;
       background:#111318;
       color:#fff;
+      font-size:.69rem;
       font-weight:800;
-      font-size:.72rem;
       cursor:pointer;
-      box-shadow:0 14px 30px rgba(17,19,24,.14);
+      box-shadow:0 14px 28px rgba(17,19,24,.13);
     }
 
-    /* Giant word behind the phone, like the reference */
+    /* equivalente a OSMO BUSINESS: permanece fijo */
     .hero-word{
       position:absolute;
-      z-index:1;
+      z-index:2;
       left:50%;
-      top:47%;
-      transform:translate(-50%,-50%);
+      top:53%;
       width:100%;
+      transform:translate(-50%,-50%);
+      opacity:var(--hero-opacity);
       text-align:center;
-      font-size:clamp(4rem,9vw,9.2rem);
-      line-height:.83;
+      white-space:nowrap;
+      pointer-events:none;
+      font-size:clamp(4.6rem,8.8vw,9rem);
+      line-height:.84;
       letter-spacing:-.072em;
       font-weight:800;
       color:#111318;
       text-transform:uppercase;
-      opacity:var(--word-opacity);
-      white-space:nowrap;
-      pointer-events:none;
     }
 
     .hero-word span{
       display:block;
       margin-top:2px;
-      background:linear-gradient(100deg,#111318 0%,#3b91b8 48%,#776bdc 100%);
+      background:linear-gradient(100deg,#111318 0%,#3b91b8 47%,#776bdc 100%);
       -webkit-background-clip:text;
       background-clip:text;
       color:transparent;
     }
 
-    /* Phone enters from bottom and leaves through the top */
+    /* el teléfono es lo que realmente atraviesa la escena */
     .phone-wrap{
       position:absolute;
-      z-index:5;
+      z-index:6;
       left:50%;
       top:50%;
-      width:310px;
-      height:566px;
+      width:420px;
+      height:768px;
       transform:
         translate3d(-50%,calc(-50% + var(--phone-y)),0)
         scale(var(--phone-scale));
@@ -303,29 +299,29 @@
     .phone{
       width:100%;
       height:100%;
-      padding:8px;
-      border-radius:51px;
-      background:linear-gradient(145deg,#4c5055,#111318 22%,#050607 72%,#4b4f55);
+      padding:11px;
+      border-radius:68px;
+      background:linear-gradient(145deg,#51555b,#131518 22%,#050607 72%,#4d5258);
       box-shadow:
-        0 46px 92px rgba(19,26,34,.21),
-        inset 0 1px 0 rgba(255,255,255,.45);
+        0 54px 105px rgba(18,26,34,.22),
+        inset 0 1px 0 rgba(255,255,255,.48);
     }
 
     .screen{
       position:relative;
       height:100%;
       overflow:hidden;
-      border-radius:43px;
+      border-radius:58px;
       background:#fff;
     }
 
     .island{
       position:absolute;
       z-index:5;
-      top:11px;
+      top:15px;
       left:50%;
-      width:104px;
-      height:29px;
+      width:140px;
+      height:38px;
       transform:translateX(-50%);
       border-radius:999px;
       background:#050505;
@@ -333,70 +329,70 @@
 
     .phone-ui{
       height:100%;
-      padding:55px 18px 21px;
+      padding:75px 24px 28px;
     }
 
     .phone-nav{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding-bottom:15px;
+      padding-bottom:20px;
       border-bottom:1px solid #edf0f2;
     }
 
     .phone-brand{
       display:flex;
       align-items:center;
-      gap:8px;
+      gap:10px;
     }
 
     .phone-brand img{
-      width:29px;
-      height:29px;
+      width:39px;
+      height:39px;
       object-fit:contain;
-      border-radius:9px;
-      background:#0c0e11;
+      border-radius:12px;
+      background:#0d0f12;
     }
 
     .phone-brand strong{
       display:block;
-      font-size:.61rem;
+      font-size:.79rem;
       letter-spacing:.08em;
     }
 
     .phone-brand small{
       display:block;
-      margin-top:2px;
+      margin-top:3px;
       color:#9da3ab;
-      font-size:.37rem;
+      font-size:.48rem;
     }
 
     .bag{
-      width:28px;
-      height:28px;
+      width:38px;
+      height:38px;
       display:grid;
       place-items:center;
-      border-radius:8px;
+      border-radius:11px;
       background:#f3f5f6;
       color:#34383e;
-      font-size:.75rem;
+      font-size:.95rem;
     }
 
     .phone-hero{
-      padding:24px 2px 16px;
+      padding:31px 2px 21px;
     }
 
     .phone-hero small{
       color:#3b94be;
-      font-size:.39rem;
+      font-size:.52rem;
       font-weight:800;
       letter-spacing:.1em;
       text-transform:uppercase;
     }
 
     .phone-hero h3{
-      margin:7px 0 6px;
-      font-size:1.25rem;
+      margin:9px 0 8px;
+      font-size:1.7rem;
       line-height:1.02;
       letter-spacing:-.045em;
     }
@@ -406,27 +402,27 @@
     .phone-hero p{
       margin:0;
       color:#9298a1;
-      font-size:.44rem;
-      line-height:1.52;
+      font-size:.59rem;
+      line-height:1.55;
     }
 
     .offer-card{
       position:relative;
       overflow:hidden;
-      margin-top:2px;
-      padding:12px;
+      padding:16px;
       border:1px solid #deeaef;
-      border-radius:15px;
+      border-radius:19px;
       background:linear-gradient(145deg,#f7fcff,#f8f8ff);
     }
 
     .offer-card::after{
       content:"15%";
       position:absolute;
-      right:-7px;
-      bottom:-17px;
+      right:-10px;
+      bottom:-23px;
       color:rgba(40,100,132,.05);
-      font-size:3.8rem;
+      font-size:5rem;
+      line-height:1;
       font-weight:900;
       letter-spacing:-.1em;
     }
@@ -436,203 +432,397 @@
       z-index:2;
       display:flex;
       align-items:center;
-      gap:9px;
+      gap:12px;
     }
 
     .offer-icon{
-      width:36px;
-      height:36px;
+      width:48px;
+      height:48px;
       display:grid;
       place-items:center;
-      border-radius:11px;
+      border-radius:14px;
       background:linear-gradient(145deg,#75dfff,#8a7fff);
-      font-size:.95rem;
+      font-size:1.2rem;
     }
 
     .offer-head strong{
       display:block;
-      font-size:.57rem;
+      font-size:.76rem;
     }
 
     .offer-head small{
       display:block;
-      margin-top:2px;
+      margin-top:3px;
       color:#9298a1;
-      font-size:.38rem;
+      font-size:.50rem;
     }
 
     .offer-button{
       position:relative;
       z-index:2;
-      min-height:29px;
-      margin-top:11px;
+      min-height:38px;
+      margin-top:15px;
       display:flex;
       align-items:center;
       justify-content:center;
-      border-radius:8px;
+      border-radius:11px;
       background:#111318;
       color:#fff;
-      font-size:.43rem;
+      font-size:.57rem;
       font-weight:800;
     }
 
     .mini-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:7px;
-      margin-top:9px;
+      gap:10px;
+      margin-top:12px;
     }
 
     .mini{
-      min-height:72px;
-      padding:8px;
+      min-height:98px;
+      padding:11px;
       border:1px solid #eaedf0;
-      border-radius:12px;
+      border-radius:16px;
       background:#fbfcfd;
     }
 
     .mini img{
-      width:25px;
-      height:25px;
+      width:34px;
+      height:34px;
       object-fit:contain;
-      margin-bottom:6px;
+      margin-bottom:8px;
     }
 
     .mini strong{
       display:block;
-      font-size:.4rem;
+      font-size:.55rem;
     }
 
     .mini span{
       display:block;
-      margin-top:2px;
+      margin-top:3px;
       color:#a0a5ac;
-      font-size:.32rem;
+      font-size:.42rem;
     }
 
     .homebar{
       position:absolute;
       left:50%;
-      bottom:7px;
-      width:92px;
-      height:3px;
+      bottom:10px;
+      width:125px;
+      height:4px;
       transform:translateX(-50%);
       border-radius:999px;
       background:#111318;
     }
 
-    /* Second stage revealed after phone passes upward */
-    .benefits{
+    .corner-badge{
       position:absolute;
-      z-index:7;
-      left:50%;
-      top:52%;
-      width:min(880px,calc(100% - 42px));
-      transform:translate(-50%,var(--benefit-y));
-      text-align:center;
-      opacity:var(--benefit-opacity);
-      will-change:transform,opacity;
-      pointer-events:none;
-    }
-
-    .benefits h2{
-      margin:0;
-      font-size:clamp(2.4rem,5vw,5rem);
-      line-height:.94;
-      letter-spacing:-.058em;
-      font-weight:800;
-      text-transform:uppercase;
-    }
-
-    .benefits h2 span{
-      display:block;
-      color:#5f6a75;
-    }
-
-    .benefits p{
-      width:min(650px,92%);
-      margin:15px auto 0;
-      color:#7b818a;
-      font-size:.84rem;
-      line-height:1.6;
-    }
-
-    .benefit-grid{
-      width:min(720px,100%);
-      margin:23px auto 0;
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:9px;
-    }
-
-    .benefit-card{
-      min-height:96px;
-      padding:14px 10px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:7px;
-      border:1px solid #e5e8eb;
-      border-radius:15px;
-      background:rgba(255,255,255,.90);
-      box-shadow:0 12px 30px rgba(18,24,31,.04);
-    }
-
-    .benefit-icon{
-      width:34px;
-      height:34px;
-      display:grid;
-      place-items:center;
-      border-radius:11px;
-      background:#f3f5f6;
-      font-size:.9rem;
-    }
-
-    .benefit-card strong{
-      font-size:.66rem;
-    }
-
-    .benefit-card span{
-      color:#9298a1;
-      font-size:.48rem;
-      line-height:1.35;
-    }
-
-    .floating-note{
-      position:absolute;
-      z-index:9;
-      right:6%;
-      bottom:7%;
+      z-index:8;
+      right:5%;
+      bottom:6%;
       padding:10px 12px;
-      border:1px solid #e3e7ea;
+      border:1px solid #e4e7ea;
       border-radius:13px;
-      background:rgba(255,255,255,.88);
+      background:rgba(255,255,255,.90);
       backdrop-filter:blur(18px);
-      box-shadow:0 14px 34px rgba(20,27,34,.06);
-      opacity:calc(.45 + (var(--p) * .55));
+      box-shadow:0 13px 32px rgba(18,24,31,.055);
     }
 
-    .floating-note small{
+    .corner-badge small{
       display:block;
-      color:#959ba4;
+      color:#969ca5;
       font-size:.43rem;
       letter-spacing:.07em;
       text-transform:uppercase;
     }
 
-    .floating-note strong{
+    .corner-badge strong{
       display:block;
       margin-top:3px;
       font-size:.62rem;
     }
 
-    .floating-note strong span{color:#2e8db9}
+    .corner-badge span{color:#2e8db9}
 
-    /* Install modal */
+    /* ========================================================
+       SEAMLESS CONTINUATION AFTER THE PIN
+       ======================================================== */
+    .continuation{
+      position:relative;
+      z-index:5;
+      background:#fff;
+      padding:88px 0 120px;
+    }
+
+    .continuation-inner{
+      width:min(1160px,calc(100% - 34px));
+      margin:0 auto;
+    }
+
+    .continuation-kicker{
+      color:#767c85;
+      font-size:.66rem;
+      font-weight:800;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+    }
+
+    .continuation h2{
+      margin:13px 0 0;
+      max-width:900px;
+      font-size:clamp(3rem,6vw,6.2rem);
+      line-height:.94;
+      letter-spacing:-.064em;
+      font-weight:800;
+    }
+
+    .continuation h2 span{
+      color:#858c95;
+    }
+
+    .continuation-copy{
+      width:min(690px,100%);
+      margin:22px 0 0;
+      color:#747b84;
+      font-size:.95rem;
+      line-height:1.68;
+    }
+
+    .apple-grid{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:16px;
+      margin-top:40px;
+    }
+
+    .apple-card{
+      position:relative;
+      min-height:405px;
+      padding:32px;
+      overflow:hidden;
+      border-radius:30px;
+      background:#f5f5f7;
+    }
+
+    .apple-card.dark{
+      background:#111214;
+      color:#fff;
+    }
+
+    .card-label{
+      color:#838992;
+      font-size:.62rem;
+      font-weight:800;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+    }
+
+    .apple-card.dark .card-label{color:#a9b0ba}
+
+    .apple-card h3{
+      max-width:520px;
+      margin:13px 0 0;
+      font-size:clamp(2rem,3.2vw,3.55rem);
+      line-height:1;
+      letter-spacing:-.055em;
+      font-weight:800;
+    }
+
+    .apple-card p{
+      max-width:475px;
+      margin:15px 0 0;
+      color:#777e88;
+      font-size:.86rem;
+      line-height:1.62;
+    }
+
+    .apple-card.dark p{color:#a6acb4}
+
+    .features{
+      display:grid;
+      gap:10px;
+      margin-top:28px;
+    }
+
+    .feature{
+      min-height:60px;
+      display:flex;
+      align-items:center;
+      gap:11px;
+      padding:0 15px;
+      border:1px solid #e6e8eb;
+      border-radius:17px;
+      background:#fff;
+    }
+
+    .feature i{
+      width:35px;
+      height:35px;
+      flex:0 0 auto;
+      display:grid;
+      place-items:center;
+      border-radius:11px;
+      background:#edf8fc;
+      color:#318eb8;
+      font-style:normal;
+      font-size:.75rem;
+      font-weight:800;
+    }
+
+    .feature strong{
+      display:block;
+      font-size:.73rem;
+    }
+
+    .feature span{
+      display:block;
+      margin-top:2px;
+      color:#8b9199;
+      font-size:.56rem;
+    }
+
+    .giant-15{
+      position:absolute;
+      right:18px;
+      bottom:-30px;
+      color:rgba(117,216,250,.085);
+      font-size:clamp(8rem,15vw,14rem);
+      line-height:1;
+      letter-spacing:-.1em;
+      font-weight:900;
+      pointer-events:none;
+    }
+
+    .devices{
+      padding:118px 0 80px;
+      text-align:center;
+    }
+
+    .devices h2{
+      margin:0 auto;
+      max-width:900px;
+    }
+
+    .devices .continuation-copy{
+      margin-left:auto;
+      margin-right:auto;
+    }
+
+    .device-row{
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      gap:18px;
+      min-height:330px;
+      margin-top:38px;
+    }
+
+    .device{
+      width:175px;
+      height:290px;
+      padding:6px;
+      border-radius:30px;
+      background:linear-gradient(145deg,#53585e,#15171a 22%,#050607 72%,#4c5157);
+      box-shadow:0 24px 54px rgba(18,24,31,.14);
+    }
+
+    .device.main{
+      width:205px;
+      height:335px;
+    }
+
+    .device-screen{
+      height:100%;
+      padding:24px 13px;
+      border-radius:25px;
+      background:
+        radial-gradient(150px 100px at 50% 10%,rgba(86,191,233,.12),transparent 72%),
+        #fff;
+    }
+
+    .device-screen img{
+      width:36px;
+      height:36px;
+      display:block;
+      margin:0 auto;
+      object-fit:contain;
+      border-radius:10px;
+      background:#0d0f12;
+    }
+
+    .device-screen strong{
+      display:block;
+      margin-top:17px;
+      text-align:center;
+      font-size:.7rem;
+    }
+
+    .device-screen span{
+      display:block;
+      margin-top:5px;
+      text-align:center;
+      color:#8f959d;
+      font-size:.48rem;
+      line-height:1.4;
+    }
+
+    .final-cta{
+      min-height:450px;
+      margin-top:40px;
+      padding:50px 24px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      border-radius:34px;
+      background:
+        radial-gradient(620px 300px at 50% 100%,rgba(86,191,233,.14),transparent 70%),
+        #f5f5f7;
+    }
+
+    .final-cta h2{
+      margin:0 auto;
+      max-width:900px;
+    }
+
+    .final-cta p{
+      width:min(650px,92%);
+      margin:18px auto 0;
+      color:#737a84;
+      font-size:.9rem;
+      line-height:1.65;
+    }
+
+    .final-cta button{
+      min-height:49px;
+      margin-top:21px;
+      padding:0 18px;
+      border:0;
+      border-radius:14px;
+      background:#111318;
+      color:#fff;
+      font-size:.73rem;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 14px 31px rgba(17,19,24,.14);
+    }
+
+    footer{
+      margin-top:90px;
+      padding:26px 18px calc(26px + env(safe-area-inset-bottom));
+      border-top:1px solid #eceef0;
+      color:#9aa0a8;
+      text-align:center;
+      font-size:.61rem;
+    }
+
+    /* ========================================================
+       INSTALL MODAL
+       ======================================================== */
     .install-help{
       position:fixed;
-      z-index:100;
+      z-index:200;
       inset:0;
       display:none;
       place-items:center;
@@ -646,9 +836,9 @@
     .help-card{
       width:min(430px,100%);
       padding:22px;
+      border:1px solid #e7e9ec;
       border-radius:24px;
       background:#fff;
-      border:1px solid #e7e9ec;
       box-shadow:0 28px 90px rgba(16,20,26,.22);
     }
 
@@ -678,8 +868,8 @@
       padding:11px;
       border-radius:14px;
       background:#f5f7f8;
-      font-size:.78rem;
       color:#4f555e;
+      font-size:.78rem;
     }
 
     .help-step b{
@@ -706,216 +896,282 @@
       cursor:pointer;
     }
 
-    @media(max-width:900px){
-      .intro{top:116px}
-      .intro h1{font-size:clamp(2.7rem,7.4vw,4.8rem)}
-      .hero-word{font-size:clamp(4rem,11vw,7.2rem)}
-      .phone-wrap{width:285px;height:520px}
-      .ring{width:980px}
-      .benefit-grid{grid-template-columns:repeat(2,1fr)}
-    }
-
-    @media(max-width:620px){
-      .page{min-height:260vh}
-      .scene{min-height:680px}
-
-      .topbar{
+    /* ========================================================
+       MOBILE
+       ======================================================== */
+    @media(max-width:760px){
+      .site-header{
         top:10px;
         width:calc(100% - 20px);
         height:58px;
-        border-radius:19px;
         padding:7px 8px 7px 10px;
+        border-radius:19px;
       }
 
       .brand img{
-        width:35px;height:35px;border-radius:10px;
+        width:35px;
+        height:35px;
+        border-radius:10px;
       }
 
-      .brand-copy strong{font-size:.66rem}
-      .brand-copy span{font-size:.38rem;margin-top:4px}
-      .nav a{display:none}
-      .nav button{
+      .brand strong{font-size:.66rem}
+      .brand small{font-size:.38rem;margin-top:4px}
+
+      .header-actions a{display:none}
+
+      .header-actions button{
         min-height:39px;
         padding:0 11px;
         font-size:.61rem;
       }
 
+      .motion-section{height:190vh}
+      .motion-pin{min-height:680px}
+
       .intro{
-        top:92px;
+        top:90px;
         width:calc(100% - 22px);
       }
 
       .eyebrow{
         padding:6px 9px;
-        font-size:.5rem;
+        font-size:.49rem;
       }
 
       .intro h1{
         margin-top:11px;
-        font-size:clamp(2rem,10.5vw,3.35rem);
+        font-size:clamp(2.05rem,10.3vw,3.3rem);
         line-height:.94;
       }
 
       .intro p{
         margin-top:11px;
-        font-size:.7rem;
-        line-height:1.52;
+        font-size:.69rem;
+        line-height:1.5;
       }
 
-      .intro .cta{
-        min-height:42px;
-        margin-top:13px;
-        padding:0 14px;
-        font-size:.65rem;
+      .intro button{
+        min-height:41px;
+        margin-top:12px;
+        font-size:.63rem;
       }
 
-      .ring{
-        top:55%;
-        width:720px;
+      .orbit{
+        top:58%;
+        width:730px;
       }
 
-      .ring-glow{
-        top:68%;
+      .orbit-glow{
+        top:72%;
         width:500px;
         height:250px;
       }
 
       .hero-word{
-        top:46%;
-        font-size:clamp(3.2rem,14vw,5rem);
+        top:52%;
+        font-size:clamp(3.25rem,13.4vw,5rem);
         line-height:.86;
         white-space:normal;
       }
 
       .phone-wrap{
-        width:218px;
-        height:398px;
+        width:260px;
+        height:475px;
       }
 
       .phone{
         padding:7px;
-        border-radius:40px;
+        border-radius:43px;
       }
 
-      .screen{border-radius:33px}
-      .island{top:9px;width:79px;height:22px}
+      .screen{border-radius:36px}
 
-      .phone-ui{padding:42px 12px 16px}
-      .phone-nav{padding-bottom:10px}
-      .phone-brand img{width:22px;height:22px;border-radius:7px}
-      .phone-brand strong{font-size:.45rem}
-      .phone-brand small{font-size:.28rem}
-      .bag{width:23px;height:23px;border-radius:7px;font-size:.55rem}
-      .phone-hero{padding:16px 1px 10px}
-      .phone-hero small{font-size:.29rem}
-      .phone-hero h3{margin:5px 0;font-size:.91rem}
-      .phone-hero p{font-size:.32rem}
-      .offer-card{padding:9px;border-radius:11px}
-      .offer-icon{width:27px;height:27px;border-radius:8px;font-size:.7rem}
-      .offer-head strong{font-size:.41rem}
-      .offer-head small{font-size:.28rem}
-      .offer-button{min-height:22px;margin-top:8px;border-radius:7px;font-size:.32rem}
-      .mini{min-height:56px;padding:6px;border-radius:9px}
-      .mini img{width:20px;height:20px;margin-bottom:4px}
-      .mini strong{font-size:.3rem}
-      .mini span{font-size:.24rem}
-      .homebar{width:74px;height:3px}
-
-      .benefits{
-        top:48%;
-        width:calc(100% - 24px);
+      .island{
+        top:10px;
+        width:88px;
+        height:24px;
       }
 
-      .benefits h2{
-        font-size:clamp(2rem,10vw,3.1rem);
-      }
+      .phone-ui{padding:48px 14px 18px}
+      .phone-nav{padding-bottom:12px}
+      .phone-brand img{width:25px;height:25px;border-radius:8px}
+      .phone-brand strong{font-size:.51rem}
+      .phone-brand small{font-size:.31rem}
+      .bag{width:25px;height:25px;border-radius:8px;font-size:.6rem}
+      .phone-hero{padding:18px 1px 11px}
+      .phone-hero small{font-size:.31rem}
+      .phone-hero h3{margin:5px 0;font-size:1.02rem}
+      .phone-hero p{font-size:.35rem}
+      .offer-card{padding:10px;border-radius:12px}
+      .offer-icon{width:29px;height:29px;border-radius:9px;font-size:.73rem}
+      .offer-head strong{font-size:.45rem}
+      .offer-head small{font-size:.30rem}
+      .offer-button{min-height:24px;margin-top:8px;border-radius:7px;font-size:.35rem}
+      .mini{min-height:62px;padding:6px;border-radius:10px}
+      .mini img{width:21px;height:21px;margin-bottom:4px}
+      .mini strong{font-size:.33rem}
+      .mini span{font-size:.26rem}
+      .homebar{width:78px;height:3px}
 
-      .benefits p{
-        font-size:.7rem;
-      }
-
-      .benefit-grid{
-        grid-template-columns:1fr 1fr;
-        gap:7px;
-        margin-top:17px;
-      }
-
-      .benefit-card{
-        min-height:82px;
-        padding:10px 7px;
-        border-radius:12px;
-      }
-
-      .benefit-icon{
-        width:30px;height:30px;border-radius:9px;font-size:.78rem
-      }
-
-      .benefit-card strong{font-size:.58rem}
-      .benefit-card span{font-size:.42rem}
-
-      .floating-note{
+      .corner-badge{
         right:8px;
-        bottom:7px;
+        bottom:8px;
         padding:8px 9px;
       }
 
-      .floating-note small{font-size:.34rem}
-      .floating-note strong{font-size:.48rem}
+      .corner-badge small{font-size:.34rem}
+      .corner-badge strong{font-size:.48rem}
+
+      .continuation{
+        padding:70px 0 80px;
+      }
+
+      .continuation-inner{
+        width:calc(100% - 20px);
+      }
+
+      .continuation-kicker{
+        font-size:.55rem;
+      }
+
+      .continuation h2{
+        margin-top:10px;
+        font-size:clamp(2.45rem,10.8vw,4rem);
+      }
+
+      .continuation-copy{
+        margin-top:16px;
+        font-size:.78rem;
+      }
+
+      .apple-grid{
+        grid-template-columns:1fr;
+        gap:10px;
+        margin-top:28px;
+      }
+
+      .apple-card{
+        min-height:330px;
+        padding:23px;
+        border-radius:24px;
+      }
+
+      .apple-card h3{
+        font-size:clamp(1.85rem,8vw,2.8rem);
+      }
+
+      .apple-card p{
+        font-size:.75rem;
+      }
+
+      .feature{
+        min-height:56px;
+        border-radius:15px;
+      }
+
+      .devices{
+        padding:78px 0 50px;
+      }
+
+      .device-row{
+        min-height:230px;
+        gap:8px;
+        margin-top:30px;
+      }
+
+      .device{
+        width:116px;
+        height:202px;
+        border-radius:23px;
+      }
+
+      .device.main{
+        width:132px;
+        height:232px;
+      }
+
+      .device-screen{
+        padding:16px 8px;
+        border-radius:18px;
+      }
+
+      .device-screen img{
+        width:28px;height:28px
+      }
+
+      .device-screen strong{font-size:.52rem}
+      .device-screen span{font-size:.36rem}
+
+      .final-cta{
+        min-height:380px;
+        margin-top:30px;
+        padding:38px 17px;
+        border-radius:26px;
+      }
+
+      .final-cta p{
+        font-size:.76rem;
+      }
     }
 
     @media(max-width:390px){
-      .floating-note{display:none}
-      .intro h1{font-size:clamp(1.9rem,10vw,2.9rem)}
-      .phone-wrap{width:204px;height:373px}
+      .hero-word{
+        font-size:clamp(3rem,12.8vw,4.5rem);
+      }
+
+      .phone-wrap{
+        width:238px;
+        height:435px;
+      }
+
+      .corner-badge{display:none}
+
+      .device-row{gap:5px}
+      .device{width:105px;height:186px}
+      .device.main{width:120px;height:215px}
     }
 
     @media(prefers-reduced-motion:reduce){
-      .phone-wrap,
-      .intro,
-      .benefits{
-        transition:none!important;
+      .phone-wrap,.intro{
+        will-change:auto;
       }
     }
   </style>
 </head>
 
 <body>
-  <main class="page" id="page">
-    <section class="scene">
 
-      <header class="topbar">
-        <a class="brand" href="index.html" aria-label="Dingloft">
-          <img src="img/dingloft.png" alt="Dingloft">
-          <span class="brand-copy">
-            <strong>DINGLOFT</strong>
-            <span>EVOLUTION GROUP</span>
-          </span>
-        </a>
+  <header class="site-header">
+    <a href="index.html" class="brand" aria-label="Dingloft">
+      <img src="img/dingloft.png" onerror="this.src='img/favicon.png'" alt="Dingloft">
+      <span>
+        <strong>DINGLOFT</strong>
+        <small>EVOLUTION GROUP</small>
+      </span>
+    </a>
 
-        <nav class="nav" aria-label="Navegación">
-          <a href="index.html">Home</a>
-          <a href="account.html">Cuenta</a>
-          <button class="primary" id="navInstall" type="button">Instalar app</button>
-        </nav>
-      </header>
+    <nav class="header-actions" aria-label="Navegación">
+      <a href="index.html">Home</a>
+      <a href="account.html">Cuenta</a>
+      <button type="button" class="primary" id="topInstall">Instalar app</button>
+    </nav>
+  </header>
 
-      <div class="ring" aria-hidden="true"></div>
-      <div class="ring-glow" aria-hidden="true"></div>
+  <!-- SECUENCIA PRINCIPAL -->
+  <main class="motion-section" id="motionSection">
+    <section class="motion-pin">
+
+      <div class="orbit" aria-hidden="true"></div>
+      <div class="orbit-glow" aria-hidden="true"></div>
 
       <div class="intro">
-        <div class="eyebrow">
-          <span class="eyebrow-dot"></span>
-          Dingloft App
-        </div>
-
-        <h1>Instala Dingloft.<br>Obtén 15% de descuento.</h1>
-
+        <div class="eyebrow"><i></i>Dingloft App</div>
+        <h1>Instala Dingloft<br>y obtén 15% OFF</h1>
         <p>
           Accede más rápido a tu catálogo, compras, Multitracks y biblioteca.
-          Instálala como app y desbloquea un beneficio especial para tu próxima compra.
+          Instala Dingloft como app y recibe un beneficio especial para tu próxima compra.
         </p>
-
-        <button class="cta" id="installBtn" type="button">Instalar Dingloft</button>
+        <button type="button" id="heroInstall">Instalar Dingloft</button>
       </div>
 
       <div class="hero-word" aria-hidden="true">
@@ -926,12 +1182,13 @@
       <div class="phone-wrap" aria-hidden="true">
         <div class="phone">
           <div class="screen">
+
             <div class="island"></div>
 
             <div class="phone-ui">
               <div class="phone-nav">
                 <div class="phone-brand">
-                  <img src="img/dingloft.png" alt="">
+                  <img src="img/dingloft.png" onerror="this.src='img/favicon.png'" alt="">
                   <div>
                     <strong>DINGLOFT</strong>
                     <small>EVOLUTION GROUP</small>
@@ -959,15 +1216,15 @@
 
               <div class="mini-grid">
                 <div class="mini">
-                  <img src="img/autocad.png" alt="">
+                  <img src="img/autocad.png" onerror="this.src='img/favicon.png'" alt="">
                   <strong>Software</strong>
                   <span>Catálogo Dingloft</span>
                 </div>
 
                 <div class="mini">
-                  <img src="img/dingloft.png" alt="">
+                  <img src="img/favicon.png" alt="">
                   <strong>Multitracks</strong>
-                  <span>Escucha y compra</span>
+                  <span>Catálogo y previews</span>
                 </div>
               </div>
             </div>
@@ -977,40 +1234,7 @@
         </div>
       </div>
 
-      <section class="benefits" aria-label="Beneficios">
-        <h2>Más rápido.<br><span>Todo en Dingloft.</span></h2>
-        <p>
-          Instalar la app no cambia tu cuenta ni tus compras. Solo te da una forma más directa de entrar a tu ecosistema Dingloft.
-        </p>
-
-        <div class="benefit-grid">
-          <div class="benefit-card">
-            <div class="benefit-icon">⌂</div>
-            <strong>Tienda</strong>
-            <span>Software y librerías</span>
-          </div>
-
-          <div class="benefit-card">
-            <div class="benefit-icon">♪</div>
-            <strong>Multitracks</strong>
-            <span>Catálogo y previews</span>
-          </div>
-
-          <div class="benefit-card">
-            <div class="benefit-icon">↓</div>
-            <strong>Biblioteca</strong>
-            <span>Compras y descargas</span>
-          </div>
-
-          <div class="benefit-card">
-            <div class="benefit-icon">15</div>
-            <strong>15% OFF</strong>
-            <span>Beneficio de instalación</span>
-          </div>
-        </div>
-      </section>
-
-      <div class="floating-note" aria-hidden="true">
+      <div class="corner-badge" aria-hidden="true">
         <small>Beneficio exclusivo</small>
         <strong>Próxima compra <span>-15%</span></strong>
       </div>
@@ -1018,20 +1242,119 @@
     </section>
   </main>
 
+  <!-- CONTINUACIÓN APPLE-LIKE -->
+  <section class="continuation">
+    <div class="continuation-inner">
+
+      <div class="continuation-kicker">Una sola experiencia</div>
+      <h2>Todo Dingloft.<br><span>Más simple, más rápido.</span></h2>
+      <p class="continuation-copy">
+        La instalación mantiene intactas tu cuenta, compras y biblioteca.
+        Solo te da una forma más directa de entrar a todo lo que ya tienes en Dingloft.
+      </p>
+
+      <div class="apple-grid">
+        <article class="apple-card">
+          <div class="card-label">Acceso directo</div>
+          <h3>Tu biblioteca siempre a mano.</h3>
+          <p>
+            Abre tus compras, descargas y Multitracks desde una experiencia limpia y sin tener que buscar una pestaña abierta.
+          </p>
+
+          <div class="features">
+            <div class="feature">
+              <i>↓</i>
+              <div>
+                <strong>Compras y descargas</strong>
+                <span>Vinculadas a tu misma cuenta Dingloft.</span>
+              </div>
+            </div>
+
+            <div class="feature">
+              <i>♪</i>
+              <div>
+                <strong>Multitracks</strong>
+                <span>Acceso rápido al catálogo y previews.</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="apple-card dark">
+          <div class="card-label">Beneficio de instalación</div>
+          <h3>15% para tu próxima compra.</h3>
+          <p>
+            Instala Dingloft y activa el beneficio de bienvenida asociado a esta experiencia.
+          </p>
+          <div class="giant-15">15%</div>
+        </article>
+      </div>
+
+      <section class="devices">
+        <div class="continuation-kicker">En tus dispositivos</div>
+        <h2>Se siente como app.<br><span>Porque lo es.</span></h2>
+        <p class="continuation-copy">
+          En dispositivos y navegadores compatibles, Dingloft puede abrirse como una aplicación independiente.
+        </p>
+
+        <div class="device-row" aria-hidden="true">
+          <div class="device">
+            <div class="device-screen">
+              <img src="img/favicon.png" alt="">
+              <strong>Dingloft</strong>
+              <span>Tu catálogo y biblioteca.</span>
+            </div>
+          </div>
+
+          <div class="device main">
+            <div class="device-screen">
+              <img src="img/favicon.png" alt="">
+              <strong>Todo en un lugar</strong>
+              <span>Software, Multitracks, compras y soporte.</span>
+            </div>
+          </div>
+
+          <div class="device">
+            <div class="device-screen">
+              <img src="img/favicon.png" alt="">
+              <strong>Acceso rápido</strong>
+              <span>Menos pasos para llegar a lo tuyo.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="final-cta">
+        <div>
+          <h2>Instala Dingloft.<br><span>Obtén 15% OFF.</span></h2>
+          <p>
+            Una experiencia más rápida y minimalista manteniendo todo lo que ya tienes en tu cuenta.
+          </p>
+          <button type="button" id="bottomInstall">Instalar Dingloft</button>
+        </div>
+      </section>
+
+      <footer>Dingloft · Evolution Group © 2026</footer>
+    </div>
+  </section>
+
+  <!-- MODAL DE INSTALACIÓN -->
   <div class="install-help" id="installHelp" aria-hidden="true">
     <div class="help-card">
       <h3>Instalar Dingloft</h3>
       <p id="helpText">Tu navegador puede instalar Dingloft como una app independiente.</p>
       <div class="help-steps" id="helpSteps"></div>
-      <button class="help-close" id="helpClose" type="button">Entendido</button>
+      <button type="button" class="help-close" id="helpClose">Entendido</button>
     </div>
   </div>
 
   <script>
     (() => {
-      const page = document.getElementById('page');
-      const installBtn = document.getElementById('installBtn');
-      const navInstall = document.getElementById('navInstall');
+      const section = document.getElementById('motionSection');
+      const topInstall = document.getElementById('topInstall');
+      const heroInstall = document.getElementById('heroInstall');
+      const bottomInstall = document.getElementById('bottomInstall');
+
       const help = document.getElementById('installHelp');
       const helpText = document.getElementById('helpText');
       const helpSteps = document.getElementById('helpSteps');
@@ -1108,12 +1431,15 @@
 
       window.addEventListener('appinstalled',() => {
         deferredPrompt = null;
-        installBtn.textContent = 'Dingloft instalada';
-        navInstall.textContent = 'Instalada';
+        topInstall.textContent = 'Instalada';
+        heroInstall.textContent = 'Dingloft instalada';
+        bottomInstall.textContent = 'Dingloft instalada';
       });
 
-      installBtn.addEventListener('click',install);
-      navInstall.addEventListener('click',install);
+      [topInstall,heroInstall,bottomInstall].forEach(btn => {
+        btn?.addEventListener('click',install);
+      });
+
       helpClose.addEventListener('click',closeHelp);
 
       help.addEventListener('click',event => {
@@ -1124,66 +1450,65 @@
         if(event.key === 'Escape') closeHelp();
       });
 
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
+      /*
+       * Timing basado en el comportamiento del video de Osmo:
+       * - el círculo y "DINGLOFT APP" quedan fijos;
+       * - el texto superior sale primero;
+       * - el teléfono nace parcialmente abajo, queda COMPLETO en el centro,
+       *   y continúa hasta salir por arriba;
+       * - si se hace scroll hacia arriba todo vuelve exactamente en reversa.
+       */
       function paint(progress){
         const p = clamp(progress);
 
-        /*
-          Reference-like timing:
-          0.00 - 0.12 : phone starts mostly below viewport
-          0.12 - 0.42 : phone rises through center
-          0.42 - 0.70 : phone keeps moving and exits above
-          0.58 - 1.00 : benefit content fades in underneath
-        */
-
-        const phoneY =
-          p < .12
-            ? map(p,0,.12,470,370)
-            : p < .42
-              ? map(p,.12,.42,370,20)
-              : map(p,.42,1,20,-720);
+        let phoneY;
+        if(p < .08){
+          phoneY = map(p,0,.08,55,42);       // parte inferior asomando
+        }else if(p < .45){
+          phoneY = map(p,.08,.45,42,0);      // entra completo al centro
+        }else{
+          phoneY = map(p,.45,1,0,-105);      // cruza y sale por arriba
+        }
 
         const phoneScale =
-          p < .42
-            ? map(p,0,.42,.88,1)
-            : map(p,.42,1,1,.94);
+          p < .45
+            ? map(p,0,.45,.94,1)
+            : map(p,.45,1,1,.98);
 
         const introOpacity =
-          p < .22 ? 1 : map(p,.22,.38,1,0);
+          p < .10 ? 1 :
+          p < .30 ? map(p,.10,.30,1,0) :
+          0;
 
         const introY =
-          p < .22 ? 0 : map(p,.22,.38,0,-26);
+          p < .10 ? 0 :
+          p < .30 ? map(p,.10,.30,0,-64) :
+          -64;
 
-        const wordOpacity =
-          p < .58 ? 1 : map(p,.58,.72,1,.18);
+        const heroOpacity =
+          p < .76 ? 1 :
+          map(p,.76,1,1,.25);
 
-        const benefitOpacity =
-          p < .52 ? 0 : p < .70 ? map(p,.52,.70,0,1) : 1;
-
-        const benefitY =
-          p < .52 ? 42 : map(p,.52,.74,42,0);
-
-        page.style.setProperty('--p',p.toFixed(4));
-        page.style.setProperty('--phone-y',`${phoneY.toFixed(1)}px`);
-        page.style.setProperty('--phone-scale',phoneScale.toFixed(4));
-        page.style.setProperty('--intro-opacity',introOpacity.toFixed(4));
-        page.style.setProperty('--intro-y',`${introY.toFixed(1)}px`);
-        page.style.setProperty('--word-opacity',wordOpacity.toFixed(4));
-        page.style.setProperty('--benefit-opacity',benefitOpacity.toFixed(4));
-        page.style.setProperty('--benefit-y',`${benefitY.toFixed(1)}px`);
+        section.style.setProperty('--scroll-p',p.toFixed(4));
+        section.style.setProperty('--phone-y',`${phoneY.toFixed(2)}vh`);
+        section.style.setProperty('--phone-scale',phoneScale.toFixed(4));
+        section.style.setProperty('--intro-opacity',introOpacity.toFixed(4));
+        section.style.setProperty('--intro-y',`${introY.toFixed(1)}px`);
+        section.style.setProperty('--hero-opacity',heroOpacity.toFixed(4));
       }
 
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
       if(reduced){
-        paint(.72);
+        paint(.45);
       }else{
         let ticking = false;
 
         function update(){
-          const rect = page.getBoundingClientRect();
-          const max = Math.max(1,page.offsetHeight - window.innerHeight);
-          const passed = Math.min(max,Math.max(0,-rect.top));
-          paint(passed/max);
+          const rect = section.getBoundingClientRect();
+          const scrollable = Math.max(1,section.offsetHeight - window.innerHeight);
+          const travelled = Math.min(scrollable,Math.max(0,-rect.top));
+          paint(travelled/scrollable);
         }
 
         function requestUpdate(){
