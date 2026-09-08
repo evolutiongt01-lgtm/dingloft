@@ -138,7 +138,7 @@ button{font:inherit}
 .hero-copy{
   position:absolute;
   z-index:8;
-  top:112px;
+  top:106px;
   left:50%;
   width:min(900px,calc(100% - 40px));
   transform:translate(-50%,var(--intro-y));
@@ -180,26 +180,13 @@ button{font:inherit}
   font-size:.82rem;
   line-height:1.58;
 }
-.hero-copy button{
-  min-height:44px;
-  margin-top:16px;
-  padding:0 16px;
-  border:0;
-  border-radius:12px;
-  background:#111318;
-  color:#fff;
-  font-size:.68rem;
-  font-weight:800;
-  cursor:pointer;
-  box-shadow:0 14px 28px rgba(17,19,24,.13);
-}
 
 /* el círculo ocupa su propia zona media/baja */
 .orbit{
   position:absolute;
   z-index:0;
   left:50%;
-  top:60%;
+  top:57.5%;
   width:min(1240px,91vw);
   aspect-ratio:1;
   transform:translate(-50%,-50%);
@@ -224,7 +211,7 @@ button{font:inherit}
   position:absolute;
   z-index:0;
   left:50%;
-  top:73%;
+  top:70%;
   width:min(850px,68vw);
   height:330px;
   transform:translate(-50%,-50%);
@@ -239,7 +226,7 @@ button{font:inherit}
   position:absolute;
   z-index:2;
   left:50%;
-  top:57%;
+  top:54.5%;
   width:100%;
   transform:translate(-50%,-50%);
   text-align:center;
@@ -259,14 +246,44 @@ button{font:inherit}
   color:transparent;
 }
 
+
+/* CTA justo debajo de DINGLOFT APP */
+.big-word-cta{
+  position:absolute;
+  z-index:7;
+  left:50%;
+  top:68.5%;
+  transform:translateX(-50%);
+  pointer-events:auto;
+}
+
+.big-word-cta button{
+  min-height:46px;
+  padding:0 18px;
+  border:0;
+  border-radius:13px;
+  background:#111318;
+  color:#fff;
+  font-size:.69rem;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 14px 30px rgba(17,19,24,.13);
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+
+.big-word-cta button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 18px 36px rgba(17,19,24,.18);
+}
+
 /* teléfono grande, como en Osmo */
 .phone-wrap{
   position:absolute;
   z-index:6;
   left:50%;
   top:50%;
-  width:390px;
-  height:714px;
+  width:350px;
+  height:641px;
   transform:
     translate3d(-50%,calc(-50% + var(--phone-y)),0)
     scale(var(--phone-scale));
@@ -853,9 +870,20 @@ footer{
     white-space:nowrap;
   }
 
+  .big-word-cta{
+    top:66.5%;
+  }
+
+  .big-word-cta button{
+    min-height:42px;
+    padding:0 14px;
+    font-size:.61rem;
+    border-radius:12px;
+  }
+
   .phone-wrap{
-    width:245px;
-    height:448px;
+    width:228px;
+    height:417px;
   }
   .phone{
     padding:7px;
@@ -957,7 +985,7 @@ footer{
 
 @media(max-width:390px){
   .big-word{font-size:clamp(2.9rem,12vw,4.3rem)}
-  .phone-wrap{width:230px;height:420px}
+  .phone-wrap{width:216px;height:395px}
   .corner-note{display:none}
   .devices{gap:4px}
   .device{width:102px;height:180px}
@@ -997,11 +1025,15 @@ footer{
         Accede más rápido a tu catálogo, compras, Multitracks y biblioteca.
         Instala Dingloft como app y recibe un beneficio especial para tu próxima compra.
       </p>
-      <button type="button" id="heroInstall">Instalar Dingloft</button>
+
     </div>
 
     <!-- una sola línea, igual que OSMO BUSINESS -->
     <div class="big-word" aria-hidden="true"><span>DINGLOFT APP</span></div>
+
+    <div class="big-word-cta">
+      <button type="button" id="heroInstall">Instalar Dingloft</button>
+    </div>
 
     <div class="phone-wrap" aria-hidden="true">
       <div class="phone">
@@ -1261,18 +1293,20 @@ footer{
 
     let phoneY;
 
-    if(p < .16){
-      phoneY=map(p,0,.16,62,42);
-    }else if(p < .42){
-      phoneY=map(p,.16,.42,42,0);
+    if(p < .14){
+      phoneY=map(p,0,.14,51,40);
+    }else if(p < .40){
+      phoneY=map(p,.14,.40,40,27);
+    }else if(p < .62){
+      phoneY=map(p,.40,.62,27,-4);
     }else{
-      phoneY=map(p,.42,1,0,-108);
+      phoneY=map(p,.62,1,-4,-108);
     }
 
     const phoneScale=
-      p < .42
-        ? map(p,0,.42,.94,1)
-        : map(p,.42,1,1,.985);
+      p < .40
+        ? map(p,0,.40,.94,1)
+        : map(p,.40,1,1,.985);
 
     const introO=
       p < .12 ? 1 :
