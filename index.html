@@ -922,6 +922,51 @@ body{
   }
 }
 
+
+/* ===== iPhone / mobile performance ===== */
+@media (max-width:760px){
+  .phone-wrap,
+  .big-word-track,
+  .intro{
+    will-change:transform,opacity;
+    transform-style:preserve-3d;
+    backface-visibility:hidden;
+  }
+
+  .phone,
+  .screen,
+  .orbit,
+  .orbit-glow{
+    backface-visibility:hidden;
+  }
+
+  .orbit-glow{
+    filter:blur(52px) !important;
+  }
+
+  .header{
+    backdrop-filter:blur(10px) saturate(120%) !important;
+    -webkit-backdrop-filter:blur(10px) saturate(120%) !important;
+  }
+
+  body.is-scrolling .orbit-glow{
+    filter:blur(24px) !important;
+    opacity:.82;
+  }
+
+  body.is-scrolling .header{
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    background:rgba(255,255,255,.97) !important;
+  }
+
+  body.is-scrolling .phone{
+    box-shadow:
+      0 24px 52px rgba(18,26,34,.15),
+      inset 0 1px 0 rgba(255,255,255,.38) !important;
+  }
+}
+
 </style>
 </head>
 
@@ -1136,6 +1181,26 @@ body{
   const wordTrack=document.querySelector('.big-word-track');
   const centerAnchor=document.querySelector('.center-anchor');
 
+  const docBody=document.body;
+  let viewportH=window.innerHeight;
+  let sequenceTop=0;
+  let sequenceDistance=1;
+  let mobileMetrics={
+    phoneHeight:phoneWrap?.offsetHeight||402,
+    anchorHeight:centerAnchor?.offsetHeight||110,
+    wordHeight:wordTrack?.offsetHeight||58
+  };
+
+  function refreshMetrics(){
+    viewportH=window.innerHeight;
+    const rect=sequence.getBoundingClientRect();
+    sequenceTop=window.scrollY+rect.top;
+    sequenceDistance=Math.max(1,sequence.offsetHeight-window.innerHeight);
+    mobileMetrics.phoneHeight=phoneWrap?.offsetHeight||402;
+    mobileMetrics.anchorHeight=centerAnchor?.offsetHeight||110;
+    mobileMetrics.wordHeight=wordTrack?.offsetHeight||58;
+  }
+
   function easeInOutCubic(t){
     return t < .5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
   }
@@ -1144,7 +1209,7 @@ body{
     p=clamp(p);
 
     const mobile=window.matchMedia('(max-width:760px)').matches;
-    const vh=window.innerHeight;
+    const vh=viewportH;
 
     if(!mobile){
       /*
@@ -1225,13 +1290,13 @@ body{
 
     const phoneBaseCenter=.47*vh;
     const finalPhoneCenter=phoneBaseCenter+(-.13*vh);
-    const finalPhoneHeight=(phoneWrap?.offsetHeight||402)*.99;
+    const finalPhoneHeight=mobileMetrics.phoneHeight*.99;
     const finalPhoneBottom=finalPhoneCenter+finalPhoneHeight/2;
 
     const anchorBaseCenter=.49*vh;
-    const anchorHeight=centerAnchor?.offsetHeight||110;
+    const anchorHeight=mobileMetrics.anchorHeight;
     const anchorTop=anchorBaseCenter-anchorHeight/2;
-    const wordHeight=wordTrack?.offsetHeight||58;
+    const wordHeight=mobileMetrics.wordHeight;
     const baseWordCenter=anchorTop+wordHeight/2;
 
     const desiredWordCenter=finalPhoneBottom+14+wordHeight/2;
@@ -1273,26 +1338,54 @@ body{
   }
 
   let ticking=false;
+  let scrollTimer=null;
+  let resizeTimer=null;
 
   function update(){
-    const rect=sequence.getBoundingClientRect();
-    const distance=Math.max(1,sequence.offsetHeight-window.innerHeight);
-    const travelled=Math.min(distance,Math.max(0,-rect.top));
-    paint(travelled/distance);
+    const travelled=Math.min(
+      sequenceDistance,
+      Math.max(0,window.scrollY-sequenceTop)
+    );
+    paint(travelled/sequenceDistance);
   }
 
   function requestUpdate(){
+    if(!docBody.classList.contains('is-scrolling')){
+      docBody.classList.add('is-scrolling');
+    }
+
+    clearTimeout(scrollTimer);
+    scrollTimer=setTimeout(()=>{
+      docBody.classList.remove('is-scrolling');
+    },120);
+
     if(ticking)return;
     ticking=true;
+
     requestAnimationFrame(()=>{
       update();
       ticking=false;
     });
   }
 
-  // Se anima SIEMPRE porque esta pantalla depende de este movimiento.
   window.addEventListener('scroll',requestUpdate,{passive:true});
-  window.addEventListener('resize',requestUpdate,{passive:true});
+
+  window.addEventListener('resize',()=>{
+    clearTimeout(resizeTimer);
+    resizeTimer=setTimeout(()=>{
+      refreshMetrics();
+      update();
+    },100);
+  },{passive:true});
+
+  window.addEventListener('orientationchange',()=>{
+    setTimeout(()=>{
+      refreshMetrics();
+      update();
+    },180);
+  },{passive:true});
+
+  refreshMetrics();
   update();
 })();
 </script>
