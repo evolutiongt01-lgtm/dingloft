@@ -843,6 +843,12 @@
       .product-frame { transform: none !important; }
       .reveal { opacity: 1; transform: none; }
     }
+  
+    .hero-title-image,
+    .product-shot {
+      background: transparent !important;
+    }
+
   </style>
 </head>
 <body>
@@ -885,7 +891,8 @@
           <h1 class="sr-only" id="motion-title">Motion-X — Sound in Motion</h1>
           <img
             class="hero-title-image"
-            src="titlemotion.png"
+            data-img-check="motion-x"
+            src="img/titlemotion.png"
             alt="Motion-X — Sound in Motion"
             loading="eager"
             decoding="async">
@@ -947,7 +954,8 @@
             <div class="product-shell">
               <img
                 class="product-shot"
-                src="motion-x-preview.png"
+                data-img-check="motion-x"
+                src="img/motion-x-preview.png"
                 alt="Interfaz de Motion-X Engine"
                 loading="eager"
                 decoding="async">
