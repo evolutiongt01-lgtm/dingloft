@@ -1066,7 +1066,213 @@
       .pay-body{padding:16px}
       .qr-frame{width:184px;height:184px}
     }
-  </style>
+  
+    /* Mobile polish: softer, rounder, less boxy */
+    @media(max-width:560px){
+      html,body{
+        background:#f4f4f2;
+      }
+
+      .shell{
+        width:calc(100% - 22px);
+        padding:14px 0 28px;
+      }
+
+      .checkout-layout{
+        gap:14px;
+      }
+
+      .order-side{
+        padding:18px 16px 16px;
+        background:rgba(255,255,255,.96);
+        border:1px solid #e8e8e5;
+        border-radius:24px;
+        box-shadow:0 12px 34px rgba(0,0,0,.045);
+        overflow:hidden;
+      }
+
+      .eyebrow{
+        display:inline-flex;
+        align-items:center;
+        min-height:28px;
+        padding:0 10px;
+        margin-bottom:12px;
+        border:1px solid #e7e7e4;
+        border-radius:999px;
+        background:#f7f7f5;
+        color:#727278;
+        font-size:7.5px;
+        font-weight:700;
+        letter-spacing:1px;
+      }
+
+      .order-side h1{
+        margin:0 0 9px;
+        font-size:28px;
+        line-height:1.02;
+        letter-spacing:-1px;
+      }
+
+      .order-side .lead{
+        margin:0 0 17px;
+        max-width:95%;
+        font-size:10.5px;
+        line-height:1.5;
+        color:#818187;
+      }
+
+      .summary-card{
+        padding:13px 14px;
+        gap:11px;
+        border-radius:19px;
+        background:#f5f5f3;
+        border-color:#e6e6e3;
+      }
+
+      .product-thumb{
+        border-radius:14px;
+        overflow:hidden;
+      }
+
+      .summary-name{
+        font-size:11px;
+      }
+
+      .summary-meta{
+        font-size:7.5px;
+      }
+
+      .summary-price{
+        font-size:10px;
+      }
+
+      .summary-lines{
+        margin-top:14px;
+        padding:2px 13px;
+        border:1px solid #e9e9e6;
+        border-radius:18px;
+        background:#fbfbfa;
+      }
+
+      .line-row{
+        min-height:45px;
+        font-size:10px;
+      }
+
+      .line-row.total{
+        min-height:52px;
+      }
+
+      .line-row.total b{
+        font-size:16px;
+      }
+
+      .status-card{
+        margin-top:14px;
+        padding:14px 11px 12px;
+        border-radius:20px;
+        background:#fcfcfb;
+        box-shadow:0 5px 18px rgba(0,0,0,.025);
+      }
+
+      .status-title{
+        padding:0 3px 10px;
+      }
+
+      .pay-card{
+        border-radius:24px;
+        box-shadow:0 14px 36px rgba(0,0,0,.05);
+      }
+
+      .pay-head{
+        padding:18px 17px 14px;
+        background:linear-gradient(180deg,#fff,#fcfcfb);
+      }
+
+      .pay-head h2{
+        font-size:17px;
+        letter-spacing:-.35px;
+      }
+
+      .pay-head p{
+        margin-top:5px;
+        font-size:8.5px;
+        line-height:1.45;
+      }
+
+      .pay-body{
+        padding:15px 14px 17px;
+      }
+
+      .field-label{
+        margin-bottom:7px;
+        font-size:8px;
+      }
+
+      .select-wrap select{
+        min-height:48px;
+        border-radius:14px;
+      }
+
+      .mini-order{
+        margin:13px 0 2px;
+        padding:13px 2px;
+      }
+
+      .solidarity-card{
+        border-radius:18px;
+      }
+
+      .solidarity-toggle{
+        border-radius:18px;
+      }
+
+      .total-row{
+        margin-top:16px;
+        padding-top:15px;
+      }
+
+      .primary-btn,
+      .ghost-btn{
+        min-height:52px;
+        border-radius:15px;
+      }
+    }
+
+    @media(max-width:390px){
+      .shell{
+        width:calc(100% - 14px);
+      }
+
+      .order-side{
+        padding:16px 13px 14px;
+        border-radius:22px;
+      }
+
+      .order-side h1{
+        font-size:26px;
+      }
+
+      .summary-card{
+        padding:12px;
+        border-radius:17px;
+      }
+
+      .summary-lines{
+        padding:0 11px;
+        border-radius:16px;
+      }
+
+      .pay-card{
+        border-radius:22px;
+      }
+
+      .pay-body{
+        padding:14px 12px 15px;
+      }
+    }
+
+</style>
 </head>
 <body>
 <div class="page">
@@ -1303,7 +1509,7 @@ let currentQuote=null;
 let paypalSdkPromise=null;
 let paypalRendered=false;
 let donationUsd=0;
-let lastHeartRainUnits=0;
+let lastHeartRainAmount=0;
 let heartRainCooldown=false;
 
 function money(v){
@@ -1412,16 +1618,22 @@ function rainHearts(intensity=12){
 }
 
 function maybeRainHearts(){
-  const units=donationMode==="units"
-    ? donationUnits
-    : Math.floor(Number(donationUsd||0)/DONATION_UNIT_USD);
+  const amount=Number(donationUsd||0);
 
-  if(units>1 && units>lastHeartRainUnits && !heartRainCooldown){
+  // Lluvia desde el PRIMER aporte (> $0), tanto con +/- como con monto libre.
+  if(amount>0 && amount>lastHeartRainAmount && !heartRainCooldown){
     heartRainCooldown=true;
-    rainHearts(10+Math.min(20,units*3));
+
+    const intensity=donationMode==="units"
+      ? 10+Math.min(20,Math.max(1,donationUnits)*3)
+      : 12+Math.min(18,Math.floor(amount/5)*2);
+
+    rainHearts(intensity);
     window.setTimeout(()=>{heartRainCooldown=false;},700);
   }
-  lastHeartRainUnits=units;
+
+  // Si vuelve a $0, queda listo para volver a celebrar el siguiente aporte.
+  lastHeartRainAmount=amount;
 }
 
 function updateSolidarityThanks(){
