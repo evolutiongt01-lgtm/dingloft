@@ -311,13 +311,102 @@
     .mini-price{font-size:13px;font-weight:700;white-space:nowrap}
 
 
+
     .solidarity-card{
-      margin:20px 0 4px;
-      padding:20px;
+      margin:14px 0 4px;
+      padding:0;
       border:1px solid #e4e4e1;
-      border-radius:18px;
+      border-radius:16px;
       background:#fff;
-      box-shadow:0 10px 28px rgba(0,0,0,.035);
+      box-shadow:0 8px 24px rgba(0,0,0,.028);
+      overflow:hidden;
+    }
+    .solidarity-toggle{
+      width:100%;
+      min-height:72px;
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      border:0;
+      background:#fff;
+      color:#171717;
+      cursor:pointer;
+      text-align:left;
+    }
+    .solidarity-toggle:hover{
+      background:#fcfcfb;
+    }
+    .solidarity-toggle-left,
+    .solidarity-toggle-right{
+      display:flex;
+      align-items:center;
+      min-width:0;
+    }
+    .solidarity-toggle-left{
+      gap:11px;
+      flex:1;
+    }
+    .solidarity-toggle-right{
+      gap:10px;
+      flex:0 0 auto;
+    }
+    .solidarity-toggle-heart{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background:#c63838;
+      color:#fff;
+      font-size:19px;
+      flex:0 0 auto;
+      box-shadow:0 8px 20px rgba(198,56,56,.12);
+    }
+    .solidarity-toggle-copy{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      min-width:0;
+    }
+    .solidarity-toggle-copy b{
+      font-size:10.5px;
+      line-height:1.25;
+      font-weight:720;
+      letter-spacing:-.08px;
+      color:#171717;
+    }
+    .solidarity-toggle-copy small{
+      color:#98989d;
+      font-size:8px;
+      line-height:1.3;
+    }
+    #solidarity-toggle-amount{
+      color:#c63838;
+      font-size:10px;
+      font-weight:730;
+      white-space:nowrap;
+    }
+    .solidarity-chevron{
+      display:inline-block;
+      color:#88888d;
+      font-size:18px;
+      line-height:1;
+      transition:transform .22s ease;
+      transform-origin:center;
+    }
+    .solidarity-card:not(.solidarity-collapsed) .solidarity-chevron{
+      transform:rotate(180deg);
+    }
+    .solidarity-content{
+      padding:0 16px 16px;
+      border-top:1px solid #f0f0ee;
+      animation:solidarityExpand .24s ease;
+    }
+    @keyframes solidarityExpand{
+      from{opacity:0;transform:translateY(-4px)}
+      to{opacity:1;transform:translateY(0)}
     }
     .solidarity-kicker{
       display:flex;
@@ -616,6 +705,170 @@
       .solidarity-counter-value strong{font-size:42px}
     }
 
+
+    .heart-rain-layer{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:9999;
+    }
+    .heart-rain{
+      position:absolute;
+      top:-32px;
+      line-height:1;
+      user-select:none;
+      animation:heartFall var(--heart-duration,2.8s) linear forwards;
+      opacity:0;
+      filter:drop-shadow(0 4px 8px rgba(198,56,56,.12));
+      will-change:transform,opacity;
+    }
+    @keyframes heartFall{
+      0%{
+        transform:translate3d(0,-40px,0) rotate(0deg) scale(.85);
+        opacity:0;
+      }
+      10%{opacity:.95}
+      85%{opacity:.9}
+      100%{
+        transform:translate3d(var(--heart-drift,0px),105vh,0) rotate(var(--heart-rotate,180deg)) scale(1.08);
+        opacity:0;
+      }
+    }
+
+    @media(max-width:760px){
+      .solidarity-card{
+        margin-top:12px;
+        border-radius:14px;
+      }
+      .solidarity-toggle{
+        min-height:66px;
+        padding:12px 13px;
+        gap:10px;
+      }
+      .solidarity-toggle-heart{
+        width:34px;
+        height:34px;
+        border-radius:10px;
+        font-size:17px;
+      }
+      .solidarity-toggle-copy b{
+        font-size:9.7px;
+      }
+      .solidarity-toggle-copy small{
+        font-size:7.4px;
+      }
+      #solidarity-toggle-amount{
+        font-size:9px;
+      }
+      .solidarity-content{
+        padding:0 12px 13px;
+      }
+      .solidarity-kicker{
+        margin-top:14px;
+      }
+      .solidarity-heading h3{
+        font-size:19px;
+        letter-spacing:-.5px;
+      }
+      .solidarity-heading p{
+        font-size:8.7px;
+        line-height:1.5;
+      }
+      .solidarity-modes{
+        gap:7px;
+        margin-top:14px;
+      }
+      .solidarity-mode{
+        min-height:58px;
+        grid-template-columns:34px 1fr 16px;
+        gap:9px;
+        padding:10px 11px;
+        border-radius:11px;
+      }
+      .solidarity-mode-icon{
+        width:34px;
+        height:34px;
+        border-radius:10px;
+        font-size:16px;
+      }
+      .solidarity-mode-copy b{
+        font-size:9.3px;
+      }
+      .solidarity-mode-copy small{
+        font-size:7.2px;
+      }
+      .solidarity-panel{
+        margin-top:10px;
+        padding:16px 12px 13px;
+        border-radius:12px;
+      }
+      .solidarity-counter{
+        width:100%;
+        grid-template-columns:44px 1fr 44px;
+        gap:10px;
+        margin-top:16px;
+      }
+      .solidarity-counter-btn{
+        width:44px;
+        height:44px;
+        font-size:20px;
+      }
+      .solidarity-counter-value strong{
+        font-size:36px;
+      }
+      .solidarity-counter-value span{
+        font-size:6.8px;
+      }
+      .solidarity-panel-total{
+        margin-top:16px;
+      }
+      .solidarity-panel-total b{
+        font-size:15px;
+      }
+      .solidarity-free-amount{
+        height:54px;
+        margin-top:15px;
+      }
+      .solidarity-free-amount input{
+        font-size:21px;
+      }
+      .solidarity-thanks{
+        margin-top:10px;
+        border-radius:12px;
+      }
+      .solidarity-thanks img{
+        max-height:260px;
+        object-fit:contain;
+      }
+      .solidarity-footer{
+        margin-top:9px;
+      }
+    }
+
+    @media(max-width:420px){
+      .solidarity-toggle-right{
+        gap:6px;
+      }
+      #solidarity-toggle-amount{
+        display:none;
+      }
+      .solidarity-heading h3{
+        font-size:18px;
+      }
+      .solidarity-mode-copy small{
+        white-space:normal;
+      }
+      .solidarity-thanks img{
+        max-height:220px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .heart-rain{display:none}
+      .solidarity-content{animation:none}
+    }
+
     .total-row{
       display:flex;align-items:end;justify-content:space-between;
       padding:18px 0 0;
@@ -882,12 +1135,29 @@
                   <div class="mini-name">Pedido Dingloft</div>
                   <div class="mini-meta">El precio se valida antes de pagar</div>
                 </div>
-              </div>
+              </div><section class="solidarity-card solidarity-collapsed" aria-labelledby="solidarity-title">
+                <button class="solidarity-toggle" id="solidarity-toggle" type="button"
+                        aria-expanded="false" aria-controls="solidarity-content">
+                  <span class="solidarity-toggle-left">
+                    <span class="solidarity-toggle-heart solidarity-heartbeat">♡</span>
+                    <span class="solidarity-toggle-copy">
+                      <b>¿Deseas agregar un aporte solidario?</b>
+                      <small>Opcional · desde US$5</small>
+                    </span>
+                  </span>
+                  <span class="solidarity-toggle-right">
+                    <span id="solidarity-toggle-amount">$0.00</span>
+                    <span class="solidarity-chevron">⌄</span>
+                  </span>
+                </button>
+
+                <div class="solidarity-content" id="solidarity-content" hidden>
 
 
-              <section class="solidarity-card" aria-labelledby="solidarity-title">
+
+              
                 <div class="solidarity-kicker">
-                  <span class="solidarity-kicker-icon solidarity-heartbeat">♡</span>
+                  <span class="solidarity-kicker-icon">♡</span>
                   <span>DINGLOFT SOLIDARIO</span>
                 </div>
 
@@ -950,6 +1220,8 @@
                 </div>
 
                 <div class="solidarity-footer"><span>Opcional</span></div>
+              
+                </div>
               </section>
 
               <div class="total-row">
@@ -1031,6 +1303,8 @@ let currentQuote=null;
 let paypalSdkPromise=null;
 let paypalRendered=false;
 let donationUsd=0;
+let lastHeartRainUnits=0;
+let heartRainCooldown=false;
 
 function money(v){
   return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(Number(v||0));
@@ -1095,6 +1369,61 @@ function payableTotal(){
 }
 
 
+
+function setSolidarityOpen(open){
+  const card=document.querySelector(".solidarity-card");
+  const toggle=$("#solidarity-toggle");
+  const content=$("#solidarity-content");
+  if(!card||!toggle||!content)return;
+
+  card.classList.toggle("solidarity-collapsed",!open);
+  toggle.setAttribute("aria-expanded",open?"true":"false");
+  content.hidden=!open;
+}
+
+function updateSolidarityToggleAmount(){
+  const amount=$("#solidarity-toggle-amount");
+  if(!amount)return;
+  amount.textContent=donationUsd>0?money(donationUsd):"$0.00";
+}
+
+function rainHearts(intensity=12){
+  if(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches)return;
+  const layer=$("#heart-rain-layer");
+  if(!layer)return;
+
+  const count=Math.max(10,Math.min(30,Number(intensity)||12));
+  const hearts=["♥","♡"];
+
+  for(let i=0;i<count;i++){
+    const heart=document.createElement("span");
+    heart.className="heart-rain";
+    heart.textContent=hearts[Math.random()>.35?0:1];
+    heart.style.left=`${Math.random()*100}%`;
+    heart.style.fontSize=`${14+Math.random()*18}px`;
+    heart.style.color=Math.random()>.2?"#c63838":"#e36b6b";
+    heart.style.setProperty("--heart-duration",`${2.15+Math.random()*1.45}s`);
+    heart.style.setProperty("--heart-drift",`${-70+Math.random()*140}px`);
+    heart.style.setProperty("--heart-rotate",`${120+Math.random()*320}deg`);
+    heart.style.animationDelay=`${Math.random()*.35}s`;
+    layer.appendChild(heart);
+    window.setTimeout(()=>heart.remove(),4300);
+  }
+}
+
+function maybeRainHearts(){
+  const units=donationMode==="units"
+    ? donationUnits
+    : Math.floor(Number(donationUsd||0)/DONATION_UNIT_USD);
+
+  if(units>1 && units>lastHeartRainUnits && !heartRainCooldown){
+    heartRainCooldown=true;
+    rainHearts(10+Math.min(20,units*3));
+    window.setTimeout(()=>{heartRainCooldown=false;},700);
+  }
+  lastHeartRainUnits=units;
+}
+
 function updateSolidarityThanks(){
   const box=$("#solidarity-thanks");
   if(!box)return;
@@ -1138,6 +1467,8 @@ function paintDonation(){
   );
 
   updateSolidarityThanks();
+  updateSolidarityToggleAmount();
+  maybeRainHearts();
 }
 
 function updateDonationMode(mode){
@@ -1425,6 +1756,14 @@ $("#donation-custom")?.addEventListener("input",event=>{
 
 setDonationUnits(0);
 updateDonationMode("units");
+setSolidarityOpen(false);
+updateSolidarityToggleAmount();
+
+
+$("#solidarity-toggle")?.addEventListener("click",()=>{
+  const expanded=$("#solidarity-toggle")?.getAttribute("aria-expanded")==="true";
+  setSolidarityOpen(!expanded);
+});
 
 $("#product-select")?.addEventListener("change",updatePreview);
 $("#prepare-btn")?.addEventListener("click",prepare);
@@ -1450,5 +1789,7 @@ onAuthStateChanged(auth,async user=>{
   }
 });
 </script>
+
+  <div class="heart-rain-layer" id="heart-rain-layer" aria-hidden="true"></div>
 </body>
 </html>
