@@ -248,7 +248,7 @@
 
     .method-switch{
       display:grid;
-      grid-template-columns:repeat(3,1fr);
+      grid-template-columns:repeat(4,1fr);
       gap:8px;
       margin-bottom:18px;
     }
@@ -472,6 +472,40 @@
     #paypal-button-container{max-width:420px;margin:0 auto}
     .sandbox-note{margin-top:10px;color:#a0a0a5;font-size:8px}
 
+
+    .airtm-shell{
+      min-height:260px;
+      border:1px solid #e3e3e0;
+      border-radius:14px;
+      background:#fafaf9;
+      padding:28px 22px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
+    .airtm-mark{
+      width:64px;height:64px;border-radius:18px;
+      display:grid;place-items:center;
+      background:#fff;
+      border:1px solid #e7e7e4;
+      font-size:20px;font-weight:800;letter-spacing:-1px;
+      margin-bottom:15px;
+      box-shadow:0 8px 24px rgba(0,0,0,.05);
+    }
+    .airtm-shell h3{margin:0 0 6px;font-size:17px}
+    .airtm-shell p{max-width:390px;margin:0 0 17px;color:#85858b;font-size:10px;line-height:1.55}
+    .airtm-amount{
+      margin-bottom:15px;
+      padding:10px 13px;
+      border:1px solid #e6e6e3;
+      border-radius:11px;
+      background:#fff;
+      font-size:11px;color:#6e6e73
+    }
+    .airtm-amount b{color:#111;font-size:14px;margin-left:5px}
+    .airtm-note{margin-top:10px;color:#9a9aa0;font-size:8px;line-height:1.45}
     .binance-shell{
       min-height:330px;
       display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -688,6 +722,7 @@
 <div class="method-switch">
                 <button class="method-btn active" type="button" data-method="card">Tarjeta</button>
                 <button class="method-btn" type="button" data-method="paypal">PayPal</button>
+                <button class="method-btn" type="button" data-method="airtm">Airtm</button>
                 <button class="method-btn" type="button" data-method="binance">Binance</button>
               </div>
 
@@ -758,6 +793,18 @@
                   </div>
 
                   <div class="payment-message" id="paypal-payment-message"></div>
+                </div>
+              </div>
+
+              <div class="alt-method-panel" id="airtm-method-panel">
+                <div class="airtm-shell">
+                  <div class="airtm-mark">A</div>
+                  <h3>Paga con Airtm</h3>
+                  <p>Te enviaremos al checkout seguro de Airtm para confirmar el pago con tu saldo Airtm. Después regresarás automáticamente a Dingloft.</p>
+                  <div class="airtm-amount">Total <b id="airtm-total">$0.00 USD</b></div>
+                  <button class="primary-btn" id="airtm-pay-btn" type="button">Continuar con Airtm</button>
+                  <div class="payment-message" id="airtm-payment-message"></div>
+                  <div class="airtm-note">Airtm procesa pay-ins entre cuentas Airtm en USD/USDC. No es un formulario de tarjeta.</div>
                 </div>
               </div>
 
@@ -854,7 +901,11 @@ function setError(msg=""){
 }
 
 function setMethodMessage(method,msg="",error=false){
-  const el=$(method==="card"?"#card-payment-message":"#paypal-payment-message");
+  const selector =
+    method==="card" ? "#card-payment-message" :
+    method==="airtm" ? "#airtm-payment-message" :
+    "#paypal-payment-message";
+  const el=$(selector);
   if(!el)return;
   el.textContent=msg;
   el.classList.toggle("error",Boolean(error));
@@ -1053,7 +1104,10 @@ function showSuccess(result,method){
   $("#setup-zone").style.display="none";
   $("#result-zone").style.display="block";
 
-  $("#r-session").textContent=method==="card"?"Tarjeta vía PayPal v6":"PayPal v6";
+  $("#r-session").textContent=
+    method==="card" ? "Tarjeta vía PayPal v6" :
+    method==="airtm" ? "Airtm" :
+    "PayPal v6";
   $("#r-transaction").textContent=
     result?.captureId||result?.orderId||result?.orderNumber||"Confirmado";
   $("#r-total").textContent=
@@ -1302,6 +1356,97 @@ async function setupPayPalV6(){
   }
 }
 
+
+async function startAirtmCheckout(){
+  const btn=$("#airtm-pay-btn");
+  if(!btn)return;
+
+  btn.disabled=true;
+  const original=btn.textContent;
+  btn.textContent="Preparando Airtm…";
+  setMethodMessage("airtm","");
+  step("payment","active");
+
+  try{
+    const item=cartItem();
+    if(!item?.name)throw new Error("Producto inválido.");
+
+    const result=await api("/checkout/airtm/create",{
+      method:"POST",
+      authRequired:true,
+      body:{items:[item],couponCode:""}
+    });
+
+    if(!result?.checkoutUrl)throw new Error("Airtm no devolvió una URL de pago.");
+
+    sessionStorage.setItem("dingloft_airtm_code",String(result.code||""));
+    sessionStorage.setItem("dingloft_airtm_purchase_id",String(result.purchaseId||""));
+    location.href=result.checkoutUrl;
+  }catch(error){
+    console.error("Dingloft Airtm",error);
+    step("payment","");
+    setMethodMessage("airtm",error?.message||"No se pudo iniciar Airtm.",true);
+    btn.disabled=false;
+    btn.textContent=original;
+  }
+}
+
+async function verifyAirtmReturn(){
+  const qs=new URLSearchParams(location.search);
+  const state=qs.get("airtm");
+  if(!state)return;
+
+  const code=qs.get("code")||qs.get("airtm_code")||sessionStorage.getItem("dingloft_airtm_code")||"";
+  if(state==="canceled"){
+    setMethodMessage("airtm","Pago cancelado. No se realizó ningún cobro.");
+    return;
+  }
+
+  if(state!=="confirmed")return;
+
+  step("payment","active");
+  setMethodMessage("airtm","Verificando el pago con Airtm…");
+
+  try{
+    const result=await api("/checkout/airtm/status",{
+      method:"POST",
+      authRequired:true,
+      body:{code}
+    });
+
+    const status=String(result?.status||"").toLowerCase();
+
+    if(status==="confirmed" && result?.fulfilled){
+      showSuccess(result,"airtm");
+      return;
+    }
+
+    if(status==="confirmed"){
+      setMethodMessage("airtm","Pago confirmado. Estamos terminando la entrega…");
+      setTimeout(()=>location.reload(),1400);
+      return;
+    }
+
+    if(status==="canceled"){
+      step("payment","");
+      setMethodMessage("airtm","El pago fue cancelado.");
+      return;
+    }
+
+    if(status==="failed"){
+      step("payment","");
+      setMethodMessage("airtm","Airtm indicó que el pago falló.",true);
+      return;
+    }
+
+    setMethodMessage("airtm","El pago aún está pendiente de confirmación.");
+  }catch(error){
+    console.error("Airtm verify",error);
+    step("payment","");
+    setMethodMessage("airtm",error?.message||"No se pudo verificar Airtm.",true);
+  }
+}
+
 function selectPaymentMethod(method){
   activeMethod=method;
 
@@ -1311,12 +1456,16 @@ function selectPaymentMethod(method){
 
   $("#card-method-panel")?.classList.toggle("hidden-method",method!=="card");
   $("#paypal-method-panel")?.classList.toggle("active",method==="paypal");
+  $("#airtm-method-panel")?.classList.toggle("active",method==="airtm");
   $("#binance-method-panel")?.classList.toggle("active",method==="binance");
 
   if(method==="card"){
     setupCardFieldsV6();
   }else if(method==="paypal"){
     setupPayPalV6();
+  }else if(method==="airtm"){
+    $("#airtm-total").textContent=`${money(currentQuote?.totalUsd||currentProduct?.priceUsd)} USD`;
+    step("elements","done");
   }else{
     step("elements","done");
   }
@@ -1376,6 +1525,7 @@ if(qrImg){
 $("#product-select")?.addEventListener("change",updatePreview);
 $("#prepare-btn")?.addEventListener("click",prepare);
 $("#paypal-card-submit")?.addEventListener("click",submitCardV6);
+$("#airtm-pay-btn")?.addEventListener("click",startAirtmCheckout);
 $("#cancel-btn")?.addEventListener("click",reset);
 $("#new-test-btn")?.addEventListener("click",reset);
 
@@ -1389,6 +1539,7 @@ onAuthStateChanged(auth,async user=>{
   try{
     token=await user.getIdToken(false);
     await loadConfig();
+    await verifyAirtmReturn();
   }catch(error){
     console.error(error);
     $("#loading").style.display="none";
