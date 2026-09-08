@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Motion-X — Dingloft</title>
+<meta name="description" content="Motion-X para macOS. Instrumento virtual nativo con 16 Parts, Live Banks, Super Knob, controles de expresión y motor de audio JUCE.">
+<style>
+:root{
+  --bg:#07090c;--panel:#0e1217;--panel2:#121821;--line:#242c36;
+  --text:#f5f7fa;--muted:#8d98a7;--orange:#ff9638;--orange2:#ff6c1f;
+  --green:#43d17a;--shadow:0 28px 80px rgba(0,0,0,.45)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+radial-gradient(900px 500px at 50% -120px,#243242 0%,#10151b 36%,#07090c 76%);
+color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
+a{text-decoration:none;color:inherit}
+.wrap{width:min(1180px,92vw);margin:auto}
+.nav{height:72px;display:flex;align-items:center;gap:26px}
+.logo{font-weight:900;letter-spacing:-.03em;font-size:20px}.logo span{color:var(--orange)}
+.navlinks{display:flex;gap:22px;margin-left:20px;color:#aab2bd;font-size:14px}
+.navlinks a:hover{color:#fff}.navcta{margin-left:auto;border:1px solid #343e4a;background:#11171e;padding:10px 15px;border-radius:12px;font-size:13px}
+.hero{padding:76px 0 44px;display:grid;grid-template-columns:1.08fr .92fr;gap:58px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid #2a3540;background:#10161d;padding:7px 11px;border-radius:999px;font-size:12px;color:#b8c1cc}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px #43d17a}
+h1{font-size:clamp(48px,6vw,82px);line-height:.94;margin:20px 0 18px;letter-spacing:-.065em}
+h1 span{background:linear-gradient(90deg,#fff 0,#ffbe78 45%,var(--orange2) 100%);-webkit-background-clip:text;color:transparent}
+.lead{font-size:19px;line-height:1.65;color:#a8b2bf;max-width:650px}
+.actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.btn{padding:14px 19px;border-radius:13px;font-weight:800;font-size:14px;border:1px solid #303945;cursor:pointer}
+.primary{background:linear-gradient(180deg,#ffad55,#ff7727);border:0;color:#17100b;box-shadow:0 12px 32px rgba(255,122,39,.18)}
+.secondary{background:#11171d}
+.subline{margin-top:17px;font-size:12px;color:#707b87}
+.product-shot{position:relative;min-height:430px}
+.glow{position:absolute;inset:18% 8%;background:radial-gradient(circle,#ff873544 0,transparent 67%);filter:blur(22px)}
+.plugin{position:absolute;inset:28px 0;background:linear-gradient(145deg,#171d24,#090c10);border:1px solid #343e49;border-radius:24px;box-shadow:var(--shadow);overflow:hidden;transform:perspective(1000px) rotateY(-5deg) rotateX(1deg)}
+.topbar{height:38px;border-bottom:1px solid #252d36;display:flex;align-items:center;padding:0 12px;gap:7px}
+.t{width:10px;height:10px;border-radius:50%}.tr{background:#ff5f57}.ty{background:#febc2e}.tg{background:#28c840}
+.ptitle{margin:auto;font-size:10px;font-weight:800;letter-spacing:.14em;color:#dfe5ea}
+.ui{padding:14px;display:grid;grid-template-columns:1.1fr .9fr;gap:12px}
+.panel{background:#11161c;border:1px solid #252e38;border-radius:13px;padding:11px}
+.label{font-size:9px;color:#788593;letter-spacing:.12em;text-transform:uppercase;margin-bottom:9px}
+.banks{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.bank{height:34px;border-radius:8px;background:#171d24;border:1px solid #2e3843}.bank.on{border-color:var(--orange)}
+.parts{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;margin-top:8px}.part{height:104px;border:1px solid #27313a;border-radius:7px;background:#0e1216;position:relative}.part:after{content:"";position:absolute;left:50%;bottom:14px;width:4px;height:58px;transform:translateX(-50%);background:linear-gradient(#333d47 0 30%,#ff9638 31% 34%,#333d47 35%);border-radius:4px}
+.knob{width:132px;height:132px;margin:13px auto;border-radius:50%;background:radial-gradient(circle,#2e3740 0 48%,#0b0f13 49% 60%,#414b56 61% 64%,#171c22 65%);position:relative}
+.knob:after{content:"";position:absolute;left:50%;top:14px;width:4px;height:38px;background:linear-gradient(#fff,var(--orange));border-radius:3px;transform:translateX(-50%) rotate(35deg);transform-origin:50% 52px}
+.knobname{text-align:center;font-size:11px;font-weight:850;letter-spacing:.08em}.maps{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}.map{border:1px solid #29333d;border-radius:7px;padding:7px;font-size:8px;color:#9aa5b1}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:36px 0 76px}
+.stat{padding:20px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(#10151b,#0b0f13)}
+.stat b{font-size:25px;display:block}.stat span{font-size:12px;color:var(--muted)}
+.section{padding:74px 0}.section h2{font-size:42px;letter-spacing:-.045em;margin:0 0 14px}.section .intro{color:#9ba6b3;max-width:700px;line-height:1.65}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}
+.feature{background:linear-gradient(180deg,#11171e,#0c1015);border:1px solid var(--line);padding:22px;border-radius:17px;min-height:170px}
+.icon{width:38px;height:38px;border-radius:11px;background:linear-gradient(145deg,#342318,#18120d);border:1px solid #5c3921;display:grid;place-items:center;color:var(--orange);font-weight:900;margin-bottom:18px}
+.feature h3{margin:0 0 9px;font-size:17px}.feature p{margin:0;color:#8995a3;line-height:1.55;font-size:13px}
+.darkband{border-top:1px solid #1e252d;border-bottom:1px solid #1e252d;background:#090d11}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:30px}
+.plan{border:1px solid #27313b;border-radius:20px;background:#0d1217;padding:25px}.plan.full{border-color:#664322;box-shadow:inset 0 0 50px #ff8d2310}
+.planhead{display:flex;justify-content:space-between;align-items:center}.plan h3{font-size:22px;margin:0}.badge{font-size:10px;border:1px solid #56381f;padding:5px 8px;border-radius:999px;color:#ffb15f}
+.plan ul{padding:0;list-style:none;margin:22px 0 0}.plan li{padding:9px 0;color:#a0aab6;font-size:13px;border-bottom:1px solid #1d242c}.plan li:before{content:"✓";color:var(--green);font-weight:900;margin-right:9px}
+.buybox{margin:72px 0 90px;border:1px solid #313b46;border-radius:24px;padding:34px;background:radial-gradient(circle at 80% 20%,#342012,#10151b 42%,#0c1014 80%);display:grid;grid-template-columns:1fr auto;align-items:center;gap:30px}
+.buybox h2{margin:0 0 8px;font-size:36px}.buybox p{margin:0;color:#9ca7b3}.price{font-size:34px;font-weight:900;text-align:right}.price small{display:block;color:#7d8996;font-size:11px;font-weight:600;margin-top:4px}
+footer{border-top:1px solid #1e252d;padding:28px 0 42px;color:#707c88;font-size:12px;display:flex;justify-content:space-between}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.product-shot{min-height:390px}.features{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.compare{grid-template-columns:1fr}.buybox{grid-template-columns:1fr}.price{text-align:left}.navlinks{display:none}}
+@media(max-width:600px){.features,.stats{grid-template-columns:1fr}.plugin{transform:none}.hero{padding-top:38px}.product-shot{min-height:340px}.ui{grid-template-columns:1fr}.ui .panel:last-child{display:none}}
+</style>
+</head>
+<body>
+<header class="wrap nav">
+  <div class="logo">DING<span>LOFT</span></div>
+  <nav class="navlinks"><a href="#features">Funciones</a><a href="#editions">Ediciones</a><a href="#requirements">Compatibilidad</a></nav>
+  <a class="navcta" href="#buy">Motion-X</a>
+</header>
+
+<main>
+<section class="wrap hero">
+  <div>
+    <div class="eyebrow"><span class="dot"></span> Instrumento virtual nativo para macOS</div>
+    <h1>MOTION<span>-X</span></h1>
+    <p class="lead">Un workstation virtual diseñado para tocar, crear y transformar sonidos en vivo. 16 Parts, Live Banks con transición continua, Super Knob, controles de expresión y motor de audio nativo.</p>
+    <div class="actions">
+      <a class="btn primary" href="#buy">Comprar Motion-X</a>
+      <a class="btn secondary" href="#features">Ver funciones</a>
+    </div>
+    <div class="subline">Standalone · VST3 · Audio Unit · Motor nativo JUCE</div>
+  </div>
+
+  <div class="product-shot" aria-label="Vista previa de Motion-X">
+    <div class="glow"></div>
+    <div class="plugin">
+      <div class="topbar"><i class="t tr"></i><i class="t ty"></i><i class="t tg"></i><div class="ptitle">MOTION X</div></div>
+      <div class="ui">
+        <div class="panel">
+          <div class="label">Live Banks</div>
+          <div class="banks"><div class="bank on"></div><div class="bank"></div><div class="bank"></div><div class="bank"></div></div>
+          <div class="parts">
+            <div class="part"></div><div class="part"></div><div class="part"></div><div class="part"></div>
+            <div class="part"></div><div class="part"></div><div class="part"></div><div class="part"></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="label">Motion Control</div>
+          <div class="knob"></div>
+          <div class="knobname">SUPER KNOB</div>
+          <div class="maps"><div class="map">CUTOFF</div><div class="map">REVERB</div><div class="map">PAN</div><div class="map">LEVEL</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap stats">
+  <div class="stat"><b>16</b><span>Parts simultáneas</span></div>
+  <div class="stat"><b>128</b><span>Voces máximas del motor</span></div>
+  <div class="stat"><b>4</b><span>Destinos Common Assign</span></div>
+  <div class="stat"><b>Native</b><span>Audio + MIDI en C++ / JUCE</span></div>
+</div>
+
+<section id="features" class="darkband">
+  <div class="wrap section">
+    <h2>Hecho para tocar, no solo para cargar presets.</h2>
+    <p class="intro">Motion-X combina una interfaz rápida con un motor nativo pensado para interpretación en vivo y producción musical.</p>
+    <div class="features">
+      <article class="feature"><div class="icon">16</div><h3>16 Parts reales</h3><p>Capas independientes con volumen, pan, rangos, filtros, envelopes y envíos de efectos.</p></article>
+      <article class="feature"><div class="icon">◉</div><h3>Super Knob</h3><p>Control macro reversible con Common Assign y múltiples destinos simultáneos.</p></article>
+      <article class="feature"><div class="icon">LIVE</div><h3>Live Banks</h3><p>Cambia de banco sin cortar las voces anteriores: las colas y releases terminan naturalmente.</p></article>
+      <article class="feature"><div class="icon">MIDI</div><h3>Expresión real</h3><p>Pitch Bend, Modulation, sustain, presión MIDI y control nativo en tiempo real.</p></article>
+      <article class="feature"><div class="icon">FX</div><h3>Motor de efectos</h3><p>Reverb, delay, chorus y procesamiento por parte con arquitectura optimizada para directo.</p></article>
+      <article class="feature"><div class="icon">JUCE</div><h3>Motor nativo</h3><p>El audio no depende del navegador. HTML controla la interfaz; C++ ejecuta audio y MIDI.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id="editions" class="wrap section">
+  <h2>Una app. Dos modos.</h2>
+  <p class="intro">Descarga Motion-X y utiliza la misma instalación. Inicia sesión con Dingloft para desbloquear la versión completa cuando tengas una licencia.</p>
+  <div class="compare">
+    <div class="plan">
+      <div class="planhead"><h3>Motion-X Free</h3><span class="badge">GRATIS</span></div>
+      <ul>
+        <li>Selección limitada de sonidos</li>
+        <li>Motor nativo</li>
+        <li>Compatibilidad MIDI</li>
+        <li>Prueba del flujo de trabajo Motion-X</li>
+      </ul>
+    </div>
+    <div class="plan full">
+      <div class="planhead"><h3>Motion-X Full</h3><span class="badge">LICENCIA COMPLETA</span></div>
+      <ul>
+        <li>Banco completo de sonidos</li>
+        <li>16 Parts y Live Banks</li>
+        <li>Super Knob + Common Assign</li>
+        <li>Controles y funciones avanzadas</li>
+        <li>Actualizaciones de Motion-X incluidas según la licencia</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="requirements" class="darkband">
+  <div class="wrap section">
+    <h2>Compatibilidad</h2>
+    <p class="intro">Diseñado actualmente para macOS. Motion-X puede funcionar como aplicación Standalone y, en la distribución final, como VST3 y Audio Unit.</p>
+    <div class="features">
+      <article class="feature"><div class="icon"></div><h3>macOS</h3><p>Aplicación nativa optimizada para integración con CoreMIDI y dispositivos de audio del sistema.</p></article>
+      <article class="feature"><div class="icon">VST</div><h3>VST3</h3><p>Preparado para integrarse en hosts compatibles una vez publicada la build final.</p></article>
+      <article class="feature"><div class="icon">AU</div><h3>Audio Unit</h3><p>Formato pensado para Logic Pro y otros hosts Audio Unit en macOS.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id="buy" class="wrap">
+  <div class="buybox">
+    <div>
+      <h2>Motion-X Full</h2>
+      <p>Compra la licencia en Dingloft y desbloquea Motion-X con tu cuenta.</p>
+    </div>
+    <div>
+      <div class="price">Precio por definir<small>Producto ID sugerido: motion-x-full</small></div>
+      <div class="actions" style="justify-content:flex-end;margin-top:14px">
+        <button class="btn primary" id="buyButton">Comprar ahora</button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="wrap">
+  <span>© Dingloft · Evolution Group</span>
+  <span>Motion-X</span>
+</footer>
+
+<script>
+/*
+  INTEGRACIÓN DINGLOFT
+  Cambia esta función por tu checkout/worker real.
+  Producto sugerido: motion-x-full
+*/
+document.getElementById('buyButton').addEventListener('click', () => {
+  if (window.DingloftCheckout?.open) {
+    window.DingloftCheckout.open({ productId: 'motion-x-full' });
+    return;
+  }
+  alert('Conecta aquí el checkout de Dingloft para el producto motion-x-full.');
+});
+</script>
+</body>
+</html>
