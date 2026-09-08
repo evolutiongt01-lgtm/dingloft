@@ -5,45 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#050708">
   <title>Motion-X — Dingloft</title>
-  <meta name="description" content="Motion-X: instrumento de performance con Live Banks, 16 Parts, Super Knob y controles de expresión.">
+  <meta name="description" content="Motion-X para Dingloft: instrumento de performance con Live Banks, 16 Parts, Super Knob y motor nativo.">
   <meta property="og:title" content="Motion-X — Dingloft">
-  <meta property="og:description" content="Sound in Motion. Descarga Motion-X y prueba una experiencia de performance enfocada en fluidez, control y expresión.">
+  <meta property="og:description" content="Sound in Motion. Descarga Motion-X y desbloquea el sistema completo cuando quieras.">
   <meta property="og:type" content="product">
 
   <style>
     :root{
       --bg:#050708;
-      --bg-2:#090c0e;
-      --surface:#0c1012;
-      --surface-2:#111719;
-      --text:#f4f6f6;
-      --muted:#8c979c;
-      --muted-2:#657176;
+      --bg-soft:#0a0d10;
+      --surface:#0d1114;
+      --surface-2:#11161a;
+      --card:#0d1013;
+      --text:#f4f6f7;
+      --muted:#8b969b;
+      --muted-2:#667176;
       --cyan:#18c7e5;
       --cyan-rgb:24,199,229;
-      --coral:#d64e4b;
-      --coral-rgb:214,78,75;
+      --coral:#d95a56;
+      --coral-rgb:217,90,86;
       --line:rgba(255,255,255,.085);
       --line-strong:rgba(255,255,255,.14);
-      --max:1460px;
-      --radius-xl:36px;
-      --radius-lg:26px;
+      --hero-radius:38px;
+      --radius-xl:30px;
+      --radius-lg:24px;
       --radius-md:18px;
+      --max:1460px;
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
     body{
       margin:0;
-      background:var(--bg);
       color:var(--text);
-      font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at 15% -10%, rgba(255,255,255,.035), transparent 32rem),
+        radial-gradient(circle at 85% 0%, rgba(var(--cyan-rgb), .045), transparent 26rem),
+        var(--bg);
+      font-family:Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
     }
-    img{max-width:100%}
-    a{color:inherit;text-decoration:none}
-    button{font:inherit}
+
+    img{ max-width:100%; display:block; }
+    a{ color:inherit; text-decoration:none; }
+    button{ font:inherit; }
+
     .sr-only{
       position:absolute!important;
       width:1px!important;height:1px!important;
@@ -52,725 +59,1571 @@
       white-space:nowrap!important;border:0!important;
     }
 
-    /* ===== DINGLOFT NAV ===== */
-    .site-nav{
-      position:sticky;
-      top:0;
-      z-index:100;
-      height:76px;
-      border-bottom:1px solid rgba(255,255,255,.055);
-      background:rgba(5,7,8,.78);
-      backdrop-filter:blur(18px) saturate(130%);
-      -webkit-backdrop-filter:blur(18px) saturate(130%);
-    }
-    .nav-inner{
-      max-width:var(--max);
-      height:100%;
-      margin:auto;
-      padding:0 28px;
-      display:grid;
-      grid-template-columns:1fr auto 1fr;
-      align-items:center;
-      gap:24px;
-    }
-    .brand{
-      display:inline-flex;align-items:center;gap:10px;
-      width:max-content;font-weight:760;letter-spacing:-.03em;font-size:18px
-    }
-    .brand-mark{
-      width:30px;height:30px;border-radius:10px;
-      display:grid;place-items:center;border:1px solid var(--line-strong);
-      background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.025));
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.08)
-    }
-    .brand-mark::before{
-      content:"";width:10px;height:10px;border-radius:50%;
-      background:var(--cyan);box-shadow:0 0 17px rgba(var(--cyan-rgb),.46)
-    }
-    .nav-links{display:flex;gap:34px;color:#aab4b8;font-size:13px}
-    .nav-links a{position:relative;transition:.25s ease}
-    .nav-links a:hover,.nav-links a[aria-current="page"]{color:#fff}
-    .nav-links a[aria-current="page"]::after{
-      content:"";position:absolute;left:50%;bottom:-15px;transform:translateX(-50%);
-      width:4px;height:4px;border-radius:50%;background:var(--cyan);
-      box-shadow:0 0 10px rgba(var(--cyan-rgb),.5)
-    }
-    .nav-actions{justify-self:end;display:flex;gap:10px}
-    .nav-icon{
-      width:39px;height:39px;border-radius:50%;border:1px solid var(--line);
-      background:rgba(255,255,255,.025);display:grid;place-items:center;color:#cbd1d4;
-      transition:.25s ease
-    }
-    .nav-icon:hover{
-      transform:translateY(-1px);
-      color:#fff;border-color:rgba(var(--cyan-rgb),.3);
-      background:rgba(var(--cyan-rgb),.06)
-    }
-
-    /* ===== PAGE WRAPPER ===== */
     .page{
       max-width:var(--max);
       margin:0 auto;
-      padding:22px 20px 80px;
+      padding:16px 18px 84px;
     }
 
-    /* ===== HERO like reference ===== */
-    .hero-card{
+    /* ============ HERO WRAP ============ */
+    .hero-shell{
       position:relative;
-      min-height:700px;
-      border-radius:var(--radius-xl);
       overflow:hidden;
+      border-radius:var(--hero-radius);
+      border:1px solid rgba(255,255,255,.09);
+      box-shadow:0 32px 110px rgba(0,0,0,.42);
+      background:
+        radial-gradient(circle at 82% 34%, rgba(var(--cyan-rgb), .07), transparent 22rem),
+        linear-gradient(180deg, rgba(255,255,255,.015), rgba(255,255,255,.006)),
+        #07090b;
       isolation:isolate;
-      border:1px solid rgba(255,255,255,.08);
-      box-shadow:0 38px 100px rgba(0,0,0,.38);
-      background:#0b0f11;
     }
-    .hero-card::before{
-      content:"";position:absolute;inset:0;z-index:-3;
+
+    .hero-shell::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-3;
       background:
-        linear-gradient(to bottom,rgba(4,6,7,.12) 0%,rgba(4,6,7,.2) 40%,rgba(4,6,7,.72) 100%),
-        linear-gradient(90deg,rgba(2,4,5,.54) 0%,rgba(2,4,5,.12) 42%,rgba(2,4,5,.16) 100%),
-        url("img/motion-x-cover.png") center 42%/cover no-repeat;
-    }
-    .hero-card::after{
-      content:"";position:absolute;inset:0;z-index:-2;
-      background:
-        radial-gradient(circle at 74% 55%,rgba(var(--cyan-rgb),.13),transparent 27%),
-        linear-gradient(to top,rgba(5,7,8,.5),transparent 38%);
+        linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.38)),
+        radial-gradient(circle at 78% 42%, rgba(var(--cyan-rgb), .06), transparent 18rem),
+        radial-gradient(circle at 72% 74%, rgba(255,255,255,.03), transparent 18rem);
       pointer-events:none;
     }
-    .hero-topline{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:22px 26px;color:#dce1e3;font-size:11px;letter-spacing:.12em;text-transform:uppercase
-    }
-    .hero-topline .status{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:8px 11px;border:1px solid rgba(255,255,255,.12);
-      background:rgba(3,6,7,.36);border-radius:999px;
-      backdrop-filter:blur(12px)
-    }
-    .hero-topline .status i{
-      width:6px;height:6px;border-radius:50%;background:var(--cyan);
-      box-shadow:0 0 11px rgba(var(--cyan-rgb),.6)
+
+    .hero-waves{
+      position:absolute;
+      inset:-12% -8% auto 24%;
+      height:120%;
+      z-index:-2;
+      pointer-events:none;
+      opacity:.95;
+      background:
+        radial-gradient(120% 75% at 88% 12%, rgba(255,255,255,.045), transparent 34%),
+        radial-gradient(120% 82% at 84% 34%, rgba(255,255,255,.03), transparent 34%),
+        radial-gradient(120% 96% at 80% 56%, rgba(255,255,255,.025), transparent 34%),
+        radial-gradient(120% 112% at 76% 78%, rgba(255,255,255,.02), transparent 34%);
+      filter:blur(0.2px);
+      transform:rotate(-7deg);
+      mask-image:linear-gradient(90deg, transparent 0%, rgba(0,0,0,.85) 22%, #000 100%);
+      -webkit-mask-image:linear-gradient(90deg, transparent 0%, rgba(0,0,0,.85) 22%, #000 100%);
     }
 
-    .hero-copy{
+    .hero-waves::before,
+    .hero-waves::after{
+      content:"";
       position:absolute;
-      left:clamp(26px,5vw,78px);
-      bottom:clamp(34px,7vw,82px);
-      z-index:3;
+      inset:0;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.08);
+      transform:translate(11%, 7%) scale(1.02);
+      filter:blur(.1px);
+    }
+
+    .hero-waves::after{
+      transform:translate(20%, 18%) scale(1.1);
+      opacity:.55;
+    }
+
+    /* ============ NAV ============ */
+    .hero-nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+      padding:16px 24px;
+      min-height:76px;
+      border-bottom:1px solid rgba(255,255,255,.05);
+      background:rgba(8,10,12,.48);
+      backdrop-filter:blur(14px) saturate(125%);
+      -webkit-backdrop-filter:blur(14px) saturate(125%);
+    }
+
+    .brand{
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      font-size:18px;
+      font-weight:760;
+      letter-spacing:-.03em;
+      flex:0 0 auto;
+    }
+
+    .brand-mark{
+      width:30px;
+      height:30px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      border:1px solid var(--line-strong);
+      background:linear-gradient(145deg, rgba(255,255,255,.11), rgba(255,255,255,.025));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    .brand-mark::before{
+      content:"";
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--cyan);
+      box-shadow:0 0 16px rgba(var(--cyan-rgb), .46);
+    }
+
+    .nav-center{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:34px;
+      flex:1 1 auto;
+      min-width:0;
+    }
+
+    .nav-center a{
+      color:#b6bfc3;
+      font-size:13px;
+      transition:color .24s ease, opacity .24s ease;
+    }
+    .nav-center a:hover,
+    .nav-center a[aria-current="page"]{
+      color:#fff;
+    }
+
+    .nav-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex:0 0 auto;
+    }
+
+    .nav-icon{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.025);
+      color:#d5dbde;
+      display:grid;
+      place-items:center;
+      transition:.25s ease;
+    }
+    .nav-icon:hover{
+      color:#fff;
+      transform:translateY(-1px);
+      border-color:rgba(var(--cyan-rgb), .3);
+      background:rgba(var(--cyan-rgb), .06);
+    }
+
+    .shop-pill{
+      padding:0 18px;
+      height:38px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.085);
+      background:rgba(255,255,255,.055);
+      color:#fff;
+      font-size:12px;
+      font-weight:650;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      transition:.25s ease;
+      white-space:nowrap;
+    }
+    .shop-pill:hover{
+      transform:translateY(-1px);
+      background:rgba(var(--cyan-rgb), .12);
+      border-color:rgba(var(--cyan-rgb), .24);
+    }
+
+    /* ============ HERO CONTENT ============ */
+    .hero-content{
+      position:relative;
+      display:grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(420px, .9fr);
+      gap:24px;
+      align-items:center;
+      padding:54px 38px 26px;
+      min-height:620px;
+    }
+
+    .hero-left{
+      position:relative;
+      z-index:2;
+      max-width:700px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:#9ca7ac;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      margin-bottom:16px;
+    }
+
+    .eyebrow i{
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:var(--cyan);
+      box-shadow:0 0 12px rgba(var(--cyan-rgb), .55);
+    }
+
+    .hero-title{
+      margin:0;
+      font-size:clamp(54px, 7.6vw, 92px);
+      line-height:.95;
+      letter-spacing:-.065em;
+      font-weight:760;
       max-width:760px;
     }
-    .hero-logo{
-      display:block;
-      width:min(650px,78vw);
-      max-height:170px;
-      object-fit:contain;
-      object-position:left center;
-      margin:0 0 18px;
-      filter:drop-shadow(0 14px 38px rgba(0,0,0,.4));
+
+    .hero-title .soft{
+      display:inline-block;
+      margin-left:.12em;
+      padding:.08em .22em .16em;
+      border-radius:999px;
+      background:rgba(255,255,255,.13);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
+      font-style:italic;
     }
+
     .hero-sub{
-      max-width:640px;
-      margin:0;
-      color:#d2d8da;
-      font-size:clamp(15px,1.6vw,20px);
-      line-height:1.58;
-      text-shadow:0 2px 18px rgba(0,0,0,.4)
+      max-width:610px;
+      margin:22px 0 0;
+      font-size:16px;
+      line-height:1.72;
+      color:#c1c9cd;
     }
+
     .hero-actions{
-      display:flex;flex-wrap:wrap;gap:11px;margin-top:26px
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:28px;
     }
+
     .btn{
-      min-height:48px;padding:0 20px;border-radius:999px;border:1px solid transparent;
-      display:inline-flex;align-items:center;justify-content:center;gap:9px;
-      cursor:pointer;font-weight:750;font-size:13px;
-      transition:transform .28s cubic-bezier(.22,1,.36,1),box-shadow .25s ease,background .25s ease,border-color .25s ease
+      min-height:48px;
+      padding:0 20px;
+      border-radius:999px;
+      border:1px solid transparent;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      cursor:pointer;
+      font-weight:760;
+      font-size:13px;
+      transition:transform .28s cubic-bezier(.22,1,.36,1), box-shadow .25s ease, background .25s ease, border-color .25s ease;
     }
-    .btn:hover{transform:translateY(-2px)}
+    .btn:hover{ transform:translateY(-2px); }
+
     .btn-primary{
-      color:#031014;background:var(--cyan);
-      box-shadow:0 10px 34px rgba(var(--cyan-rgb),.18)
+      color:#031014;
+      background:var(--cyan);
+      box-shadow:0 12px 36px rgba(var(--cyan-rgb), .17);
     }
-    .btn-primary:hover{box-shadow:0 14px 44px rgba(var(--cyan-rgb),.28)}
+    .btn-primary:hover{
+      box-shadow:0 16px 48px rgba(var(--cyan-rgb), .28);
+    }
+
     .btn-secondary{
-      color:#eef2f2;border-color:rgba(255,255,255,.15);
-      background:rgba(8,11,12,.48);backdrop-filter:blur(12px)
+      color:#f0f3f4;
+      background:rgba(255,255,255,.035);
+      border-color:rgba(255,255,255,.12);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
     }
     .btn-secondary:hover{
-      border-color:rgba(var(--cyan-rgb),.34);
-      background:rgba(var(--cyan-rgb),.07)
-    }
-    .hero-meta{
-      display:flex;flex-wrap:wrap;gap:8px;margin-top:20px
-    }
-    .hero-meta span{
-      padding:7px 10px;border-radius:999px;
-      background:rgba(4,7,8,.43);border:1px solid rgba(255,255,255,.11);
-      color:#b0bbbf;font-size:9px;font-weight:700;letter-spacing:.095em;text-transform:uppercase;
-      backdrop-filter:blur(10px)
+      border-color:rgba(var(--cyan-rgb), .28);
+      background:rgba(var(--cyan-rgb), .065);
     }
 
-    /* ===== TRUST/FEATURE STRIP ===== */
-    .feature-strip{
-      margin:38px 0 0;
-      padding:30px 6px 40px;
-      display:grid;grid-template-columns:repeat(3,1fr);
-      gap:10px;border-bottom:1px solid rgba(255,255,255,.055)
-    }
-    .strip-item{
-      padding:16px 18px;text-align:center
-    }
-    .strip-icon{
-      width:34px;height:34px;margin:0 auto 12px;border-radius:12px;
-      display:grid;place-items:center;border:1px solid var(--line);
-      background:rgba(255,255,255,.02);color:var(--cyan)
-    }
-    .strip-item strong{
-      display:block;font-size:17px;letter-spacing:-.025em
-    }
-    .strip-item p{
-      margin:8px auto 0;max-width:290px;color:#737f84;font-size:11px;line-height:1.6
+    .hero-right{
+      position:relative;
+      z-index:1;
+      display:flex;
+      align-items:flex-end;
+      justify-content:flex-end;
+      min-height:100%;
     }
 
-    /* ===== BIG INTRO ===== */
-    .intro{
-      display:grid;grid-template-columns:1.02fr .98fr;gap:62px;align-items:center;
-      padding:110px 32px 120px
+    .cover-wrap{
+      position:relative;
+      width:min(100%, 640px);
+      margin-right:-8px;
     }
-    .kicker{
-      color:var(--cyan);font-size:10px;font-weight:800;letter-spacing:.22em;text-transform:uppercase
-    }
-    .intro h2{
-      margin:18px 0 0;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:clamp(47px,6vw,90px);
-      line-height:.98;letter-spacing:-.045em;font-weight:500
-    }
-    .intro h2 span{color:#788287}
-    .intro p{
-      max-width:600px;margin:28px 0 0;color:var(--muted);font-size:15px;line-height:1.78
-    }
-    .tiny-row{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:40px
-    }
-    .tiny{
-      padding:18px 4px;border-top:1px solid var(--line);
-    }
-    .tiny strong{display:block;color:#edf0f1;font-size:13px}
-    .tiny span{display:block;margin-top:6px;color:#687378;font-size:9px;letter-spacing:.08em;text-transform:uppercase}
 
-    .plugin-showcase{
+    .cover-wrap::before{
+      content:"";
+      position:absolute;
+      inset:auto 14% 6% 12%;
+      height:18%;
+      border-radius:50%;
+      background:radial-gradient(ellipse, rgba(0,0,0,.68), transparent 70%);
+      filter:blur(16px);
+      z-index:0;
+    }
+
+    .cover-wrap::after{
+      content:"";
+      position:absolute;
+      right:10%;
+      top:12%;
+      width:72%;
+      height:72%;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(var(--cyan-rgb), .10), transparent 68%);
+      filter:blur(26px);
+      z-index:0;
+    }
+
+    .cover-figure{
+      position:relative;
+      z-index:1;
+      width:100%;
+      object-fit:contain;
+      max-height:560px;
+      filter:drop-shadow(0 26px 55px rgba(0,0,0,.44));
+      transform:translateY(10px);
+    }
+
+    .hero-note{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:14px;
+      padding:0 38px 34px;
+    }
+
+    .hero-stat{
+      padding:18px 0 0;
+      border-top:1px solid rgba(255,255,255,.07);
+    }
+
+    .hero-stat strong{
+      display:block;
+      font-size:42px;
+      line-height:1;
+      letter-spacing:-.05em;
+      font-weight:720;
+    }
+
+    .hero-stat span{
+      display:block;
+      margin-top:10px;
+      max-width:280px;
+      color:#8b979b;
+      font-size:13px;
+      line-height:1.58;
+    }
+
+    /* ============ MAIN CONTENT ============ */
+    .section{
+      padding:84px 16px 0;
+    }
+
+    .split{
+      display:grid;
+      grid-template-columns:1.06fr .94fr;
+      gap:34px;
+      align-items:center;
+    }
+
+    .section-kicker{
+      color:var(--cyan);
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+    }
+
+    .section h2{
+      margin:14px 0 0;
+      font-size:clamp(44px, 5.6vw, 78px);
+      line-height:.98;
+      letter-spacing:-.058em;
+      font-weight:740;
+    }
+
+    .section h2 .subtle{
+      color:#748086;
+    }
+
+    .section p{
+      margin:22px 0 0;
+      max-width:640px;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.78;
+    }
+
+    .cta-inline{
+      margin-top:26px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .plugin-panel{
       position:relative;
       min-height:500px;
-      border-radius:32px;
-      display:grid;place-items:center;
-      background:
-        radial-gradient(circle at 55% 40%,rgba(var(--cyan-rgb),.12),transparent 34%),
-        linear-gradient(145deg,#0d1316,#090c0e 58%,#0b0f10);
+      border-radius:30px;
       border:1px solid var(--line);
       overflow:hidden;
-      box-shadow:0 32px 90px rgba(0,0,0,.28)
-    }
-    .plugin-showcase::after{
-      content:"";position:absolute;inset:0;
-      background:linear-gradient(115deg,rgba(255,255,255,.035),transparent 30%);
-      pointer-events:none
-    }
-    .plugin-showcase img{
-      width:94%;height:94%;object-fit:contain;
-      filter:drop-shadow(0 32px 55px rgba(0,0,0,.5))
+      background:
+        radial-gradient(circle at 56% 42%, rgba(var(--cyan-rgb), .11), transparent 34%),
+        linear-gradient(145deg, #11161a, #090c0f 56%, #0a0d10);
+      box-shadow:0 32px 90px rgba(0,0,0,.3);
+      display:grid;
+      place-items:center;
+      padding:20px;
     }
 
-    /* ===== FEATURE CARDS ===== */
-    .features{
-      padding:24px 32px 118px
+    .plugin-panel::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(115deg, rgba(255,255,255,.035), transparent 32%);
+      pointer-events:none;
     }
-    .features-head{
-      display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:34px
+
+    .plugin-panel img{
+      width:96%;
+      height:96%;
+      object-fit:contain;
+      filter:drop-shadow(0 30px 52px rgba(0,0,0,.52));
     }
-    .features-head h2{
-      margin:7px 0 0;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:clamp(44px,5vw,76px);font-weight:500;letter-spacing:-.045em
+
+    /* ============ FEATURE GRID ============ */
+    .feature-area{
+      padding:84px 16px 0;
     }
-    .features-head p{
-      max-width:470px;color:var(--muted);font-size:13px;line-height:1.7;margin:0
+
+    .feature-head{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:26px;
+      margin-bottom:30px;
     }
-    .feature-grid{
-      display:grid;grid-template-columns:1.15fr .85fr;gap:18px
+
+    .feature-head p{
+      max-width:470px;
+      margin:0;
+      font-size:13px;
     }
-    .feature-card{
-      position:relative;min-height:370px;border-radius:28px;border:1px solid var(--line);
-      background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012)),#090c0e;
-      padding:28px;overflow:hidden
+
+    .grid{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:18px;
     }
-    .feature-card.accent{
+
+    .card{
+      position:relative;
+      border-radius:28px;
+      border:1px solid var(--line);
       background:
-        radial-gradient(circle at 80% 18%,rgba(var(--cyan-rgb),.13),transparent 25rem),
-        linear-gradient(145deg,#101719,#090c0e)
+        linear-gradient(145deg, rgba(255,255,255,.035), rgba(255,255,255,.012)),
+        #090c0e;
+      padding:28px;
+      overflow:hidden;
+      min-height:350px;
     }
-    .feature-card.red{
+
+    .card.accent{
       background:
-        radial-gradient(circle at 80% 18%,rgba(var(--coral-rgb),.12),transparent 20rem),
-        linear-gradient(145deg,#121010,#090c0e)
+        radial-gradient(circle at 82% 22%, rgba(var(--cyan-rgb), .12), transparent 22rem),
+        linear-gradient(145deg, #11181b, #090c0e);
     }
-    .feature-card h3{margin:8px 0 0;font-size:30px;letter-spacing:-.045em}
-    .feature-card p{max-width:560px;color:#889398;font-size:13px;line-height:1.7}
-    .feature-card .mini-ui{
-      position:absolute;left:28px;right:28px;bottom:28px;
-      display:grid;grid-template-columns:repeat(4,1fr);gap:8px
+
+    .card.red{
+      background:
+        radial-gradient(circle at 78% 16%, rgba(var(--coral-rgb), .12), transparent 18rem),
+        linear-gradient(145deg, #151112, #090c0e);
     }
+
+    .card h3{
+      margin:10px 0 0;
+      font-size:30px;
+      letter-spacing:-.045em;
+      line-height:1.05;
+    }
+
+    .card p{
+      max-width:560px;
+      font-size:13px;
+      margin-top:14px;
+      color:#8b969b;
+    }
+
+    .mini-banks{
+      position:absolute;
+      left:28px;
+      right:28px;
+      bottom:28px;
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:8px;
+    }
+
     .mini-bank{
-      padding:15px 12px;border:1px solid rgba(255,255,255,.07);
-      border-radius:14px;background:rgba(255,255,255,.02)
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.075);
+      background:rgba(255,255,255,.02);
+      padding:15px 12px;
     }
-    .mini-bank b{display:block;color:#edf1f2;font-size:12px}
-    .mini-bank span{display:block;color:#657177;font-size:9px;margin-top:5px}
-    .superknob{
-      position:absolute;right:38px;bottom:34px;width:170px;height:170px;border-radius:50%;
-      border:1px solid rgba(var(--cyan-rgb),.22);
-      box-shadow:inset 0 0 0 16px rgba(var(--cyan-rgb),.035),0 0 42px rgba(var(--cyan-rgb),.08)
-    }
-    .superknob::before{
-      content:"";position:absolute;inset:20px;border-radius:50%;
-      border:8px solid rgba(var(--cyan-rgb),.7);border-left-color:rgba(var(--cyan-rgb),.18)
-    }
-    .superknob::after{
-      content:"";position:absolute;left:50%;top:28px;width:2px;height:45px;background:#f4f6f6;
-      transform:translateX(-50%);border-radius:4px;box-shadow:0 0 10px rgba(255,255,255,.3)
-    }
-    .full-span{grid-column:1/-1;min-height:300px}
-    .parts-row{
-      display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-top:36px
-    }
-    .part-chip{
-      padding:15px 8px;border-radius:13px;text-align:center;
-      border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02);
-      color:#7e8a8f;font-size:9px;letter-spacing:.07em;text-transform:uppercase
-    }
-    .part-chip b{display:block;color:var(--cyan);font-size:16px;margin-bottom:6px}
 
-    /* ===== FREE VS FULL ===== */
+    .mini-bank b{
+      display:block;
+      color:#eff2f3;
+      font-size:12px;
+    }
+
+    .mini-bank span{
+      display:block;
+      margin-top:5px;
+      color:#657177;
+      font-size:9px;
+    }
+
+    .knob-visual{
+      position:absolute;
+      right:36px;
+      bottom:30px;
+      width:170px;
+      height:170px;
+      border-radius:50%;
+      border:1px solid rgba(var(--cyan-rgb), .22);
+      box-shadow:inset 0 0 0 15px rgba(var(--cyan-rgb), .035), 0 0 42px rgba(var(--cyan-rgb), .08);
+    }
+
+    .knob-visual::before{
+      content:"";
+      position:absolute;
+      inset:20px;
+      border-radius:50%;
+      border:8px solid rgba(var(--cyan-rgb), .72);
+      border-left-color:rgba(var(--cyan-rgb), .18);
+    }
+
+    .knob-visual::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:28px;
+      width:2px;
+      height:45px;
+      border-radius:4px;
+      background:#f4f6f6;
+      transform:translateX(-50%);
+      box-shadow:0 0 10px rgba(255,255,255,.3);
+    }
+
+    .wide{ grid-column:1 / -1; min-height:300px; }
+
+    .parts{
+      display:grid;
+      grid-template-columns:repeat(8, minmax(0,1fr));
+      gap:8px;
+      margin-top:34px;
+    }
+
+    .part{
+      padding:16px 8px;
+      border-radius:13px;
+      text-align:center;
+      border:1px solid rgba(255,255,255,.07);
+      background:rgba(255,255,255,.02);
+      color:#7f8b90;
+      font-size:9px;
+      letter-spacing:.07em;
+      text-transform:uppercase;
+    }
+
+    .part b{
+      display:block;
+      color:var(--cyan);
+      font-size:16px;
+      margin-bottom:6px;
+    }
+
+    /* ============ ACCESS CARDS ============ */
     .access{
-      padding:20px 32px 120px
+      padding:84px 16px 0;
     }
-    .access-head{
-      max-width:920px;margin-bottom:40px
+
+    .access-grid{
+      display:grid;
+      grid-template-columns:.92fr 1.08fr;
+      gap:18px;
+      margin-top:30px;
     }
-    .access-head h2{
-      margin:12px 0 0;font-family:Georgia,"Times New Roman",serif;
-      font-size:clamp(46px,5.8vw,84px);font-weight:500;letter-spacing:-.05em;line-height:.98
-    }
-    .access-head p{max-width:720px;color:var(--muted);line-height:1.75;font-size:14px}
-    .access-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px}
+
     .access-card{
-      padding:28px;border-radius:26px;border:1px solid var(--line);
-      background:#090c0e;min-height:480px
+      border-radius:28px;
+      border:1px solid var(--line);
+      background:#090c0e;
+      padding:28px;
+      min-height:470px;
     }
+
     .access-card.full{
       background:
-        radial-gradient(circle at 82% 12%,rgba(var(--cyan-rgb),.11),transparent 20rem),
-        #0a0f11;border-color:rgba(var(--cyan-rgb),.18)
+        radial-gradient(circle at 84% 14%, rgba(var(--cyan-rgb), .12), transparent 22rem),
+        #0a0f11;
+      border-color:rgba(var(--cyan-rgb), .18);
     }
-    .price-row{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding-bottom:22px;border-bottom:1px solid var(--line)}
-    .price-row h3{margin:4px 0 0;font-size:32px;letter-spacing:-.045em}
-    .price{text-align:right}
-    .price strong{display:block;font-size:30px}
-    .price span{display:block;margin-top:5px;color:#6e797d;font-size:9px;text-transform:uppercase;letter-spacing:.08em}
-    .trial{
-      display:inline-flex;margin-top:16px;padding:7px 10px;border-radius:999px;
-      border:1px solid rgba(var(--coral-rgb),.23);background:rgba(var(--coral-rgb),.055);
-      color:#c88683;font-size:8px;font-weight:800;letter-spacing:.13em;text-transform:uppercase
-    }
-    .checklist{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:13px}
-    .checklist li{
-      display:grid;grid-template-columns:18px 1fr;gap:10px;color:#9aa5aa;font-size:12px;line-height:1.55
-    }
-    .checklist li::before{
-      content:"✓";width:17px;height:17px;border-radius:50%;
-      display:grid;place-items:center;border:1px solid rgba(var(--cyan-rgb),.2);
-      color:var(--cyan);font-size:9px;background:rgba(var(--cyan-rgb),.045)
-    }
-    .access-actions{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
 
-    /* ===== CTA ===== */
+    .price-row{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      padding-bottom:22px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+
+    .price-row h3{
+      margin:6px 0 0;
+      font-size:32px;
+      letter-spacing:-.045em;
+    }
+
+    .price{
+      text-align:right;
+    }
+
+    .price strong{
+      display:block;
+      font-size:30px;
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .price span{
+      display:block;
+      margin-top:6px;
+      color:#6d787d;
+      font-size:9px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      line-height:1.45;
+    }
+
+    .trial{
+      display:inline-flex;
+      margin-top:16px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(var(--coral-rgb), .24);
+      background:rgba(var(--coral-rgb), .055);
+      color:#ca8885;
+      font-size:8px;
+      font-weight:800;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+    }
+
+    .checklist{
+      list-style:none;
+      margin:24px 0 0;
+      padding:0;
+      display:grid;
+      gap:13px;
+    }
+
+    .checklist li{
+      display:grid;
+      grid-template-columns:18px 1fr;
+      gap:10px;
+      color:#98a4a8;
+      font-size:12px;
+      line-height:1.58;
+    }
+
+    .checklist li::before{
+      content:"✓";
+      width:17px;
+      height:17px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(var(--cyan-rgb), .2);
+      color:var(--cyan);
+      font-size:9px;
+      background:rgba(var(--cyan-rgb), .045);
+    }
+
+    .access-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:24px;
+    }
+
+    /* ============ FINAL CTA ============ */
     .final-cta{
-      position:relative;margin:0 0 20px;border-radius:32px;padding:84px 34px;
-      text-align:center;border:1px solid var(--line);
-      overflow:hidden;background:
-        radial-gradient(circle at 50% 20%,rgba(var(--cyan-rgb),.12),transparent 28rem),
-        linear-gradient(145deg,#0b1012,#07090a)
+      position:relative;
+      margin:84px 16px 20px;
+      border-radius:34px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:
+        radial-gradient(circle at 50% 18%, rgba(var(--cyan-rgb), .12), transparent 26rem),
+        linear-gradient(145deg, #0b1012, #07090a);
+      padding:84px 28px;
+      text-align:center;
     }
+
     .final-cta h2{
-      margin:0;font-family:Georgia,"Times New Roman",serif;
-      font-size:clamp(50px,7vw,96px);font-weight:500;letter-spacing:-.055em
+      margin:12px 0 0;
+      font-size:clamp(48px, 6.5vw, 88px);
+      line-height:.96;
+      letter-spacing:-.058em;
+      font-weight:740;
     }
-    .final-cta p{max-width:680px;margin:18px auto 0;color:var(--muted);font-size:14px;line-height:1.7}
-    .final-cta .hero-actions{justify-content:center}
+
+    .final-cta p{
+      max-width:700px;
+      margin:18px auto 0;
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.72;
+    }
+
+    .final-cta .hero-actions{
+      justify-content:center;
+    }
 
     footer{
-      padding:28px 8px 16px;color:#667176;font-size:10px;
-      display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap
+      padding:10px 18px 0;
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+      color:#667176;
+      font-size:10px;
     }
 
-    /* ===== REVEALS ===== */
-    .reveal{opacity:0;transform:translateY(28px);transition:opacity .85s cubic-bezier(.22,1,.36,1),transform .85s cubic-bezier(.22,1,.36,1)}
-    .reveal.in{opacity:1;transform:none}
-
-    @media(max-width:980px){
-      .intro,.feature-grid,.access-grid{grid-template-columns:1fr}
-      .feature-card{min-height:330px}
-      .full-span{grid-column:auto}
-      .parts-row{grid-template-columns:repeat(4,1fr)}
-      .features-head{align-items:flex-start;flex-direction:column}
-      .plugin-showcase{min-height:430px}
+    .reveal{
+      opacity:0;
+      transform:translateY(28px);
+      transition:opacity .85s cubic-bezier(.22,1,.36,1), transform .85s cubic-bezier(.22,1,.36,1);
+    }
+    .reveal.in{
+      opacity:1;
+      transform:none;
     }
 
-    @media(max-width:760px){
-      .site-nav{height:68px}
-      .nav-inner{padding:0 16px;grid-template-columns:1fr auto}
-      .nav-links{display:none}
-      .nav-actions .nav-icon:first-child{display:none}
-      .page{padding:14px 12px 60px}
-      .hero-card{min-height:640px;border-radius:28px}
-      .hero-topline{padding:18px 18px}
-      .hero-copy{left:20px;right:20px;bottom:26px}
-      .hero-logo{width:min(520px,86vw);max-height:135px}
-      .hero-sub{font-size:14px}
-      .feature-strip{grid-template-columns:1fr;padding:24px 0 32px}
-      .strip-item{padding:15px}
-      .intro{padding:78px 10px 90px;gap:36px}
-      .features,.access{padding-left:10px;padding-right:10px}
-      .plugin-showcase{min-height:340px}
-      .feature-card{padding:22px;border-radius:22px}
-      .feature-card .mini-ui{left:22px;right:22px;bottom:22px;grid-template-columns:repeat(2,1fr)}
-      .superknob{width:130px;height:130px;right:22px}
-      .parts-row{grid-template-columns:repeat(4,1fr)}
-      .final-cta{padding:64px 22px}
+    @media (max-width:1120px){
+      .hero-content{
+        grid-template-columns:1fr;
+        min-height:auto;
+        gap:10px;
+        padding-top:48px;
+      }
+      .hero-right{
+        justify-content:center;
+        padding-top:8px;
+      }
+      .cover-wrap{
+        width:min(100%, 620px);
+        margin-right:0;
+      }
+      .hero-note{
+        grid-template-columns:1fr;
+      }
+      .split,
+      .grid,
+      .access-grid{
+        grid-template-columns:1fr;
+      }
+      .feature-head{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+      .parts{
+        grid-template-columns:repeat(4, minmax(0,1fr));
+      }
     }
 
-    @media(max-width:520px){
-      .hero-card{min-height:600px}
-      .hero-card::before{background-position:58% 42%}
-      .hero-logo{width:92%;max-height:110px}
-      .hero-actions .btn{flex:1 1 100%}
-      .hero-meta span{font-size:8px}
-      .tiny-row{grid-template-columns:1fr}
-      .feature-card{min-height:360px}
-      .mini-ui{position:static!important;margin-top:24px}
-      .superknob{position:relative;right:auto;bottom:auto;margin:30px auto 0}
-      .parts-row{grid-template-columns:repeat(2,1fr)}
-      .price-row{flex-direction:column}
-      .price{text-align:left}
-      .access-actions .btn{flex:1 1 100%}
+    @media (max-width:760px){
+      .page{ padding:12px 10px 60px; }
+
+      .hero-shell{ border-radius:28px; }
+      .hero-nav{
+        min-height:66px;
+        padding:14px 16px;
+      }
+      .nav-center{
+        display:none;
+      }
+      .shop-pill{
+        display:none;
+      }
+
+      .hero-content{
+        padding:34px 18px 18px;
+      }
+      .hero-title{
+        font-size:clamp(44px, 12vw, 64px);
+      }
+      .hero-sub{
+        font-size:14px;
+      }
+      .cover-figure{
+        max-height:420px;
+      }
+      .hero-note{
+        padding:0 18px 22px;
+      }
+
+      .section,
+      .feature-area,
+      .access{
+        padding:66px 8px 0;
+      }
+
+      .plugin-panel{
+        min-height:340px;
+        border-radius:24px;
+      }
+      .card{
+        min-height:330px;
+        padding:22px;
+        border-radius:22px;
+      }
+      .mini-banks{
+        grid-template-columns:repeat(2, minmax(0,1fr));
+        left:22px; right:22px; bottom:22px;
+      }
+      .knob-visual{
+        width:130px;
+        height:130px;
+        right:22px;
+        bottom:22px;
+      }
+      .parts{
+        grid-template-columns:repeat(4, minmax(0,1fr));
+      }
+
+      .access-card{
+        padding:22px;
+        min-height:auto;
+      }
+
+      .final-cta{
+        margin:66px 8px 16px;
+        padding:64px 20px;
+        border-radius:26px;
+      }
+      footer{ padding:10px 8px 0; }
     }
 
-    @media(prefers-reduced-motion:reduce){
-      html{scroll-behavior:auto}
-      *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
-      .reveal{opacity:1;transform:none}
+    @media (max-width:520px){
+      .hero-title .soft{
+        display:inline-block;
+        margin-left:0;
+        margin-top:.12em;
+      }
+      .hero-actions .btn,
+      .access-actions .btn{
+        flex:1 1 100%;
+      }
+      .parts{
+        grid-template-columns:repeat(2, minmax(0,1fr));
+      }
+      .mini-banks{
+        position:static;
+        margin-top:24px;
+      }
+      .knob-visual{
+        position:relative;
+        right:auto;
+        bottom:auto;
+        margin:28px auto 0;
+      }
+      .price-row{
+        flex-direction:column;
+      }
+      .price{
+        text-align:left;
+      }
     }
+
+    @media (prefers-reduced-motion: reduce){
+      html{ scroll-behavior:auto; }
+      *, *::before, *::after{
+        animation-duration:.001ms!important;
+        animation-iteration-count:1!important;
+        transition-duration:.001ms!important;
+      }
+      .reveal{
+        opacity:1;
+        transform:none;
+      }
+    }
+  
+    /* =========================================================
+       MOTION-X NAV + HERO — reference-inspired direction
+       ========================================================= */
+    .hero-shell{
+      min-height:760px;
+      background:
+        radial-gradient(circle at 76% 36%, rgba(var(--cyan-rgb), .08), transparent 24rem),
+        linear-gradient(135deg,#0b0d0f 0%,#060708 54%,#030405 100%);
+    }
+
+    .hero-nav{
+      position:relative;
+      z-index:10;
+      min-height:72px;
+      padding:14px 26px;
+      border-bottom:0;
+      background:linear-gradient(180deg,rgba(5,6,7,.86),rgba(5,6,7,.36));
+    }
+
+    .hero-nav::after{
+      content:"";
+      position:absolute;
+      left:26px;
+      right:26px;
+      bottom:0;
+      height:1px;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.09) 20%,rgba(255,255,255,.09) 80%,transparent);
+    }
+
+    .nav-center{
+      gap:38px;
+    }
+
+    .nav-center a{
+      color:#858f94;
+      font-size:12px;
+      font-weight:550;
+    }
+
+    .nav-center a[aria-current="page"]{
+      color:#fff;
+    }
+
+    .nav-center a[aria-current="page"]::after{
+      content:"";
+      display:block;
+      width:16px;
+      height:2px;
+      border-radius:999px;
+      margin:7px auto -9px;
+      background:var(--cyan);
+      box-shadow:0 0 12px rgba(var(--cyan-rgb),.4);
+    }
+
+    .shop-pill{
+      height:36px;
+      padding:0 18px;
+      color:#071014;
+      background:#e7ecee;
+      border-color:rgba(255,255,255,.5);
+      font-weight:750;
+    }
+
+    .shop-pill:hover{
+      background:#fff;
+      border-color:#fff;
+    }
+
+    .hero-content{
+      position:relative;
+      grid-template-columns:minmax(0,1.02fr) minmax(470px,.98fr);
+      min-height:570px;
+      padding:58px 38px 22px;
+      overflow:hidden;
+    }
+
+    .hero-left{
+      max-width:720px;
+      align-self:center;
+      padding-bottom:28px;
+    }
+
+    .hero-title{
+      max-width:780px;
+      font-size:clamp(58px,7.25vw,104px);
+      line-height:.94;
+      letter-spacing:-.066em;
+      font-weight:700;
+    }
+
+    .hero-title .soft{
+      padding:.02em .24em .1em;
+      margin-left:0;
+      margin-top:.08em;
+      color:#f7f9f9;
+      background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.13));
+      border:1px solid rgba(255,255,255,.08);
+      font-style:italic;
+      font-weight:630;
+    }
+
+    .hero-sub{
+      max-width:620px;
+      color:#a8b2b7;
+      font-size:15px;
+      line-height:1.75;
+    }
+
+    .trial-copy{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      max-width:600px;
+      margin-top:17px;
+      color:#707b80;
+      font-size:11px;
+      line-height:1.55;
+    }
+
+    .trial-copy span{
+      width:6px;
+      height:6px;
+      flex:0 0 6px;
+      border-radius:50%;
+      background:var(--coral);
+      box-shadow:0 0 11px rgba(var(--coral-rgb),.42);
+    }
+
+    .hero-right{
+      position:relative;
+      min-height:520px;
+      align-self:stretch;
+      overflow:visible;
+    }
+
+    .cover-wrap{
+      position:absolute;
+      inset:-20px -40px -18px -45px;
+      width:auto;
+      margin:0;
+      overflow:hidden;
+      border-radius:0;
+    }
+
+    .cover-wrap::before{
+      inset:auto 10% 1% 13%;
+      height:15%;
+      background:radial-gradient(ellipse,rgba(0,0,0,.78),transparent 72%);
+      filter:blur(20px);
+    }
+
+    .cover-wrap::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      width:auto;
+      height:auto;
+      right:auto;
+      top:auto;
+      border-radius:0;
+      z-index:2;
+      background:
+        linear-gradient(90deg,#07090a 0%,rgba(7,9,10,.93) 7%,rgba(7,9,10,.52) 22%,transparent 48%),
+        linear-gradient(180deg,rgba(7,9,10,.06) 0%,transparent 52%,rgba(5,7,8,.82) 100%);
+      filter:none;
+      pointer-events:none;
+    }
+
+    .cover-figure{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      max-height:none;
+      object-fit:cover;
+      object-position:center;
+      transform:none;
+      opacity:.92;
+      filter:saturate(.78) brightness(.69) contrast(1.08);
+    }
+
+    .hero-tech{
+      position:absolute;
+      z-index:4;
+      display:grid;
+      gap:3px;
+      color:#d9dfe1;
+      font-size:10px;
+      letter-spacing:.11em;
+      text-transform:uppercase;
+      pointer-events:none;
+    }
+
+    .hero-tech b{
+      font-size:10px;
+      font-weight:760;
+    }
+
+    .hero-tech small{
+      color:#6f7b80;
+      font-size:8px;
+      letter-spacing:.08em;
+    }
+
+    .hero-tech::before{
+      content:"";
+      position:absolute;
+      top:50%;
+      width:100px;
+      height:1px;
+      background:linear-gradient(90deg,rgba(var(--cyan-rgb),.65),rgba(255,255,255,.12));
+    }
+
+    .hero-tech::after{
+      content:"";
+      position:absolute;
+      top:calc(50% - 3px);
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:var(--cyan);
+      box-shadow:0 0 12px rgba(var(--cyan-rgb),.48);
+    }
+
+    .hero-tech-a{
+      right:38px;
+      top:20%;
+      text-align:right;
+    }
+    .hero-tech-a::before{ right:calc(100% + 12px); }
+    .hero-tech-a::after{ right:calc(100% + 109px); }
+
+    .hero-tech-b{
+      right:18px;
+      top:66%;
+      text-align:right;
+    }
+    .hero-tech-b::before{ right:calc(100% + 12px); }
+    .hero-tech-b::after{ right:calc(100% + 109px); }
+
+    .hero-note{
+      position:relative;
+      z-index:5;
+      grid-template-columns:repeat(3,1fr);
+      gap:0;
+      padding:0 38px 34px;
+      background:linear-gradient(180deg,transparent,rgba(4,6,7,.22));
+    }
+
+    .hero-stat{
+      position:relative;
+      min-height:100px;
+      padding:22px 30px 0 0;
+      border-top:1px solid rgba(255,255,255,.07);
+    }
+
+    .hero-stat + .hero-stat{
+      padding-left:30px;
+    }
+
+    .hero-stat + .hero-stat::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:22px;
+      bottom:8px;
+      width:1px;
+      background:rgba(255,255,255,.055);
+    }
+
+    .hero-stat strong{
+      font-size:38px;
+      font-weight:560;
+    }
+
+    .hero-stat span{
+      margin-top:8px;
+      color:#737f84;
+      font-size:11px;
+      line-height:1.55;
+    }
+
+    @media (max-width:1120px){
+      .hero-shell{ min-height:auto; }
+      .hero-content{
+        grid-template-columns:1fr;
+        padding-bottom:0;
+      }
+      .hero-left{
+        max-width:760px;
+        padding-bottom:0;
+      }
+      .hero-right{
+        min-height:500px;
+        margin:18px -38px 0;
+      }
+      .cover-wrap{
+        inset:0;
+      }
+      .cover-wrap::after{
+        background:
+          linear-gradient(180deg,#07090a 0%,rgba(7,9,10,.2) 16%,transparent 40%,rgba(5,7,8,.85) 100%),
+          linear-gradient(90deg,rgba(7,9,10,.55),transparent 32%);
+      }
+      .hero-tech{ display:none; }
+    }
+
+    @media (max-width:760px){
+      .hero-nav{
+        padding:13px 15px;
+      }
+      .hero-nav::after{
+        left:15px; right:15px;
+      }
+      .nav-center{ display:none; }
+      .shop-pill{ display:none; }
+
+      .hero-content{
+        padding:34px 18px 0;
+      }
+      .hero-title{
+        font-size:clamp(48px,13vw,70px);
+      }
+      .hero-right{
+        min-height:370px;
+        margin:20px -18px 0;
+      }
+      .cover-figure{
+        object-position:58% center;
+      }
+      .hero-note{
+        grid-template-columns:1fr;
+        padding:0 18px 24px;
+      }
+      .hero-stat,
+      .hero-stat + .hero-stat{
+        min-height:auto;
+        padding:18px 0 16px;
+      }
+      .hero-stat + .hero-stat::before{
+        display:none;
+      }
+      .hero-stat strong{
+        font-size:30px;
+      }
+    }
+
   </style>
 </head>
 <body>
+  <main class="page">
+    <section class="hero-shell">
+      <div class="hero-waves" aria-hidden="true"></div>
 
-<header class="site-nav">
-  <div class="nav-inner">
-    <a class="brand" href="#" aria-label="Dingloft">
-      <span class="brand-mark" aria-hidden="true"></span>
-      <span>Dingloft</span>
-    </a>
+      <header class="hero-nav">
+        <a class="brand" href="#" aria-label="Dingloft">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Dingloft</span>
+        </a>
 
-    <nav class="nav-links" aria-label="Principal">
-      <a href="#">Home</a>
-      <a href="#" aria-current="page">Software</a>
-      <a href="#">Multitracks</a>
-    </nav>
+        <nav class="nav-center" aria-label="Principal">
+          <a href="#">Home</a>
+          <a href="#" aria-current="page">Software</a>
+          <a href="#">Multitracks</a>
+        </nav>
 
-    <div class="nav-actions">
-      <a class="nav-icon" href="#" aria-label="Carrito">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M7 8h10l1 11H6L7 8Z" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M9 9V7a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.6"/>
-        </svg>
-      </a>
-      <a class="nav-icon" href="#" aria-label="Cuenta">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M5 20c.7-4 3.1-6 7-6s6.3 2 7 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-      </a>
-    </div>
-  </div>
-</header>
+        <div class="nav-right">
+          <a class="shop-pill" href="#" data-action="download-motion-x">Descargar</a>
 
-<main class="page">
+          <a class="nav-icon" href="#" aria-label="Carrito">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 8h10l1 11H6L7 8Z" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M9 9V7a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.6"/>
+            </svg>
+          </a>
 
-  <!-- HERO -->
-  <section class="hero-card">
-    <div class="hero-topline">
-      <span>Motion-X · Personal Instrument</span>
-      <span class="status"><i></i> Native Audio Engine</span>
-    </div>
+          <a class="nav-icon" href="#" aria-label="Cuenta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M5 20c.7-4 3.1-6 7-6s6.3 2 7 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </div>
+      </header>
 
-    <div class="hero-copy">
-      <h1 class="sr-only">Motion-X</h1>
-      <img class="hero-logo" src="img/titlemotion.png" alt="Motion-X Engine">
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="eyebrow"><i></i> Motion-X · Personal Instrument</div>
 
-      <p class="hero-sub">
-        Un instrumento de performance diseñado para moverse contigo:
-        sonido, expresión, capas y cambios fluidos en una sola experiencia.
+          <h1 class="hero-title">
+            Performance Built
+            <br>For Seamless
+            <br><span class="soft">Motion</span>
+          </h1>
+
+          <p class="hero-sub">
+            Un instrumento creado para tocar sin romper el flujo. Live Banks, 16 Parts,
+            Super Knob y control expresivo dentro de una sola experiencia.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" type="button" data-action="download-motion-x">
+              Descargar gratis
+              <span aria-hidden="true">↓</span>
+            </button>
+
+            <button class="btn btn-secondary" type="button"
+                    data-product-id="motion-x-full"
+                    data-action="buy-motion-x">
+              Desbloquear FULL · US$28
+            </button>
+          </div>
+
+          <div class="trial-copy">
+            <span></span>
+            10 minutos de prueba con capacidades FREE. FULL permanece bloqueado hasta activar la licencia.
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="cover-wrap">
+            <img class="cover-figure" src="img/motion-x-cover.png" alt="Músico usando Motion-X en estudio">
+
+            <div class="hero-tech hero-tech-a">
+              <b>16 PARTS</b>
+              <small>Layered performance</small>
+            </div>
+
+            <div class="hero-tech hero-tech-b">
+              <b>LIVE BANKS</b>
+              <small>Seamless transitions</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-note">
+        <div class="hero-stat">
+          <strong>16</strong>
+          <span>Parts para capas, splits y performances complejas.</span>
+        </div>
+
+        <div class="hero-stat">
+          <strong>Live</strong>
+          <span>Cambia de banco sin cortar las voces anteriores.</span>
+        </div>
+
+        <div class="hero-stat">
+          <strong>1 App</strong>
+          <span>Descarga una vez y desbloquea FULL desde Dingloft.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="split">
+        <div class="reveal">
+          <div class="section-kicker">Motion-X overview</div>
+          <h2>Made for control.<br><span class="subtle">Built for musicians.</span></h2>
+          <p>
+            Inspirado en un flujo de trabajo de performance moderno, Motion-X concentra capas, cambios
+            fluidos, expresión y control macro en una interfaz clara. La idea no es tener una “demo falsa”,
+            sino una herramienta real que puedas descargar, tocar y desbloquear cuando estés listo.
+          </p>
+
+          <div class="cta-inline">
+            <button class="btn btn-secondary" type="button" data-action="download-motion-x">Descargar versión FREE</button>
+            <button class="btn btn-secondary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">Comprar Motion-X FULL</button>
+          </div>
+        </div>
+
+        <div class="plugin-panel reveal">
+          <img src="img/motion-x-preview.png" alt="Interfaz de Motion-X Engine">
+        </div>
+      </div>
+    </section>
+
+    <section class="feature-area">
+      <div class="feature-head reveal">
+        <div>
+          <div class="section-kicker">Core features</div>
+          <h2>Performance, simplified.</h2>
+        </div>
+        <p>
+          Las funciones importantes de Motion-X están puestas al frente para tocar, no para perder tiempo navegando menús.
+        </p>
+      </div>
+
+      <div class="grid">
+        <article class="card accent reveal">
+          <div class="section-kicker">Live Banks</div>
+          <h3>Change sounds.<br>Keep the performance.</h3>
+          <p>
+            Las notas anteriores pueden terminar de forma natural mientras las nuevas notas ya responden
+            al banco siguiente. Cambias de sonido sin sentir un corte artificial.
+          </p>
+
+          <div class="mini-banks">
+            <div class="mini-bank"><b>01</b><span>Piano + Atmosphere</span></div>
+            <div class="mini-bank"><b>02</b><span>Warm Worship</span></div>
+            <div class="mini-bank"><b>03</b><span>Grand Piano</span></div>
+            <div class="mini-bank"><b>04</b><span>Strings</span></div>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="section-kicker">Super Knob</div>
+          <h3>One macro.<br>Multiple moves.</h3>
+          <p>
+            Controla cutoff, reverb, pan, level y otros destinos compatibles desde un solo macro pensado
+            para movimiento real durante la interpretación.
+          </p>
+
+          <div class="knob-visual" aria-hidden="true"></div>
+        </article>
+
+        <article class="card red wide reveal">
+          <div class="section-kicker">16 Parts</div>
+          <h3>More layers.<br>Still readable.</h3>
+          <p>
+            Construye performances con varias partes, texturas y combinaciones manteniendo una lectura clara
+            del instrumento. Todo sigue sintiéndose musical, no saturado.
+          </p>
+
+          <div class="parts">
+            <div class="part"><b>01</b>Part</div>
+            <div class="part"><b>02</b>Part</div>
+            <div class="part"><b>03</b>Part</div>
+            <div class="part"><b>04</b>Part</div>
+            <div class="part"><b>05</b>Part</div>
+            <div class="part"><b>06</b>Part</div>
+            <div class="part"><b>07</b>Part</div>
+            <div class="part"><b>08</b>Part</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="access">
+      <div class="reveal">
+        <div class="section-kicker">One app · two levels</div>
+        <h2>Try Motion-X.<br><span class="subtle">Unlock when ready.</span></h2>
+        <p>
+          Motion-X se instala una sola vez. Descargas la app, pruebas sus capacidades FREE durante 10 minutos
+          y, si quieres todo el sistema, desbloqueas FULL desde Dingloft sin reinstalar otra aplicación.
+        </p>
+      </div>
+
+      <div class="access-grid">
+        <article class="access-card reveal">
+          <div class="price-row">
+            <div>
+              <div class="section-kicker">Included</div>
+              <h3>FREE</h3>
+              <span class="trial">10 min trial</span>
+            </div>
+            <div class="price">
+              <strong>US$0</strong>
+              <span>Descarga inmediata</span>
+            </div>
+          </div>
+
+          <ul class="checklist">
+            <li>Selección limitada de sonidos.</li>
+            <li>Motor de audio nativo.</li>
+            <li>MIDI, Pitch Bend, Modulation y Sustain.</li>
+            <li>2–4 Parts como máximo.</li>
+            <li>Super Knob con destinos limitados.</li>
+          </ul>
+
+          <div class="access-actions">
+            <button class="btn btn-secondary" type="button" data-action="download-motion-x">Descargar gratis</button>
+          </div>
+        </article>
+
+        <article class="access-card full reveal">
+          <div class="price-row">
+            <div>
+              <div class="section-kicker">Complete system</div>
+              <h3>FULL</h3>
+              <span class="trial">Oferta de apertura</span>
+            </div>
+            <div class="price">
+              <strong>US$28</strong>
+              <span>Precio regular previsto · US$60</span>
+            </div>
+          </div>
+
+          <ul class="checklist">
+            <li>Banco completo de sonidos y librería ampliada.</li>
+            <li>16 Parts / Layers completas.</li>
+            <li>Live Banks completos.</li>
+            <li>Super Knob completo y Common Assign.</li>
+            <li>Filtros, envelopes, FX, reverb, delay, chorus y mixer.</li>
+            <li>Standalone, VST3 y AU.</li>
+          </ul>
+
+          <div class="access-actions">
+            <button class="btn btn-primary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">
+              Desbloquear FULL · US$28
+            </button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="final-cta reveal">
+      <div class="section-kicker">Motion-X</div>
+      <h2>Sound in Motion.</h2>
+      <p>
+        Descarga Motion-X, pruébalo en tu setup y desbloquea FULL cuando quieras llevar toda la experiencia a tu estudio o escenario.
       </p>
-
       <div class="hero-actions">
-        <button class="btn btn-primary" type="button" data-action="download-motion-x">
-          Descargar gratis <span aria-hidden="true">↓</span>
-        </button>
-        <button class="btn btn-secondary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">
-          Desbloquear FULL · US$28
-        </button>
+        <button class="btn btn-primary" type="button" data-action="download-motion-x">Descargar gratis</button>
+        <button class="btn btn-secondary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">Comprar Motion-X FULL</button>
       </div>
+    </section>
 
-      <div class="hero-meta">
-        <span>macOS</span>
-        <span>Standalone</span>
-        <span>VST3</span>
-        <span>AU</span>
-        <span>10 min trial</span>
-      </div>
-    </div>
-  </section>
+    <footer>
+      <span>© Dingloft · Motion-X</span>
+      <span>Software · Multitracks · Cuenta</span>
+    </footer>
+  </main>
 
-  <!-- STRIP -->
-  <section class="feature-strip reveal" aria-label="Motion-X highlights">
-    <article class="strip-item">
-      <div class="strip-icon">16</div>
-      <strong>16 Parts</strong>
-      <p>Capas independientes pensadas para performances complejas y controladas.</p>
-    </article>
-    <article class="strip-item">
-      <div class="strip-icon">↔</div>
-      <strong>Live Banks</strong>
-      <p>Cambia de banco sin cortar la interpretación ni los releases anteriores.</p>
-    </article>
-    <article class="strip-item">
-      <div class="strip-icon">●</div>
-      <strong>Super Knob</strong>
-      <p>Un macro para mover múltiples parámetros compatibles a la vez.</p>
-    </article>
-  </section>
+  <script>
+    (() => {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const reveal = document.querySelectorAll('.reveal');
 
-  <!-- INTRO -->
-  <section class="intro">
-    <div class="reveal">
-      <div class="kicker">Performance instrument</div>
-      <h2>Built for motion.<br><span>Made to keep playing.</span></h2>
-      <p>
-        Motion-X toma inspiración del enfoque de performance del MONTAGE M8X y lo lleva a un instrumento
-        de software independiente dentro del ecosistema Dingloft. Control rápido, capas, expresión y cambios
-        pensados para seguir tocando sin romper el flujo.
-      </p>
+      if (!reduced && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: .14 });
 
-      <div class="tiny-row">
-        <div class="tiny">
-          <strong>Native MIDI</strong>
-          <span>Respuesta directa</span>
-        </div>
-        <div class="tiny">
-          <strong>Expression</strong>
-          <span>Pitch · Mod · Sustain</span>
-        </div>
-        <div class="tiny">
-          <strong>FX + Mixer</strong>
-          <span>Control integrado</span>
-        </div>
-      </div>
-    </div>
+        reveal.forEach((el) => io.observe(el));
+      } else {
+        reveal.forEach((el) => el.classList.add('in'));
+      }
 
-    <div class="plugin-showcase reveal">
-      <img src="img/motion-x-preview.png" alt="Interfaz de Motion-X Engine">
-    </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section class="features">
-    <div class="features-head reveal">
-      <div>
-        <div class="kicker">Key features</div>
-        <h2>Performance first.</h2>
-      </div>
-      <p>
-        No se trata de llenar la pantalla de funciones. Cada control importante de Motion-X está pensado
-        para ser útil mientras estás tocando.
-      </p>
-    </div>
-
-    <div class="feature-grid">
-      <article class="feature-card accent reveal">
-        <div class="kicker">Live Banks</div>
-        <h3>Change sounds. Keep the performance.</h3>
-        <p>
-          Las notas anteriores continúan su release natural mientras las nuevas notas responden al nuevo banco.
-        </p>
-
-        <div class="mini-ui">
-          <div class="mini-bank"><b>01</b><span>Piano + Atmosphere</span></div>
-          <div class="mini-bank"><b>02</b><span>Warm Worship</span></div>
-          <div class="mini-bank"><b>03</b><span>Grand Piano</span></div>
-          <div class="mini-bank"><b>04</b><span>Strings</span></div>
-        </div>
-      </article>
-
-      <article class="feature-card reveal">
-        <div class="kicker">Super Knob</div>
-        <h3>One macro.<br>Multiple destinations.</h3>
-        <p>Cutoff, reverb, pan, level y otros destinos compatibles desde un solo control.</p>
-        <div class="superknob" aria-hidden="true"></div>
-      </article>
-
-      <article class="feature-card red full-span reveal">
-        <div class="kicker">16 Parts</div>
-        <h3>Layered without losing control.</h3>
-        <p>
-          Construye performances con múltiples partes, sonidos y capas manteniendo una lectura clara del instrumento.
-        </p>
-        <div class="parts-row">
-          <div class="part-chip"><b>01</b>Part</div>
-          <div class="part-chip"><b>02</b>Part</div>
-          <div class="part-chip"><b>03</b>Part</div>
-          <div class="part-chip"><b>04</b>Part</div>
-          <div class="part-chip"><b>05</b>Part</div>
-          <div class="part-chip"><b>06</b>Part</div>
-          <div class="part-chip"><b>07</b>Part</div>
-          <div class="part-chip"><b>08</b>Part</div>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- FREE VS FULL -->
-  <section class="access">
-    <div class="access-head reveal">
-      <div class="kicker">One app · two levels</div>
-      <h2>Try Motion-X.<br>Unlock when ready.</h2>
-      <p>
-        Descargas una sola app. Tienes 10 minutos de prueba con las capacidades FREE disponibles.
-        Las funciones FULL permanecen bloqueadas hasta activar la licencia.
-      </p>
-    </div>
-
-    <div class="access-grid">
-      <article class="access-card reveal">
-        <div class="price-row">
-          <div>
-            <div class="kicker">Included</div>
-            <h3>FREE</h3>
-            <span class="trial">10 min trial</span>
-          </div>
-          <div class="price">
-            <strong>US$0</strong>
-            <span>Download</span>
-          </div>
-        </div>
-
-        <ul class="checklist">
-          <li>Selección limitada de sonidos.</li>
-          <li>Motor de audio nativo.</li>
-          <li>MIDI y expresión.</li>
-          <li>2–4 Parts como máximo.</li>
-          <li>Super Knob con destinos limitados.</li>
-        </ul>
-
-        <div class="access-actions">
-          <button class="btn btn-secondary" type="button" data-action="download-motion-x">Descargar gratis</button>
-        </div>
-      </article>
-
-      <article class="access-card full reveal">
-        <div class="price-row">
-          <div>
-            <div class="kicker">Complete system</div>
-            <h3>FULL</h3>
-            <span class="trial">Oferta de apertura</span>
-          </div>
-          <div class="price">
-            <strong>US$28</strong>
-            <span>Precio regular previsto · US$60</span>
-          </div>
-        </div>
-
-        <ul class="checklist">
-          <li>Banco completo de sonidos.</li>
-          <li>16 Parts / Layers completas.</li>
-          <li>Live Banks completos.</li>
-          <li>Super Knob completo + Common Assign.</li>
-          <li>Filtros, envelopes, FX, reverb, delay, chorus y mixer.</li>
-          <li>Standalone, VST3 y AU.</li>
-        </ul>
-
-        <div class="access-actions">
-          <button class="btn btn-primary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">
-            Desbloquear FULL · US$28
-          </button>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- FINAL CTA -->
-  <section class="final-cta reveal">
-    <div class="kicker">Motion-X</div>
-    <h2>Sound in Motion.</h2>
-    <p>
-      Descarga el instrumento, pruébalo y desbloquea FULL cuando quieras llevar toda la experiencia a tu setup.
-    </p>
-    <div class="hero-actions">
-      <button class="btn btn-primary" type="button" data-action="download-motion-x">Descargar gratis</button>
-      <button class="btn btn-secondary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">
-        Comprar FULL
-      </button>
-    </div>
-  </section>
-
-  <footer>
-    <span>© Dingloft · Motion-X</span>
-    <span>Software · Multitracks · Cuenta</span>
-  </footer>
-
-</main>
-
-<script>
-(() => {
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const reveal = document.querySelectorAll('.reveal');
-
-  if (!reduced && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-          io.unobserve(entry.target);
-        }
+      document.querySelectorAll('[data-action="download-motion-x"]').forEach((button) => {
+        button.addEventListener('click', () => {
+          console.log('Motion-X download hook');
+        });
       });
-    }, { threshold: .15 });
-    reveal.forEach(el => io.observe(el));
-  } else {
-    reveal.forEach(el => el.classList.add('in'));
-  }
 
-  document.querySelectorAll('[data-action="download-motion-x"]').forEach(button => {
-    button.addEventListener('click', () => {
-      console.log('Motion-X download hook');
-    });
-  });
-
-  document.querySelectorAll('[data-action="buy-motion-x"]').forEach(button => {
-    button.addEventListener('click', e => {
-      console.log('Motion-X checkout hook:', e.currentTarget.dataset.productId);
-    });
-  });
-})();
-</script>
+      document.querySelectorAll('[data-action="buy-motion-x"]').forEach((button) => {
+        button.addEventListener('click', (e) => {
+          console.log('Motion-X checkout hook:', e.currentTarget.dataset.productId);
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
