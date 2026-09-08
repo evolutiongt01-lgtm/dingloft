@@ -664,7 +664,8 @@ body{
   }
 }
 
-@media(max-width:760px){
+@supports not (height:100dvh){
+  @media(max-width:760px){
     .sequence{height:230vh}
     .pin{
       height:100vh;
@@ -1057,6 +1058,114 @@ body{
   }
 }
 
+
+/* =========================================================
+   MOBILE RESET — composition rebuilt for iPhone
+   ========================================================= */
+@media (max-width:760px){
+
+  .intro{
+    top:82px !important;
+    width:calc(100% - 28px) !important;
+  }
+
+  .intro h1{
+    font-size:clamp(2rem,8.9vw,3rem) !important;
+    line-height:.95 !important;
+    letter-spacing:-.055em !important;
+  }
+
+  .intro p{
+    width:min(92%,620px) !important;
+    margin-top:12px !important;
+    font-size:.68rem !important;
+    line-height:1.48 !important;
+  }
+
+  .center-anchor{
+    top:45.5% !important;
+    left:50% !important;
+    width:100vw !important;
+    transform:translate(-50%,-50%) !important;
+    padding:0 14px !important;
+  }
+
+  .big-word-track{
+    width:100% !important;
+    text-align:center !important;
+    transform-origin:center center !important;
+  }
+
+  .big-word{
+    display:block !important;
+    width:100% !important;
+    margin:0 auto !important;
+    white-space:nowrap !important;
+    text-align:center !important;
+    font-size:clamp(2.75rem,10.8vw,4rem) !important;
+    line-height:.88 !important;
+    letter-spacing:-.07em !important;
+  }
+
+  .center-install{
+    display:block !important;
+    margin:14px auto 0 !important;
+    min-height:43px !important;
+    padding:0 16px !important;
+    border-radius:13px !important;
+    font-size:.64rem !important;
+    transform:none !important;
+  }
+
+  /* Phone begins immediately under the button, not half a screen lower */
+  .phone-wrap{
+    top:49% !important;
+    width:224px !important;
+    height:410px !important;
+  }
+
+  .orbit{
+    top:62% !important;
+    width:690px !important;
+    opacity:.72 !important;
+  }
+
+  .orbit-glow{
+    top:70% !important;
+    width:390px !important;
+    height:220px !important;
+  }
+
+  /* richer but still clean background */
+  .pin{
+    background:
+      radial-gradient(82% 34% at 50% 20%, rgba(71,183,228,.13), transparent 66%),
+      radial-gradient(68% 42% at 18% 72%, rgba(58,180,220,.10), transparent 70%),
+      radial-gradient(74% 44% at 92% 58%, rgba(119,103,220,.10), transparent 72%),
+      linear-gradient(180deg,#f8fcfe 0%,#edf7fb 54%,#f5f3fb 100%) !important;
+  }
+
+  .pin::before{
+    left:-28% !important;
+    bottom:8% !important;
+    width:86vw !important;
+    background:rgba(57,181,222,.065) !important;
+  }
+
+  .pin::after{
+    right:-32% !important;
+    top:31% !important;
+    width:82vw !important;
+    background:rgba(118,102,220,.055) !important;
+  }
+}
+
+
+/* Global Dingloft navbar replaces this local header only on iPad + desktop */
+@media (min-width:768px){
+  body > .header{display:none !important;}
+}
+
 </style>
 </head>
 
@@ -1272,23 +1381,35 @@ body{
   const centerAnchor=document.querySelector('.center-anchor');
 
   const docBody=document.body;
-  let viewportH=window.innerHeight;
+  let viewportH=document.documentElement.clientHeight;
+  let stableViewportW=window.innerWidth;
   let sequenceTop=0;
   let sequenceDistance=1;
   let mobileMetrics={
-    phoneHeight:phoneWrap?.offsetHeight||402,
+    phoneHeight:phoneWrap?.offsetHeight||410,
     anchorHeight:centerAnchor?.offsetHeight||110,
-    wordHeight:wordTrack?.offsetHeight||58
+    wordHeight:wordTrack?.offsetHeight||58,
+    wordTravel:Math.max(150,Math.round(document.documentElement.clientHeight*.235))
   };
 
-  function refreshMetrics(){
-    viewportH=window.innerHeight;
+  function refreshMetrics(force=false){
+    const nextW=window.innerWidth;
+
+    // Safari changes viewport HEIGHT while its bars hide/show.
+    // Ignore that. Recalculate only on a genuine width/orientation change.
+    if(!force && Math.abs(nextW-stableViewportW)<20) return;
+
+    stableViewportW=nextW;
+    viewportH=document.documentElement.clientHeight;
+
     const rect=sequence.getBoundingClientRect();
     sequenceTop=window.scrollY+rect.top;
-    sequenceDistance=Math.max(1,sequence.offsetHeight-window.innerHeight);
-    mobileMetrics.phoneHeight=phoneWrap?.offsetHeight||402;
+    sequenceDistance=Math.max(1,sequence.offsetHeight-viewportH);
+
+    mobileMetrics.phoneHeight=phoneWrap?.offsetHeight||410;
     mobileMetrics.anchorHeight=centerAnchor?.offsetHeight||110;
     mobileMetrics.wordHeight=wordTrack?.offsetHeight||58;
+    mobileMetrics.wordTravel=Math.max(150,Math.round(viewportH*.235));
   }
 
   function easeInOutCubic(t){
@@ -1364,61 +1485,49 @@ body{
     }
 
     /*
-      MOBILE: preserve existing behavior.
+      MOBILE:
+      stable viewport math for iPhone Safari.
+      No layout reads, no dynamic-toolbar height dependence per frame.
     */
-    let phoneY;
-    if(p < .18){
-      phoneY=map(p,0,.18,55,35);
-    }else if(p < .60){
-      phoneY=map(p,.18,.60,35,-13);
-    }else{
-      phoneY=-13;
-    }
+    const phoneY =
+      p < .12 ? map(p,0,.12,28,24) :
+      p < .62 ? map(p,.12,.62,24,-11) :
+      map(p,.62,1,-11,-15);
 
-    const phoneScale=
-      p < .60 ? map(p,0,.60,.95,.99) : .99;
+    const phoneScale =
+      p < .62 ? map(p,0,.62,.965,1) : map(p,.62,1,1,.99);
 
-    const phoneBaseCenter=.47*vh;
-    const finalPhoneCenter=phoneBaseCenter+(-.13*vh);
-    const finalPhoneHeight=mobileMetrics.phoneHeight*.99;
-    const finalPhoneBottom=finalPhoneCenter+finalPhoneHeight/2;
+    // DINGLOFT APP goes DOWN while phone goes UP.
+    const wp =
+      p < .10 ? 0 :
+      p > .80 ? 1 :
+      (p-.10)/.70;
 
-    const anchorBaseCenter=.49*vh;
-    const anchorHeight=mobileMetrics.anchorHeight;
-    const anchorTop=anchorBaseCenter-anchorHeight/2;
-    const wordHeight=mobileMetrics.wordHeight;
-    const baseWordCenter=anchorTop+wordHeight/2;
+    const easedWord=easeInOutCubic(wp);
 
-    const desiredWordCenter=finalPhoneBottom+14+wordHeight/2;
-    const finalWordY=Math.max(0,desiredWordCenter-baseWordCenter);
+    // Clear, controlled downward travel.
+    const wordY=mobileMetrics.wordTravel * easedWord;
+    const wordScale=1-(.010*wp);
 
-    const wp=
-      p<=.10?0:
-      p>=.82?1:
-      (p-.10)/(.82-.10);
-
-    const wordY=finalWordY*easeInOutCubic(wp);
-    const wordScale=1-(.012*wp);
-
-    const buttonO=
-      p<.20?1:
-      p<.38?map(p,.20,.38,1,0):
+    const buttonO =
+      p < .22 ? 1 :
+      p < .39 ? map(p,.22,.39,1,0) :
       0;
 
-    const introO=
-      p<.10?1:
-      p<.27?map(p,.10,.27,1,0):
+    const introO =
+      p < .09 ? 1 :
+      p < .25 ? map(p,.09,.25,1,0) :
       0;
 
-    const introY=
-      p<.10?0:
-      p<.27?map(p,.10,.27,0,-72):
-      -72;
+    const introY =
+      p < .09 ? 0 :
+      p < .25 ? map(p,.09,.25,0,-66) :
+      -66;
 
-    phoneWrap.style.transform=
+    phoneWrap.style.transform =
       `translate3d(-50%,calc(-50% + ${phoneY.toFixed(2)}vh),0) scale(${phoneScale.toFixed(4)})`;
 
-    wordTrack.style.transform=
+    wordTrack.style.transform =
       `translate3d(0,${wordY.toFixed(1)}px,0) scale(${wordScale.toFixed(4)})`;
 
     heroInstall.style.opacity=buttonO.toFixed(4);
@@ -1427,49 +1536,21 @@ body{
     sequence.style.setProperty('--intro-y',`${introY.toFixed(1)}px`);
   }
 
-  let rafId=0;
-  let targetProgress=0;
-  let currentProgress=0;
+  let rafPending=false;
   let resizeTimer=null;
   let scrollTimer=null;
 
-  const isMobileNow=()=>window.matchMedia('(max-width:760px)').matches;
-
-  function computeTarget(){
+  function update(){
     const travelled=Math.min(
       sequenceDistance,
       Math.max(0,window.scrollY-sequenceTop)
     );
-    targetProgress=travelled/sequenceDistance;
-  }
 
-  function animate(){
-    const mobile=isMobileNow();
-
-    // iPhone Safari benefits from visual interpolation.
-    // Desktop stays nearly direct.
-    const ease=mobile ? 0.16 : 0.32;
-    currentProgress += (targetProgress-currentProgress)*ease;
-
-    if(Math.abs(targetProgress-currentProgress) < 0.0007){
-      currentProgress=targetProgress;
-    }
-
-    paint(currentProgress);
-
-    if(
-      Math.abs(targetProgress-currentProgress) > 0.0007 ||
-      docBody.classList.contains('is-scrolling')
-    ){
-      rafId=requestAnimationFrame(animate);
-    }else{
-      rafId=0;
-    }
+    // Direct scroll-linked progress; no delayed lerp / rubber-band feel.
+    paint(travelled/sequenceDistance);
   }
 
   function requestUpdate(){
-    computeTarget();
-
     if(!docBody.classList.contains('is-scrolling')){
       docBody.classList.add('is-scrolling');
     }
@@ -1477,42 +1558,42 @@ body{
     clearTimeout(scrollTimer);
     scrollTimer=setTimeout(()=>{
       docBody.classList.remove('is-scrolling');
-      if(!rafId){
-        rafId=requestAnimationFrame(animate);
-      }
-    },90);
+    },100);
 
-    if(!rafId){
-      rafId=requestAnimationFrame(animate);
-    }
+    if(rafPending) return;
+    rafPending=true;
+
+    requestAnimationFrame(()=>{
+      update();
+      rafPending=false;
+    });
   }
 
   window.addEventListener('scroll',requestUpdate,{passive:true});
 
+  // Ignore Safari's vertical toolbar resize. Only react if WIDTH really changes.
   window.addEventListener('resize',()=>{
     clearTimeout(resizeTimer);
     resizeTimer=setTimeout(()=>{
-      refreshMetrics();
-      computeTarget();
-      currentProgress=targetProgress;
-      paint(currentProgress);
-    },120);
+      const oldW=stableViewportW;
+      refreshMetrics(false);
+      if(Math.abs(window.innerWidth-oldW)>=20){
+        update();
+      }
+    },160);
   },{passive:true});
 
   window.addEventListener('orientationchange',()=>{
     setTimeout(()=>{
-      refreshMetrics();
-      computeTarget();
-      currentProgress=targetProgress;
-      paint(currentProgress);
-    },220);
+      refreshMetrics(true);
+      update();
+    },260);
   },{passive:true});
 
-  refreshMetrics();
-  computeTarget();
-  currentProgress=targetProgress;
-  paint(currentProgress);
+  refreshMetrics(true);
+  update();
 })();</script>
 
+  <script src="dingloft-global-nav.js" defer></script>
 </body>
 </html>
