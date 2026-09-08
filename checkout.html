@@ -556,6 +556,34 @@
       font-size:17px;
       font-weight:760;
     }
+
+    .solidarity-thanks{
+      margin-top:14px;
+      overflow:hidden;
+      border-radius:15px;
+      border:1px solid #ececea;
+      background:#fff;
+      opacity:0;
+      transform:translateY(8px) scale(.985);
+      transition:opacity .32s ease,transform .32s cubic-bezier(.22,.8,.32,1);
+    }
+    .solidarity-thanks.show{
+      opacity:1;
+      transform:translateY(0) scale(1);
+    }
+    .solidarity-thanks img{
+      display:block;
+      width:100%;
+      height:auto;
+      object-fit:contain;
+    }
+    @media (prefers-reduced-motion: reduce){
+      .solidarity-thanks{
+        transition:none;
+        transform:none;
+      }
+    }
+
     .solidarity-footer{
       display:flex;
       align-items:center;
@@ -917,6 +945,10 @@
                   </div>
                 </div>
 
+                <div class="solidarity-thanks" id="solidarity-thanks" aria-live="polite" hidden>
+                  <img src="img/nenes.png" alt="Gracias por tu apoyo">
+                </div>
+
                 <div class="solidarity-footer"><span>Opcional</span></div>
               </section>
 
@@ -1062,6 +1094,26 @@ function payableTotal(){
   return Math.round((base+donationUsd)*100)/100;
 }
 
+
+function updateSolidarityThanks(){
+  const box=$("#solidarity-thanks");
+  if(!box)return;
+
+  const show=Number(donationUsd||0)>0;
+
+  if(show){
+    box.hidden=false;
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>box.classList.add("show"));
+    });
+  }else{
+    box.classList.remove("show");
+    window.setTimeout(()=>{
+      if(Number(donationUsd||0)<=0)box.hidden=true;
+    },320);
+  }
+}
+
 function paintDonation(){
   const base=Number(currentQuote?.totalUsd ?? currentProduct?.priceUsd ?? 0);
   const total=Math.round((base+donationUsd)*100)/100;
@@ -1084,6 +1136,8 @@ function paintDonation(){
   if(customTotal)customTotal.textContent=money(
     donationMode==="custom" ? donationUsd : clampDonation($("#donation-custom")?.value||0)
   );
+
+  updateSolidarityThanks();
 }
 
 function updateDonationMode(mode){
