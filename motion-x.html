@@ -58,14 +58,14 @@
 
     .hero-title-image {
       display: block;
-      width: min(760px, 88%);
-      max-height: 220px;
-      margin: 0 auto;
-      object-fit: contain;
-      object-position: center;
+      width: min(900px, 94%);
+      height: clamp(190px, 20vw, 285px);
+      margin: -18px auto -8px;
+      object-fit: cover;
+      object-position: center 51%;
       filter:
-        drop-shadow(0 18px 44px rgba(0,0,0,.34))
-        drop-shadow(0 0 28px rgba(var(--mx-cyan-rgb), .055));
+        drop-shadow(0 22px 54px rgba(0,0,0,.38))
+        drop-shadow(0 0 34px rgba(var(--mx-cyan-rgb), .07));
       user-select: none;
       -webkit-user-drag: none;
     }
@@ -225,7 +225,7 @@
     .hero-top {
       text-align: center;
       max-width: 940px;
-      margin: 0 auto 34px;
+      margin: 0 auto 22px;
       animation: heroIn .85s cubic-bezier(.22,1,.36,1) both;
     }
 
@@ -469,10 +469,29 @@
     }
     .callout.right::before { right: calc(100% + var(--line) + 6px); }
 
-    .c-live { left: 0; top: 37%; }
-    .c-parts { left: 8px; top: 67%; }
-    .c-knob { right: 0; top: 26%; }
-    .c-expression { right: 8px; top: 63%; }
+    .c-live {
+      left: 0;
+      top: 82%;
+      --line: 390px;
+    }
+
+    .c-parts {
+      left: 8px;
+      top: 64%;
+      --line: 118px;
+    }
+
+    .c-knob {
+      right: 0;
+      top: 38%;
+      --line: 112px;
+    }
+
+    .c-expression {
+      right: 8px;
+      top: 66%;
+      --line: 112px;
+    }
 
     .stage-badge {
       position: absolute;
@@ -556,6 +575,38 @@
     .performance-copy strong {
       color: #e3e8e9;
       font-weight: 600;
+    }
+
+
+    .design-origin {
+      margin-top: 34px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 13px;
+      border: 1px solid rgba(255,255,255,.075);
+      border-radius: 999px;
+      background: rgba(255,255,255,.018);
+      color: #7f8a8f;
+      font-size: 9px;
+      line-height: 1.4;
+      letter-spacing: .095em;
+      text-transform: uppercase;
+    }
+
+    .design-origin::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      flex: 0 0 5px;
+      border-radius: 50%;
+      background: var(--mx-cyan);
+      box-shadow: 0 0 11px rgba(var(--mx-cyan-rgb), .45);
+    }
+
+    .design-origin strong {
+      color: #cbd2d5;
+      font-weight: 650;
     }
 
     .bank-demo {
@@ -781,9 +832,25 @@
     }
 
     @media (max-width: 560px) {
+
       .hero-title-image {
-        width: min(94%, 620px);
-        max-height: 150px;
+        width: 100%;
+        height: 154px;
+        margin: -8px auto -2px;
+      }
+
+      .design-origin {
+        width: 100%;
+        border-radius: 14px;
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      .hero-title-image {
+        width: min(96%, 720px);
+        height: 180px;
+        margin: -12px auto -5px;
+        object-position: center 51%;
       }
       .hero-copy {
         font-size: 13px;
@@ -929,25 +996,25 @@
           <div class="callout left c-live">
             <strong>Live Banks</strong>
             Seamless transitions
-            <small>Cambia de banco sin cortar la interpretación.</small>
+            <small>Las voces anteriores terminan de forma natural.</small>
           </div>
 
           <div class="callout left c-parts">
             <strong>16 Parts</strong>
             Layered performance
-            <small>Capas y partes pensadas para tocar en vivo.</small>
+            <small>Capas independientes dentro de una sola interpretación.</small>
           </div>
 
           <div class="callout right c-knob">
             <strong>Super Knob</strong>
             Motion macro
-            <small>Control simultáneo de parámetros compatibles.</small>
+            <small>Un macro para mover varios parámetros a la vez.</small>
           </div>
 
           <div class="callout right c-expression">
-            <strong>Expression</strong>
-            Play with movement
-            <small>Pitch Bend · Modulation · Sustain.</small>
+            <strong>Performance Controls</strong>
+            Octave · Transpose
+            <small>Ajustes rápidos de interpretación y registro.</small>
           </div>
 
           <div class="product-frame" id="productFrame">
@@ -988,6 +1055,10 @@
               El resultado es una transición musical: sales de un piano con pad, entras a strings o synths,
               y la interpretación sigue respirando.
             </p>
+            <div class="design-origin">
+              <span>Inspirado en el enfoque de performance del <strong>MONTAGE M8X</strong> · Motion-X es un producto independiente.</span>
+            </div>
+
           </div>
 
           <div class="bank-demo reveal" aria-label="Demostración conceptual de Live Banks">
