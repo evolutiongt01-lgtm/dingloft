@@ -10,16 +10,10 @@
   <style>
     :root{
       --bg:#0b0b0b;
-      --bg-soft:#101010;
       --panel:#111111;
-      --panel-2:#171717;
-      --line:rgba(255,255,255,.09);
       --text:#f5f5f5;
       --muted:#b7b7b7;
-      --white-soft:#efefef;
-      --accent:#ffffff;
       --max:1440px;
-      --radius:28px;
       --shadow:0 28px 80px rgba(0,0,0,.42);
     }
 
@@ -49,7 +43,6 @@
       overflow:hidden;
       padding:20px 18px 26px;
       background:#090909;
-      border-radius:0;
       box-shadow:var(--shadow);
       min-height:980px;
     }
@@ -173,13 +166,13 @@
       position:absolute;
       left:18px;
       top:18px;
-      width:330px;
-      height:328px;
+      width:268px;
+      height:232px;
       border-radius:12px;
       background:#f4f4f4;
       color:#111;
       z-index:1;
-      padding:22px 22px 16px;
+      padding:18px 18px 14px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
@@ -191,28 +184,28 @@
       align-items:flex-start;
       justify-content:space-between;
       gap:12px;
-      font-size:14px;
+      font-size:13px;
       color:#272727;
     }
 
-    .left-white-panel .dingloft-badge{
-      font-size:22px;
-      font-weight:900;
-      line-height:1;
-      letter-spacing:-.05em;
-      text-transform:uppercase;
+    .panel-app-logo{
+      width:160px;
+      max-width:100%;
+      height:auto;
+      object-fit:contain;
     }
 
     .left-white-panel .mini-copy{
       color:#222;
-      font-size:13px;
+      font-size:12px;
+      line-height:1.4;
     }
 
     .left-white-panel .floating-line{
       position:absolute;
-      right:-90px;
-      top:120px;
-      width:190px;
+      right:-72px;
+      top:106px;
+      width:152px;
       height:1.5px;
       background:#6b6b6b;
       transform:rotate(-12deg);
@@ -301,8 +294,8 @@
 
     .imac{
       left:50%;
-      top:58px;
-      width:min(56vw, 615px);
+      top:22px;
+      width:min(54vw, 590px);
       transform:translateX(-50%);
       z-index:2;
     }
@@ -319,7 +312,7 @@
     }
 
     .ipad{
-      right:44px;
+      right:88px;
       bottom:72px;
       width:min(22vw, 255px);
       z-index:4;
@@ -818,9 +811,14 @@
       .device-stage{
         inset:96px 80px 0 50px;
       }
-      .imac{width:min(58vw, 580px)}
+      .left-white-panel{
+        width:236px;
+        height:208px;
+      }
+      .panel-app-logo{width:138px}
+      .imac{width:min(58vw, 560px); top:12px;}
       .macbook{width:min(28vw, 290px); left:6px;}
-      .ipad{width:min(24vw, 230px); right:18px;}
+      .ipad{width:min(24vw, 220px); right:52px;}
       .trio,
       .feature-grid,
       .access-grid{
@@ -843,13 +841,12 @@
       }
       .brand{justify-self:end}
       .nav-links{gap:16px;font-size:13px}
-      .hero-board{
-        min-height:760px;
-      }
+      .hero-board{min-height:760px}
       .left-white-panel{
-        width:250px;
-        height:250px;
+        width:220px;
+        height:190px;
       }
+      .panel-app-logo{width:126px}
       .big-m{
         left:150px;
         top:24px;
@@ -859,8 +856,8 @@
         inset:110px 32px 0 24px;
       }
       .imac{
-        top:130px;
-        width:min(82vw, 520px);
+        top:96px;
+        width:min(82vw, 500px);
       }
       .macbook{
         left:0;
@@ -868,19 +865,13 @@
         width:min(34vw, 260px);
       }
       .ipad{
-        right:0;
+        right:22px;
         bottom:126px;
-        width:min(28vw, 200px);
+        width:min(28vw, 190px);
       }
-      .vertical-title .word{
-        font-size:74px;
-      }
-      .hero-lower{
-        grid-template-columns:1fr;
-      }
-      .hero-stats{
-        grid-template-columns:1fr 1fr;
-      }
+      .vertical-title .word{font-size:74px}
+      .hero-lower{grid-template-columns:1fr}
+      .hero-stats{grid-template-columns:1fr 1fr}
       .trio,
       .feature-grid,
       .access-grid{
@@ -890,17 +881,13 @@
 
     @media (max-width:700px){
       .page{padding:12px 10px 56px}
-      .hero{
-        padding:14px 12px 18px;
-      }
+      .hero{padding:14px 12px 18px}
       .nav{
         grid-template-columns:1fr auto;
         min-height:58px;
         padding:0 6px;
       }
-      .nav-links{
-        display:none;
-      }
+      .nav-links{display:none}
       .brand{
         justify-self:start;
         font-size:17px;
@@ -911,12 +898,11 @@
         top:auto;
         width:100%;
         height:auto;
-        min-height:162px;
+        min-height:148px;
         margin:12px 0 0;
       }
-      .hero-board{
-        min-height:660px;
-      }
+      .panel-app-logo{width:150px}
+      .hero-board{min-height:660px}
       .big-m{
         left:20px;
         top:196px;
@@ -927,18 +913,14 @@
         top:14px;
         bottom:auto;
       }
-      .vertical-title .word{
-        font-size:42px;
-      }
-      .vertical-title .side-notes{
-        display:none;
-      }
+      .vertical-title .word{font-size:42px}
+      .vertical-title .side-notes{display:none}
       .device-stage{
         inset:250px 8px 0 8px;
       }
       .imac{
         width:min(92%, 440px);
-        top:62px;
+        top:44px;
       }
       .macbook{
         width:40%;
@@ -946,40 +928,26 @@
         left:0;
       }
       .ipad{
-        width:28%;
-        right:2px;
+        width:30%;
+        right:16px;
         bottom:130px;
       }
       .hero-copy h1{
         font-size:clamp(40px,10vw,54px);
       }
       .hero-copy p{font-size:14px}
-      .hero-stats{
-        grid-template-columns:1fr;
-      }
+      .hero-stats{grid-template-columns:1fr}
       .hero-tags{gap:8px}
       .trio-card{min-height:320px}
-      .bank-row{
-        grid-template-columns:repeat(2,1fr);
-      }
-      .parts{
-        grid-template-columns:repeat(4,1fr);
-      }
-      .section{
-        padding:68px 4px 0;
-      }
+      .bank-row{grid-template-columns:repeat(2,1fr)}
+      .parts{grid-template-columns:repeat(4,1fr)}
+      .section{padding:68px 4px 0}
     }
 
     @media (max-width:520px){
-      .hero-board{
-        min-height:560px;
-      }
-      .device-stage{
-        inset:232px 0 0 0;
-      }
-      .imac{
-        width:92%;
-      }
+      .hero-board{min-height:560px}
+      .device-stage{inset:232px 0 0 0}
+      .imac{width:92%}
       .macbook{
         width:44%;
         bottom:70px;
@@ -987,10 +955,9 @@
       .ipad{
         width:32%;
         bottom:116px;
+        right:10px;
       }
-      .parts{
-        grid-template-columns:repeat(2,1fr);
-      }
+      .parts{grid-template-columns:repeat(2,1fr)}
       .knob{
         position:relative;
         right:auto;
@@ -1059,7 +1026,7 @@
       <div class="hero-board">
         <div class="left-white-panel">
           <div class="logo-line">
-            <div class="dingloft-badge">DINGLOFT</div>
+            <img class="panel-app-logo" src="img/titlemotion.png" alt="Logo Motion-X">
             <div>Performance</div>
           </div>
           <div class="mini-copy">Advanced Motion Technology</div>
@@ -1089,7 +1056,9 @@
         <div class="hero-copy">
           <h1>Built for Precision.<br>Engineered for Performance.</h1>
           <p>
-            Motion-X se presenta con una dirección visual más editorial: iMac al centro, más pequeña y detrás del MacBook Pro y del iPad para que los tres dispositivos se lean mejor dentro del hero.
+            Motion-X se presenta con una composición más clara: iMac al centro y un poco más arriba,
+            MacBook Pro al frente en el lado izquierdo e iPad más pegado en el lado derecho para que los tres
+            dispositivos se lean mejor dentro del hero.
           </p>
 
           <div class="hero-actions">
@@ -1309,7 +1278,7 @@
 
     <footer>
       <span>© Dingloft · Motion-X</span>
-      <span>Usa en /img/: iMac-Motion.png · MacbookPro.png · iPadmotion.png</span>
+      <span>Usa en /img/: iMac-Motion.png · MacbookPro.png · iPadmotion.png · titlemotion.png</span>
     </footer>
   </main>
 
