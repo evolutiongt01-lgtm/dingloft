@@ -3,18 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#090909">
+  <meta name="theme-color" content="#05070c">
   <title>Motion-X — Dingloft</title>
-  <meta name="description" content="Motion-X en Dingloft. Página de producto con diseño premium, iMac al centro, MacBook Pro e iPad dentro del ecosistema Motion-X.">
+  <meta name="description" content="Motion-X dentro de Dingloft. Instrumento premium con Live Banks, Super Knob, 16 Parts y motor nativo para macOS. Diseño optimizado para desktop, iPad y móvil.">
+  <meta property="og:title" content="Motion-X — Sound in Motion">
+  <meta property="og:description" content="Descarga Motion-X, prueba el modo FREE y desbloquea FULL dentro del ecosistema Dingloft.">
+  <meta property="og:type" content="website">
 
   <style>
     :root{
-      --bg:#0b0b0b;
-      --panel:#111111;
-      --text:#f5f5f5;
-      --muted:#b7b7b7;
-      --max:1440px;
-      --shadow:0 28px 80px rgba(0,0,0,.42);
+      --bg:#05070c;
+      --bg-2:#090d14;
+      --panel:#0c1119cc;
+      --panel-solid:#0d1118;
+      --line:rgba(151,170,255,.14);
+      --line-strong:rgba(168,191,255,.28);
+      --text:#eef4ff;
+      --muted:#a9b4c8;
+      --blue:#7ab2ff;
+      --blue-2:#4f7cff;
+      --cyan:#80d7ff;
+      --soft:#121928;
+      --shadow:0 30px 90px rgba(0,0,0,.42);
+      --radius:28px;
+      --max:1500px;
     }
 
     *{box-sizing:border-box}
@@ -22,29 +34,33 @@
     body{
       margin:0;
       font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
-      background:linear-gradient(180deg,#111 0%, #0a0a0a 100%);
+      background:
+        radial-gradient(circle at 50% -10%, rgba(106,146,255,.08), transparent 30%),
+        linear-gradient(180deg, #07090f 0%, #05070c 100%);
       color:var(--text);
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
     }
-
-    a{color:inherit;text-decoration:none}
     img{display:block;max-width:100%}
+    a{text-decoration:none;color:inherit}
     button{font:inherit}
 
     .page{
       max-width:var(--max);
       margin:0 auto;
-      padding:24px 20px 84px;
+      padding:18px 14px 80px;
     }
 
     .hero{
       position:relative;
+      min-height:1000px;
       overflow:hidden;
-      padding:20px 18px 26px;
-      background:#090909;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.005)),
+        #05070c;
+      border:1px solid rgba(255,255,255,.06);
       box-shadow:var(--shadow);
-      min-height:980px;
+      isolation:isolate;
     }
 
     .hero::before{
@@ -52,1282 +68,766 @@
       position:absolute;
       inset:0;
       background:
-        linear-gradient(180deg, rgba(255,255,255,.02), transparent 16%),
-        radial-gradient(circle at 50% 18%, rgba(255,255,255,.03), transparent 24%);
+        linear-gradient(var(--line), var(--line)) 0 112px/100% 1px no-repeat,
+        linear-gradient(var(--line), var(--line)) 0 272px/100% 1px no-repeat,
+        linear-gradient(var(--line), var(--line)) 0 742px/100% 1px no-repeat,
+        linear-gradient(var(--line), var(--line)) 54px 0/1px 100% no-repeat,
+        linear-gradient(var(--line), var(--line)) calc(100% - 54px) 0/1px 100% no-repeat;
       pointer-events:none;
+      z-index:0;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image:
+        linear-gradient(to right, rgba(126,151,222,.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(126,151,222,.06) 1px, transparent 1px);
+      background-size: 84px 84px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.65), transparent 100%);
+      pointer-events:none;
+      z-index:0;
+      opacity:.5;
+    }
+
+    .hero-glow{
+      position:absolute;
+      inset:80px 12% auto 12%;
+      height:540px;
+      z-index:0;
+      pointer-events:none;
+      filter:blur(2px);
+    }
+
+    .hero-glow::before{
+      content:"";
+      position:absolute;
+      left:50%; top:34px;
+      width:min(58vw, 760px);
+      height:min(58vw, 760px);
+      transform:translateX(-50%);
+      border-radius:50%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(42,70,130,.28) 0 27%, rgba(7,10,16,0) 28% 42%, rgba(164,193,255,.52) 43% 48%, rgba(29,47,85,.25) 49% 60%, rgba(7,10,16,0) 63%),
+        radial-gradient(circle at 50% 50%, rgba(111,157,255,.28), transparent 68%);
+      box-shadow:0 0 110px rgba(90,130,255,.28);
+      opacity:.88;
+    }
+
+    .hero-glow::after{
+      content:"";
+      position:absolute;
+      left:50%; top:130px;
+      width:min(72vw, 980px);
+      height:220px;
+      transform:translateX(-50%) rotate(-8deg);
+      border-radius:999px;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(196,221,255,.78) 18%, rgba(125,171,255,.28) 36%, rgba(255,255,255,.84) 48%, rgba(116,158,255,.3) 67%, rgba(255,255,255,0) 100%);
+      filter:blur(14px);
+      opacity:.9;
     }
 
     .nav{
       position:relative;
-      z-index:6;
-      min-height:72px;
+      z-index:3;
       display:grid;
-      grid-template-columns:1fr auto 1fr;
+      grid-template-columns:auto 1fr auto;
       align-items:center;
-      gap:16px;
-      padding:2px 14px 0;
-    }
-
-    .nav-links{
-      display:flex;
-      align-items:center;
-      gap:24px;
-      font-size:14px;
-      color:#ececec;
-    }
-
-    .nav-links a{
-      opacity:.9;
-      transition:.22s ease;
-      font-weight:550;
-    }
-
-    .nav-links a:hover{
-      opacity:1;
-      transform:translateY(-1px);
+      gap:20px;
+      padding:22px 26px 16px;
     }
 
     .brand{
-      justify-self:center;
       display:inline-flex;
       align-items:center;
-      gap:12px;
-      font-size:18px;
+      gap:10px;
       font-weight:800;
       letter-spacing:-.03em;
+      font-size:18px;
     }
-
     .brand-mark{
-      width:30px;
-      height:30px;
-      border-radius:10px;
-      background:linear-gradient(145deg,#ffffff,#bbbbbb);
-      color:#111;
-      display:grid;
-      place-items:center;
-      font-size:15px;
+      width:30px;height:30px;
+      border-radius:50%;
+      display:grid;place-items:center;
+      background:linear-gradient(145deg,#f3f8ff,#7aa8ff);
+      color:#08111d;
+      font-size:14px;
       font-weight:900;
-      box-shadow:0 12px 26px rgba(255,255,255,.06);
+      box-shadow:0 10px 24px rgba(98,145,255,.22);
     }
-
-    .nav-icons{
+    .nav-links{
+      justify-self:center;
       display:flex;
       align-items:center;
-      justify-content:flex-end;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+    .nav-links a{
+      min-height:40px;
+      padding:0 16px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      color:#dbe7ff;
+      font-size:14px;
+      opacity:.9;
+      transition:.22s ease;
+    }
+    .nav-links a.active,
+    .nav-links a:hover{
+      background:rgba(255,255,255,.05);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+      opacity:1;
+    }
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
       gap:10px;
     }
-
-    .icon-btn{
-      width:38px;height:38px;
-      border:none;
-      background:transparent;
-      color:#f6f6f6;
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      opacity:.94;
-      transition:.2s ease;
-    }
-
-    .icon-btn:hover{
-      transform:translateY(-2px);
-      opacity:1;
-    }
-
-    .icon{
-      width:22px;height:22px;
-      stroke:currentColor;
-      fill:none;
-      stroke-width:1.8;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-
-    .hero-board{
-      position:relative;
-      z-index:2;
-      margin-top:14px;
-      min-height:655px;
-      border:1px solid rgba(255,255,255,.08);
-      background:#0a0a0a;
-      overflow:hidden;
-    }
-
-    .hero-board::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(90deg, transparent 0 18%, rgba(255,255,255,.02) 18% 19%, transparent 19% 100%);
-      pointer-events:none;
-    }
-
-    .left-white-panel{display:none}
-
-    .left-white-panel .logo-line{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      font-size:13px;
-      color:#272727;
-    }
-
-    .panel-app-logo{
-      width:160px;
-      max-width:100%;
-      height:auto;
-      object-fit:contain;
-    }
-
-    .left-white-panel .mini-copy{
-      color:#222;
-      font-size:12px;
-      line-height:1.4;
-    }
-
-    .left-white-panel .floating-line{
-      position:absolute;
-      right:-72px;
-      top:106px;
-      width:152px;
-      height:1.5px;
-      background:#6b6b6b;
-      transform:rotate(-12deg);
-    }
-
-    .big-m{
-      position:absolute;
-      left:205px;
-      top:18px;
-      width:760px;
-      height:610px;
-      z-index:0;
-      color:#fff;
-      font-size:610px;
-      line-height:.86;
-      font-weight:900;
-      letter-spacing:-.18em;
-      user-select:none;
-      pointer-events:none;
-      opacity:1;
-      text-transform:uppercase;
-      display:flex;
-      align-items:flex-start;
-      justify-content:flex-start;
-    }
-
-    .big-m span{
-      display:block;
-      transform:translateX(-16px);
-      text-shadow:0 4px 10px rgba(255,255,255,.02);
-    }
-
-    .vertical-title{
-      position:absolute;
-      right:26px;
-      top:24px;
-      bottom:20px;
-      z-index:2;
-      display:flex;
-      flex-direction:column;
-      align-items:flex-end;
-      justify-content:space-between;
-      pointer-events:none;
-    }
-
-    .vertical-title .word{
-      writing-mode:vertical-rl;
-      text-orientation:mixed;
-      font-size:110px;
-      line-height:.8;
-      letter-spacing:-.07em;
-      font-weight:900;
-      color:#ffffff;
-    }
-
-    .vertical-title .side-notes{
-      display:flex;
-      flex-direction:column;
-      gap:30px;
-      font-size:13px;
-      color:#dcdcdc;
-      align-items:flex-end;
-      opacity:.9;
-    }
-
-    .device-stage{
-      position:absolute;
-      inset:84px 110px 0 78px;
-      z-index:3;
-    }
-
-    .device-stage img{
-      position:absolute;
-      max-width:none;
-      height:auto;
-      filter:drop-shadow(0 24px 48px rgba(0,0,0,.38));
-    }
-
-    .device-stage img:not(.imac){
-      transition:transform .3s ease;
-    }
-
-    .device-stage img:not(.imac):hover{
-      transform:translateY(-8px);
-    }
-
-    .imac{
-      left:50%;
-      top:-34px;
-      width:min(54vw, 590px);
-      transform:translateX(-50%);
-      z-index:2;
-    }
-
-    .imac:hover{
-      transform:translateX(-50%);
-    }
-
-    .macbook{
-      left:18px;
-      bottom:42px;
-      width:min(24vw, 300px);
-      z-index:4;
-    }
-
-    .ipad{
-      right:88px;
-      bottom:72px;
-      width:min(22vw, 255px);
-      z-index:4;
-    }
-
-    .hero-lower{
-      position:relative;
-      z-index:3;
-      display:grid;
-      grid-template-columns:1.15fr .85fr;
-      gap:28px;
-      margin-top:34px;
-      padding:0 14px;
-      align-items:end;
-    }
-
-    .hero-copy h1{
-      margin:0;
-      font-size:clamp(54px,5.8vw,76px);
-      line-height:1.02;
-      letter-spacing:-.06em;
-      font-weight:880;
-      text-transform:uppercase;
-    }
-
-    .hero-copy p{
-      margin:18px 0 0;
-      max-width:740px;
-      color:var(--muted);
-      font-size:16px;
-      line-height:1.72;
-    }
-
-    .hero-stats{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:16px;
-    }
-
-    .stat{
-      padding:18px 18px 16px;
-      border:1px solid rgba(255,255,255,.08);
-      background:#101010;
-      min-height:108px;
-    }
-
-    .stat strong{
-      display:block;
-      font-size:28px;
-      line-height:1;
-      font-weight:850;
-      letter-spacing:-.04em;
-    }
-
-    .stat span{
-      display:block;
-      margin-top:8px;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.5;
-    }
-
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:24px;
-    }
-
     .btn{
-      min-height:48px;
-      padding:0 22px;
+      min-height:44px;
+      padding:0 18px;
       border:none;
+      border-radius:12px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
       gap:8px;
-      font-size:13px;
-      font-weight:760;
       cursor:pointer;
-      transition:.24s ease;
+      font-size:14px;
+      font-weight:700;
+      transition:transform .22s ease, box-shadow .22s ease, background .22s ease;
     }
-
-    .btn:hover{transform:translateY(-2px)}
-
+    .btn:hover{transform:translateY(-1px)}
+    .btn-ghost{
+      background:rgba(255,255,255,.05);
+      color:#eff5ff;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+    }
     .btn-primary{
-      background:#ffffff;
-      color:#111;
-      box-shadow:0 14px 32px rgba(255,255,255,.08);
+      background:linear-gradient(145deg, #6a91ff, #4371ff);
+      color:#fff;
+      box-shadow:0 16px 34px rgba(67,113,255,.32);
     }
 
-    .btn-secondary{
-      background:transparent;
-      color:#fff;
-      border:1px solid rgba(255,255,255,.18);
+    .hero-meta{
+      position:relative;
+      z-index:3;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:8px 26px 0;
+      color:#c9d7f0;
+      font-size:12px;
+      letter-spacing:.2em;
+      text-transform:uppercase;
+      opacity:.86;
+    }
+
+    .hero-copy{
+      position:relative;
+      z-index:3;
+      text-align:center;
+      padding:82px 22px 0;
+      max-width:1080px;
+      margin:0 auto;
+    }
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:14px;
+      color:#d8e5fb;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      opacity:.88;
+    }
+    .eyebrow::before,
+    .eyebrow::after{
+      content:"";
+      width:34px;
+      height:1px;
+      background:rgba(182,204,255,.45);
+    }
+
+    .hero-copy h1{
+      margin:28px 0 0;
+      font-size:clamp(44px, 6vw, 84px);
+      line-height:1.04;
+      letter-spacing:-.065em;
+      font-weight:830;
+      max-width:980px;
+      margin-inline:auto;
+    }
+
+    .hero-copy p{
+      margin:18px auto 0;
+      max-width:700px;
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.7;
+    }
+
+    .hero-cta{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:28px;
     }
 
     .hero-tags{
       display:flex;
+      justify-content:center;
       flex-wrap:wrap;
       gap:10px;
-      margin-top:16px;
+      margin-top:22px;
     }
-
     .tag{
-      padding:10px 12px;
-      border:1px solid rgba(255,255,255,.12);
-      background:#111;
-      color:#ddd;
+      min-height:36px;
+      padding:0 14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      background:rgba(9,16,27,.58);
+      box-shadow:inset 0 0 0 1px rgba(150,180,255,.12);
+      color:#d8e6ff;
       font-size:11px;
       font-weight:700;
+      letter-spacing:.1em;
       text-transform:uppercase;
-      letter-spacing:.08em;
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
     }
 
-    .trio{
-      margin-top:26px;
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
-      padding:0 14px;
-    }
-
-    .trio-card{
+    .device-stage{
       position:relative;
-      overflow:hidden;
-      min-height:368px;
-      background:#121212;
-      border:1px solid rgba(255,255,255,.08);
+      z-index:3;
+      max-width:1120px;
+      height:420px;
+      margin:52px auto 0;
     }
-
-    .trio-card img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      padding:32px 18px 18px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)),
-        #141414;
-    }
-
-    .trio-card .overlay{
+    .device-stage img{
       position:absolute;
-      left:0;right:0;top:0;
-      padding:18px 18px 0;
+      max-width:none;
+      height:auto;
+      filter:drop-shadow(0 30px 55px rgba(0,0,0,.35));
+    }
+    .device-stage .imac{
+      left:50%;
+      top:22px;
+      width:min(56vw, 680px);
+      transform:translateX(-50%);
       z-index:2;
+    }
+    .device-stage .macbook{
+      left:66px;
+      bottom:28px;
+      width:min(25vw, 305px);
+      z-index:4;
+    }
+    .device-stage .ipad{
+      right:88px;
+      bottom:62px;
+      width:min(19vw, 228px);
+      z-index:4;
+    }
+
+    .hero-console{
+      position:relative;
+      z-index:3;
+      width:min(760px, calc(100% - 48px));
+      margin:22px auto 0;
+      padding:16px 16px 14px;
+      border-radius:28px;
+      background:rgba(10,14,21,.72);
+      box-shadow:
+        0 22px 56px rgba(0,0,0,.4),
+        inset 0 0 0 1px rgba(255,255,255,.06);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+    }
+    .console-top{
       display:flex;
       justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      margin-bottom:12px;
+      color:#cfdcf3;
+      font-size:14px;
+      font-weight:600;
+    }
+    .console-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .mini-pill{
+      min-height:36px;
+      padding:0 14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+    .console-input{
+      min-height:74px;
+      border-radius:22px;
+      background:rgba(255,255,255,.02);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+      padding:18px 18px 14px;
+      color:#f1f5ff;
+      display:flex;
       align-items:flex-start;
-      gap:12px;
-      pointer-events:none;
+      justify-content:space-between;
+      gap:16px;
     }
-
-    .trio-card .num{
-      font-size:22px;
-      font-weight:800;
-      letter-spacing:-.04em;
+    .console-input .placeholder{
+      color:#8ca2c5;
+      font-size:16px;
+      line-height:1.5;
     }
-
-    .trio-card .meta{
-      text-align:right;
-      color:#f1f1f1;
-      font-size:12px;
-      max-width:170px;
-      line-height:1.45;
+    .console-tools{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-shrink:0;
     }
-
-    .trio-card .caption{
-      position:absolute;
-      left:18px;right:18px;bottom:18px;
-      color:#f0f0f0;
-      font-size:13px;
-      line-height:1.6;
-      z-index:2;
-    }
-
-    .trio-card .caption b{
-      display:block;
-      margin-bottom:6px;
-      font-size:15px;
-      line-height:1.3;
+    .circle-btn{
+      width:42px;height:42px;
+      border:none;
+      border-radius:50%;
+      background:rgba(255,255,255,.06);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+      color:#e8f0ff;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
     }
 
     .section{
-      padding:84px 4px 0;
+      padding:88px 6px 0;
     }
-
     .section-head{
-      display:flex;
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:20px;
       align-items:end;
-      justify-content:space-between;
-      gap:24px;
       margin-bottom:28px;
     }
-
-    .section-head .copy{
-      max-width:760px;
-    }
-
-    .eyebrow{
-      color:#d8d8d8;
-      font-size:10px;
-      font-weight:800;
-      letter-spacing:.24em;
-      text-transform:uppercase;
-    }
-
     .section-head h2{
       margin:14px 0 0;
-      font-size:clamp(42px,5.6vw,78px);
-      line-height:.96;
+      font-size:clamp(36px,5vw,70px);
+      line-height:.98;
       letter-spacing:-.06em;
-      font-weight:800;
-      text-transform:uppercase;
     }
-
-    .section-head h2 span{color:#cdcdcd}
     .section-head p{
-      max-width:460px;
       margin:0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.72;
-    }
-
-    .feature-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:18px;
-    }
-
-    .card{
-      min-height:350px;
-      border:1px solid rgba(255,255,255,.08);
-      padding:28px;
-      position:relative;
-      overflow:hidden;
-      background:linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.008)), var(--panel);
-    }
-
-    .card.wide{
-      grid-column:1/-1;
-      min-height:300px;
-    }
-
-    .kicker{
-      color:#ffffff;
-      font-size:10px;
-      font-weight:800;
-      letter-spacing:.24em;
-      text-transform:uppercase;
-    }
-
-    .card h3{
-      margin:10px 0 0;
-      font-size:31px;
-      line-height:1.04;
-      letter-spacing:-.045em;
-      text-transform:uppercase;
-    }
-
-    .card p{
-      max-width:540px;
-      margin:14px 0 0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.72;
-    }
-
-    .bank-row{
-      position:absolute;
-      left:28px;right:28px;bottom:28px;
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:8px;
-    }
-
-    .bank{
-      padding:14px 12px;
-      border:1px solid rgba(255,255,255,.08);
-      background:#151515;
-    }
-
-    .bank b{
-      display:block;
-      font-size:12px;
-      color:#fff;
-    }
-
-    .bank span{
-      display:block;
-      margin-top:6px;
-      color:var(--muted);
-      font-size:9px;
-      line-height:1.45;
-    }
-
-    .knob{
-      position:absolute;
-      right:34px;
-      bottom:28px;
-      width:168px;height:168px;
-      border-radius:50%;
-      border:1px solid rgba(255,255,255,.22);
-      background:
-        radial-gradient(circle, rgba(10,10,10,.96) 0 44%, transparent 45%),
-        conic-gradient(from 210deg, #ffffff 0 72%, rgba(255,255,255,.08) 72% 100%);
-      box-shadow:
-        inset 0 0 0 14px rgba(255,255,255,.03),
-        0 0 32px rgba(255,255,255,.06);
-    }
-
-    .knob::after{
-      content:"";
-      position:absolute;
-      left:50%;
-      top:28px;
-      width:3px;height:42px;
-      transform:translateX(-50%);
-      border-radius:3px;
-      background:#f4f7ff;
-    }
-
-    .parts{
-      display:grid;
-      grid-template-columns:repeat(8,1fr);
-      gap:8px;
-      margin-top:34px;
-    }
-
-    .part{
-      padding:15px 8px;
-      border:1px solid rgba(255,255,255,.08);
-      background:#151515;
-      text-align:center;
-      color:var(--muted);
-      font-size:9px;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-    }
-
-    .part b{
-      display:block;
-      color:#fff;
-      font-size:16px;
-      margin-bottom:5px;
-    }
-
-    .access-grid{
-      display:grid;
-      grid-template-columns:.95fr 1.05fr;
-      gap:18px;
-    }
-
-    .price-card{
-      min-height:470px;
-      border:1px solid rgba(255,255,255,.08);
-      padding:28px;
-      background:linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.008)), var(--panel);
-    }
-
-    .price-row{
-      display:flex;
-      justify-content:space-between;
-      gap:18px;
-      padding-bottom:22px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
-
-    .price-row h3{
-      margin:8px 0 0;
-      font-size:34px;
-      line-height:1;
-      letter-spacing:-.05em;
-      text-transform:uppercase;
-    }
-
-    .trial{
-      display:inline-flex;
-      margin-top:16px;
-      padding:7px 10px;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(255,255,255,.06);
-      color:#fff;
-      font-size:8px;
-      font-weight:800;
-      letter-spacing:.13em;
-      text-transform:uppercase;
-    }
-
-    .price{text-align:right}
-    .price strong{
-      display:block;
-      font-size:30px;
-      line-height:1;
-      font-weight:840;
-    }
-
-    .price span{
-      display:block;
-      margin-top:6px;
-      color:var(--muted);
-      font-size:9px;
-      line-height:1.45;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .checklist{
-      list-style:none;
-      margin:24px 0 0;
-      padding:0;
-      display:grid;
-      gap:13px;
-    }
-
-    .checklist li{
-      display:grid;
-      grid-template-columns:18px 1fr;
-      gap:10px;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.55;
-    }
-
-    .checklist li::before{
-      content:"✓";
-      width:17px;height:17px;
-      display:grid;
-      place-items:center;
-      border:1px solid rgba(255,255,255,.16);
-      color:#fff;
-      font-size:9px;
-      background:rgba(255,255,255,.04);
-    }
-
-    .cta-row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:24px;
-    }
-
-    .final{
-      margin-top:84px;
-      padding:84px 28px;
-      border:1px solid rgba(255,255,255,.08);
-      background:linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.008)), var(--panel);
-      text-align:center;
-    }
-
-    .final h2{
-      margin:12px 0 0;
-      font-size:clamp(50px,6vw,88px);
-      line-height:.95;
-      letter-spacing:-.06em;
-      font-weight:800;
-      text-transform:uppercase;
-    }
-
-    .final p{
-      max-width:680px;
-      margin:18px auto 0;
+      max-width:420px;
       color:var(--muted);
       font-size:14px;
-      line-height:1.72;
+      line-height:1.75;
+    }
+
+    .feature-grid,
+    .pricing-grid,
+    .spec-grid{
+      display:grid;
+      gap:18px;
+    }
+    .feature-grid{grid-template-columns:1.15fr .85fr}
+    .pricing-grid{grid-template-columns:1fr 1fr}
+    .spec-grid{grid-template-columns:repeat(4,1fr)}
+
+    .card{
+      position:relative;
+      min-height:280px;
+      padding:28px;
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(15,21,33,.92), rgba(10,14,22,.92));
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:auto -10% -30% auto;
+      width:280px;height:280px;
+      background:radial-gradient(circle, rgba(92,138,255,.16), transparent 68%);
+      pointer-events:none;
+    }
+    .kicker{
+      color:#dbe9ff;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+    .card h3{
+      margin:12px 0 0;
+      font-size:34px;
+      line-height:1.04;
+      letter-spacing:-.05em;
+    }
+    .card p{
+      margin:14px 0 0;
+      max-width:600px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.75;
+    }
+
+    .bank-flow{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      margin-top:26px;
+    }
+    .bank-item,
+    .mini-spec,
+    .plan-list li{
+      border-radius:18px;
+      background:rgba(255,255,255,.03);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+    .bank-item{
+      min-height:90px;
+      padding:14px;
+    }
+    .bank-item b{
+      display:block;
+      font-size:13px;
+      color:#eef3ff;
+    }
+    .bank-item span{
+      display:block;
+      margin-top:8px;
+      font-size:11px;
+      line-height:1.55;
+      color:#a8b5cb;
+    }
+
+    .knob-visual{
+      position:absolute;
+      right:30px;
+      bottom:28px;
+      width:170px;height:170px;
+      border-radius:50%;
+      background:
+        radial-gradient(circle, rgba(10,14,22,.95) 0 38%, transparent 39%),
+        conic-gradient(from 220deg, rgba(123,180,255,.95) 0 68%, rgba(255,255,255,.09) 68% 100%);
+      box-shadow:
+        inset 0 0 0 16px rgba(255,255,255,.03),
+        0 0 55px rgba(93,137,255,.18);
+      border:1px solid rgba(164,192,255,.22);
+    }
+    .knob-visual::after{
+      content:"";
+      position:absolute;
+      left:50%; top:26px;
+      width:4px; height:44px;
+      background:#f2f7ff;
+      transform:translateX(-50%);
+      border-radius:999px;
+    }
+
+    .parts-grid{
+      display:grid;
+      grid-template-columns:repeat(8,1fr);
+      gap:10px;
+      margin-top:28px;
+    }
+    .mini-spec{
+      min-height:92px;
+      padding:16px 12px;
+      text-align:center;
+    }
+    .mini-spec b{
+      display:block;
+      font-size:18px;
+      margin-bottom:8px;
+      color:#f5f8ff;
+    }
+    .mini-spec span{
+      color:#a8b5cb;
+      font-size:11px;
+      line-height:1.55;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .pricing-card{
+      min-height:420px;
+      padding:28px;
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(15,21,33,.92), rgba(10,14,22,.92));
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+    .price-top{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      padding-bottom:20px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .price-top h3{
+      margin:12px 0 0;
+      font-size:38px;
+      line-height:1;
+      letter-spacing:-.05em;
+    }
+    .pill-note{
+      display:inline-flex;
+      min-height:34px;
+      padding:0 12px;
+      border-radius:999px;
+      align-items:center;
+      background:rgba(255,255,255,.05);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+      color:#deebff;
+      font-size:10px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      margin-top:14px;
+    }
+    .price-tag{text-align:right}
+    .price-tag strong{
+      display:block;
+      font-size:34px;
+      line-height:1;
+    }
+    .price-tag span{
+      display:block;
+      margin-top:8px;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.55;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    .plan-list{
+      list-style:none;
+      margin:22px 0 0;
+      padding:0;
+      display:grid;
+      gap:12px;
+    }
+    .plan-list li{
+      padding:14px 14px 14px 42px;
+      position:relative;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.65;
+    }
+    .plan-list li::before{
+      content:"✓";
+      position:absolute;
+      left:14px; top:14px;
+      width:18px; height:18px;
+      border-radius:50%;
+      background:rgba(86,126,255,.18);
+      color:#eef4ff;
+      display:grid;place-items:center;
+      font-size:11px;
+      font-weight:900;
+    }
+
+    .final-cta{
+      margin-top:84px;
+      padding:84px 24px;
+      border-radius:34px;
+      text-align:center;
+      background:
+        radial-gradient(circle at 50% 10%, rgba(98,140,255,.18), transparent 38%),
+        linear-gradient(180deg, rgba(15,21,33,.96), rgba(10,14,22,.96));
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+    .final-cta h2{
+      margin:12px 0 0;
+      font-size:clamp(42px,5.6vw,82px);
+      line-height:.98;
+      letter-spacing:-.06em;
+    }
+    .final-cta p{
+      max-width:760px;
+      margin:18px auto 0;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.75;
+    }
+    .cta-actions{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:26px;
     }
 
     footer{
       padding:28px 4px 0;
       display:flex;
       justify-content:space-between;
+      gap:16px;
       flex-wrap:wrap;
-      gap:18px;
-      color:#888;
-      font-size:10px;
-      letter-spacing:.02em;
+      color:#7f8da6;
+      font-size:12px;
     }
 
     .reveal{
       opacity:0;
-      transform:translateY(24px);
-      transition:opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1);
+      transform:translateY(28px);
+      transition:opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);
     }
     .reveal.in{opacity:1;transform:none}
 
     @media (max-width:1200px){
-      .hero{min-height:auto}
-      .hero-board{min-height:600px}
-      .big-m{
-        left:190px;
-        top:20px;
-        width:580px;
-        font-size:500px;
-      }
-      .device-stage{
-        inset:96px 80px 0 50px;
-      }
-      .left-white-panel{display:none}
-      .panel-app-logo{width:138px}
-      .imac{width:min(58vw, 560px); top:-42px;}
-      .macbook{width:min(28vw, 290px); left:6px;}
-      .ipad{width:min(24vw, 220px); right:52px;}
-      .trio,
+      .hero{min-height:960px}
+      .hero-glow{inset:90px 4% auto 4%}
+      .device-stage{max-width:980px;height:390px}
+      .device-stage .imac{width:min(62vw, 620px)}
+      .device-stage .macbook{left:26px;width:min(28vw, 270px)}
+      .device-stage .ipad{right:34px;width:min(21vw, 210px)}
       .feature-grid,
-      .access-grid{
-        grid-template-columns:1fr 1fr;
-      }
-      .trio-card:last-child,
-      .feature-grid .wide,
-      .access-grid > *:last-child{
-        grid-column:1/-1;
-      }
-      .section-head{
-        display:grid;
-        grid-template-columns:1fr;
-      }
+      .pricing-grid,
+      .spec-grid{grid-template-columns:1fr 1fr}
+      .section-head{grid-template-columns:1fr}
+      .section-head p{max-width:680px}
     }
 
     @media (max-width:900px){
+      .page{padding:12px 10px 64px}
+      .hero{min-height:940px}
       .nav{
         grid-template-columns:1fr auto;
+        padding:18px 18px 12px;
       }
-      .brand{justify-self:end}
-      .nav-links{gap:16px;font-size:13px}
-      .hero-board{min-height:760px}
-      .left-white-panel{display:none}
-      .panel-app-logo{width:126px}
-      .big-m{
-        left:150px;
-        top:24px;
-        font-size:400px;
-      }
-      .device-stage{
-        inset:110px 32px 0 24px;
-      }
-      .imac{
-        top:28px;
-        width:min(82vw, 500px);
-      }
-      .macbook{
-        left:0;
-        bottom:76px;
-        width:min(34vw, 260px);
-      }
-      .ipad{
-        right:22px;
-        bottom:126px;
-        width:min(28vw, 190px);
-      }
-      .vertical-title .word{font-size:74px}
-      .hero-lower{grid-template-columns:1fr}
-      .hero-stats{grid-template-columns:1fr 1fr}
-      .trio,
-      .feature-grid,
-      .access-grid{
-        grid-template-columns:1fr;
-      }
-    }
-
-    @media (max-width:700px){
-      .page{
-        padding:8px 6px 50px;
-      }
-
-      .hero{
-        padding:10px 8px 16px;
-        min-height:auto;
-      }
-
-      /* Mantener la misma composición del desktop, solo escalada */
-      .nav{
-        min-height:48px;
-        grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
-        gap:5px;
-        padding:0 2px;
-      }
-
       .nav-links{
-        display:flex;
-        gap:7px;
-        font-size:8px;
-        white-space:nowrap;
-        overflow:visible;
+        order:3;
+        grid-column:1 / -1;
+        justify-self:start;
+        gap:8px;
+        margin-top:4px;
       }
-
-      .nav-links a{
-        font-weight:600;
-      }
-
-      .brand{
-        justify-self:center;
-        gap:5px;
-        font-size:11px;
-        white-space:nowrap;
-      }
-
-      .brand-mark{
-        width:19px;
-        height:19px;
-        border-radius:6px;
-        font-size:9px;
-      }
-
-      .nav-icons{
-        gap:0;
-      }
-
-      .icon-btn{
-        width:23px;
-        height:23px;
-        padding:0;
-      }
-
-      .icon{
-        width:14px;
-        height:14px;
-      }
-
-      .hero-board{
-        min-height:0;
-        height:clamp(330px, 92vw, 430px);
-        margin-top:8px;
-        overflow:hidden;
-      }
-
-      .left-white-panel{
-        display:none;
-      }
-
-      .big-m{
-        left:12%;
-        top:4%;
-        width:58%;
-        height:auto;
-        font-size:clamp(205px, 62vw, 320px);
-        line-height:.82;
-      }
-
-      .big-m span{
-        transform:translateX(-4%);
-      }
-
-      .vertical-title{
-        right:2.5%;
-        top:5%;
-        bottom:4%;
-        z-index:5;
-      }
-
-      .vertical-title .word{
-        font-size:clamp(38px, 12vw, 62px);
-        line-height:.76;
-      }
-
-      .vertical-title .side-notes{
-        display:flex;
-        gap:12px;
-        font-size:clamp(6px, 1.8vw, 9px);
-      }
-
-      .device-stage{
-        inset:0;
-        z-index:3;
-      }
-
-      .imac{
-        left:49%;
-        top:5%;
-        width:64%;
-        max-width:none;
-        transform:translateX(-50%);
-        z-index:2;
-      }
-
-      .imac:hover{
-        transform:translateX(-50%);
-      }
-
-      .macbook{
-        left:4.5%;
-        bottom:6%;
-        width:34%;
-        max-width:none;
-        z-index:4;
-      }
-
-      .ipad{
-        right:9%;
-        bottom:13%;
-        width:27%;
-        max-width:none;
-        z-index:4;
-      }
-
-      .hero-lower{
-        grid-template-columns:1.15fr .85fr;
-        gap:10px;
-        margin-top:18px;
-        padding:0 2px;
-        align-items:start;
-      }
-
-      .hero-copy h1{
-        font-size:clamp(22px, 6.2vw, 32px);
-        line-height:1.02;
-      }
-
-      .hero-copy p{
-        margin-top:10px;
-        font-size:10px;
-        line-height:1.55;
-      }
-
-      .hero-actions{
-        gap:6px;
-        margin-top:12px;
-      }
-
-      .btn{
-        min-height:34px;
-        padding:0 11px;
-        font-size:9px;
-      }
-
-      .hero-tags{
-        gap:5px;
-        margin-top:9px;
-      }
-
-      .tag{
-        padding:6px 7px;
-        font-size:7px;
-      }
-
-      .hero-stats{
-        grid-template-columns:1fr 1fr;
-        gap:6px;
-      }
-
-      .stat{
-        min-height:70px;
-        padding:9px 8px;
-      }
-
-      .stat strong{
-        font-size:17px;
-      }
-
-      .stat span{
-        margin-top:5px;
-        font-size:7px;
-        line-height:1.35;
-      }
-
-      .trio{
-        grid-template-columns:repeat(3,1fr);
-        gap:6px;
-        padding:0 2px;
-      }
-
-      .trio-card{
-        min-height:180px;
-      }
-
-      .trio-card img{
-        padding:20px 6px 38px;
-      }
-
-      .trio-card .overlay{
-        padding:8px 8px 0;
-      }
-
-      .trio-card .num{
-        font-size:12px;
-      }
-
-      .trio-card .meta{
-        max-width:78px;
-        font-size:6px;
-      }
-
-      .trio-card .caption{
-        left:8px;
-        right:8px;
-        bottom:8px;
-        font-size:6px;
-        line-height:1.35;
-      }
-
-      .trio-card .caption b{
-        margin-bottom:3px;
-        font-size:8px;
-      }
-
-      .section{
-        padding:54px 2px 0;
-      }
-
-      .section-head{
-        display:grid;
-        grid-template-columns:1fr .7fr;
-        gap:12px;
-        align-items:end;
-      }
-
-      .section-head h2{
-        font-size:clamp(26px, 7vw, 38px);
-      }
-
-      .section-head p{
-        font-size:9px;
-        line-height:1.55;
-      }
-
+      .hero-meta{padding:6px 18px 0;font-size:11px;letter-spacing:.14em}
+      .hero-copy{padding:58px 16px 0}
+      .hero-copy p{font-size:16px}
+      .hero-glow::before{width:min(80vw, 680px);height:min(80vw, 680px)}
+      .hero-glow::after{width:min(92vw, 820px); top:170px}
+      .device-stage{height:360px;margin-top:46px}
+      .device-stage .imac{top:18px;width:min(76vw, 580px)}
+      .device-stage .macbook{left:6px;bottom:18px;width:min(32vw, 230px)}
+      .device-stage .ipad{right:6px;bottom:52px;width:min(24vw, 172px)}
+      .console-input{min-height:68px}
       .feature-grid,
-      .access-grid{
-        grid-template-columns:1fr 1fr;
-        gap:8px;
-      }
-
-      .feature-grid .wide{
-        grid-column:1/-1;
-      }
-
-      .card,
-      .price-card{
-        min-height:260px;
-        padding:15px;
-      }
-
-      .card h3{
-        font-size:20px;
-      }
-
-      .card p{
-        font-size:9px;
-      }
-
-      .bank-row{
-        left:15px;
-        right:15px;
-        bottom:15px;
-        grid-template-columns:repeat(4,1fr);
-        gap:4px;
-      }
-
-      .bank{
-        padding:8px 6px;
-      }
-
-      .bank b{
-        font-size:8px;
-      }
-
-      .bank span{
-        font-size:6px;
-      }
-
-      .knob{
-        right:14px;
-        bottom:14px;
-        width:98px;
-        height:98px;
-      }
-
-      .knob::after{
-        top:16px;
-        height:26px;
-      }
-
-      .parts{
-        grid-template-columns:repeat(8,1fr);
-        gap:4px;
-        margin-top:18px;
-      }
-
-      .part{
-        padding:9px 3px;
-        font-size:6px;
-      }
-
-      .part b{
-        font-size:10px;
-      }
-
-      .price-row h3{
-        font-size:22px;
-      }
-
-      .price strong{
-        font-size:20px;
-      }
-
-      .checklist{
-        gap:8px;
-      }
-
-      .checklist li{
-        grid-template-columns:14px 1fr;
-        gap:6px;
-        font-size:8px;
-      }
-
-      .checklist li::before{
-        width:13px;
-        height:13px;
-        font-size:7px;
-      }
-
-      .final{
-        margin-top:54px;
-        padding:42px 14px;
-      }
+      .pricing-grid,
+      .spec-grid{grid-template-columns:1fr}
+      .parts-grid{grid-template-columns:repeat(4,1fr)}
     }
 
-    @media (max-width:520px){
-      .hero-board{
-        height:clamp(300px, 94vw, 370px);
+    @media (max-width:640px){
+      .hero{
+        min-height:980px;
       }
-
-      .big-m{
-        left:10%;
-        top:6%;
-        font-size:clamp(185px, 63vw, 260px);
+      .hero::before{
+        background:
+          linear-gradient(var(--line), var(--line)) 0 88px/100% 1px no-repeat,
+          linear-gradient(var(--line), var(--line)) 0 230px/100% 1px no-repeat,
+          linear-gradient(var(--line), var(--line)) 0 772px/100% 1px no-repeat,
+          linear-gradient(var(--line), var(--line)) 18px 0/1px 100% no-repeat,
+          linear-gradient(var(--line), var(--line)) calc(100% - 18px) 0/1px 100% no-repeat;
       }
-
-      .vertical-title{
-        right:1.5%;
+      .hero::after{background-size:46px 46px;opacity:.38}
+      .nav{
+        padding:14px 14px 10px;
+        gap:10px;
       }
-
-      .vertical-title .word{
-        font-size:clamp(34px, 11vw, 52px);
+      .brand{font-size:17px}
+      .brand-mark{width:28px;height:28px;font-size:13px}
+      .nav-links{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        width:100%;
       }
-
-      .imac{
-        left:49%;
-        top:7%;
-        width:64%;
+      .nav-links a,
+      .btn,
+      .btn-ghost,
+      .btn-primary{min-height:42px;font-size:13px}
+      .nav-actions{gap:8px}
+      .nav-actions .btn-ghost{display:none}
+      .hero-meta{
+        padding:6px 14px 0;
+        font-size:10px;
       }
-
-      .macbook{
-        left:3%;
-        bottom:7%;
-        width:35%;
+      .hero-copy{padding-top:48px}
+      .eyebrow{font-size:10px;gap:10px;letter-spacing:.18em}
+      .eyebrow::before,.eyebrow::after{width:18px}
+      .hero-copy h1{font-size:clamp(36px, 10vw, 52px)}
+      .hero-copy p{font-size:14px;line-height:1.65}
+      .hero-cta{gap:10px}
+      .hero-cta .btn{flex:1 1 100%}
+      .hero-glow{inset:92px 0 auto 0;height:420px}
+      .hero-glow::before{width:92vw;height:92vw;top:34px}
+      .hero-glow::after{width:112vw;height:180px;top:168px}
+      .device-stage{
+        height:280px;
+        margin-top:42px;
       }
-
-      .ipad{
-        right:8%;
-        bottom:14%;
-        width:28%;
+      .device-stage .imac{
+        width:min(94vw, 470px);
+        top:34px;
       }
-
-      .hero-lower{
-        grid-template-columns:1.12fr .88fr;
-        gap:7px;
+      .device-stage .macbook{
+        left:-2px;
+        bottom:8px;
+        width:min(42vw, 185px);
       }
-
-      .hero-copy h1{
-        font-size:clamp(19px, 6vw, 27px);
+      .device-stage .ipad{
+        right:-2px;
+        bottom:32px;
+        width:min(30vw, 128px);
       }
-
-      .hero-copy p{
-        font-size:8px;
+      .hero-console{
+        width:calc(100% - 20px);
+        margin-top:26px;
+        padding:12px;
+        border-radius:22px;
       }
-
-      .btn{
-        min-height:31px;
-        padding:0 9px;
-        font-size:8px;
+      .console-top{font-size:12px;flex-wrap:wrap}
+      .mini-pill{min-height:32px;padding:0 12px;font-size:12px}
+      .console-input{
+        min-height:60px;
+        padding:14px;
+        border-radius:18px;
       }
-
-      .stat{
-        min-height:62px;
-        padding:7px;
-      }
-
-      .stat strong{
-        font-size:15px;
-      }
-
-      .stat span{
-        font-size:6px;
-      }
-
-      .trio-card{
-        min-height:155px;
-      }
-
-      .feature-grid,
-      .access-grid{
-        grid-template-columns:1fr 1fr;
-      }
-
+      .console-input .placeholder{font-size:14px}
+      .circle-btn{width:36px;height:36px}
+      .section{padding-top:72px}
       .card,
-      .price-card{
-        min-height:240px;
-        padding:13px;
+      .pricing-card,
+      .final-cta{border-radius:24px}
+      .card{min-height:240px;padding:22px}
+      .card h3{font-size:28px}
+      .bank-flow{grid-template-columns:1fr 1fr}
+      .knob-visual{
+        position:relative;
+        right:auto;bottom:auto;
+        width:132px;height:132px;
+        margin:24px auto 0;
       }
-
-      .bank-row{
-        position:absolute;
-        left:13px;
-        right:13px;
-        bottom:13px;
-        grid-template-columns:repeat(4,1fr);
-      }
-
-      .knob{
-        position:absolute;
-        right:13px;
-        bottom:13px;
-        margin:0;
-        width:88px;
-        height:88px;
-      }
-
-      .parts{
-        grid-template-columns:repeat(8,1fr);
-      }
-
-      .cta-row .btn,
-      .hero-actions .btn{
-        flex:0 0 auto;
-      }
-
-      .final{
-        margin-top:52px;
-        padding:38px 12px;
-      }
+      .parts-grid{grid-template-columns:repeat(2,1fr)}
+      .price-top{display:grid;grid-template-columns:1fr;gap:10px}
+      .price-tag{text-align:left}
+      .final-cta{padding:64px 18px}
+      .final-cta p{font-size:14px}
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -1343,284 +843,247 @@
 </head>
 <body>
   <main class="page">
-
     <section class="hero">
-      <header class="nav">
-        <nav class="nav-links" aria-label="Principal izquierda">
-          <a href="#">Products</a>
-          <a href="#">Gallery</a>
-          <a href="#">Clients</a>
-          <a href="#">Contact</a>
-        </nav>
+      <div class="hero-glow" aria-hidden="true"></div>
 
+      <header class="nav">
         <a class="brand" href="#" aria-label="Dingloft">
           <span class="brand-mark">D</span>
           <span>Dingloft</span>
         </a>
 
-        <div class="nav-icons">
-          <button class="icon-btn" type="button" aria-label="Buscar">
-            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.2"></circle><path d="M20 20l-3.5-3.5"></path></svg>
-          </button>
-          <button class="icon-btn" type="button" aria-label="Carrito">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M3 5h2l2 10h10l2-7H7"></path><circle cx="10" cy="19" r="1.2"></circle><circle cx="17" cy="19" r="1.2"></circle></svg>
-          </button>
-          <button class="icon-btn" type="button" aria-label="Favoritos">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M12 20s-6.7-3.9-8.4-7.4c-1.2-2.4-.2-5.4 2.4-6.4 2-.8 4.1-.2 5.2 1.4 1.1-1.6 3.2-2.2 5.2-1.4 2.6 1 3.6 4 2.4 6.4C18.7 16.1 12 20 12 20z"></path></svg>
-          </button>
-          <button class="icon-btn" type="button" aria-label="Menú">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>
-          </button>
+        <nav class="nav-links" aria-label="Principal">
+          <a class="active" href="#features">Features</a>
+          <a href="#how-to-use">How to use</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQs</a>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="btn btn-ghost" type="button">Log in</button>
+          <button class="btn btn-primary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">Get started</button>
         </div>
       </header>
 
-      <div class="hero-board">
-        <div class="big-m"><span>M</span></div>
+      <div class="hero-meta">
+        <span>[ 01 / 09 ]</span>
+        <span>[ Hero ]</span>
+      </div>
 
-        <div class="vertical-title" aria-hidden="true">
-          <div class="word">MOTION</div>
-          <div class="side-notes">
-            <span>Precision</span>
-            <span>Performance</span>
-            <span>Possibilities</span>
-            <span>New Series</span>
-          </div>
+      <div class="hero-copy">
+        <div class="eyebrow">Your all-in-one performance instrument</div>
+        <h1>Play Smarter. Launch Faster.<br>Built for <span style="color:#dce8ff">Motion-X</span>.</h1>
+        <p>
+          Un instrumento premium para performance y producción. Live Banks, 16 Parts, Super Knob y motor nativo en una sola experiencia pensada para seguir tocando.
+        </p>
+
+        <div class="hero-cta">
+          <button class="btn btn-ghost" type="button" data-action="download-motion-x">Descargar gratis</button>
+          <button class="btn btn-primary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">Desbloquear FULL · US$28</button>
         </div>
 
-        <div class="device-stage">
-          <img class="macbook" src="img/MacbookPro.png" alt="Motion-X en MacBook Pro">
-          <img class="imac" src="img/iMac-Motion.png" alt="Motion-X en iMac Pro">
-          <img class="ipad" src="img/iPadmotion.png" alt="Motion-X en iPad Pro">
+        <div class="hero-tags">
+          <span class="tag">macOS</span>
+          <span class="tag">Standalone</span>
+          <span class="tag">VST3</span>
+          <span class="tag">AU</span>
+          <span class="tag">10 min FREE</span>
+          <span class="tag">iPad próximamente</span>
         </div>
       </div>
 
-      <div class="hero-lower">
-        <div class="hero-copy">
-          <h1>Built for Precision.<br>Engineered for Performance.</h1>
-          <p>
-            Motion-X se presenta con una composición más clara: iMac al centro y un poco más arriba,
-            MacBook Pro al frente en el lado izquierdo e iPad más pegado en el lado derecho para que los tres
-            dispositivos se lean mejor dentro del hero.
-          </p>
-
-          <div class="hero-actions">
-            <button class="btn btn-primary" type="button" data-action="download-motion-x">Descargar gratis</button>
-            <button class="btn btn-secondary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">Desbloquear FULL · US$28</button>
-          </div>
-
-          <div class="hero-tags">
-            <span class="tag">macOS</span>
-            <span class="tag">Standalone</span>
-            <span class="tag">VST3</span>
-            <span class="tag">AU</span>
-            <span class="tag">iPad Próximamente</span>
-          </div>
-        </div>
-
-        <div class="hero-stats">
-          <article class="stat">
-            <strong>16</strong>
-            <span>Parts listas para capas, splits y performances complejas.</span>
-          </article>
-          <article class="stat">
-            <strong>10m</strong>
-            <span>Prueba FREE funcional. FULL se desbloquea sin reinstalar.</span>
-          </article>
-          <article class="stat">
-            <strong>Live</strong>
-            <span>Live Banks para cambiar sonidos sin cortar releases anteriores.</span>
-          </article>
-          <article class="stat">
-            <strong>Full</strong>
-            <span>Oferta de apertura US$28. Precio previsto después US$60.</span>
-          </article>
-        </div>
+      <div class="device-stage" aria-label="Dispositivos Motion-X">
+        <img class="imac" src="img/iMac-Motion.png" alt="Motion-X en iMac">
+        <img class="macbook" src="img/MacbookPro.png" alt="Motion-X en MacBook Pro">
+        <img class="ipad" src="img/iPadmotion.png" alt="Motion-X en iPad">
       </div>
 
-      <div class="trio">
-        <article class="trio-card">
-          <div class="overlay">
-            <div class="num">80</div>
-            <div class="meta">MacBook Pro<br>Producción portátil</div>
+      <div class="hero-console">
+        <div class="console-top">
+          <span>Ask Motion-X what you want to play…</span>
+          <div class="console-actions">
+            <span class="mini-pill">FREE / FULL</span>
+            <span class="mini-pill">Native Audio Engine</span>
           </div>
-          <img src="img/MacbookPro.png" alt="MacBook Pro con Motion-X">
-          <div class="caption">
-            <b>Portable Workflow</b>
-            Ideal para producción, prueba FREE, compras y desbloqueo del sistema FULL desde macOS.
+        </div>
+        <div class="console-input">
+          <div class="placeholder">Pianos, layers, worship pads, live transitions y control macro en una sola app.</div>
+          <div class="console-tools">
+            <button class="circle-btn" type="button" aria-label="Agregar">+</button>
+            <button class="circle-btn" type="button" aria-label="Micrófono">🎙</button>
+            <button class="circle-btn" type="button" aria-label="Enviar">↑</button>
           </div>
-        </article>
-
-        <article class="trio-card">
-          <div class="overlay">
-            <div class="num">0.98</div>
-            <div class="meta">iMac Motion<br>Setup principal</div>
-          </div>
-          <img src="img/iMac-Motion.png" alt="iMac Motion">
-          <div class="caption">
-            <b>Desktop Performance</b>
-            El centro de la presentación: interfaz Motion-X protagonista para mostrar toda la experiencia.
-          </div>
-        </article>
-
-        <article class="trio-card">
-          <div class="overlay">
-            <div class="num">99%</div>
-            <div class="meta">iPadmotion<br>Próximamente</div>
-          </div>
-          <img src="img/iPadmotion.png" alt="iPadmotion">
-          <div class="caption">
-            <b>Future App Experience</b>
-            La app para iPad se anuncia como el siguiente paso del ecosistema Motion-X.
-          </div>
-        </article>
+        </div>
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="features">
       <div class="section-head reveal">
-        <div class="copy">
-          <div class="eyebrow">Core features</div>
-          <h2>Motion tools<br><span>designed to move.</span></h2>
+        <div>
+          <div class="eyebrow" style="justify-content:flex-start">Feature stack</div>
+          <h2>Performance features,<br>ready for the stage.</h2>
         </div>
-
         <p>
-          Motion-X fue pensado como un instrumento serio para performance: capas, bancos vivos, control expresivo
-          y un sistema claro para estudio o escenario.
+          Motion-X toma inspiración de instrumentos modernos de performance y lo aterriza en un producto serio dentro de Dingloft.
         </p>
       </div>
 
       <div class="feature-grid">
         <article class="card reveal">
           <div class="kicker">Live Banks</div>
-          <h3>Change sounds.<br>Keep the flow.</h3>
+          <h3>Cambia sonidos<br>sin cortar la interpretación.</h3>
           <p>
-            Las notas anteriores siguen sonando y terminan su release natural, mientras las nuevas notas pasan al banco siguiente.
+            Las notas anteriores siguen sonando, los releases terminan naturalmente y las nuevas notas entran usando el banco seleccionado. Todo explicado de forma musical y comercial.
           </p>
-
-          <div class="bank-row">
-            <div class="bank"><b>01</b><span>Piano + Atmosphere</span></div>
-            <div class="bank"><b>02</b><span>Warm Worship</span></div>
-            <div class="bank"><b>03</b><span>Grand Piano</span></div>
-            <div class="bank"><b>04</b><span>Strings</span></div>
+          <div class="bank-flow">
+            <div class="bank-item"><b>01 Piano + Atmosphere</b><span>Banco activo para intro y capas suaves.</span></div>
+            <div class="bank-item"><b>02 Warm Worship</b><span>Transición limpia para la siguiente sección.</span></div>
+            <div class="bank-item"><b>03 Grand Piano</b><span>Nuevo ataque con banco nuevo sin cortar el anterior.</span></div>
+            <div class="bank-item"><b>04 Strings</b><span>Más profundidad para el arreglo en vivo.</span></div>
           </div>
         </article>
 
         <article class="card reveal">
           <div class="kicker">Super Knob</div>
-          <h3>One macro.<br>Many destinations.</h3>
+          <h3>Un macro.<br>Múltiples destinos.</h3>
           <p>
-            Controla cutoff, reverb, pan, level y otros destinos compatibles desde un solo gesto.
+            Controla cutoff, reverb, pan, level y otros destinos compatibles desde un solo gesto. Potente para directo y fácil de entender.
           </p>
-          <div class="knob" aria-hidden="true"></div>
+          <div class="knob-visual" aria-hidden="true"></div>
         </article>
 
-        <article class="card wide reveal">
+        <article class="card reveal" id="how-to-use" style="grid-column:1 / -1">
           <div class="kicker">16 Parts</div>
-          <h3>Layered without losing control.</h3>
+          <h3>Capas, splits y control total.</h3>
           <p>
-            Diseñado para performances más grandes con una lectura visual clara y acceso rápido a cada parte.
+            FULL desbloquea el sistema completo de 16 Parts, Live Banks, control expresivo, mixer, FX y más. La estructura está pensada para tocar en vivo, producir y mantener un flujo claro.
           </p>
-
-          <div class="parts">
-            <div class="part"><b>01</b>Part</div>
-            <div class="part"><b>02</b>Part</div>
-            <div class="part"><b>03</b>Part</div>
-            <div class="part"><b>04</b>Part</div>
-            <div class="part"><b>05</b>Part</div>
-            <div class="part"><b>06</b>Part</div>
-            <div class="part"><b>07</b>Part</div>
-            <div class="part"><b>08</b>Part</div>
+          <div class="parts-grid">
+            <div class="mini-spec"><b>01</b><span>Piano</span></div>
+            <div class="mini-spec"><b>02</b><span>EP</span></div>
+            <div class="mini-spec"><b>03</b><span>Pad</span></div>
+            <div class="mini-spec"><b>04</b><span>Lead</span></div>
+            <div class="mini-spec"><b>05</b><span>Strings</span></div>
+            <div class="mini-spec"><b>06</b><span>Bass</span></div>
+            <div class="mini-spec"><b>07</b><span>Texture</span></div>
+            <div class="mini-spec"><b>08</b><span>Split</span></div>
           </div>
         </article>
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="pricing">
       <div class="section-head reveal">
-        <div class="copy">
-          <div class="eyebrow">Free vs Full</div>
-          <h2>Try Motion-X.<br><span>Unlock when ready.</span></h2>
+        <div>
+          <div class="eyebrow" style="justify-content:flex-start">Free vs Full</div>
+          <h2>Una sola app.<br>Dos niveles de acceso.</h2>
         </div>
-
         <p>
-          Una sola aplicación. Descargas FREE con prueba funcional y desbloqueas FULL cuando quieras dentro del ecosistema Dingloft.
+          No hay dos apps separadas. Descargas Motion-X una sola vez, usas FREE y luego desbloqueas FULL dentro del ecosistema Dingloft.
         </p>
       </div>
 
-      <div class="access-grid">
-        <article class="price-card reveal">
-          <div class="price-row">
+      <div class="pricing-grid">
+        <article class="pricing-card reveal">
+          <div class="price-top">
             <div>
-              <div class="kicker">Included</div>
+              <div class="kicker">Download</div>
               <h3>FREE</h3>
-              <span class="trial">10 min trial</span>
+              <span class="pill-note">10 min trial · full sigue bloqueado</span>
             </div>
-
-            <div class="price">
+            <div class="price-tag">
               <strong>US$0</strong>
-              <span>Download</span>
+              <span>Instala una vez</span>
             </div>
           </div>
-
-          <ul class="checklist">
-            <li>Selección limitada de sonidos.</li>
-            <li>Motor de audio nativo.</li>
-            <li>MIDI y controles de expresión.</li>
-            <li>2–4 Parts como máximo.</li>
-            <li>Super Knob con destinos limitados.</li>
+          <ul class="plan-list">
+            <li>4 sonidos aproximados: 1 piano, 1 EP, 1 pad y 1 lead.</li>
+            <li>Motor nativo funcional y MIDI listo para tocar.</li>
+            <li>2–4 Parts como máximo y experiencia básica Motion-X.</li>
+            <li>Super Knob funcional con destinos limitados.</li>
+            <li>Botón Unlock Full preparado para checkout real de Dingloft.</li>
           </ul>
-
-          <div class="cta-row">
-            <button class="btn btn-secondary" type="button" data-action="download-motion-x">Descargar gratis</button>
+          <div class="cta-actions" style="justify-content:flex-start">
+            <button class="btn btn-ghost" type="button" data-action="download-motion-x">Descargar gratis</button>
           </div>
         </article>
 
-        <article class="price-card reveal">
-          <div class="price-row">
+        <article class="pricing-card reveal">
+          <div class="price-top">
             <div>
               <div class="kicker">Complete system</div>
               <h3>FULL</h3>
-              <span class="trial">Oferta de apertura</span>
+              <span class="pill-note">Oferta de apertura</span>
             </div>
-
-            <div class="price">
+            <div class="price-tag">
               <strong>US$28</strong>
-              <span>Precio regular previsto · US$60</span>
+              <span>Después US$60</span>
             </div>
           </div>
-
-          <ul class="checklist">
-            <li>Banco completo de sonidos.</li>
-            <li>16 Parts / Layers completas.</li>
-            <li>Live Banks completos.</li>
-            <li>Super Knob completo y Common Assign.</li>
-            <li>FX, mixer, filtros, envelopes, reverb, delay y chorus.</li>
-            <li>Standalone, VST3 y AU.</li>
+          <ul class="plan-list">
+            <li>Banco completo con categorías como pianos, EPs, pads, synths, strings, leads y textures.</li>
+            <li>16 Parts completas, Live Banks y flujo avanzado de performance.</li>
+            <li>Super Knob completo, Common Assign y controles expresivos reales.</li>
+            <li>FX, reverb, delay, chorus, filtros, envelopes y mixer.</li>
+            <li>Standalone, VST3 y AU con estructura lista para checkout: <code>data-product-id="motion-x-full"</code>.</li>
           </ul>
-
-          <div class="cta-row">
+          <div class="cta-actions" style="justify-content:flex-start">
             <button class="btn btn-primary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">Desbloquear FULL · US$28</button>
           </div>
         </article>
       </div>
     </section>
 
-    <section class="final reveal">
+    <section class="section" id="faq">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow" style="justify-content:flex-start">Compatibility</div>
+          <h2>Built for macOS.<br>iPad coming next.</h2>
+        </div>
+        <p>
+          Se mantiene una comunicación honesta: el producto actual se centra en macOS, mientras la versión iPad se presenta como lanzamiento próximo.
+        </p>
+      </div>
+
+      <div class="spec-grid">
+        <article class="card reveal">
+          <div class="kicker">Current</div>
+          <h3>macOS</h3>
+          <p>Compatible como Standalone, VST3 y AU. Pensado para estudio y escenario.</p>
+        </article>
+        <article class="card reveal">
+          <div class="kicker">Audio</div>
+          <h3>Native Engine</h3>
+          <p>Motor de audio nativo, MIDI funcional y estructura lista para expansión futura.</p>
+        </article>
+        <article class="card reveal">
+          <div class="kicker">Upcoming</div>
+          <h3>iPad App</h3>
+          <p>La experiencia táctil en iPad se comunica como “próximamente disponible”.</p>
+        </article>
+        <article class="card reveal">
+          <div class="kicker">FAQ</div>
+          <h3>One app only</h3>
+          <p>FREE y FULL viven dentro del mismo binario. No hace falta reinstalar al comprar.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="final-cta reveal">
       <div class="eyebrow">Motion-X</div>
       <h2>Sound in Motion.</h2>
       <p>
-        Una sola marca, tres dispositivos y una dirección clara: hacer que Motion-X se vea serio, moderno y premium dentro de Dingloft.
+        Motion-X ahora tiene una dirección visual mucho más premium, inspirada en un hero futurista tipo producto tecnológico, y optimizada desde una sola vez para desktop, iPad y móvil.
       </p>
-
-      <div class="cta-row" style="justify-content:center">
-        <button class="btn btn-primary" type="button" data-action="download-motion-x">Descargar gratis</button>
-        <button class="btn btn-secondary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">Comprar FULL</button>
+      <div class="cta-actions">
+        <button class="btn btn-ghost" type="button" data-action="download-motion-x">Descargar gratis</button>
+        <button class="btn btn-primary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">Comprar FULL</button>
       </div>
     </section>
 
     <footer>
       <span>© Dingloft · Motion-X</span>
-      <span>Usa en /img/: iMac-Motion.png · MacbookPro.png · iPadmotion.png · titlemotion.png</span>
+      <span>Usa en /img/: iMac-Motion.png · MacbookPro.png · iPadmotion.png</span>
     </footer>
   </main>
 
@@ -1638,7 +1101,6 @@
             }
           });
         }, { threshold: .14 });
-
         revealEls.forEach(el => io.observe(el));
       } else {
         revealEls.forEach(el => el.classList.add('in'));
@@ -1647,7 +1109,6 @@
       document.querySelectorAll('[data-action="download-motion-x"]').forEach(btn => {
         btn.addEventListener('click', () => console.log('Motion-X download hook'));
       });
-
       document.querySelectorAll('[data-action="buy-motion-x"]').forEach(btn => {
         btn.addEventListener('click', e => console.log('Motion-X checkout hook:', e.currentTarget.dataset.productId));
       });
