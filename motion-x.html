@@ -162,22 +162,7 @@
       pointer-events:none;
     }
 
-    .left-white-panel{
-      position:absolute;
-      left:18px;
-      top:18px;
-      width:268px;
-      height:232px;
-      border-radius:12px;
-      background:#f4f4f4;
-      color:#111;
-      z-index:1;
-      padding:18px 18px 14px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      overflow:hidden;
-    }
+    .left-white-panel{display:none}
 
     .left-white-panel .logo-line{
       display:flex;
@@ -294,7 +279,7 @@
 
     .imac{
       left:50%;
-      top:22px;
+      top:-34px;
       width:min(54vw, 590px);
       transform:translateX(-50%);
       z-index:2;
@@ -811,12 +796,9 @@
       .device-stage{
         inset:96px 80px 0 50px;
       }
-      .left-white-panel{
-        width:236px;
-        height:208px;
-      }
+      .left-white-panel{display:none}
       .panel-app-logo{width:138px}
-      .imac{width:min(58vw, 560px); top:12px;}
+      .imac{width:min(58vw, 560px); top:-42px;}
       .macbook{width:min(28vw, 290px); left:6px;}
       .ipad{width:min(24vw, 220px); right:52px;}
       .trio,
@@ -842,10 +824,7 @@
       .brand{justify-self:end}
       .nav-links{gap:16px;font-size:13px}
       .hero-board{min-height:760px}
-      .left-white-panel{
-        width:220px;
-        height:190px;
-      }
+      .left-white-panel{display:none}
       .panel-app-logo{width:126px}
       .big-m{
         left:150px;
@@ -856,7 +835,7 @@
         inset:110px 32px 0 24px;
       }
       .imac{
-        top:96px;
+        top:28px;
         width:min(82vw, 500px);
       }
       .macbook{
@@ -892,15 +871,7 @@
         justify-self:start;
         font-size:17px;
       }
-      .left-white-panel{
-        position:relative;
-        left:auto;
-        top:auto;
-        width:100%;
-        height:auto;
-        min-height:148px;
-        margin:12px 0 0;
-      }
+      .left-white-panel{display:none}
       .panel-app-logo{width:150px}
       .hero-board{min-height:660px}
       .big-m{
@@ -920,7 +891,7 @@
       }
       .imac{
         width:min(92%, 440px);
-        top:44px;
+        top:6px;
       }
       .macbook{
         width:40%;
@@ -1024,15 +995,6 @@
       </header>
 
       <div class="hero-board">
-        <div class="left-white-panel">
-          <div class="logo-line">
-            <img class="panel-app-logo" src="img/titlemotion.png" alt="Logo Motion-X">
-            <div>Performance</div>
-          </div>
-          <div class="mini-copy">Advanced Motion Technology</div>
-          <div class="floating-line"></div>
-        </div>
-
         <div class="big-m"><span>M</span></div>
 
         <div class="vertical-title" aria-hidden="true">
