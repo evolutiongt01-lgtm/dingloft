@@ -143,6 +143,13 @@
       letter-spacing:-.075em;
       font-weight:900;
     }
+    .hero-title-logo{
+      width:min(520px, 72vw);
+      height:auto;
+      margin:0 auto;
+      object-fit:contain;
+      filter:drop-shadow(0 14px 32px rgba(0,0,0,.28));
+    }
     .hero-copy p{
       margin:28px auto 0;
       max-width:640px;
@@ -398,6 +405,7 @@
         padding:100px 18px 120px;
       }
       .hero-copy h1{font-size:clamp(42px, 13vw, 72px)}
+      .hero-title-logo{width:min(360px, 76vw)}
       .hero-copy p{font-size:15px; line-height:1.7; margin-top:18px}
       .hero-cta{gap:10px; margin-top:24px}
       .btn{min-height:52px; width:100%; max-width:320px; padding:0 22px}
@@ -458,7 +466,7 @@
       </header>
 
       <div class="hero-copy">
-        <h1>MODERN<br>DESIGN</h1>
+        <img class="hero-title-logo" src="img/titlemotion.png" alt="Motion-X Engine">
         <p>
           Motion-X lleva una estética premium y una experiencia seria para performance y producción. Live Banks, Super Knob, 8 capas y un flujo limpio dentro del ecosistema Dingloft, compatible con cualquier DAW que soporte el formato del plugin.
         </p>
