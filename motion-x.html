@@ -3,40 +3,34 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#040506">
+  <meta name="theme-color" content="#090909">
   <title>Motion-X — Dingloft</title>
-  <meta name="description" content="Motion-X para Dingloft. Instrumento de performance con Live Banks, 16 Parts, Super Knob y un ecosistema visual con iMac, MacBook Pro e iPad.">
+  <meta name="description" content="Motion-X en Dingloft. Página de producto con diseño premium, iMac al centro, MacBook Pro e iPad dentro del ecosistema Motion-X.">
 
   <style>
     :root{
-      --bg:#040506;
-      --bg-2:#070a0d;
-      --panel:#0b1015;
-      --panel-2:#0d131b;
-      --line:rgba(255,255,255,.08);
-      --line-strong:rgba(0,218,255,.22);
-      --text:#f2f7ff;
-      --muted:#93a3b9;
-      --cyan:#10d8ff;
-      --cyan-2:#00a8ff;
-      --red:#ff4f68;
-      --red-soft:rgba(255,79,104,.10);
-      --cyan-soft:rgba(16,216,255,.12);
-      --shadow:0 30px 90px rgba(0,0,0,.42);
+      --bg:#0b0b0b;
+      --bg-soft:#101010;
+      --panel:#111111;
+      --panel-2:#171717;
+      --line:rgba(255,255,255,.09);
+      --text:#f5f5f5;
+      --muted:#b7b7b7;
+      --white-soft:#efefef;
+      --accent:#ffffff;
       --max:1440px;
+      --radius:28px;
+      --shadow:0 28px 80px rgba(0,0,0,.42);
     }
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      color:var(--text);
       font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#111 0%, #0a0a0a 100%);
+      color:var(--text);
       -webkit-font-smoothing:antialiased;
-      background:
-        radial-gradient(circle at 50% 0%, rgba(16,216,255,.08), transparent 26rem),
-        radial-gradient(circle at 80% 18%, rgba(255,79,104,.04), transparent 20rem),
-        linear-gradient(180deg, #040506 0%, #020304 100%);
       overflow-x:hidden;
     }
 
@@ -47,240 +41,353 @@
     .page{
       max-width:var(--max);
       margin:0 auto;
-      padding:0 18px 84px;
+      padding:24px 20px 84px;
     }
 
-    /* ===== HERO ===== */
     .hero{
       position:relative;
       overflow:hidden;
-      min-height:100svh;
-      padding:22px 24px 34px;
-      border:1px solid var(--line);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.006)),
-        radial-gradient(circle at 50% 24%, rgba(16,216,255,.08), transparent 24rem),
-        var(--bg);
+      padding:20px 18px 26px;
+      background:#090909;
+      border-radius:0;
       box-shadow:var(--shadow);
+      min-height:980px;
     }
 
     .hero::before{
       content:"";
       position:absolute;
       inset:0;
-      pointer-events:none;
       background:
-        radial-gradient(circle at 50% 18%, rgba(255,255,255,.025), transparent 30rem),
-        linear-gradient(90deg, transparent 0%, rgba(16,216,255,.08) 50%, transparent 100%);
-      opacity:.75;
+        linear-gradient(180deg, rgba(255,255,255,.02), transparent 16%),
+        radial-gradient(circle at 50% 18%, rgba(255,255,255,.03), transparent 24%);
+      pointer-events:none;
     }
 
+    /* NAV */
     .nav{
       position:relative;
-      z-index:8;
+      z-index:6;
       min-height:72px;
       display:grid;
       grid-template-columns:1fr auto 1fr;
       align-items:center;
-      gap:18px;
+      gap:16px;
+      padding:2px 14px 0;
     }
 
-    .nav-left,
-    .nav-right{
+    .nav-links{
       display:flex;
       align-items:center;
       gap:24px;
-    }
-
-    .nav-left{
-      justify-content:flex-start;
-    }
-
-    .nav-right{
-      justify-content:flex-end;
-      gap:16px;
-    }
-
-    .nav-link{
-      color:#f3f6ff;
       font-size:14px;
-      font-weight:600;
-      opacity:.88;
-      transition:.25s ease;
+      color:#ececec;
     }
 
-    .nav-link:hover{opacity:1;color:#fff}
+    .nav-links a{
+      opacity:.9;
+      transition:.22s ease;
+      font-weight:550;
+    }
+
+    .nav-links a:hover{
+      opacity:1;
+      transform:translateY(-1px);
+    }
 
     .brand{
       justify-self:center;
       display:inline-flex;
       align-items:center;
       gap:12px;
-      font-weight:800;
       font-size:18px;
-      letter-spacing:-.02em;
+      font-weight:800;
+      letter-spacing:-.03em;
     }
 
     .brand-mark{
-      width:28px;height:28px;
-      position:relative;
-      display:inline-block;
+      width:30px;
+      height:30px;
+      border-radius:10px;
+      background:linear-gradient(145deg,#ffffff,#bbbbbb);
+      color:#111;
+      display:grid;
+      place-items:center;
+      font-size:15px;
+      font-weight:900;
+      box-shadow:0 12px 26px rgba(255,255,255,.06);
     }
 
-    .brand-mark::before,
-    .brand-mark::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      border-radius:8px;
-      transform:skewX(-18deg);
-    }
-
-    .brand-mark::before{
-      background:linear-gradient(180deg,var(--cyan),var(--cyan-2));
-      clip-path:polygon(0 0,100% 0,62% 40%,0 40%);
-      box-shadow:0 0 20px rgba(16,216,255,.28);
-    }
-
-    .brand-mark::after{
-      background:linear-gradient(180deg,#5fe5ff,#00a4ff);
-      clip-path:polygon(38% 60%,100% 60%,100% 100%,0 100%);
+    .nav-icons{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:10px;
     }
 
     .icon-btn{
       width:38px;height:38px;
       border:none;
       background:transparent;
-      color:#eef4ff;
+      color:#f6f6f6;
       display:grid;
       place-items:center;
       cursor:pointer;
-      opacity:.92;
+      opacity:.94;
       transition:.2s ease;
     }
 
     .icon-btn:hover{
       transform:translateY(-2px);
-      color:#fff;
+      opacity:1;
     }
 
     .icon{
       width:22px;height:22px;
       stroke:currentColor;
       fill:none;
-      stroke-width:1.9;
+      stroke-width:1.8;
       stroke-linecap:round;
       stroke-linejoin:round;
     }
 
-    .hero-stage{
+    /* TOP PANEL */
+    .hero-board{
       position:relative;
-      z-index:3;
-      min-height:calc(100svh - 110px);
+      z-index:2;
+      margin-top:14px;
+      min-height:655px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#0a0a0a;
+      overflow:hidden;
+    }
+
+    .hero-board::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, transparent 0 18%, rgba(255,255,255,.02) 18% 19%, transparent 19% 100%);
+      pointer-events:none;
+    }
+
+    .left-white-panel{
+      position:absolute;
+      left:18px;
+      top:18px;
+      width:330px;
+      height:328px;
+      border-radius:12px;
+      background:#f4f4f4;
+      color:#111;
+      z-index:1;
+      padding:22px 22px 16px;
       display:flex;
       flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      padding:26px 0 0;
+      justify-content:space-between;
+      overflow:hidden;
     }
 
-    .watermark{
+    .left-white-panel .logo-line{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      font-size:14px;
+      color:#272727;
+    }
+
+    .left-white-panel .dingloft-badge{
+      font-size:22px;
+      font-weight:900;
+      line-height:1;
+      letter-spacing:-.05em;
+      text-transform:uppercase;
+    }
+
+    .left-white-panel .mini-copy{
+      color:#222;
+      font-size:13px;
+    }
+
+    .left-white-panel .floating-line{
       position:absolute;
-      top:10%;
-      left:50%;
-      transform:translateX(-50%);
-      font-size:clamp(140px, 18vw, 330px);
-      line-height:.82;
-      font-weight:840;
-      letter-spacing:-.08em;
-      color:rgba(20,223,255,.55);
+      right:-90px;
+      top:120px;
+      width:190px;
+      height:1.5px;
+      background:#6b6b6b;
+      transform:rotate(-12deg);
+    }
+
+    .big-m{
+      position:absolute;
+      left:205px;
+      top:18px;
+      width:760px;
+      height:610px;
+      z-index:0;
+      color:#fff;
+      font-size:610px;
+      line-height:.86;
+      font-weight:900;
+      letter-spacing:-.18em;
       user-select:none;
       pointer-events:none;
-      z-index:0;
-      white-space:nowrap;
+      opacity:1;
       text-transform:uppercase;
-      filter:drop-shadow(0 0 30px rgba(16,216,255,.08));
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-start;
     }
 
-    .device-cluster{
-      position:relative;
-      z-index:3;
-      width:min(100%, 1180px);
-      min-height:410px;
-      margin-top:40px;
+    .big-m span{
+      display:block;
+      transform:translateX(-16px);
+      text-shadow:0 4px 10px rgba(255,255,255,.02);
     }
 
-    .device-card{
+    .vertical-title{
       position:absolute;
-      transition:transform .35s ease;
-      filter:drop-shadow(0 20px 40px rgba(0,0,0,.38));
+      right:26px;
+      top:24px;
+      bottom:20px;
+      z-index:2;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      justify-content:space-between;
+      pointer-events:none;
     }
 
-    .device-card:hover{
+    .vertical-title .word{
+      writing-mode:vertical-rl;
+      text-orientation:mixed;
+      font-size:110px;
+      line-height:.8;
+      letter-spacing:-.07em;
+      font-weight:900;
+      color:#ffffff;
+    }
+
+    .vertical-title .side-notes{
+      display:flex;
+      flex-direction:column;
+      gap:30px;
+      font-size:13px;
+      color:#dcdcdc;
+      align-items:flex-end;
+      opacity:.9;
+    }
+
+    .device-stage{
+      position:absolute;
+      inset:84px 110px 0 78px;
+      z-index:3;
+    }
+
+    .device-stage img{
+      position:absolute;
+      max-width:none;
+      height:auto;
+      filter:drop-shadow(0 24px 48px rgba(0,0,0,.38));
+      transition:transform .3s ease;
+    }
+
+    .device-stage img:hover{
       transform:translateY(-8px);
     }
 
-    .device-imac{
-      left:50%;
-      top:-10px;
-      width:min(68%, 760px);
+    .imac{
+      left:48%;
+      top:38px;
+      width:min(62vw, 700px);
       transform:translateX(-50%);
+      z-index:4;
+    }
+
+    .macbook{
+      left:-8px;
+      bottom:54px;
+      width:min(24vw, 300px);
       z-index:3;
     }
 
-    .device-mac{
-      left:3%;
-      bottom:6px;
-      width:min(34%, 360px);
-      z-index:2;
+    .ipad{
+      right:28px;
+      bottom:84px;
+      width:min(22vw, 260px);
+      z-index:3;
     }
 
-    .device-ipad{
-      right:4%;
-      bottom:10px;
-      width:min(30%, 310px);
-      z-index:2;
-    }
-
-    .headline{
+    .hero-lower{
       position:relative;
-      z-index:5;
-      margin-top:16px;
-      text-align:center;
-      max-width:980px;
+      z-index:3;
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:28px;
+      margin-top:34px;
+      padding:0 14px;
+      align-items:end;
     }
 
-    .headline h1{
+    .hero-copy h1{
       margin:0;
-      font-size:clamp(52px, 6.4vw, 84px);
-      line-height:1.03;
+      font-size:clamp(54px,5.8vw,76px);
+      line-height:1.02;
       letter-spacing:-.06em;
-      font-weight:820;
-      text-shadow:0 10px 36px rgba(0,0,0,.28);
+      font-weight:880;
+      text-transform:uppercase;
     }
 
-    .headline p{
-      max-width:760px;
-      margin:18px auto 0;
+    .hero-copy p{
+      margin:18px 0 0;
+      max-width:740px;
       color:var(--muted);
       font-size:16px;
       line-height:1.72;
     }
 
+    .hero-stats{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+
+    .stat{
+      padding:18px 18px 16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#101010;
+      min-height:108px;
+    }
+
+    .stat strong{
+      display:block;
+      font-size:28px;
+      line-height:1;
+      font-weight:850;
+      letter-spacing:-.04em;
+    }
+
+    .stat span{
+      display:block;
+      margin-top:8px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
+    }
+
     .hero-actions{
-      margin-top:28px;
       display:flex;
       flex-wrap:wrap;
-      align-items:center;
-      justify-content:center;
       gap:12px;
+      margin-top:24px;
     }
 
     .btn{
       min-height:48px;
       padding:0 22px;
-      border-radius:999px;
-      border:1px solid transparent;
+      border:none;
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -288,101 +395,120 @@
       font-size:13px;
       font-weight:760;
       cursor:pointer;
-      transition:.25s ease;
+      transition:.24s ease;
     }
 
     .btn:hover{transform:translateY(-2px)}
 
     .btn-primary{
-      color:#061018;
-      background:linear-gradient(180deg,#51e6ff,#13ccff);
-      box-shadow:0 14px 30px rgba(16,216,255,.22);
+      background:#ffffff;
+      color:#111;
+      box-shadow:0 14px 32px rgba(255,255,255,.08);
     }
 
     .btn-secondary{
-      color:#dbebff;
       background:transparent;
-      border-color:rgba(16,216,255,.32);
-      box-shadow:inset 0 0 0 1px rgba(16,216,255,.05);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.18);
     }
 
-    .btn-secondary:hover{
-      border-color:rgba(255,79,104,.28);
-      box-shadow:0 0 0 1px rgba(255,79,104,.08), 0 12px 28px rgba(16,216,255,.10);
-    }
-
-    .badges{
-      margin-top:16px;
+    .hero-tags{
       display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
       flex-wrap:wrap;
+      gap:10px;
+      margin-top:16px;
     }
 
-    .badge{
-      padding:9px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.1);
-      background:rgba(255,255,255,.03);
-      color:#c9d8ea;
+    .tag{
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,.12);
+      background:#111;
+      color:#ddd;
       font-size:11px;
       font-weight:700;
-      letter-spacing:.08em;
       text-transform:uppercase;
+      letter-spacing:.08em;
     }
 
-    .badge.red{
-      border-color:rgba(255,79,104,.18);
-      background:var(--red-soft);
-      color:#ffc5cf;
-    }
-
-    .hero-meta{
-      position:relative;
-      z-index:5;
-      margin-top:34px;
-      width:min(100%, 1180px);
+    /* BOTTOM CARDS INSPIRED BY REFERENCE */
+    .trio{
+      margin-top:26px;
       display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:16px;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      padding:0 14px;
     }
 
-    .meta-card{
-      min-height:106px;
-      padding:18px 18px 16px;
-      border-radius:22px;
-      border:1px solid var(--line);
+    .trio-card{
+      position:relative;
+      overflow:hidden;
+      min-height:368px;
+      background:#121212;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .trio-card img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      padding:32px 18px 18px;
       background:
-        linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.01)),
-        rgba(10,14,19,.82);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)),
+        #141414;
     }
 
-    .meta-card b{
-      display:block;
-      font-size:14px;
-      line-height:1.2;
+    .trio-card .overlay{
+      position:absolute;
+      left:0;right:0;top:0;
+      padding:18px 18px 0;
+      z-index:2;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      pointer-events:none;
     }
 
-    .meta-card span{
-      display:block;
-      margin-top:8px;
-      color:var(--muted);
+    .trio-card .num{
+      font-size:22px;
+      font-weight:800;
+      letter-spacing:-.04em;
+    }
+
+    .trio-card .meta{
+      text-align:right;
+      color:#f1f1f1;
       font-size:12px;
-      line-height:1.58;
+      max-width:170px;
+      line-height:1.45;
     }
 
-    /* ===== CONTENT ===== */
+    .trio-card .caption{
+      position:absolute;
+      left:18px;right:18px;bottom:18px;
+      color:#f0f0f0;
+      font-size:13px;
+      line-height:1.6;
+      z-index:2;
+    }
+
+    .trio-card .caption b{
+      display:block;
+      margin-bottom:6px;
+      font-size:15px;
+      line-height:1.3;
+    }
+
+    /* content */
     .section{
-      padding:86px 6px 0;
+      padding:84px 4px 0;
     }
 
     .section-head{
       display:flex;
       align-items:end;
       justify-content:space-between;
-      gap:26px;
+      gap:24px;
       margin-bottom:28px;
     }
 
@@ -391,7 +517,7 @@
     }
 
     .eyebrow{
-      color:var(--cyan);
+      color:#d8d8d8;
       font-size:10px;
       font-weight:800;
       letter-spacing:.24em;
@@ -403,13 +529,11 @@
       font-size:clamp(42px,5.6vw,78px);
       line-height:.96;
       letter-spacing:-.06em;
-      font-weight:780;
+      font-weight:800;
+      text-transform:uppercase;
     }
 
-    .section-head h2 span{
-      color:#84c8d7;
-    }
-
+    .section-head h2 span{color:#cdcdcd}
     .section-head p{
       max-width:460px;
       margin:0;
@@ -426,38 +550,20 @@
 
     .card{
       min-height:350px;
-      border:1px solid var(--line);
-      border-radius:26px;
+      border:1px solid rgba(255,255,255,.08);
       padding:28px;
       position:relative;
       overflow:hidden;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.015), rgba(255,255,255,.006)),
-        var(--panel);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
-    }
-
-    .card.blue{
-      background:
-        radial-gradient(circle at 84% 16%, rgba(16,216,255,.08), transparent 20rem),
-        linear-gradient(180deg, rgba(255,255,255,.015), rgba(255,255,255,.006)),
-        var(--panel);
-    }
-
-    .card.red{
-      background:
-        radial-gradient(circle at 84% 16%, rgba(255,79,104,.08), transparent 20rem),
-        linear-gradient(180deg, rgba(255,255,255,.015), rgba(255,255,255,.006)),
-        var(--panel);
+      background:linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.008)), var(--panel);
     }
 
     .card.wide{
       grid-column:1/-1;
-      min-height:310px;
+      min-height:300px;
     }
 
     .kicker{
-      color:var(--cyan);
+      color:#ffffff;
       font-size:10px;
       font-weight:800;
       letter-spacing:.24em;
@@ -469,6 +575,7 @@
       font-size:31px;
       line-height:1.04;
       letter-spacing:-.045em;
+      text-transform:uppercase;
     }
 
     .card p{
@@ -489,15 +596,14 @@
 
     .bank{
       padding:14px 12px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.02);
+      border:1px solid rgba(255,255,255,.08);
+      background:#151515;
     }
 
     .bank b{
       display:block;
       font-size:12px;
-      color:var(--cyan);
+      color:#fff;
     }
 
     .bank span{
@@ -514,13 +620,13 @@
       bottom:28px;
       width:168px;height:168px;
       border-radius:50%;
-      border:1px solid rgba(16,216,255,.24);
+      border:1px solid rgba(255,255,255,.22);
       background:
-        radial-gradient(circle, rgba(10,14,18,.96) 0 44%, transparent 45%),
-        conic-gradient(from 210deg, var(--cyan) 0 58%, var(--red) 58% 75%, rgba(255,255,255,.08) 75% 100%);
+        radial-gradient(circle, rgba(10,10,10,.96) 0 44%, transparent 45%),
+        conic-gradient(from 210deg, #ffffff 0 72%, rgba(255,255,255,.08) 72% 100%);
       box-shadow:
-        inset 0 0 0 14px rgba(255,255,255,.02),
-        0 0 40px rgba(16,216,255,.10);
+        inset 0 0 0 14px rgba(255,255,255,.03),
+        0 0 32px rgba(255,255,255,.06);
     }
 
     .knob::after{
@@ -543,9 +649,8 @@
 
     .part{
       padding:15px 8px;
-      border-radius:13px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.02);
+      border:1px solid rgba(255,255,255,.08);
+      background:#151515;
       text-align:center;
       color:var(--muted);
       font-size:9px;
@@ -555,7 +660,7 @@
 
     .part b{
       display:block;
-      color:var(--red);
+      color:#fff;
       font-size:16px;
       margin-bottom:5px;
     }
@@ -568,21 +673,9 @@
 
     .price-card{
       min-height:470px;
-      border-radius:26px;
-      border:1px solid var(--line);
+      border:1px solid rgba(255,255,255,.08);
       padding:28px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.015), rgba(255,255,255,.006)),
-        var(--panel);
-    }
-
-    .price-card.full{
-      background:
-        radial-gradient(circle at 84% 16%, rgba(16,216,255,.08), transparent 20rem),
-        radial-gradient(circle at 18% 16%, rgba(255,79,104,.06), transparent 20rem),
-        linear-gradient(180deg, rgba(255,255,255,.015), rgba(255,255,255,.006)),
-        var(--panel);
-      border-color:rgba(16,216,255,.18);
+      background:linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.008)), var(--panel);
     }
 
     .price-row{
@@ -590,7 +683,7 @@
       justify-content:space-between;
       gap:18px;
       padding-bottom:22px;
-      border-bottom:1px solid var(--line);
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
 
     .price-row h3{
@@ -598,30 +691,28 @@
       font-size:34px;
       line-height:1;
       letter-spacing:-.05em;
+      text-transform:uppercase;
     }
 
     .trial{
       display:inline-flex;
       margin-top:16px;
       padding:7px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,79,104,.18);
-      background:rgba(255,79,104,.08);
-      color:#ffc3cc;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
+      color:#fff;
       font-size:8px;
       font-weight:800;
       letter-spacing:.13em;
       text-transform:uppercase;
     }
 
-    .price{
-      text-align:right;
-    }
-
+    .price{text-align:right}
     .price strong{
       display:block;
       font-size:30px;
       line-height:1;
+      font-weight:840;
     }
 
     .price span{
@@ -654,12 +745,12 @@
     .checklist li::before{
       content:"✓";
       width:17px;height:17px;
-      border-radius:50%;
-      display:grid;place-items:center;
-      background:rgba(16,216,255,.07);
-      border:1px solid rgba(16,216,255,.16);
-      color:var(--cyan);
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,255,255,.16);
+      color:#fff;
       font-size:9px;
+      background:rgba(255,255,255,.04);
     }
 
     .cta-row{
@@ -672,13 +763,8 @@
     .final{
       margin-top:84px;
       padding:84px 28px;
-      border:1px solid var(--line);
-      border-radius:30px;
-      background:
-        radial-gradient(circle at 50% 18%, rgba(16,216,255,.08), transparent 20rem),
-        radial-gradient(circle at 70% 18%, rgba(255,79,104,.06), transparent 20rem),
-        linear-gradient(180deg, rgba(255,255,255,.015), rgba(255,255,255,.006)),
-        var(--panel);
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.008)), var(--panel);
       text-align:center;
     }
 
@@ -687,7 +773,8 @@
       font-size:clamp(50px,6vw,88px);
       line-height:.95;
       letter-spacing:-.06em;
-      font-weight:760;
+      font-weight:800;
+      text-transform:uppercase;
     }
 
     .final p{
@@ -704,7 +791,7 @@
       justify-content:space-between;
       flex-wrap:wrap;
       gap:18px;
-      color:#7e8c9f;
+      color:#888;
       font-size:10px;
       letter-spacing:.02em;
     }
@@ -716,45 +803,34 @@
     }
     .reveal.in{opacity:1;transform:none}
 
-    @media (max-width:1180px){
-      .hero-stage{
-        min-height:auto;
-        padding-bottom:8px;
+    @media (max-width:1200px){
+      .hero{min-height:auto}
+      .hero-board{min-height:600px}
+      .big-m{
+        left:190px;
+        top:20px;
+        width:580px;
+        font-size:500px;
       }
-
-      .device-cluster{
-        min-height:800px;
+      .device-stage{
+        inset:96px 80px 0 50px;
       }
-
-      .device-imac{
-        width:min(82%, 760px);
-      }
-
-      .device-mac{
-        left:6%;
-        width:min(42%, 380px);
-      }
-
-      .device-ipad{
-        right:6%;
-        width:min(36%, 320px);
-      }
-
-      .hero-meta,
+      .imac{width:min(66vw, 640px)}
+      .macbook{width:min(28vw, 290px)}
+      .ipad{width:min(24vw, 240px)}
+      .trio,
       .feature-grid,
       .access-grid{
         grid-template-columns:1fr 1fr;
       }
-
+      .trio-card:last-child,
       .feature-grid .wide,
       .access-grid > *:last-child{
         grid-column:1/-1;
       }
-
       .section-head{
         display:grid;
         grid-template-columns:1fr;
-        align-items:start;
       }
     }
 
@@ -762,139 +838,156 @@
       .nav{
         grid-template-columns:1fr auto;
       }
-
-      .brand{
-        justify-self:end;
+      .brand{justify-self:end}
+      .nav-links{gap:16px;font-size:13px}
+      .hero-board{
+        min-height:760px;
       }
-
-      .nav-left{
-        gap:14px;
-        flex-wrap:wrap;
+      .left-white-panel{
+        width:250px;
+        height:250px;
       }
-
-      .device-cluster{
-        min-height:780px;
+      .big-m{
+        left:150px;
+        top:24px;
+        font-size:400px;
       }
-
-      .device-imac{
-        top:0;
-        width:min(92%, 760px);
+      .device-stage{
+        inset:110px 32px 0 24px;
       }
-
-      .device-mac{
-        left:2%;
-        bottom:40px;
-        width:min(52%, 400px);
+      .imac{
+        top:108px;
+        width:min(90vw, 620px);
       }
-
-      .device-ipad{
-        right:2%;
-        bottom:0;
-        width:min(40%, 320px);
+      .macbook{
+        left:0;
+        bottom:68px;
+        width:min(34vw, 280px);
       }
-
-      .hero-meta,
+      .ipad{
+        right:0;
+        bottom:116px;
+        width:min(28vw, 220px);
+      }
+      .vertical-title .word{
+        font-size:74px;
+      }
+      .hero-lower{
+        grid-template-columns:1fr;
+      }
+      .hero-stats{
+        grid-template-columns:1fr 1fr;
+      }
+      .trio,
       .feature-grid,
       .access-grid{
         grid-template-columns:1fr;
       }
     }
 
-    @media (max-width:720px){
-      .page{padding:0 10px 56px}
+    @media (max-width:700px){
+      .page{padding:12px 10px 56px}
       .hero{
-        padding:18px 16px 24px;
+        padding:14px 12px 18px;
       }
-
       .nav{
-        min-height:64px;
+        grid-template-columns:1fr auto;
+        min-height:58px;
+        padding:0 6px;
       }
-
-      .nav-left{
+      .nav-links{
         display:none;
       }
-
       .brand{
         justify-self:start;
+        font-size:17px;
       }
-
-      .watermark{
-        top:11%;
-        font-size:clamp(92px, 23vw, 170px);
-      }
-
-      .device-cluster{
-        min-height:660px;
-        margin-top:24px;
-      }
-
-      .device-imac{
+      .left-white-panel{
         position:relative;
         left:auto;
         top:auto;
-        transform:none;
-        width:min(100%, 620px);
-        margin:0 auto;
+        width:100%;
+        height:auto;
+        min-height:162px;
+        margin:12px 0 0;
       }
-
-      .device-mac{
-        left:0;
-        width:46%;
-        bottom:12px;
+      .hero-board{
+        min-height:660px;
       }
-
-      .device-ipad{
-        right:0;
-        width:38%;
-        bottom:4px;
+      .big-m{
+        left:20px;
+        top:196px;
+        font-size:270px;
       }
-
-      .headline h1{
-        font-size:clamp(40px, 10vw, 58px);
+      .vertical-title{
+        right:8px;
+        top:14px;
+        bottom:auto;
       }
-
-      .headline p{
-        font-size:14px;
+      .vertical-title .word{
+        font-size:42px;
       }
-
-      .hero-meta{
+      .vertical-title .side-notes{
+        display:none;
+      }
+      .device-stage{
+        inset:250px 8px 0 8px;
+      }
+      .imac{
+        width:min(100%, 520px);
+        top:32px;
+      }
+      .macbook{
+        width:40%;
+        bottom:84px;
+      }
+      .ipad{
+        width:28%;
+        right:2px;
+        bottom:130px;
+      }
+      .hero-copy h1{
+        font-size:clamp(40px,10vw,54px);
+      }
+      .hero-copy p{font-size:14px}
+      .hero-stats{
         grid-template-columns:1fr;
       }
-
+      .hero-tags{gap:8px}
+      .hero-meta{grid-template-columns:1fr}
+      .trio-card{min-height:320px}
       .bank-row{
         grid-template-columns:repeat(2,1fr);
       }
-
       .parts{
         grid-template-columns:repeat(4,1fr);
       }
-
       .section{
         padding:68px 4px 0;
       }
     }
 
     @media (max-width:520px){
-      .device-cluster{
-        min-height:520px;
+      .hero-board{
+        min-height:560px;
       }
-
-      .device-imac{
+      .device-stage{
+        inset:232px 0 0 0;
+      }
+      .imac{
         width:100%;
       }
-
-      .device-mac{
-        width:48%;
+      .macbook{
+        width:44%;
+        bottom:70px;
       }
-
-      .device-ipad{
-        width:40%;
+      .ipad{
+        width:32%;
+        bottom:116px;
       }
-
       .parts{
         grid-template-columns:repeat(2,1fr);
       }
-
       .knob{
         position:relative;
         right:auto;
@@ -902,17 +995,14 @@
         margin:28px auto 0;
         width:128px;height:128px;
       }
-
       .bank-row{
         position:static;
         margin-top:22px;
       }
-
       .cta-row .btn,
       .hero-actions .btn{
         flex:1 1 100%;
       }
-
       .final{
         margin-top:68px;
         padding:62px 20px;
@@ -922,9 +1012,9 @@
     @media (prefers-reduced-motion: reduce){
       html{scroll-behavior:auto}
       *,*::before,*::after{
-        animation-duration:.001ms !important;
-        animation-iteration-count:1 !important;
-        transition-duration:.001ms !important;
+        animation-duration:.001ms!important;
+        animation-iteration-count:1!important;
+        transition-duration:.001ms!important;
       }
       .reveal{opacity:1;transform:none}
     }
@@ -935,19 +1025,19 @@
 
     <section class="hero">
       <header class="nav">
-        <nav class="nav-left" aria-label="Principal izquierda">
-          <a class="nav-link" href="#">Products</a>
-          <a class="nav-link" href="#">Gallery</a>
-          <a class="nav-link" href="#">Clients</a>
-          <a class="nav-link" href="#">Contact</a>
+        <nav class="nav-links" aria-label="Principal izquierda">
+          <a href="#">Products</a>
+          <a href="#">Gallery</a>
+          <a href="#">Clients</a>
+          <a href="#">Contact</a>
         </nav>
 
-        <a class="brand" href="#" aria-label="Dingloft Motion-X">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span>Motion-X</span>
+        <a class="brand" href="#" aria-label="Dingloft">
+          <span class="brand-mark">D</span>
+          <span>Dingloft</span>
         </a>
 
-        <div class="nav-right">
+        <div class="nav-icons">
           <button class="icon-btn" type="button" aria-label="Buscar">
             <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.2"></circle><path d="M20 20l-3.5-3.5"></path></svg>
           </button>
@@ -963,20 +1053,41 @@
         </div>
       </header>
 
-      <div class="hero-stage">
-        <div class="watermark">Motion-X</div>
-
-        <div class="device-cluster">
-          <img class="device-card device-mac" src="img/MacbookPro.png" alt="Motion-X en MacBook Pro">
-          <img class="device-card device-imac" src="img/iMac-Motion.png" alt="Motion-X en iMac Pro">
-          <img class="device-card device-ipad" src="img/iPadmotion.png" alt="Motion-X en iPad Pro">
+      <div class="hero-board">
+        <div class="left-white-panel">
+          <div class="logo-line">
+            <div class="dingloft-badge">DINGLOFT</div>
+            <div>Performance</div>
+          </div>
+          <div class="mini-copy">Advanced Motion Technology</div>
+          <div class="floating-line"></div>
         </div>
 
-        <div class="headline">
-          <h1>Next-Gen Performance Intelligence</h1>
+        <div class="big-m"><span>M</span></div>
+
+        <div class="vertical-title" aria-hidden="true">
+          <div class="word">MOTION</div>
+          <div class="side-notes">
+            <span>Precision</span>
+            <span>Performance</span>
+            <span>Possibilities</span>
+            <span>New Series</span>
+          </div>
+        </div>
+
+        <div class="device-stage">
+          <img class="macbook" src="img/MacbookPro.png" alt="Motion-X en MacBook Pro">
+          <img class="imac" src="img/iMac-Motion.png" alt="Motion-X en iMac Pro">
+          <img class="ipad" src="img/iPadmotion.png" alt="Motion-X en iPad Pro">
+        </div>
+      </div>
+
+      <div class="hero-lower">
+        <div class="hero-copy">
+          <h1>Built for Precision.<br>Engineered for Performance.</h1>
           <p>
-            Motion-X unifica performance, producción y una próxima experiencia iPad en una sola dirección visual.
-            El iMac Pro lidera el setup, el MacBook Pro queda listo para tocar y el iPad anuncia lo que viene.
+            Motion-X se presenta con una dirección visual más editorial: iMac al centro como setup principal,
+            MacBook Pro al lado izquierdo y iPad al lado derecho como expansión del ecosistema.
           </p>
 
           <div class="hero-actions">
@@ -984,33 +1095,71 @@
             <button class="btn btn-secondary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">Desbloquear FULL · US$28</button>
           </div>
 
-          <div class="badges">
-            <span class="badge">macOS</span>
-            <span class="badge">Standalone</span>
-            <span class="badge">VST3</span>
-            <span class="badge">AU</span>
-            <span class="badge red">iPad próximamente</span>
+          <div class="hero-tags">
+            <span class="tag">macOS</span>
+            <span class="tag">Standalone</span>
+            <span class="tag">VST3</span>
+            <span class="tag">AU</span>
+            <span class="tag">iPad Próximamente</span>
           </div>
         </div>
 
-        <div class="hero-meta">
-          <article class="meta-card">
-            <b>Live Banks</b>
-            <span>Cambia de banco sin cortar las voces anteriores ni la interpretación.</span>
+        <div class="hero-stats">
+          <article class="stat">
+            <strong>16</strong>
+            <span>Parts listas para capas, splits y performances complejas.</span>
           </article>
-          <article class="meta-card">
-            <b>16 Parts</b>
-            <span>Capas y splits pensados para sesiones reales y performance compleja.</span>
+          <article class="stat">
+            <strong>10m</strong>
+            <span>Prueba FREE funcional. FULL se desbloquea sin reinstalar.</span>
           </article>
-          <article class="meta-card">
-            <b>Super Knob</b>
-            <span>Un macro central para mover cutoff, reverb, pan, level y más.</span>
+          <article class="stat">
+            <strong>Live</strong>
+            <span>Live Banks para cambiar sonidos sin cortar releases anteriores.</span>
           </article>
-          <article class="meta-card">
-            <b>One App</b>
-            <span>FREE incluido. FULL se desbloquea sin reinstalar dentro de Dingloft.</span>
+          <article class="stat">
+            <strong>Full</strong>
+            <span>Oferta de apertura US$28. Precio previsto después US$60.</span>
           </article>
         </div>
+      </div>
+
+      <div class="trio">
+        <article class="trio-card">
+          <div class="overlay">
+            <div class="num">80</div>
+            <div class="meta">MacBook Pro<br>Producción portátil</div>
+          </div>
+          <img src="img/MacbookPro.png" alt="MacBook Pro con Motion-X">
+          <div class="caption">
+            <b>Portable Workflow</b>
+            Ideal para producción, prueba FREE, compras y desbloqueo del sistema FULL desde macOS.
+          </div>
+        </article>
+
+        <article class="trio-card">
+          <div class="overlay">
+            <div class="num">0.98</div>
+            <div class="meta">iMac Motion<br>Setup principal</div>
+          </div>
+          <img src="img/iMac-Motion.png" alt="iMac Motion">
+          <div class="caption">
+            <b>Desktop Performance</b>
+            El centro de la presentación: interfaz Motion-X protagonista para mostrar toda la experiencia.
+          </div>
+        </article>
+
+        <article class="trio-card">
+          <div class="overlay">
+            <div class="num">99%</div>
+            <div class="meta">iPadmotion<br>Próximamente</div>
+          </div>
+          <img src="img/iPadmotion.png" alt="iPadmotion">
+          <div class="caption">
+            <b>Future App Experience</b>
+            La app para iPad se anuncia como el siguiente paso del ecosistema Motion-X.
+          </div>
+        </article>
       </div>
     </section>
 
@@ -1018,7 +1167,7 @@
       <div class="section-head reveal">
         <div class="copy">
           <div class="eyebrow">Core features</div>
-          <h2>Performance tools<br><span>designed to move.</span></h2>
+          <h2>Motion tools<br><span>designed to move.</span></h2>
         </div>
 
         <p>
@@ -1028,7 +1177,7 @@
       </div>
 
       <div class="feature-grid">
-        <article class="card blue reveal">
+        <article class="card reveal">
           <div class="kicker">Live Banks</div>
           <h3>Change sounds.<br>Keep the flow.</h3>
           <p>
@@ -1043,7 +1192,7 @@
           </div>
         </article>
 
-        <article class="card red reveal">
+        <article class="card reveal">
           <div class="kicker">Super Knob</div>
           <h3>One macro.<br>Many destinations.</h3>
           <p>
@@ -1113,7 +1262,7 @@
           </div>
         </article>
 
-        <article class="price-card full reveal">
+        <article class="price-card reveal">
           <div class="price-row">
             <div>
               <div class="kicker">Complete system</div>
@@ -1147,7 +1296,7 @@
       <div class="eyebrow">Motion-X</div>
       <h2>Sound in Motion.</h2>
       <p>
-        Un solo producto, tres formatos de visualización y una meta clara: hacer que Motion-X se vea tan serio como su propuesta musical.
+        Una sola marca, tres dispositivos y una dirección clara: hacer que Motion-X se vea serio, moderno y premium dentro de Dingloft.
       </p>
 
       <div class="cta-row" style="justify-content:center">
