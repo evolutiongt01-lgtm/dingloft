@@ -316,6 +316,7 @@
       box-shadow:0 18px 44px rgba(0,0,0,.07);
       padding:28px;
     }
+    .requirements-card.wide-requirement{grid-column:1 / -1}
     .requirements-head{
       display:flex;
       align-items:center;
@@ -684,29 +685,29 @@
         <div class="card-grid">
           <article class="card">
             <div class="card-media">
-              <img src="img/MacbookPro.png" alt="Motion-X en MacBook Pro">
+              <img src="img/MacbookPro.png" alt="Motion-X en laptop">
             </div>
             <div class="card-body">
-              <h3>MacBook Pro</h3>
-              <p>Producción móvil, ensayos y directo con Motion-X dentro de cualquier DAW compatible con VST3 o AU.</p>
+              <h3>Laptops</h3>
+              <p>Producción móvil, ensayos y directo con Motion-X dentro de cualquier DAW compatible con el formato del plugin.</p>
               <div class="card-tags">
-                <span class="tag">Standalone</span>
-                <span class="tag">VST3</span>
-                <span class="tag">AU</span>
+                <span class="tag">Producción móvil</span>
+                <span class="tag">Compatible DAW</span>
+                <span class="tag">Directo</span>
               </div>
             </div>
           </article>
 
           <article class="card">
             <div class="card-media">
-              <img src="img/iMac-Motion.png" alt="Motion-X en iMac">
+              <img src="img/iMac-Motion.png" alt="Motion-X en escritorio de estudio">
             </div>
             <div class="card-body">
-              <h3>iMac Studio View</h3>
+              <h3>Desktop Studio</h3>
               <p>Un entorno amplio para composición, mezcla, diseño sonoro y control completo de Motion-X en estudio o directo.</p>
               <div class="card-tags">
-                <span class="tag">Native Engine</span>
-                <span class="tag">8 Layers</span>
+                <span class="tag">Motor nativo</span>
+                <span class="tag">8 capas</span>
                 <span class="tag">Live Banks</span>
               </div>
             </div>
@@ -714,15 +715,15 @@
 
           <article class="card">
             <div class="card-media">
-              <img src="img/iPadmotion.png" alt="Motion-X en iPad">
+              <img src="img/iPadmotion.png" alt="Motion-X en tablet">
             </div>
             <div class="card-body">
-              <h3>iPad App</h3>
-              <p>La experiencia táctil de Motion-X llegará próximamente a iPad, adaptada para control directo y performance.</p>
+              <h3>Tablets</h3>
+              <p>La experiencia táctil de Motion-X llegará próximamente a tablets Android y Apple, adaptada para control directo y performance.</p>
               <div class="card-tags">
-                <span class="tag">App Store · Próximamente</span>
-                <span class="tag">Touch UI</span>
-                <span class="tag">iPadOS</span>
+                <span class="tag">Tablets</span>
+                <span class="tag">Android + Apple</span>
+                <span class="tag">Próximamente</span>
               </div>
             </div>
           </article>
@@ -836,25 +837,26 @@
         <div class="section-intro" style="margin-bottom:28px">
           <div>
             <div class="eyebrow">Requisitos del sistema</div>
-            <h2>LISTO PARA TU
-            PERFORMANCE.</h2>
+            <h2>LISTO PARA TU<br>PERFORMANCE.</h2>
           </div>
           <p>
-            Requisitos claros para instalar Motion-X en macOS y Windows, desde configuraciones básicas hasta sesiones de mayor carga y múltiples capas.
+            Requisitos recomendados para ejecutar Motion-X en computadoras y dispositivos móviles, desde configuraciones básicas hasta performances multicapa de mayor exigencia.
           </p>
         </div>
 
         <div class="requirements-grid">
           <article class="requirements-card">
             <div class="requirements-head">
-              <h3>macOS</h3>
-              <span class="requirements-badge">Requisitos del sistema</span>
+              <h3>macOS · Intel</h3>
+              <span class="requirements-badge">Intel</span>
             </div>
             <div class="requirements-levels">
               <div class="requirement-level">
                 <h4>Mínimos</h4>
                 <ul>
-                  <li>8 GB RAM</li>
+                  <li>macOS 10.15 Catalina o posterior</li>
+                  <li>Intel Core i5 o superior</li>
+                  <li>8 GB de RAM</li>
                   <li>8 GB de almacenamiento libre</li>
                   <li>SSD recomendado</li>
                 </ul>
@@ -862,14 +864,48 @@
               <div class="requirement-level">
                 <h4>Recomendados</h4>
                 <ul>
-                  <li>16 GB RAM</li>
-                  <li>15 GB libres en SSD</li>
+                  <li>16 GB de RAM</li>
+                  <li>15 GB de almacenamiento libre</li>
+                  <li>SSD recomendado</li>
                 </ul>
               </div>
               <div class="requirement-level advanced">
                 <h4>Para performances avanzadas</h4>
                 <ul>
-                  <li>Se recomiendan 32 GB de RAM para configuraciones grandes con múltiples capas y performances exigentes de 8 capas.</li>
+                  <li>32 GB de RAM recomendados para configuraciones grandes, múltiples capas y sesiones de alta exigencia.</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="requirements-card">
+            <div class="requirements-head">
+              <h3>macOS · Apple Silicon</h3>
+              <span class="requirements-badge">Apple Silicon</span>
+            </div>
+            <div class="requirements-levels">
+              <div class="requirement-level">
+                <h4>Mínimos</h4>
+                <ul>
+                  <li>macOS 11 Big Sur o posterior</li>
+                  <li>Apple M1 o superior</li>
+                  <li>8 GB de RAM</li>
+                  <li>8 GB de almacenamiento libre</li>
+                  <li>SSD recomendado</li>
+                </ul>
+              </div>
+              <div class="requirement-level">
+                <h4>Recomendados</h4>
+                <ul>
+                  <li>16 GB de RAM</li>
+                  <li>15 GB de almacenamiento libre</li>
+                  <li>SSD recomendado</li>
+                </ul>
+              </div>
+              <div class="requirement-level advanced">
+                <h4>Para performances avanzadas</h4>
+                <ul>
+                  <li>32 GB de RAM recomendados para performances pesadas y configuraciones multicapa.</li>
                 </ul>
               </div>
             </div>
@@ -884,9 +920,9 @@
               <div class="requirement-level">
                 <h4>Mínimos</h4>
                 <ul>
-                  <li>Windows 10 64-bit</li>
-                  <li>Intel Core i5 / AMD Ryzen 5</li>
-                  <li>8 GB RAM</li>
+                  <li>Windows 10 de 64 bits o Windows 11</li>
+                  <li>Intel Core i5 / AMD Ryzen 5 o superior</li>
+                  <li>8 GB de RAM</li>
                   <li>8 GB de almacenamiento libre</li>
                   <li>SSD recomendado</li>
                 </ul>
@@ -894,16 +930,92 @@
               <div class="requirement-level">
                 <h4>Recomendados</h4>
                 <ul>
-                  <li>Windows 11 64-bit</li>
+                  <li>Windows 11 de 64 bits</li>
                   <li>Intel Core i5/i7 o AMD Ryzen 5/7</li>
-                  <li>16 GB RAM</li>
-                  <li>15 GB libres en SSD</li>
+                  <li>16 GB de RAM</li>
+                  <li>15 GB de almacenamiento libre</li>
+                  <li>SSD recomendado</li>
                 </ul>
               </div>
               <div class="requirement-level advanced">
                 <h4>Para performances grandes</h4>
                 <ul>
-                  <li>Se recomiendan 32 GB de RAM para performances grandes de 8 capas.</li>
+                  <li>32 GB de RAM recomendados para sesiones multicapa y performances de alta exigencia.</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="requirements-card">
+            <div class="requirements-head">
+              <h3>iPad / Tablets</h3>
+              <span class="requirements-badge">Touch</span>
+            </div>
+            <div class="requirements-levels">
+              <div class="requirement-level">
+                <h4>iPad</h4>
+                <ul>
+                  <li>iPadOS 16 o posterior</li>
+                  <li>Apple A12 Bionic o superior</li>
+                  <li>4 GB de RAM mínimo</li>
+                  <li>8 GB de RAM recomendado</li>
+                  <li>8 GB de almacenamiento libre mínimo</li>
+                  <li>12–15 GB libres recomendados</li>
+                </ul>
+              </div>
+              <div class="requirement-level">
+                <h4>Tablet Android</h4>
+                <ul>
+                  <li>Android 12 o posterior</li>
+                  <li>Procesador moderno de 64 bits</li>
+                  <li>6 GB de RAM mínimo</li>
+                  <li>8 GB de RAM recomendado</li>
+                  <li>8 GB de almacenamiento libre mínimo</li>
+                  <li>12–15 GB libres recomendados</li>
+                </ul>
+              </div>
+              <div class="requirement-level advanced">
+                <h4>Recomendación</h4>
+                <ul>
+                  <li>Para sets grandes y uso intensivo en directo, se recomienda priorizar dispositivos con mayor memoria y almacenamiento SSD/UFS rápido.</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="requirements-card wide-requirement">
+            <div class="requirements-head">
+              <h3>iPhone / Android</h3>
+              <span class="requirements-badge">Mobile</span>
+            </div>
+            <div class="requirements-levels">
+              <div class="requirement-level">
+                <h4>iPhone</h4>
+                <ul>
+                  <li>iOS 16 o posterior</li>
+                  <li>Apple A12 Bionic o superior</li>
+                  <li>4 GB de RAM mínimo</li>
+                  <li>6 GB de RAM o más recomendado</li>
+                  <li>8 GB de almacenamiento libre mínimo</li>
+                  <li>12–15 GB libres recomendados</li>
+                </ul>
+              </div>
+              <div class="requirement-level">
+                <h4>Android</h4>
+                <ul>
+                  <li>Android 12 o posterior</li>
+                  <li>ARM64</li>
+                  <li>Snapdragon 778G, Dimensity equivalente o superior como referencia</li>
+                  <li>6 GB de RAM mínimo</li>
+                  <li>8 GB de RAM recomendado</li>
+                  <li>8 GB de almacenamiento libre mínimo</li>
+                  <li>12–15 GB libres recomendados</li>
+                </ul>
+              </div>
+              <div class="requirement-level advanced">
+                <h4>Para una mejor experiencia</h4>
+                <ul>
+                  <li>Se recomienda utilizar dispositivos recientes con almacenamiento rápido, buena gestión térmica y memoria suficiente para sesiones de mayor carga.</li>
                 </ul>
               </div>
             </div>
