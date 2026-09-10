@@ -1598,7 +1598,7 @@
                     <span class="solidarity-toggle-heart solidarity-heartbeat">♡</span>
                     <span class="solidarity-toggle-copy">
                       <b>¿Deseas agregar un aporte solidario?</b>
-                      <small>Opcional · desde US$5</small>
+                      <small>Opcional · desde US$1</small>
                     </span>
                   </span>
                   <span class="solidarity-toggle-right">
@@ -1627,7 +1627,7 @@
                     <span class="solidarity-mode-icon">♡</span>
                     <span class="solidarity-mode-copy">
                       <b>Aporte sugerido</b>
-                      <small>US$5 por aporte · tú eliges cuántos</small>
+                      <small>US$1 por aporte · tú eliges cuántos</small>
                     </span>
                     <span class="solidarity-mode-arrow">›</span>
                   </button>
@@ -1662,7 +1662,7 @@
                   <div class="solidarity-panel-label">MONTO LIBRE</div>
                   <div class="solidarity-free-amount">
                     <span>$</span>
-                    <input id="donation-custom" type="number" min="0" max="100" step="1" inputmode="decimal" placeholder="0.00" aria-label="Monto libre en dólares">
+                    <input id="donation-custom" type="number" min="1" step="1" inputmode="decimal" placeholder="1.00" aria-label="Monto libre en dólares">
                     <small>USD</small>
                   </div>
                   <div class="solidarity-panel-total">
@@ -1825,14 +1825,14 @@ async function api(path,{method="GET",body,authRequired=false}={}){
 }
 
 
-const DONATION_UNIT_USD=5;
+const DONATION_UNIT_USD=1;
 let donationMode="units";
 let donationUnits=0;
 
 function clampDonation(value){
   const n=Number(value||0);
   if(!Number.isFinite(n)||n<=0)return 0;
-  return Math.round(Math.min(100,n)*100)/100;
+  return Math.round(Math.min(100000,n)*100)/100;
 }
 
 function remoteAssistanceFee(){
@@ -1845,7 +1845,9 @@ function localOrderSubtotal(){
 }
 
 function payableTotal(){
-  const base=Number(currentQuote?.totalUsd ?? Number(currentProduct?.priceUsd||0));
+  const quoted=Number(currentQuote?.totalUsd);
+  if(currentQuote && Number.isFinite(quoted))return Math.round(quoted*100)/100;
+  const base=Number(currentProduct?.priceUsd||0);
   return Math.round((base+remoteAssistanceFee()+donationUsd)*100)/100;
 }
 
@@ -1945,6 +1947,19 @@ function remoteBookingData(){
     dateValue,slot,software,notes,timestamp,
     fecha:displayDate,
     hora:`${slot.label.replace(" (+1 día)","")} (Hora de Miami)`
+  };
+}
+
+function remoteAssistancePayload(){
+  if(!remoteAssistanceSelected())return {enabled:false};
+  const booking=remoteBookingData();
+  if(!booking)return {enabled:true};
+  return {
+    enabled:true,
+    dateValue:booking.dateValue,
+    slotValue:booking.slot?.value||"",
+    software:booking.software,
+    notes:booking.notes
   };
 }
 
@@ -2124,8 +2139,7 @@ function updateSolidarityThanks(){
 }
 
 function paintDonation(){
-  const base=Number(currentQuote?.totalUsd ?? Number(currentProduct?.priceUsd||0));
-  const total=Math.round((base+remoteAssistanceFee()+donationUsd)*100)/100;
+  const total=payableTotal();
 
   const row=$("#left-donation-row");
   const value=$("#left-donation");
@@ -2178,8 +2192,9 @@ function updateDonationMode(mode){
 }
 
 function setDonationUnits(next){
-  donationUnits=Math.max(0,Math.min(20,Number(next)||0));
+  donationUnits=Math.max(0,Math.min(100,Number(next)||0));
   donationUsd=clampDonation(donationUnits*DONATION_UNIT_USD);
+  currentQuote=null;
 
   const units=$("#donation-units");
   const label=$("#donation-units-label");
@@ -2294,7 +2309,12 @@ async function secureQuote(){
 
   return api("/checkout/quote",{
     method:"POST",
-    body:{items,couponCode:""}
+    body:{
+      items,
+      couponCode:"",
+      remoteAssistance:remoteAssistancePayload(),
+      donationUsd
+    }
   });
 }
 
@@ -2302,15 +2322,15 @@ async function createOrder(){
   const items=cartItems();
   if(!items.length)throw new Error("Producto inválido.");
 
-  // La asistencia remota es un servicio adicional, no un producto del catálogo.
-  // El endpoint actual acepta un importe suplementario validado por el servidor;
-  // se suma aquí para cobrar producto + asistencia en una sola transacción.
-  const supplementalUsd=Math.round((donationUsd+remoteAssistanceFee())*100)/100;
-
   const result=await api("/checkout/paypal/create",{
     method:"POST",
     authRequired:true,
-    body:{items,couponCode:"",donationUsd:supplementalUsd}
+    body:{
+      items,
+      couponCode:"",
+      remoteAssistance:remoteAssistancePayload(),
+      donationUsd
+    }
   });
   return result.orderId;
 }
@@ -2331,7 +2351,7 @@ function showSuccess(result){
   $("#result-zone").style.display="block";
   $("#r-session").textContent="PayPal";
   $("#r-transaction").textContent=result?.captureId||result?.orderNumber||"Confirmado";
-  $("#r-total").textContent=`${money(payableTotal())} USD`;
+  $("#r-total").textContent=`${money(Number(result?.amountPaidUsd||currentQuote?.totalUsd||payableTotal()))} USD`;
 }
 
 async function renderPayPal(){
@@ -2357,13 +2377,7 @@ async function renderPayPal(){
         step("payment","active");
         setMessage("Pago aprobado. Habilitando tu compra…");
         const result=await captureOrder(data.orderID);
-        if(remoteAssistanceSelected()){
-          try{
-            await createRemoteReservation(data.orderID,result);
-          }catch(reservationError){
-            console.error("Dingloft: el pago se confirmó pero la reserva no pudo sincronizarse",reservationError);
-          }
-        }
+        // El Worker crea la reserva de asistencia después de verificar el pago real.
         showSuccess(result);
       }catch(error){
         step("payment","");
@@ -2401,10 +2415,13 @@ async function prepare(){
 
     currentQuote=await secureQuote();
 
+    // La pantalla de pago usa el total confirmado por el Worker, no un cálculo local.
+    donationUsd=Number(currentQuote?.donationUsd||0);
+
     $("#checkout-name").textContent=remoteAssistanceEnabled
       ? `${currentProduct.name} + Asistencia remota`
       : currentProduct.name;
-    $("#checkout-price").textContent=money(payableTotal());
+    $("#checkout-price").textContent=money(Number(currentQuote?.totalUsd||payableTotal()));
     $("#left-subtotal").textContent=money(currentProduct.priceUsd);
 
     const payImg=$("#payment-product-image");
@@ -2454,6 +2471,7 @@ $("#donation-plus")?.addEventListener("click",()=>setDonationUnits(donationUnits
 
 $("#donation-custom")?.addEventListener("input",event=>{
   donationUsd=clampDonation(event.target.value);
+  currentQuote=null;
   paintDonation();
 });
 
