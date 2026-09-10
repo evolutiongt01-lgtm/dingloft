@@ -1045,6 +1045,52 @@
     .remote-booking-error{
       min-height:14px;margin-top:8px;color:#b42318;font-size:7.5px;line-height:1.4;
     }
+
+    /* Remote assistance guided flow */
+    .remote-guide{
+      margin:0 0 14px;padding:12px 13px 11px;border:1px solid #e4e4df;border-radius:14px;background:linear-gradient(180deg,#fff 0%,#fbfbf9 100%);overflow:hidden;position:relative
+    }
+    .remote-guide::before{
+      content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 12% 0%,rgba(17,17,17,.045),transparent 34%);opacity:.8
+    }
+    .remote-guide-top{display:flex;align-items:center;justify-content:space-between;gap:10px;position:relative;z-index:1}
+    .remote-guide-copy{min-width:0}
+    .remote-guide-copy b{display:block;color:#171719;font-size:8.5px;font-weight:820;letter-spacing:.01em}
+    .remote-guide-copy span{display:block;margin-top:3px;color:#8d8d92;font-size:7.2px;line-height:1.45}
+    .remote-guide-badge{
+      flex:0 0 auto;min-width:62px;padding:6px 9px;border-radius:999px;background:#111;color:#fff;text-align:center;font-size:6.5px;font-weight:820;letter-spacing:.08em;text-transform:uppercase;transition:transform .28s cubic-bezier(.22,1,.36,1),background .28s ease
+    }
+    .remote-guide-track{height:3px;margin:10px 1px 11px;border-radius:999px;background:#ededeb;overflow:hidden;position:relative;z-index:1}
+    .remote-guide-progress{display:block;width:0;height:100%;border-radius:inherit;background:#111;transition:width .48s cubic-bezier(.22,1,.36,1)}
+    .remote-guide-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;position:relative;z-index:1}
+    .remote-guide-step{
+      display:flex;align-items:center;gap:6px;min-width:0;padding:7px 7px;border:1px solid transparent;border-radius:10px;color:#aaa9ae;transition:background .28s ease,border-color .28s ease,color .28s ease,transform .34s cubic-bezier(.22,1,.36,1)
+    }
+    .remote-guide-step i{
+      width:18px;height:18px;display:grid;place-items:center;flex:0 0 18px;border-radius:50%;background:#efefec;color:#8d8d92;font-style:normal;font-size:6.8px;font-weight:850;transition:all .3s cubic-bezier(.22,1,.36,1)
+    }
+    .remote-guide-step span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:6.8px;font-weight:760;letter-spacing:.025em}
+    .remote-guide-step.active{background:#fff;border-color:#d9d9d4;color:#171719;transform:translateY(-1px);box-shadow:0 5px 14px rgba(0,0,0,.04)}
+    .remote-guide-step.active i{background:#111;color:#fff;box-shadow:0 0 0 5px rgba(17,17,17,.055);animation:remoteGuidePulse 1.8s ease-in-out infinite}
+    .remote-guide-step.complete{color:#38383b}
+    .remote-guide-step.complete i{background:#e6f6ee;color:#178654;font-size:0}
+    .remote-guide-step.complete i::after{content:"✓";font-size:8px;font-weight:900}
+    .remote-guide.done .remote-guide-badge{background:#178654;transform:scale(1.02)}
+    .remote-guide.done .remote-guide-copy b{color:#156b47}
+    .remote-booking-field[data-guide-step]{position:relative;transition:opacity .25s ease,transform .3s cubic-bezier(.22,1,.36,1)}
+    .remote-booking-field[data-guide-step].guide-pending{opacity:.52}
+    .remote-booking-field[data-guide-step].guide-active{opacity:1}
+    .remote-booking-field[data-guide-step].guide-active::after{
+      content:"";position:absolute;inset:-6px;border:1px solid rgba(17,17,17,.18);border-radius:14px;pointer-events:none;animation:remoteGuideRing 1.7s ease-in-out infinite
+    }
+    .remote-booking-field[data-guide-step].guide-complete{opacity:1}
+    .remote-booking-field.guide-nudge{animation:remoteGuideNudge .52s cubic-bezier(.2,.8,.2,1)}
+    .remote-booking-field.guide-error::after{border-color:rgba(180,35,24,.48)!important;animation:remoteGuideErrorRing .72s ease both!important}
+    .remote-booking-field select:disabled,.remote-booking-field textarea:disabled{background:#f4f4f2;color:#aaa9ae;cursor:not-allowed}
+    @keyframes remoteGuidePulse{0%,100%{box-shadow:0 0 0 4px rgba(17,17,17,.04)}50%{box-shadow:0 0 0 7px rgba(17,17,17,.075)}}
+    @keyframes remoteGuideRing{0%,100%{opacity:.35;transform:scale(.995)}50%{opacity:.78;transform:scale(1.008)}}
+    @keyframes remoteGuideErrorRing{0%{opacity:0;transform:scale(.985)}35%{opacity:1;transform:scale(1.012)}100%{opacity:.75;transform:scale(1)}}
+    @keyframes remoteGuideNudge{0%{transform:translateY(0)}35%{transform:translateY(-3px)}70%{transform:translateY(1px)}100%{transform:translateY(0)}}
     @media(max-width:560px){
       .remote-booking-details{padding:0 13px 13px}
       .remote-booking-intro{display:block}
@@ -1056,6 +1102,12 @@
       .remote-booking-field input,.remote-booking-field select,.remote-booking-field textarea{font-size:16px}
       .remote-booking-field label{font-size:8px}
       .remote-booking-benefit,.remote-booking-note{font-size:8px}
+      .remote-guide{padding:11px 10px 10px;margin-bottom:12px}
+      .remote-guide-top{align-items:flex-start}
+      .remote-guide-copy b{font-size:9px}.remote-guide-copy span{font-size:7.5px}
+      .remote-guide-badge{min-width:58px;font-size:6.3px;padding:6px 7px}
+      .remote-guide-steps{grid-template-columns:repeat(2,1fr);gap:5px}
+      .remote-guide-step span{font-size:7.2px}
     }
 
 
@@ -1610,8 +1662,25 @@
                     <div class="remote-booking-hours">8:00 PM – 2:00 AM · MIAMI</div>
                   </div>
 
+                  <div class="remote-guide" id="remote-guide" aria-live="polite">
+                    <div class="remote-guide-top">
+                      <div class="remote-guide-copy">
+                        <b id="remote-guide-title">Empecemos por la fecha</b>
+                        <span id="remote-guide-hint">Selecciona el día en que quieres recibir la asistencia.</span>
+                      </div>
+                      <div class="remote-guide-badge" id="remote-guide-badge">Paso 1 de 4</div>
+                    </div>
+                    <div class="remote-guide-track" aria-hidden="true"><span class="remote-guide-progress" id="remote-guide-progress"></span></div>
+                    <div class="remote-guide-steps" aria-hidden="true">
+                      <div class="remote-guide-step active" data-remote-guide="0"><i>1</i><span>Fecha</span></div>
+                      <div class="remote-guide-step" data-remote-guide="1"><i>2</i><span>Hora</span></div>
+                      <div class="remote-guide-step" data-remote-guide="2"><i>3</i><span>Conexión</span></div>
+                      <div class="remote-guide-step" data-remote-guide="3"><i>4</i><span>Detalles</span></div>
+                    </div>
+                  </div>
+
                   <div class="remote-booking-grid">
-                    <div class="remote-booking-field remote-calendar-field">
+                    <div class="remote-booking-field remote-calendar-field" data-guide-step="0">
                       <label>Fecha</label>
                       <input class="remote-calendar-input" id="remote-booking-date" type="hidden" autocomplete="off">
                       <div class="remote-calendar-shell" id="remote-calendar-shell">
@@ -1630,20 +1699,21 @@
                       </div>
                     </div>
                     <div class="remote-booking-side">
-                      <div class="remote-booking-field">
+                      <div class="remote-booking-field" data-guide-step="1">
                         <label for="remote-booking-time">Horario · Hora de Miami</label>
                         <select id="remote-booking-time">
                           <option value="">Selecciona un horario</option>
                         </select>
                       </div>
-                      <div class="remote-booking-field">
+                      <div class="remote-booking-field" data-guide-step="2">
                         <label for="remote-booking-software">Conexión remota</label>
                         <select id="remote-booking-software">
+                          <option value="">Selecciona una app</option>
                           <option value="Google Chrome Remote Desktop">Chrome Remote Desktop</option>
                           <option value="AnyDesk">AnyDesk</option>
                         </select>
                       </div>
-                      <div class="remote-booking-field">
+                      <div class="remote-booking-field" data-guide-step="3">
                         <label for="remote-booking-notes">¿Qué necesitas instalar o configurar?</label>
                         <textarea id="remote-booking-notes" rows="4" maxlength="500" placeholder="Ej. Instalar Motion-X, configurar el plugin en mi DAW y verificar audio/MIDI."></textarea>
                       </div>
@@ -2045,6 +2115,8 @@ function renderRemoteCalendar(){
     const error=$("#remote-booking-error");if(error)error.textContent="";
     renderRemoteCalendar();
     refreshRemoteTimeOptions();
+    updateRemoteGuide();
+    window.setTimeout(()=>guideToRemoteStep(1),120);
     paintDonation();
   }));
 }
@@ -2080,19 +2152,101 @@ function initRemoteBookingControls(){
     renderRemoteCalendar();
     refreshRemoteTimeOptions();
     paintRemoteAssistance();
+    updateRemoteGuide();
+    window.setTimeout(()=>guideToRemoteStep(0),120);
     paintDonation();
   });
-  $("#remote-booking-time")?.addEventListener("change",()=>{const e=$("#remote-booking-error");if(e)e.textContent="";currentQuote=null;});
-  $("#remote-booking-software")?.addEventListener("change",()=>{const e=$("#remote-booking-error");if(e)e.textContent="";currentQuote=null;});
-  $("#remote-booking-notes")?.addEventListener("input",()=>{const e=$("#remote-booking-error");if(e)e.textContent="";currentQuote=null;});
+  $("#remote-booking-time")?.addEventListener("change",()=>{
+    const e=$("#remote-booking-error");if(e)e.textContent="";currentQuote=null;
+    updateRemoteGuide();
+    if(remoteSelectedSlot())window.setTimeout(()=>guideToRemoteStep(2),110);
+  });
+  $("#remote-booking-software")?.addEventListener("change",()=>{
+    const e=$("#remote-booking-error");if(e)e.textContent="";currentQuote=null;
+    updateRemoteGuide();
+    if($("#remote-booking-software")?.value)window.setTimeout(()=>guideToRemoteStep(3),110);
+  });
+  $("#remote-booking-notes")?.addEventListener("input",()=>{
+    const e=$("#remote-booking-error");if(e)e.textContent="";currentQuote=null;updateRemoteGuide();
+  });
   renderRemoteCalendar();
   refreshRemoteTimeOptions();
+  updateRemoteGuide();
+}
+
+function remoteGuideSnapshot(){
+  const dateValue=$("#remote-booking-date")?.value||"";
+  const slot=remoteSelectedSlot();
+  const software=$("#remote-booking-software")?.value||"";
+  const notes=($("#remote-booking-notes")?.value||"").trim();
+  const dateOk=Boolean(dateValue&&isRemoteDateCurrentMiamiMonth(dateValue)&&(remoteUrgentWeekend?isRemoteDateWeekend(dateValue):isRemoteDateWeekday(dateValue)));
+  const timeOk=Boolean(dateOk&&slot&&miamiSlotTimestamp(dateValue,slot)>Date.now());
+  const softwareOk=Boolean(timeOk&&software);
+  const notesOk=Boolean(softwareOk&&notes);
+  const complete=[dateOk,timeOk,softwareOk,notesOk];
+  const current=complete.findIndex(v=>!v);
+  return {complete,current:current<0?4:current,dateOk,timeOk,softwareOk,notesOk};
+}
+
+function updateRemoteGuide(){
+  const guide=$("#remote-guide");
+  if(!guide)return;
+  const state=remoteGuideSnapshot();
+  const titles=[
+    ["Empecemos por la fecha","Selecciona el día en que quieres recibir la asistencia."],
+    ["Ahora elige la hora","Escoge el horario que más te convenga, siempre en hora de Miami."],
+    ["¿Cómo nos conectamos?","Selecciona Chrome Remote Desktop o AnyDesk para la sesión."],
+    ["Cuéntanos qué necesitas","Describe brevemente qué instalaremos o configuraremos para llegar preparados."],
+    ["Tu sesión está lista","Fecha, hora, conexión y detalles completos. Ya puedes continuar al pago."]
+  ];
+  const current=state.current;
+  const copy=titles[current]||titles[4];
+  const title=$("#remote-guide-title"),hint=$("#remote-guide-hint"),badge=$("#remote-guide-badge"),progress=$("#remote-guide-progress");
+  if(title)title.textContent=copy[0];
+  if(hint)hint.textContent=copy[1];
+  if(badge)badge.textContent=current>=4?"Todo listo":`Paso ${current+1} de 4`;
+  if(progress)progress.style.width=`${Math.min(100,(state.complete.filter(Boolean).length/4)*100)}%`;
+  guide.classList.toggle("done",current>=4);
+
+  document.querySelectorAll("[data-remote-guide]").forEach(el=>{
+    const idx=Number(el.dataset.remoteGuide);
+    el.classList.toggle("complete",Boolean(state.complete[idx]));
+    el.classList.toggle("active",current<4&&idx===current);
+  });
+  document.querySelectorAll(".remote-booking-field[data-guide-step]").forEach(el=>{
+    const idx=Number(el.dataset.guideStep);
+    el.classList.toggle("guide-complete",Boolean(state.complete[idx]));
+    el.classList.toggle("guide-active",current<4&&idx===current);
+    el.classList.toggle("guide-pending",current<4&&idx>current);
+    if(idx!==current)el.classList.remove("guide-error");
+  });
+
+  const time=$("#remote-booking-time"),software=$("#remote-booking-software"),notes=$("#remote-booking-notes");
+  if(time)time.disabled=!state.dateOk;
+  if(software)software.disabled=!state.timeOk;
+  if(notes)notes.disabled=!state.softwareOk;
+}
+
+function guideToRemoteStep(stepIndex,message="",isError=false){
+  if(!remoteAssistanceSelected())return;
+  updateRemoteGuide();
+  const field=document.querySelector(`.remote-booking-field[data-guide-step="${stepIndex}"]`);
+  if(!field)return;
+  if(message){const error=$("#remote-booking-error");if(error)error.textContent=message;}
+  field.classList.remove("guide-nudge","guide-error");
+  void field.offsetWidth;
+  field.classList.add("guide-nudge");
+  if(isError)field.classList.add("guide-error");
+  field.scrollIntoView({behavior:"smooth",block:"nearest"});
+  const target=stepIndex===1?$("#remote-booking-time"):stepIndex===2?$("#remote-booking-software"):stepIndex===3?$("#remote-booking-notes"):null;
+  if(target&&!target.disabled)window.setTimeout(()=>{try{target.focus({preventScroll:true});}catch(_){target.focus();}},260);
+  window.setTimeout(()=>field.classList.remove("guide-nudge"),650);
 }
 
 function remoteBookingData(){
   const dateValue=$("#remote-booking-date")?.value||"";
   const slot=remoteSelectedSlot();
-  const software=$("#remote-booking-software")?.value||"Google Chrome Remote Desktop";
+  const software=$("#remote-booking-software")?.value||"";
   const notes=($("#remote-booking-notes")?.value||"").trim();
   if(!dateValue||!slot)return null;
   const timestamp=miamiSlotTimestamp(dateValue,slot);
@@ -2125,16 +2279,20 @@ function validateRemoteBooking(){
   const error=$("#remote-booking-error");
   const dateValue=$("#remote-booking-date")?.value||"";
   const slot=remoteSelectedSlot();
+  const software=$("#remote-booking-software")?.value||"";
   const notes=($("#remote-booking-notes")?.value||"").trim();
-  let message="";
-  if(!dateValue)message="Selecciona la fecha de tu asistencia remota.";
-  else if(!isRemoteDateCurrentMiamiMonth(dateValue))message="Solo puedes reservar fechas del mes actual.";
-  else if(remoteUrgentWeekend&&!isRemoteDateWeekend(dateValue))message="Para servicio urgente selecciona sábado o domingo.";
-  else if(!remoteUrgentWeekend&&!isRemoteDateWeekday(dateValue))message="La tarifa normal de $10 está disponible de lunes a viernes.";
-  else if(!slot)message="Selecciona un horario disponible entre 8:00 PM y 2:00 AM, hora de Miami.";
-  else if(miamiSlotTimestamp(dateValue,slot)<=Date.now())message="Ese horario ya finalizó. Selecciona otro.";
-  else if(!notes)message="Cuéntanos brevemente qué necesitas instalar o configurar.";
+  let message="",invalidStep=-1;
+  if(!dateValue){message="Primero selecciona la fecha de tu asistencia remota.";invalidStep=0;}
+  else if(!isRemoteDateCurrentMiamiMonth(dateValue)){message="Solo puedes reservar fechas del mes actual.";invalidStep=0;}
+  else if(remoteUrgentWeekend&&!isRemoteDateWeekend(dateValue)){message="Para servicio urgente selecciona sábado o domingo.";invalidStep=0;}
+  else if(!remoteUrgentWeekend&&!isRemoteDateWeekday(dateValue)){message="La tarifa normal de $10 está disponible de lunes a viernes.";invalidStep=0;}
+  else if(!slot){message="Paso 2: selecciona un horario disponible entre 8:00 PM y 2:00 AM, hora de Miami.";invalidStep=1;}
+  else if(miamiSlotTimestamp(dateValue,slot)<=Date.now()){message="Ese horario ya finalizó. Selecciona otro.";invalidStep=1;}
+  else if(!software){message="Paso 3: elige Chrome Remote Desktop o AnyDesk para conectarnos.";invalidStep=2;}
+  else if(!notes){message="Último paso: cuéntanos brevemente qué necesitas instalar o configurar.";invalidStep=3;}
   if(error)error.textContent=message;
+  updateRemoteGuide();
+  if(message&&invalidStep>=0)window.setTimeout(()=>guideToRemoteStep(invalidStep,message,true),50);
   return !message;
 }
 
@@ -2336,6 +2494,7 @@ function paintRemoteAssistance(){
   }
   if(row)row.style.display=selected?"flex":"none";
   if(rowValue)rowValue.textContent=selected?money(fee):"$0.00";
+  if(selected)updateRemoteGuide();
 }
 
 
@@ -2760,7 +2919,9 @@ $("#remote-assistance-toggle")?.addEventListener("click",()=>{
   if(remoteAssistanceEnabled){
     renderRemoteCalendar();
     refreshRemoteTimeOptions();
-    window.setTimeout(()=>$("#remote-calendar-shell")?.scrollIntoView({block:"nearest",behavior:"smooth"}),80);
+    updateRemoteGuide();
+    const state=remoteGuideSnapshot();
+    window.setTimeout(()=>guideToRemoteStep(state.current>=4?3:state.current),100);
   }
 });
 
