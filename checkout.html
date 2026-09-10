@@ -1081,7 +1081,7 @@
     .remote-guide-step.active i{background:#111;color:#fff;box-shadow:0 0 0 5px rgba(17,17,17,.055);animation:remoteGuidePulse 1.8s ease-in-out infinite}
     .remote-guide-step.complete{color:#38383b}
     .remote-guide-step.complete i{background:#e6f6ee;color:#178654;font-size:0}
-    .remote-guide-step.complete i::after{content:"✓";font-size:8px;font-weight:900}
+    .remote-guide-step.complete i::after{content:"✓";display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:8px;font-weight:900;line-height:1;text-align:center;transform:translateY(-.15px)}
     .remote-guide.done .remote-guide-badge{background:#178654;transform:scale(1.02)}
     .remote-guide.done .remote-guide-copy b{color:#156b47}
     .remote-booking-field[data-guide-step]{position:relative;transition:opacity .25s ease,transform .3s cubic-bezier(.22,1,.36,1)}
