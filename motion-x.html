@@ -605,6 +605,33 @@
       .footer{width:min(100%, calc(100% - 24px)); font-size:12px}
     }
 
+
+    /* Ajuste exclusivo para teléfonos: centra branding y navegación sin tocar tablet/desktop */
+    @media (max-width:600px){
+      .nav{
+        grid-template-columns:1fr;
+        justify-items:center;
+        text-align:center;
+      }
+      .brand{
+        justify-self:center;
+        align-items:center;
+        text-align:center;
+        width:100%;
+      }
+      .brand strong,
+      .brand span{
+        text-align:center;
+      }
+      .nav-links{
+        width:100%;
+        justify-self:center;
+        justify-content:center;
+        text-align:center;
+      }
+      .nav-spacer{display:none;}
+    }
+
     @media (prefers-reduced-motion: reduce){
       html{scroll-behavior:auto}
       *,*::before,*::after{transition:none!important; animation:none!important}
