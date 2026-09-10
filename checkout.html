@@ -1056,6 +1056,55 @@
       .remote-booking-benefit,.remote-booking-note{font-size:8px}
     }
 
+
+    .remote-calendar-field{position:relative}
+    .remote-calendar-input{display:none!important}
+    .remote-calendar-shell{
+      border:1px solid #e1e1de;border-radius:13px;background:#fff;overflow:hidden;
+      box-shadow:0 1px 0 rgba(0,0,0,.02);
+    }
+    .remote-calendar-head{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding:10px 11px;border-bottom:1px solid #efefec;background:#fbfbfa;
+    }
+    .remote-calendar-kicker{display:block;color:#9a9aa0;font-size:6.7px;font-weight:760;letter-spacing:.09em;text-transform:uppercase}
+    .remote-calendar-head b{display:block;margin-top:2px;color:#1b1b1d;font-size:9px;letter-spacing:.02em}
+    .remote-weekend-urgent{
+      appearance:none;border:1px solid #deded9;background:#fff;color:#343438;border-radius:999px;
+      min-height:27px;padding:5px 8px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;
+      font-size:6.9px;font-weight:720;white-space:nowrap;transition:.16s ease;
+    }
+    .remote-weekend-urgent strong{font-size:7px;color:#111}
+    .remote-weekend-urgent[aria-pressed="true"]{background:#111;color:#fff;border-color:#111}
+    .remote-weekend-urgent[aria-pressed="true"] strong{color:#fff}
+    .remote-calendar-weekdays,.remote-calendar-days{display:grid;gap:5px;padding-left:10px;padding-right:10px}
+    .remote-calendar-weekdays{grid-template-columns:repeat(5,1fr);padding-top:9px;padding-bottom:4px}
+    .remote-calendar-days{grid-template-columns:repeat(5,1fr);padding-top:1px;padding-bottom:10px}
+    .remote-calendar-shell.weekend-mode .remote-calendar-weekdays,
+    .remote-calendar-shell.weekend-mode .remote-calendar-days{grid-template-columns:repeat(2,1fr)}
+    .remote-calendar-weekdays span{text-align:center;color:#a1a1a6;font-size:6.4px;font-weight:760;letter-spacing:.05em}
+    .remote-calendar-day{
+      appearance:none;border:1px solid #ecece8;background:#fff;color:#202023;border-radius:9px;
+      min-height:31px;padding:5px 2px;display:grid;place-items:center;cursor:pointer;font-size:8px;font-weight:680;
+      transition:background .14s ease,border-color .14s ease,color .14s ease,transform .14s ease;
+    }
+    .remote-calendar-day:hover:not(:disabled){border-color:#cfcfca;background:#f8f8f6;transform:translateY(-1px)}
+    .remote-calendar-day.selected{background:#111;color:#fff;border-color:#111}
+    .remote-calendar-day:disabled{opacity:.3;cursor:not-allowed;background:#f5f5f3;color:#8d8d92}
+    .remote-calendar-blank{min-height:31px}
+    .remote-calendar-caption{
+      padding:8px 10px;border-top:1px solid #efefec;background:#fbfbfa;color:#7d7d82;
+      font-size:6.8px;line-height:1.4;text-align:center;
+    }
+    .remote-calendar-caption strong{color:#252527}
+    @media(max-width:560px){
+      .remote-calendar-head{align-items:flex-start;flex-direction:column}
+      .remote-weekend-urgent{font-size:8px;min-height:30px}
+      .remote-calendar-kicker{font-size:7px}.remote-calendar-head b{font-size:10px}
+      .remote-calendar-weekdays span{font-size:7px}.remote-calendar-day{font-size:10px;min-height:36px}
+      .remote-calendar-caption{font-size:8px}
+    }
+
     .total-row{
       display:flex;align-items:end;justify-content:space-between;
       padding:18px 0 0;
@@ -1469,8 +1518,8 @@
     .checkout-cart-item+.checkout-cart-item{margin-top:0}
     .checkout-cart-thumb{width:58px;height:58px;border-radius:13px;display:grid;place-items:center;overflow:hidden;background:transparent;border:0}
     .checkout-cart-thumb img{width:100%;height:100%;object-fit:contain;padding:0;background:transparent}
-    .checkout-cart-copy{min-width:0}.checkout-cart-copy b{display:block;color:#f1f5f8;font-size:.82rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.checkout-cart-copy span{display:block;margin-top:4px;color:var(--muted);font-size:.67rem;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .checkout-cart-price{color:#f7fbff;font-size:.82rem;font-weight:820;white-space:nowrap}
+    .checkout-cart-copy{min-width:0}.checkout-cart-copy b{display:block;color:var(--text);font-size:.82rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.checkout-cart-copy span{display:block;margin-top:4px;color:var(--muted);font-size:.67rem;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .checkout-cart-price{color:var(--text);font-size:.82rem;font-weight:820;white-space:nowrap}
     .checkout-cart-empty{padding:18px;text-align:center;color:var(--muted);font-size:.78rem;border:1px dashed rgba(255,255,255,.11);border-radius:16px}
     @media(max-width:520px){.checkout-cart-item{grid-template-columns:50px minmax(0,1fr) auto;gap:9px;padding:9px}.checkout-cart-thumb{width:50px;height:50px}.checkout-cart-copy b{font-size:.76rem}.checkout-cart-price{font-size:.74rem}}
 
@@ -1560,9 +1609,23 @@
                   </div>
 
                   <div class="remote-booking-grid">
-                    <div class="remote-booking-field">
-                      <label for="remote-booking-date">Fecha</label>
-                      <input id="remote-booking-date" type="date" autocomplete="off">
+                    <div class="remote-booking-field remote-calendar-field">
+                      <label>Fecha</label>
+                      <input class="remote-calendar-input" id="remote-booking-date" type="hidden" autocomplete="off">
+                      <div class="remote-calendar-shell" id="remote-calendar-shell">
+                        <div class="remote-calendar-head">
+                          <div>
+                            <span class="remote-calendar-kicker">Disponibilidad</span>
+                            <b id="remote-calendar-month">—</b>
+                          </div>
+                          <button class="remote-weekend-urgent" id="remote-weekend-urgent" type="button" aria-pressed="false">
+                            <span>Urgente fin de semana</span><strong>$20</strong>
+                          </button>
+                        </div>
+                        <div class="remote-calendar-weekdays" id="remote-calendar-weekdays"></div>
+                        <div class="remote-calendar-days" id="remote-calendar-days"></div>
+                        <div class="remote-calendar-caption" id="remote-calendar-caption">Lunes a viernes · <strong>$10</strong></div>
+                      </div>
                     </div>
                     <div class="remote-booking-field">
                       <label for="remote-booking-time">Horario · Hora de Miami</label>
@@ -1765,6 +1828,7 @@ let checkoutCart=[];
 let cartQuote=null;
 let activeCouponCode="";
 let remoteAssistanceEnabled=false;
+let remoteUrgentWeekend=false;
 let currentQuote=null;
 let paypalSdkPromise=null;
 let paypalRendered=false;
@@ -1774,6 +1838,7 @@ let heartRainCooldown=false;
 
 const REMOTE_TIME_ZONE="America/New_York";
 const REMOTE_BASE_PRICE_USD=10;
+const REMOTE_WEEKEND_PRICE_USD=20;
 const REMOTE_BOOKING_SLOTS=[
   {value:"20|0",label:"08:00 PM",hour:20,dayOffset:0},
   {value:"21|0",label:"09:00 PM",hour:21,dayOffset:0},
@@ -1842,7 +1907,8 @@ function clampDonation(value){
 }
 
 function remoteAssistanceFee(){
-  return remoteAssistanceEnabled ? REMOTE_BASE_PRICE_USD : 0;
+  if(!remoteAssistanceEnabled)return 0;
+  return remoteUrgentWeekend ? REMOTE_WEEKEND_PRICE_USD : REMOTE_BASE_PRICE_USD;
 }
 
 function baseProductSubtotal(){
@@ -1901,11 +1967,82 @@ function remoteSelectedSlot(){
   return REMOTE_BOOKING_SLOTS.find(slot=>slot.value===value)||null;
 }
 
-function isRemoteDateWeekday(dateValue){
-  if(!dateValue)return false;
+function remoteDateInfo(dateValue){
+  if(!dateValue)return null;
   const [y,m,d]=dateValue.split("-").map(Number);
-  const weekday=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();
-  return weekday!==0&&weekday!==6;
+  const date=new Date(Date.UTC(y,m-1,d,12));
+  if(date.getUTCFullYear()!==y||date.getUTCMonth()!==m-1||date.getUTCDate()!==d)return null;
+  const weekday=date.getUTCDay();
+  return {y,m,d,weekday,weekend:weekday===0||weekday===6};
+}
+
+function miamiTodayParts(){
+  const parts=new Intl.DateTimeFormat("en-CA",{
+    timeZone:REMOTE_TIME_ZONE,year:"numeric",month:"2-digit",day:"2-digit"
+  }).formatToParts(new Date()).reduce((acc,p)=>{if(p.type!=="literal")acc[p.type]=p.value;return acc;},{});
+  return {y:Number(parts.year),m:Number(parts.month),d:Number(parts.day),dateValue:`${parts.year}-${parts.month}-${parts.day}`};
+}
+
+function isRemoteDateCurrentMiamiMonth(dateValue){
+  const info=remoteDateInfo(dateValue),today=miamiTodayParts();
+  return Boolean(info&&info.y===today.y&&info.m===today.m);
+}
+
+function isRemoteDateWeekday(dateValue){
+  const info=remoteDateInfo(dateValue);
+  return Boolean(info&&!info.weekend);
+}
+
+function isRemoteDateWeekend(dateValue){
+  return Boolean(remoteDateInfo(dateValue)?.weekend);
+}
+
+function monthNameEs(month){
+  return ["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"][month-1]||"";
+}
+
+function renderRemoteCalendar(){
+  const shell=$("#remote-calendar-shell"),monthLabel=$("#remote-calendar-month"),weekdays=$("#remote-calendar-weekdays"),days=$("#remote-calendar-days"),caption=$("#remote-calendar-caption"),dateInput=$("#remote-booking-date"),urgent=$("#remote-weekend-urgent");
+  if(!shell||!monthLabel||!weekdays||!days||!dateInput)return;
+
+  const today=miamiTodayParts();
+  const lastDay=new Date(Date.UTC(today.y,today.m,0,12)).getUTCDate();
+  const selected=dateInput.value||"";
+  monthLabel.textContent=`${monthNameEs(today.m)} ${today.y}`;
+  shell.classList.toggle("weekend-mode",remoteUrgentWeekend);
+  if(urgent)urgent.setAttribute("aria-pressed",remoteUrgentWeekend?"true":"false");
+  weekdays.innerHTML=(remoteUrgentWeekend?["SÁB","DOM"]:["LUN","MAR","MIÉ","JUE","VIE"]).map(x=>`<span>${x}</span>`).join("");
+  if(caption)caption.innerHTML=remoteUrgentWeekend
+    ? 'Sábado y domingo · servicio urgente · <strong>$20</strong>'
+    : 'Lunes a viernes · <strong>$10</strong>';
+
+  const wanted=[];
+  for(let d=1;d<=lastDay;d++){
+    const weekday=new Date(Date.UTC(today.y,today.m-1,d,12)).getUTCDay();
+    if(remoteUrgentWeekend ? (weekday===0||weekday===6) : (weekday>=1&&weekday<=5))wanted.push({d,weekday});
+  }
+
+  let html="";
+  if(wanted.length){
+    const first=wanted[0];
+    const blanks=remoteUrgentWeekend ? (first.weekday===0?1:0) : Math.max(0,first.weekday-1);
+    html+='<span class="remote-calendar-blank" aria-hidden="true"></span>'.repeat(blanks);
+  }
+  for(const item of wanted){
+    const value=`${today.y}-${pad2(today.m)}-${pad2(item.d)}`;
+    const past=item.d<today.d;
+    const isSelected=value===selected;
+    html+=`<button type="button" class="remote-calendar-day${isSelected?' selected':''}" data-remote-date="${value}"${past?' disabled':''} aria-pressed="${isSelected?'true':'false'}">${item.d}</button>`;
+  }
+  days.innerHTML=html||'<div class="remote-calendar-caption">No hay fechas disponibles este mes.</div>';
+  days.querySelectorAll("[data-remote-date]").forEach(btn=>btn.addEventListener("click",()=>{
+    dateInput.value=btn.dataset.remoteDate||"";
+    currentQuote=null;
+    const error=$("#remote-booking-error");if(error)error.textContent="";
+    renderRemoteCalendar();
+    refreshRemoteTimeOptions();
+    paintDonation();
+  }));
 }
 
 function refreshRemoteTimeOptions(){
@@ -1930,20 +2067,21 @@ function refreshRemoteTimeOptions(){
 
 function initRemoteBookingControls(){
   const date=$("#remote-booking-date");
-  if(date){
-    date.min=localDateInputValue();
-    date.addEventListener("change",()=>{
-      const error=$("#remote-booking-error");
-      if(error)error.textContent="";
-      if(date.value&&!isRemoteDateWeekday(date.value)){
-        if(error)error.textContent="La asistencia remota se agenda de lunes a viernes. Selecciona otro día.";
-      }
-      refreshRemoteTimeOptions();
-    });
-  }
-  $("#remote-booking-time")?.addEventListener("change",()=>{const e=$("#remote-booking-error");if(e)e.textContent="";});
-  $("#remote-booking-software")?.addEventListener("change",()=>{const e=$("#remote-booking-error");if(e)e.textContent="";});
-  $("#remote-booking-notes")?.addEventListener("input",()=>{const e=$("#remote-booking-error");if(e)e.textContent="";});
+  $("#remote-weekend-urgent")?.addEventListener("click",()=>{
+    remoteUrgentWeekend=!remoteUrgentWeekend;
+    if(date)date.value="";
+    const time=$("#remote-booking-time");if(time)time.value="";
+    currentQuote=null;
+    const error=$("#remote-booking-error");if(error)error.textContent="";
+    renderRemoteCalendar();
+    refreshRemoteTimeOptions();
+    paintRemoteAssistance();
+    paintDonation();
+  });
+  $("#remote-booking-time")?.addEventListener("change",()=>{const e=$("#remote-booking-error");if(e)e.textContent="";currentQuote=null;});
+  $("#remote-booking-software")?.addEventListener("change",()=>{const e=$("#remote-booking-error");if(e)e.textContent="";currentQuote=null;});
+  $("#remote-booking-notes")?.addEventListener("input",()=>{const e=$("#remote-booking-error");if(e)e.textContent="";currentQuote=null;});
+  renderRemoteCalendar();
   refreshRemoteTimeOptions();
 }
 
@@ -1958,7 +2096,7 @@ function remoteBookingData(){
     timeZone:REMOTE_TIME_ZONE,weekday:"short",day:"numeric",month:"short",year:"numeric"
   }).format(new Date(timestamp));
   return {
-    dateValue,slot,software,notes,timestamp,
+    dateValue,slot,software,notes,timestamp,urgentWeekend:remoteUrgentWeekend,amountUsd:remoteAssistanceFee(),
     fecha:displayDate,
     hora:`${slot.label.replace(" (+1 día)","")} (Hora de Miami)`
   };
@@ -1970,6 +2108,7 @@ function remoteAssistancePayload(){
   if(!booking)return {enabled:true};
   return {
     enabled:true,
+    urgentWeekend:Boolean(booking.urgentWeekend),
     dateValue:booking.dateValue,
     slotValue:booking.slot?.value||"",
     software:booking.software,
@@ -1985,7 +2124,9 @@ function validateRemoteBooking(){
   const notes=($("#remote-booking-notes")?.value||"").trim();
   let message="";
   if(!dateValue)message="Selecciona la fecha de tu asistencia remota.";
-  else if(!isRemoteDateWeekday(dateValue))message="La asistencia remota se agenda de lunes a viernes.";
+  else if(!isRemoteDateCurrentMiamiMonth(dateValue))message="Solo puedes reservar fechas del mes actual.";
+  else if(remoteUrgentWeekend&&!isRemoteDateWeekend(dateValue))message="Para servicio urgente selecciona sábado o domingo.";
+  else if(!remoteUrgentWeekend&&!isRemoteDateWeekday(dateValue))message="La tarifa normal de $10 está disponible de lunes a viernes.";
   else if(!slot)message="Selecciona un horario disponible entre 8:00 PM y 2:00 AM, hora de Miami.";
   else if(miamiSlotTimestamp(dateValue,slot)<=Date.now())message="Ese horario ya finalizó. Selecciona otro.";
   else if(!notes)message="Cuéntanos brevemente qué necesitas instalar o configurar.";
@@ -1997,7 +2138,7 @@ async function createRemoteReservation(paypalOrderId,paymentResult={}){
   if(!remoteAssistanceSelected()||!currentUser)return null;
   const booking=remoteBookingData();
   if(!booking||!booking.notes)return null;
-  const amount=REMOTE_BASE_PRICE_USD;
+  const amount=remoteAssistanceFee();
   const ref=await addDoc(collection(db,"reservas"),{
     uid:currentUser.uid,
     email:currentUser.email||"",
@@ -2180,14 +2321,17 @@ function paintRemoteAssistance(){
   card.classList.toggle("selected",selected);
   if(details)details.hidden=!selected;
 
-  if(price)price.textContent=money(REMOTE_BASE_PRICE_USD);
+  const fee=remoteUrgentWeekend?REMOTE_WEEKEND_PRICE_USD:REMOTE_BASE_PRICE_USD;
+  if(price)price.textContent=money(fee);
   if(status){
     status.textContent=selected
-      ? "Asistencia remota agregada · completa la fecha, horario y detalles de tu sesión."
-      : "Opcional · instalación o configuración guiada por un técnico de Dingloft.";
+      ? (remoteUrgentWeekend
+          ? "Servicio urgente de fin de semana · $20 · completa fecha, horario y detalles."
+          : "Asistencia remota agregada · $10 · completa fecha, horario y detalles de tu sesión.")
+      : "Opcional · lunes a viernes $10 · sábado/domingo urgente $20.";
   }
   if(row)row.style.display=selected?"flex":"none";
-  if(rowValue)rowValue.textContent=selected?money(REMOTE_BASE_PRICE_USD):"$0.00";
+  if(rowValue)rowValue.textContent=selected?money(fee):"$0.00";
 }
 
 
@@ -2363,6 +2507,7 @@ async function loadConfig(){
   const paypalCfg=await api("/paypal/config");
   config={paypalClientId:String(paypalCfg.clientId||"").trim()};
   remoteAssistanceEnabled=false;
+  remoteUrgentWeekend=false;
   if(!config.paypalClientId)throw new Error("PayPal no está configurado.");
 
   try{activeCouponCode=String(sessionStorage.getItem("dingloft_checkout_coupon")||"").trim().toUpperCase();}catch(_){activeCouponCode="";}
@@ -2609,7 +2754,9 @@ $("#remote-assistance-toggle")?.addEventListener("click",()=>{
   paintRemoteAssistance();
   paintDonation();
   if(remoteAssistanceEnabled){
-    window.setTimeout(()=>$("#remote-booking-date")?.focus({preventScroll:true}),80);
+    renderRemoteCalendar();
+    refreshRemoteTimeOptions();
+    window.setTimeout(()=>$("#remote-calendar-shell")?.scrollIntoView({block:"nearest",behavior:"smooth"}),80);
   }
 });
 
