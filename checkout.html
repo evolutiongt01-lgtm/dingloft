@@ -983,6 +983,79 @@
       .remote-assistance-price{display:none}
     }
 
+    .remote-booking-details{
+      padding:0 16px 16px;
+      border-top:1px solid transparent;
+      background:linear-gradient(180deg,#fff,#fdfdfc);
+    }
+    .remote-booking-details[hidden]{display:none!important}
+    .remote-assistance-card.selected .remote-booking-details{
+      border-top-color:#ecece9;
+    }
+    .remote-booking-intro{
+      display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+      padding:14px 0 12px;
+    }
+    .remote-booking-intro b{
+      display:block;color:#171717;font-size:10px;line-height:1.25;
+    }
+    .remote-booking-intro span{
+      display:block;margin-top:4px;color:#929298;font-size:7.8px;line-height:1.5;
+    }
+    .remote-booking-hours{
+      flex:0 0 auto;padding:7px 9px;border-radius:999px;background:#111;color:#fff;
+      font-size:7px;font-weight:760;letter-spacing:.06em;white-space:nowrap;
+    }
+    .remote-booking-grid{
+      display:grid;grid-template-columns:1fr 1fr;gap:10px;
+    }
+    .remote-booking-field{min-width:0}
+    .remote-booking-field.full{grid-column:1/-1}
+    .remote-booking-field label{
+      display:block;margin:0 0 6px;color:#77777d;font-size:7.2px;font-weight:760;
+      text-transform:uppercase;letter-spacing:.09em;
+    }
+    .remote-booking-field input,
+    .remote-booking-field select,
+    .remote-booking-field textarea{
+      width:100%;min-height:40px;padding:9px 11px;border:1px solid #e1e1de;border-radius:11px;
+      background:#fff;color:#191919;outline:none;font:inherit;font-size:9px;line-height:1.4;
+      transition:border-color .16s ease,box-shadow .16s ease;
+    }
+    .remote-booking-field textarea{min-height:64px;resize:vertical}
+    .remote-booking-field input:focus,
+    .remote-booking-field select:focus,
+    .remote-booking-field textarea:focus{
+      border-color:#b9b9b4;box-shadow:0 0 0 3px rgba(0,0,0,.035);
+    }
+    .remote-booking-benefits{
+      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px;
+    }
+    .remote-booking-benefit{
+      min-height:48px;padding:9px 10px;border:1px solid #ecece8;border-radius:11px;background:#fafaf8;
+      color:#6f6f75;font-size:7.2px;line-height:1.45;
+    }
+    .remote-booking-benefit b{display:block;margin-bottom:3px;color:#262629;font-size:7.5px}
+    .remote-booking-note{
+      margin-top:10px;padding:9px 10px;border-radius:11px;background:#f4f4f1;color:#7a7a80;
+      font-size:7.2px;line-height:1.5;
+    }
+    .remote-booking-note strong{color:#2b2b2e}
+    .remote-booking-error{
+      min-height:14px;margin-top:8px;color:#b42318;font-size:7.5px;line-height:1.4;
+    }
+    @media(max-width:560px){
+      .remote-booking-details{padding:0 13px 13px}
+      .remote-booking-intro{display:block}
+      .remote-booking-hours{display:inline-flex;margin-top:8px}
+      .remote-booking-grid{grid-template-columns:1fr}
+      .remote-booking-field.full{grid-column:auto}
+      .remote-booking-benefits{grid-template-columns:1fr}
+      .remote-booking-field input,.remote-booking-field select,.remote-booking-field textarea{font-size:16px}
+      .remote-booking-field label{font-size:8px}
+      .remote-booking-benefit,.remote-booking-note{font-size:8px}
+    }
+
     .total-row{
       display:flex;align-items:end;justify-content:space-between;
       padding:18px 0 0;
@@ -1465,7 +1538,7 @@
                   </span>
                   <span class="remote-assistance-copy">
                     <b id="remote-assistance-title">Agregar asistencia remota</b>
-                    <small>Un técnico de Dingloft puede ayudarte con la instalación y configuración inicial.</small>
+                    <small>Instalación o configuración guiada por un técnico de Dingloft.</small>
                   </span>
                   <span class="remote-assistance-side">
                     <span class="remote-assistance-price" id="remote-assistance-price">Verificando…</span>
@@ -1473,6 +1546,49 @@
                   </span>
                 </button>
                 <div class="remote-assistance-status" id="remote-assistance-status">Buscando disponibilidad en el catálogo…</div>
+
+                <div class="remote-booking-details" id="remote-booking-details" hidden>
+                  <div class="remote-booking-intro">
+                    <div>
+                      <b>Programa tu sesión de asistencia</b>
+                      <span>Elige la fecha, el horario y la vía de conexión antes de continuar al pago.</span>
+                    </div>
+                    <div class="remote-booking-hours">8:00 PM – 2:00 AM · MIAMI</div>
+                  </div>
+
+                  <div class="remote-booking-grid">
+                    <div class="remote-booking-field">
+                      <label for="remote-booking-date">Fecha</label>
+                      <input id="remote-booking-date" type="date" autocomplete="off">
+                    </div>
+                    <div class="remote-booking-field">
+                      <label for="remote-booking-time">Horario · Hora de Miami</label>
+                      <select id="remote-booking-time">
+                        <option value="">Selecciona un horario</option>
+                      </select>
+                    </div>
+                    <div class="remote-booking-field full">
+                      <label for="remote-booking-software">Conexión remota</label>
+                      <select id="remote-booking-software">
+                        <option value="Google Chrome Remote Desktop">Chrome Remote Desktop</option>
+                        <option value="AnyDesk">AnyDesk</option>
+                      </select>
+                    </div>
+                    <div class="remote-booking-field full">
+                      <label for="remote-booking-notes">¿Qué necesitas instalar o configurar?</label>
+                      <textarea id="remote-booking-notes" rows="3" maxlength="500" placeholder="Ej. Instalar Motion-X, configurar el plugin en mi DAW y verificar audio/MIDI."></textarea>
+                    </div>
+                  </div>
+
+                  <div class="remote-booking-benefits">
+                    <div class="remote-booking-benefit"><b>Control visible</b>Ves cada acción del técnico en tiempo real.</div>
+                    <div class="remote-booking-benefit"><b>Conexión temporal</b>La sesión remota se utiliza únicamente durante la asistencia.</div>
+                    <div class="remote-booking-benefit"><b>Validación final</b>Revisamos la instalación o configuración antes de terminar.</div>
+                  </div>
+
+                  <div class="remote-booking-note"><strong>Después del pago:</strong> la reserva aparecerá en tu Cuenta Dingloft. El campo para enviar tu código o enlace de conexión se habilita 5 minutos antes de la sesión.</div>
+                  <div class="remote-booking-error" id="remote-booking-error" role="alert"></div>
+                </div>
               </section>
 
               <section class="solidarity-card solidarity-collapsed" aria-labelledby="solidarity-title">
@@ -1620,6 +1736,7 @@
 <script type="module">
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const FIREBASE_CONFIG={
   apiKey:"AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
@@ -1634,9 +1751,11 @@ const FIREBASE_CONFIG={
 const WORKER="https://autumn-breeze-dfa0.evolutiongt01.workers.dev";
 const app=getApps().length?getApp():initializeApp(FIREBASE_CONFIG);
 const auth=getAuth(app);
+const db=getFirestore(app);
 const $=s=>document.querySelector(s);
 
 let token="";
+let currentUser=null;
 let config=null;
 let currentProduct=null;
 let remoteAssistanceProduct=null;
@@ -1647,6 +1766,18 @@ let paypalRendered=false;
 let donationUsd=0;
 let lastHeartRainAmount=0;
 let heartRainCooldown=false;
+
+const REMOTE_TIME_ZONE="America/New_York";
+const REMOTE_BASE_PRICE_USD=10;
+const REMOTE_BOOKING_SLOTS=[
+  {value:"20|0",label:"08:00 PM",hour:20,dayOffset:0},
+  {value:"21|0",label:"09:00 PM",hour:21,dayOffset:0},
+  {value:"22|0",label:"10:00 PM",hour:22,dayOffset:0},
+  {value:"23|0",label:"11:00 PM",hour:23,dayOffset:0},
+  {value:"0|1",label:"12:00 AM (+1 día)",hour:0,dayOffset:1},
+  {value:"1|1",label:"01:00 AM (+1 día)",hour:1,dayOffset:1},
+  {value:"2|1",label:"02:00 AM (+1 día)",hour:2,dayOffset:1}
+];
 
 function money(v){
   return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(Number(v||0));
@@ -1718,6 +1849,161 @@ function payableTotal(){
   return Math.round((base+donationUsd)*100)/100;
 }
 
+function remoteAssistanceSelected(){
+  return Boolean((currentProduct && isRemoteAssistanceProduct(currentProduct)) || remoteAssistanceEnabled);
+}
+
+function pad2(value){return String(value).padStart(2,"0")}
+
+function localDateInputValue(date=new Date()){
+  return `${date.getFullYear()}-${pad2(date.getMonth()+1)}-${pad2(date.getDate())}`;
+}
+
+function timezoneOffsetMs(date,timeZone){
+  const parts=new Intl.DateTimeFormat("en-CA",{
+    timeZone,year:"numeric",month:"2-digit",day:"2-digit",
+    hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"
+  }).formatToParts(date).reduce((acc,p)=>{if(p.type!=="literal")acc[p.type]=p.value;return acc;},{});
+  const asUTC=Date.UTC(+parts.year,+parts.month-1,+parts.day,+parts.hour,+parts.minute,+parts.second);
+  return asUTC-date.getTime();
+}
+
+function miamiSlotTimestamp(dateValue,slot){
+  if(!dateValue||!slot)return NaN;
+  const [y,m,d]=dateValue.split("-").map(Number);
+  const wallUtc=Date.UTC(y,m-1,d+Number(slot.dayOffset||0),Number(slot.hour||0),0,0);
+  let guess=new Date(wallUtc);
+  let offset=timezoneOffsetMs(guess,REMOTE_TIME_ZONE);
+  let result=wallUtc-offset;
+  const corrected=timezoneOffsetMs(new Date(result),REMOTE_TIME_ZONE);
+  if(corrected!==offset)result=wallUtc-corrected;
+  return result;
+}
+
+function remoteSelectedSlot(){
+  const value=$("#remote-booking-time")?.value||"";
+  return REMOTE_BOOKING_SLOTS.find(slot=>slot.value===value)||null;
+}
+
+function isRemoteDateWeekday(dateValue){
+  if(!dateValue)return false;
+  const [y,m,d]=dateValue.split("-").map(Number);
+  const weekday=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();
+  return weekday!==0&&weekday!==6;
+}
+
+function refreshRemoteTimeOptions(){
+  const dateValue=$("#remote-booking-date")?.value||"";
+  const select=$("#remote-booking-time");
+  if(!select)return;
+  const current=select.value;
+  select.innerHTML='<option value="">Selecciona un horario</option>';
+  REMOTE_BOOKING_SLOTS.forEach(slot=>{
+    const option=document.createElement("option");
+    option.value=slot.value;
+    option.textContent=slot.label;
+    const ts=miamiSlotTimestamp(dateValue,slot);
+    if(dateValue && Number.isFinite(ts) && ts<=Date.now()){
+      option.disabled=true;
+      option.textContent+= " · Finalizado";
+    }
+    select.appendChild(option);
+  });
+  if([...select.options].some(o=>o.value===current&&!o.disabled))select.value=current;
+}
+
+function initRemoteBookingControls(){
+  const date=$("#remote-booking-date");
+  if(date){
+    date.min=localDateInputValue();
+    date.addEventListener("change",()=>{
+      const error=$("#remote-booking-error");
+      if(error)error.textContent="";
+      if(date.value&&!isRemoteDateWeekday(date.value)){
+        if(error)error.textContent="La asistencia remota se agenda de lunes a viernes. Selecciona otro día.";
+      }
+      refreshRemoteTimeOptions();
+    });
+  }
+  $("#remote-booking-time")?.addEventListener("change",()=>{const e=$("#remote-booking-error");if(e)e.textContent="";});
+  $("#remote-booking-software")?.addEventListener("change",()=>{const e=$("#remote-booking-error");if(e)e.textContent="";});
+  $("#remote-booking-notes")?.addEventListener("input",()=>{const e=$("#remote-booking-error");if(e)e.textContent="";});
+  refreshRemoteTimeOptions();
+}
+
+function remoteBookingData(){
+  const dateValue=$("#remote-booking-date")?.value||"";
+  const slot=remoteSelectedSlot();
+  const software=$("#remote-booking-software")?.value||"Google Chrome Remote Desktop";
+  const notes=($("#remote-booking-notes")?.value||"").trim();
+  if(!dateValue||!slot)return null;
+  const timestamp=miamiSlotTimestamp(dateValue,slot);
+  const displayDate=new Intl.DateTimeFormat("es-ES",{
+    timeZone:REMOTE_TIME_ZONE,weekday:"short",day:"numeric",month:"short",year:"numeric"
+  }).format(new Date(timestamp));
+  return {
+    dateValue,slot,software,notes,timestamp,
+    fecha:displayDate,
+    hora:`${slot.label.replace(" (+1 día)","")} (Hora de Miami)`
+  };
+}
+
+function validateRemoteBooking(){
+  if(!remoteAssistanceSelected())return true;
+  const error=$("#remote-booking-error");
+  const dateValue=$("#remote-booking-date")?.value||"";
+  const slot=remoteSelectedSlot();
+  const notes=($("#remote-booking-notes")?.value||"").trim();
+  let message="";
+  if(!dateValue)message="Selecciona la fecha de tu asistencia remota.";
+  else if(!isRemoteDateWeekday(dateValue))message="La asistencia remota se agenda de lunes a viernes.";
+  else if(!slot)message="Selecciona un horario disponible entre 8:00 PM y 2:00 AM, hora de Miami.";
+  else if(miamiSlotTimestamp(dateValue,slot)<=Date.now())message="Ese horario ya finalizó. Selecciona otro.";
+  else if(!notes)message="Cuéntanos brevemente qué necesitas instalar o configurar.";
+  if(error)error.textContent=message;
+  return !message;
+}
+
+async function createRemoteReservation(paypalOrderId,paymentResult={}){
+  if(!remoteAssistanceSelected()||!currentUser)return null;
+  const booking=remoteBookingData();
+  if(!booking||!booking.notes)return null;
+  const amount=Number(
+    (currentProduct&&isRemoteAssistanceProduct(currentProduct)?currentProduct.priceUsd:remoteAssistanceProduct?.priceUsd)
+    ?? REMOTE_BASE_PRICE_USD
+  );
+  const ref=await addDoc(collection(db,"reservas"),{
+    uid:currentUser.uid,
+    email:currentUser.email||"",
+    payerName:currentUser.displayName||"",
+    fecha:booking.fecha,
+    hora:booking.hora,
+    software:booking.software,
+    comentario:booking.notes,
+    estado:"pendiente",
+    timestampReserva:booking.timestamp,
+    montoPagado:amount,
+    paypalOrderId:paypalOrderId||paymentResult?.orderId||paymentResult?.captureId||"",
+    origen:"checkout",
+    creado:serverTimestamp()
+  });
+
+  if(paypalOrderId&&amount>0){
+    try{
+      const freshToken=await currentUser.getIdToken(false);
+      await fetch(WORKER+"/reservations/verify-paid",{
+        method:"POST",
+        headers:{Authorization:`Bearer ${freshToken}`,"content-type":"application/json",Accept:"application/json"},
+        body:JSON.stringify({reservationId:ref.id,paypalOrderId}),
+        cache:"no-store"
+      });
+    }catch(error){
+      console.warn("Dingloft: reserva creada; verificación de pago pendiente",error);
+    }
+  }
+  return ref.id;
+}
+
 function isRemoteAssistanceProduct(product){
   const haystack=[product?.sku,product?.name,product?.type,product?.title,product?.slug]
     .filter(Boolean).join(" ").toLowerCase();
@@ -1751,27 +2037,34 @@ function paintRemoteAssistance(){
   const status=$("#remote-assistance-status");
   const row=$("#left-assistance-row");
   const rowValue=$("#left-assistance");
+  const details=$("#remote-booking-details");
   if(!card||!toggle)return;
 
+  const currentIsAssistance=Boolean(currentProduct&&isRemoteAssistanceProduct(currentProduct));
   const available=Boolean(remoteAssistanceProduct && remoteAssistanceProduct!==currentProduct);
-  if(!available)remoteAssistanceEnabled=false;
+  if(!available&&!currentIsAssistance)remoteAssistanceEnabled=false;
+  const selected=currentIsAssistance||remoteAssistanceEnabled;
 
-  toggle.disabled=!available;
-  toggle.setAttribute("aria-pressed",remoteAssistanceEnabled?"true":"false");
-  card.classList.toggle("selected",remoteAssistanceEnabled);
+  toggle.disabled=currentIsAssistance||!available;
+  toggle.setAttribute("aria-pressed",selected?"true":"false");
+  card.classList.toggle("selected",selected);
+  if(details)details.hidden=!selected;
 
+  const assistancePrice=currentIsAssistance
+    ? Number(currentProduct?.priceUsd??REMOTE_BASE_PRICE_USD)
+    : Number(remoteAssistanceProduct?.priceUsd??REMOTE_BASE_PRICE_USD);
   if(price){
-    price.textContent=available ? money(remoteAssistanceProduct.priceUsd) : "No disponible";
+    price.textContent=(available||currentIsAssistance) ? money(assistancePrice) : `${money(REMOTE_BASE_PRICE_USD)} base`;
   }
   if(status){
-    status.textContent=available
-      ? (remoteAssistanceEnabled ? "Asistencia remota agregada a este pedido." : "Opcional · el precio se valida junto con tu pedido.")
-      : (currentProduct && isRemoteAssistanceProduct(currentProduct)
-          ? "Este pedido ya corresponde a asistencia remota."
-          : "Asistencia remota no disponible actualmente en el catálogo.");
+    status.textContent=currentIsAssistance
+      ? "Este pedido corresponde a asistencia remota · selecciona fecha y horario."
+      : available
+        ? (remoteAssistanceEnabled ? "Asistencia remota agregada · completa los datos de tu sesión." : "Opcional · sesión base de instalación/configuración remota.")
+        : "Asistencia remota no disponible actualmente en el catálogo.";
   }
   if(row)row.style.display=remoteAssistanceEnabled?"flex":"none";
-  if(rowValue)rowValue.textContent=remoteAssistanceEnabled?money(remoteAssistanceProduct?.priceUsd||0):"$0.00";
+  if(rowValue)rowValue.textContent=remoteAssistanceEnabled?money(assistancePrice):"$0.00";
 }
 
 
@@ -2084,6 +2377,13 @@ async function renderPayPal(){
         step("payment","active");
         setMessage("Pago aprobado. Habilitando tu compra…");
         const result=await captureOrder(data.orderID);
+        if(remoteAssistanceSelected()){
+          try{
+            await createRemoteReservation(data.orderID,result);
+          }catch(reservationError){
+            console.error("Dingloft: el pago se confirmó pero la reserva no pudo sincronizarse",reservationError);
+          }
+        }
         showSuccess(result);
       }catch(error){
         step("payment","");
@@ -2117,6 +2417,7 @@ async function prepare(){
   try{
     currentProduct=config.products.find(p=>p.sku===$("#product-select").value);
     if(!currentProduct)throw new Error("Selecciona un producto válido.");
+    if(!validateRemoteBooking())throw new Error("Completa los datos de tu asistencia remota.");
 
     currentQuote=await secureQuote();
 
@@ -2136,7 +2437,10 @@ async function prepare(){
     const meta=$("#checkout-meta");
     if(meta){
       const extras=[];
-      if(remoteAssistanceEnabled)extras.push("asistencia remota");
+      if(remoteAssistanceSelected()){
+        const booking=remoteBookingData();
+        extras.push(booking ? `asistencia remota · ${booking.fecha} · ${booking.hora}` : "asistencia remota");
+      }
       if(donationUsd>0)extras.push(`${money(donationUsd)} de aporte solidario`);
       meta.textContent=extras.length
         ? `Pedido Dingloft · incluye ${extras.join(" · ")}`
@@ -2190,13 +2494,19 @@ $("#remote-assistance-toggle")?.addEventListener("click",()=>{
   currentQuote=null;
   paintRemoteAssistance();
   paintDonation();
+  if(remoteAssistanceEnabled){
+    window.setTimeout(()=>$("#remote-booking-date")?.focus({preventScroll:true}),80);
+  }
 });
+
+initRemoteBookingControls();
 
 $("#product-select")?.addEventListener("change",updatePreview);
 $("#prepare-btn")?.addEventListener("click",prepare);
 $("#new-test-btn")?.addEventListener("click",reset);
 
 onAuthStateChanged(auth,async user=>{
+  currentUser=user||null;
   if(!user){
     $("#loading").style.display="none";
     $("#auth-lock").style.display="grid";
