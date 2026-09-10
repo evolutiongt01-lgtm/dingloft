@@ -3,281 +3,304 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#fffaf6">
+  <meta name="theme-color" content="#07162e">
   <meta name="dingloft-worker-base" content="https://autumn-breeze-dfa0.evolutiongt01.workers.dev">
-  <title>Dingloft · Software, Samples, VSTs y Multitracks</title>
-  <meta name="description" content="Software, librerías, VSTs, samples y multitracks en Dingloft. Compra digital, acceso desde tu cuenta y soporte cuando lo necesites.">
+  <title>Dingloft · Software, VSTs, Samples y Multitracks</title>
+  <meta name="description" content="Software profesional, VSTs, samples, librerías y los multitracks más recientes en Dingloft.">
   <link rel="icon" type="image/png" href="img/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root{
-      --ink:#171515;
-      --muted:#746f6b;
-      --line:#ece7e2;
-      --paper:#fff;
-      --soft:#fff7f1;
-      --peach:#ff7668;
-      --peach-deep:#f45749;
-      --peach-soft:#fff0eb;
-      --cream:#fff8ee;
-      --navy:#151526;
-      --shadow:0 22px 60px rgba(44,34,26,.08);
+      --navy:#07162e;
+      --navy-2:#0b1f3f;
+      --navy-3:#102b53;
+      --orange:#ff6a1a;
+      --orange-2:#ff7f36;
+      --ink:#111827;
+      --muted:#6f7885;
+      --line:#e8ebef;
+      --paper:#ffffff;
+      --soft:#f5f7fa;
+      --soft-blue:#eef4fa;
+      --shadow:0 24px 70px rgba(7,22,46,.12);
       --radius:22px;
       --max:1240px;
     }
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth;background:#fffaf6}
-    body{margin:0;color:var(--ink);background:#fffaf6;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+    html{scroll-behavior:smooth;background:#fff}
+    body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}
     a{color:inherit;text-decoration:none}
     button,input{font:inherit}
+    button{cursor:pointer}
     img{display:block;max-width:100%}
-    .shell{width:min(var(--max),calc(100% - 32px));margin-inline:auto}
+    .shell{width:min(var(--max),calc(100% - 34px));margin-inline:auto}
 
-    .utility{background:#171515;color:#fff;font-size:11px;letter-spacing:.02em}
-    .utility .shell{min-height:34px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-    .utility-links{display:flex;align-items:center;gap:18px;color:#cfc9c4}
-    .utility a:hover{color:#fff}
+    .announcement{background:var(--orange);color:#fff}
+    .announcement .shell{min-height:36px;display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:11px;font-weight:700}
+    .announcement span:last-child{opacity:.82;font-weight:500}
 
-    .site-header{position:sticky;top:0;z-index:60;background:rgba(255,250,246,.94);backdrop-filter:blur(18px);border-bottom:1px solid rgba(236,231,226,.88)}
-    .nav{min-height:78px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:30px}
-    .brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.03em;font-size:18px}
-    .brand img{width:38px;height:38px;object-fit:cover;border-radius:12px}
-    .nav-links{display:flex;justify-content:center;gap:26px;font-size:13px;font-weight:600;color:#55504c}
-    .nav-links a:hover{color:var(--ink)}
-    .nav-actions{display:flex;align-items:center;gap:10px}
-    .search-wrap{position:relative;width:min(270px,24vw)}
-    .search-wrap input{width:100%;height:42px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:0 43px 0 16px;outline:none;color:var(--ink);transition:.2s}
-    .search-wrap input:focus{border-color:#d6cbc4;box-shadow:0 0 0 4px rgba(255,118,104,.08)}
-    .search-icon{position:absolute;right:15px;top:50%;transform:translateY(-50%);width:17px;height:17px;color:#8a827c;pointer-events:none}
-    .cart-link{height:42px;padding:0 15px;border-radius:999px;background:var(--ink);color:#fff;display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:700;white-space:nowrap}
-    .cart-count{display:grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--peach);font-size:10px;color:#fff}
+    .site-header{position:sticky;top:0;z-index:80;background:rgba(7,22,46,.97);border-bottom:1px solid rgba(255,255,255,.08);backdrop-filter:blur(18px)}
+    .nav{min-height:76px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:26px;color:#fff}
+    .brand{display:flex;align-items:center;gap:11px;font-size:18px;font-weight:900;letter-spacing:-.035em}
+    .brand img{width:39px;height:39px;border-radius:12px;object-fit:cover}
+    .brand small{display:block;margin-top:3px;color:#8fa0b6;font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+    .nav-links{display:flex;justify-content:center;gap:25px;color:#c3cedb;font-size:12px;font-weight:700}
+    .nav-links a{position:relative;padding:28px 0}
+    .nav-links a:after{content:"";position:absolute;left:0;right:0;bottom:20px;height:2px;background:var(--orange);transform:scaleX(0);transition:.2s}
+    .nav-links a:hover{color:#fff}.nav-links a:hover:after{transform:scaleX(1)}
+    .nav-actions{display:flex;align-items:center;gap:9px}
+    .search-box{position:relative;width:min(250px,22vw)}
+    .search-box input{width:100%;height:40px;border:1px solid rgba(255,255,255,.12);background:#fff;color:#162239;border-radius:6px;padding:0 42px 0 13px;outline:none;font-size:11px}
+    .search-box svg{position:absolute;right:13px;top:50%;transform:translateY(-50%);color:#6f7885}
+    .icon-btn{width:40px;height:40px;border:1px solid rgba(255,255,255,.12);border-radius:7px;background:rgba(255,255,255,.04);display:grid;place-items:center;color:#fff;position:relative}
+    .cart-count{position:absolute;right:-6px;top:-7px;min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:var(--orange);display:grid;place-items:center;font-size:9px;font-weight:800}
 
     main{overflow:hidden}
-    .hero{padding:38px 0 24px}
-    .hero-grid{display:grid;grid-template-columns:1.24fr .76fr;gap:18px;min-height:470px}
-    .hero-primary,.hero-side{border-radius:28px;overflow:hidden;position:relative}
-    .hero-primary{background:linear-gradient(120deg,#fff2df 0%,#fff6ea 47%,#ff7568 47.1%,#ff6d60 100%);box-shadow:var(--shadow);display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:46px}
-    .hero-copy{position:relative;z-index:2;max-width:570px}
-    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;color:var(--peach-deep);text-transform:uppercase;letter-spacing:.12em;margin-bottom:15px}
-    .eyebrow:before{content:"";width:24px;height:2px;border-radius:99px;background:currentColor}
-    .hero h1{margin:0;font-size:clamp(38px,4.4vw,68px);line-height:.98;letter-spacing:-.065em;max-width:630px}
-    .hero h1 span{color:var(--peach-deep)}
-    .hero-copy p{margin:20px 0 0;max-width:500px;color:#665e58;font-size:15px;line-height:1.65}
-    .hero-cta{margin-top:26px;display:flex;gap:10px;flex-wrap:wrap}
-    .btn{height:44px;padding:0 17px;border:0;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-size:12px;font-weight:800;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+    .hero{background:linear-gradient(105deg,var(--navy) 0%,var(--navy-2) 58%,#103565 100%);color:#fff;position:relative;overflow:hidden}
+    .hero:before{content:"";position:absolute;width:640px;height:640px;border-radius:50%;right:-170px;top:-255px;background:radial-gradient(circle,rgba(255,106,26,.25),rgba(255,106,26,0) 68%)}
+    .hero:after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(90deg,#000 0%,transparent 76%)}
+    .hero-grid{min-height:540px;display:grid;grid-template-columns:1.02fr .98fr;align-items:center;gap:36px;position:relative;z-index:1}
+    .hero-copy{padding:74px 0}
+    .eyebrow{display:flex;align-items:center;gap:10px;color:#ff9d68;font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+    .eyebrow:before{content:"";width:30px;height:2px;background:var(--orange)}
+    .hero h1{margin:17px 0 18px;font-size:clamp(42px,5.15vw,74px);line-height:.94;letter-spacing:-.065em;max-width:700px}
+    .hero h1 span{color:#fff;display:block}.hero h1 em{font-style:normal;color:var(--orange)}
+    .hero-copy p{margin:0;max-width:600px;color:#b9c6d6;font-size:15px;line-height:1.7}
+    .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+    .btn{height:45px;border-radius:7px;padding:0 17px;border:0;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-size:11px;font-weight:900;transition:transform .18s,box-shadow .18s,background .18s}
     .btn:hover{transform:translateY(-1px)}
-    .btn-dark{background:var(--ink);color:#fff;box-shadow:0 10px 24px rgba(23,21,21,.14)}
-    .btn-white{background:#fff;color:var(--ink);border:1px solid rgba(23,21,21,.09)}
-    .btn-peach{background:var(--peach);color:#fff}
-    .hero-art{position:relative;min-height:360px;align-self:stretch}
-    .hero-art .blob{position:absolute;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.17);right:-56px;bottom:-62px;border:1px solid rgba(255,255,255,.26)}
-    .hero-art img{position:absolute;z-index:2;right:-10px;bottom:-6px;width:min(480px,122%);height:92%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 26px 28px rgba(73,31,26,.22));animation:floatArt 7s ease-in-out infinite}
-    @keyframes floatArt{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-    .hero-side{background:var(--navy);color:#fff;padding:34px;display:flex;flex-direction:column;justify-content:space-between;min-height:470px}
-    .hero-side:after{content:"";position:absolute;inset:auto -80px -100px auto;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(255,118,104,.42),transparent 66%)}
-    .hero-side .micro{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#c0becf;font-weight:700}
-    .hero-side h2{margin:14px 0 12px;font-size:32px;line-height:1.04;letter-spacing:-.045em;max-width:320px}
-    .hero-side p{margin:0;color:#b8b6c4;font-size:13px;line-height:1.6;max-width:320px}
-    .hero-side img{position:relative;z-index:2;width:100%;height:210px;object-fit:contain;filter:drop-shadow(0 24px 28px rgba(0,0,0,.3));margin-top:20px}
+    .btn-orange{background:var(--orange);color:#fff;box-shadow:0 12px 30px rgba(255,106,26,.23)}
+    .btn-ghost{color:#fff;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05)}
+    .hero-art{align-self:stretch;position:relative;min-height:500px;display:grid;place-items:center}
+    .hero-art:before{content:"";position:absolute;width:390px;height:390px;border:1px solid rgba(255,255,255,.09);border-radius:50%;right:20px;bottom:40px;box-shadow:0 0 0 34px rgba(255,255,255,.018),0 0 0 70px rgba(255,255,255,.012)}
+    .hero-art img{position:relative;z-index:2;width:min(620px,112%);height:430px;object-fit:contain;filter:drop-shadow(0 34px 32px rgba(0,0,0,.36));animation:heroFloat 8s ease-in-out infinite}
+    @keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
-    .benefits{padding:4px 0 50px}
-    .benefit-row{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden}
-    .benefit{display:flex;align-items:center;gap:12px;padding:18px 20px;border-right:1px solid var(--line)}
-    .benefit:last-child{border-right:0}
-    .benefit-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:var(--peach-soft);color:var(--peach-deep);font-weight:800;flex:none}
-    .benefit strong{display:block;font-size:12px;margin-bottom:4px}
-    .benefit span{display:block;font-size:10.5px;color:#908983;line-height:1.4}
+    .service-strip{position:relative;z-index:3;margin-top:-42px}
+    .service-grid{background:#fff;box-shadow:var(--shadow);border-radius:16px;display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden}
+    .service-item{display:flex;align-items:center;gap:13px;padding:21px 22px;border-right:1px solid var(--line)}
+    .service-item:last-child{border-right:0}
+    .service-icon{width:43px;height:43px;border-radius:10px;background:#fff2ea;color:var(--orange);display:grid;place-items:center;font-weight:900;flex:none}
+    .service-item strong{display:block;font-size:12px;margin-bottom:4px}.service-item span{display:block;color:#8a929d;font-size:10px;line-height:1.35}
 
-    .section{padding:72px 0}
-    .section.white{background:#fff}
-    .section.soft{background:#fff5ef;border-top:1px solid #f5e8e0;border-bottom:1px solid #f5e8e0}
-    .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;margin-bottom:30px}
-    .section-kicker{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--peach-deep);margin-bottom:10px}
-    .section-title{margin:0;font-size:clamp(30px,3vw,46px);line-height:1;letter-spacing:-.055em}
-    .section-sub{margin:12px 0 0;color:var(--muted);font-size:13px;line-height:1.6;max-width:650px}
-    .section-action{font-size:12px;font-weight:800;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
-    .section-action:hover{color:var(--peach-deep)}
+    .section{padding:82px 0}
+    .section.soft{background:var(--soft)}
+    .section.dark{background:var(--navy);color:#fff;position:relative;overflow:hidden}
+    .section.dark:before{content:"";position:absolute;width:560px;height:560px;border-radius:50%;left:-220px;bottom:-330px;background:radial-gradient(circle,rgba(255,106,26,.18),transparent 68%)}
+    .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;margin-bottom:30px;position:relative;z-index:2}
+    .section-kicker{font-size:10px;font-weight:900;color:var(--orange);letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px}
+    .section-title{margin:0;font-size:clamp(30px,3.1vw,46px);line-height:1;letter-spacing:-.055em}
+    .section-sub{margin:11px 0 0;max-width:660px;color:var(--muted);font-size:13px;line-height:1.62}
+    .dark .section-sub{color:#9fb0c4}
+    .section-link{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:900;white-space:nowrap;color:var(--orange)}
 
-    .product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-    .product-card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;min-width:0;display:flex;flex-direction:column}
-    .soft .product-card{background:rgba(255,255,255,.82)}
-    .product-card:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(45,33,24,.08);border-color:#e2d9d2}
-    .product-media{height:210px;display:grid;place-items:center;background:linear-gradient(150deg,#faf8f6,#f2efec);position:relative;overflow:hidden;padding:20px}
-    .product-media:after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;right:-60px;bottom:-65px;background:rgba(255,118,104,.10)}
-    .product-media img{position:relative;z-index:2;width:100%;height:100%;object-fit:contain;transition:transform .25s ease;filter:drop-shadow(0 16px 18px rgba(40,31,26,.10))}
+    .category-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:30px}
+    .category-card{min-height:124px;border:1px solid var(--line);background:#fff;border-radius:14px;padding:18px;display:flex;flex-direction:column;justify-content:space-between;transition:.2s}
+    .category-card:hover{transform:translateY(-2px);box-shadow:0 14px 35px rgba(7,22,46,.07)}
+    .category-card .num{color:var(--orange);font-size:10px;font-weight:900}.category-card strong{font-size:16px;letter-spacing:-.03em}.category-card span{font-size:10.5px;line-height:1.5;color:#89919d}
+
+    .product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;position:relative;z-index:2}
+    .product-card{background:#fff;border:1px solid var(--line);border-radius:15px;overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:transform .2s,box-shadow .2s,border-color .2s}
+    .product-card:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(7,22,46,.1);border-color:#dbe0e6}
+    .dark .product-card{border-color:rgba(255,255,255,.09)}
+    .product-media{height:200px;background:linear-gradient(145deg,#f7f8fa,#edf0f3);padding:22px;display:grid;place-items:center;position:relative;overflow:hidden}
+    .product-media:after{content:"";position:absolute;width:140px;height:140px;border-radius:50%;right:-55px;bottom:-55px;background:rgba(255,106,26,.08)}
+    .product-media img{position:relative;z-index:2;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 14px 16px rgba(8,17,31,.12));transition:transform .22s}
     .product-card:hover .product-media img{transform:scale(1.035)}
-    .product-badge{position:absolute;z-index:3;left:13px;top:13px;padding:7px 9px;border-radius:999px;background:#fff;color:#3c3835;border:1px solid rgba(0,0,0,.05);font-size:9px;font-weight:800}
-    .product-body{padding:16px;display:flex;flex-direction:column;flex:1}
-    .product-type{font-size:9.5px;color:#99918b;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:7px}
-    .product-name{font-size:14px;font-weight:700;line-height:1.35;letter-spacing:-.025em;min-height:38px}
-    .product-name:hover{color:var(--peach-deep)}
-    .product-meta{margin-top:8px;color:#8b837d;font-size:10.5px;line-height:1.5;min-height:32px}
-    .product-foot{margin-top:auto;padding-top:15px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-    .product-price{font-size:16px;font-weight:800;letter-spacing:-.035em}
-    .add-btn{border:0;border-radius:999px;height:36px;padding:0 12px;background:var(--peach-soft);color:var(--peach-deep);font-size:10px;font-weight:800;cursor:pointer;transition:.18s;white-space:nowrap}
-    .add-btn:hover{background:var(--peach);color:#fff}
-    .add-btn.added{background:#171515;color:#fff}
-    .add-btn[disabled]{cursor:not-allowed;opacity:.5}
+    .product-badge{position:absolute;z-index:3;left:12px;top:12px;background:var(--orange);color:#fff;border-radius:5px;padding:6px 8px;font-size:8px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+    .product-body{padding:15px 15px 16px;display:flex;flex-direction:column;flex:1}
+    .product-type{font-size:9px;color:#9aa1aa;text-transform:uppercase;letter-spacing:.08em;font-weight:800;margin-bottom:7px}
+    .product-name{font-size:13px;font-weight:800;line-height:1.35;letter-spacing:-.025em;min-height:36px}
+    .product-meta{margin-top:7px;color:#8b939e;font-size:10px;line-height:1.45;min-height:30px}
+    .product-foot{margin-top:auto;padding-top:14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .price{font-size:16px;font-weight:900;letter-spacing:-.035em}
+    .add-btn{height:34px;border:0;border-radius:6px;background:#fff2ea;color:#e95e14;padding:0 11px;font-size:9.5px;font-weight:900;white-space:nowrap;transition:.18s}
+    .add-btn:hover{background:var(--orange);color:#fff}.add-btn.added{background:#eaf8ef;color:#168548}
+    .loading{height:354px;border-radius:15px;background:linear-gradient(90deg,#f0f2f4,#f7f8f9,#f0f2f4);background-size:200% 100%;animation:load 1.3s infinite}
+    @keyframes load{to{background-position:-200% 0}}
 
-    .music-band{background:var(--navy);color:#fff;padding:68px 0;position:relative;overflow:hidden}
-    .music-band:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 50%,rgba(255,118,104,.16),transparent 32rem)}
-    .music-grid{position:relative;z-index:2;display:grid;grid-template-columns:.9fr 1.1fr;gap:42px;align-items:center}
-    .music-band .section-kicker{color:#ff9389}
-    .music-band .section-title{font-size:clamp(34px,4vw,58px)}
-    .music-band .section-sub{color:#b7b5c5}
-    .music-art{position:relative;height:330px}
-    .music-art img{position:absolute;inset:0;margin:auto;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 28px 36px rgba(0,0,0,.38))}
+    .feature-band{background:#fff;display:grid;grid-template-columns:1fr 1fr;min-height:390px}
+    .feature-copy{padding:70px max(34px,calc((100vw - var(--max))/2));padding-right:60px;display:flex;flex-direction:column;justify-content:center}
+    .feature-copy h2{font-size:clamp(32px,4vw,56px);line-height:.98;letter-spacing:-.06em;margin:0 0 16px}.feature-copy p{margin:0;color:#78818c;font-size:13px;line-height:1.65;max-width:540px}
+    .feature-visual{background:linear-gradient(115deg,#ff6a1a,#ff8b48);position:relative;overflow:hidden;display:grid;place-items:center;min-height:390px}
+    .feature-visual:before{content:"";position:absolute;width:480px;height:480px;border-radius:50%;border:1px solid rgba(255,255,255,.24);right:-90px;top:-160px;box-shadow:0 0 0 40px rgba(255,255,255,.05),0 0 0 80px rgba(255,255,255,.035)}
+    .feature-visual img{position:relative;z-index:2;width:min(560px,88%);height:330px;object-fit:contain;filter:drop-shadow(0 26px 24px rgba(77,27,3,.23))}
 
-    .multitrack-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
-    .track-card{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:.2s}
-    .track-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(45,33,24,.08)}
-    .track-cover{aspect-ratio:1/1;background:#eee;position:relative;overflow:hidden}
-    .track-cover img{width:100%;height:100%;object-fit:cover;transition:transform .25s ease}
-    .track-card:hover .track-cover img{transform:scale(1.035)}
-    .track-body{padding:13px;display:flex;flex-direction:column;flex:1}
-    .track-id{font-size:9px;color:#aaa09a;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
-    .track-title{margin:7px 0 5px;font-size:12px;font-weight:700;line-height:1.35;min-height:33px}
-    .track-meta{font-size:9.5px;color:#8f8680;line-height:1.5}
+    .multitrack-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;position:relative;z-index:2}
+    .track-card{background:#fff;border:1px solid var(--line);border-radius:15px;overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:.2s}
+    .track-card:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(7,22,46,.09)}
+    .track-cover{position:relative;aspect-ratio:1.4/1;background:#e9edf1;overflow:hidden}
+    .track-cover img{width:100%;height:100%;object-fit:cover;transition:transform .3s}.track-card:hover .track-cover img{transform:scale(1.03)}
+    .track-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,22,46,.82),rgba(7,22,46,.03) 65%);display:flex;align-items:flex-end;padding:14px}
+    .preview-btn{width:38px;height:38px;border:0;border-radius:50%;background:#fff;color:var(--navy);display:grid;place-items:center;box-shadow:0 10px 25px rgba(0,0,0,.18);transition:.18s}
+    .preview-btn:hover{transform:scale(1.05);background:var(--orange);color:#fff}
+    .preview-btn.playing{background:var(--orange);color:#fff}
+    .track-body{padding:15px;display:flex;flex-direction:column;flex:1}
+    .track-id{font-size:9px;font-weight:900;color:var(--orange);letter-spacing:.08em;text-transform:uppercase}
+    .track-title{font-size:13px;font-weight:800;line-height:1.35;margin-top:6px;min-height:36px}
+    .track-artist{font-size:10px;color:#8a939e;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .track-facts{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.fact{font-size:8.5px;font-weight:800;color:#5f6974;background:#f3f5f7;border-radius:5px;padding:5px 7px}
+    .track-progress{height:3px;background:#edf0f3;border-radius:99px;overflow:hidden;margin:13px 0 3px}.track-progress span{display:block;height:100%;width:0;background:var(--orange)}
+    .track-time{font-size:8px;color:#a0a7af;text-align:right}
     .track-foot{margin-top:auto;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-    .track-price{font-size:14px;font-weight:800}
-    .track-add{width:34px;height:34px;border:0;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;cursor:pointer;display:grid;place-items:center;transition:.18s}
-    .track-add:hover{background:var(--peach)}
-    .track-add.added{background:var(--peach)}
+    .track-actions{display:flex;gap:6px}.small-btn{height:33px;border-radius:6px;border:1px solid #e6e9ed;background:#fff;color:#253044;padding:0 9px;font-size:8.5px;font-weight:900}.small-btn.cart{border-color:#ffe0cd;background:#fff2ea;color:#e65e16}.small-btn.cart:hover{background:var(--orange);color:#fff}
+    .track-price{font-size:15px;font-weight:900}
+    .catalog-cta{margin-top:24px;border-radius:16px;background:var(--orange);color:#fff;padding:25px 28px;display:flex;align-items:center;justify-content:space-between;gap:30px;position:relative;z-index:2}
+    .catalog-cta h3{margin:0;font-size:22px;letter-spacing:-.04em}.catalog-cta p{margin:7px 0 0;color:#ffe0d0;font-size:11px;line-height:1.5}.catalog-cta .btn{background:#fff;color:var(--orange)}
 
-    .multitrack-cta{margin-top:26px;border-radius:24px;padding:28px;background:linear-gradient(115deg,#161525,#24223a);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:24px;overflow:hidden;position:relative}
-    .multitrack-cta:after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;right:-80px;top:-110px;background:rgba(255,118,104,.18)}
-    .multitrack-cta h3{position:relative;z-index:2;margin:0 0 7px;font-size:24px;letter-spacing:-.04em}
-    .multitrack-cta p{position:relative;z-index:2;margin:0;color:#bdbacb;font-size:12px;line-height:1.55;max-width:720px}
-    .multitrack-cta .btn{position:relative;z-index:2;flex:none;background:#fff;color:#171515}
+    .trust{padding:70px 0;background:var(--soft-blue)}
+    .trust-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:25px;align-items:center}
+    .trust h2{margin:0;font-size:clamp(30px,3.2vw,46px);letter-spacing:-.055em}.trust p{margin:13px 0 0;color:#738092;font-size:13px;line-height:1.65;max-width:650px}
+    .trust-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.trust-card{background:#fff;border:1px solid #e4eaf1;border-radius:12px;padding:17px}.trust-card b{font-size:12px}.trust-card span{display:block;margin-top:5px;color:#8b95a2;font-size:9.5px;line-height:1.45}
 
-    .empty-state{grid-column:1/-1;padding:32px;border:1px dashed #ddd2cb;border-radius:18px;color:#8a817b;text-align:center;background:rgba(255,255,255,.5);font-size:12px}
-    .loading-card{min-height:310px;border-radius:20px;background:linear-gradient(90deg,#f8f5f2 25%,#fff 38%,#f8f5f2 62%);background-size:300% 100%;animation:shimmer 1.5s infinite;border:1px solid var(--line)}
-    @keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
+    footer{background:#061329;color:#a5b2c3;padding:30px 0}
+    .footer-grid{display:flex;align-items:center;justify-content:space-between;gap:30px;font-size:10px}.footer-brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:900}.footer-brand img{width:34px;height:34px;border-radius:10px}.footer-links{display:flex;gap:18px}
+    .toast{position:fixed;left:50%;bottom:24px;z-index:100;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#07162e;color:#fff;border-radius:8px;padding:11px 15px;font-size:10px;font-weight:800;box-shadow:0 18px 45px rgba(0,0,0,.18);transition:.22s}.toast.show{opacity:1;transform:translate(-50%,0)}
 
-    .toast{position:fixed;left:50%;bottom:24px;z-index:100;transform:translate(-50%,22px);background:#171515;color:#fff;border-radius:999px;padding:12px 16px;font-size:11px;font-weight:700;opacity:0;pointer-events:none;transition:.28s cubic-bezier(.16,1,.3,1);box-shadow:0 16px 40px rgba(0,0,0,.2)}
-    .toast.show{opacity:1;transform:translate(-50%,0)}
-
-    footer{background:#111;color:#fff;padding:42px 0 34px}
-    .footer-grid{display:flex;align-items:center;justify-content:space-between;gap:24px}
-    .footer-brand{display:flex;align-items:center;gap:11px;font-weight:800}
-    .footer-brand img{width:34px;height:34px;border-radius:11px}
-    .footer-copy{font-size:10px;color:#8d8a8a;text-align:right;line-height:1.6}
-
-    @media(max-width:1080px){
-      .nav{grid-template-columns:auto 1fr}.nav-links{display:none}.nav-actions{justify-content:end}.hero-grid{grid-template-columns:1fr}.hero-side{min-height:330px;display:grid;grid-template-columns:1fr 1fr;align-items:center}.hero-side img{height:250px}.product-grid{grid-template-columns:repeat(3,1fr)}.multitrack-grid{grid-template-columns:repeat(4,1fr)}.benefit-row{grid-template-columns:repeat(2,1fr)}.benefit:nth-child(2){border-right:0}.benefit:nth-child(-n+2){border-bottom:1px solid var(--line)}
+    @media(max-width:1020px){
+      .nav{grid-template-columns:auto 1fr}.nav-links{display:none}.nav-actions{justify-content:end}.search-box{width:220px}
+      .hero-grid{grid-template-columns:1fr .9fr;min-height:500px}.hero-art img{height:360px}.service-grid{grid-template-columns:repeat(2,1fr)}.service-item:nth-child(2){border-right:0}.service-item:nth-child(-n+2){border-bottom:1px solid var(--line)}
+      .product-grid,.multitrack-grid{grid-template-columns:repeat(3,1fr)}.category-row{grid-template-columns:repeat(2,1fr)}
+      .feature-band{grid-template-columns:1fr}.feature-copy{padding:60px 34px}.trust-grid{grid-template-columns:1fr}
     }
-    @media(max-width:780px){
-      .utility{display:none}.site-header{top:0}.shell{width:min(100% - 22px,var(--max))}.nav{min-height:66px;gap:12px}.brand span{display:none}.search-wrap{display:none}.cart-link{padding:0 12px}.hero{padding-top:16px}.hero-primary{grid-template-columns:1fr;padding:30px 24px;min-height:540px;background:linear-gradient(155deg,#fff2df 0%,#fff7ed 52%,#ff7568 52.1%,#ff6d60 100%)}.hero-copy{align-self:start}.hero-art{position:absolute;inset:auto 0 0;height:270px;min-height:0}.hero-art img{height:100%;right:0}.hero-side{grid-template-columns:1fr;min-height:430px;padding:28px}.hero-side img{height:210px;margin-top:4px}.benefits{padding-bottom:28px}.benefit-row{grid-template-columns:1fr}.benefit{border-right:0;border-bottom:1px solid var(--line)}.benefit:last-child{border-bottom:0}.section{padding:52px 0}.section-head{align-items:flex-start;flex-direction:column;margin-bottom:24px}.product-grid{grid-template-columns:repeat(2,1fr);gap:11px}.product-media{height:170px}.product-body{padding:13px}.product-name{font-size:12px}.product-foot{align-items:flex-end;flex-direction:column}.product-price{align-self:flex-start}.add-btn{width:100%}.music-grid{grid-template-columns:1fr}.music-art{height:250px}.multitrack-grid{grid-template-columns:repeat(2,1fr);gap:10px}.multitrack-cta{align-items:flex-start;flex-direction:column}.footer-grid{align-items:flex-start;flex-direction:column}.footer-copy{text-align:left}
+    @media(max-width:760px){
+      .announcement span:last-child{display:none}.site-header{position:relative}.nav{grid-template-columns:auto auto;min-height:68px}.search-box{display:none}.nav-actions{justify-self:end}.brand .brand-text{display:none}
+      .hero-grid{grid-template-columns:1fr;min-height:auto}.hero-copy{padding:58px 0 24px}.hero-art{min-height:320px}.hero-art img{height:300px}.hero h1{font-size:46px}.service-strip{margin-top:-20px}.service-grid{grid-template-columns:1fr 1fr}
+      .section{padding:62px 0}.section-head{align-items:flex-start;flex-direction:column;margin-bottom:24px}.product-grid,.multitrack-grid{grid-template-columns:repeat(2,1fr)}.category-row{grid-template-columns:1fr 1fr}
+      .catalog-cta{align-items:flex-start;flex-direction:column}.trust-cards{grid-template-columns:1fr 1fr}.footer-grid{align-items:flex-start;flex-direction:column}
     }
-    @media(max-width:430px){.product-grid{grid-template-columns:1fr 1fr}.product-media{height:145px}.product-badge{font-size:8px;padding:6px 8px}.product-meta{display:none}.product-name{min-height:48px}.track-title{font-size:11px}.hero h1{font-size:42px}}
-    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.hero-art img{animation:none!important}.product-card,.track-card,.btn{transition:none!important}}
+    @media(max-width:510px){
+      .shell{width:min(100% - 22px,var(--max))}.announcement .shell{font-size:9.5px}.hero h1{font-size:39px}.hero-copy p{font-size:13px}.hero-art{min-height:270px}.hero-art img{height:250px}.service-grid{grid-template-columns:1fr}.service-item{border-right:0;border-bottom:1px solid var(--line)}.service-item:last-child{border-bottom:0}
+      .category-row,.product-grid,.multitrack-grid,.trust-cards{grid-template-columns:1fr}.product-media{height:220px}.section{padding:52px 0}.feature-copy{padding:50px 22px}.feature-visual{min-height:310px}.feature-visual img{height:270px}.catalog-cta{padding:22px}.nav-actions .icon-btn:first-of-type{display:none}
+    }
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
   </style>
 </head>
 <body>
-  <div class="utility">
-    <div class="shell">
-      <span>Software, librerías y multitracks digitales · Acceso desde tu cuenta Dingloft</span>
-      <div class="utility-links"><a href="account.html">Mi cuenta</a><a href="account.html#support">Soporte</a></div>
-    </div>
+  <div class="announcement">
+    <div class="shell"><span>Descargas digitales · acceso desde tu cuenta Dingloft</span><span>Soporte remoto disponible durante el checkout</span></div>
   </div>
 
   <header class="site-header">
     <nav class="nav shell" aria-label="Navegación principal">
-      <a class="brand" href="index.html" aria-label="Dingloft inicio"><img src="img/dingloft.png" alt="Dingloft"><span>Dingloft</span></a>
-      <div class="nav-links"><a href="#programas">Programas</a><a href="#samples">Samples & VSTs</a><a href="#multitracks">Multitracks</a><a href="account.html">Cuenta</a></div>
+      <a class="brand" href="/" aria-label="Dingloft">
+        <img src="img/dingloft.png" alt="Dingloft">
+        <span class="brand-text">Dingloft<small>Evolution Group</small></span>
+      </a>
+      <div class="nav-links">
+        <a href="#programas">Programas</a>
+        <a href="#samples">Samples & VSTs</a>
+        <a href="#multitracks">Multitracks</a>
+        <a href="account.html">Cuenta</a>
+      </div>
       <div class="nav-actions">
-        <label class="search-wrap" aria-label="Buscar en Dingloft">
-          <input id="catalogSearch" type="search" placeholder="Buscar software, VST o multitrack…" autocomplete="off">
-          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.6-3.6"></path></svg>
+        <label class="search-box" aria-label="Buscar productos">
+          <input id="catalogSearch" type="search" placeholder="Buscar en Dingloft..." autocomplete="off">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
         </label>
-        <a class="cart-link" href="checkout.html" aria-label="Ir al carrito y checkout">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8h12l-1 12H7L6 8Z"></path><path d="M9 8a3 3 0 0 1 6 0"></path></svg>
-          Carrito <span class="cart-count" data-cart-count>0</span>
+        <a class="icon-btn" href="account.html" aria-label="Mi cuenta">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
+        </a>
+        <a class="icon-btn" href="checkout.html" aria-label="Carrito y checkout">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8h12l-1 12H7L6 8Z"></path><path d="M9 8a3 3 0 0 1 6 0"></path></svg>
+          <span class="cart-count" data-cart-count>0</span>
         </a>
       </div>
     </nav>
   </header>
 
   <main>
-    <section class="hero shell" aria-labelledby="heroTitle">
-      <div class="hero-grid">
-        <article class="hero-primary">
-          <div class="hero-copy">
-            <div class="eyebrow">Todo tu ecosistema digital</div>
-            <h1 id="heroTitle">Herramientas para <span>crear mejor.</span></h1>
-            <p>Software profesional, instrumentos virtuales, librerías y recursos listos para sumar a tu flujo de trabajo.</p>
-            <div class="hero-cta"><a class="btn btn-dark" href="#programas">Ver catálogo</a><a class="btn btn-white" href="#multitracks">Explorar multitracks</a></div>
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-grid shell">
+        <div class="hero-copy">
+          <div class="eyebrow">Dingloft digital store</div>
+          <h1 id="heroTitle"><span>Software y sonido</span> para tu <em>flujo creativo.</em></h1>
+          <p>Programas profesionales, instrumentos virtuales, librerías y multitracks listos para comprar, descargar y gestionar desde tu cuenta Dingloft.</p>
+          <div class="hero-actions">
+            <a class="btn btn-orange" href="#programas">Explorar catálogo</a>
+            <a class="btn btn-ghost" href="multitrack.html">Escuchar multitracks</a>
           </div>
-          <div class="hero-art" aria-hidden="true"><span class="blob"></span><img src="img/motion-x-cover.png" alt=""></div>
-        </article>
-        <aside class="hero-side">
-          <div><div class="micro">Motion-X · Dingloft</div><h2>Tu instrumento. Tu sonido. Tu escenario.</h2><p>Diseñado para producción y performance con una experiencia directa dentro del ecosistema Dingloft.</p></div>
-          <a href="motion-x.html" aria-label="Conocer Motion-X"><img src="img/iMac-Motion.png" alt="Motion-X en iMac"></a>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <img src="img/iMac-Motion.png" alt="">
+        </div>
+      </div>
+    </section>
+
+    <section class="service-strip shell" aria-label="Beneficios Dingloft">
+      <div class="service-grid">
+        <article class="service-item"><div class="service-icon">↧</div><div><strong>Entrega digital</strong><span>Tus compras quedan disponibles desde tu cuenta.</span></div></article>
+        <article class="service-item"><div class="service-icon">✓</div><div><strong>Pago validado</strong><span>El servidor confirma productos y total antes de cobrar.</span></div></article>
+        <article class="service-item"><div class="service-icon">∞</div><div><strong>Acceso permanente</strong><span>Vuelve a tus descargas cuando las necesites.</span></div></article>
+        <article class="service-item"><div class="service-icon">⌁</div><div><strong>Dingloft Care</strong><span>Asistencia remota opcional durante tu compra.</span></div></article>
+      </div>
+    </section>
+
+    <section id="programas" class="section">
+      <div class="shell">
+        <header class="section-head">
+          <div><div class="section-kicker">01 · Software</div><h2 class="section-title">Programas</h2><p class="section-sub">Herramientas para arquitectura, diseño, productividad, edición y producción profesional.</p></div>
+          <a class="section-link" href="#samples">Ver Samples & VSTs →</a>
+        </header>
+        <div class="category-row" aria-label="Categorías de software">
+          <article class="category-card"><span class="num">01</span><strong>Arquitectura</strong><span>AutoCAD, SketchUp y herramientas para diseño técnico.</span></article>
+          <article class="category-card"><span class="num">02</span><strong>Productividad</strong><span>Office y utilidades para trabajo, estudio y negocio.</span></article>
+          <article class="category-card"><span class="num">03</span><strong>Diseño 3D</strong><span>Modelado, visualización y creación de contenido.</span></article>
+          <article class="category-card"><span class="num">04</span><strong>Producción</strong><span>DAWs y herramientas para producción audiovisual.</span></article>
+        </div>
+        <div id="programGrid" class="product-grid" aria-live="polite"><div class="loading"></div><div class="loading"></div><div class="loading"></div><div class="loading"></div></div>
+      </div>
+    </section>
+
+    <section class="feature-band" aria-label="Motion-X">
+      <div class="feature-copy">
+        <div class="section-kicker">Motion-X · Instrumento virtual</div>
+        <h2>Un instrumento pensado para tocar y producir.</h2>
+        <p>Live Banks, 8 capas, Super Knob y un flujo directo dentro del ecosistema Dingloft. Disponible para macOS y Windows.</p>
+        <div class="hero-actions"><a class="btn btn-orange" href="motion-x.html">Conocer Motion-X</a><button class="btn" style="background:#07162e;color:#fff" type="button" data-add-sku="motion-x" data-add-name="Motion-X" data-add-price="28">Agregar al carrito</button></div>
+      </div>
+      <div class="feature-visual"><img src="img/motion-x-cover.png" alt="Motion-X"></div>
+    </section>
+
+    <section id="samples" class="section dark">
+      <div class="shell">
+        <header class="section-head">
+          <div><div class="section-kicker">02 · Audio</div><h2 class="section-title">Samples, VSTs & Librerías</h2><p class="section-sub">Instrumentos, pianos, pads, sonidos y colecciones para estudio, directo y producción musical.</p></div>
+          <a class="section-link" href="#multitracks">Ver Multitracks →</a>
+        </header>
+        <div id="sampleGrid" class="product-grid" aria-live="polite"><div class="loading"></div><div class="loading"></div><div class="loading"></div><div class="loading"></div></div>
+      </div>
+    </section>
+
+    <section id="multitracks" class="section soft">
+      <div class="shell">
+        <header class="section-head">
+          <div><div class="section-kicker">03 · Lo más reciente</div><h2 class="section-title">Multitracks</h2><p class="section-sub">Aquí mostramos únicamente los 4 lanzamientos más recientes. Puedes escuchar el preview, agregar al carrito o abrir el catálogo completo.</p></div>
+          <a class="section-link" href="multitrack.html">Ir al catálogo →</a>
+        </header>
+        <div id="multitrackGrid" class="multitrack-grid" aria-live="polite"><div class="loading"></div><div class="loading"></div><div class="loading"></div><div class="loading"></div></div>
+        <aside class="catalog-cta">
+          <div><h3>¿Quieres ver todos los multitracks?</h3><p>En el catálogo puedes escuchar más previews, revisar BPM, tonalidad, stems y todos los lanzamientos disponibles.</p></div>
+          <a class="btn" href="multitrack.html">Ir al catálogo de Multitracks</a>
         </aside>
       </div>
     </section>
 
-    <section class="benefits shell" aria-label="Beneficios Dingloft">
-      <div class="benefit-row">
-        <div class="benefit"><div class="benefit-icon">∞</div><div><strong>Acceso digital</strong><span>Tu compra queda disponible desde tu cuenta.</span></div></div>
-        <div class="benefit"><div class="benefit-icon">✓</div><div><strong>Pago seguro</strong><span>El importe se valida antes de procesar el pago.</span></div></div>
-        <div class="benefit"><div class="benefit-icon">↧</div><div><strong>Entrega directa</strong><span>Descarga tus archivos cuando el pedido esté confirmado.</span></div></div>
-        <div class="benefit"><div class="benefit-icon">⌁</div><div><strong>Dingloft Care</strong><span>Asistencia remota disponible cuando la necesites.</span></div></div>
-      </div>
-    </section>
-
-    <section id="programas" class="section white">
-      <div class="shell">
-        <div class="section-head">
-          <div><div class="section-kicker">01 · Software</div><h2 class="section-title">Programas</h2><p class="section-sub">Herramientas para arquitectura, diseño, productividad, producción y creación digital.</p></div>
-          <a class="section-action" href="#samples">Siguiente · Samples & VSTs →</a>
-        </div>
-        <div id="programGrid" class="product-grid" aria-live="polite">
-          <div class="loading-card"></div><div class="loading-card"></div><div class="loading-card"></div><div class="loading-card"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="music-band" aria-label="Producción musical Dingloft">
-      <div class="shell music-grid">
-        <div><div class="section-kicker">Producción musical</div><h2 class="section-title">Sonidos que entran directo a tu sesión.</h2><p class="section-sub">Explora instrumentos, pianos, pads, texturas y librerías pensadas para tocar, producir y llevar al escenario.</p><div class="hero-cta"><a class="btn btn-white" href="#samples">Ver Samples & VSTs</a></div></div>
-        <div class="music-art"><img src="img/pianos_bundle_boxes.png" alt="Librerías musicales Dingloft"></div>
-      </div>
-    </section>
-
-    <section id="samples" class="section soft">
-      <div class="shell">
-        <div class="section-head">
-          <div><div class="section-kicker">02 · Audio</div><h2 class="section-title">Samples, VSTs & Librerías</h2><p class="section-sub">Instrumentos y colecciones para ampliar tu paleta sonora en estudio, directo y dispositivos compatibles.</p></div>
-          <a class="section-action" href="#multitracks">Siguiente · Multitracks →</a>
-        </div>
-        <div id="sampleGrid" class="product-grid" aria-live="polite">
-          <div class="loading-card"></div><div class="loading-card"></div><div class="loading-card"></div><div class="loading-card"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="multitracks" class="section white">
-      <div class="shell">
-        <div class="section-head">
-          <div><div class="section-kicker">03 · Multitracks</div><h2 class="section-title">Pistas por canales</h2><p class="section-sub">Compra el multitrack desde aquí o entra a la colección para escuchar previews, revisar BPM, tonalidad y stems.</p></div>
-          <a class="section-action" href="multitrack.html">Ir a Multitracks para escuchar previews →</a>
-        </div>
-        <div id="multitrackGrid" class="multitrack-grid" aria-live="polite">
-          <div class="loading-card"></div><div class="loading-card"></div><div class="loading-card"></div><div class="loading-card"></div><div class="loading-card"></div>
-        </div>
-        <div class="multitrack-cta">
-          <div><h3>¿Quieres escuchar antes de comprar?</h3><p>Abre la sección Multitracks para reproducir previews y revisar cada lanzamiento con más detalle.</p></div>
-          <a class="btn" href="multitrack.html">Ir a Multitracks</a>
-        </div>
+    <section class="trust">
+      <div class="shell trust-grid">
+        <div><div class="section-kicker">Dingloft Care</div><h2>Compra digital con soporte cuando lo necesitas.</h2><p>Si prefieres que te ayudemos con la instalación o configuración, puedes agregar asistencia remota desde el checkout sin cambiar tu carrito ni tus compras.</p></div>
+        <div class="trust-cards"><article class="trust-card"><b>Control visible</b><span>Ves cada acción durante la sesión remota.</span></article><article class="trust-card"><b>Conexión temporal</b><span>La conexión se utiliza únicamente durante la asistencia.</span></article><article class="trust-card"><b>Pago seguro</b><span>Productos, asistencia y aportes se validan antes del cobro.</span></article><article class="trust-card"><b>Tu cuenta sincronizada</b><span>Pedidos y descargas quedan unidos a tu cuenta Dingloft.</span></article></div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="shell footer-grid"><div class="footer-brand"><img src="img/dingloft.png" alt="Dingloft"><span>Dingloft</span></div><div class="footer-copy">© 2026 Dingloft · Evolution Group<br>Software, audio y recursos digitales.</div></div>
+    <div class="shell footer-grid">
+      <div class="footer-brand"><img src="img/dingloft.png" alt="Dingloft"><span>Dingloft · Evolution Group</span></div>
+      <div class="footer-links"><a href="account.html">Mi cuenta</a><a href="multitrack.html">Multitracks</a><a href="checkout.html">Checkout</a></div>
+    </div>
   </footer>
 
   <div class="toast" id="cartToast" role="status" aria-live="polite">Agregado al carrito</div>
@@ -288,83 +311,123 @@
   (()=>{
     const WORKER=String(window.DINGLOFT_WORKER_BASE||document.querySelector('meta[name="dingloft-worker-base"]')?.content||'https://autumn-breeze-dfa0.evolutiongt01.workers.dev').replace(/\/$/,'');
     const CART_KEY='dingloft_cart';
+    const programGrid=document.getElementById('programGrid');
+    const sampleGrid=document.getElementById('sampleGrid');
+    const trackGrid=document.getElementById('multitrackGrid');
+    const searchInput=document.getElementById('catalogSearch');
+    const toast=document.getElementById('cartToast');
+    let allProducts=[];
+    let currentAudio=null;
+    let currentPreviewButton=null;
+
     const productLinks={
-      'autocad-2026':'autocad.html','office-home-business':'office.html','sketchup-pro-2026':'sketchup.html','cinema-4d':'cinema4d.html',
-      'biblias-e-sword':'esword.html','pianos-legendarios-sf2-bundle':'dual.html','nord-stage-4-ultimate-library':'nord.html',
-      'yamaha-premium-keys':'yamahakeys.html','rhodes-affair-2':'rhodes.html','montage-8-nord-stage-3':'mainstage.html','logic-pro':'logic.html','motion-x':'motion-x.html'
+      'autocad-2026':'autocad.html','office-home-business':'office.html','sketchup-pro-2026':'sketchup.html','sketchup-2026-autocad-2026':'producto.html?sku=sketchup-2026-autocad-2026','cinema-4d':'cinema4d.html','logic-pro':'logic.html',
+      'biblias-e-sword':'esword.html','pianos-legendarios-sf2-bundle':'dual.html','nord-stage-4-ultimate-library':'nord.html','nord-essentials-sf2-collection':'producto.html?sku=nord-essentials-sf2-collection','yamaha-legacy-collection-sf2':'producto.html?sku=yamaha-legacy-collection-sf2','yamaha-premium-keys':'yamahakeys.html','rhodes-affair-2':'rhodes.html','montage-8-nord-stage-3':'mainstage.html','cosmos-collection':'producto.html?sku=cosmos-collection','motion-x':'motion-x.html'
     };
+    const imageMap={autocad:'img/autocad.png',office:'img/office.png',sketchup:'img/sketchup.png',combo:'img/combo.png',cinema4d:'img/cinema4d.png',logic:'img/logic.png',esword:'img/esword.png',dual:'img/dual.png',nord:'img/nord.png',nordessentials:'img/nordessentials.png',yamahalegacy:'img/yamahalegacy.png',yamahakeys:'img/yamahakeys.png',cosmos:'img/cosmos.png',rhodes:'img/rhodes.png',mainstage:'img/mainstage.png',dingloft:'img/dingloft.png'};
     const fallbackProducts=[
-      {sku:'autocad-2026',name:'AutoCAD 2026',priceUsd:35,img:'autocad',type:'Licencia vitalicia',category:'Software'},
-      {sku:'office-home-business',name:'Office Home & Business',priceUsd:40,img:'office',type:'Licencia vitalicia',category:'Software'},
-      {sku:'sketchup-pro-2026',name:'SketchUp Pro 2026',priceUsd:27,img:'sketchup',type:'Licencia vitalicia',category:'Software'},
-      {sku:'sketchup-2026-autocad-2026',name:'SketchUp 2026 & AutoCAD 2026',priceUsd:50,img:'combo',type:'Licencia vitalicia',category:'Software'},
-      {sku:'cinema-4d',name:'Cinema 4D',priceUsd:35,img:'cinema4d',type:'Licencia vitalicia',category:'Software'},
-      {sku:'logic-pro',name:'Logic Pro',priceUsd:25,img:'logic',type:'Licencia vitalicia',category:'Audio'},
-      {sku:'biblias-e-sword',name:'Biblias E-Sword',priceUsd:0,img:'esword',type:'Descarga gratuita',category:'Software'},
-      {sku:'pianos-legendarios-sf2-bundle',name:'Pianos Legendarios SF2 Bundle',priceUsd:60,img:'dual',type:'Librería vitalicia',category:'Audio'},
-      {sku:'nord-stage-4-ultimate-library',name:'Nord Stage 4 Ultimate Library',priceUsd:40,img:'nord',type:'Librería vitalicia',category:'Audio'},
-      {sku:'nord-essentials-sf2-collection',name:'Nord Essentials SF2 Collection',priceUsd:33,img:'nordessentials',type:'Librería vitalicia',category:'Audio'},
-      {sku:'yamaha-legacy-collection-sf2',name:'Yamaha Legacy Collection SF2',priceUsd:33,img:'yamahalegacy',type:'Librería vitalicia',category:'Audio'},
-      {sku:'yamaha-premium-keys',name:'Yamaha Premium Keys',priceUsd:30,img:'yamahakeys',type:'Librería vitalicia',category:'Audio'},
-      {sku:'cosmos-collection',name:'Cosmos Collection',priceUsd:70,img:'cosmos',type:'Librería vitalicia',category:'Audio'},
-      {sku:'rhodes-affair-2',name:'Rhodes Affair 2',priceUsd:30,img:'rhodes',type:'Librería vitalicia',category:'Audio'},
-      {sku:'montage-8-nord-stage-3',name:'Montage 8 & Nord Stage 3',priceUsd:27,img:'mainstage',type:'Librería vitalicia',category:'Audio'}
+      {sku:'autocad-2026',name:'AutoCAD 2026',priceUsd:35,img:'autocad',type:'Licencia vitalicia',category:'Software',shortDescription:'Diseño técnico y documentación profesional.'},
+      {sku:'office-home-business',name:'Office Home & Business',priceUsd:40,img:'office',type:'Licencia vitalicia',category:'Software',shortDescription:'Productividad para trabajo, estudio y negocio.'},
+      {sku:'sketchup-pro-2026',name:'SketchUp Pro 2026',priceUsd:27,img:'sketchup',type:'Licencia vitalicia',category:'Software',shortDescription:'Modelado 3D directo y profesional.'},
+      {sku:'sketchup-2026-autocad-2026',name:'SketchUp 2026 & AutoCAD 2026',priceUsd:50,img:'combo',type:'Licencia vitalicia',category:'Software',shortDescription:'Combo para arquitectura y diseño técnico.'},
+      {sku:'cinema-4d',name:'Cinema 4D',priceUsd:35,img:'cinema4d',type:'Licencia vitalicia',category:'Software',shortDescription:'Creación 3D y motion graphics.'},
+      {sku:'logic-pro',name:'Logic Pro',priceUsd:25,img:'logic',type:'Licencia vitalicia',category:'Software',shortDescription:'Producción musical en macOS.'},
+      {sku:'pianos-legendarios-sf2-bundle',name:'Pianos Legendarios SF2 Bundle',priceUsd:60,img:'dual',type:'Librería vitalicia',category:'Audio',shortDescription:'Colección SF2 para producción y performance.'},
+      {sku:'nord-stage-4-ultimate-library',name:'Nord Stage 4 Ultimate Library',priceUsd:40,img:'nord',type:'Librería vitalicia',category:'Audio',shortDescription:'Sonidos y recursos para stage keyboards.'},
+      {sku:'nord-essentials-sf2-collection',name:'Nord Essentials SF2 Collection',priceUsd:33,img:'nordessentials',type:'Librería vitalicia',category:'Audio',shortDescription:'Colección esencial en formato SF2.'},
+      {sku:'yamaha-legacy-collection-sf2',name:'Yamaha Legacy Collection SF2',priceUsd:33,img:'yamahalegacy',type:'Librería vitalicia',category:'Audio',shortDescription:'Colección de sonidos Yamaha en SF2.'},
+      {sku:'yamaha-premium-keys',name:'Yamaha Premium Keys',priceUsd:30,img:'yamahakeys',type:'Librería vitalicia',category:'Audio',shortDescription:'Teclados y pianos premium para Kontakt.'},
+      {sku:'cosmos-collection',name:'Cosmos Collection',priceUsd:70,img:'cosmos',type:'Librería vitalicia',category:'Audio',shortDescription:'Colección amplia para producción musical.'},
+      {sku:'rhodes-affair-2',name:'Rhodes Affair 2',priceUsd:30,img:'rhodes',type:'Librería vitalicia',category:'Audio',shortDescription:'Electric piano para macOS y Windows.'},
+      {sku:'montage-8-nord-stage-3',name:'Montage 8 & Nord Stage 3',priceUsd:27,img:'mainstage',type:'Librería vitalicia',category:'Audio',shortDescription:'Librería enfocada en performance.'}
     ];
     const fallbackTracks=[
-      ['MT-001','Todos Reunidos',20,'Genesis Campos','img/albums/todos-reunidos.jpg'],['MT-002','Lanza Gritos',25,'Ministerios Ebenezer','img/albums/Lanzagritos.jpg'],
-      ['MT-003','Melodía de Unción - La voz de mi Amado - Libertad',15,'CCINT','img/albums/ccint1.jpeg'],['MT-004','Ante el Rey',15,'Genesis Campos','img/albums/anteelrey.jpg'],
-      ['MT-005','Deleitate en el Señor',15,'Genesis Campos','img/albums/anteelrey.jpg'],['MT-006','Tú Me Reivindicarás',15,'Barro de Dios Ministerios Ebenezer','img/albums/barrodedios.jpeg'],
-      ['MT-007','Guerrero Victorioso',18,'Ministerios Ebenezer','img/albums/Libertad.jpeg'],['MT-008','Llevando el Arca',18,'Ministerios Ebenezer','img/albums/Libertad.jpeg'],
-      ['MT-009','Libertad - Natsach & Jehova A Vencido',18,'Ministerios Ebenezer','img/albums/Libertad.jpeg'],['MT-010','Preparados Estamos',18,'Ministerios Ebenezer','img/albums/Libertad.jpeg'],
-      ['MT-011','Aleluya',20,'Ministerios Ebenezer','img/albums/Album2.jpg'],['MT-012','Derrama de tu vino Señor',18,'Leonardo Díaz','img/albums/derrama.jpeg'],
-      ['MT-013','Medley Justicia',15,'Ebenezer Honduras','img/albums/Reino.jpg'],['MT-014','Jesus eres mi paz',16,'Genesis Campos','img/albums/anteelrey.jpg'],
-      ['MT-015','Medley Renacer',15,'Ebenezer San Francisco','img/albums/renacer.jpg']
-    ].map(([id,title,price,artist,cover])=>({id,title,price,priceUsd:price,artist,cover,sku:title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),type:'Multitrack digital'}));
+      {id:'MT-015',sku:'medley-renacer',title:'Medley Renacer',artist:'Ebenezer San Francisco',priceUsd:15,bpm:'155',chord:'Bb',stems:'18',cover:'img/albums/renacer.jpg',preview:'audio/Preview15.mp3'},
+      {id:'MT-014',sku:'jesus-eres-mi-paz',title:'Jesus eres mi paz',artist:'Genesis Campos',priceUsd:16,bpm:'150',chord:'Bb',stems:'11',cover:'img/albums/anteelrey.jpg',preview:'audio/Preview14.mp3'},
+      {id:'MT-013',sku:'medley-justicia',title:'Medley Justicia',artist:'Ebenezer Honduras',priceUsd:15,bpm:'150',chord:'Em - Gm',stems:'12',cover:'img/albums/Reino.jpg',preview:'audio/Preview13.mp3'},
+      {id:'MT-012',sku:'derrama-de-tu-vino-senor',title:'Derrama de tu vino Señor',artist:'Leonardo Díaz',priceUsd:18,bpm:'155',chord:'Cm',stems:'12',cover:'img/albums/derrama.jpeg',preview:'audio/Preview12.mp3'}
+    ];
 
-    const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    const slug=v=>String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
-    const imageFor=p=>{const raw=String(p.imageUrl||p.cover||p.img||'dingloft');if(/^(?:https?:)?\/\//i.test(raw)||raw.startsWith('/')||raw.startsWith('data:'))return raw;if(raw.startsWith('img/'))return raw;return `img/${raw}.png`};
-    const cart=()=>{try{return Array.isArray(JSON.parse(localStorage.getItem(CART_KEY)||'[]'))?JSON.parse(localStorage.getItem(CART_KEY)||'[]'):[]}catch(_){return[]}};
-    const cartKey=i=>String(i?.sku||i?.id||i?.name||'').trim().toLowerCase();
-    const isInCart=item=>cart().some(x=>cartKey(x)===cartKey(item)||slug(x?.name||'')===slug(item?.name||item?.title||''));
-    const money=n=>Number(n||0).toFixed(2);
-    const isAudio=p=>{const hay=slug(`${p?.name||''} ${p?.type||''} ${p?.category||''}`);return /motion-x|motion-x|libreria|sample|vst|plugin|instrumento|piano|nord|yamaha|rhodes|cosmos|montage/.test(hay)&&!hay.includes('logic-pro')};
-    const detailFor=p=>productLinks[slug(p.sku||p.slug||p.name)]||'ventas.html';
+    function normalizeKey(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+    function money(n){return `$${Number(n||0).toFixed(2)}`}
+    function productImage(p){if(p.imageUrl)return p.imageUrl;return imageMap[p.img]||'img/dingloft.png'}
+    function isMultitrackProduct(p){const t=`${p?.type||''} ${p?.category||''} ${p?.name||''}`.toLowerCase();return /multitrack/.test(t)||/^mt-\d+/i.test(String(p?.id||''))}
+    function isAudioProduct(p){if(isMultitrackProduct(p))return false;const key=normalizeKey(`${p?.sku||''} ${p?.name||''} ${p?.category||''} ${p?.type||''}`);return /(piano|nord|yamaha|rhodes|cosmos|montage|sf2|sample|vst|libreria|library|instrument|kontakt|sound|audio)/.test(key)}
+    function isProgramProduct(p){return !isMultitrackProduct(p)&&!isAudioProduct(p)}
+    function productLink(p){return productLinks[p.sku]||`producto.html?sku=${encodeURIComponent(p.sku||'')}`}
 
-    function updateCartCount(){document.querySelectorAll('[data-cart-count]').forEach(el=>el.textContent=String(cart().length));syncButtons()}
-    function syncButtons(){document.querySelectorAll('[data-add-item]').forEach(btn=>{let item={sku:btn.dataset.sku,id:btn.dataset.id,name:btn.dataset.name};const added=isInCart(item);btn.classList.toggle('added',added);btn.textContent=added?'Agregado':'Agregar al carrito'});document.querySelectorAll('[data-add-track]').forEach(btn=>{let item={sku:btn.dataset.sku,id:btn.dataset.id,name:btn.dataset.name};btn.classList.toggle('added',isInCart(item));btn.textContent=isInCart(item)?'✓':'+'})}
-    function showToast(text){const t=document.getElementById('cartToast');t.textContent=text;t.classList.add('show');clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>t.classList.remove('show'),1800)}
-    function addItem(raw){
-      const item={id:raw.id||raw.sku,sku:raw.sku||raw.id,name:raw.name||raw.title,type:raw.type||'Producto digital',img:raw.img||'dingloft',imageUrl:raw.imageUrl||'',cover:raw.cover||'',price:Number(raw.priceUsd??raw.price??0),priceUsd:Number(raw.priceUsd??raw.price??0),qty:1,quantity:1};
-      let next;
-      if(window.DingloftCartSync?.addOrMerge&&window.DingloftCartSync?.write){next=window.DingloftCartSync.addOrMerge(window.DingloftCartSync.current?.()||cart(),item);window.DingloftCartSync.write(next,true)}
-      else{next=cart();const key=cartKey(item);if(!next.some(x=>cartKey(x)===key))next.push(item);localStorage.setItem(CART_KEY,JSON.stringify(next));window.dispatchEvent(new CustomEvent('dingloft:cart-sync',{detail:{cart:next,source:'index-html5'}}))}
-      updateCartCount();showToast(`${item.name} agregado al carrito`);
-    }
+    function readCart(){try{const raw=JSON.parse(localStorage.getItem(CART_KEY)||'[]');return Array.isArray(raw)?raw:[]}catch(_){return[]}}
+    function writeCart(items){localStorage.setItem(CART_KEY,JSON.stringify(items));window.dispatchEvent(new CustomEvent('dingloft:cart-change',{detail:{items}}));document.dispatchEvent(new CustomEvent('dingloft:cart-change',{detail:{items}}));updateCartCount()}
+    function updateCartCount(){const items=readCart();const count=items.reduce((s,x)=>s+Math.max(1,Number(x.quantity||1)),0);document.querySelectorAll('[data-cart-count]').forEach(el=>el.textContent=String(count))}
+    function showToast(text='Agregado al carrito'){toast.textContent=text;toast.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(()=>toast.classList.remove('show'),1800)}
+    function addToCart(item,button){const items=readCart();const sku=item.sku||normalizeKey(item.name);const existing=items.find(x=>String(x.sku||'')===sku);if(existing)existing.quantity=Math.max(1,Number(existing.quantity||1));else items.push({sku,name:item.name||item.title||'Producto Dingloft',quantity:1,priceUsd:Number(item.priceUsd??item.price??0),img:item.img||'dingloft'});writeCart(items);showToast(`${item.name||item.title} agregado`);if(button){button.classList.add('added');const old=button.textContent;button.textContent='Agregado ✓';setTimeout(()=>{button.classList.remove('added');button.textContent=old},1400)}}
 
-    function productCard(p){const added=isInCart(p),price=Number(p.priceUsd??p.price??0),badge=price===0?'Gratis':(p.badge||'Digital');return `<article class="product-card catalog-item" data-search="${esc(`${p.name} ${p.type||''} ${p.category||''}`.toLowerCase())}"><a class="product-media" href="${esc(detailFor(p))}"><span class="product-badge">${esc(badge)}</span><img src="${esc(imageFor(p))}" alt="${esc(p.name)}" loading="lazy" onerror="this.src='img/dingloft.png'"></a><div class="product-body"><div class="product-type">${esc(p.type||p.category||'Producto digital')}</div><a class="product-name" href="${esc(detailFor(p))}">${esc(p.name)}</a><div class="product-meta">Compra digital · Acceso desde tu cuenta Dingloft.</div><div class="product-foot"><span class="product-price">${price===0?'Gratis':`$${money(price)} USD`}</span><button class="add-btn ${added?'added':''}" type="button" data-add-item data-sku="${esc(p.sku||slug(p.name))}" data-id="${esc(p.sku||slug(p.name))}" data-name="${esc(p.name)}" data-type="${esc(p.type||'Producto digital')}" data-img="${esc(p.img||'dingloft')}" data-price="${price}">${added?'Agregado':'Agregar al carrito'}</button></div></div></article>`}
-    function trackCard(t){const title=t.title||t.name||'Multitrack',price=Number(t.price??t.priceUsd??0),sku=t.commerceSku||t.sku||slug(title),added=isInCart({sku,id:t.id,name:title});return `<article class="track-card catalog-item" data-search="${esc(`${title} ${t.artist||''} ${t.bpm||''} ${t.chord||t.key||''}`.toLowerCase())}"><a class="track-cover" href="multitrack.html"><img src="${esc(imageFor({...t,img:'dingloft'}))}" alt="${esc(title)}" loading="lazy" onerror="this.src='img/dingloft.png'"></a><div class="track-body"><div class="track-id">${esc(t.id||'Multitrack')} · ${esc(t.bpm||'')} ${t.bpm?'BPM':''}</div><a class="track-title" href="multitrack.html">${esc(title)}</a><div class="track-meta">${esc(t.artist||'Dingloft')} ${t.chord||t.key?`· ${esc(t.chord||t.key)}`:''}</div><div class="track-foot"><span class="track-price">$${money(price)}</span><button class="track-add ${added?'added':''}" type="button" aria-label="Agregar ${esc(title)} al carrito" data-add-track data-sku="${esc(sku)}" data-id="${esc(t.id||sku)}" data-name="${esc(title)}" data-price="${price}" data-cover="${esc(t.cover||'')}" data-type="Multitrack digital">${added?'✓':'+'}</button></div></div></article>`}
+    function productCard(p){const image=productImage(p),desc=p.shortDescription||p.description||'Producto digital disponible en Dingloft.';return `<article class="product-card" data-search="${String(p.name||'').toLowerCase()} ${String(p.type||'').toLowerCase()}"><a class="product-media" href="${productLink(p)}"><span class="product-badge">${p.badge||'Digital'}</span><img src="${image}" alt="${p.name}" loading="lazy"></a><div class="product-body"><div class="product-type">${p.type||p.category||'Producto digital'}</div><a class="product-name" href="${productLink(p)}">${p.name}</a><div class="product-meta">${desc}</div><div class="product-foot"><span class="price">${Number(p.priceUsd||0)>0?money(p.priceUsd):'Gratis'}</span><button class="add-btn" type="button" data-add-product="${encodeURIComponent(JSON.stringify({sku:p.sku,name:p.name,priceUsd:Number(p.priceUsd||0),img:p.img||'dingloft'}))}">Agregar al carrito</button></div></div></article>`}
 
-    function render(products,tracks){
-      const active=products.filter(p=>p&&p.active!==false&&p.name);const programs=active.filter(p=>!isAudio(p));const samples=active.filter(isAudio);
-      document.getElementById('programGrid').innerHTML=programs.length?programs.map(productCard).join(''):'<div class="empty-state">No hay programas disponibles en este momento.</div>';
-      document.getElementById('sampleGrid').innerHTML=samples.length?samples.map(productCard).join(''):'<div class="empty-state">No hay Samples o VSTs disponibles en este momento.</div>';
-      document.getElementById('multitrackGrid').innerHTML=tracks.length?tracks.filter(t=>t.active!==false).map(trackCard).join(''):'<div class="empty-state">No hay multitracks disponibles en este momento.</div>';
-      updateCartCount();
-    }
-    async function loadCatalog(){
-      let products=fallbackProducts,tracks=fallbackTracks;
-      try{const [pr,tr]=await Promise.allSettled([fetch(`${WORKER}/products/public`,{cache:'no-store',headers:{Accept:'application/json'}}),fetch(`${WORKER}/multitracks/catalog`,{cache:'no-store',headers:{Accept:'application/json'}})]);if(pr.status==='fulfilled'&&pr.value.ok){const d=await pr.value.json();const list=Array.isArray(d)?d:(d.products||d.catalog||d.items||[]);if(Array.isArray(list)&&list.length)products=list}if(tr.status==='fulfilled'&&tr.value.ok){const d=await tr.value.json();if(Array.isArray(d?.multitracks)&&d.multitracks.length)tracks=d.multitracks}}catch(_){ }
-      render(products,tracks);
-    }
+    function trackCard(t){const cover=t.cover||'img/dingloft.png',preview=t.preview||'',sku=t.commerceSku||t.sku||normalizeKey(t.title);return `<article class="track-card" data-search="${String(t.title||'').toLowerCase()} ${String(t.artist||'').toLowerCase()}"><div class="track-cover"><img src="${cover}" alt="${t.title}" loading="lazy"><div class="track-overlay"><button class="preview-btn" type="button" aria-label="Reproducir preview de ${t.title}" data-preview="${preview}"><svg class="play-icon" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></button></div></div><div class="track-body"><div class="track-id">${t.id||'Multitrack'}</div><div class="track-title">${t.title}</div><div class="track-artist">${t.artist||'Dingloft'}</div><div class="track-facts"><span class="fact">${t.bpm||'—'} BPM</span><span class="fact">${t.chord||t.key||'—'}</span><span class="fact">${t.stems||'—'} stems</span></div><div class="track-progress"><span></span></div><div class="track-time">Preview</div><div class="track-foot"><span class="track-price">${money(t.priceUsd??t.price??0)}</span><div class="track-actions"><a class="small-btn" href="multitrack.html">Ver</a><button class="small-btn cart" type="button" data-add-product="${encodeURIComponent(JSON.stringify({sku,name:t.title,priceUsd:Number(t.priceUsd??t.price??0),img:'dingloft'}))}">Agregar</button></div></div></div></article>`}
+
+    function renderProducts(products){allProducts=products.filter(p=>p&&p.active!==false&&!isMultitrackProduct(p));const programs=allProducts.filter(isProgramProduct);const audio=allProducts.filter(isAudioProduct);programGrid.innerHTML=(programs.length?programs:fallbackProducts.filter(isProgramProduct)).map(productCard).join('');sampleGrid.innerHTML=(audio.length?audio:fallbackProducts.filter(isAudioProduct)).map(productCard).join('')}
+    function mtNumber(id){const m=String(id||'').match(/(\d+)/);return m?Number(m[1]):0}
+    function renderTracks(list){const rows=(Array.isArray(list)?list:[]).filter(x=>x&&x.active!==false).sort((a,b)=>mtNumber(b.id)-mtNumber(a.id)).slice(0,4);trackGrid.innerHTML=(rows.length?rows:fallbackTracks).map(trackCard).join('')}
+
+    async function loadCatalog(){try{const r=await fetch(`${WORKER}/products/public`,{cache:'no-store'}),data=await r.json();const list=Array.isArray(data?.products)?data.products:[];renderProducts(list.length?list:fallbackProducts)}catch(_){renderProducts(fallbackProducts)}}
+    async function loadTracks(){try{const r=await fetch(`${WORKER}/multitracks/catalog`,{cache:'no-store'}),data=await r.json();renderTracks(Array.isArray(data?.multitracks)?data.multitracks:[])}catch(_){renderTracks(fallbackTracks)}}
 
     document.addEventListener('click',e=>{
-      const b=e.target.closest('[data-add-item]');if(b){addItem({sku:b.dataset.sku,id:b.dataset.id,name:b.dataset.name,type:b.dataset.type,img:b.dataset.img,priceUsd:Number(b.dataset.price)});return}
-      const t=e.target.closest('[data-add-track]');if(t){addItem({sku:t.dataset.sku,id:t.dataset.id,name:t.dataset.name,type:'Multitrack digital',cover:t.dataset.cover,priceUsd:Number(t.dataset.price)});return}
+      const add=e.target.closest('[data-add-product]');
+      if(add){
+        try{addToCart(JSON.parse(decodeURIComponent(add.dataset.addProduct)),add)}catch(_){}
+        return;
+      }
+
+      const quick=e.target.closest('[data-add-sku]');
+      if(quick){
+        addToCart({sku:quick.dataset.addSku,name:quick.dataset.addName,priceUsd:Number(quick.dataset.addPrice||0),img:'dingloft'},quick);
+        return;
+      }
+
+      const preview=e.target.closest('[data-preview]');
+      if(!preview)return;
+      const src=preview.dataset.preview;
+      if(!src)return;
+      const card=preview.closest('.track-card');
+      const bar=card?.querySelector('.track-progress span');
+      const time=card?.querySelector('.track-time');
+
+      if(currentAudio&&currentPreviewButton===preview){
+        if(currentAudio.paused){
+          currentAudio.play().catch(()=>{});
+          preview.classList.add('playing');
+        }else{
+          currentAudio.pause();
+          preview.classList.remove('playing');
+        }
+        return;
+      }
+
+      if(currentAudio){
+        currentAudio.pause();
+        if(currentPreviewButton)currentPreviewButton.classList.remove('playing');
+      }
+
+      currentAudio=new Audio(src);
+      currentPreviewButton=preview;
+      preview.classList.add('playing');
+      currentAudio.play().catch(()=>preview.classList.remove('playing'));
+      currentAudio.addEventListener('timeupdate',()=>{
+        if(!currentAudio.duration)return;
+        if(bar)bar.style.width=`${(currentAudio.currentTime/currentAudio.duration)*100}%`;
+        if(time)time.textContent=`${Math.floor(currentAudio.currentTime/60)}:${String(Math.floor(currentAudio.currentTime%60)).padStart(2,'0')} / ${Math.floor(currentAudio.duration/60)}:${String(Math.floor(currentAudio.duration%60)).padStart(2,'0')}`;
+      });
+      currentAudio.addEventListener('ended',()=>{
+        preview.classList.remove('playing');
+        if(bar)bar.style.width='0';
+        if(time)time.textContent='Preview';
+      });
     });
-    document.getElementById('catalogSearch')?.addEventListener('input',e=>{const q=e.target.value.trim().toLowerCase();document.querySelectorAll('.catalog-item').forEach(card=>card.hidden=Boolean(q&&!card.dataset.search.includes(q)))});
-    window.addEventListener('dingloft:cart-sync',updateCartCount);window.addEventListener('storage',e=>{if(e.key===CART_KEY)updateCartCount()});
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadCatalog,{once:true});else loadCatalog();
+
+    searchInput?.addEventListener('input',()=>{const q=String(searchInput.value||'').trim().toLowerCase();document.querySelectorAll('[data-search]').forEach(card=>card.style.display=!q||card.dataset.search.includes(q)?'':'none')});
+    window.addEventListener('storage',updateCartCount);document.addEventListener('dingloft:cart-change',updateCartCount);updateCartCount();loadCatalog();loadTracks();
   })();
   </script>
 </body>
