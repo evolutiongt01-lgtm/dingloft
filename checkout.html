@@ -869,6 +869,120 @@
       .solidarity-content{animation:none}
     }
 
+    /* Asistencia remota opcional */
+    .remote-assistance-card{
+      margin:14px 0 4px;
+      border:1px solid #e4e4e1;
+      border-radius:16px;
+      background:#fff;
+      box-shadow:0 8px 24px rgba(0,0,0,.028);
+      overflow:hidden;
+    }
+    .remote-assistance-card[hidden]{display:none!important}
+    .remote-assistance-toggle{
+      width:100%;
+      min-height:76px;
+      padding:14px 16px;
+      display:grid;
+      grid-template-columns:42px minmax(0,1fr) auto;
+      align-items:center;
+      gap:12px;
+      border:0;
+      background:#fff;
+      color:#171717;
+      cursor:pointer;
+      text-align:left;
+      transition:.16s ease;
+    }
+    .remote-assistance-toggle:hover:not(:disabled){background:#fcfcfb}
+    .remote-assistance-toggle:disabled{cursor:not-allowed;opacity:.62}
+    .remote-assistance-icon{
+      width:42px;height:42px;
+      border-radius:13px;
+      display:grid;place-items:center;
+      background:#111;
+      color:#fff;
+      flex:0 0 auto;
+    }
+    .remote-assistance-icon svg{
+      width:20px;height:20px;
+      fill:none;stroke:currentColor;stroke-width:1.7;
+      stroke-linecap:round;stroke-linejoin:round;
+    }
+    .remote-assistance-copy{min-width:0}
+    .remote-assistance-copy b{
+      display:block;
+      font-size:11px;
+      line-height:1.25;
+      font-weight:720;
+      color:#171717;
+    }
+    .remote-assistance-copy small{
+      display:block;
+      margin-top:4px;
+      color:#929298;
+      font-size:8px;
+      line-height:1.45;
+    }
+    .remote-assistance-side{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex:0 0 auto;
+    }
+    .remote-assistance-price{
+      color:#55555b;
+      font-size:10px;
+      font-weight:720;
+      white-space:nowrap;
+    }
+    .remote-assistance-switch{
+      width:38px;height:22px;
+      padding:2px;
+      border-radius:999px;
+      background:#d8d8d5;
+      box-shadow:inset 0 0 0 1px rgba(0,0,0,.05);
+      transition:.18s ease;
+    }
+    .remote-assistance-switch:before{
+      content:"";
+      display:block;
+      width:18px;height:18px;
+      border-radius:50%;
+      background:#fff;
+      box-shadow:0 2px 6px rgba(0,0,0,.16);
+      transition:transform .18s ease;
+    }
+    .remote-assistance-card.selected{border-color:#111}
+    .remote-assistance-card.selected .remote-assistance-switch{background:#111}
+    .remote-assistance-card.selected .remote-assistance-switch:before{transform:translateX(16px)}
+    .remote-assistance-status{
+      padding:0 16px 13px 70px;
+      margin-top:-6px;
+      color:#9a9aa0;
+      font-size:7.5px;
+      line-height:1.4;
+    }
+    @media(max-width:560px){
+      .remote-assistance-card{border-radius:18px}
+      .remote-assistance-toggle{
+        min-height:70px;
+        padding:12px 13px;
+        grid-template-columns:38px minmax(0,1fr) auto;
+        gap:10px;
+      }
+      .remote-assistance-icon{width:38px;height:38px;border-radius:12px}
+      .remote-assistance-copy b{font-size:10px}
+      .remote-assistance-copy small{font-size:7.4px}
+      .remote-assistance-price{font-size:9px}
+      .remote-assistance-status{padding:0 13px 12px 61px;font-size:7px}
+    }
+    @media(max-width:390px){
+      .remote-assistance-toggle{grid-template-columns:36px minmax(0,1fr) auto}
+      .remote-assistance-icon{width:36px;height:36px}
+      .remote-assistance-price{display:none}
+    }
+
     .total-row{
       display:flex;align-items:end;justify-content:space-between;
       padding:18px 0 0;
@@ -1308,6 +1422,7 @@
             <div class="line-row"><span>Subtotal</span><b id="left-subtotal">$0.00</b></div>
             <div class="line-row"><span>Descuento</span><b>$0.00</b></div>
             <div class="line-row"><span>Impuestos</span><b>$0.00</b></div>
+            <div class="line-row" id="left-assistance-row" style="display:none"><span>Asistencia remota</span><b id="left-assistance">$0.00</b></div>
             <div class="line-row" id="left-donation-row" style="display:none"><span>Aporte solidario</span><b id="left-donation">$0.00</b></div>
             <div class="line-row total"><span>Total</span><b id="left-total">$0.00 USD</b></div>
           </div>
@@ -1341,7 +1456,26 @@
                   <div class="mini-name">Pedido Dingloft</div>
                   <div class="mini-meta">El precio se valida antes de pagar</div>
                 </div>
-              </div><section class="solidarity-card solidarity-collapsed" aria-labelledby="solidarity-title">
+              </div>
+
+              <section class="remote-assistance-card" id="remote-assistance-card" aria-labelledby="remote-assistance-title">
+                <button class="remote-assistance-toggle" id="remote-assistance-toggle" type="button" aria-pressed="false">
+                  <span class="remote-assistance-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="11" rx="2"/><path d="M8 19.5h8M12 15.5v4M8.5 9.5h7M12 6.8v5.4"/></svg>
+                  </span>
+                  <span class="remote-assistance-copy">
+                    <b id="remote-assistance-title">Agregar asistencia remota</b>
+                    <small>Un técnico de Dingloft puede ayudarte con la instalación y configuración inicial.</small>
+                  </span>
+                  <span class="remote-assistance-side">
+                    <span class="remote-assistance-price" id="remote-assistance-price">Verificando…</span>
+                    <span class="remote-assistance-switch" aria-hidden="true"></span>
+                  </span>
+                </button>
+                <div class="remote-assistance-status" id="remote-assistance-status">Buscando disponibilidad en el catálogo…</div>
+              </section>
+
+              <section class="solidarity-card solidarity-collapsed" aria-labelledby="solidarity-title">
                 <button class="solidarity-toggle" id="solidarity-toggle" type="button"
                         aria-expanded="false" aria-controls="solidarity-content">
                   <span class="solidarity-toggle-left">
@@ -1505,6 +1639,8 @@ const $=s=>document.querySelector(s);
 let token="";
 let config=null;
 let currentProduct=null;
+let remoteAssistanceProduct=null;
+let remoteAssistanceEnabled=false;
 let currentQuote=null;
 let paypalSdkPromise=null;
 let paypalRendered=false;
@@ -1569,9 +1705,73 @@ function clampDonation(value){
   return Math.round(Math.min(100,n)*100)/100;
 }
 
+function localOrderSubtotal(){
+  const base=Number(currentProduct?.priceUsd||0);
+  const assistance=remoteAssistanceEnabled && remoteAssistanceProduct && remoteAssistanceProduct!==currentProduct
+    ? Number(remoteAssistanceProduct.priceUsd||0)
+    : 0;
+  return Math.round((base+assistance)*100)/100;
+}
+
 function payableTotal(){
-  const base=Number(currentQuote?.totalUsd ?? currentProduct?.priceUsd ?? 0);
+  const base=Number(currentQuote?.totalUsd ?? localOrderSubtotal());
   return Math.round((base+donationUsd)*100)/100;
+}
+
+function isRemoteAssistanceProduct(product){
+  const haystack=[product?.sku,product?.name,product?.type,product?.title,product?.slug]
+    .filter(Boolean).join(" ").toLowerCase();
+  return /(asistencia\s*remota|soporte\s*remoto|remote\s*(support|assistance)|instalaci[oó]n\s*remota)/i.test(haystack);
+}
+
+function cartItemFrom(product){
+  if(!product)return null;
+  return {
+    name:String(product.name||"").trim(),
+    type:String(product.type||"").trim(),
+    img:String(product.img||product.imageUrl||"").trim()
+  };
+}
+
+function cartItems(){
+  const items=[];
+  const main=cartItemFrom(currentProduct);
+  if(main?.name)items.push(main);
+  if(remoteAssistanceEnabled && remoteAssistanceProduct && remoteAssistanceProduct!==currentProduct){
+    const assistance=cartItemFrom(remoteAssistanceProduct);
+    if(assistance?.name)items.push(assistance);
+  }
+  return items;
+}
+
+function paintRemoteAssistance(){
+  const card=$("#remote-assistance-card");
+  const toggle=$("#remote-assistance-toggle");
+  const price=$("#remote-assistance-price");
+  const status=$("#remote-assistance-status");
+  const row=$("#left-assistance-row");
+  const rowValue=$("#left-assistance");
+  if(!card||!toggle)return;
+
+  const available=Boolean(remoteAssistanceProduct && remoteAssistanceProduct!==currentProduct);
+  if(!available)remoteAssistanceEnabled=false;
+
+  toggle.disabled=!available;
+  toggle.setAttribute("aria-pressed",remoteAssistanceEnabled?"true":"false");
+  card.classList.toggle("selected",remoteAssistanceEnabled);
+
+  if(price){
+    price.textContent=available ? money(remoteAssistanceProduct.priceUsd) : "No disponible";
+  }
+  if(status){
+    status.textContent=available
+      ? (remoteAssistanceEnabled ? "Asistencia remota agregada a este pedido." : "Opcional · el precio se valida junto con tu pedido.")
+      : (currentProduct && isRemoteAssistanceProduct(currentProduct)
+          ? "Este pedido ya corresponde a asistencia remota."
+          : "Asistencia remota no disponible actualmente en el catálogo.");
+  }
+  if(row)row.style.display=remoteAssistanceEnabled?"flex":"none";
+  if(rowValue)rowValue.textContent=remoteAssistanceEnabled?money(remoteAssistanceProduct?.priceUsd||0):"$0.00";
 }
 
 
@@ -1656,7 +1856,7 @@ function updateSolidarityThanks(){
 }
 
 function paintDonation(){
-  const base=Number(currentQuote?.totalUsd ?? currentProduct?.priceUsd ?? 0);
+  const base=Number(currentQuote?.totalUsd ?? localOrderSubtotal());
   const total=Math.round((base+donationUsd)*100)/100;
 
   const row=$("#left-donation-row");
@@ -1669,6 +1869,8 @@ function paintDonation(){
 
   const leftTotal=$("#left-total");
   if(leftTotal)leftTotal.textContent=`${money(total)} USD`;
+
+  paintRemoteAssistance();
 
   const unitsTotal=$("#donation-units-total");
   if(unitsTotal)unitsTotal.textContent=money(donationUnits*DONATION_UNIT_USD);
@@ -1726,12 +1928,7 @@ function setDonationUnits(next){
 }
 
 function cartItem(){
-  if(!currentProduct)return null;
-  return {
-    name:String(currentProduct.name||"").trim(),
-    type:String(currentProduct.type||"").trim(),
-    img:String(currentProduct.img||"").trim()
-  };
+  return cartItemFrom(currentProduct);
 }
 
 function updatePreview(){
@@ -1758,7 +1955,9 @@ function updatePreview(){
     checkoutImg.onerror=()=>{ checkoutImg.onerror=null; checkoutImg.src="/img/dingloft.png"; };
   }
 
+  currentQuote=null;
   $("#left-subtotal").textContent=money(currentProduct.priceUsd);
+  paintRemoteAssistance();
   paintDonation();
 }
 
@@ -1775,6 +1974,8 @@ async function loadConfig(){
   if(!products.length)throw new Error("No hay productos disponibles.");
 
   config={products,paypalClientId:String(paypalCfg.clientId||"").trim()};
+  remoteAssistanceProduct=products.find(isRemoteAssistanceProduct)||null;
+  remoteAssistanceEnabled=false;
   if(!config.paypalClientId)throw new Error("PayPal no está configurado.");
 
   const select=$("#product-select");
@@ -1821,21 +2022,22 @@ async function loadPayPalSDK(){
 }
 
 async function secureQuote(){
-  const item=cartItem();
-  if(!item?.name)throw new Error("Producto inválido.");
+  const items=cartItems();
+  if(!items.length)throw new Error("Producto inválido.");
 
   return api("/checkout/quote",{
     method:"POST",
-    body:{items:[item],couponCode:""}
+    body:{items,couponCode:""}
   });
 }
 
 async function createOrder(){
-  const item=cartItem();
+  const items=cartItems();
+  if(!items.length)throw new Error("Producto inválido.");
   const result=await api("/checkout/paypal/create",{
     method:"POST",
     authRequired:true,
-    body:{items:[item],couponCode:"",donationUsd}
+    body:{items,couponCode:"",donationUsd}
   });
   return result.orderId;
 }
@@ -1918,9 +2120,11 @@ async function prepare(){
 
     currentQuote=await secureQuote();
 
-    $("#checkout-name").textContent=currentProduct.name;
+    $("#checkout-name").textContent=remoteAssistanceEnabled
+      ? `${currentProduct.name} + Asistencia remota`
+      : currentProduct.name;
     $("#checkout-price").textContent=money(payableTotal());
-    $("#left-subtotal").textContent=money(currentQuote.subtotalUsd);
+    $("#left-subtotal").textContent=money(currentProduct.priceUsd);
 
     const payImg=$("#payment-product-image");
     if(payImg){
@@ -1931,8 +2135,11 @@ async function prepare(){
 
     const meta=$("#checkout-meta");
     if(meta){
-      meta.textContent=donationUsd>0
-        ? `Producto digital · incluye ${money(donationUsd)} de aporte solidario`
+      const extras=[];
+      if(remoteAssistanceEnabled)extras.push("asistencia remota");
+      if(donationUsd>0)extras.push(`${money(donationUsd)} de aporte solidario`);
+      meta.textContent=extras.length
+        ? `Pedido Dingloft · incluye ${extras.join(" · ")}`
         : "Producto digital · USD";
     }
 
@@ -1975,6 +2182,14 @@ updateSolidarityToggleAmount();
 $("#solidarity-toggle")?.addEventListener("click",()=>{
   const expanded=$("#solidarity-toggle")?.getAttribute("aria-expanded")==="true";
   setSolidarityOpen(!expanded);
+});
+
+$("#remote-assistance-toggle")?.addEventListener("click",()=>{
+  if(!remoteAssistanceProduct || remoteAssistanceProduct===currentProduct)return;
+  remoteAssistanceEnabled=!remoteAssistanceEnabled;
+  currentQuote=null;
+  paintRemoteAssistance();
+  paintDonation();
 });
 
 $("#product-select")?.addEventListener("change",updatePreview);
