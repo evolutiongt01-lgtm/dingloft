@@ -1541,11 +1541,11 @@
                     <small>Instalación o configuración guiada por un técnico de Dingloft.</small>
                   </span>
                   <span class="remote-assistance-side">
-                    <span class="remote-assistance-price" id="remote-assistance-price">Verificando…</span>
+                    <span class="remote-assistance-price" id="remote-assistance-price">$10.00</span>
                     <span class="remote-assistance-switch" aria-hidden="true"></span>
                   </span>
                 </button>
-                <div class="remote-assistance-status" id="remote-assistance-status">Buscando disponibilidad en el catálogo…</div>
+                <div class="remote-assistance-status" id="remote-assistance-status">Opcional · instalación o configuración guiada por un técnico de Dingloft.</div>
 
                 <div class="remote-booking-details" id="remote-booking-details" hidden>
                   <div class="remote-booking-intro">
@@ -1758,7 +1758,6 @@ let token="";
 let currentUser=null;
 let config=null;
 let currentProduct=null;
-let remoteAssistanceProduct=null;
 let remoteAssistanceEnabled=false;
 let currentQuote=null;
 let paypalSdkPromise=null;
@@ -1836,21 +1835,22 @@ function clampDonation(value){
   return Math.round(Math.min(100,n)*100)/100;
 }
 
+function remoteAssistanceFee(){
+  return remoteAssistanceEnabled ? REMOTE_BASE_PRICE_USD : 0;
+}
+
 function localOrderSubtotal(){
   const base=Number(currentProduct?.priceUsd||0);
-  const assistance=remoteAssistanceEnabled && remoteAssistanceProduct && remoteAssistanceProduct!==currentProduct
-    ? Number(remoteAssistanceProduct.priceUsd||0)
-    : 0;
-  return Math.round((base+assistance)*100)/100;
+  return Math.round((base+remoteAssistanceFee())*100)/100;
 }
 
 function payableTotal(){
-  const base=Number(currentQuote?.totalUsd ?? localOrderSubtotal());
-  return Math.round((base+donationUsd)*100)/100;
+  const base=Number(currentQuote?.totalUsd ?? Number(currentProduct?.priceUsd||0));
+  return Math.round((base+remoteAssistanceFee()+donationUsd)*100)/100;
 }
 
 function remoteAssistanceSelected(){
-  return Boolean((currentProduct && isRemoteAssistanceProduct(currentProduct)) || remoteAssistanceEnabled);
+  return Boolean(remoteAssistanceEnabled);
 }
 
 function pad2(value){return String(value).padStart(2,"0")}
@@ -1968,10 +1968,7 @@ async function createRemoteReservation(paypalOrderId,paymentResult={}){
   if(!remoteAssistanceSelected()||!currentUser)return null;
   const booking=remoteBookingData();
   if(!booking||!booking.notes)return null;
-  const amount=Number(
-    (currentProduct&&isRemoteAssistanceProduct(currentProduct)?currentProduct.priceUsd:remoteAssistanceProduct?.priceUsd)
-    ?? REMOTE_BASE_PRICE_USD
-  );
+  const amount=REMOTE_BASE_PRICE_USD;
   const ref=await addDoc(collection(db,"reservas"),{
     uid:currentUser.uid,
     email:currentUser.email||"",
@@ -2004,12 +2001,6 @@ async function createRemoteReservation(paypalOrderId,paymentResult={}){
   return ref.id;
 }
 
-function isRemoteAssistanceProduct(product){
-  const haystack=[product?.sku,product?.name,product?.type,product?.title,product?.slug]
-    .filter(Boolean).join(" ").toLowerCase();
-  return /(asistencia\s*remota|soporte\s*remoto|remote\s*(support|assistance)|instalaci[oó]n\s*remota)/i.test(haystack);
-}
-
 function cartItemFrom(product){
   if(!product)return null;
   return {
@@ -2020,14 +2011,8 @@ function cartItemFrom(product){
 }
 
 function cartItems(){
-  const items=[];
   const main=cartItemFrom(currentProduct);
-  if(main?.name)items.push(main);
-  if(remoteAssistanceEnabled && remoteAssistanceProduct && remoteAssistanceProduct!==currentProduct){
-    const assistance=cartItemFrom(remoteAssistanceProduct);
-    if(assistance?.name)items.push(assistance);
-  }
-  return items;
+  return main?.name ? [main] : [];
 }
 
 function paintRemoteAssistance(){
@@ -2040,31 +2025,21 @@ function paintRemoteAssistance(){
   const details=$("#remote-booking-details");
   if(!card||!toggle)return;
 
-  const currentIsAssistance=Boolean(currentProduct&&isRemoteAssistanceProduct(currentProduct));
-  const available=Boolean(remoteAssistanceProduct && remoteAssistanceProduct!==currentProduct);
-  if(!available&&!currentIsAssistance)remoteAssistanceEnabled=false;
-  const selected=currentIsAssistance||remoteAssistanceEnabled;
+  const selected=remoteAssistanceEnabled;
 
-  toggle.disabled=currentIsAssistance||!available;
+  toggle.disabled=false;
   toggle.setAttribute("aria-pressed",selected?"true":"false");
   card.classList.toggle("selected",selected);
   if(details)details.hidden=!selected;
 
-  const assistancePrice=currentIsAssistance
-    ? Number(currentProduct?.priceUsd??REMOTE_BASE_PRICE_USD)
-    : Number(remoteAssistanceProduct?.priceUsd??REMOTE_BASE_PRICE_USD);
-  if(price){
-    price.textContent=(available||currentIsAssistance) ? money(assistancePrice) : `${money(REMOTE_BASE_PRICE_USD)} base`;
-  }
+  if(price)price.textContent=money(REMOTE_BASE_PRICE_USD);
   if(status){
-    status.textContent=currentIsAssistance
-      ? "Este pedido corresponde a asistencia remota · selecciona fecha y horario."
-      : available
-        ? (remoteAssistanceEnabled ? "Asistencia remota agregada · completa los datos de tu sesión." : "Opcional · sesión base de instalación/configuración remota.")
-        : "Asistencia remota no disponible actualmente en el catálogo.";
+    status.textContent=selected
+      ? "Asistencia remota agregada · completa la fecha, horario y detalles de tu sesión."
+      : "Opcional · instalación o configuración guiada por un técnico de Dingloft.";
   }
-  if(row)row.style.display=remoteAssistanceEnabled?"flex":"none";
-  if(rowValue)rowValue.textContent=remoteAssistanceEnabled?money(assistancePrice):"$0.00";
+  if(row)row.style.display=selected?"flex":"none";
+  if(rowValue)rowValue.textContent=selected?money(REMOTE_BASE_PRICE_USD):"$0.00";
 }
 
 
@@ -2149,8 +2124,8 @@ function updateSolidarityThanks(){
 }
 
 function paintDonation(){
-  const base=Number(currentQuote?.totalUsd ?? localOrderSubtotal());
-  const total=Math.round((base+donationUsd)*100)/100;
+  const base=Number(currentQuote?.totalUsd ?? Number(currentProduct?.priceUsd||0));
+  const total=Math.round((base+remoteAssistanceFee()+donationUsd)*100)/100;
 
   const row=$("#left-donation-row");
   const value=$("#left-donation");
@@ -2267,7 +2242,6 @@ async function loadConfig(){
   if(!products.length)throw new Error("No hay productos disponibles.");
 
   config={products,paypalClientId:String(paypalCfg.clientId||"").trim()};
-  remoteAssistanceProduct=products.find(isRemoteAssistanceProduct)||null;
   remoteAssistanceEnabled=false;
   if(!config.paypalClientId)throw new Error("PayPal no está configurado.");
 
@@ -2327,10 +2301,16 @@ async function secureQuote(){
 async function createOrder(){
   const items=cartItems();
   if(!items.length)throw new Error("Producto inválido.");
+
+  // La asistencia remota es un servicio adicional, no un producto del catálogo.
+  // El endpoint actual acepta un importe suplementario validado por el servidor;
+  // se suma aquí para cobrar producto + asistencia en una sola transacción.
+  const supplementalUsd=Math.round((donationUsd+remoteAssistanceFee())*100)/100;
+
   const result=await api("/checkout/paypal/create",{
     method:"POST",
     authRequired:true,
-    body:{items,couponCode:"",donationUsd}
+    body:{items,couponCode:"",donationUsd:supplementalUsd}
   });
   return result.orderId;
 }
@@ -2489,7 +2469,6 @@ $("#solidarity-toggle")?.addEventListener("click",()=>{
 });
 
 $("#remote-assistance-toggle")?.addEventListener("click",()=>{
-  if(!remoteAssistanceProduct || remoteAssistanceProduct===currentProduct)return;
   remoteAssistanceEnabled=!remoteAssistanceEnabled;
   currentQuote=null;
   paintRemoteAssistance();
