@@ -1459,6 +1459,22 @@
       }
     }
 
+
+
+    /* v3.10.6 · carrito real → checkout dedicado */
+    .cart-summary-list,.checkout-cart-review{display:grid;gap:9px}
+    .cart-summary-list{margin-top:16px}
+    .checkout-cart-review{margin:8px 0 14px;padding:10px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.018)}
+    .checkout-cart-item{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:12px;align-items:center;min-width:0;padding:11px;border:1px solid rgba(255,255,255,.075);border-radius:16px;background:rgba(255,255,255,.026)}
+    .checkout-cart-item+.checkout-cart-item{margin-top:0}
+    .checkout-cart-thumb{width:58px;height:58px;border-radius:13px;display:grid;place-items:center;overflow:hidden;background:#080a0d;border:1px solid rgba(255,255,255,.08)}
+    .checkout-cart-thumb img{width:100%;height:100%;object-fit:contain;padding:5px}
+    .checkout-cart-copy{min-width:0}.checkout-cart-copy b{display:block;color:#f1f5f8;font-size:.82rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.checkout-cart-copy span{display:block;margin-top:4px;color:var(--muted);font-size:.67rem;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .checkout-cart-price{color:#f7fbff;font-size:.82rem;font-weight:820;white-space:nowrap}
+    .checkout-cart-empty{padding:18px;text-align:center;color:var(--muted);font-size:.78rem;border:1px dashed rgba(255,255,255,.11);border-radius:16px}
+    .cart-origin-note{display:flex;align-items:center;gap:8px;margin:7px 0 2px;color:#74869a;font-size:.65rem}.cart-origin-note svg{width:15px;height:15px;stroke:#78dfff;fill:none;stroke-width:1.8}
+    @media(max-width:520px){.checkout-cart-item{grid-template-columns:50px minmax(0,1fr) auto;gap:9px;padding:9px}.checkout-cart-thumb{width:50px;height:50px}.checkout-cart-copy b{font-size:.76rem}.checkout-cart-price{font-size:.74rem}}
+
 </style>
 </head>
 <body>
@@ -1482,18 +1498,13 @@
           <h1>Finaliza tu compra</h1>
           <p class="lead">Revisa tu pedido y elige cómo quieres pagar. Todo el proceso se mantiene dentro de Dingloft.</p>
 
-          <div class="summary-card">
-            <div class="product-thumb"><img id="preview-product-image" src="" alt=""></div>
-            <div class="summary-main">
-              <div class="summary-name" id="preview-name">Producto Dingloft</div>
-              <div class="summary-meta" id="preview-type">Producto digital</div>
-            </div>
-            <div class="summary-price" id="preview-price">$0.00 USD</div>
+          <div class="cart-summary-list" id="cart-summary-list" aria-live="polite">
+            <div class="checkout-cart-empty">Cargando los productos de tu carrito…</div>
           </div>
 
           <div class="summary-lines">
             <div class="line-row"><span>Subtotal</span><b id="left-subtotal">$0.00</b></div>
-            <div class="line-row"><span>Descuento</span><b>$0.00</b></div>
+            <div class="line-row"><span>Descuento</span><b id="left-discount">$0.00</b></div>
             <div class="line-row"><span>Impuestos</span><b>$0.00</b></div>
             <div class="line-row" id="left-assistance-row" style="display:none"><span>Asistencia remota</span><b id="left-assistance">$0.00</b></div>
             <div class="line-row" id="left-donation-row" style="display:none"><span>Aporte solidario</span><b id="left-donation">$0.00</b></div>
@@ -1520,14 +1531,17 @@
 
           <div class="pay-body">
             <div id="setup-zone">
-              <div class="field-label">Producto</div>
-              <div class="select-wrap"><select id="product-select"></select></div>
+              <div class="field-label">Tu carrito</div>
+              <div class="checkout-cart-review" id="checkout-cart-review" aria-live="polite">
+                <div class="checkout-cart-empty">Sincronizando tu carrito…</div>
+              </div>
+              <div class="cart-origin-note"><svg viewBox="0 0 24 24"><path d="M5 7h14l-1 13H6L5 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg><span>El checkout usa exactamente los productos de tu carrito y valida sus precios en el servidor.</span></div>
 
               <div class="mini-order">
-                <div class="mini-icon"><img id="checkout-product-image" src="" alt=""></div>
+                <div class="mini-icon"><img id="checkout-product-image" src="/img/dingloft.png" alt="Dingloft"></div>
                 <div class="mini-copy">
                   <div class="mini-name">Pedido Dingloft</div>
-                  <div class="mini-meta">El precio se valida antes de pagar</div>
+                  <div class="mini-meta" id="checkout-cart-count">Preparando carrito…</div>
                 </div>
               </div>
 
@@ -1718,7 +1732,7 @@
                 <div><span>Transacción</span><b id="r-transaction">—</b></div>
                 <div><span>Total</span><b id="r-total">—</b></div>
               </div>
-              <button class="primary-btn" id="new-test-btn">Volver al checkout</button>
+              <button class="primary-btn" id="new-test-btn">Ir a mi cuenta</button>
             </div>
           </div>
         </section>
@@ -1758,6 +1772,9 @@ let token="";
 let currentUser=null;
 let config=null;
 let currentProduct=null;
+let checkoutCart=[];
+let cartQuote=null;
+let activeCouponCode="";
 let remoteAssistanceEnabled=false;
 let currentQuote=null;
 let paypalSdkPromise=null;
@@ -1839,16 +1856,24 @@ function remoteAssistanceFee(){
   return remoteAssistanceEnabled ? REMOTE_BASE_PRICE_USD : 0;
 }
 
+function baseProductSubtotal(){
+  if(cartQuote && Number.isFinite(Number(cartQuote.subtotalUsd)))return Number(cartQuote.subtotalUsd);
+  return checkoutCart.reduce((sum,item)=>sum+Number(item.priceUsd??item.price??0),0);
+}
+
+function baseProductTotal(){
+  if(cartQuote && Number.isFinite(Number(cartQuote.totalUsd)))return Number(cartQuote.totalUsd);
+  return baseProductSubtotal();
+}
+
 function localOrderSubtotal(){
-  const base=Number(currentProduct?.priceUsd||0);
-  return Math.round((base+remoteAssistanceFee())*100)/100;
+  return Math.round((baseProductTotal()+remoteAssistanceFee())*100)/100;
 }
 
 function payableTotal(){
   const quoted=Number(currentQuote?.totalUsd);
   if(currentQuote && Number.isFinite(quoted))return Math.round(quoted*100)/100;
-  const base=Number(currentProduct?.priceUsd||0);
-  return Math.round((base+remoteAssistanceFee()+donationUsd)*100)/100;
+  return Math.round((baseProductTotal()+remoteAssistanceFee()+donationUsd)*100)/100;
 }
 
 function remoteAssistanceSelected(){
@@ -2019,15 +2044,134 @@ async function createRemoteReservation(paypalOrderId,paymentResult={}){
 function cartItemFrom(product){
   if(!product)return null;
   return {
-    name:String(product.name||"").trim(),
+    sku:String(product.sku||product.productSku||product.workerSku||product.id||"").trim(),
+    name:String(product.name||product.title||"").trim(),
     type:String(product.type||"").trim(),
-    img:String(product.img||product.imageUrl||"").trim()
+    img:String(product.img||product.imageUrl||product.cover||"").trim()
   };
 }
 
+function cartItemKey(item={}){
+  return String(item.sku||item.productSku||item.workerSku||item.id||item.name||"").trim().toLowerCase();
+}
+
+function normalizeCheckoutCart(raw){
+  const rows=Array.isArray(raw)?raw:[];
+  const seen=new Set();
+  const out=[];
+  for(const source of rows.slice(0,50)){
+    if(source?.uiOnly===true||source?.bonusUiOnly===true)continue;
+    const item={
+      ...source,
+      sku:String(source?.sku||source?.productSku||source?.workerSku||source?.id||"").trim(),
+      name:String(source?.name||source?.title||"Producto Dingloft").trim()||"Producto Dingloft",
+      type:String(source?.type||"Producto digital").trim()||"Producto digital",
+      img:String(source?.img||source?.imageUrl||source?.cover||"dingloft").trim()||"dingloft",
+      priceUsd:Number(source?.priceUsd??source?.price??0)||0,
+      quantity:1,
+      qty:1
+    };
+    const key=cartItemKey(item);
+    if(!key||seen.has(key))continue;
+    seen.add(key);out.push(item);
+  }
+  return out;
+}
+
+function readLocalCheckoutCart(){
+  try{return normalizeCheckoutCart(JSON.parse(localStorage.getItem("dingloft_cart")||"[]"));}
+  catch(_){return [];}
+}
+
 function cartItems(){
-  const main=cartItemFrom(currentProduct);
-  return main?.name ? [main] : [];
+  return checkoutCart.map(cartItemFrom).filter(item=>item?.sku||item?.name);
+}
+
+function cartServerPayload(items=checkoutCart){
+  return normalizeCheckoutCart(items).map(item=>({sku:item.sku,name:item.name,quantity:1,priceUsd:Number(item.priceUsd||0)}));
+}
+
+async function syncCheckoutCartToServer(items=checkoutCart){
+  if(!currentUser)return null;
+  return api("/push/customer/cart",{
+    method:"POST",authRequired:true,
+    body:{items:cartServerPayload(items),path:`${location.pathname}${location.search}`}
+  });
+}
+
+async function readCheckoutCartFromServer(){
+  if(!currentUser)return [];
+  try{
+    const data=await api("/push/customer/cart",{authRequired:true});
+    return normalizeCheckoutCart(data?.items||[]);
+  }catch(error){
+    console.warn("Dingloft checkout cart recovery",error);return [];
+  }
+}
+
+async function loadCheckoutCart(){
+  let cart=readLocalCheckoutCart();
+  if(cart.length){
+    const synced=await syncCheckoutCartToServer(cart).catch(()=>null);
+    if(Array.isArray(synced?.items)){
+      const accepted=normalizeCheckoutCart(synced.items);
+      if(accepted.length!==cart.length){
+        cart=accepted;
+        try{localStorage.setItem("dingloft_cart",JSON.stringify(cart));}catch(_){}
+        try{window.dispatchEvent(new CustomEvent("dingloft:cart-sync",{detail:{cart,source:"checkout-server-reconcile"}}));}catch(_){}
+      }
+    }
+    return cart;
+  }
+  cart=await readCheckoutCartFromServer();
+  if(cart.length){
+    try{localStorage.setItem("dingloft_cart",JSON.stringify(cart));}catch(_){}
+    return cart;
+  }
+  // Compatibilidad con enlaces antiguos ?sku=... sin reintroducir el selector manual.
+  const qs=new URLSearchParams(location.search);
+  const fallback=String(qs.get("sku")||qs.get("product")||"").trim();
+  return fallback?[{sku:fallback,name:"Producto Dingloft",type:"Producto digital",img:"dingloft",priceUsd:0,quantity:1,qty:1}]:[];
+}
+
+function mergeQuoteIntoCart(quote){
+  const canonical=Array.isArray(quote?.items)?quote.items:[];
+  const previous=new Map(checkoutCart.map(item=>[cartItemKey(item),item]));
+  checkoutCart=canonical.map(item=>{
+    const key=cartItemKey(item);
+    const old=previous.get(key)||{};
+    return {...old,...item,sku:item.sku||old.sku,name:item.name||old.name,type:item.type||old.type,img:old.cover||old.imageUrl||item.img||old.img||"dingloft",priceUsd:Number(item.price??item.priceUsd??old.priceUsd??0),quantity:1,qty:1};
+  });
+  currentProduct=checkoutCart[0]||null;
+}
+
+function cartItemMarkup(item){
+  const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const image=esc(productImageUrl(item));
+  const safeName=esc(item.name||"Producto Dingloft");
+  const safeType=esc(item.type||"Producto digital");
+  return `<article class="checkout-cart-item"><div class="checkout-cart-thumb"><img src="${image}" alt="" onerror="this.onerror=null;this.src='/img/dingloft.png'"></div><div class="checkout-cart-copy"><b>${safeName}</b><span>${safeType}</span></div><div class="checkout-cart-price">${money(item.priceUsd??item.price??0)}</div></article>`;
+}
+
+function renderCheckoutCart(){
+  const html=checkoutCart.length?checkoutCart.map(cartItemMarkup).join(""):'<div class="checkout-cart-empty">Tu carrito está vacío.</div>';
+  const left=$("#cart-summary-list"),review=$("#checkout-cart-review");
+  if(left)left.innerHTML=html;if(review)review.innerHTML=html;
+  const count=$("#checkout-cart-count");
+  if(count)count.textContent=`${checkoutCart.length} producto${checkoutCart.length===1?"":"s"} · precios validados por Dingloft`;
+  const first=checkoutCart[0];
+  const thumb=$("#checkout-product-image");
+  if(thumb){thumb.src=first?productImageUrl(first):"/img/dingloft.png";thumb.alt=first?.name||"Dingloft";thumb.onerror=()=>{thumb.onerror=null;thumb.src="/img/dingloft.png";};}
+}
+
+async function removePurchasedItemsFromLocalCart(){
+  const purchased=new Set(checkoutCart.map(cartItemKey).filter(Boolean));
+  const latest=readLocalCheckoutCart();
+  const remaining=latest.filter(item=>!purchased.has(cartItemKey(item)));
+  try{localStorage.setItem("dingloft_cart",JSON.stringify(remaining));}catch(_){}
+  try{window.dispatchEvent(new CustomEvent("dingloft:cart-sync",{detail:{cart:remaining,source:"checkout-success"}}));}catch(_){}
+  await syncCheckoutCartToServer(remaining).catch(()=>{});
+  return remaining;
 }
 
 function paintRemoteAssistance(){
@@ -2141,6 +2285,11 @@ function updateSolidarityThanks(){
 function paintDonation(){
   const total=payableTotal();
 
+  const subtotalEl=$("#left-subtotal");
+  const discountEl=$("#left-discount");
+  if(subtotalEl)subtotalEl.textContent=money(baseProductSubtotal());
+  if(discountEl)discountEl.textContent=cartQuote&&Number(cartQuote.discountUsd||0)>0?`−${money(cartQuote.discountUsd)}`:"$0.00";
+
   const row=$("#left-donation-row");
   const value=$("#left-donation");
   if(row)row.style.display=donationUsd>0?"flex":"none";
@@ -2215,61 +2364,33 @@ function cartItem(){
 }
 
 function updatePreview(){
-  const sku=$("#product-select")?.value;
-  currentProduct=config?.products?.find(p=>p.sku===sku)||config?.products?.[0]||null;
-  if(!currentProduct)return;
-
-  $("#preview-name").textContent=currentProduct.name;
-  $("#preview-type").textContent=
-    `${currentProduct.type||"Producto digital"}${currentProduct.deliveryConfigured?" · entrega configurada":""}`;
-  $("#preview-price").textContent=`${money(currentProduct.priceUsd)} USD`;
-
-  const image=productImageUrl(currentProduct);
-  const previewImg=$("#preview-product-image");
-  const checkoutImg=$("#checkout-product-image");
-  if(previewImg){
-    previewImg.src=image;
-    previewImg.alt=currentProduct.name||"Producto Dingloft";
-    previewImg.onerror=()=>{ previewImg.onerror=null; previewImg.src="/img/dingloft.png"; };
-  }
-  if(checkoutImg){
-    checkoutImg.src=image;
-    checkoutImg.alt=currentProduct.name||"Producto Dingloft";
-    checkoutImg.onerror=()=>{ checkoutImg.onerror=null; checkoutImg.src="/img/dingloft.png"; };
-  }
-
+  renderCheckoutCart();
   currentQuote=null;
-  $("#left-subtotal").textContent=money(currentProduct.priceUsd);
   paintRemoteAssistance();
   paintDonation();
 }
 
 async function loadConfig(){
-  const [catalog,paypalCfg]=await Promise.all([
-    api("/products/public"),
-    api("/paypal/config")
-  ]);
-
-  const products=(catalog.products||[])
-    .filter(p=>p.active!==false)
-    .sort((a,b)=>String(a.name||"").localeCompare(String(b.name||""),"es",{sensitivity:"base"}));
-
-  if(!products.length)throw new Error("No hay productos disponibles.");
-
-  config={products,paypalClientId:String(paypalCfg.clientId||"").trim()};
+  const paypalCfg=await api("/paypal/config");
+  config={paypalClientId:String(paypalCfg.clientId||"").trim()};
   remoteAssistanceEnabled=false;
   if(!config.paypalClientId)throw new Error("PayPal no está configurado.");
 
-  const select=$("#product-select");
-  select.innerHTML=products
-    .map(p=>`<option value="${String(p.sku).replace(/"/g,"&quot;")}">${p.name} · ${money(p.priceUsd)}</option>`)
-    .join("");
+  try{activeCouponCode=String(sessionStorage.getItem("dingloft_checkout_coupon")||"").trim().toUpperCase();}catch(_){activeCouponCode="";}
+  checkoutCart=await loadCheckoutCart();
+  if(!checkoutCart.length)throw new Error("Tu carrito está vacío. Agrega un producto antes de abrir el checkout.");
 
-  const qs=new URLSearchParams(location.search);
-  const wanted=qs.get("sku")||qs.get("product");
-  if(wanted&&products.some(p=>p.sku===wanted))select.value=wanted;
+  let quote=await api("/checkout/quote",{method:"POST",body:{items:cartItems(),couponCode:activeCouponCode,remoteAssistance:{enabled:false},donationUsd:0}});
+  if(activeCouponCode&&!quote.couponValid){
+    activeCouponCode="";
+    try{sessionStorage.removeItem("dingloft_checkout_coupon");}catch(_){}
+    quote=await api("/checkout/quote",{method:"POST",body:{items:cartItems(),couponCode:"",remoteAssistance:{enabled:false},donationUsd:0}});
+  }
+  cartQuote={...quote,totalUsd:Number(quote.productTotalUsd??quote.totalUsd??0)};
+  mergeQuoteIntoCart(quote);
+  renderCheckoutCart();
+  paintDonation();
 
-  updatePreview();
   step("auth","done");
   $("#loading").style.display="none";
   const body=$("#lab-body")||$("#checkout-body");
@@ -2311,7 +2432,7 @@ async function secureQuote(){
     method:"POST",
     body:{
       items,
-      couponCode:"",
+      couponCode:activeCouponCode,
       remoteAssistance:remoteAssistancePayload(),
       donationUsd
     }
@@ -2327,7 +2448,7 @@ async function createOrder(){
     authRequired:true,
     body:{
       items,
-      couponCode:"",
+      couponCode:activeCouponCode,
       remoteAssistance:remoteAssistancePayload(),
       donationUsd
     }
@@ -2377,7 +2498,8 @@ async function renderPayPal(){
         step("payment","active");
         setMessage("Pago aprobado. Habilitando tu compra…");
         const result=await captureOrder(data.orderID);
-        // El Worker crea la reserva de asistencia después de verificar el pago real.
+        // El Worker crea la reserva y limpia del carrito únicamente los SKU pagados.
+        await removePurchasedItemsFromLocalCart();
         showSuccess(result);
       }catch(error){
         step("payment","");
@@ -2409,25 +2531,30 @@ async function prepare(){
   step("session","active");
 
   try{
-    currentProduct=config.products.find(p=>p.sku===$("#product-select").value);
-    if(!currentProduct)throw new Error("Selecciona un producto válido.");
+    if(!checkoutCart.length)throw new Error("Tu carrito está vacío.");
     if(!validateRemoteBooking())throw new Error("Completa los datos de tu asistencia remota.");
 
     currentQuote=await secureQuote();
+    mergeQuoteIntoCart(currentQuote);
+    cartQuote={
+      items:currentQuote.items||[],
+      subtotalUsd:Number(currentQuote.subtotalUsd||0),
+      discountUsd:Number(currentQuote.discountUsd||0),
+      totalUsd:Number(currentQuote.productTotalUsd??(Number(currentQuote.subtotalUsd||0)-Number(currentQuote.discountUsd||0)))
+    };
 
     // La pantalla de pago usa el total confirmado por el Worker, no un cálculo local.
     donationUsd=Number(currentQuote?.donationUsd||0);
-
-    $("#checkout-name").textContent=remoteAssistanceEnabled
-      ? `${currentProduct.name} + Asistencia remota`
-      : currentProduct.name;
+    const productCount=checkoutCart.length;
+    $("#checkout-name").textContent=productCount===1
+      ? `${checkoutCart[0].name}${remoteAssistanceEnabled?" + Asistencia remota":""}`
+      : `${productCount} productos Dingloft${remoteAssistanceEnabled?" + Asistencia remota":""}`;
     $("#checkout-price").textContent=money(Number(currentQuote?.totalUsd||payableTotal()));
-    $("#left-subtotal").textContent=money(currentProduct.priceUsd);
 
     const payImg=$("#payment-product-image");
     if(payImg){
-      payImg.src=productImageUrl(currentProduct);
-      payImg.alt=currentProduct.name||"Producto Dingloft";
+      payImg.src=checkoutCart[0]?productImageUrl(checkoutCart[0]):"/img/dingloft.png";
+      payImg.alt=checkoutCart[0]?.name||"Pedido Dingloft";
       payImg.onerror=()=>{payImg.onerror=null;payImg.src="/img/dingloft.png";};
     }
 
@@ -2439,9 +2566,10 @@ async function prepare(){
         extras.push(booking ? `asistencia remota · ${booking.fecha} · ${booking.hora}` : "asistencia remota");
       }
       if(donationUsd>0)extras.push(`${money(donationUsd)} de aporte solidario`);
+      const baseLabel=`${checkoutCart.length} producto${checkoutCart.length===1?"":"s"} · USD`;
       meta.textContent=extras.length
-        ? `Pedido Dingloft · incluye ${extras.join(" · ")}`
-        : "Producto digital · USD";
+        ? `${baseLabel} · incluye ${extras.join(" · ")}`
+        : baseLabel;
     }
 
     paintDonation();
@@ -2459,7 +2587,7 @@ async function prepare(){
   }
 }
 
-function reset(){ location.reload(); }
+function reset(){ location.href="account.html?purchase=success"; }
 
 
 document.querySelectorAll("[data-donation-mode]").forEach(btn=>{
@@ -2498,7 +2626,6 @@ $("#remote-assistance-toggle")?.addEventListener("click",()=>{
 
 initRemoteBookingControls();
 
-$("#product-select")?.addEventListener("change",updatePreview);
 $("#prepare-btn")?.addEventListener("click",prepare);
 $("#new-test-btn")?.addEventListener("click",reset);
 

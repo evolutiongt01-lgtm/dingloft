@@ -1,4 +1,4 @@
-/* Dingloft Mobile Cart · v93 persistent-shell build
+/* Dingloft Mobile Cart · v94 dedicated-checkout handoff
    One independent cart UI for phones + tablets only.
    Desktop keeps every existing page/cart untouched. */
 (() => {
@@ -298,7 +298,7 @@
   async function ensureCommerce() {
     if (typeof window.renderPayPalStable === 'function') return true;
     if (commercePromise) return commercePromise;
-    commercePromise = import('/dingloft-commerce.js?v=2.2.1-shell93').then(()=>true).catch(()=>false).finally(()=>{commercePromise=null});
+    commercePromise = import('/dingloft-commerce.js?v=2.3.0-checkout').then(()=>true).catch(()=>false).finally(()=>{commercePromise=null});
     return commercePromise;
   }
 
@@ -306,15 +306,12 @@
     if (!openState) return;
     const cart = render();
     if (!cart.length) return;
-    const [paypalReady, commerceReady] = await Promise.all([ensurePayPal(), ensureCommerce()]);
+    // v94: PayPal ya no se carga dentro del carrito. El carrito solo valida el
+    // pedido y abre checkout.html, donde viven PayPal, asistencia y donaciones.
+    const commerceReady = await ensureCommerce();
     if (!openState) return;
     render();
     if (commerceReady && typeof window.renderPayPalStable === 'function') {
-      if (!paypalReady) {
-        const msg = document.getElementById('coupon-msg');
-        if (msg) { msg.style.display='block'; msg.style.color='#ff8c96'; msg.textContent='PayPal no pudo cargar. Revisa tu conexión e inténtalo nuevamente.'; }
-        return;
-      }
       try { await window.renderPayPalStable(); } catch (_) {}
     }
   }

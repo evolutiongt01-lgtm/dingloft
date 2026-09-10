@@ -1,5 +1,5 @@
-/* Dingloft Commerce Bridge · v2.1.0 · Worker Canonical Catalog
-   Payment and digital fulfillment are finalized by Cloudflare Worker.
+/* Dingloft Commerce Bridge · v2.3.0 · Cart → Dedicated Checkout
+   Product pages only manage the cart. Payment, extras and fulfillment live in checkout.html + Cloudflare Worker.
    This file intentionally never writes a paid purchase from the browser. */
 
 import { getApps, getApp, initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -26,6 +26,8 @@ const auth = getAuth(app);
 let activeCouponCode = "";
 let lastQuote = null;
 let paypalRenderGeneration = 0;
+const CHECKOUT_COUPON_KEY = "dingloft_checkout_coupon";
+const CHECKOUT_SOURCE_KEY = "dingloft_checkout_source";
 
 window.__DINGLOFT_COMMERCE_V1__ = true;
 window.__DINGLOFT_COMMERCE_V2__ = true;
@@ -178,13 +180,60 @@ function escapeHtml(value) {
 }
 
 function setCheckoutMode(total) {
-  const paypal = paypalWrapper();
+  // Desde v2.3.0 el carrito no cobra. Siempre entrega el pedido al checkout dedicado,
+  // incluso si el producto es gratuito porque allí el cliente todavía puede añadir
+  // asistencia remota o un aporte solidario.
+  const wrapper = paypalWrapper();
   const free = freeButton();
   const badge = securityBadge();
-  const isFree = Number(total) === 0;
-  if (paypal) paypal.style.display = isFree ? "none" : "block";
-  if (badge) badge.style.display = isFree ? "none" : "block";
-  if (free) free.style.display = isFree ? "block" : "none";
+  if (wrapper) wrapper.style.display = "block";
+  if (badge) badge.style.display = "block";
+  if (free) free.style.display = "none";
+}
+
+function checkoutHref() {
+  return "checkout.html?from=cart";
+}
+
+async function syncCartBeforeCheckout() {
+  const items = currentItems().map(item => ({
+    sku:item.sku,
+    name:item.name,
+    quantity:1,
+    priceUsd:0
+  }));
+  if (!items.length) throw new Error("El carrito está vacío.");
+  return api("/push/customer/cart", {
+    method:"POST",
+    authRequired:true,
+    body:{items, path:currentContentUrl()}
+  });
+}
+
+async function continueToDedicatedCheckout() {
+  if (!currentItems().length) {
+    showMessage("El carrito está vacío.", "error");
+    return;
+  }
+  try {
+    sessionStorage.setItem(CHECKOUT_COUPON_KEY, activeCouponCode || "");
+    sessionStorage.setItem(CHECKOUT_SOURCE_KEY, "cart");
+  } catch (_) {}
+
+  if (typeof auth.authStateReady === "function") {
+    try { await auth.authStateReady(); } catch (_) {}
+  }
+  if (!auth.currentUser) {
+    navigateInternal(`login.html?next=${encodeURIComponent(checkoutHref())}`);
+    return;
+  }
+
+  try { await syncCartBeforeCheckout(); } catch (error) {
+    // No bloqueamos el salto: checkout.html conserva el carrito local y vuelve a
+    // validarlo contra el catálogo seguro antes de crear cualquier cobro.
+    console.warn("Dingloft cart sync before checkout", error);
+  }
+  navigateInternal(checkoutHref());
 }
 
 function paintQuote(quote) {
@@ -235,8 +284,8 @@ async function captureOrderOnServer(orderId) {
   });
 }
 
-/* Override the legacy browser-capture function. PayPal capture now happens only in Worker. */
-window.renderPayPalStable = async function renderPayPalStableSecure() {
+/* Dedicated checkout handoff. Legacy cart PayPal is intentionally replaced by one CTA. */
+window.renderPayPalStable = async function renderCheckoutHandoff() {
   const generation = ++paypalRenderGeneration;
   const container = document.getElementById("paypal-button-container");
   if (!container) return;
@@ -246,47 +295,36 @@ window.renderPayPalStable = async function renderPayPalStableSecure() {
   try {
     const quote = await secureQuote();
     if (generation !== paypalRenderGeneration) return;
-    if (Number(quote.totalUsd) === 0) return;
-    if (typeof window.paypal === "undefined") {
-      showMessage("PayPal todavía no terminó de cargar. Recarga la página si el botón no aparece.", "error");
-      return;
-    }
+    setCheckoutMode(quote?.totalUsd);
 
-    window.paypal.Buttons({
-      style: { layout: "vertical", color: "gold", shape: "pill", label: "pay" },
-      createOrder: async () => {
-        try {
-          return await createOrderOnServer();
-        } catch (error) {
-          if (error.message === "AUTH_REDIRECT") return Promise.reject(error);
-          showMessage(error.message || "No se pudo preparar el pago.", "error");
-          throw error;
-        }
-      },
-      onApprove: async (data) => {
-        try {
-          showMessage("Pago aprobado. Estamos habilitando tus archivos…", "info");
-          const result = await captureOrderOnServer(data.orderID);
-          successAndGo(result.orderNumber || "");
-        } catch (error) {
-          if (error.message === "AUTH_REDIRECT") return;
-          /* If the browser/network fails here, PayPal webhook completes fulfillment server-side. */
-          showMessage(`${error.message || "El pago fue aprobado."} Si PayPal confirmó el cobro, vuelve a Mi cuenta: el servidor recupera la entrega automáticamente.`, "error");
-        }
-      },
-      onCancel: () => showMessage("Pago cancelado. No se realizó ningún cobro.", "info"),
-      onError: (error) => {
-        console.error("Dingloft secure PayPal", error);
-        showMessage("No se pudo abrir PayPal. Inténtalo nuevamente.", "error");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.setAttribute("data-dingloft-checkout-handoff", "1");
+    button.style.cssText = [
+      "width:100%","min-height:50px","border:0","border-radius:14px",
+      "background:#f4f7fb","color:#071018","font:800 .86rem/1 Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif",
+      "display:flex","align-items:center","justify-content:center","gap:9px","cursor:pointer",
+      "box-shadow:0 12px 30px rgba(0,0,0,.22)"
+    ].join(";");
+    button.innerHTML = `<i class="bi bi-arrow-right-circle"></i><span>Continuar al checkout · $${Number(quote?.totalUsd || 0).toFixed(2)}</span>`;
+    button.addEventListener("click", async () => {
+      if (button.disabled) return;
+      button.disabled = true;
+      const label = button.querySelector("span");
+      if (label) label.textContent = "Abriendo checkout…";
+      try {
+        await continueToDedicatedCheckout();
+      } finally {
+        button.disabled = false;
+        if (label) label.textContent = `Continuar al checkout · $${Number(lastQuote?.totalUsd || 0).toFixed(2)}`;
       }
-    }).render("#paypal-button-container");
+    });
+    container.appendChild(button);
+    showMessage("Pedido validado. Continúa al checkout para pagar y elegir servicios opcionales.", "success");
   } catch (error) {
     if (error.message === "AUTH_REDIRECT") return;
     setCheckoutMode(1);
-    const wrapper = paypalWrapper();
-    if (wrapper) wrapper.style.display = "none";
-    if (securityBadge()) securityBadge().style.display = "none";
-    showMessage(error.message || "Este producto todavía no puede cobrarse de forma segura.", "error");
+    showMessage(error.message || "No se pudo validar el carrito.", "error");
   }
 };
 
@@ -326,27 +364,7 @@ async function freeCheckoutSecure(event) {
   event.preventDefault();
   event.stopPropagation();
   event.stopImmediatePropagation();
-  const button = freeButton();
-  if (button) {
-    button.disabled = true;
-    button.dataset.originalText = button.dataset.originalText || button.innerHTML;
-    button.innerHTML = '<span class="spinner-border spinner-border-sm" aria-hidden="true" style="margin-right:8px"></span> Procesando…';
-  }
-  try {
-    const result = await api("/checkout/free", {
-      method: "POST",
-      authRequired: true,
-      body: { items: currentItems(), couponCode: activeCouponCode }
-    });
-    successAndGo(result.orderNumber || "");
-  } catch (error) {
-    if (error.message !== "AUTH_REDIRECT") showMessage(error.message || "No se pudo procesar el pedido gratuito.", "error");
-  } finally {
-    if (button) {
-      button.disabled = false;
-      if (button.dataset.originalText) button.innerHTML = button.dataset.originalText;
-    }
-  }
+  await continueToDedicatedCheckout();
 }
 
 /* Capture phase prevents the legacy public ADMIN_EVOLUTION handler and browser Firestore free-order writer. */
