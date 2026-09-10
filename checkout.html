@@ -696,6 +696,13 @@
       font-size:7.5px;
       line-height:1.5;
     }
+    @media (prefers-reduced-motion: reduce){
+      .remote-booking-field[data-guide-step].guide-arrive,
+      .remote-booking-field[data-guide-step].guide-arrive::before,
+      .remote-booking-field[data-guide-step].guide-arrive .remote-calendar-shell,
+      .remote-booking-field[data-guide-step].guide-arrive select,
+      .remote-booking-field[data-guide-step].guide-arrive textarea{animation:none!important}
+    }
     @media(max-width:560px){
       .solidarity-card{padding:16px;border-radius:16px}
       .solidarity-heading h3{font-size:22px}
@@ -1064,7 +1071,7 @@
     .remote-guide-progress{display:block;width:0;height:100%;border-radius:inherit;background:#111;transition:width .48s cubic-bezier(.22,1,.36,1)}
     .remote-guide-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;position:relative;z-index:1}
     .remote-guide-step{
-      display:flex;align-items:center;gap:6px;min-width:0;padding:7px 7px;border:1px solid transparent;border-radius:10px;color:#aaa9ae;transition:background .28s ease,border-color .28s ease,color .28s ease,transform .34s cubic-bezier(.22,1,.36,1)
+      display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;padding:7px 7px;border:1px solid transparent;border-radius:10px;color:#aaa9ae;text-align:center;transition:background .28s ease,border-color .28s ease,color .28s ease,transform .34s cubic-bezier(.22,1,.36,1)
     }
     .remote-guide-step i{
       width:18px;height:18px;display:grid;place-items:center;flex:0 0 18px;border-radius:50%;background:#efefec;color:#8d8d92;font-style:normal;font-size:6.8px;font-weight:850;transition:all .3s cubic-bezier(.22,1,.36,1)
@@ -1084,10 +1091,37 @@
       content:"";position:absolute;inset:-6px;border:1px solid rgba(17,17,17,.18);border-radius:14px;pointer-events:none;animation:remoteGuideRing 1.7s ease-in-out infinite
     }
     .remote-booking-field[data-guide-step].guide-complete{opacity:1}
+    .remote-booking-field[data-guide-step].guide-arrive{z-index:2;animation:remoteGuideArrive 1.28s cubic-bezier(.22,1,.36,1) both}
+    .remote-booking-field[data-guide-step].guide-arrive::before{
+      content:"";position:absolute;inset:-8px;border-radius:16px;pointer-events:none;z-index:-1;
+      background:linear-gradient(115deg,rgba(0,122,255,.18),rgba(90,200,250,.16),rgba(52,199,89,.13));
+      filter:blur(10px);animation:remoteGuideColorGlow 1.28s ease-out both
+    }
+    .remote-booking-field[data-guide-step].guide-arrive .remote-calendar-shell,
+    .remote-booking-field[data-guide-step].guide-arrive select,
+    .remote-booking-field[data-guide-step].guide-arrive textarea{animation:remoteGuideControlFlash 1.28s cubic-bezier(.22,1,.36,1) both}
     .remote-booking-field.guide-nudge{animation:remoteGuideNudge .52s cubic-bezier(.2,.8,.2,1)}
     .remote-booking-field.guide-error::after{border-color:rgba(180,35,24,.48)!important;animation:remoteGuideErrorRing .72s ease both!important}
     .remote-booking-field select:disabled,.remote-booking-field textarea:disabled{background:#f4f4f2;color:#aaa9ae;cursor:not-allowed}
     @keyframes remoteGuidePulse{0%,100%{box-shadow:0 0 0 4px rgba(17,17,17,.04)}50%{box-shadow:0 0 0 7px rgba(17,17,17,.075)}}
+    @keyframes remoteGuideArrive{
+      0%{transform:translateY(5px) scale(.992)}
+      28%{transform:translateY(-2px) scale(1.008)}
+      62%{transform:translateY(0) scale(1.002)}
+      100%{transform:translateY(0) scale(1)}
+    }
+    @keyframes remoteGuideColorGlow{
+      0%{opacity:0;transform:scale(.96)}
+      20%{opacity:1;transform:scale(1.02)}
+      58%{opacity:.72;transform:scale(1.01)}
+      100%{opacity:0;transform:scale(1)}
+    }
+    @keyframes remoteGuideControlFlash{
+      0%{border-color:#d9d9d4;box-shadow:0 0 0 0 rgba(0,122,255,0);background:#fff}
+      24%{border-color:#4ca3ff;box-shadow:0 0 0 4px rgba(0,122,255,.11),0 9px 24px rgba(0,122,255,.08);background:#f7fbff}
+      55%{border-color:#6ccf91;box-shadow:0 0 0 3px rgba(52,199,89,.09),0 7px 20px rgba(52,199,89,.06);background:#fbfffc}
+      100%{border-color:#e2e2de;box-shadow:none;background:#fff}
+    }
     @keyframes remoteGuideRing{0%,100%{opacity:.35;transform:scale(.995)}50%{opacity:.78;transform:scale(1.008)}}
     @keyframes remoteGuideErrorRing{0%{opacity:0;transform:scale(.985)}35%{opacity:1;transform:scale(1.012)}100%{opacity:.75;transform:scale(1)}}
     @keyframes remoteGuideNudge{0%{transform:translateY(0)}35%{transform:translateY(-3px)}70%{transform:translateY(1px)}100%{transform:translateY(0)}}
@@ -2188,6 +2222,9 @@ function remoteGuideSnapshot(){
   return {complete,current:current<0?4:current,dateOk,timeOk,softwareOk,notesOk};
 }
 
+let remoteGuideLastStep=-1;
+let remoteGuideArrivalTimer=0;
+
 function updateRemoteGuide(){
   const guide=$("#remote-guide");
   if(!guide)return;
@@ -2220,6 +2257,18 @@ function updateRemoteGuide(){
     el.classList.toggle("guide-pending",current<4&&idx>current);
     if(idx!==current)el.classList.remove("guide-error");
   });
+
+  if(current<4&&current!==remoteGuideLastStep){
+    const activeField=document.querySelector(`.remote-booking-field[data-guide-step="${current}"]`);
+    document.querySelectorAll(".remote-booking-field.guide-arrive").forEach(el=>el.classList.remove("guide-arrive"));
+    if(activeField){
+      void activeField.offsetWidth;
+      activeField.classList.add("guide-arrive");
+      window.clearTimeout(remoteGuideArrivalTimer);
+      remoteGuideArrivalTimer=window.setTimeout(()=>activeField.classList.remove("guide-arrive"),1450);
+    }
+  }
+  remoteGuideLastStep=current;
 
   const time=$("#remote-booking-time"),software=$("#remote-booking-software"),notes=$("#remote-booking-notes");
   if(time)time.disabled=!state.dateOk;
