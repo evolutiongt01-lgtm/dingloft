@@ -1007,10 +1007,11 @@
       font-size:7px;font-weight:760;letter-spacing:.06em;white-space:nowrap;
     }
     .remote-booking-grid{
-      display:grid;grid-template-columns:1fr 1fr;gap:10px;
+      display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start;
     }
     .remote-booking-field{min-width:0}
     .remote-booking-field.full{grid-column:1/-1}
+    .remote-booking-side{display:grid;gap:10px;min-width:0;align-content:start}
     .remote-booking-field label{
       display:block;margin:0 0 6px;color:#77777d;font-size:7.2px;font-weight:760;
       text-transform:uppercase;letter-spacing:.09em;
@@ -1050,6 +1051,7 @@
       .remote-booking-hours{display:inline-flex;margin-top:8px}
       .remote-booking-grid{grid-template-columns:1fr}
       .remote-booking-field.full{grid-column:auto}
+      .remote-booking-side{gap:10px}
       .remote-booking-benefits{grid-template-columns:1fr}
       .remote-booking-field input,.remote-booking-field select,.remote-booking-field textarea{font-size:16px}
       .remote-booking-field label{font-size:8px}
@@ -1627,22 +1629,24 @@
                         <div class="remote-calendar-caption" id="remote-calendar-caption">Lunes a viernes · <strong>$10</strong></div>
                       </div>
                     </div>
-                    <div class="remote-booking-field">
-                      <label for="remote-booking-time">Horario · Hora de Miami</label>
-                      <select id="remote-booking-time">
-                        <option value="">Selecciona un horario</option>
-                      </select>
-                    </div>
-                    <div class="remote-booking-field full">
-                      <label for="remote-booking-software">Conexión remota</label>
-                      <select id="remote-booking-software">
-                        <option value="Google Chrome Remote Desktop">Chrome Remote Desktop</option>
-                        <option value="AnyDesk">AnyDesk</option>
-                      </select>
-                    </div>
-                    <div class="remote-booking-field full">
-                      <label for="remote-booking-notes">¿Qué necesitas instalar o configurar?</label>
-                      <textarea id="remote-booking-notes" rows="3" maxlength="500" placeholder="Ej. Instalar Motion-X, configurar el plugin en mi DAW y verificar audio/MIDI."></textarea>
+                    <div class="remote-booking-side">
+                      <div class="remote-booking-field">
+                        <label for="remote-booking-time">Horario · Hora de Miami</label>
+                        <select id="remote-booking-time">
+                          <option value="">Selecciona un horario</option>
+                        </select>
+                      </div>
+                      <div class="remote-booking-field">
+                        <label for="remote-booking-software">Conexión remota</label>
+                        <select id="remote-booking-software">
+                          <option value="Google Chrome Remote Desktop">Chrome Remote Desktop</option>
+                          <option value="AnyDesk">AnyDesk</option>
+                        </select>
+                      </div>
+                      <div class="remote-booking-field">
+                        <label for="remote-booking-notes">¿Qué necesitas instalar o configurar?</label>
+                        <textarea id="remote-booking-notes" rows="4" maxlength="500" placeholder="Ej. Instalar Motion-X, configurar el plugin en mi DAW y verificar audio/MIDI."></textarea>
+                      </div>
                     </div>
                   </div>
 
