@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" style="background:#040609"><head><script src="/dingloft-theme.js?v=2"></script><script src="/dingloft-mobile-nav-v71.js?v=113" data-dingloft-mobile-chrome="113"></script>
+<html lang="es" style="background:#040609"><head><script src="/dingloft-theme.js?v=2"></script><script src="/dingloft-mobile-nav-v71.js?v=114" data-dingloft-mobile-chrome="114"></script>
 <style id="dl-ios-first-paint-v29">html,body{background:#05070a!important}</style>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <script id="dingloft-persistent-shell-v93-boot">(()=>{try{
@@ -269,6 +269,70 @@ body.cart-sheet-open #stage{bottom:0!important}
 }
 @media(max-width:370px){.home-admin-btn span{display:none}.home-admin-btn{width:34px;padding:0;justify-content:center}.top .brand{gap:8px}.top .brand img{width:33px!important;height:33px!important}.top .bn{font-size:.82rem!important}}
 </style>
+
+<style id="dingloft-mobile-bottom-root-fix-v114">
+/* v114 · ROOT FIX
+   The black strip was not only the page footer: app.html itself stayed dark and
+   older dock rules could expose the shell below the iframe. Native Home and
+   Checkout now cover the viewport to bottom:0 and the exposed shell is white. */
+@media (max-width:1024px){
+  html.dl-shell-native-navbar,
+  html.dl-shell-native-navbar body,
+  html.dl-shell-checkout,
+  html.dl-shell-checkout body{
+    background:#fff!important;
+    background-color:#fff!important;
+  }
+
+  html.dl-shell-native-navbar #stage{
+    top:0!important;
+    right:0!important;
+    bottom:0!important;
+    left:0!important;
+    width:auto!important;
+    height:auto!important;
+    min-height:0!important;
+    background:#fff!important;
+  }
+
+  html.dl-shell-checkout #stage{
+    top:calc(68px + env(safe-area-inset-top,0px))!important;
+    right:0!important;
+    bottom:0!important;
+    left:0!important;
+    width:auto!important;
+    height:auto!important;
+    min-height:0!important;
+    background:#fff!important;
+  }
+
+  html.dl-shell-native-navbar #stage>.frame,
+  html.dl-shell-checkout #stage>.frame{
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:100%!important;
+    bottom:0!important;
+    background:#fff!important;
+  }
+
+  /* White underlay only shows if Safari exposes any shell pixels under the iframe. */
+  html.dl-shell-native-navbar body::after,
+  html.dl-shell-checkout body::after{
+    content:""!important;
+    display:block!important;
+    position:fixed!important;
+    z-index:0!important;
+    left:0!important;
+    right:0!important;
+    bottom:0!important;
+    height:max(180px,env(safe-area-inset-bottom,0px))!important;
+    background:#fff!important;
+    pointer-events:none!important;
+  }
+}
+</style>
+
 </head><body style="background:#040609">
 <div id="appSplash" aria-live="polite" aria-label="Cargando Dingloft">
   <div class="splash-inner">
@@ -285,7 +349,7 @@ body.cart-sheet-open #stage{bottom:0!important}
 <div class="install-card" id="installCard" role="dialog" aria-label="Instalar Dingloft"><button class="install-close" id="installCardClose" aria-label="Cerrar">×</button><div class="install-logo"><img src="img/pwa-liquid-192-v5.png?v=6" alt=""></div><div class="install-copy"><strong>Instala Dingloft</strong><span>Ábrelo como una app desde tu pantalla principal.</span></div><button class="install-action" id="installCardAction">Instalar</button></div>
 <div class="install-guide" id="installGuide"><div class="install-sheet"><div class="install-handle"></div><h2 id="installGuideTitle">Instala Dingloft</h2><p id="installGuideText">Añádelo a tu pantalla de inicio.</p><div id="installSteps"></div><button class="install-done" id="installGuideClose">Entendido</button></div></div>
 <div class="toast" id="toast"></div><script src="dingloft-app.js?v=103"></script><script src="pwa-install.js?v=18"></script><script src="dingloft-ui-guard.js?v=58"></script>
-<script src="/pwa-runtime.js?v=82"></script>
+<script src="/pwa-runtime.js?v=83"></script>
 
 <script type="module" id="dingloft-home-admin-auth-v31">
 // Admin eligibility on mobile now mirrors desktop and account.html: a signed-in

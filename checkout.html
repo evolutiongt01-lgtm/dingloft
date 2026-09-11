@@ -1652,6 +1652,32 @@
 })();
 </script>
 
+
+<style id="dingloft-checkout-footer-kill-v114">
+@media (max-width:900px), (hover:none) and (pointer:coarse){
+  body>footer.footer, footer.footer{
+    display:none!important;
+    visibility:hidden!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    overflow:hidden!important;
+  }
+  html,body{margin-bottom:0!important;padding-bottom:0!important;background:#f4f4f2!important}
+}
+</style>
+<script id="dingloft-checkout-remove-footer-v114">
+(()=>{
+  const mobile=matchMedia('(max-width:900px)').matches||matchMedia('(hover:none) and (pointer:coarse)').matches;
+  if(!mobile)return;
+  const kill=()=>document.querySelector('footer.footer')?.remove();
+  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',kill,{once:true}):kill();
+})();
+</script>
+
 </head>
 <body>
 <div class="page">

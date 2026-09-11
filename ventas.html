@@ -759,6 +759,33 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
 }
 </style>
 
+
+<style id="dingloft-ventas-footer-kill-v114">
+@media (max-width:900px), (hover:none) and (pointer:coarse){
+  body>footer, footer{
+    display:none!important;
+    visibility:hidden!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    overflow:hidden!important;
+  }
+  html,body,main{margin-bottom:0!important;padding-bottom:0!important}
+  html,body{background:#fff!important}
+}
+</style>
+<script id="dingloft-ventas-remove-footer-v114">
+(()=>{
+  const mobile=matchMedia('(max-width:900px)').matches||matchMedia('(hover:none) and (pointer:coarse)').matches;
+  if(!mobile)return;
+  const kill=()=>document.querySelector('body>footer')?.remove();
+  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',kill,{once:true}):kill();
+})();
+</script>
+
 </head>
 <body data-dingloft-test-version="motion-box-v2">
 <div class="announcement">
