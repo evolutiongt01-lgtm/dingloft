@@ -12,8 +12,8 @@
   if(!mobile)return;
   if(document.querySelector('script[data-dgn-global-loader]'))return;
   const s=document.createElement('script');
-  s.src='/dingloft-global-nav.js?v=121';
+  s.src='/dingloft-global-nav.js?v=124';
   s.defer=true;
-  s.dataset.dgnGlobalLoader='121';
+  s.dataset.dgnGlobalLoader='124';
   document.head.appendChild(s);
 })();

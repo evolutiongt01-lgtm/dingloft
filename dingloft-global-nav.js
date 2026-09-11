@@ -4,10 +4,10 @@
    Cart uses transform/opacity only: no page-wide blur/scale choreography. */
 (() => {
   'use strict';
-  if (window.__DINGLOFT_GLOBAL_NAV_V122__) return;
-  window.__DINGLOFT_GLOBAL_NAV_V122__ = true;
+  if (window.__DINGLOFT_GLOBAL_NAV_V124__) return;
+  window.__DINGLOFT_GLOBAL_NAV_V124__ = true;
 
-  const VERSION = 122;
+  const VERSION = 124;
   const CART_KEY = 'dingloft_cart';
   const WORKER = String(
     window.DINGLOFT_WORKER_BASE ||
@@ -41,10 +41,10 @@
     : fn();
 
   onReady(() => {
-    if (document.getElementById('dingloftGlobalNavV122')) return;
+    if (document.getElementById('dingloftGlobalNavV124')) return;
 
     const style = document.createElement('style');
-    style.id = 'dingloftGlobalNavStyleV122';
+    style.id = 'dingloftGlobalNavStyleV124';
     style.textContent = `
       :root{
         --dgn-bg:#05070a;
@@ -92,7 +92,7 @@
         display:none!important;
       }
 
-      .dgn-v122{
+      .dgn-v124{
         position:fixed;z-index:2147482500;
         inset:0 0 auto 0;
         height:var(--dgn-total-h);
@@ -104,7 +104,7 @@
         -webkit-font-smoothing:antialiased;
         contain:layout style;
       }
-      .dgn-v122.is-scrolled{
+      .dgn-v124.is-scrolled{
         background:rgba(5,7,10,.99);
       }
       .dgn-inner{
@@ -327,19 +327,20 @@
       .dgn-toast.show{opacity:1;transform:translate(-50%,0)}
 
       .dgn-fly{
-        position:fixed;z-index:2147483250;width:74px;height:74px;padding:8px;display:grid;place-items:center;
-        background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(246,248,250,.96));
-        border:1px solid rgba(8,10,12,.08);border-radius:20px;
-        box-shadow:0 18px 44px rgba(0,0,0,.22),0 4px 18px rgba(0,0,0,.10);
-        pointer-events:none;will-change:transform,opacity;overflow:visible;
+        position:fixed;z-index:2147483250;width:70px;height:70px;padding:8px;display:grid;place-items:center;
+        background:rgba(255,255,255,.98);border:1px solid rgba(8,10,12,.08);border-radius:18px;
+        box-shadow:0 16px 36px rgba(0,0,0,.20);pointer-events:none;
+        will-change:transform,opacity;transform:translateZ(0);backface-visibility:hidden;
       }
-      .dgn-fly::before{content:"";position:absolute;inset:-8px;border-radius:28px;background:radial-gradient(circle,rgba(183,255,52,.22),transparent 70%);opacity:.95;z-index:-1}
-      .dgn-fly::after{content:"";position:absolute;right:-4px;top:-4px;width:22px;height:22px;border-radius:999px;background:var(--dgn-accent);box-shadow:0 8px 16px rgba(183,255,52,.35)}
-      .dgn-fly img{width:82%;height:82%;object-fit:contain;filter:drop-shadow(0 8px 10px rgba(0,0,0,.14))}
-      .dgn-cart-pop{animation:dgnCartPop .58s cubic-bezier(.16,1,.3,1)}
-      .dgn-cart-badge-pop .dgn-cart-count{animation:dgnCartBadgePop .52s cubic-bezier(.16,1,.3,1)}
-      @keyframes dgnCartPop{0%{transform:scale(1)}38%{transform:scale(1.18)}68%{transform:scale(.93)}100%{transform:scale(1)}}
-      @keyframes dgnCartBadgePop{0%{transform:scale(1)}38%{transform:scale(1.24)}72%{transform:scale(.9)}100%{transform:scale(1)}}
+      .dgn-fly::after{
+        content:"";position:absolute;right:-3px;top:-3px;width:18px;height:18px;border-radius:999px;
+        background:var(--dgn-accent);box-shadow:0 5px 12px rgba(183,255,52,.28);
+      }
+      .dgn-fly img{width:82%;height:82%;object-fit:contain;filter:drop-shadow(0 7px 8px rgba(0,0,0,.12))}
+      .dgn-cart-pop{animation:dgnCartPop .50s cubic-bezier(.16,1,.3,1)}
+      .dgn-cart-badge-pop .dgn-cart-count{animation:dgnCartBadgePop .48s cubic-bezier(.16,1,.3,1)}
+      @keyframes dgnCartPop{0%{transform:scale(1)}40%{transform:scale(1.15)}72%{transform:scale(.96)}100%{transform:scale(1)}}
+      @keyframes dgnCartBadgePop{0%{transform:scale(1)}40%{transform:scale(1.22)}72%{transform:scale(.93)}100%{transform:scale(1)}}
 
       @media(max-width:900px){
         .dgn-inner{padding:0 28px;grid-template-columns:auto minmax(0,1fr) auto;gap:16px}
@@ -378,8 +379,8 @@
     document.head.appendChild(style);
 
     const nav = document.createElement('header');
-    nav.className = 'dgn-v122';
-    nav.id = 'dingloftGlobalNavV122';
+    nav.className = 'dgn-v124';
+    nav.id = 'dingloftGlobalNavV124';
     nav.innerHTML = `
       <div class="dgn-inner">
         <a class="dgn-brand" href="ventas.html" data-dgn-nav="ventas.html" aria-label="Dingloft">
@@ -688,7 +689,7 @@
       navigate(href);
     });
     document.querySelectorAll('[data-dgn-nav]').forEach(a => a.addEventListener('click', e => {
-      if (a.closest('#dingloftGlobalNavV122')) return;
+      if (a.closest('#dingloftGlobalNavV124')) return;
       e.preventDefault(); navigate(a.getAttribute('data-dgn-nav'));
     }));
 
@@ -868,25 +869,34 @@
       const end=cartBtn.getBoundingClientRect();
       const flyer=document.createElement('div');
       flyer.className='dgn-fly';
-      flyer.style.left=`${startRect.left + startRect.width/2 - 37}px`;
-      flyer.style.top=`${startRect.top + startRect.height/2 - 37}px`;
+      flyer.style.left=`${startRect.left + startRect.width/2 - 35}px`;
+      flyer.style.top=`${startRect.top + startRect.height/2 - 35}px`;
       flyer.innerHTML=`<img src="${esc(imageOf(item||{}))}" alt="">`;
       document.body.appendChild(flyer);
+
       const dx=(end.left+end.width/2)-(startRect.left+startRect.width/2);
       const dy=(end.top+end.height/2)-(startRect.top+startRect.height/2);
-      requestAnimationFrame(()=>{
-        flyer.style.transition='transform .76s cubic-bezier(.16,1,.3,1),opacity .18s ease .58s,filter .76s cubic-bezier(.16,1,.3,1)';
-        flyer.style.transform=`translate3d(${dx}px,${dy}px,0) scale(.16) rotate(-10deg)`;
-        flyer.style.opacity='.08';
-        flyer.style.filter='blur(.2px)';
+      const arc=Math.min(74,Math.max(34,Math.abs(dx)*.075));
+
+      const motion=flyer.animate([
+        {transform:'translate3d(0,0,0) scale(.96) rotate(0deg)',opacity:1,offset:0},
+        {transform:`translate3d(${dx*.18}px,${dy*.10-arc}px,0) scale(.88) rotate(-2deg)`,opacity:1,offset:.20},
+        {transform:`translate3d(${dx*.58}px,${dy*.47-arc*.72}px,0) scale(.62) rotate(-5deg)`,opacity:.96,offset:.58},
+        {transform:`translate3d(${dx*.86}px,${dy*.82-arc*.20}px,0) scale(.34) rotate(-7deg)`,opacity:.78,offset:.84},
+        {transform:`translate3d(${dx}px,${dy}px,0) scale(.14) rotate(-8deg)`,opacity:.08,offset:1}
+      ],{
+        duration:690,
+        easing:'cubic-bezier(.16,1,.3,1)',
+        fill:'forwards'
       });
-      setTimeout(()=>{
+
+      motion.finished.catch(()=>{}).finally(()=>{
         flyer.remove();
         cartBtn.classList.remove('dgn-cart-pop','dgn-cart-badge-pop');
         void cartBtn.offsetWidth;
         cartBtn.classList.add('dgn-cart-pop','dgn-cart-badge-pop');
-        setTimeout(()=>cartBtn.classList.remove('dgn-cart-pop','dgn-cart-badge-pop'),620);
-      },780);
+        setTimeout(()=>cartBtn.classList.remove('dgn-cart-pop','dgn-cart-badge-pop'),540);
+      });
     };
 
     // Admin state comes from the existing Firebase /admin/session module in both shells.
