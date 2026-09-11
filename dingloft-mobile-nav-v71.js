@@ -528,10 +528,36 @@
   // Software nav item, but product pages (and index/tienda/login/register/producto) have no
   // navbar of their own, so this chrome must keep serving as theirs.
   function ownsNavbar(){ return embeddedFile() === 'ventas'; }
+
+  // Checkout has no cart of its own to open (checkout.html is never modified for this),
+  // and offering "open cart" while the user is already finalizing the purchase makes no
+  // sense, so the bottom cart dock — not the header — hides there too.
+  function isCheckoutRoute(){ return embeddedFile() === 'checkout'; }
+  function dockHidden(){ return ownsNavbar() || isCheckoutRoute(); }
+
+  // How much space #stage must reserve for the header/dock, kept in exactly one place so
+  // it can never drift from what makeHost() actually gives those hosts. Falls back to the
+  // same figures the stylesheets already reserve by default, so nothing shifts before this
+  // runs; env(safe-area-inset-*) is read once here, never re-added on top of itself.
+  const HEADER_SPACE = 'calc(68px + env(safe-area-inset-top,0px))';
+  const DOCK_SPACE = 'calc(68px + max(0px,calc(env(safe-area-inset-bottom,0px) - 33px)))';
+  function syncStageSpacing(hideHeader, hideDock){
+    // Only app.html owns a #stage/iframe pair whose height depends on this chrome; a
+    // standalone page (chrome as a plain overlay, no reserved iframe box) has none.
+    const stage = document.getElementById('stage');
+    if (!stage) return;
+    stage.style.setProperty('top', hideHeader ? '0px' : HEADER_SPACE, 'important');
+    stage.style.setProperty('bottom', hideDock ? '0px' : DOCK_SPACE, 'important');
+    const progress = document.getElementById('progress');
+    if (progress) progress.style.setProperty('top', hideHeader ? '0px' : HEADER_SPACE, 'important');
+  }
+
   function syncChromeVisibility(){
-    const hide = ownsNavbar();
-    if (headerHost) headerHost.style.setProperty('display', hide ? 'none' : 'block', 'important');
-    if (dockHost) dockHost.style.setProperty('display', hide ? 'none' : 'block', 'important');
+    const hideHeader = ownsNavbar();
+    const hideDock = dockHidden();
+    if (headerHost) headerHost.style.setProperty('display', hideHeader ? 'none' : 'block', 'important');
+    if (dockHost) dockHost.style.setProperty('display', hideDock ? 'none' : 'block', 'important');
+    syncStageSpacing(hideHeader, hideDock);
   }
 
   function sync(){
@@ -564,12 +590,14 @@
 
     headerHost = makeHost(HEADER_ID, 'header');
     dockHost = makeHost(DOCK_ID, 'dock');
-    // Decide visibility before either host ever joins the document: when ventas.html itself
-    // is the embedded content, this chrome must never paint, not even for a single frame.
-    if (ownsNavbar()) {
-      headerHost.style.setProperty('display', 'none', 'important');
-      dockHost.style.setProperty('display', 'none', 'important');
-    }
+    // Decide visibility — and the matching #stage reservation — before either host ever
+    // joins the document: when ventas.html owns the navbar or Checkout is active, this
+    // chrome (and the space #stage reserves for it) must never paint, not even one frame.
+    const hideHeaderAtBoot = ownsNavbar();
+    const hideDockAtBoot = dockHidden();
+    if (hideHeaderAtBoot) headerHost.style.setProperty('display', 'none', 'important');
+    if (hideDockAtBoot) dockHost.style.setProperty('display', 'none', 'important');
+    syncStageSpacing(hideHeaderAtBoot, hideDockAtBoot);
     searchHost = document.createElement('div');
     searchHost.id = SEARCH_ID;
     searchHost.style.cssText = 'position:fixed;inset:0;z-index:2147483647;pointer-events:none;display:block;';
