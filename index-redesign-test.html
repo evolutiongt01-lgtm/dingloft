@@ -133,6 +133,9 @@
     .launch-unit b{display:block;font-size:24px;line-height:1;color:#07162e;letter-spacing:-.05em}
     .launch-unit span{display:block;margin-top:5px;font-size:8px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#8d96a2}
     .launch-live{margin-top:2px;font-size:10px;font-weight:800;color:#e85d13}
+    .motion-release-note{display:inline-flex;align-items:center;gap:7px;padding:10px 12px;border:1px solid #dbe0e6;border-radius:10px;background:#f7f8fa;color:#687382;font-size:10px;font-weight:900;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
+    .motion-release-note i{color:#ff6a1a}
+    .motion-buy-button[hidden]{display:none!important}
     @keyframes launchPulse{0%{box-shadow:0 0 0 0 rgba(255,106,26,.5)}70%{box-shadow:0 0 0 10px rgba(255,106,26,0)}100%{box-shadow:0 0 0 0 rgba(255,106,26,0)}}
     @keyframes launchSheen{0%,35%{transform:translateX(-130%)}65%,100%{transform:translateX(130%)}}
 
@@ -296,7 +299,7 @@
           <div class="launch-date">26 SEP · 6:00 PM · MIAMI</div>
         </div>
         <h2>Un instrumento pensado para tocar y producir.</h2>
-        <p>Live Banks, 8 capas, Super Knob y un flujo directo dentro del ecosistema Dingloft. Disponible para macOS y Windows.</p>
+        <p>Live Banks, 8 capas, Super Knob y un flujo directo dentro del ecosistema Dingloft. Compra Motion-X Access una sola vez, inicia sesión con tu cuenta y la app desbloquea automáticamente el modo FULL.</p>
         <div class="launch-countdown" id="motionLaunchCountdown" aria-live="polite">
           <div class="launch-unit"><b id="launchDays">00</b><span>Días</span></div>
           <div class="launch-unit"><b id="launchHours">00</b><span>Horas</span></div>
@@ -304,7 +307,7 @@
           <div class="launch-unit"><b id="launchSeconds">00</b><span>Seg</span></div>
         </div>
         <div class="launch-live" id="motionLaunchStatus">Cuenta regresiva al lanzamiento en Miami.</div>
-        <div class="hero-actions"><a class="btn btn-orange" href="motion-x.html">Conocer Motion-X</a><button class="btn" style="background:#07162e;color:#fff" type="button" data-add-sku="motion-x" data-add-name="Motion-X" data-add-price="28">Agregar al carrito</button></div>
+        <div class="hero-actions"><a class="btn btn-orange" href="motion-x.html">Conocer Motion-X</a><span class="motion-release-note" data-motion-release-note><i class="bi bi-clock-fill"></i> Venta disponible el 26 SEP</span><button id="motionBuyButton" class="btn motion-buy-button" style="background:#07162e;color:#fff" type="button" data-add-sku="motion-x-access" data-add-name="Motion-X Access" data-add-price="28" hidden>Comprar acceso FULL</button></div>
       </div>
       <div class="feature-visual"><img src="img/motion-x-cover.png" alt="Motion-X"></div>
     </section>
@@ -394,9 +397,9 @@
 
     const productLinks={
       'autocad-2026':'autocad.html','office-home-business':'office.html','sketchup-pro-2026':'sketchup.html','sketchup-2026-autocad-2026':'producto.html?sku=sketchup-2026-autocad-2026','cinema-4d':'cinema4d.html','logic-pro':'logic.html',
-      'biblias-e-sword':'esword.html','pianos-legendarios-sf2-bundle':'dual.html','nord-stage-4-ultimate-library':'nord.html','nord-essentials-sf2-collection':'producto.html?sku=nord-essentials-sf2-collection','yamaha-legacy-collection-sf2':'producto.html?sku=yamaha-legacy-collection-sf2','yamaha-premium-keys':'yamahakeys.html','rhodes-affair-2':'rhodes.html','montage-8-nord-stage-3':'mainstage.html','cosmos-collection':'producto.html?sku=cosmos-collection','motion-x':'motion-x.html'
+      'biblias-e-sword':'esword.html','pianos-legendarios-sf2-bundle':'dual.html','nord-stage-4-ultimate-library':'nord.html','nord-essentials-sf2-collection':'producto.html?sku=nord-essentials-sf2-collection','yamaha-legacy-collection-sf2':'producto.html?sku=yamaha-legacy-collection-sf2','yamaha-premium-keys':'yamahakeys.html','rhodes-affair-2':'rhodes.html','montage-8-nord-stage-3':'mainstage.html','cosmos-collection':'producto.html?sku=cosmos-collection','motion-x':'motion-x.html','motion-x-access':'motion-x.html'
     };
-    const imageMap={autocad:'img/autocad.png',office:'img/office.png',sketchup:'img/sketchup.png',combo:'img/combo.png',cinema4d:'img/cinema4d.png',logic:'img/logic.png',esword:'img/esword.png',dual:'img/dual.png',nord:'img/nord.png',nordessentials:'img/nordessentials.png',yamahalegacy:'img/yamahalegacy.png',yamahakeys:'img/yamahakeys.png',cosmos:'img/cosmos.png',rhodes:'img/rhodes.png',mainstage:'img/mainstage.png',dingloft:'img/dingloft.png'};
+    const imageMap={autocad:'img/autocad.png',office:'img/office.png',sketchup:'img/sketchup.png',combo:'img/combo.png',cinema4d:'img/cinema4d.png',logic:'img/logic.png',esword:'img/esword.png',dual:'img/dual.png',nord:'img/nord.png',nordessentials:'img/nordessentials.png',yamahalegacy:'img/yamahalegacy.png',yamahakeys:'img/yamahakeys.png',cosmos:'img/cosmos.png',rhodes:'img/rhodes.png',mainstage:'img/mainstage.png',motionx:'img/motion-x-cover.png',dingloft:'img/dingloft.png'};
     const fallbackProducts=[
       {sku:'autocad-2026',name:'AutoCAD 2026',priceUsd:35,img:'autocad',type:'Licencia vitalicia',category:'Software',shortDescription:'Diseño técnico y documentación profesional.'},
       {sku:'office-home-business',name:'Office Home & Business',priceUsd:40,img:'office',type:'Licencia vitalicia',category:'Software',shortDescription:'Productividad para trabajo, estudio y negocio.'},
@@ -404,6 +407,7 @@
       {sku:'sketchup-2026-autocad-2026',name:'SketchUp 2026 & AutoCAD 2026',priceUsd:50,img:'combo',type:'Licencia vitalicia',category:'Software',shortDescription:'Combo para arquitectura y diseño técnico.'},
       {sku:'cinema-4d',name:'Cinema 4D',priceUsd:35,img:'cinema4d',type:'Licencia vitalicia',category:'Software',shortDescription:'Creación 3D y motion graphics.'},
       {sku:'logic-pro',name:'Logic Pro',priceUsd:25,img:'logic',type:'Licencia vitalicia',category:'Software',shortDescription:'Producción musical en macOS.'},
+      {sku:'motion-x-access',name:'Motion-X Access',priceUsd:28,img:'motionx',type:'Acceso FULL',category:'Audio',badge:'Acceso',shortDescription:'Acceso completo vinculado a tu cuenta Dingloft. Inicia sesión en Motion-X y la app desbloquea automáticamente el modo FULL.'},
       {sku:'pianos-legendarios-sf2-bundle',name:'Pianos Legendarios SF2 Bundle',priceUsd:60,img:'dual',type:'Librería vitalicia',category:'Audio',shortDescription:'Colección SF2 para producción y performance.'},
       {sku:'nord-stage-4-ultimate-library',name:'Nord Stage 4 Ultimate Library',priceUsd:40,img:'nord',type:'Librería vitalicia',category:'Audio',shortDescription:'Sonidos y recursos para stage keyboards.'},
       {sku:'nord-essentials-sf2-collection',name:'Nord Essentials SF2 Collection',priceUsd:33,img:'nordessentials',type:'Librería vitalicia',category:'Audio',shortDescription:'Colección esencial en formato SF2.'},
@@ -424,7 +428,7 @@
     function money(n){return `$${Number(n||0).toFixed(2)}`}
     function productImage(p){if(p.imageUrl)return p.imageUrl;return imageMap[p.img]||'img/dingloft.png'}
     function isMultitrackProduct(p){const t=`${p?.type||''} ${p?.category||''} ${p?.name||''}`.toLowerCase();return /multitrack/.test(t)||/^mt-\d+/i.test(String(p?.id||''))}
-    function isAudioProduct(p){if(isMultitrackProduct(p))return false;const key=normalizeKey(`${p?.sku||''} ${p?.name||''} ${p?.category||''} ${p?.type||''}`);return /(piano|nord|yamaha|rhodes|cosmos|montage|sf2|sample|vst|libreria|library|instrument|kontakt|sound|audio)/.test(key)}
+    function isAudioProduct(p){if(isMultitrackProduct(p))return false;const key=normalizeKey(`${p?.sku||''} ${p?.name||''} ${p?.category||''} ${p?.type||''}`);return /(motion-x|piano|nord|yamaha|rhodes|cosmos|montage|sf2|sample|vst|libreria|library|instrument|kontakt|sound|audio)/.test(key)}
     function isProgramProduct(p){return !isMultitrackProduct(p)&&!isAudioProduct(p)}
     function productLink(p){return productLinks[p.sku]||`producto.html?sku=${encodeURIComponent(p.sku||'')}`}
 
@@ -448,11 +452,19 @@
     function showToast(text='Agregado al carrito'){toast.textContent=text;toast.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(()=>toast.classList.remove('show'),1800)}
     function addToCart(item,button){const items=readCart();const sku=item.sku||normalizeKey(item.name);const existing=items.find(x=>String(x.sku||'')===sku);if(existing)existing.quantity=Math.max(1,Number(existing.quantity||1));else items.push({sku,name:item.name||item.title||'Producto Dingloft',quantity:1,priceUsd:Number(item.priceUsd??item.price??0),img:item.img||'dingloft'});writeCart(items);showToast(`${item.name||item.title} agregado`);if(button){button.classList.add('added');const old=button.textContent;button.textContent='Agregado ✓';setTimeout(()=>{button.classList.remove('added');button.textContent=old},1400)}}
 
-    function productCard(p){const image=productImage(p),desc=p.shortDescription||p.description||'Producto digital disponible en Dingloft.';return `<article class="product-card" data-search="${String(p.name||'').toLowerCase()} ${String(p.type||'').toLowerCase()}"><a class="product-media" href="${productLink(p)}"><span class="product-badge">${p.badge||'Digital'}</span><img src="${image}" alt="${p.name}" loading="lazy"></a><div class="product-body"><div class="product-type">${p.type||p.category||'Producto digital'}</div><a class="product-name" href="${productLink(p)}">${p.name}</a><div class="product-meta">${desc}</div><div class="product-foot"><span class="price">${Number(p.priceUsd||0)>0?money(p.priceUsd):'Gratis'}</span><button class="add-btn" type="button" data-add-product="${encodeURIComponent(JSON.stringify({sku:p.sku,name:p.name,priceUsd:Number(p.priceUsd||0),img:p.img||'dingloft'}))}">Agregar al carrito</button></div></div></article>`}
+    function productCard(p){const image=productImage(p),desc=p.shortDescription||p.description||'Producto digital disponible en Dingloft.',payload=encodeURIComponent(JSON.stringify({sku:p.sku,name:p.name,priceUsd:Number(p.priceUsd||0),img:p.img||'dingloft'})),motion=String(p.sku||'')==='motion-x-access';const buy=motion?`<span class="motion-release-note" data-motion-release-note><i class="bi bi-clock-fill"></i> 26 SEP · 6 PM</span><button class="add-btn motion-buy-button" hidden type="button" data-add-product="${payload}">Agregar al carrito</button>`:`<button class="add-btn" type="button" data-add-product="${payload}">Agregar al carrito</button>`;return `<article class="product-card" data-search="${String(p.name||'').toLowerCase()} ${String(p.type||'').toLowerCase()}"><a class="product-media" href="${productLink(p)}"><span class="product-badge">${p.badge||'Digital'}</span><img src="${image}" alt="${p.name}" loading="lazy"></a><div class="product-body"><div class="product-type">${p.type||p.category||'Producto digital'}</div><a class="product-name" href="${productLink(p)}">${p.name}</a><div class="product-meta">${desc}</div><div class="product-foot"><span class="price">${Number(p.priceUsd||0)>0?money(p.priceUsd):'Gratis'}</span>${buy}</div></div></article>`}
 
     function trackCard(t){const cover=t.cover||'img/dingloft.png',preview=t.preview||'',sku=t.commerceSku||t.sku||normalizeKey(t.title);return `<article class="track-card" data-search="${String(t.title||'').toLowerCase()} ${String(t.artist||'').toLowerCase()}"><div class="track-cover"><img src="${cover}" alt="${t.title}" loading="lazy"><div class="track-overlay"><button class="preview-btn" type="button" aria-label="Reproducir preview de ${t.title}" data-preview="${preview}"><svg class="play-icon" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></button></div></div><div class="track-body"><div class="track-id">${t.id||'Multitrack'}</div><div class="track-title">${t.title}</div><div class="track-artist">${t.artist||'Dingloft'}</div><div class="track-facts"><span class="fact">${t.bpm||'—'} BPM</span><span class="fact">${t.chord||t.key||'—'}</span><span class="fact">${t.stems||'—'} stems</span></div><div class="track-progress"><span></span></div><div class="track-time">Preview</div><div class="track-foot"><span class="track-price">${money(t.priceUsd??t.price??0)}</span><div class="track-actions"><a class="small-btn" href="multitrack.html">Ver</a><button class="small-btn cart" type="button" data-add-product="${encodeURIComponent(JSON.stringify({sku,name:t.title,priceUsd:Number(t.priceUsd??t.price??0),img:'dingloft'}))}">Agregar</button></div></div></div></article>`}
 
-    function renderProducts(products){allProducts=products.filter(p=>p&&p.active!==false&&!isMultitrackProduct(p));const programs=allProducts.filter(isProgramProduct);const audio=allProducts.filter(isAudioProduct);programGrid.innerHTML=(programs.length?programs:fallbackProducts.filter(isProgramProduct)).map(productCard).join('');sampleGrid.innerHTML=(audio.length?audio:fallbackProducts.filter(isAudioProduct)).map(productCard).join('')}
+    function renderProducts(products){
+      allProducts=products.filter(p=>p&&p.active!==false&&!isMultitrackProduct(p));
+      const motionAccess=fallbackProducts.find(p=>p.sku==='motion-x-access');
+      if(motionAccess&&!allProducts.some(p=>String(p.sku||'')==='motion-x-access')) allProducts.push(motionAccess);
+      const programs=allProducts.filter(isProgramProduct);
+      const audio=allProducts.filter(isAudioProduct);
+      programGrid.innerHTML=(programs.length?programs:fallbackProducts.filter(isProgramProduct)).map(productCard).join('');
+      sampleGrid.innerHTML=(audio.length?audio:fallbackProducts.filter(isAudioProduct)).map(productCard).join('');
+    }
     function mtNumber(id){const m=String(id||'').match(/(\d+)/);return m?Number(m[1]):0}
     function renderTracks(list){const rows=(Array.isArray(list)?list:[]).filter(x=>x&&x.active!==false).sort((a,b)=>mtNumber(b.id)-mtNumber(a.id)).slice(0,4);trackGrid.innerHTML=(rows.length?rows:fallbackTracks).map(trackCard).join('')}
 
@@ -524,6 +536,10 @@
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cartPanel?.classList.contains('show'))closeCartDrawer()});
 
     const motionLaunchAt = new Date('2026-09-26T22:00:00Z'); // 6:00 PM Miami (EDT)
+    function syncMotionLaunchUI(isLive){
+      document.querySelectorAll('.motion-buy-button').forEach(el=>{el.hidden=!isLive});
+      document.querySelectorAll('[data-motion-release-note]').forEach(el=>{el.hidden=isLive});
+    }
     function updateMotionLaunchCountdown(){
       const now=new Date();
       let ms=motionLaunchAt-now;
@@ -533,8 +549,10 @@
         ['launchDays','launchHours','launchMinutes','launchSeconds'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='00'});
         if(status)status.textContent='Motion-X ya está disponible.';
         if(wrap)wrap.setAttribute('aria-label','Motion-X disponible');
+        syncMotionLaunchUI(true);
         return;
       }
+      syncMotionLaunchUI(false);
       const d=Math.floor(ms/86400000); ms%=86400000;
       const h=Math.floor(ms/3600000); ms%=3600000;
       const m=Math.floor(ms/60000); ms%=60000;
