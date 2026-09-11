@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#0a0a0a">
   <title>Motion-X — Dingloft</title>
   <meta name="description" content="Motion-X es un instrumento premium para performance y producción con 8 capas, Live Banks, Super Knob y compatibilidad con cualquier DAW que soporte VST3 o AU.">
+  <meta name="dingloft-worker-base" content="https://autumn-breeze-dfa0.evolutiongt01.workers.dev">
   <meta property="og:title" content="Motion-X — Dingloft">
   <meta property="og:description" content="Sound in Motion. Descarga Motion-X gratis y desbloquea FULL con tu licencia vinculada a tu cuenta.">
   <meta property="og:type" content="website">
@@ -1117,9 +1118,38 @@
     syncMotionXSaleState();
     setInterval(syncMotionXSaleState, 30000);
 
+    const motionXWorker = document.querySelector('meta[name="dingloft-worker-base"]')?.content?.replace(/\/$/, '') || '';
+    let motionXFreeDownloadUrl = '';
+
+    function setMotionXDownloadState(url){
+      motionXFreeDownloadUrl = /^https:\/\//i.test(String(url || '')) ? String(url) : '';
+      document.querySelectorAll('[data-action="download-motion-x"]').forEach(btn => {
+        btn.disabled = !motionXFreeDownloadUrl;
+        btn.setAttribute('aria-disabled', String(!motionXFreeDownloadUrl));
+        btn.title = motionXFreeDownloadUrl ? 'Descargar Motion-X FREE' : 'Descarga disponible próximamente';
+      });
+    }
+
+    async function loadMotionXFreeDownload(){
+      try{
+        if(!motionXWorker) return setMotionXDownloadState('');
+        const response = await fetch(`${motionXWorker}/products/product?sku=motion-x-access`, { cache:'no-store' });
+        const data = await response.json().catch(() => ({}));
+        if(!response.ok || !data?.ok) throw new Error('DOWNLOAD_LINK_UNAVAILABLE');
+        setMotionXDownloadState(data?.product?.publicDownloadUrl || '');
+      }catch(_){
+        setMotionXDownloadState('');
+      }
+    }
+
     document.querySelectorAll('[data-action="download-motion-x"]').forEach(btn => {
-      btn.addEventListener('click', () => console.log('download hook: motion-x'));
+      btn.addEventListener('click', () => {
+        if(!motionXFreeDownloadUrl) return;
+        window.location.assign(motionXFreeDownloadUrl);
+      });
     });
+
+    loadMotionXFreeDownload();
 
     document.querySelectorAll('[data-action="buy-motion-x"]').forEach(btn => {
       btn.addEventListener('click', event => {
