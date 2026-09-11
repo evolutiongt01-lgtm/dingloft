@@ -308,6 +308,189 @@ html.dingloft-installed #navInstall{display:none!important}
 .helmet-shell-brand .brand-copy{display:none!important}
 </style>
 
+
+<style id="dingloft-shell-match-ventas-v117">
+@media (min-width:900px) and (pointer:fine){
+  /* Same fixed geometry used by ventas.html. */
+  .helmet-shell-nav{
+    position:fixed!important;
+    inset:0 0 auto 0!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+    min-width:100%!important;
+    max-width:none!important;
+    height:68px!important;
+    min-height:68px!important;
+    margin:0!important;
+    padding:0 max(26px,calc((100vw - 1360px)/2))!important;
+    transform:none!important;
+    translate:none!important;
+    scale:1!important;
+    display:grid!important;
+    grid-template-columns:auto minmax(0,1fr) auto!important;
+    align-items:center!important;
+    gap:34px!important;
+    overflow:visible!important;
+    border:0!important;
+    border-bottom:1px solid rgba(255,255,255,.08)!important;
+    border-radius:0!important;
+    background:rgba(5,7,10,.975)!important;
+    box-shadow:none!important;
+    backdrop-filter:blur(16px)!important;
+    -webkit-backdrop-filter:blur(16px)!important;
+  }
+
+  /* Kill old shell glow/translation states completely. */
+  .helmet-shell-nav::before,
+  .helmet-shell-nav::after,
+  .helmet-shell-nav.loading::before,
+  .helmet-shell-nav.loading::after,
+  .helmet-shell-nav.load-complete::before,
+  .helmet-shell-nav.load-complete::after{
+    display:none!important;
+    content:none!important;
+  }
+
+  .helmet-shell-brand{
+    display:flex!important;
+    visibility:visible!important;
+    opacity:1!important;
+    justify-self:start!important;
+    align-items:center!important;
+    min-width:29px!important;
+    margin:0!important;
+    padding:0!important;
+    transform:none!important;
+  }
+  .helmet-shell-brand img{
+    display:block!important;
+    width:29px!important;
+    height:29px!important;
+    object-fit:contain!important;
+    border-radius:8px!important;
+    box-shadow:none!important;
+  }
+  .helmet-shell-brand .brand-copy{display:none!important}
+
+  .helmet-shell-links{
+    display:flex!important;
+    visibility:visible!important;
+    opacity:1!important;
+    justify-self:center!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:6px!important;
+    width:auto!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+    transform:none!important;
+  }
+  .helmet-shell-links .nav-glider{display:none!important}
+  .helmet-shell-links .action{
+    display:flex!important;
+    visibility:visible!important;
+    opacity:1!important;
+    height:30px!important;
+    padding:0 13px!important;
+    margin:0!important;
+    transform:none!important;
+    border:1px solid transparent!important;
+    border-radius:0!important;
+    background:transparent!important;
+    color:#a8adb4!important;
+    box-shadow:none!important;
+    font-size:9px!important;
+    font-weight:800!important;
+    letter-spacing:.025em!important;
+  }
+  .helmet-shell-links .action:hover{
+    color:#fff!important;
+    background:rgba(255,255,255,.05)!important;
+  }
+  .helmet-shell-links .action.active{
+    color:#080a0d!important;
+    background:#fff!important;
+    border-color:#fff!important;
+  }
+
+  .helmet-shell-tools{
+    display:flex!important;
+    visibility:visible!important;
+    opacity:1!important;
+    justify-self:end!important;
+    align-items:center!important;
+    justify-content:flex-end!important;
+    gap:8px!important;
+    min-width:max-content!important;
+    margin:0!important;
+    padding:0!important;
+    transform:none!important;
+  }
+  .helmet-shell-tools .action{
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    visibility:visible!important;
+    opacity:1!important;
+    height:30px!important;
+    min-width:26px!important;
+    padding:0 5px!important;
+    margin:0!important;
+    transform:none!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    color:#d9dde2!important;
+    box-shadow:none!important;
+  }
+  .helmet-shell-tools .action:hover{
+    transform:translateY(-1px)!important;
+    color:#fff!important;
+    background:transparent!important;
+  }
+  .helmet-shell-tools .action svg{
+    width:16px!important;
+    height:16px!important;
+  }
+  .helmet-shell-cart{
+    position:relative!important;
+    width:28px!important;
+  }
+  .helmet-shell-cart-count{
+    position:absolute!important;
+    right:-4px!important;
+    top:0!important;
+    min-width:14px!important;
+    height:14px!important;
+    padding:0 4px!important;
+    display:grid!important;
+    place-items:center!important;
+    border-radius:999px!important;
+    background:#fff!important;
+    color:#080a0c!important;
+    border:1px solid #080a0c!important;
+    font-size:7px!important;
+    font-weight:900!important;
+    line-height:1!important;
+  }
+  .helmet-shell-cart-count[hidden]{display:none!important}
+  .helmet-admin-link{
+    color:#ff9da5!important;
+    gap:6px!important;
+    font-size:9px!important;
+    font-weight:800!important;
+    letter-spacing:.06em!important;
+    text-transform:uppercase!important;
+  }
+  .helmet-admin-link[hidden]{display:none!important}
+
+  .stage{top:68px!important}
+}
+</style>
+
 </head>
 <body style="background:#040609">
 <div id="desktopSplash" aria-label="Cargando Dingloft"><div class="desktop-splash-inner"><div class="desktop-splash-mark"><img src="/img/pwa-liquid-rounded-192-v17.png?v=18" alt="Dingloft"></div><div class="desktop-splash-brand">DINGLOFT</div><div class="desktop-splash-group">Evolution Group</div><div class="desktop-splash-status">Preparando tu espacio</div><div class="desktop-splash-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div></div>
@@ -340,7 +523,7 @@ html.dingloft-installed #navInstall{display:none!important}
 
 <div class="dl-search-overlay" id="desktopSearchOverlay" aria-hidden="true"><section class="dl-search-panel" role="dialog" aria-modal="true" aria-label="Buscar productos Dingloft"><div class="dl-search-head"><label class="dl-search-input"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg><input id="desktopSearchInput" type="search" autocomplete="off" placeholder="Buscar productos, software o Multitracks…" aria-label="Buscar"></label><button class="dl-search-close" id="desktopSearchClose" type="button" aria-label="Cerrar búsqueda"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div class="dl-search-meta">Catálogo en vivo · productos del Admin incluidos</div><div class="dl-search-results" id="desktopSearchResults"><div class="dl-search-empty"><b>Busca en todo Dingloft</b>Los productos nuevos aparecen aquí automáticamente.</div></div></section></div>
 <div class="stage" id="stage"></div><div class="progress" id="progress"></div>
-<script src="desktop-shell.js?v=94"></script>
+<script src="desktop-shell.js?v=95"></script>
 <script type="module" id="dingloft-desktop-admin-auth">
 // Determines Admin visibility in the desktop navbar using the same authority
 // account.html and auth-global.js already use: a signed-in Firebase user whose

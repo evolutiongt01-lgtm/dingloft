@@ -1,4 +1,4 @@
-const VERSION = '121';
+const VERSION = '123';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -48,7 +48,7 @@ const CORE = [
   '/dingloft-app.js',
   '/dingloft-app.js?v=116',
   '/desktop-shell.js',
-  '/desktop-shell.js?v=92',
+  '/desktop-shell.js?v=95',
   '/desktop-global-nav.js',
   '/dingloft-theme.js?v=2',
   '/dingloft-theme.css?v=2',
@@ -61,7 +61,7 @@ const CORE = [
   '/pwa-install.js',
   '/dingloft-commerce.js?v=2.2.1-shell94',
   '/dingloft-cart-sync.js?v=91',
-  '/pwa-runtime.js?v=84',
+  '/pwa-runtime.js?v=86',
   '/dingloft-mobile-nav-v71.js?v=115',
   '/dingloft-mobile-dock.css?v=34',
   '/dingloft-mobile-cart-v92.js?v=95',

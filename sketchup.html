@@ -1393,8 +1393,28 @@ body.no-scroll{overflow:hidden!important}
       const addButtons = document.querySelectorAll('.btn-add-cart');
       const buyNowButtons = document.querySelectorAll('.btn-buy-now');
 
-      const openCart = (e) => { if(e) e.preventDefault(); cartDrawer.classList.add('active'); cartOverlay.classList.add('active'); document.body.classList.add('no-scroll'); updateCartUI(); };
-      const closeCart = (e) => { if(e) e.preventDefault(); cartDrawer.classList.remove('active'); cartOverlay.classList.remove('active'); document.body.classList.remove('no-scroll'); };
+      const notifyShellCartState = (open) => {
+        try {
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: open ? 'dingloft:cart-opened' : 'dingloft:cart-closed' }, location.origin);
+          }
+        } catch (_) {}
+      };
+      const openCart = (e) => {
+        if(e) e.preventDefault();
+        cartDrawer.classList.add('active');
+        cartOverlay.classList.add('active');
+        document.body.classList.add('no-scroll');
+        updateCartUI();
+        notifyShellCartState(true);
+      };
+      const closeCart = (e) => {
+        if(e) e.preventDefault();
+        cartDrawer.classList.remove('active');
+        cartOverlay.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+        notifyShellCartState(false);
+      };
 
       cartBtns.forEach(btn => { if(btn) btn.addEventListener('click', openCart); });
       if(closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
