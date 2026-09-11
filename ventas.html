@@ -742,17 +742,49 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
 </style>
 
 
-<style id="dingloft-mobile-product-image-position-v109">
+<style id="dingloft-mobile-product-image-position-v110">
 @media (max-width:600px){
+  /* Subir más los mockups sin cambiar assets, datos ni tamaño de tarjeta. */
+  .product-media{
+    overflow:hidden!important;
+  }
   .product-media img{
-    transform:translateY(-52px) scale(1.045)!important;
+    object-position:center top!important;
+    transform:translateY(-82px) scale(1.06)!important;
     transform-origin:center top!important;
   }
   .product-card:hover .product-media img{
-    transform:translateY(-52px) scale(1.045)!important;
+    transform:translateY(-82px) scale(1.06)!important;
   }
-  .helmet-brand{
-    gap:0!important;
+
+  /* El final de la página móvil nunca debe revelar una franja negra. */
+  html,body{
+    background:#fff!important;
+    padding-bottom:0!important;
+    margin-bottom:0!important;
+  }
+  main{
+    background:#fff!important;
+    margin-bottom:0!important;
+    padding-bottom:0!important;
+  }
+  footer{
+    display:none!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    padding:0!important;
+    margin:0!important;
+    border:0!important;
+    overflow:hidden!important;
+  }
+  .trust{
+    margin-bottom:0!important;
+    padding-bottom:max(20px,env(safe-area-inset-bottom,0px))!important;
+  }
+  body::after,main::after{
+    display:none!important;
+    content:none!important;
   }
 }
 </style>
