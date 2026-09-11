@@ -630,13 +630,46 @@ body.no-scroll{overflow:hidden!important}
 .su-package h3{font-size:24px;margin:10px 0 8px;letter-spacing:-.03em}
 .su-package p{font-size:14px;color:var(--su-muted);line-height:1.6}
 .su-package-price{font-size:42px;font-weight:900;letter-spacing:-.04em;margin:22px 0 16px}
-.su-package .btn-add-cart{
-  margin-top:auto;width:100%;min-height:52px;border:0;border-radius:0;
-  background:#171a1d;color:#fff;font-weight:900;text-transform:uppercase;
-  letter-spacing:.05em;font-size:12px;cursor:pointer;
+.su-package-actions{
+  margin-top:auto;
+  display:grid;
+  gap:9px;
 }
-.su-package.popular .btn-add-cart{background:var(--su-orange);color:#17202a}
-.su-package .btn-add-cart:hover{filter:brightness(.95)}
+.su-package .btn-buy-now,
+.su-package .btn-add-cart{
+  width:100%;
+  min-height:52px;
+  border-radius:0;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  font-size:12px;
+  cursor:pointer;
+  transition:transform .16s ease,background .16s ease,color .16s ease,border-color .16s ease;
+}
+.su-package .btn-buy-now{
+  border:1px solid #171a1d;
+  background:#171a1d;
+  color:#fff;
+}
+.su-package .btn-add-cart{
+  border:1px solid #c9cdd1;
+  background:#fff;
+  color:#171a1d;
+}
+.su-package .btn-buy-now:hover,
+.su-package .btn-add-cart:hover{transform:translateY(-1px)}
+.su-package .btn-add-cart:hover{border-color:#171a1d;background:#f4f4f2}
+.su-package.popular .btn-buy-now{
+  background:var(--su-orange);
+  border-color:var(--su-orange);
+  color:#17202a;
+}
+.su-package.popular .btn-add-cart{
+  border-color:#17202a;
+  background:#fff;
+  color:#17202a;
+}
 
 /* Video / compatibility */
 .su-two-col{display:grid;grid-template-columns:.9fr 1.1fr;gap:50px;align-items:center}
@@ -798,8 +831,8 @@ body.no-scroll{overflow:hidden!important}
           <div class="su-eyebrow">Software para arquitectura y diseño</div>
           <h1>Modela ideas.<br><strong>Construye mejor.</strong></h1>
           <p class="su-hero-copy">
-            SketchUp Pro 2026 en una página pensada como producto principal:
-            menos ficha técnica, más experiencia visual, flujo de trabajo y compra directa.
+            SketchUp Pro 2026 reúne modelado 3D, documentación y presentación
+            en un flujo de trabajo ágil para arquitectura, interiores y diseño.
           </p>
           <div class="su-actions">
             <button class="su-btn-primary btn-buy-now"
@@ -818,7 +851,7 @@ body.no-scroll{overflow:hidden!important}
                     data-price="27"
                     data-img="sketchup"
                     data-type="Programa vitalicio">
-              <i class="bi bi-bag-plus"></i> Agregar al carro
+              <i class="bi bi-bag-plus"></i> Añadir al carrito
             </button>
           </div>
           <a class="su-demo-link" href="#video-instalacion">
@@ -876,8 +909,8 @@ body.no-scroll{overflow:hidden!important}
         <div class="su-kicker">01 · Un producto, no una ficha</div>
         <h2>Una página que vende el flujo de trabajo.</h2>
         <p class="su-section-lead">
-          La idea es presentar SketchUp como una solución completa para diseño y arquitectura:
-          primero la experiencia, después las características y al final la compra.
+          Trabaja desde el concepto inicial hasta la presentación final con herramientas
+          pensadas para modelar, organizar y comunicar cada etapa del proyecto.
         </p>
 
         <div class="su-feature-grid">
@@ -914,8 +947,8 @@ body.no-scroll{overflow:hidden!important}
         <div class="su-kicker">02 · Para proyectos exigentes</div>
         <h2>Diseña, revisa y presenta en un mismo entorno.</h2>
         <p>
-          En lugar de llenar la pantalla de tarjetas, esta sección comunica la idea principal
-          con una composición grande, técnica y limpia, inspirada en páginas de software profesional.
+          Centraliza el modelado, la revisión y la presentación del proyecto en un entorno
+          visual pensado para mantener tu proceso claro y eficiente.
         </p>
       </div>
       <div class="su-showcase-visual" aria-hidden="true"></div>
@@ -928,7 +961,7 @@ body.no-scroll{overflow:hidden!important}
             <div class="su-kicker">03 · Elige tu programa</div>
             <h2>Compra directa.</h2>
           </div>
-          <p>Elige la opción que mejor se adapte a tu flujo de trabajo y continúa al checkout.</p>
+          <p>Elige la opción que mejor se adapte a tu flujo de trabajo.</p>
         </div>
 
         <div class="su-package-grid">
@@ -938,15 +971,26 @@ body.no-scroll{overflow:hidden!important}
             <h3>SketchUp + AutoCAD 2026</h3>
             <p>Dos herramientas esenciales para modelado 3D, dibujo técnico y documentación.</p>
             <div class="su-package-price">$50</div>
-            <button class="btn-add-cart"
-                    data-id="16"
-                    data-sku="sketchup-2026-autocad-2026"
-                    data-name="SketchUp 2026 & AutoCAD 2026"
-                    data-price="50"
-                    data-img="sketchup"
-                    data-type="Programa vitalicio">
-              Agregar combo
-            </button>
+            <div class="su-package-actions">
+              <button class="btn-buy-now"
+                      data-id="16"
+                      data-sku="sketchup-2026-autocad-2026"
+                      data-name="SketchUp 2026 & AutoCAD 2026"
+                      data-price="50"
+                      data-img="sketchup"
+                      data-type="Programa vitalicio">
+                Comprar ahora
+              </button>
+              <button class="btn-add-cart"
+                      data-id="16"
+                      data-sku="sketchup-2026-autocad-2026"
+                      data-name="SketchUp 2026 & AutoCAD 2026"
+                      data-price="50"
+                      data-img="sketchup"
+                      data-type="Programa vitalicio">
+                Añadir al carrito
+              </button>
+            </div>
           </article>
 
           <article class="su-package">
@@ -954,15 +998,26 @@ body.no-scroll{overflow:hidden!important}
             <h3>SketchUp Pro 2026</h3>
             <p>Modelado 3D profesional para arquitectura, interiores y diseño.</p>
             <div class="su-package-price">$27</div>
-            <button class="btn-buy-now"
-                    data-id="15"
-                    data-sku="sketchup-pro-2026"
-                    data-name="SketchUp Pro 2026"
-                    data-price="27"
-                    data-img="sketchup"
-                    data-type="Programa vitalicio">
-              Comprar SketchUp
-            </button>
+            <div class="su-package-actions">
+              <button class="btn-buy-now"
+                      data-id="15"
+                      data-sku="sketchup-pro-2026"
+                      data-name="SketchUp Pro 2026"
+                      data-price="27"
+                      data-img="sketchup"
+                      data-type="Programa vitalicio">
+                Comprar ahora
+              </button>
+              <button class="btn-add-cart"
+                      data-id="15"
+                      data-sku="sketchup-pro-2026"
+                      data-name="SketchUp Pro 2026"
+                      data-price="27"
+                      data-img="sketchup"
+                      data-type="Programa vitalicio">
+                Añadir al carrito
+              </button>
+            </div>
           </article>
 
           <article class="su-package">
@@ -970,15 +1025,26 @@ body.no-scroll{overflow:hidden!important}
             <h3>AutoCAD 2026</h3>
             <p>Dibujo técnico y documentación profesional para completar el flujo.</p>
             <div class="su-package-price">$35</div>
-            <button class="btn-buy-now"
-                    data-id="14"
-                    data-sku="autocad-2026"
-                    data-name="AutoCAD 2026"
-                    data-price="35"
-                    data-img="autocad"
-                    data-type="Programa vitalicio">
-              Comprar AutoCAD
-            </button>
+            <div class="su-package-actions">
+              <button class="btn-buy-now"
+                      data-id="14"
+                      data-sku="autocad-2026"
+                      data-name="AutoCAD 2026"
+                      data-price="35"
+                      data-img="autocad"
+                      data-type="Programa vitalicio">
+                Comprar ahora
+              </button>
+              <button class="btn-add-cart"
+                      data-id="14"
+                      data-sku="autocad-2026"
+                      data-name="AutoCAD 2026"
+                      data-price="35"
+                      data-img="autocad"
+                      data-type="Programa vitalicio">
+                Añadir al carrito
+              </button>
+            </div>
           </article>
         </div>
       </div>
