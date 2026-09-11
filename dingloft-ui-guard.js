@@ -115,6 +115,8 @@
     const script=document.createElement('script');script.type='module';script.src='/dingloft-customer-push.js?v=1';script.dataset.dingloftCustomerPush='1';document.head.appendChild(script);
   }
   function loadGlobalSupport(){
+    // Admin already has its own Support workspace. Never mount the customer chat there.
+    if(/^\/(?:admin|admin\.html|commerce-admin|commerce-admin\.html)(?:\/|$)/i.test(location.pathname))return;
     // The top-level persistent shell owns the chat. Embedded pages must never
     // create another copy, otherwise every route change would remount it.
     if (window.self !== window.top || document.querySelector('script[data-dingloft-global-support]')) return;
