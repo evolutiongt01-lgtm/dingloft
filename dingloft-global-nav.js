@@ -4,10 +4,10 @@
    Cart uses transform/opacity only: no page-wide blur/scale choreography. */
 (() => {
   'use strict';
-  if (window.__DINGLOFT_GLOBAL_NAV_V121__) return;
-  window.__DINGLOFT_GLOBAL_NAV_V121__ = true;
+  if (window.__DINGLOFT_GLOBAL_NAV_V122__) return;
+  window.__DINGLOFT_GLOBAL_NAV_V122__ = true;
 
-  const VERSION = 121;
+  const VERSION = 122;
   const CART_KEY = 'dingloft_cart';
   const WORKER = String(
     window.DINGLOFT_WORKER_BASE ||
@@ -41,10 +41,10 @@
     : fn();
 
   onReady(() => {
-    if (document.getElementById('dingloftGlobalNavV120')) return;
+    if (document.getElementById('dingloftGlobalNavV122')) return;
 
     const style = document.createElement('style');
-    style.id = 'dingloftGlobalNavStyleV120';
+    style.id = 'dingloftGlobalNavStyleV122';
     style.textContent = `
       :root{
         --dgn-bg:#05070a;
@@ -92,7 +92,7 @@
         display:none!important;
       }
 
-      .dgn-v120{
+      .dgn-v122{
         position:fixed;z-index:2147482500;
         inset:0 0 auto 0;
         height:var(--dgn-total-h);
@@ -104,7 +104,7 @@
         -webkit-font-smoothing:antialiased;
         contain:layout style;
       }
-      .dgn-v120.is-scrolled{
+      .dgn-v122.is-scrolled{
         background:rgba(5,7,10,.99);
       }
       .dgn-inner{
@@ -327,13 +327,19 @@
       .dgn-toast.show{opacity:1;transform:translate(-50%,0)}
 
       .dgn-fly{
-        position:fixed;z-index:2147483250;width:64px;height:64px;display:grid;place-items:center;
-        background:#fff;border:1px solid rgba(0,0,0,.08);box-shadow:0 15px 36px rgba(0,0,0,.22);
-        pointer-events:none;will-change:transform,opacity;
+        position:fixed;z-index:2147483250;width:74px;height:74px;padding:8px;display:grid;place-items:center;
+        background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(246,248,250,.96));
+        border:1px solid rgba(8,10,12,.08);border-radius:20px;
+        box-shadow:0 18px 44px rgba(0,0,0,.22),0 4px 18px rgba(0,0,0,.10);
+        pointer-events:none;will-change:transform,opacity;overflow:visible;
       }
-      .dgn-fly img{width:80%;height:80%;object-fit:contain}
-      .dgn-cart-pop{animation:dgnCartPop .46s cubic-bezier(.16,1,.3,1)}
-      @keyframes dgnCartPop{0%{transform:scale(1)}45%{transform:scale(1.23)}75%{transform:scale(.95)}100%{transform:scale(1)}}
+      .dgn-fly::before{content:"";position:absolute;inset:-8px;border-radius:28px;background:radial-gradient(circle,rgba(183,255,52,.22),transparent 70%);opacity:.95;z-index:-1}
+      .dgn-fly::after{content:"";position:absolute;right:-4px;top:-4px;width:22px;height:22px;border-radius:999px;background:var(--dgn-accent);box-shadow:0 8px 16px rgba(183,255,52,.35)}
+      .dgn-fly img{width:82%;height:82%;object-fit:contain;filter:drop-shadow(0 8px 10px rgba(0,0,0,.14))}
+      .dgn-cart-pop{animation:dgnCartPop .58s cubic-bezier(.16,1,.3,1)}
+      .dgn-cart-badge-pop .dgn-cart-count{animation:dgnCartBadgePop .52s cubic-bezier(.16,1,.3,1)}
+      @keyframes dgnCartPop{0%{transform:scale(1)}38%{transform:scale(1.18)}68%{transform:scale(.93)}100%{transform:scale(1)}}
+      @keyframes dgnCartBadgePop{0%{transform:scale(1)}38%{transform:scale(1.24)}72%{transform:scale(.9)}100%{transform:scale(1)}}
 
       @media(max-width:900px){
         .dgn-inner{padding:0 28px;grid-template-columns:auto minmax(0,1fr) auto;gap:16px}
@@ -372,8 +378,8 @@
     document.head.appendChild(style);
 
     const nav = document.createElement('header');
-    nav.className = 'dgn-v120';
-    nav.id = 'dingloftGlobalNavV120';
+    nav.className = 'dgn-v122';
+    nav.id = 'dingloftGlobalNavV122';
     nav.innerHTML = `
       <div class="dgn-inner">
         <a class="dgn-brand" href="ventas.html" data-dgn-nav="ventas.html" aria-label="Dingloft">
@@ -682,7 +688,7 @@
       navigate(href);
     });
     document.querySelectorAll('[data-dgn-nav]').forEach(a => a.addEventListener('click', e => {
-      if (a.closest('#dingloftGlobalNavV120')) return;
+      if (a.closest('#dingloftGlobalNavV122')) return;
       e.preventDefault(); navigate(a.getAttribute('data-dgn-nav'));
     }));
 
@@ -862,24 +868,25 @@
       const end=cartBtn.getBoundingClientRect();
       const flyer=document.createElement('div');
       flyer.className='dgn-fly';
-      flyer.style.left=`${startRect.left + startRect.width/2 - 32}px`;
-      flyer.style.top=`${startRect.top + startRect.height/2 - 32}px`;
+      flyer.style.left=`${startRect.left + startRect.width/2 - 37}px`;
+      flyer.style.top=`${startRect.top + startRect.height/2 - 37}px`;
       flyer.innerHTML=`<img src="${esc(imageOf(item||{}))}" alt="">`;
       document.body.appendChild(flyer);
       const dx=(end.left+end.width/2)-(startRect.left+startRect.width/2);
       const dy=(end.top+end.height/2)-(startRect.top+startRect.height/2);
       requestAnimationFrame(()=>{
-        flyer.style.transition='transform .58s cubic-bezier(.2,.8,.2,1),opacity .14s ease .44s';
-        flyer.style.transform=`translate3d(${dx}px,${dy}px,0) scale(.16)`;
-        flyer.style.opacity='.12';
+        flyer.style.transition='transform .76s cubic-bezier(.16,1,.3,1),opacity .18s ease .58s,filter .76s cubic-bezier(.16,1,.3,1)';
+        flyer.style.transform=`translate3d(${dx}px,${dy}px,0) scale(.16) rotate(-10deg)`;
+        flyer.style.opacity='.08';
+        flyer.style.filter='blur(.2px)';
       });
       setTimeout(()=>{
         flyer.remove();
-        cartBtn.classList.remove('dgn-cart-pop');
+        cartBtn.classList.remove('dgn-cart-pop','dgn-cart-badge-pop');
         void cartBtn.offsetWidth;
-        cartBtn.classList.add('dgn-cart-pop');
-        setTimeout(()=>cartBtn.classList.remove('dgn-cart-pop'),480);
-      },600);
+        cartBtn.classList.add('dgn-cart-pop','dgn-cart-badge-pop');
+        setTimeout(()=>cartBtn.classList.remove('dgn-cart-pop','dgn-cart-badge-pop'),620);
+      },780);
     };
 
     // Admin state comes from the existing Firebase /admin/session module in both shells.
