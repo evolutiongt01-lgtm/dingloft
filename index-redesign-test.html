@@ -1,17 +1,18 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#07162e">
-  <meta name="dingloft-worker-base" content="https://autumn-breeze-dfa0.evolutiongt01.workers.dev">
-  <title>Dingloft · Software, VSTs, Samples y Multitracks</title>
-  <meta name="description" content="Software profesional, VSTs, samples, librerías y los multitracks más recientes en Dingloft.">
-  <link rel="icon" type="image/png" href="img/favicon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#ff3f7f" name="theme-color"/>
+<meta content="https://autumn-breeze-dfa0.evolutiongt01.workers.dev" name="dingloft-worker-base"/>
+<title>Dingloft · Software, VSTs, Samples y Multitracks</title>
+<meta content="Software profesional, VSTs, samples, librerías y los multitracks más recientes en Dingloft." name="description"/>
+<link href="img/favicon.png" rel="icon" type="image/png"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<style>
     :root{
       --navy:#07162e;
       --navy-2:#0b1f3f;
@@ -214,166 +215,458 @@
     }
     @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
   </style>
+<style id="dingloft-orange-redesign">
+    :root{
+      --navy:#0b1730;
+      --navy-2:#111f3d;
+      --orange:#ff6500;
+      --orange-2:#ff7d2d;
+      --orange-soft:#fff1e8;
+      --ink:#111318;
+      --muted:#747b85;
+      --line:#eceef1;
+      --paper:#ffffff;
+      --soft:#f7f8fa;
+      --soft-blue:#f5f6f8;
+      --shadow:0 22px 60px rgba(21,28,42,.10);
+      --radius:18px;
+      --max:1240px;
+    }
+    html{background:#fff}
+    body{background:#fff;color:var(--ink)}
+    .shell{width:min(var(--max),calc(100% - 42px))}
+
+    /* Barra superior + navegación blanca, limpia y de ecommerce */
+    .announcement{background:#0b1730;color:#fff;border:0}
+    .announcement .shell{min-height:32px;font-size:10px;letter-spacing:.01em}
+    .announcement span:last-child{opacity:.72}
+    .site-header{position:sticky;top:0;z-index:80;background:rgba(255,255,255,.96);border-bottom:1px solid #eceff3;box-shadow:0 8px 28px rgba(15,20,30,.04);backdrop-filter:blur(18px)}
+    .nav{min-height:74px;color:#13161c;gap:30px}
+    .brand{color:#111318;font-size:20px}
+    .brand img{width:40px;height:40px;border-radius:12px;box-shadow:0 6px 18px rgba(18,22,31,.08)}
+    .brand small{color:#9a9fa7}
+    .nav-links{color:#4f5661;gap:28px;font-size:11px}
+    .nav-links a{padding:28px 0}
+    .nav-links a:after{bottom:19px;background:var(--orange);height:2px}
+    .nav-links a:hover{color:#111318}
+    .search-box{width:min(265px,23vw)}
+    .search-box input{height:42px;border:1px solid #e6e8ec;background:#f8f9fa;color:#171a20;border-radius:10px;padding-left:14px}
+    .search-box input:focus{border-color:#ffb382;background:#fff;box-shadow:0 0 0 4px rgba(255,101,0,.08)}
+    .icon-btn{width:42px;height:42px;border:1px solid #e4e7eb;border-radius:10px;background:#fff;color:#1b2028;box-shadow:0 4px 12px rgba(16,23,36,.03)}
+    .icon-btn:hover{border-color:#ffc39d;background:#fff8f3;color:var(--orange)}
+    .cart-count{background:var(--orange);color:#fff;right:-6px;top:-6px}
+
+    /* Hero naranja inspirado en retail de seguridad, aterrizado a Dingloft */
+    .hero{background:linear-gradient(112deg,#f4510a 0%,#ff6500 48%,#ff8a33 100%);color:#fff;min-height:565px;position:relative;overflow:hidden}
+    .hero:before{content:"";position:absolute;inset:auto -130px -310px auto;width:780px;height:780px;border-radius:50%;border:1px solid rgba(255,255,255,.18);box-shadow:0 0 0 68px rgba(255,255,255,.035),0 0 0 138px rgba(255,255,255,.024);background:none}
+    .hero:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 79% 35%,rgba(255,255,255,.18),transparent 23%),linear-gradient(135deg,transparent 57%,rgba(71,19,0,.08) 57% 100%);mask-image:none}
+    .hero-grid{min-height:565px;grid-template-columns:.92fr 1.08fr;gap:30px}
+    .hero-copy{padding:84px 0 92px;position:relative;z-index:3}
+    .eyebrow{color:#fff7f1;font-size:10px;letter-spacing:.19em}
+    .eyebrow:before{background:#fff;width:34px}
+    .hero h1{font-size:clamp(48px,5.7vw,80px);line-height:.93;max-width:650px;margin:18px 0 22px;text-shadow:0 2px 0 rgba(0,0,0,.03)}
+    .hero h1 span{color:#fff}.hero h1 em{color:#172033}
+    .hero-copy p{color:rgba(255,255,255,.88);font-size:15px;max-width:580px;line-height:1.72}
+    .hero-actions{gap:12px;margin-top:30px}
+    .btn{height:47px;border-radius:10px;padding:0 19px;font-size:10.5px;letter-spacing:.01em}
+    .hero .btn-orange{background:#111a2e;color:#fff;box-shadow:0 14px 30px rgba(22,24,31,.18)}
+    .hero .btn-orange:hover{background:#080e1d}
+    .hero .btn-ghost{background:#fff;color:#1a1c22;border-color:#fff;box-shadow:0 14px 32px rgba(85,28,0,.10)}
+    .hero-art{min-height:565px;align-self:stretch;display:flex;align-items:center;justify-content:center;padding-top:28px}
+    .hero-art:before{width:430px;height:430px;border:1px solid rgba(255,255,255,.2);right:8%;bottom:40px;box-shadow:0 0 0 38px rgba(255,255,255,.04),0 0 0 77px rgba(255,255,255,.025)}
+    .hero-art img{width:min(680px,112%);height:455px;object-fit:contain;filter:drop-shadow(0 38px 35px rgba(73,20,0,.26));animation:heroFloat 8s ease-in-out infinite}
+
+    /* Beneficios flotantes */
+    .service-strip{margin-top:-48px}
+    .service-grid{border-radius:16px;box-shadow:0 24px 70px rgba(20,27,39,.13);border:1px solid rgba(230,232,236,.9)}
+    .service-item{padding:22px 24px}
+    .service-icon{background:var(--orange-soft);color:var(--orange);border-radius:12px}
+    .service-item strong{font-size:11px}.service-item span{font-size:9.5px}
+
+    /* Secciones generales */
+    .section{padding:88px 0}
+    .section.soft{background:#f7f8fa}
+    .section.dark{background:#fff;color:var(--ink);border-top:1px solid #f0f1f3;border-bottom:1px solid #f0f1f3}
+    .section.dark:before{display:none}
+    .section-head{margin-bottom:32px}
+    .section-kicker{color:var(--orange);font-size:9px;letter-spacing:.18em;margin-bottom:10px}
+    .section-title{font-size:clamp(32px,3.25vw,48px)}
+    .section-sub,.dark .section-sub{color:#7c838d;font-size:12px;max-width:700px}
+    .section-link{color:var(--orange);font-size:10.5px;padding-bottom:3px;border-bottom:1px solid rgba(255,101,0,.25)}
+
+    /* Categorías compactas */
+    .category-row{gap:12px;margin-bottom:34px}
+    .category-card{min-height:112px;border:1px solid #e9ebee;background:#fafbfc;border-radius:13px;padding:16px 17px;box-shadow:none;position:relative;overflow:hidden}
+    .category-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--orange);transform:scaleY(0);transform-origin:bottom;transition:.2s}
+    .category-card:hover{transform:translateY(-2px);background:#fff;box-shadow:0 16px 34px rgba(20,27,39,.07);border-color:#e5e7ea}
+    .category-card:hover:before{transform:scaleY(1)}
+    .category-card .num{font-size:9px}.category-card strong{font-size:15px}.category-card span{font-size:9.5px;color:#868d96}
+
+    /* Catálogo con estética retail */
+    .product-grid{gap:15px}
+    .product-card{border:1px solid #e9ebee;border-radius:14px;background:#fff;box-shadow:0 3px 10px rgba(20,27,39,.02)}
+    .product-card:hover{transform:translateY(-4px);box-shadow:0 20px 42px rgba(20,27,39,.09);border-color:#e2e4e8}
+    .dark .product-card{border-color:#e9ebee;color:var(--ink)}
+    .product-media{height:210px;background:#f6f7f9;padding:24px}
+    .product-media:after{width:150px;height:150px;right:-72px;bottom:-72px;background:rgba(255,101,0,.07)}
+    .product-media img{filter:drop-shadow(0 16px 18px rgba(15,21,32,.11))}
+    .product-badge{left:13px;top:13px;background:var(--orange);border-radius:6px;padding:6px 8px;font-size:7.5px}
+    .product-body{padding:16px 16px 17px}
+    .product-type{color:#9aa0a8;font-size:8px}
+    .product-name{font-size:13.5px;color:#171a20;min-height:38px}
+    .product-meta{font-size:9.5px;color:#858c96;line-height:1.5}
+    .product-foot{padding-top:15px;align-items:flex-end}
+    .price{font-size:17px;color:#161a20}
+    .add-btn{height:36px;border-radius:8px;background:var(--orange);color:#fff;padding:0 12px;box-shadow:0 8px 18px rgba(255,101,0,.13)}
+    .add-btn:hover{background:#ec5700;color:#fff}.add-btn.added{background:#e9f8ef;color:#168548;box-shadow:none}
+    .motion-release-note{border-color:#ffd6bd;background:#fff5ef;color:#c94a00;border-radius:8px;font-size:8.5px;padding:9px 10px}
+
+    /* Motion-X como bloque promocional fuerte */
+    .feature-band{background:#0b1730;color:#fff;grid-template-columns:1.03fr .97fr;min-height:470px;position:relative;overflow:hidden}
+    .feature-band:before{content:"";position:absolute;width:650px;height:650px;border-radius:50%;left:-280px;bottom:-420px;background:radial-gradient(circle,rgba(255,101,0,.30),transparent 67%)}
+    .feature-copy{padding-top:76px;padding-bottom:76px;position:relative;z-index:2}
+    .feature-copy .section-kicker{color:#ff9555}
+    .feature-copy h2{color:#fff;font-size:clamp(36px,4.3vw,60px);max-width:650px}
+    .feature-copy p{color:#aeb9c9;font-size:12px;max-width:580px}
+    .launch-card{margin-bottom:19px}
+    .launch-badge{background:var(--orange);box-shadow:0 12px 30px rgba(255,101,0,.24)}
+    .launch-date{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);color:#fff}
+    .launch-unit{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.09)}
+    .launch-unit b{color:#fff}.launch-unit span{color:#9ca9ba}
+    .launch-live{color:#ff9858}
+    .feature-copy .motion-release-note{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.11);color:#d7deea}
+    .feature-visual{background:linear-gradient(135deg,#ff6500,#ff8738);min-height:470px}
+    .feature-visual:after{content:"MOTION-X";position:absolute;right:-16px;bottom:10px;font-size:clamp(60px,8vw,125px);font-weight:900;letter-spacing:-.08em;color:rgba(255,255,255,.10);white-space:nowrap}
+    .feature-visual img{height:365px;width:min(610px,91%);filter:drop-shadow(0 30px 28px rgba(80,24,0,.28))}
+
+    /* Multitracks */
+    .multitrack-grid{gap:15px}
+    .track-card{border-radius:14px;border-color:#e8eaee;box-shadow:0 3px 10px rgba(18,25,36,.02)}
+    .track-card:hover{transform:translateY(-4px);box-shadow:0 20px 42px rgba(20,27,39,.09)}
+    .track-cover{background:#e9ebee}
+    .track-overlay{background:linear-gradient(to top,rgba(11,23,48,.84),rgba(11,23,48,.02) 66%)}
+    .preview-btn{color:var(--orange);box-shadow:0 10px 28px rgba(0,0,0,.19)}
+    .preview-btn:hover,.preview-btn.playing{background:var(--orange);color:#fff}
+    .track-id{color:var(--orange)}
+    .fact{background:#f5f6f8;color:#69717d}
+    .track-progress span{background:var(--orange)}
+    .small-btn{border-radius:7px}.small-btn.cart{border-color:#ffd8c0;background:#fff5ef;color:#d65000}.small-btn.cart:hover{background:var(--orange);color:#fff}
+    .catalog-cta{margin-top:28px;border-radius:16px;background:linear-gradient(112deg,#ff6500,#ff7c29);padding:28px 30px;box-shadow:0 18px 42px rgba(255,101,0,.16)}
+    .catalog-cta p{color:#ffe9dc}.catalog-cta .btn{background:#fff;color:#d95000}
+
+    /* Soporte / confianza */
+    .trust{padding:78px 0;background:#fff}
+    .trust h2{font-size:clamp(34px,3.4vw,49px)}
+    .trust p{color:#7d8590;font-size:12px}
+    .trust-card{border:1px solid #e8eaed;border-radius:13px;padding:18px;position:relative;overflow:hidden}
+    .trust-card:before{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--orange)}
+    .trust-card b{font-size:11.5px}.trust-card span{font-size:9.5px;color:#858d97}
+
+    footer{background:#0a152c;color:#aeb7c7;padding:34px 0;border-top:4px solid var(--orange)}
+    .footer-brand img{border-radius:10px}
+    .footer-links a:hover{color:#fff}
+
+    /* Carrito lateral con el mismo lenguaje visual */
+    .cart-panel-overlay{background:rgba(5,11,24,.42)}
+    .cart-panel{box-shadow:-34px 0 90px rgba(5,11,24,.22)}
+    .cart-panel-head{border-bottom-color:#eceef1}
+    .cart-panel-close{border-radius:10px}
+    .cart-line-art{background:#f5f6f8;border-radius:10px}
+    .cart-line-copy b{color:var(--orange)}
+    .cart-panel-foot{background:#fafafa}
+    .cart-checkout{background:var(--orange);border-color:var(--orange)!important}
+    .toast{background:#0b1730}
+
+    @media(max-width:1020px){
+      .hero-grid{grid-template-columns:1fr .9fr;min-height:520px}.hero-art{min-height:520px}.hero-art img{height:390px}
+      .feature-band{grid-template-columns:1fr}.feature-copy{padding:62px 34px}.feature-visual{min-height:370px}
+    }
+    @media(max-width:760px){
+      .shell{width:min(100% - 28px,var(--max))}
+      .site-header{position:relative}.nav{min-height:68px}
+      .hero{min-height:auto}.hero-grid{grid-template-columns:1fr;min-height:auto}.hero-copy{padding:60px 0 22px}.hero-art{min-height:320px;padding-top:0}.hero-art img{height:300px}
+      .hero h1{font-size:48px}.service-strip{margin-top:-28px}
+      .section{padding:64px 0}.feature-copy{padding:58px 24px}.feature-visual{min-height:330px}.feature-visual img{height:285px}
+    }
+    @media(max-width:510px){
+      .hero h1{font-size:41px}.hero-copy p{font-size:12.5px}.hero-art{min-height:275px}.hero-art img{height:255px}
+      .service-strip{margin-top:-18px}.service-grid{border-radius:14px}
+      .product-media{height:220px}.section{padding:56px 0}.feature-copy{padding:50px 20px}.feature-visual{min-height:300px}.feature-visual img{height:255px}
+      .catalog-cta{padding:23px}
+    }
+  </style>
+\n<style id="immersive-vr-inspired-design">\n:root{\n  --navy:#16102f;--navy-2:#241447;--navy-3:#39205f;--orange:#ff3f7f;--orange-2:#ff6fa0;\n  --ink:#1d1930;--muted:#777286;--line:#eee9f1;--paper:#fff;--soft:#fbf7fb;--soft-blue:#f8f1f7;\n  --shadow:0 24px 72px rgba(37,20,71,.12);--radius:24px;--max:1210px;\n}\nbody{background:#fff;color:var(--ink)}\n.announcement{display:none}\n.site-header{position:sticky;top:0;background:rgba(255,255,255,.94);border-bottom:1px solid rgba(31,26,48,.06);backdrop-filter:blur(20px);box-shadow:0 1px 0 rgba(31,26,48,.02)}\n.nav{min-height:68px;color:var(--ink);gap:22px}\n.brand{color:var(--ink)}.brand small{color:#aaa4b4}.brand img{border-radius:13px}\n.nav-links{color:#6e697b;gap:28px;font-size:11px}.nav-links a{padding:24px 0}.nav-links a:after{bottom:17px;background:var(--orange)}.nav-links a:hover{color:var(--ink)}\n.search-box input{height:38px;background:#f9f7fa;border-color:#ebe7ee;color:var(--ink);border-radius:999px;padding-left:15px}.search-box svg{color:#8b8593}\n.icon-btn{width:38px;height:38px;border-color:#e9e4ec;background:#fff;color:var(--ink);border-radius:999px}.icon-btn:hover{border-color:#ddd4e0;background:#faf7fb}\n.cart-count{background:var(--orange);color:#fff}\n.hero{background:radial-gradient(circle at 76% 35%,rgba(255,84,147,.22),transparent 27%),radial-gradient(circle at 52% 20%,rgba(116,75,255,.22),transparent 32%),linear-gradient(115deg,#0f0b27 0%,#211142 48%,#100923 100%);min-height:650px;overflow:hidden}\n.hero:before{width:680px;height:680px;right:-120px;top:-230px;background:radial-gradient(circle,rgba(255,59,128,.22),transparent 66%);filter:blur(4px)}\n.hero:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 16% 16%,rgba(255,255,255,.10) 0 1px,transparent 2px) 0 0/37px 37px,radial-gradient(circle at 70% 55%,rgba(255,255,255,.08) 0 1px,transparent 2px) 0 0/59px 59px;mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.76) 70%,transparent 100%);pointer-events:none}\n.hero-grid{min-height:650px;padding-bottom:72px;grid-template-columns:.93fr 1.07fr;gap:22px}\n.hero-copy{padding:78px 0 96px}.eyebrow{color:#ff8ab5;font-size:10px}.eyebrow:before{background:#ff4f8a}\n.hero h1{font-size:clamp(48px,5.4vw,78px);line-height:.95;max-width:640px}.hero h1 em{color:#ff5c95}.hero-copy p{color:#d0c8da;max-width:560px;font-size:14px}\n.hero-actions{margin-top:28px}.btn{border-radius:999px;height:44px;padding:0 19px}.btn-orange{background:linear-gradient(135deg,#ff387a,#ff648f);box-shadow:0 14px 34px rgba(255,63,127,.26)}.btn-ghost{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.22)}\n.hero-art{min-height:580px}.hero-art:before{width:470px;height:470px;border-color:rgba(255,255,255,.10);right:3%;bottom:80px;box-shadow:0 0 0 42px rgba(255,255,255,.025),0 0 0 84px rgba(255,255,255,.014)}\n.hero-art img{width:min(690px,120%);height:500px;filter:drop-shadow(0 38px 38px rgba(0,0,0,.44))}\n.hero-wave{position:absolute;z-index:3;left:0;right:0;bottom:-1px;height:115px;pointer-events:none}.hero-wave svg{display:block;width:100%;height:100%}\n.service-strip{margin-top:-24px;z-index:5}.service-grid{border:1px solid #f0ecf2;box-shadow:0 22px 60px rgba(35,20,63,.08);border-radius:24px;overflow:hidden}\n.service-item{padding:18px 20px;border-color:#f0ecf2}.service-icon{background:#fff0f6;color:#ff3f7f;border-radius:999px;width:40px;height:40px}.service-item strong{font-size:11px}.service-item span{font-size:9.5px;color:#96909e}\n.section{padding:92px 0}.section.soft{background:#fbf8fb}.section.dark{background:#fff;color:var(--ink)}.section.dark:before{display:none}.dark .section-sub{color:var(--muted)}\n.section-head{margin-bottom:34px}.section-kicker{color:#ff3f7f;font-size:9px}.section-title{font-size:clamp(30px,3vw,43px)}.section-sub{font-size:12.5px}.section-link{color:#ff3f7f}\n.category-row{gap:12px;margin-bottom:26px}.category-card{border:0;background:#faf7fa;border-radius:18px;min-height:112px;padding:17px}.category-card:hover{box-shadow:0 14px 30px rgba(40,22,65,.06)}.category-card .num{color:#ff3f7f}.category-card strong{font-size:15px}\n.product-grid{gap:18px}.product-card{border:0;border-radius:18px;box-shadow:none;background:#fff}.product-card:hover{box-shadow:0 18px 40px rgba(38,22,66,.08);transform:translateY(-3px)}\n.product-media{height:218px;background:#fbf8fb;border-radius:18px;padding:24px}.product-media:after{background:rgba(255,63,127,.07)}.product-badge{background:#ff3f7f;border-radius:999px;padding:6px 9px}.product-body{padding:13px 5px 8px}.product-type{color:#a099a8}.product-name{font-size:13px}.product-meta{color:#918a99}.price{font-size:15px}.add-btn{border-radius:999px;background:#fff0f6;color:#e7286a;padding:0 13px}.add-btn:hover{background:#ff3f7f;color:#fff}\n.feature-band{width:min(var(--max),calc(100% - 34px));margin:20px auto 84px;min-height:430px;border-radius:26px;overflow:hidden;grid-template-columns:1fr 1fr;box-shadow:0 24px 70px rgba(37,20,71,.07)}\n.feature-copy{order:2;padding:64px 64px;background:linear-gradient(135deg,#fff3f8,#faeef7)}.feature-copy h2{font-size:clamp(34px,3.8vw,54px);color:#1d1930}.feature-copy p{color:#716a79}.feature-visual{order:1;min-height:430px;background:linear-gradient(145deg,#120d2b,#2c1450)}.feature-visual:before{border-color:rgba(255,255,255,.10);box-shadow:0 0 0 45px rgba(255,255,255,.025),0 0 0 90px rgba(255,255,255,.012)}.feature-visual img{height:390px;width:min(600px,95%)}\n.launch-badge{background:#1b1335}.launch-date{color:#2a203f;background:#fff;border-color:#f4dfe9}.launch-unit{background:#fff;border-color:#f1e4eb}.launch-unit b{color:#231a39}.launch-live{color:#e72b68}.motion-release-note{background:#fff;border-color:#f1e3ea;color:#817787}.motion-release-note i{color:#ff3f7f}\n#samples{padding-top:0}.dark .product-card{border:0}.dark .product-media{background:#fbf8fb}.dark .product-body{color:var(--ink)}\n#multitracks{background:#fbf7fb}.multitrack-grid{gap:18px}.track-card{border:0;border-radius:18px;background:#fff}.track-cover{background:#eee7ef;border-radius:18px 18px 0 0}.track-overlay{background:linear-gradient(to top,rgba(23,13,46,.78),rgba(23,13,46,.02) 65%)}.preview-btn.playing,.preview-btn:hover{background:#ff3f7f}.track-id{color:#ff3f7f}.fact{background:#faf5f8}.track-progress span{background:#ff3f7f}.small-btn.cart{border-color:#f7d7e5;background:#fff0f6;color:#df2866}.small-btn.cart:hover{background:#ff3f7f}.catalog-cta{background:linear-gradient(135deg,#17102f,#31184f);border-radius:20px}.catalog-cta p{color:#cfc4d8}.catalog-cta .btn{color:#24163d}\n.trust{background:#fff6fa;padding:76px 0}.trust-card{border:0;border-radius:16px}.trust p{color:#817989}\nfooter{background:#17102f;color:#b8afc2}.footer-brand{color:#fff}\n.toast{background:#1b1234}\n/* Cart drawer follows the same visual language without changing behavior */\n.cart-panel{border-left:1px solid #eee7f0!important;box-shadow:-28px 0 70px rgba(28,17,46,.14)!important}.cart-checkout{background:#ff3f7f!important}.cart-panel-close,.cart-continue{border-radius:999px!important}\n@media(max-width:980px){.hero-grid{grid-template-columns:1fr;min-height:auto;padding-bottom:105px}.hero-copy{padding:64px 0 16px}.hero-art{min-height:370px}.hero-art img{height:360px}.feature-band{grid-template-columns:1fr}.feature-copy{order:2;padding:46px 38px}.feature-visual{order:1;min-height:340px}.service-grid{grid-template-columns:repeat(2,1fr)}.product-grid,.multitrack-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}\n@media(max-width:720px){.nav{grid-template-columns:auto auto;justify-content:space-between}.nav-links,.search-box{display:none}.hero{min-height:0}.hero-grid{padding-bottom:88px}.hero-copy{padding-top:54px}.hero h1{font-size:45px}.hero-art{min-height:300px}.hero-art img{height:300px}.hero-wave{height:72px}.service-strip{margin-top:-10px}.service-grid{grid-template-columns:1fr 1fr}.service-item{padding:14px}.section{padding:68px 0}.category-row{grid-template-columns:1fr 1fr}.product-grid,.multitrack-grid{grid-template-columns:1fr 1fr;gap:12px}.product-media{height:170px}.feature-band{width:min(100% - 24px,var(--max));margin-bottom:64px}.feature-copy{padding:36px 24px}.feature-visual{min-height:280px}.feature-visual img{height:270px}.trust-grid{grid-template-columns:1fr}.catalog-cta{align-items:flex-start;flex-direction:column}}\n@media(max-width:480px){.shell{width:min(var(--max),calc(100% - 24px))}.service-grid{grid-template-columns:1fr}.category-row{display:none}.product-grid,.multitrack-grid{grid-template-columns:1fr}.product-media{height:225px}.hero h1{font-size:39px}.feature-copy h2{font-size:36px}}\n</style>\n
+<style id="dingloft-helmet-inspired-design">
+:root{
+  --navy:#07090c;--navy-2:#0d1116;--navy-3:#171c22;--orange:#b7ff34;--orange-2:#d4ff7b;
+  --ink:#0b0d10;--muted:#777d86;--line:#e8eaed;--paper:#fff;--soft:#f5f5f4;--soft-blue:#f3f4f5;
+  --shadow:0 28px 80px rgba(0,0,0,.12);--radius:0px;--max:1280px;
+}
+html{background:#fff}
+body{background:#fff;color:var(--ink);letter-spacing:-.01em}
+.announcement{display:none!important}
+.shell{width:min(var(--max),calc(100% - 54px))}
+.site-header{position:sticky;top:0;z-index:80;background:rgba(8,10,13,.94);border-bottom:1px solid rgba(255,255,255,.08);box-shadow:none;backdrop-filter:blur(18px)}
+.nav{min-height:74px;color:#fff;grid-template-columns:auto 1fr auto;gap:28px}
+.brand{color:#fff;font-size:20px}.brand img{width:38px;height:38px;border-radius:10px;box-shadow:none}.brand small{color:#777f8a}
+.nav-links{color:#9da3aa;gap:31px;font-size:11px}.nav-links a{padding:28px 0}.nav-links a:after{bottom:19px;height:2px;background:var(--orange)}.nav-links a:hover{color:#fff}
+.search-box{width:min(250px,22vw)}.search-box input{height:40px;border:1px solid rgba(255,255,255,.10);background:#11151a;color:#fff;border-radius:2px;padding-left:14px}.search-box input::placeholder{color:#666d75}.search-box input:focus{border-color:#4b535d;box-shadow:none}.search-box svg{color:#8d949c}
+.icon-btn{width:40px;height:40px;border:1px solid rgba(255,255,255,.12);border-radius:2px;background:#11151a;color:#fff;box-shadow:none}.icon-btn:hover{background:#fff;color:#080a0d;border-color:#fff}.cart-count{background:var(--orange);color:#090b0d;right:-5px;top:-5px}
+
+/* HERO: inspirado en el lenguaje oscuro, técnico y editorial de la referencia */
+.hero{min-height:690px;background:#05070a;color:#fff;position:relative;overflow:hidden}
+.hero:before{content:"DINGLOFT";position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);font-size:clamp(120px,16vw,260px);font-weight:900;letter-spacing:-.08em;color:rgba(255,255,255,.035);white-space:nowrap;width:auto;height:auto;border-radius:0;background:none;filter:none}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.22) 46%,rgba(0,0,0,.56) 100%),radial-gradient(circle at 69% 48%,rgba(180,255,52,.07),transparent 24%);mask-image:none;pointer-events:none}
+.hero-grid{min-height:690px;display:grid;grid-template-columns:.78fr 1.22fr;align-items:center;gap:0;padding:0;position:relative;z-index:2}
+.hero-copy{padding:96px 0 112px;position:relative;z-index:4;max-width:520px}.eyebrow{color:var(--orange);font-size:10px;letter-spacing:.18em}.eyebrow:before{width:34px;background:var(--orange)}
+.hero h1{margin:18px 0 20px;font-size:clamp(52px,6vw,88px);line-height:.91;letter-spacing:-.07em;max-width:650px}.hero h1 span{color:#fff}.hero h1 em{color:#fff;font-style:normal;font-weight:500;display:block}
+.hero-copy p{max-width:500px;color:#a7adb5;font-size:14px;line-height:1.75}
+.hero-actions{margin-top:30px;gap:10px}.btn{height:45px;border-radius:2px;padding:0 18px;font-size:10px;letter-spacing:.04em;text-transform:uppercase}.btn-orange{background:#fff;color:#06080a;box-shadow:none}.btn-orange:hover{background:var(--orange)}.btn-ghost{border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff}.btn-ghost:hover{background:#fff;color:#090b0d}
+.hero-art{min-height:690px;align-self:stretch;display:grid;place-items:center;position:relative}.hero-art:before{content:"";position:absolute;width:440px;height:440px;border:1px solid rgba(255,255,255,.07);border-radius:50%;right:7%;bottom:90px;box-shadow:0 0 0 54px rgba(255,255,255,.018),0 0 0 106px rgba(255,255,255,.01)}
+.hero-art img{width:min(760px,118%);height:565px;object-fit:contain;filter:grayscale(.12) contrast(1.08) drop-shadow(0 48px 50px rgba(0,0,0,.56));animation:heroFloat 9s ease-in-out infinite;transform-origin:center}
+.hero-wave{display:none!important}
+
+.service-strip{margin-top:-34px;position:relative;z-index:5}.service-grid{background:#fff;border:1px solid #e6e8eb;border-radius:0;box-shadow:0 18px 55px rgba(0,0,0,.08);grid-template-columns:repeat(4,1fr)}
+.service-item{padding:20px 22px;border-right:1px solid #e7e9ec}.service-icon{width:38px;height:38px;border-radius:0;background:#0b0d10;color:var(--orange);font-size:14px}.service-item strong{font-size:11px;text-transform:uppercase;letter-spacing:.035em}.service-item span{font-size:9.5px;color:#8c9198}
+
+.section{padding:90px 0}.section.soft{background:#f5f5f4}.section.dark{background:#0a0c0f;color:#fff}.section.dark:before{display:none}.dark .section-sub{color:#8e949c}
+.section-head{margin-bottom:34px;align-items:flex-end}.section-kicker{color:#777e86;font-size:9px;letter-spacing:.18em}.dark .section-kicker{color:var(--orange)}.section-title{font-size:clamp(38px,4vw,58px);letter-spacing:-.065em}.section-sub{font-size:12px;line-height:1.65}.section-link{color:#101319;font-size:10px;text-transform:uppercase;letter-spacing:.06em}.dark .section-link{color:var(--orange)}
+.category-row{grid-template-columns:repeat(4,1fr);gap:1px;background:#e8eaed;border:1px solid #e8eaed;margin-bottom:28px}.category-card{min-height:120px;border:0;background:#fff;border-radius:0;padding:18px}.category-card:hover{transform:none;background:#f8f8f7;box-shadow:none}.category-card .num{color:#a7acb2;font-size:9px}.category-card strong{font-size:15px}.category-card span{font-size:10px;color:#858a91}
+
+.product-grid{gap:1px;background:#e6e8ea;border:1px solid #e6e8ea}.product-card{border:0;border-radius:0;background:#fff;box-shadow:none;min-width:0}.product-card:hover{transform:none;box-shadow:none;background:#fbfbfa}.dark .product-card{background:#0f1216;border-color:#22262b}.dark .product-card:hover{background:#13171c}
+.product-media{height:225px;background:#f3f3f2;border-radius:0;padding:24px}.dark .product-media{background:#15191e}.product-media:after{display:none}.product-media img{filter:drop-shadow(0 14px 18px rgba(0,0,0,.18))}.product-card:hover .product-media img{transform:scale(1.025)}.product-badge{left:14px;top:14px;background:#0b0d10;color:#fff;border-radius:0;padding:6px 8px;font-size:7.5px;letter-spacing:.09em}.dark .product-badge{background:var(--orange);color:#080a0c}
+.product-body{padding:16px 16px 18px}.product-type{color:#a0a5ab;font-size:8.5px;letter-spacing:.1em}.product-name{font-size:13px}.dark .product-name,.dark .price{color:#fff}.dark .product-meta{color:#777f88}.price{font-size:16px}.add-btn{height:35px;border-radius:0;background:#111318;color:#fff;padding:0 12px;text-transform:uppercase;font-size:8px;letter-spacing:.05em}.add-btn:hover{background:var(--orange);color:#090b0e}.dark .add-btn{background:#fff;color:#0a0c0e}.dark .add-btn:hover{background:var(--orange)}
+
+/* Motion-X como gran bloque editorial en negro, inspirado en la composición del casco */
+.feature-band{width:min(var(--max),calc(100% - 54px));margin:0 auto 96px;min-height:520px;border-radius:0;overflow:hidden;display:grid;grid-template-columns:.92fr 1.08fr;background:#080a0d;box-shadow:none;border:1px solid #181c20}
+.feature-copy{order:1;padding:64px 58px;background:#080a0d;color:#fff;display:flex;flex-direction:column;justify-content:center}.feature-copy .section-kicker{color:var(--orange)}.feature-copy h2{font-size:clamp(42px,4.7vw,68px);line-height:.94;letter-spacing:-.065em;color:#fff;margin:16px 0}.feature-copy p{color:#959ca5;line-height:1.7;max-width:560px}.feature-visual{order:2;min-height:520px;background:#111419;position:relative;overflow:hidden}.feature-visual:after{content:"MOTION-X";position:absolute;right:-24px;top:38px;font-size:clamp(78px,10vw,150px);font-weight:900;letter-spacing:-.07em;color:rgba(255,255,255,.035);writing-mode:vertical-rl;transform:rotate(180deg)}.feature-visual:before{width:390px;height:390px;border-color:rgba(255,255,255,.07);box-shadow:0 0 0 46px rgba(255,255,255,.018),0 0 0 92px rgba(255,255,255,.01)}.feature-visual img{height:450px;width:min(650px,98%);object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 30px 35px rgba(0,0,0,.45))}
+.launch-card{display:flex!important;align-items:center!important;gap:8px!important;flex-wrap:wrap!important}.launch-badge{background:var(--orange)!important;color:#0a0c0e!important;border-radius:0!important}.launch-dot{background:#0a0c0e!important}.launch-date{background:#15191e!important;color:#d7dce2!important;border-color:#272c32!important;border-radius:0!important}.launch-unit{background:#11151a!important;border-color:#252a30!important;border-radius:0!important}.launch-unit b{color:#fff!important}.launch-unit span{color:#7f8790!important}.launch-live{color:var(--orange)!important}.motion-release-note{background:#12161b!important;border-color:#252b31!important;color:#8f969e!important;border-radius:0!important}.motion-release-note i{color:var(--orange)!important}.motion-buy-button{border-radius:0!important;background:var(--orange)!important;color:#07090b!important}
+
+#samples{padding-top:88px}.dark .product-grid{background:#22272d;border-color:#22272d}
+#multitracks{background:#f3f3f2}.multitrack-grid{gap:1px;background:#dddfe2;border:1px solid #dddfe2}.track-card{border:0;border-radius:0;background:#fff}.track-cover{border-radius:0;background:#e5e6e7}.track-overlay{background:linear-gradient(to top,rgba(0,0,0,.78),rgba(0,0,0,.02) 68%)}.preview-btn{border-radius:0}.preview-btn.playing,.preview-btn:hover{background:var(--orange);color:#0a0c0e}.track-id{color:#8b9198}.fact{border-radius:0;background:#f3f4f5}.track-progress span{background:#111318}.small-btn{border-radius:0}.small-btn.cart{border-color:#111318;background:#111318;color:#fff}.small-btn.cart:hover{background:var(--orange);border-color:var(--orange);color:#090b0d}.catalog-cta{margin-top:24px;border-radius:0;background:#0a0c0f;color:#fff;padding:28px 30px}.catalog-cta p{color:#8e959d}.catalog-cta .btn{background:var(--orange);color:#090b0c}
+
+.trust{padding:82px 0;background:#fff}.trust-grid{grid-template-columns:1fr 1fr;gap:48px}.trust h2{font-size:clamp(38px,4vw,58px);letter-spacing:-.065em}.trust p{color:#7f858c}.trust-cards{gap:1px;background:#e8eaed;border:1px solid #e8eaed}.trust-card{border:0;border-radius:0;background:#fff;padding:18px}.trust-card b{font-size:11px;text-transform:uppercase}.trust-card span{font-size:9.5px}
+footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171a1e}.footer-brand{color:#fff}.footer-brand img{border-radius:8px}
+.toast{background:#0a0c0e;border-radius:0}
+
+.cart-panel-overlay{background:rgba(0,0,0,.58);backdrop-filter:blur(3px)}.cart-panel{border-left:1px solid #23272c!important;box-shadow:-34px 0 90px rgba(0,0,0,.34)!important}.cart-panel-head,.cart-panel-foot{background:#0a0c0f;color:#fff;border-color:#252a2f}.cart-panel-head p,.cart-total-row span{color:#7f8790}.cart-panel-close{border-radius:0!important;background:#13171c;border-color:#2b3036;color:#fff}.cart-panel-close:hover{background:#fff;color:#080a0c}.cart-panel-items{background:#fff}.cart-line-art{border-radius:0;background:#f1f2f3}.cart-line-copy b{color:#0a0c0f}.cart-line-remove{border-radius:0}.cart-panel-actions button,.cart-panel-actions a{border-radius:0!important}.cart-continue{background:#15191e;color:#fff;border-color:#333941}.cart-checkout{background:var(--orange)!important;color:#080a0c!important;border-color:var(--orange)!important}
+
+@media(max-width:1020px){
+  .hero-grid{grid-template-columns:1fr .9fr}.hero-art img{height:430px}.feature-band{grid-template-columns:1fr 1fr}.feature-copy{padding:50px 36px}.feature-visual img{height:390px}
+  .product-grid,.multitrack-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:760px){
+  .shell{width:min(var(--max),calc(100% - 26px))}.site-header{position:relative}.nav{grid-template-columns:auto auto}.nav-links,.search-box{display:none}.hero{min-height:auto}.hero-grid{grid-template-columns:1fr;min-height:auto}.hero-copy{padding:64px 0 10px}.hero h1{font-size:50px}.hero-art{min-height:340px}.hero-art img{height:330px}.service-strip{margin-top:-16px}.service-grid{grid-template-columns:1fr 1fr}.section{padding:66px 0}.section-head{align-items:flex-start}.product-grid,.multitrack-grid{grid-template-columns:repeat(2,1fr)}.category-row{grid-template-columns:repeat(2,1fr)}
+  .feature-band{width:min(var(--max),calc(100% - 26px));grid-template-columns:1fr;margin-bottom:68px}.feature-copy{order:2;padding:42px 26px}.feature-visual{order:1;min-height:360px}.feature-visual img{height:350px}.trust-grid{grid-template-columns:1fr}.catalog-cta{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:510px){
+  .hero h1{font-size:43px}.hero-art{min-height:285px}.hero-art img{height:275px}.service-grid{grid-template-columns:1fr}.category-row{display:none}.product-grid,.multitrack-grid{grid-template-columns:1fr}.product-media{height:240px}.section{padding:56px 0}.feature-copy h2{font-size:40px}.feature-visual{min-height:300px}.feature-visual img{height:290px}.trust-cards{grid-template-columns:1fr}
+}
+</style>
+
+
+<style id="helmet-reference-navbar-v2">
+/* NAVBAR · compacta, integrada al hero y basada en la referencia Helmet i85 */
+.helmet-site-header{
+  position:fixed!important;inset:0 0 auto 0;z-index:120;
+  background:linear-gradient(to bottom,rgba(3,5,8,.86),rgba(3,5,8,.34) 68%,transparent)!important;
+  border:0!important;box-shadow:none!important;backdrop-filter:none!important;
+  transition:background .28s ease,border-color .28s ease,backdrop-filter .28s ease,transform .28s ease;
+}
+.helmet-site-header.is-scrolled{
+  background:rgba(5,7,10,.94)!important;
+  border-bottom:1px solid rgba(255,255,255,.08)!important;
+  backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;
+}
+.helmet-nav{min-height:64px!important;display:grid!important;grid-template-columns:auto 1fr auto!important;align-items:center!important;gap:34px!important;color:#fff!important}
+.helmet-brand{gap:9px!important;color:#fff!important;font-size:13px!important;font-weight:800!important;letter-spacing:-.02em!important}
+.helmet-brand img{width:29px!important;height:29px!important;border-radius:8px!important;box-shadow:none!important}
+.helmet-brand .brand-text{display:flex!important;align-items:center!important;gap:0!important}.helmet-brand small{display:none!important}
+.helmet-nav-links{display:flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;color:#a8adb4!important;font-size:9px!important;font-weight:800!important;letter-spacing:.025em!important;text-transform:none!important}
+.helmet-nav-links a{height:30px!important;padding:0 13px!important;display:flex!important;align-items:center!important;justify-content:center!important;border:1px solid transparent!important;transition:background .2s ease,color .2s ease,border-color .2s ease!important}
+.helmet-nav-links a:after{display:none!important}.helmet-nav-links a:hover{color:#fff!important;background:rgba(255,255,255,.05)!important}
+.helmet-nav-links a.is-active{background:#fff!important;color:#080a0d!important;border-color:#fff!important}
+.helmet-nav-actions{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:5px!important;position:relative!important}
+.helmet-icon-btn{width:32px!important;height:32px!important;border:0!important;border-radius:0!important;background:transparent!important;color:#d9dde2!important;box-shadow:none!important}
+.helmet-icon-btn:hover,.helmet-icon-btn:focus-visible{background:rgba(255,255,255,.08)!important;color:#fff!important;outline:none!important}
+.helmet-menu-toggle{margin-left:2px!important}
+.helmet-search{position:relative;display:flex;align-items:center}
+.helmet-search-box{position:absolute!important;right:36px!important;top:50%!important;transform:translateY(-50%) translateX(8px)!important;width:0!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;transition:width .26s cubic-bezier(.2,.8,.2,1),opacity .2s ease,transform .26s ease!important;z-index:3!important}
+.helmet-search.open .helmet-search-box{width:230px!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:translateY(-50%) translateX(0)!important}
+.helmet-search-box input{width:100%!important;height:34px!important;border:1px solid rgba(255,255,255,.16)!important;border-radius:0!important;background:#0c1015!important;color:#fff!important;padding:0 36px 0 12px!important;font-size:9px!important;box-shadow:0 16px 36px rgba(0,0,0,.22)!important}
+.helmet-search-box input::placeholder{color:#717780!important}.helmet-search-box input:focus{border-color:rgba(255,255,255,.34)!important;outline:none!important}
+.helmet-menu-panel{position:absolute;right:max(27px,calc((100vw - var(--max))/2));top:58px;width:224px;padding:8px;background:#0a0d11;border:1px solid rgba(255,255,255,.11);box-shadow:0 24px 60px rgba(0,0,0,.34);opacity:0;visibility:hidden;transform:translateY(-7px);transition:.22s ease;pointer-events:none}
+.helmet-menu-panel.open{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.helmet-menu-panel a{display:grid;grid-template-columns:28px 1fr;align-items:center;gap:7px;min-height:39px;padding:0 10px;color:#c7cbd0;font-size:9px;font-weight:800;border-bottom:1px solid rgba(255,255,255,.06)}
+.helmet-menu-panel a:last-child{border-bottom:0}.helmet-menu-panel a span{font-size:7px;color:#5f666e;letter-spacing:.08em}.helmet-menu-panel a:hover{background:#fff;color:#080a0d}.helmet-menu-panel a:hover span{color:#777}
+.helmet-site-header .cart-count{min-width:15px!important;height:15px!important;right:-1px!important;top:-1px!important;padding:0 4px!important;font-size:7px!important;background:var(--orange)!important;color:#080a0c!important;border:2px solid #080a0c!important}
+.hero{padding-top:0!important}.hero-grid{padding-top:64px!important}
+@media(max-width:900px){
+  .helmet-nav{grid-template-columns:auto 1fr auto!important;gap:16px!important}.helmet-nav-links{gap:2px!important}.helmet-nav-links a{padding:0 9px!important;font-size:8px!important}.helmet-search.open .helmet-search-box{width:190px!important}
+}
+@media(max-width:720px){
+  .helmet-site-header{position:fixed!important}.helmet-nav{min-height:60px!important;grid-template-columns:auto auto!important;justify-content:space-between!important}.helmet-brand .brand-text{display:none!important}.helmet-brand img{width:30px!important;height:30px!important}.helmet-nav-links{display:none!important}.helmet-search-box{position:fixed!important;left:12px!important;right:12px!important;top:68px!important;transform:translateY(-6px)!important;width:auto!important}.helmet-search.open .helmet-search-box{width:auto!important;transform:none!important}.helmet-menu-panel{position:fixed;top:66px;right:12px;left:12px;width:auto}.hero-grid{padding-top:60px!important}
+}
+</style>
+
 </head>
 <body>
-  <div class="announcement">
-    <div class="shell"><span>Descargas digitales · acceso desde tu cuenta Dingloft</span><span>Soporte remoto disponible durante el checkout</span></div>
-  </div>
-
-  <header class="site-header">
-    <nav class="nav shell" aria-label="Navegación principal">
-      <a class="brand" href="/" aria-label="Dingloft">
-        <img src="img/dingloft.png" alt="Dingloft">
-        <span class="brand-text">Dingloft<small>Evolution Group</small></span>
-      </a>
-      <div class="nav-links">
-        <a href="#programas">Programas</a>
-        <a href="#samples">Samples & VSTs</a>
-        <a href="#multitracks">Multitracks</a>
-        <a href="account.html">Cuenta</a>
-      </div>
-      <div class="nav-actions">
-        <label class="search-box" aria-label="Buscar productos">
-          <input id="catalogSearch" type="search" placeholder="Buscar en Dingloft..." autocomplete="off">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
-        </label>
-        <a class="icon-btn" href="account.html" aria-label="Mi cuenta">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
-        </a>
-        <button class="icon-btn" id="openCartBtn" type="button" aria-label="Abrir carrito" aria-haspopup="dialog" aria-controls="cartDrawer">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8h12l-1 12H7L6 8Z"></path><path d="M9 8a3 3 0 0 1 6 0"></path></svg>
-          <span class="cart-count" data-cart-count>0</span>
-        </button>
-      </div>
-    </nav>
-  </header>
-
-  <main>
-    <section class="hero" aria-labelledby="heroTitle">
-      <div class="hero-grid shell">
-        <div class="hero-copy">
-          <div class="eyebrow">Dingloft digital store</div>
-          <h1 id="heroTitle"><span>Software y sonido</span> para tu <em>flujo creativo.</em></h1>
-          <p>Programas profesionales, instrumentos virtuales, librerías y multitracks listos para comprar, descargar y gestionar desde tu cuenta Dingloft.</p>
-          <div class="hero-actions">
-            <a class="btn btn-orange" href="#programas">Explorar catálogo</a>
-            <a class="btn btn-ghost" href="multitrack.html">Escuchar multitracks</a>
-          </div>
-        </div>
-        <div class="hero-art" aria-hidden="true">
-          <img src="img/iMac-Motion.png" alt="">
-        </div>
-      </div>
-    </section>
-
-    <section class="service-strip shell" aria-label="Beneficios Dingloft">
-      <div class="service-grid">
-        <article class="service-item"><div class="service-icon">↧</div><div><strong>Entrega digital</strong><span>Tus compras quedan disponibles desde tu cuenta.</span></div></article>
-        <article class="service-item"><div class="service-icon">✓</div><div><strong>Pago validado</strong><span>El servidor confirma productos y total antes de cobrar.</span></div></article>
-        <article class="service-item"><div class="service-icon">∞</div><div><strong>Acceso permanente</strong><span>Vuelve a tus descargas cuando las necesites.</span></div></article>
-        <article class="service-item"><div class="service-icon">⌁</div><div><strong>Dingloft Care</strong><span>Asistencia remota opcional durante tu compra.</span></div></article>
-      </div>
-    </section>
-
-    <section id="programas" class="section">
-      <div class="shell">
-        <header class="section-head">
-          <div><div class="section-kicker">01 · Software</div><h2 class="section-title">Programas</h2><p class="section-sub">Herramientas para arquitectura, diseño, productividad, edición y producción profesional.</p></div>
-          <a class="section-link" href="#samples">Ver Samples & VSTs →</a>
-        </header>
-        <div class="category-row" aria-label="Categorías de software">
-          <article class="category-card"><span class="num">01</span><strong>Arquitectura</strong><span>AutoCAD, SketchUp y herramientas para diseño técnico.</span></article>
-          <article class="category-card"><span class="num">02</span><strong>Productividad</strong><span>Office y utilidades para trabajo, estudio y negocio.</span></article>
-          <article class="category-card"><span class="num">03</span><strong>Diseño 3D</strong><span>Modelado, visualización y creación de contenido.</span></article>
-          <article class="category-card"><span class="num">04</span><strong>Producción</strong><span>DAWs y herramientas para producción audiovisual.</span></article>
-        </div>
-        <div id="programGrid" class="product-grid" aria-live="polite"><div class="loading"></div><div class="loading"></div><div class="loading"></div><div class="loading"></div></div>
-      </div>
-    </section>
-
-    <section class="feature-band" aria-label="Motion-X">
-      <div class="feature-copy">
-        <div class="section-kicker">Motion-X · Instrumento virtual</div>
-        <div class="launch-card" aria-label="Lanzamiento de Motion-X">
-          <div class="launch-badge"><span class="launch-dot"></span><span>Lanzamiento oficial</span></div>
-          <div class="launch-date">26 SEP · 6:00 PM · MIAMI</div>
-        </div>
-        <h2>Un instrumento pensado para tocar y producir.</h2>
-        <p>Live Banks, 8 capas, Super Knob y un flujo directo dentro del ecosistema Dingloft. Compra Motion-X Access una sola vez, inicia sesión con tu cuenta y la app desbloquea automáticamente el modo FULL.</p>
-        <div class="launch-countdown" id="motionLaunchCountdown" aria-live="polite">
-          <div class="launch-unit"><b id="launchDays">00</b><span>Días</span></div>
-          <div class="launch-unit"><b id="launchHours">00</b><span>Horas</span></div>
-          <div class="launch-unit"><b id="launchMinutes">00</b><span>Min</span></div>
-          <div class="launch-unit"><b id="launchSeconds">00</b><span>Seg</span></div>
-        </div>
-        <div class="launch-live" id="motionLaunchStatus">Cuenta regresiva al lanzamiento en Miami.</div>
-        <div class="hero-actions"><a class="btn btn-orange" href="motion-x.html">Conocer Motion-X</a><span class="motion-release-note" data-motion-release-note><i class="bi bi-clock-fill"></i> Venta disponible el 26 SEP</span><button id="motionBuyButton" class="btn motion-buy-button" style="background:#07162e;color:#fff" type="button" data-add-sku="motion-x-access" data-add-name="Motion-X Access" data-add-price="28" hidden>Comprar acceso FULL</button></div>
-      </div>
-      <div class="feature-visual"><img src="img/motion-x-cover.png" alt="Motion-X"></div>
-    </section>
-
-    <section id="samples" class="section dark">
-      <div class="shell">
-        <header class="section-head">
-          <div><div class="section-kicker">02 · Audio</div><h2 class="section-title">Samples, VSTs & Librerías</h2><p class="section-sub">Instrumentos, pianos, pads, sonidos y colecciones para estudio, directo y producción musical.</p></div>
-          <a class="section-link" href="#multitracks">Ver Multitracks →</a>
-        </header>
-        <div id="sampleGrid" class="product-grid" aria-live="polite"><div class="loading"></div><div class="loading"></div><div class="loading"></div><div class="loading"></div></div>
-      </div>
-    </section>
-
-    <section id="multitracks" class="section soft">
-      <div class="shell">
-        <header class="section-head">
-          <div><div class="section-kicker">03 · Lo más reciente</div><h2 class="section-title">Multitracks</h2><p class="section-sub">Aquí mostramos únicamente los 4 lanzamientos más recientes. Puedes escuchar el preview, agregar al carrito o abrir el catálogo completo.</p></div>
-          <a class="section-link" href="multitrack.html">Ir al catálogo →</a>
-        </header>
-        <div id="multitrackGrid" class="multitrack-grid" aria-live="polite"><div class="loading"></div><div class="loading"></div><div class="loading"></div><div class="loading"></div></div>
-        <aside class="catalog-cta">
-          <div><h3>¿Quieres ver todos los multitracks?</h3><p>En el catálogo puedes escuchar más previews, revisar BPM, tonalidad, stems y todos los lanzamientos disponibles.</p></div>
-          <a class="btn" href="multitrack.html">Ir al catálogo de Multitracks</a>
-        </aside>
-      </div>
-    </section>
-
-    <section class="trust">
-      <div class="shell trust-grid">
-        <div><div class="section-kicker">Dingloft Care</div><h2>Compra digital con soporte cuando lo necesitas.</h2><p>Si prefieres que te ayudemos con la instalación o configuración, puedes agregar asistencia remota desde el checkout sin cambiar tu carrito ni tus compras.</p></div>
-        <div class="trust-cards"><article class="trust-card"><b>Control visible</b><span>Ves cada acción durante la sesión remota.</span></article><article class="trust-card"><b>Conexión temporal</b><span>La conexión se utiliza únicamente durante la asistencia.</span></article><article class="trust-card"><b>Pago seguro</b><span>Productos, asistencia y aportes se validan antes del cobro.</span></article><article class="trust-card"><b>Tu cuenta sincronizada</b><span>Pedidos y descargas quedan unidos a tu cuenta Dingloft.</span></article></div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="shell footer-grid">
-      <div class="footer-brand"><img src="img/dingloft.png" alt="Dingloft"><span>Dingloft · Evolution Group</span></div>
-      <div class="footer-links"><a href="account.html">Mi cuenta</a><a href="multitrack.html">Multitracks</a><a href="checkout.html">Checkout</a></div>
-    </div>
-  </footer>
-
-  <div class="cart-panel-overlay" id="cartPanelOverlay" aria-hidden="true"></div>
-  <aside class="cart-panel" id="cartDrawer" role="dialog" aria-modal="true" aria-labelledby="cartPanelTitle" aria-hidden="true">
-    <div class="cart-panel-head">
-      <div><h2 id="cartPanelTitle">Tu carrito</h2><p id="cartPanelCount">0 productos</p></div>
-      <button class="cart-panel-close" id="closeCartBtn" type="button" aria-label="Cerrar carrito">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"></path></svg>
-      </button>
-    </div>
-    <div class="cart-panel-items" id="cartPanelItems"></div>
-    <div class="cart-panel-foot">
-      <div class="cart-total-row"><span>Subtotal</span><strong id="cartPanelTotal">$0.00</strong></div>
-      <div class="cart-panel-actions">
-        <button class="cart-continue" id="continueShoppingBtn" type="button">Seguir comprando</button>
-        <a class="cart-checkout" id="cartCheckoutBtn" href="checkout.html">Ir al checkout</a>
-      </div>
-    </div>
-  </aside>
-
-  <div class="toast" id="cartToast" role="status" aria-live="polite">Agregado al carrito</div>
-
-  <script src="/dingloft-cart-sync.js?v=91"></script>
-  <script type="module" src="/dingloft-customer-push.js?v=1"></script>
-  <script>
+<div class="announcement">
+<div class="shell"><span>Descargas digitales · acceso desde tu cuenta Dingloft</span><span>Soporte remoto disponible durante el checkout</span></div>
+</div>
+<header class="site-header helmet-site-header" id="siteHeader">
+<nav aria-label="Navegación principal" class="nav shell helmet-nav">
+<a aria-label="Dingloft" class="brand helmet-brand" href="/">
+<img alt="Dingloft" src="img/dingloft.png"/>
+<span class="brand-text">Dingloft<small>Evolution Group</small></span>
+</a>
+<div class="nav-links helmet-nav-links">
+<a class="is-active" href="/">Home</a>
+<a href="#programas">Software</a>
+<a href="#multitracks">Multitracks</a>
+<a href="account.html">Cuenta</a>
+</div>
+<div class="nav-actions helmet-nav-actions">
+<div class="helmet-search" id="helmetSearch">
+<button aria-controls="catalogSearch" aria-expanded="false" aria-label="Buscar productos" class="icon-btn helmet-icon-btn" id="navSearchToggle" type="button">
+<svg fill="none" height="16" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="16"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+</button>
+<label aria-label="Buscar productos" class="search-box helmet-search-box">
+<input autocomplete="off" id="catalogSearch" placeholder="Buscar productos..." type="search"/>
+</label>
+</div>
+<button aria-controls="cartDrawer" aria-haspopup="dialog" aria-label="Abrir carrito" class="icon-btn helmet-icon-btn" id="openCartBtn" type="button">
+<svg fill="none" height="16" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="16"><path d="M6 8h12l-1 12H7L6 8Z"></path><path d="M9 8a3 3 0 0 1 6 0"></path></svg>
+<span class="cart-count" data-cart-count="">0</span>
+</button>
+<button aria-controls="helmetMenuPanel" aria-expanded="false" aria-label="Abrir menú" class="icon-btn helmet-icon-btn helmet-menu-toggle" id="helmetMenuToggle" type="button">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" viewbox="0 0 24 24" width="18"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+</button>
+</div>
+</nav>
+<div class="helmet-menu-panel" id="helmetMenuPanel" aria-hidden="true">
+<a href="#programas"><span>01</span>Programas</a>
+<a href="#samples"><span>02</span>Samples &amp; VSTs</a>
+<a href="#multitracks"><span>03</span>Multitracks</a>
+<a href="account.html"><span>04</span>Mi cuenta</a>
+</div>
+</header>
+<main>
+<section aria-labelledby="heroTitle" class="hero">
+<div class="hero-grid shell">
+<div class="hero-copy">
+<div class="eyebrow">Dingloft · Ecosistema creativo</div>
+<h1 id="heroTitle"><span>Todo para crear,</span> <em> producir y tocar.</em></h1>
+<p>Software profesional, instrumentos virtuales, librerías y multitracks listos para tu flujo de trabajo, estudio y directo.</p>
+<div class="hero-actions">
+<a class="btn btn-orange" href="#programas">Explorar catálogo</a>
+<a class="btn btn-ghost" href="multitrack.html">Escuchar multitracks</a>
+</div>
+</div>
+<div aria-hidden="true" class="hero-art">
+<img alt="" src="img/iMac-Motion.png"/>
+</div>
+</div>
+<div aria-hidden="true" class="hero-wave"><svg preserveaspectratio="none" viewbox="0 0 1440 130"><path d="M0,63 C250,150 510,124 760,64 C1000,8 1215,24 1440,88 L1440,130 L0,130 Z" fill="white"></path></svg></div></section>
+<section aria-label="Beneficios Dingloft" class="service-strip shell">
+<div class="service-grid">
+<article class="service-item"><div class="service-icon">↧</div><div><strong>Entrega digital</strong><span>Tus compras quedan disponibles desde tu cuenta.</span></div></article>
+<article class="service-item"><div class="service-icon">✓</div><div><strong>Pago validado</strong><span>El servidor confirma productos y total antes de cobrar.</span></div></article>
+<article class="service-item"><div class="service-icon">∞</div><div><strong>Acceso permanente</strong><span>Vuelve a tus descargas cuando las necesites.</span></div></article>
+<article class="service-item"><div class="service-icon">⌁</div><div><strong>Dingloft Care</strong><span>Asistencia remota opcional durante tu compra.</span></div></article>
+</div>
+</section>
+<section class="section" id="programas">
+<div class="shell">
+<header class="section-head">
+<div><div class="section-kicker">01 · Software</div><h2 class="section-title">Programas</h2><p class="section-sub">Herramientas para arquitectura, diseño, productividad, edición y producción profesional.</p></div>
+<a class="section-link" href="#samples">Ver Samples &amp; VSTs →</a>
+</header>
+<div aria-label="Categorías de software" class="category-row">
+<article class="category-card"><span class="num">01</span><strong>Arquitectura</strong><span>AutoCAD, SketchUp y herramientas para diseño técnico.</span></article>
+<article class="category-card"><span class="num">02</span><strong>Productividad</strong><span>Office y utilidades para trabajo, estudio y negocio.</span></article>
+<article class="category-card"><span class="num">03</span><strong>Diseño 3D</strong><span>Modelado, visualización y creación de contenido.</span></article>
+<article class="category-card"><span class="num">04</span><strong>Producción</strong><span>DAWs y herramientas para producción audiovisual.</span></article>
+</div>
+<div aria-live="polite" class="product-grid" id="programGrid"><div class="loading"></div><div class="loading"></div><div class="loading"></div><div class="loading"></div></div>
+</div>
+</section>
+<section aria-label="Motion-X" class="feature-band">
+<div class="feature-copy">
+<div class="section-kicker">Motion-X · Instrumento virtual</div>
+<div aria-label="Lanzamiento de Motion-X" class="launch-card">
+<div class="launch-badge"><span class="launch-dot"></span><span>Lanzamiento oficial</span></div>
+<div class="launch-date">26 SEP · 6:00 PM · MIAMI</div>
+</div>
+<h2>Motion-X. Expresa más con menos pasos.</h2>
+<p>Live Banks, 8 capas, Super Knob y un flujo directo dentro del ecosistema Dingloft. Compra Motion-X Access una sola vez, inicia sesión con tu cuenta y la app desbloquea automáticamente el modo FULL.</p>
+<div aria-live="polite" class="launch-countdown" id="motionLaunchCountdown">
+<div class="launch-unit"><b id="launchDays">00</b><span>Días</span></div>
+<div class="launch-unit"><b id="launchHours">00</b><span>Horas</span></div>
+<div class="launch-unit"><b id="launchMinutes">00</b><span>Min</span></div>
+<div class="launch-unit"><b id="launchSeconds">00</b><span>Seg</span></div>
+</div>
+<div class="launch-live" id="motionLaunchStatus">Cuenta regresiva al lanzamiento en Miami.</div>
+<div class="hero-actions"><a class="btn btn-orange" href="motion-x.html">Conocer Motion-X</a><span class="motion-release-note" data-motion-release-note=""><i class="bi bi-clock-fill"></i> Venta disponible el 26 SEP</span><button class="btn motion-buy-button" data-add-name="Motion-X Access" data-add-price="28" data-add-sku="motion-x-access" hidden="" id="motionBuyButton" style="background:#07162e;color:#fff" type="button">Comprar acceso FULL</button></div>
+</div>
+<div class="feature-visual"><img alt="Motion-X" src="img/motion-x-cover.png"/></div>
+</section>
+<section class="section dark" id="samples">
+<div class="shell">
+<header class="section-head">
+<div><div class="section-kicker">02 · Audio</div><h2 class="section-title">Samples, VSTs &amp; Librerías</h2><p class="section-sub">Instrumentos, pianos, pads, sonidos y colecciones para estudio, directo y producción musical.</p></div>
+<a class="section-link" href="#multitracks">Ver Multitracks →</a>
+</header>
+<div aria-live="polite" class="product-grid" id="sampleGrid"><div class="loading"></div><div class="loading"></div><div class="loading"></div><div class="loading"></div></div>
+</div>
+</section>
+<section class="section soft" id="multitracks">
+<div class="shell">
+<header class="section-head">
+<div><div class="section-kicker">03 · Lo más reciente</div><h2 class="section-title">Multitracks</h2><p class="section-sub">Aquí mostramos únicamente los 4 lanzamientos más recientes. Puedes escuchar el preview, agregar al carrito o abrir el catálogo completo.</p></div>
+<a class="section-link" href="multitrack.html">Ir al catálogo →</a>
+</header>
+<div aria-live="polite" class="multitrack-grid" id="multitrackGrid"><div class="loading"></div><div class="loading"></div><div class="loading"></div><div class="loading"></div></div>
+<aside class="catalog-cta">
+<div><h3>¿Quieres ver todos los multitracks?</h3><p>En el catálogo puedes escuchar más previews, revisar BPM, tonalidad, stems y todos los lanzamientos disponibles.</p></div>
+<a class="btn" href="multitrack.html">Ir al catálogo de Multitracks</a>
+</aside>
+</div>
+</section>
+<section class="trust">
+<div class="shell trust-grid">
+<div><div class="section-kicker">Dingloft Care</div><h2>Compra digital con soporte cuando lo necesitas.</h2><p>Si prefieres que te ayudemos con la instalación o configuración, puedes agregar asistencia remota desde el checkout sin cambiar tu carrito ni tus compras.</p></div>
+<div class="trust-cards"><article class="trust-card"><b>Control visible</b><span>Ves cada acción durante la sesión remota.</span></article><article class="trust-card"><b>Conexión temporal</b><span>La conexión se utiliza únicamente durante la asistencia.</span></article><article class="trust-card"><b>Pago seguro</b><span>Productos, asistencia y aportes se validan antes del cobro.</span></article><article class="trust-card"><b>Tu cuenta sincronizada</b><span>Pedidos y descargas quedan unidos a tu cuenta Dingloft.</span></article></div>
+</div>
+</section>
+</main>
+<footer>
+<div class="shell footer-grid">
+<div class="footer-brand"><img alt="Dingloft" src="img/dingloft.png"/><span>Dingloft · Evolution Group</span></div>
+<div class="footer-links"><a href="account.html">Mi cuenta</a><a href="multitrack.html">Multitracks</a><a href="checkout.html">Checkout</a></div>
+</div>
+</footer>
+<div aria-hidden="true" class="cart-panel-overlay" id="cartPanelOverlay"></div>
+<aside aria-hidden="true" aria-labelledby="cartPanelTitle" aria-modal="true" class="cart-panel" id="cartDrawer" role="dialog">
+<div class="cart-panel-head">
+<div><h2 id="cartPanelTitle">Tu carrito</h2><p id="cartPanelCount">0 productos</p></div>
+<button aria-label="Cerrar carrito" class="cart-panel-close" id="closeCartBtn" type="button">
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+</button>
+</div>
+<div class="cart-panel-items" id="cartPanelItems"></div>
+<div class="cart-panel-foot">
+<div class="cart-total-row"><span>Subtotal</span><strong id="cartPanelTotal">$0.00</strong></div>
+<div class="cart-panel-actions">
+<button class="cart-continue" id="continueShoppingBtn" type="button">Seguir comprando</button>
+<a class="cart-checkout" href="checkout.html" id="cartCheckoutBtn">Ir al checkout</a>
+</div>
+</div>
+</aside>
+<div aria-live="polite" class="toast" id="cartToast" role="status">Agregado al carrito</div>
+<script src="/dingloft-cart-sync.js?v=91"></script>
+<script src="/dingloft-customer-push.js?v=1" type="module"></script>
+<script>
   (()=>{
     const WORKER=String(window.DINGLOFT_WORKER_BASE||document.querySelector('meta[name="dingloft-worker-base"]')?.content||'https://autumn-breeze-dfa0.evolutiongt01.workers.dev').replace(/\/$/,'');
     const CART_KEY='dingloft_cart';
@@ -567,5 +860,26 @@
     window.addEventListener('storage',()=>{updateCartCount();renderCartDrawer()});document.addEventListener('dingloft:cart-change',()=>{updateCartCount();renderCartDrawer()});updateCartCount();renderCartDrawer();loadCatalog();loadTracks();
   })();
   </script>
+
+<script id="helmet-navbar-behavior-v2">
+(()=>{
+  const header=document.getElementById('siteHeader');
+  const searchWrap=document.getElementById('helmetSearch');
+  const searchToggle=document.getElementById('navSearchToggle');
+  const searchInput=document.getElementById('catalogSearch');
+  const menuToggle=document.getElementById('helmetMenuToggle');
+  const menuPanel=document.getElementById('helmetMenuPanel');
+  const syncHeader=()=>header?.classList.toggle('is-scrolled',window.scrollY>18);
+  const closeSearch=()=>{searchWrap?.classList.remove('open');searchToggle?.setAttribute('aria-expanded','false')};
+  const closeMenu=()=>{menuPanel?.classList.remove('open');menuPanel?.setAttribute('aria-hidden','true');menuToggle?.setAttribute('aria-expanded','false')};
+  syncHeader(); window.addEventListener('scroll',syncHeader,{passive:true});
+  searchToggle?.addEventListener('click',e=>{e.stopPropagation();const next=!searchWrap?.classList.contains('open');closeMenu();searchWrap?.classList.toggle('open',next);searchToggle.setAttribute('aria-expanded',String(next));if(next)setTimeout(()=>searchInput?.focus(),80)});
+  menuToggle?.addEventListener('click',e=>{e.stopPropagation();const next=!menuPanel?.classList.contains('open');closeSearch();menuPanel?.classList.toggle('open',next);menuPanel?.setAttribute('aria-hidden',String(!next));menuToggle.setAttribute('aria-expanded',String(next))});
+  document.addEventListener('click',e=>{if(searchWrap&&!searchWrap.contains(e.target))closeSearch();if(menuPanel&&menuToggle&&!menuPanel.contains(e.target)&&!menuToggle.contains(e.target))closeMenu()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSearch();closeMenu()}});
+  menuPanel?.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+})();
+</script>
+
 </body>
 </html>
