@@ -804,27 +804,44 @@ body.no-scroll{overflow:hidden!important}
 
 
 
-<style id="dingloft-sketchup-real-hero-image-v125">
+<style id="dingloft-sketchup-real-hero-image-v126">
 .su-workspace.su-workspace-image{
+  width:min(640px,84%)!important;
+  max-width:640px!important;
+  aspect-ratio:1.18/1!important;
+  margin-left:auto!important;
+  margin-right:18px!important;
   background:transparent!important;
   border:0!important;
   padding:0!important;
   overflow:hidden!important;
   transform:none!important;
-  box-shadow:0 34px 76px rgba(0,0,0,.32)!important;
+  border-radius:18px!important;
+  box-shadow:0 28px 72px rgba(0,0,0,.26)!important;
 }
 .su-workspace.su-workspace-image > img{
   display:block!important;
   width:100%!important;
   height:100%!important;
   object-fit:cover!important;
-  object-position:center!important;
+  object-position:center center!important;
   border-radius:18px!important;
+}
+@media(max-width:1280px){
+  .su-workspace.su-workspace-image{
+    width:min(600px,82%)!important;
+    max-width:600px!important;
+    margin-right:10px!important;
+  }
 }
 @media(max-width:900px){
   .su-workspace.su-workspace-image{
+    width:min(100%,620px)!important;
+    max-width:none!important;
+    aspect-ratio:1.14/1!important;
+    margin-right:0!important;
     border-radius:12px!important;
-    box-shadow:0 22px 48px rgba(0,0,0,.28)!important;
+    box-shadow:0 22px 48px rgba(0,0,0,.24)!important;
   }
   .su-workspace.su-workspace-image > img{
     border-radius:12px!important;
