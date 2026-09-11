@@ -104,6 +104,25 @@
     return 'home';
   }
 
+  // Precise "which .html file is actually on screen" — NOT the same thing as activeRoute(),
+  // which groups product pages under the same 'catalog' bucket as ventas.html purely to
+  // highlight the Software nav item. Only ventas.html itself carries its own official
+  // navbar; product pages, tienda.html, index.html, login/register, etc. do not.
+  function embeddedFile(){
+    const file = pathKey();
+    if (file !== 'app') return file;
+    const q = new URLSearchParams(location.search);
+    const route = String(q.get('route') || document.body?.dataset?.appRoute || 'home').toLowerCase();
+    if (route === 'home' || route === 'catalog') return 'ventas';
+    if (route === 'multitrack') return 'multitrack';
+    if (route === 'account') return 'account';
+    if (route === 'page') {
+      const src = String(q.get('src') || '');
+      try { return (new URL(src, location.origin).pathname.split('/').filter(Boolean).pop() || '').toLowerCase().replace(/\.html$/,''); } catch (_) { return ''; }
+    }
+    return 'ventas';
+  }
+
   function persistentNavigate(href){
     const shell = window.DingloftPersistentShellV93;
     if (!shell?.navigateHref) return false;
@@ -501,7 +520,22 @@
     }
   }
 
+  // ventas.html carries its own complete, responsive "helmet" navbar (logo, search,
+  // favorites, cart, hamburger) and is the official Dingloft navbar per design. When it is
+  // the actual embedded file, this shell must not paint a second one on top of it. This is
+  // deliberately based on embeddedFile(), not activeRoute(): the route classification groups
+  // product pages under the same "catalog" bucket as ventas.html just to highlight the
+  // Software nav item, but product pages (and index/tienda/login/register/producto) have no
+  // navbar of their own, so this chrome must keep serving as theirs.
+  function ownsNavbar(){ return embeddedFile() === 'ventas'; }
+  function syncChromeVisibility(){
+    const hide = ownsNavbar();
+    if (headerHost) headerHost.style.setProperty('display', hide ? 'none' : 'block', 'important');
+    if (dockHost) dockHost.style.setProperty('display', hide ? 'none' : 'block', 'important');
+  }
+
   function sync(){
+    syncChromeVisibility();
     syncCartFocusChrome();
     const route = activeRoute();
     headerRoot?.querySelectorAll('.panel a[data-route]').forEach(el => el.classList.toggle('active', el.dataset.route === route));
@@ -530,6 +564,12 @@
 
     headerHost = makeHost(HEADER_ID, 'header');
     dockHost = makeHost(DOCK_ID, 'dock');
+    // Decide visibility before either host ever joins the document: when ventas.html itself
+    // is the embedded content, this chrome must never paint, not even for a single frame.
+    if (ownsNavbar()) {
+      headerHost.style.setProperty('display', 'none', 'important');
+      dockHost.style.setProperty('display', 'none', 'important');
+    }
     searchHost = document.createElement('div');
     searchHost.id = SEARCH_ID;
     searchHost.style.cssText = 'position:fixed;inset:0;z-index:2147483647;pointer-events:none;display:block;';
