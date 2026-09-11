@@ -1,4 +1,4 @@
-/* Dingloft Persistent Mobile/Tablet App Shell · v103 · Route-Aware Scroll
+/* Dingloft Persistent Mobile/Tablet App Shell · v101 · Route-Aware Scroll
    The shell never reloads between internal pages. Only the content iframe changes.
    Header/search/bottom nav/cart live in the top document and remain mounted. */
 const DINGLOFT_BOOT_STARTED = performance.now();
@@ -73,14 +73,13 @@ function appUrl(i){
   if(i.key==='page')u.searchParams.set('src',cleanPublicSrc(i.src));
   return `${u.pathname}${u.search}`;
 }
-function activeDock(key,src=''){
+function activeDock(key){
   const visual=key==='page'?'catalog':key;
   activeKey=key;
   document.body.dataset.appRoute=visual;
-  document.body.dataset.appSrc=String(src||'');
   document.querySelectorAll('[data-route]').forEach(a=>a.classList.toggle('active',a.dataset.route===visual));
   window.__dingloftRefreshAdminButton?.();
-  window.dispatchEvent(new CustomEvent('dingloft:shell-route',{detail:{key,visual,src:String(src||''),version:103}}));
+  window.dispatchEvent(new CustomEvent('dingloft:shell-route',{detail:{key,visual,version:97}}));
 }
 function cartCount(){
   let n=0;try{const c=JSON.parse(localStorage.getItem('dingloft_cart')||'[]');if(Array.isArray(c))n=c.reduce((s,x)=>s+Math.max(1,Number(x?.qty??x?.quantity??1)||1),0)}catch(_){}
@@ -124,8 +123,8 @@ function child(frame){try{
   // with an iOS/mobile scroll repair keyed to this attribute. v93 used
   // "mobile-v93", so that repair never matched inside the persistent shell.
   d.documentElement.dataset.dingloftShell='mobile';
-  d.documentElement.dataset.dingloftShellVersion='101';
-  if(d.body){d.body.classList.add('dingloft-shell-view');d.body.classList.toggle('dingloft-shell-product-view',productView);d.body.dataset.dingloftShell='mobile';d.body.dataset.dingloftShellVersion='101'}
+  d.documentElement.dataset.dingloftShellVersion='116';
+  if(d.body){d.body.classList.add('dingloft-shell-view');d.body.classList.toggle('dingloft-shell-product-view',productView);d.body.dataset.dingloftShell='mobile';d.body.dataset.dingloftShellVersion='116'}
   if(d.scrollingElement)d.scrollingElement.style.webkitOverflowScrolling='touch';
   const unlockProductScroll=()=>{
     if(!productView||!d.body)return;
@@ -157,8 +156,10 @@ function child(frame){try{
   if(!d.getElementById('dl-shell-style-v100')){
     const s=d.createElement('style');s.id='dl-shell-style-v100';s.textContent=`
       @media(max-width:1024px){
-        html.dingloft-shell-view,html.dingloft-shell-view body{background:#05070a!important;width:100%!important;max-width:100%!important;overflow-x:hidden!important;overscroll-behavior-x:none!important}
-        html.dingloft-shell-view body{position:relative!important;top:auto!important;padding-top:0!important;padding-bottom:24px!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
+        /* v116: never paint an artificial dark footer/background inside embedded pages.
+           Each page owns its own background; the shell only controls sizing/scroll. */
+        html.dingloft-shell-view,html.dingloft-shell-view body{width:100%!important;max-width:100%!important;overflow-x:hidden!important;overscroll-behavior-x:none!important}
+        html.dingloft-shell-view body{position:relative!important;top:auto!important;padding-top:0!important;padding-bottom:0!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
         /* v100 · Product pages have exactly one vertical scroll owner: body. */
         html.dingloft-shell-view.dingloft-shell-product-view{height:100%!important;min-height:100%!important;max-height:100%!important;overflow-y:hidden!important;overscroll-behavior-y:none!important}
         html.dingloft-shell-view.dingloft-shell-product-view body.dingloft-shell-product-view{height:100%!important;min-height:100%!important;max-height:100%!important;overflow-y:auto!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
@@ -174,7 +175,6 @@ function child(frame){try{
         html.dingloft-shell-view .hero-section,html.dingloft-shell-view .mt-hero{padding-top:18px!important}
         html.dingloft-shell-view .mt-quickbar{top:0!important}
         html.dingloft-shell-view main{padding-top:0!important}
-        html.dingloft-shell-view .premium-footer{padding-bottom:26px!important}
         html.dingloft-shell-view .hero-proof,html.dingloft-shell-view .trust-bar,html.dingloft-shell-view .category-grid,html.dingloft-shell-view .category-section>.row,html.dingloft-shell-view .steps,html.dingloft-shell-view .mt-filter-row,html.dingloft-shell-view .mt-seo-artists,html.dingloft-shell-view [data-horizontal-scroll]{touch-action:pan-x pan-y!important;overscroll-behavior-x:contain!important;-webkit-overflow-scrolling:touch!important}
         html.dingloft-shell-view .auth-page,html.dingloft-shell-view .login-page{min-height:calc(100dvh - 110px)!important}
       }`;
@@ -256,7 +256,7 @@ function child(frame){try{
 function navigate(route,params={},opt={}){
   const i=info(route,params);const id=++token;
   if(progress)progress.classList.add('show');
-  activeDock(i.key,i.src);
+  activeDock(i.key);
   const f=document.createElement('iframe');
   const productRoute=isProductInfo(i);
   f.className='frame in';f.allow='autoplay *; payment *; clipboard-read; clipboard-write';
@@ -284,7 +284,7 @@ function navigate(route,params={},opt={}){
       const mapped=mapHref(currentHref,currentHref);
       if(mapped&&!mapped.external) loadedInfo=info(mapped.route,mapped);
     } catch (_) {}
-    activeDock(loadedInfo.key,loadedInfo.src);
+    activeDock(loadedInfo.key);
     if(firstLoad){
       firstLoad=false;
       requestAnimationFrame(()=>{f.classList.remove('in');f.classList.add('active')});
@@ -295,13 +295,13 @@ function navigate(route,params={},opt={}){
     history.replaceState(state,'',appUrl(loadedInfo));
     if(progress)progress.classList.remove('show');
     cartCount();dingloftSplashReady();
-    window.dispatchEvent(new CustomEvent('dingloft:shell-ready',{detail:{key:loadedInfo.key,src:loadedInfo.src,version:103}}));
+    window.dispatchEvent(new CustomEvent('dingloft:shell-ready',{detail:{key:loadedInfo.key,version:101}}));
   });
   if(!opt.pop){const url=appUrl(i);if(opt.replace)history.replaceState({route:i.key,src:i.key==='page'?cleanPublicSrc(i.src):''},'',url);else if(opt.push!==false)history.pushState({route:i.key,src:i.key==='page'?cleanPublicSrc(i.src):''},'',url)}
 }
 
 window.DingloftPersistentShellV93={
-  version:103,
+  version:101,
   navigate:(route,params={})=>navigate(route,params,{push:true}),
   navigateHref:(href)=>shellNavigateHref(href,{push:true}),
   get activeKey(){return activeKey;},
