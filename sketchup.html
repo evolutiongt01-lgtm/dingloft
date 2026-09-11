@@ -763,6 +763,124 @@ body.no-scroll{overflow:hidden!important}
 }
 </style>
 
+
+<style id="dingloft-ventas-cart-component-v118">
+:root{--orange:#b7ff34}
+body.cart-panel-open{overflow:hidden!important}
+
+.cart-panel-overlay{
+  position:fixed;inset:0;z-index:2147483000;
+  background:rgba(0,0,0,.58);
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .28s ease,visibility 0s linear .28s;
+}
+.cart-panel-overlay.show{
+  opacity:1;visibility:visible;pointer-events:auto;transition-delay:0s;
+}
+
+.cart-panel{
+  position:fixed;z-index:2147483100;
+  top:0;right:0;
+  width:min(430px,92vw);height:100dvh;
+  background:#fff;color:#101827;
+  border-left:1px solid #23272c;
+  box-shadow:-34px 0 90px rgba(0,0,0,.34);
+  transform:translateX(105%);
+  transition:transform .46s cubic-bezier(.16,1,.3,1);
+  display:flex;flex-direction:column;
+}
+.cart-panel.show{transform:none}
+
+.cart-panel-head{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:22px 22px 18px;
+  border-bottom:1px solid #252a2f;
+  background:#0a0c0f;color:#fff;
+}
+.cart-panel-head h2{margin:0;font-size:20px;letter-spacing:-.04em;font-weight:800}
+.cart-panel-head p{margin:4px 0 0;color:#7f8790;font-size:10px}
+.cart-panel-close{
+  width:38px;height:38px;border:1px solid #2b3036;border-radius:0;
+  background:#13171c;color:#fff;
+  display:grid;place-items:center;cursor:pointer;
+  transition:.2s ease;
+}
+.cart-panel-close:hover{background:#fff;color:#080a0c}
+
+.cart-panel-items{
+  flex:1;overflow:auto;padding:12px 16px 6px;background:#fff;
+  -webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+}
+.cart-empty{
+  padding:58px 20px;text-align:center;color:#8994a2;
+  font-size:11px;line-height:1.65;
+}
+.cart-empty b{display:block;color:#1b2635;font-size:15px;margin-bottom:6px}
+.cart-line{
+  display:grid;grid-template-columns:68px minmax(0,1fr) 36px;
+  gap:12px;align-items:center;padding:12px 4px;
+  border-bottom:1px solid #edf0f3;
+}
+.cart-line-art{
+  width:68px;height:68px;border-radius:0;background:#f1f2f3;
+  display:grid;place-items:center;overflow:hidden;
+}
+.cart-line-art img{width:82%;height:82%;object-fit:contain}
+.cart-line-art.cover img{width:100%;height:100%;object-fit:cover}
+.cart-line-copy{min-width:0}
+.cart-line-copy strong{
+  display:block;font-size:12px;line-height:1.3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.cart-line-copy span{display:block;margin-top:5px;color:#8b95a2;font-size:9px}
+.cart-line-copy b{display:block;margin-top:8px;font-size:13px;color:#0a0c0f}
+.cart-line-remove{
+  width:34px;height:34px;border:0;background:transparent;border-radius:0;
+  color:#9aa3ae;cursor:pointer;display:grid;place-items:center;
+}
+.cart-line-remove:hover{background:#f3f4f5;color:#111318}
+
+.cart-panel-foot{
+  padding:16px 20px 20px;border-top:1px solid #252a2f;
+  background:#0a0c0f;color:#fff;
+}
+.cart-total-row{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  margin-bottom:14px;
+}
+.cart-total-row span{font-size:11px;color:#7f8790}
+.cart-total-row strong{font-size:20px;letter-spacing:-.04em}
+.cart-panel-actions{display:grid;grid-template-columns:1fr 1.2fr;gap:9px}
+.cart-panel-actions button,.cart-panel-actions a{
+  height:44px;border-radius:0;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.035em;
+  border:1px solid #333941;cursor:pointer;text-decoration:none;
+}
+.cart-continue{background:#15191e;color:#fff}
+.cart-continue:hover{background:#fff;color:#080a0c}
+.cart-checkout{
+  background:var(--orange)!important;color:#080a0c!important;
+  border-color:var(--orange)!important;
+}
+.cart-checkout.is-disabled{opacity:.45;pointer-events:none}
+
+#cartToast{
+  position:fixed;left:50%;bottom:24px;z-index:2147483200;
+  transform:translate(-50%,20px);opacity:0;pointer-events:none;
+  background:#0a0c0e;color:#fff;border-radius:0;
+  padding:11px 15px;font-size:10px;font-weight:800;
+  box-shadow:0 18px 45px rgba(0,0,0,.18);transition:.22s;
+}
+#cartToast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:560px){
+  .cart-panel{width:100%;max-width:none}
+  .cart-panel-actions{grid-template-columns:1fr}
+  .cart-panel-head{padding-top:calc(18px + env(safe-area-inset-top,0px))}
+}
+</style>
+
 </head>
 <body>
 
@@ -927,7 +1045,7 @@ body.no-scroll{overflow:hidden!important}
             <div class="su-kicker">03 · Elige tu programa</div>
             <h2>Compra directa.</h2>
           </div>
-          <p>Conservé los mismos SKU, precios y botones del carrito para no romper tu sistema actual.</p>
+          <p>Elige la opción que mejor se adapte a tu flujo de trabajo y continúa al checkout.</p>
         </div>
 
         <div class="su-package-grid">
@@ -1021,15 +1139,9 @@ body.no-scroll{overflow:hidden!important}
     </section>
 
   </div><!-- /page-wrapper -->
-
-
-  <!-- BOTÓN FLOTANTE CARRITO -->
-  <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
-    <i class="bi bi-cart3 fs-4"></i>
-    <span class="badge-floating cart-badge-count-global">0</span>
-  </button>
-
-  <!-- MODAL BUSCADOR -->
+  <!-- Puente invisible para el carrito GLOBAL de la navbar -->
+  <button id="openCartBtn" data-cart-open type="button" hidden aria-hidden="true"></button>
+<!-- MODAL BUSCADOR -->
   <div class="search-overlay-fullscreen" id="search-overlay-fullscreen">
     <div class="search-modal-box">
       <div class="search-input-liquid mb-4">
@@ -1047,33 +1159,35 @@ body.no-scroll{overflow:hidden!important}
     </div>
   </div>
 
-  <!-- CARRITO LATERAL -->
-  <div class="cart-overlay" id="cart-overlay"></div>
-  <div class="cart-drawer" id="cart-drawer">
-    <div class="cart-header">
+  <!-- CARRITO DINGLOFT · MISMO COMPONENTE VISUAL DE ventas.html -->
+  <div aria-hidden="true" class="cart-panel-overlay" id="cartPanelOverlay"></div>
+  <aside aria-hidden="true" aria-labelledby="cartPanelTitle" aria-modal="true" class="cart-panel" id="cartDrawer" role="dialog">
+    <div class="cart-panel-head">
       <div>
-        <h4 class="mb-1 text-white" style="font-weight: 600;"><i class="bi bi-cart4"></i> Tu carrito</h4>
-        <span class="text-white" style="font-size: 0.85rem;" id="cart-item-count-text">0 productos</span>
+        <h2 id="cartPanelTitle">Tu carrito</h2>
+        <p id="cartPanelCount">0 productos</p>
       </div>
-      <button class="btn-close-cart" id="close-cart-btn"><i class="bi bi-x-lg"></i></button>
+      <button aria-label="Cerrar carrito" class="cart-panel-close" id="closeCartBtn" type="button">
+        <svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="18">
+          <path d="M6 6l12 12M18 6 6 18"></path>
+        </svg>
+      </button>
     </div>
-    <div class="cart-items-container" id="cart-items-container">
-      <div class="cart-empty-msg" id="empty-cart-msg"><p>Tu carrito está vacío.</p></div>
-    </div>
-    <div class="cart-footer">
-      <div class="coupon-box" id="coupon-section" style="display: none;">
-        <input type="text" id="coupon-input" class="coupon-input" placeholder="Código de descuento">
-        <button type="button" id="apply-coupon-btn" class="btn-apply-coupon">Aplicar</button>
+    <div class="cart-panel-items" id="cartPanelItems"></div>
+    <div class="cart-panel-foot">
+      <div class="cart-total-row">
+        <span>Subtotal</span>
+        <strong id="cartPanelTotal">$0.00</strong>
       </div>
-      <div id="coupon-msg" class="coupon-msg" style="display: none;"></div>
-      <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;"><span class="text-white">Subtotal</span><span id="cart-subtotal" class="text-white">$0.00</span></div>
-      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;"><span class="fs-5 fw-bold text-white">Total</span><span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span></div>
-      <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;"><div id="paypal-button-container" class="w-100"></div></div>
-      <button id="free-checkout-btn" class="btn-free-checkout mb-3" style="display: none;">Obtener gratis <i class="bi bi-download ms-1"></i></button>
+      <div class="cart-panel-actions">
+        <button class="cart-continue" id="continueShoppingBtn" type="button">Seguir comprando</button>
+        <a class="cart-checkout" href="checkout.html" id="cartCheckoutBtn">Ir al checkout</a>
+      </div>
     </div>
-  </div>
+  </aside>
+  <div aria-live="polite" class="toast" id="cartToast" role="status">Agregado al carrito</div>
 
-  <!-- Bootstrap 5 JS -->
+<!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- SCRIPT GLOBAL EXTERNO PARA AUTENTICACIÓN Y MODO ADMIN -->
@@ -1114,7 +1228,7 @@ body.no-scroll{overflow:hidden!important}
             data.items.forEach(item => purchasedNames.push(item.name));
           }
         });
-        const buyButtons = document.querySelectorAll('.btn-add-cart');
+        const buyButtons = document.querySelectorAll('.btn-add-cart,.btn-buy-now');
         buyButtons.forEach(btn => {
           const prodName = btn.getAttribute('data-name');
           if (purchasedNames.includes(prodName)) {
@@ -1368,144 +1482,174 @@ body.no-scroll{overflow:hidden!important}
         }
       });
 
-      let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
-      cart = window.DingloftCartSync ? window.DingloftCartSync.normalize(cart) : cart;
-      let couponApplied = false;
-      const cartBtns = document.querySelectorAll('.cart-btn-global, #main-cart-btn');
-      const cartDrawer = document.getElementById('cart-drawer');
-      const cartOverlay = document.getElementById('cart-overlay');
-      const closeCartBtn = document.getElementById('close-cart-btn');
-      const cartBadges = document.querySelectorAll('.cart-badge-count-global');
-      const cartItemCountText = document.getElementById('cart-item-count-text');
-      const cartItemsContainer = document.getElementById('cart-items-container');
-      const emptyCartMsg = document.getElementById('empty-cart-msg');
-      const cartSubtotalText = document.getElementById('cart-subtotal');
-      const cartTotalText = document.getElementById('cart-total');
-      const paypalWrapper = document.getElementById('paypal-container-wrapper');
-      const freeCheckoutBtn = document.getElementById('free-checkout-btn');
-      const securityBadge = document.getElementById('security-badge-box');
-      const couponSection = document.getElementById('coupon-section');
-      const subtotalRow = document.getElementById('subtotal-row');
-      const totalRow = document.getElementById('total-row');
-      const couponInput = document.getElementById('coupon-input');
-      const applyCouponBtn = document.getElementById('apply-coupon-btn');
-      const couponMsg = document.getElementById('coupon-msg');
+      const CART_KEY = 'dingloft_cart';
+      const toast = document.getElementById('cartToast');
+      const openCartBtn = document.getElementById('openCartBtn');
+      const closeCartBtn = document.getElementById('closeCartBtn');
+      const continueShoppingBtn = document.getElementById('continueShoppingBtn');
+      const cartPanel = document.getElementById('cartDrawer');
+      const cartPanelOverlay = document.getElementById('cartPanelOverlay');
+      const cartPanelItems = document.getElementById('cartPanelItems');
+      const cartPanelCount = document.getElementById('cartPanelCount');
+      const cartPanelTotal = document.getElementById('cartPanelTotal');
+      const cartCheckoutBtn = document.getElementById('cartCheckoutBtn');
       const addButtons = document.querySelectorAll('.btn-add-cart');
       const buyNowButtons = document.querySelectorAll('.btn-buy-now');
 
-      const notifyShellCartState = (open) => {
+      const money = n => `$${Number(n || 0).toFixed(2)}`;
+
+      const readCart = () => {
+        if (window.DingloftCartSync?.read) return window.DingloftCartSync.read();
+        try {
+          const raw = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+          return Array.isArray(raw) ? raw : [];
+        } catch (_) {
+          return [];
+        }
+      };
+
+      let cart = readCart();
+
+      const itemQty = item => Math.max(1, Number(item?.quantity ?? item?.qty ?? 1) || 1);
+      const itemPrice = item => Number(item?.priceUsd ?? item?.price ?? 0) || 0;
+
+      const cartImage = item => {
+        if (window.DingloftCartSync?.imageOf) return window.DingloftCartSync.imageOf(item);
+        const raw = String(item?.imageUrl || item?.cover || item?.img || 'dingloft').trim();
+        if (/^(?:https?:)?\/\//i.test(raw) || raw.startsWith('data:') || raw.startsWith('blob:')) return raw;
+        if (raw.startsWith('/')) return raw;
+        if (raw.startsWith('img/')) return raw;
+        return `img/${raw || 'dingloft'}.png`;
+      };
+
+      const syncParentBadge = () => {
+        const items = readCart();
+        const total = items.reduce((sum,item)=>sum + itemQty(item),0);
         try {
           if (window.parent && window.parent !== window) {
-            window.parent.postMessage({ type: open ? 'dingloft:cart-opened' : 'dingloft:cart-closed' }, location.origin);
+            const pd = window.parent.document;
+            const badge = pd.getElementById('navCartCount') || pd.querySelector('.helmet-shell-cart-count');
+            if (badge) {
+              badge.textContent = String(total);
+              badge.hidden = total < 1;
+            }
           }
         } catch (_) {}
       };
-      const openCart = (e) => {
-        if(e) e.preventDefault();
-        cartDrawer.classList.add('active');
-        cartOverlay.classList.add('active');
-        document.body.classList.add('no-scroll');
-        updateCartUI();
-        notifyShellCartState(true);
+
+      const renderCartDrawer = () => {
+        cart = readCart();
+        const count = cart.reduce((sum,item)=>sum + itemQty(item),0);
+        const total = cart.reduce((sum,item)=>sum + itemPrice(item) * itemQty(item),0);
+
+        if (cartPanelCount) cartPanelCount.textContent = `${count} producto${count === 1 ? '' : 's'}`;
+        if (cartPanelTotal) cartPanelTotal.textContent = money(total);
+        if (cartCheckoutBtn) cartCheckoutBtn.classList.toggle('is-disabled', !cart.length);
+
+        if (!cartPanelItems) return;
+
+        if (!cart.length) {
+          cartPanelItems.innerHTML = '<div class="cart-empty"><b>Tu carrito está vacío</b>Agrega productos y aparecerán aquí.</div>';
+          return;
+        }
+
+        cartPanelItems.innerHTML = cart.map((item,index) => {
+          const cover = /multitrack/i.test(String(item.type || '')) || Boolean(item.cover);
+          const name = String(item.name || item.title || 'Producto Dingloft');
+          return `<article class="cart-line">
+            <div class="cart-line-art ${cover ? 'cover' : ''}">
+              <img src="${cartImage(item)}" alt="${name.replace(/"/g,'&quot;')}" onerror="this.onerror=null;this.src='img/dingloft.png'">
+            </div>
+            <div class="cart-line-copy">
+              <strong>${name}</strong>
+              <span>${item.type || 'Producto digital'}</span>
+              <b>${money(itemPrice(item) * itemQty(item))}</b>
+            </div>
+            <button class="cart-line-remove" type="button" data-cart-remove="${index}" aria-label="Eliminar">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13"></path>
+              </svg>
+            </button>
+          </article>`;
+        }).join('');
       };
-      const closeCart = (e) => {
-        if(e) e.preventDefault();
-        cartDrawer.classList.remove('active');
-        cartOverlay.classList.remove('active');
-        document.body.classList.remove('no-scroll');
+
+      const notifyShellCartState = open => {
+        try {
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage({type:open ? 'dingloft:cart-opened' : 'dingloft:cart-closed'}, location.origin);
+          }
+        } catch (_) {}
+      };
+
+      const openCartDrawer = e => {
+        if (e) e.preventDefault();
+        renderCartDrawer();
+        document.body.classList.add('cart-panel-open');
+        cartPanelOverlay?.classList.add('show');
+        cartPanel?.classList.add('show');
+        cartPanel?.setAttribute('aria-hidden','false');
+        notifyShellCartState(true);
+        setTimeout(()=>closeCartBtn?.focus(),120);
+      };
+
+      const closeCartDrawer = e => {
+        if (e) e.preventDefault();
+        document.body.classList.remove('cart-panel-open');
+        cartPanelOverlay?.classList.remove('show');
+        cartPanel?.classList.remove('show');
+        cartPanel?.setAttribute('aria-hidden','true');
         notifyShellCartState(false);
       };
 
-      cartBtns.forEach(btn => { if(btn) btn.addEventListener('click', openCart); });
-      if(closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
-      if(cartOverlay) cartOverlay.addEventListener('click', closeCart);
-
-      const updateCartUI = () => {
-        cartItemsContainer.innerHTML = '';
-        let totalItems = 0; let totalPrice = 0;
-        window.cartItemsList = [];
-
-        if (cart.length === 0) {
-          cartItemsContainer.appendChild(emptyCartMsg);
-          emptyCartMsg.style.display = 'block';
-          if(paypalWrapper) paypalWrapper.style.display = 'none';
-          if(freeCheckoutBtn) freeCheckoutBtn.style.display = 'none';
-          if(securityBadge) securityBadge.style.display = 'none';
-          if(couponSection) couponSection.style.display = 'none';
-          if(subtotalRow) subtotalRow.style.display = 'none';
-          if(totalRow) totalRow.style.display = 'none';
-          couponApplied = false;
-          if(couponMsg) couponMsg.style.display = 'none';
+      const writeCart = items => {
+        if (window.DingloftCartSync?.write) {
+          cart = window.DingloftCartSync.write(items, true);
         } else {
-          emptyCartMsg.style.display = 'none';
-          if(couponSection) couponSection.style.display = 'flex';
-          if(subtotalRow) subtotalRow.style.display = 'flex';
-          if(totalRow) totalRow.style.display = 'flex';
-          
-          cart.forEach((item, index) => {
-            totalItems += item.qty;
-            totalPrice += (item.price * item.qty);
-            for(let i=0; i<item.qty; i++) {
-              window.cartItemsList.push({ id:item.id, sku:item.sku || item.id, name:item.name, img:item.img, imageUrl:item.imageUrl || '', cover:item.cover || '', type:item.type, price:couponApplied ? 0 : item.price });
-            }
-            cartItemsContainer.insertAdjacentHTML('beforeend', `
-              <div class="cart-item">
-                <div class="cart-item-img ${item.cover ? 'has-cover' : ''}"><img src="${item.cover || item.imageUrl || `img/${item.img}.png`}" alt="${item.name}" onerror="this.onerror=null;this.src='img/dingloft.png';this.closest('.cart-item-img')?.classList.remove('has-cover');"></div>
-                <div class="cart-item-info">
-                  <h4 class="cart-item-title">${item.name}</h4>
-                  <p class="cart-item-desc">${item.type}</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <span class="fw-bold text-accent">$${(couponApplied ? 0 : item.price).toFixed(2)}</span>
-                    <div class="qty-controls">
-                      <button class="qty-btn" onclick="changeQty(${index}, -1)"><i class="bi bi-dash"></i></button>
-                      <span class="qty-value">${item.qty}</span>
-                      <button class="qty-btn" onclick="changeQty(${index}, 1)"><i class="bi bi-plus"></i></button>
-                    </div>
-                  </div>
-                </div>
-                <button class="cart-item-remove" onclick="removeItem(${index})"><i class="bi bi-trash"></i></button>
-              </div>
-            `);
-          });
-
-          let finalTotal = couponApplied ? 0 : totalPrice;
-
-          if (finalTotal === 0) {
-            if(paypalWrapper) paypalWrapper.style.display = 'none';
-            if(securityBadge) securityBadge.style.display = 'none';
-            if(freeCheckoutBtn) freeCheckoutBtn.style.display = 'block';
-          } else {
-            if(paypalWrapper) paypalWrapper.style.display = 'block';
-            if(securityBadge) securityBadge.style.display = 'block';
-            if(freeCheckoutBtn) freeCheckoutBtn.style.display = 'none';
-            setTimeout(() => { if (typeof window.renderPayPalStable === 'function') window.renderPayPalStable(finalTotal); }, 100);
-          }
+          cart = Array.isArray(items) ? items : [];
+          localStorage.setItem(CART_KEY, JSON.stringify(cart));
+          window.dispatchEvent(new CustomEvent('dingloft:cart-sync', {detail:{cart}}));
         }
-
-        cartBadges.forEach(badge => { if(badge) badge.textContent = totalItems; });
-        if(cartItemCountText) cartItemCountText.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
-        if(cartSubtotalText) cartSubtotalText.textContent = `$${totalPrice.toFixed(2)}`;
-        if(cartTotalText) cartTotalText.textContent = `$${(couponApplied ? 0 : totalPrice).toFixed(2)}`;
-        localStorage.setItem('dingloft_cart', JSON.stringify(cart));
+        renderCartDrawer();
+        syncParentBadge();
       };
 
-      if(applyCouponBtn) {
-        applyCouponBtn.addEventListener('click', () => {
-          if (couponInput.value.trim().toUpperCase() === '__LEGACY_DISABLED__') {
-            couponApplied = true;
-            couponMsg.style.display = 'block'; couponMsg.style.color = '#00ff88'; couponMsg.innerHTML = '<i class="bi bi-check-circle-fill"></i> ¡Cupón __LEGACY_DISABLED__ aplicado!';
-          } else {
-            couponApplied = false;
-            couponMsg.style.display = 'block'; couponMsg.style.color = '#ff4444'; couponMsg.innerHTML = '<i class="bi bi-x-circle-fill"></i> Código de cupón inválido.';
-          }
-          updateCartUI();
-        });
-      }
+      const showToast = (text='Agregado al carrito') => {
+        if (!toast) return;
+        toast.textContent = text;
+        toast.classList.add('show');
+        clearTimeout(showToast.t);
+        showToast.t = setTimeout(()=>toast.classList.remove('show'),1800);
+      };
 
-      window.changeQty = (index, delta) => { if (cart[index].qty + delta > 0) cart[index].qty += delta; else cart.splice(index, 1); updateCartUI(); };
-      window.removeItem = (index) => { cart.splice(index, 1); updateCartUI(); };
+      openCartBtn?.addEventListener('click', openCartDrawer);
+      closeCartBtn?.addEventListener('click', closeCartDrawer);
+      continueShoppingBtn?.addEventListener('click', closeCartDrawer);
+      cartPanelOverlay?.addEventListener('click', closeCartDrawer);
 
-      const itemFromButton = (button) => {
+      cartPanelItems?.addEventListener('click', e => {
+        const remove = e.target.closest('[data-cart-remove]');
+        if (!remove) return;
+        const index = Number(remove.dataset.cartRemove);
+        const items = readCart();
+        if (Number.isInteger(index) && index >= 0 && index < items.length) {
+          items.splice(index,1);
+          writeCart(items);
+        }
+      });
+
+      /* Shell routers intercept links in capture phase. Close first, then let checkout routing continue. */
+      document.addEventListener('click', e => {
+        const checkoutLink = e.target?.closest?.('#cartCheckoutBtn');
+        if (!checkoutLink || checkoutLink.classList.contains('is-disabled')) return;
+        closeCartDrawer();
+      }, true);
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && cartPanel?.classList.contains('show')) closeCartDrawer();
+      });
+
+      const itemFromButton = button => {
         const id = button.getAttribute('data-id');
         const sku = button.getAttribute('data-sku') || id || button.getAttribute('data-name');
         return {
@@ -1516,72 +1660,38 @@ body.no-scroll{overflow:hidden!important}
           img: button.getAttribute('data-img'),
           cover: button.getAttribute('data-cover') || '',
           type: button.getAttribute('data-type'),
-          qty: 1
+          qty: 1,
+          quantity: 1
         };
       };
 
-      const commitItem = (button) => {
+      const commitItem = button => {
         const incoming = itemFromButton(button);
+        const current = readCart();
 
         cart = window.DingloftCartSync
-          ? window.DingloftCartSync.addOrMerge(cart, incoming)
-          : cart;
+          ? window.DingloftCartSync.addOrMerge(current, incoming)
+          : current;
 
         if (!window.DingloftCartSync && !cart.some(item => String(item.sku || item.id) === String(incoming.sku))) {
           cart.push(incoming);
         }
 
-        if (window.DingloftCartSync?.write) {
-          cart = window.DingloftCartSync.write(cart, true);
-        } else {
-          localStorage.setItem('dingloft_cart', JSON.stringify(cart));
-          window.dispatchEvent(new CustomEvent('dingloft:cart-sync', { detail:{cart} }));
-        }
-
-        updateCartUI();
-
-        try {
-          if (window.parent && window.parent !== window) {
-            const total = cart.reduce((sum,item)=>sum + Math.max(1,Number(item.qty ?? item.quantity ?? 1) || 1),0);
-            const pd = window.parent.document;
-            const badge = pd.getElementById('navCartCount') || pd.querySelector('.helmet-shell-cart-count');
-            if (badge) {
-              badge.textContent = String(total);
-              badge.hidden = total < 1;
-            }
-          }
-        } catch (_) {}
-
+        writeCart(cart);
         return incoming;
       };
 
       const globalCartTarget = () => {
-        const roots = [];
         try {
-          if (window.parent && window.parent !== window && window.parent.document) roots.push(window.parent.document);
-        } catch (_) {}
-        roots.push(document);
-
-        for (const root of roots) {
-          const direct = root.querySelector?.(
-            '#navCart,.helmet-shell-cart,#openCartBtn,[data-cart-open],[aria-label="Abrir carrito"]'
-          );
-          if (direct) return direct;
-
-          for (const host of Array.from(root.querySelectorAll?.('*') || [])) {
-            const shadow = host.shadowRoot;
-            if (!shadow) continue;
-            const inside = shadow.querySelector(
-              '.cart,[data-cart-open],[aria-label*="carrito" i],[aria-label*="cart" i]'
-            );
-            if (inside) return inside;
+          if (window.parent && window.parent !== window && window.parent.document) {
+            const pd = window.parent.document;
+            return pd.querySelector('#navCart,.helmet-shell-cart,[aria-label="Abrir carrito"]');
           }
-        }
-
-        return document.querySelector('.cart-btn-global,#main-cart-btn,.btn-floating-cart');
+        } catch (_) {}
+        return document.getElementById('openCartBtn');
       };
 
-      const flyToGlobalCart = (button, item) => {
+      const flyToGlobalCart = (button,item) => {
         if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
         const start = button.getBoundingClientRect();
@@ -1599,7 +1709,7 @@ body.no-scroll{overflow:hidden!important}
         flyer.className = 'dl-cart-fly';
         flyer.style.left = `${start.left + start.width/2 - 37}px`;
         flyer.style.top = `${start.top + start.height/2 - 37}px`;
-        flyer.innerHTML = `<img src="${item.cover || `img/${item.img}.png`}" alt="">`;
+        flyer.innerHTML = `<img src="${cartImage(item)}" alt="">`;
         document.body.appendChild(flyer);
 
         const dx = (end.left + end.width/2) - (start.left + start.width/2);
@@ -1608,21 +1718,13 @@ body.no-scroll{overflow:hidden!important}
         requestAnimationFrame(() => {
           flyer.style.transition = 'transform .78s cubic-bezier(.16,.84,.26,1), opacity .18s ease .60s';
           flyer.style.transform = `translate3d(${dx}px,${dy}px,0) scale(.18) rotate(10deg)`;
-          flyer.style.opacity = '0.15';
+          flyer.style.opacity = '.15';
         });
 
-        setTimeout(() => {
-          flyer.remove();
-          try {
-            target?.classList?.remove('dl-cart-target-pop');
-            void target?.offsetWidth;
-            target?.classList?.add('dl-cart-target-pop');
-            setTimeout(()=>target?.classList?.remove('dl-cart-target-pop'),700);
-          } catch (_) {}
-        }, 790);
+        setTimeout(()=>flyer.remove(),790);
       };
 
-      const flashAdded = (button) => {
+      const flashAdded = button => {
         const original = button.dataset.originalLabel || button.innerHTML;
         button.dataset.originalLabel = original;
         button.classList.remove('su-added');
@@ -1630,12 +1732,11 @@ body.no-scroll{overflow:hidden!important}
         button.classList.add('su-added');
         button.innerHTML = '<i class="bi bi-check2"></i> Agregado';
         button.disabled = true;
-
-        setTimeout(() => {
+        setTimeout(()=>{
           button.innerHTML = original;
           button.disabled = false;
           button.classList.remove('su-added');
-        }, 1050);
+        },1050);
       };
 
       const goToCheckout = () => {
@@ -1652,8 +1753,9 @@ body.no-scroll{overflow:hidden!important}
           e.preventDefault();
           if (this.disabled) return;
           const item = commitItem(this);
-          flyToGlobalCart(this, item);
+          flyToGlobalCart(this,item);
           flashAdded(this);
+          showToast(`${item.name} agregado`);
         });
       });
 
@@ -1666,6 +1768,20 @@ body.no-scroll{overflow:hidden!important}
         });
       });
 
+      const syncCartFromSharedState = () => {
+        cart = readCart();
+        renderCartDrawer();
+        syncParentBadge();
+      };
+
+      window.addEventListener('dingloft:cart-sync', syncCartFromSharedState);
+      window.addEventListener('storage', event => {
+        if (event.key === CART_KEY) syncCartFromSharedState();
+      });
+
+      renderCartDrawer();
+      syncParentBadge();
+
       const freeTrialBtn = document.getElementById('btn-free-trial');
       if (freeTrialBtn) {
         freeTrialBtn.addEventListener('click', function(e) {
@@ -1676,16 +1792,6 @@ body.no-scroll{overflow:hidden!important}
           }
         });
       }
-
-
-      const syncCartFromSharedState = (event) => {
-        const incoming = event?.detail?.cart || (() => { try { return JSON.parse(localStorage.getItem('dingloft_cart') || '[]'); } catch (_) { return []; } })();
-        cart = window.DingloftCartSync ? window.DingloftCartSync.normalize(incoming) : (Array.isArray(incoming) ? incoming : []);
-        updateCartUI();
-      };
-      window.addEventListener('dingloft:cart-sync', syncCartFromSharedState);
-      window.addEventListener('storage', event => { if (event.key === 'dingloft_cart') syncCartFromSharedState(); });
-      updateCartUI();
     });
   </script>
   <script type="module" src="dingloft-commerce.js?v=2.2.0"></script>
