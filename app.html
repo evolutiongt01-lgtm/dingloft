@@ -278,12 +278,27 @@ body.cart-sheet-open #stage{bottom:0!important}
 <script src="/pwa-runtime.js?v=78"></script>
 
 <script type="module" id="dingloft-home-admin-auth-v31">
+// Admin eligibility on mobile now mirrors desktop and account.html: a signed-in
+// Firebase user whose session the Worker's /admin/session endpoint accepts
+// (owners, historical admins, active support staff). No email list is hardcoded here.
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 const firebaseConfig={apiKey:"AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",authDomain:"login-dingloft.firebaseapp.com",projectId:"login-dingloft",storageBucket:"login-dingloft.firebasestorage.app",messagingSenderId:"549466738202",appId:"1:549466738202:web:8bf305fe2c753e9d76cba3",measurementId:"G-R9SGZCDN13"};
-const ADMIN_EMAILS=new Set(["evolutiongt01@gmail.com","tepaz2025@gmail.com","matzarcesar01@hotmail.com"]);
 const fb=getApps().length?getApp():initializeApp(firebaseConfig);const auth=getAuth(fb);window.__dingloftAdminEligible=false;
+const ADMIN_WORKER=String(window.DINGLOFT_WORKER_BASE||"https://autumn-breeze-dfa0.evolutiongt01.workers.dev").replace(/\/$/,"");
 window.__dingloftRefreshAdminButton=()=>{const btn=document.getElementById('homeAdminBtn');if(!btn)return;const route=document.body.dataset.appRoute||new URLSearchParams(location.search).get('route')||'home';btn.classList.toggle('show',window.__dingloftAdminEligible===true&&route==='home');};
-onAuthStateChanged(auth,user=>{window.__dingloftAdminEligible=!!user&&ADMIN_EMAILS.has(String(user.email||'').toLowerCase());window.__dingloftRefreshAdminButton();});
+onAuthStateChanged(auth,async(user)=>{
+  let isAdmin=false;
+  if(user){
+    try{
+      const token=await user.getIdToken(false);
+      const response=await fetch(`${ADMIN_WORKER}/admin/session`,{headers:{Authorization:`Bearer ${token}`},cache:'no-store'});
+      isAdmin=response.ok;
+    }catch(_){isAdmin=false;}
+  }
+  window.__dingloftAdminEligible=isAdmin;
+  window.__dingloftRefreshAdminButton();
+  window.dispatchEvent(new CustomEvent('dingloft:admin-state-local',{detail:{isAdmin}}));
+});
 </script>
 </body></html>

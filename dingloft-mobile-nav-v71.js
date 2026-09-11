@@ -165,6 +165,7 @@
   }
 
   async function openCart(){
+    closeMenu();
     const globalCart = await loadMobileCart();
     if (globalCart?.open) { globalCart.open(); return; }
     // Fail-safe only: old page cart is used if the independent component cannot load.
@@ -234,24 +235,33 @@
   function headerMarkup(root){
     const style = document.createElement('style');
     style.textContent = `
-      :host{display:block;width:100%;height:100%;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,"Segoe UI",sans-serif;color-scheme:dark}
+      :host{display:block;width:100%;height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;color-scheme:dark}
       *,*::before,*::after{box-sizing:border-box}
       .bar{position:relative;width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;padding:env(safe-area-inset-top,0px) max(14px,env(safe-area-inset-right,0px)) 0 max(14px,env(safe-area-inset-left,0px));background:rgba(5,7,10,.98);border-bottom:1px solid rgba(255,255,255,.08);box-shadow:none}.dl-theme-mobile{display:none!important}
       .bar::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:rgba(255,255,255,.05);opacity:1;pointer-events:none}
       .spark-field{display:none!important}
       .bar.loading .spark-field{opacity:1}
-      .spark{--x:50%;--dx:0px;--sz:3px;--delay:0s;position:absolute;left:var(--x);top:0;width:var(--sz);height:var(--sz);border-radius:50%;background:rgba(226,249,255,.96);box-shadow:0 0 8px rgba(108,220,255,.95),0 0 18px rgba(128,119,255,.45);opacity:0;transform:translate3d(0,-2px,0) scale(.4);animation:dlSparkFall .92s cubic-bezier(.18,.72,.22,1) var(--delay) infinite}
-      .spark:nth-child(3n){background:rgba(255,255,255,.98);box-shadow:0 0 7px rgba(255,255,255,.92),0 0 17px rgba(116,212,255,.42)}
+      .spark{--x:50%;--dx:0px;--sz:3px;--delay:0s;position:absolute;left:var(--x);top:0;width:var(--sz);height:var(--sz);border-radius:50%;background:rgba(226,249,255,.96);box-shadow:0 0 8px rgba(183,255,52,.85),0 0 18px rgba(183,255,52,.35);opacity:0;transform:translate3d(0,-2px,0) scale(.4);animation:dlSparkFall .92s cubic-bezier(.18,.72,.22,1) var(--delay) infinite}
+      .spark:nth-child(3n){background:rgba(255,255,255,.98);box-shadow:0 0 7px rgba(255,255,255,.92),0 0 17px rgba(183,255,52,.32)}
       .spark:nth-child(4n){border-radius:1px;transform:rotate(45deg)}
       .bar.loading::after{animation:dlHeaderSeam 1.1s ease-in-out infinite}
       @keyframes dlSparkFall{0%{opacity:0;transform:translate3d(0,-3px,0) scale(.35)}18%{opacity:1}64%{opacity:.82}100%{opacity:0;transform:translate3d(var(--dx),31px,0) scale(.08)}}
       @keyframes dlHeaderSeam{0%,100%{opacity:.36;filter:brightness(1)}50%{opacity:.88;filter:brightness(1.5)}}
       @media(prefers-reduced-motion:reduce){.spark{animation:none!important}.bar.loading .spark-field{opacity:.45}.bar.loading::after{animation:none!important}}
       .brand{height:68px;display:flex;align-items:center;justify-content:center;gap:11px;color:#fff;text-decoration:none;-webkit-tap-highlight-color:transparent}
-      .brand img{width:36px;height:36px;border-radius:12px;object-fit:cover;display:block;box-shadow:0 7px 19px rgba(0,0,0,.30)}
-      .copy{line-height:1}.copy strong{display:block;color:#f7fbff;font-size:.90rem;font-weight:850;letter-spacing:.18em;white-space:nowrap}.copy small{display:block;margin-top:6px;color:#66758a;font-size:.50rem;font-weight:750;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap}
+      .brand img{width:32px;height:32px;border-radius:10px;object-fit:cover;display:block;box-shadow:none}
+      .copy{line-height:1}.copy strong{display:block;color:#fff;font-size:.86rem;font-weight:900;letter-spacing:-.02em;white-space:nowrap}.copy small{display:none}
       .search{position:absolute;left:max(12px,env(safe-area-inset-left,0px));bottom:15px;width:38px;height:38px;padding:0;border:0;border-radius:0;background:transparent;color:#d9dde2;display:grid;place-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent}.search:active{transform:scale(.92)}.search svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-      .admin{position:absolute;right:max(12px,env(safe-area-inset-right,0px));bottom:15px;height:38px;padding:0 8px;border:0;border-radius:0;background:transparent;color:#b8ff24;text-decoration:none;display:none;align-items:center;gap:6px;font-size:.54rem;font-weight:820;text-transform:uppercase;letter-spacing:.06em}.admin.show{display:flex}.admin svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+      .menu{position:absolute;right:max(12px,env(safe-area-inset-right,0px));bottom:15px;width:38px;height:38px;padding:0;border:0;border-radius:0;background:transparent;color:#d9dde2;display:grid;place-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent}.menu:active{transform:scale(.92)}.menu svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+      .panel{position:absolute;top:100%;left:0;right:0;margin:0;padding:8px;background:#0a0d11;border-bottom:1px solid rgba(255,255,255,.08);box-shadow:0 24px 60px rgba(0,0,0,.44);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .2s ease,transform .2s ease,visibility .2s;pointer-events:none}
+      .panel.open{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+      .panel a{display:flex;align-items:center;gap:12px;min-height:46px;padding:0 12px;color:#c7cbd0;text-decoration:none;font-size:.72rem;font-weight:800;letter-spacing:.01em;border-bottom:1px solid rgba(255,255,255,.06)}
+      .panel a:last-child{border-bottom:0}
+      .panel a svg{width:17px;height:17px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+      .panel a:active{background:rgba(255,255,255,.05)}
+      .panel a.active{color:#fff;background:rgba(255,255,255,.045)}
+      .panel a.active svg{color:#b7ff34}
+      .panel a.admin{display:none;color:#b7ff34}.panel a.admin.show{display:flex}
     `;
     const bar = document.createElement('div');
     bar.className = 'bar';
@@ -259,9 +269,16 @@
       <button class="search" type="button" aria-label="Buscar en Dingloft"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg></button>
       <a class="brand" href="/ventas?app=1#inicio" aria-label="Dingloft inicio">
         <img src="/img/pwa-liquid-rounded-192-v17.png" alt="Dingloft">
-        <span class="copy"><strong>DINGLOFT</strong><small>Evolution Group</small></span>
+        <span class="copy"><strong>Dingloft</strong><small>Evolution Group</small></span>
       </a>
-      <a class="admin" href="/admin" aria-label="Administración"><svg viewBox="0 0 24 24"><path d="M12 3 20 6v5c0 5.2-3.4 8.7-8 10-4.6-1.3-8-4.8-8-10V6z"></path><path d="m9.5 12 1.6 1.7 3.5-4"></path></svg><span>Admin</span></a>
+      <button class="menu" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Abrir menú"><svg viewBox="0 0 24 24"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"></path></svg></button>
+      <nav class="panel" aria-label="Navegación Dingloft" aria-hidden="true">
+        <a class="admin" data-nav-close href="/admin" aria-label="Administración"><svg viewBox="0 0 24 24"><path d="M12 3 20 6v5c0 5.2-3.4 8.7-8 10-4.6-1.3-8-4.8-8-10V6z"></path><path d="m9.5 12 1.6 1.7 3.5-4"></path></svg><span>Admin</span></a>
+        <a data-route="home" data-nav-close href="/ventas?app=1#inicio"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5.5 9.5V21h13V9.5"></path></svg><span>Inicio</span></a>
+        <a data-route="catalog" data-nav-close href="/ventas?app=1#catalogo"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg><span>Software</span></a>
+        <a data-route="multitrack" data-nav-close href="/multitrack?app=1"><svg viewBox="0 0 24 24"><path d="M4 13v-2M8 17V7M12 20V4M16 17V7M20 13v-2"></path></svg><span>Multitracks</span></a>
+        <a data-route="account" data-nav-close href="/account?app=1"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"></path></svg><span>Cuenta</span></a>
+      </nav>
       <span class="spark-field" aria-hidden="true">
         <i class="spark" style="--x:8%;--dx:-7px;--sz:2px;--delay:.03s"></i>
         <i class="spark" style="--x:17%;--dx:5px;--sz:3px;--delay:.28s"></i>
@@ -359,6 +376,7 @@
   }
 
   async function openSearch(){
+    closeMenu();
     const overlay=searchRoot?.querySelector('.overlay');const input=searchRoot?.querySelector('input');const results=searchRoot?.querySelector('.results');if(!overlay)return;
     overlay.classList.add('show');
     if(results)results.innerHTML='<div class="empty"><b>Actualizando catálogo…</b>Buscando productos disponibles.</div>';
@@ -367,33 +385,42 @@
   }
   function closeSearch(){searchRoot?.querySelector('.overlay')?.classList.remove('show')}
 
+  // v100: header menu panel replaces the old multi-item dock — same 4 destinations as desktop.
+  function menuPanel(){ return headerRoot?.querySelector('.panel') || null; }
+  function menuToggleButton(){ return headerRoot?.querySelector('.menu') || null; }
+  function openMenu(){
+    closeSearch();
+    menuPanel()?.classList.add('open');
+    menuPanel()?.setAttribute('aria-hidden','false');
+    menuToggleButton()?.setAttribute('aria-expanded','true');
+  }
+  function closeMenu(){
+    menuPanel()?.classList.remove('open');
+    menuPanel()?.setAttribute('aria-hidden','true');
+    menuToggleButton()?.setAttribute('aria-expanded','false');
+  }
+  function toggleMenu(){ menuPanel()?.classList.contains('open') ? closeMenu() : openMenu(); }
+
+  // v100: the bottom dock is cart-only. Every other destination (Home, Software,
+  // Multitracks, Cuenta, Admin) lives in the header menu panel, same as desktop.
   function dockMarkup(root){
     const style = document.createElement('style');
     style.textContent = `
-      :host{display:block;width:100%;height:100%;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,"Segoe UI",sans-serif;color-scheme:dark}
+      :host{display:block;width:100%;height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;color-scheme:dark}
       *,*::before,*::after{box-sizing:border-box}
-      .dock{--liquid-x:7px;--liquid-w:64px;--liquid-glint:50%;position:relative;width:100%;height:66px;padding:6px 7px;display:grid;grid-template-columns:1fr 1fr 76px 1fr 1fr;align-items:center;border:1px solid rgba(255,255,255,.12);border-radius:22px;background:linear-gradient(180deg,rgba(18,22,29,.88),rgba(8,10,14,.94));box-shadow:0 18px 55px rgba(0,0,0,.56),inset 0 1px 0 rgba(255,255,255,.075);backdrop-filter:blur(28px) saturate(175%);-webkit-backdrop-filter:blur(28px) saturate(175%);overflow:visible;isolation:isolate;touch-action:pan-y}
-      .dock::before{content:"";position:absolute;inset:1px;border-radius:21px;pointer-events:none;z-index:0;background:linear-gradient(115deg,rgba(255,255,255,.055),transparent 32%,rgba(91,210,255,.035) 58%,transparent 76%),radial-gradient(180px 62px at 50% -12%,rgba(255,255,255,.09),transparent 72%)}
-      .liquid-lens{position:absolute;z-index:1;left:0;top:6px;width:var(--liquid-w);height:52px;border-radius:19px;pointer-events:none;overflow:hidden;opacity:.88;transform:translate3d(var(--liquid-x),0,0) scale(.985);transform-origin:center;transition:transform .58s cubic-bezier(.16,1,.22,1),width .48s cubic-bezier(.16,1,.22,1),opacity .24s ease,filter .24s ease;background:linear-gradient(145deg,rgba(255,255,255,.135),rgba(255,255,255,.025) 44%,rgba(97,218,255,.095) 100%);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -1px 0 rgba(91,211,255,.07),0 10px 26px rgba(0,0,0,.24),0 0 22px rgba(92,208,255,.055);backdrop-filter:blur(15px) saturate(205%) brightness(1.13);-webkit-backdrop-filter:blur(15px) saturate(205%) brightness(1.13)}
-      .liquid-lens::before{content:"";position:absolute;inset:-34% -18%;background:radial-gradient(circle at var(--liquid-glint) 24%,rgba(255,255,255,.76) 0 3%,rgba(255,255,255,.22) 8%,transparent 24%),radial-gradient(circle at calc(var(--liquid-glint) + 18%) 84%,rgba(100,222,255,.26),transparent 31%),linear-gradient(108deg,transparent 22%,rgba(255,255,255,.13) 43%,transparent 63%);filter:blur(.2px);transform:skewX(-8deg);opacity:.72;transition:opacity .2s ease}
-      .liquid-lens::after{content:"";position:absolute;inset:1px;border-radius:18px;border:1px solid rgba(255,255,255,.09);box-shadow:inset 7px 5px 16px rgba(255,255,255,.045),inset -7px -5px 14px rgba(0,0,0,.10)}
-      .dock.liquid-tracking .liquid-lens{opacity:1;transform:translate3d(var(--liquid-x),0,0) scale(1.055,1.035);transition:transform .055s linear,width .09s linear,opacity .12s ease;filter:brightness(1.08)}
-      .dock.liquid-tracking .liquid-lens::before{opacity:.96}
-      .item{position:relative;z-index:2;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:0;border-radius:17px;background:transparent;color:#687384;text-decoration:none;font-size:.48rem;font-weight:760;line-height:1;-webkit-tap-highlight-color:transparent;transition:color .18s ease,background .18s ease,transform .18s cubic-bezier(.16,1,.3,1),text-shadow .18s ease}.item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:filter .18s ease,transform .18s cubic-bezier(.16,1,.3,1)}.item.active{color:#edf8ff;background:rgba(255,255,255,.018)}.item.active svg{color:#79dcff;filter:drop-shadow(0 0 8px rgba(109,214,255,.25))}.item.liquid-hover{color:#f6fbff;text-shadow:0 0 14px rgba(197,239,255,.16);transform:translateY(-1px) scale(1.035)}.item.liquid-hover svg{filter:drop-shadow(0 0 10px rgba(111,220,255,.38));transform:scale(1.06)}.item:active{transform:scale(.92)}
-      .cart-slot{position:relative;z-index:3;height:52px;display:flex;align-items:center;justify-content:center}.cart{position:absolute;z-index:4;left:50%;top:-9px;width:60px;height:60px;margin:0;padding:0;border:1px solid rgba(255,255,255,.88);border-radius:20px;background:linear-gradient(145deg,#fbfdff,#eaf1f5);color:#080b0e;display:grid;place-items:center;transform:translateX(-50%);box-shadow:0 17px 43px rgba(0,0,0,.45);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .18s cubic-bezier(.16,1,.3,1),box-shadow .18s ease}.cart.liquid-hover{transform:translateX(-50%) translateY(-1px) scale(1.045);box-shadow:0 19px 48px rgba(0,0,0,.46),0 0 24px rgba(111,220,255,.18)}.cart:active{transform:translateX(-50%) scale(.92)}.cart svg{width:27px;height:27px;stroke:currentColor;fill:none;stroke-width:1.8}.count{position:absolute;top:-5px;right:-6px;min-width:25px;height:25px;padding:0 6px;border:2px solid #050608;border-radius:999px;background:#24aaf2;color:#fff;display:grid;place-items:center;font-size:.68rem;font-weight:850}.count.empty{display:none}
-      @media(prefers-reduced-motion:reduce){.liquid-lens,.item,.item svg,.cart{transition:none!important}.dock.liquid-tracking .liquid-lens{transform:translate3d(var(--liquid-x),0,0)!important}}
-      @media(max-width:350px){.item span{display:none}}
+      .dock{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;pointer-events:none}
+      .cart{position:absolute;z-index:4;bottom:2px;width:60px;height:60px;margin:0;padding:0;border:1px solid rgba(255,255,255,.14);border-radius:20px;background:#b7ff34;color:#080a0c;display:grid;place-items:center;box-shadow:0 17px 43px rgba(0,0,0,.45);cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent;transition:transform .18s cubic-bezier(.16,1,.3,1),box-shadow .18s ease}
+      .cart:active{transform:scale(.92)}
+      .cart svg{width:27px;height:27px;stroke:currentColor;fill:none;stroke-width:1.8}
+      .count{position:absolute;top:-6px;right:-6px;min-width:25px;height:25px;padding:0 6px;border:2px solid #050608;border-radius:999px;background:#080a0c;color:#b7ff34;display:grid;place-items:center;font-size:.68rem;font-weight:850}
+      .count.empty{display:none}
+      @media(prefers-reduced-motion:reduce){.cart{transition:none!important}}
     `;
     const dock = document.createElement('nav');
     dock.className = 'dock';
-    dock.setAttribute('aria-label','Navegación Dingloft');
+    dock.setAttribute('aria-label','Carrito Dingloft');
     dock.innerHTML = `
-      <span class="liquid-lens" aria-hidden="true"></span>
-      <a class="item" href="/ventas?app=1#inicio" data-route="home" aria-label="Inicio"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5.5 9.5V21h13V9.5"></path></svg><span>Inicio</span></a>
-      <a class="item" href="/ventas?app=1#catalogo" data-route="catalog" aria-label="Catálogo"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg><span>Catálogo</span></a>
-      <span class="cart-slot"><button class="cart" type="button" aria-label="Abrir carrito"><svg viewBox="0 0 24 24"><path d="M6 8h12l1 13H5z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="count empty">0</span></button></span>
-      <a class="item" href="/multitrack?app=1" data-route="multitrack" aria-label="Multitrack"><svg viewBox="0 0 24 24"><path d="M4 13v-2M8 17V7M12 20V4M16 17V7M20 13v-2"></path></svg><span>Multitrack</span></a>
-      <a class="item" href="/account?app=1" data-route="account" aria-label="Cuenta"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"></path></svg><span>Cuenta</span></a>`;
+      <button class="cart" type="button" aria-label="Abrir carrito"><svg viewBox="0 0 24 24"><path d="M6 8h12l1 13H5z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="count empty">0</span></button>`;
     root.append(style, dock);
   }
 
@@ -474,96 +501,16 @@
     }
   }
 
-  const liquidDockState={tracking:false,pointerId:null,startX:0,startY:0,moved:false,suppressClick:false,hover:null};
-  function liquidDock(){return dockRoot?.querySelector('.dock')||null}
-  function liquidTargets(){const d=liquidDock();return d?[...d.querySelectorAll('.item[data-route],.cart')]:[]}
-  function liquidTargetMetrics(el){
-    const d=liquidDock();if(!d||!el)return null;
-    const dr=d.getBoundingClientRect(),r=el.getBoundingClientRect();
-    const isCart=el.classList.contains('cart');
-    const w=Math.max(58,Math.min(isCart?70:r.width-5,104));
-    const x=Math.max(4,Math.min(dr.width-w-4,(r.left-dr.left)+(r.width-w)/2));
-    return{x,w,center:r.left+r.width/2,dr};
-  }
-  function setLiquidHover(el){
-    if(liquidDockState.hover===el)return;
-    liquidDockState.hover?.classList.remove('liquid-hover');
-    liquidDockState.hover=el||null;
-    liquidDockState.hover?.classList.add('liquid-hover');
-  }
-  function placeLiquidOn(el,{tracking=false,clientX=null}={}){
-    const d=liquidDock(),m=liquidTargetMetrics(el);if(!d||!m)return;
-    let x=m.x,glint=50;
-    if(tracking&&Number.isFinite(clientX)){
-      x=Math.max(4,Math.min(m.dr.width-m.w-4,clientX-m.dr.left-m.w/2));
-      glint=Math.max(10,Math.min(90,50+((clientX-m.center)/Math.max(1,m.w))*72));
-    }
-    d.style.setProperty('--liquid-x',`${x.toFixed(2)}px`);
-    d.style.setProperty('--liquid-w',`${m.w.toFixed(2)}px`);
-    d.style.setProperty('--liquid-glint',`${glint.toFixed(1)}%`);
-  }
-  function nearestLiquidTarget(clientX){
-    const list=liquidTargets();let best=null,dist=Infinity;
-    for(const el of list){const r=el.getBoundingClientRect(),d=Math.abs(clientX-(r.left+r.width/2));if(d<dist){dist=d;best=el}}
-    return best;
-  }
-  function activeLiquidTarget(){
-    const d=liquidDock();if(!d)return null;
-    const route=activeRoute();return d.querySelector(`.item[data-route="${route}"]`)||d.querySelector('.item[data-route="home"]');
-  }
-  function snapLiquidToActive(){
-    if(liquidDockState.tracking)return;
-    const d=liquidDock(),target=activeLiquidTarget();if(!d||!target)return;
-    d.classList.remove('liquid-tracking');setLiquidHover(null);placeLiquidOn(target);
-  }
-  function setupLiquidDock(){
-    const d=liquidDock();if(!d||d.dataset.liquidReady==='1')return;
-    d.dataset.liquidReady='1';
-    const endTracking=()=>{
-      if(!liquidDockState.tracking)return;
-      liquidDockState.tracking=false;liquidDockState.pointerId=null;
-      d.classList.remove('liquid-tracking');setLiquidHover(null);
-      requestAnimationFrame(()=>snapLiquidToActive());
-    };
-    d.addEventListener('pointerdown',e=>{
-      if(e.pointerType==='mouse'&&e.button!==0)return;
-      const target=e.target.closest?.('.item[data-route],.cart');if(!target)return;
-      liquidDockState.tracking=true;liquidDockState.pointerId=e.pointerId;liquidDockState.startX=e.clientX;liquidDockState.startY=e.clientY;liquidDockState.moved=false;
-      try{d.setPointerCapture(e.pointerId)}catch(_){}
-      d.classList.add('liquid-tracking');setLiquidHover(target);placeLiquidOn(target,{tracking:true,clientX:e.clientX});
-    },{passive:true});
-    d.addEventListener('pointermove',e=>{
-      if(!liquidDockState.tracking||e.pointerId!==liquidDockState.pointerId)return;
-      const dx=e.clientX-liquidDockState.startX,dy=e.clientY-liquidDockState.startY;
-      if(Math.abs(dx)>7&&Math.abs(dx)>Math.abs(dy)*.65)liquidDockState.moved=true;
-      const target=nearestLiquidTarget(e.clientX)||activeLiquidTarget();setLiquidHover(target);placeLiquidOn(target,{tracking:true,clientX:e.clientX});
-    },{passive:true});
-    d.addEventListener('pointerup',e=>{
-      if(e.pointerId!==liquidDockState.pointerId)return;
-      if(liquidDockState.moved){liquidDockState.suppressClick=true;setTimeout(()=>{liquidDockState.suppressClick=false},90)}
-      endTracking();
-    },{passive:true});
-    d.addEventListener('pointercancel',endTracking,{passive:true});
-    d.addEventListener('lostpointercapture',endTracking,{passive:true});
-    d.addEventListener('click',e=>{
-      if(!liquidDockState.suppressClick)return;
-      e.preventDefault();e.stopImmediatePropagation();liquidDockState.suppressClick=false;
-    },true);
-    requestAnimationFrame(()=>snapLiquidToActive());
-    window.addEventListener('resize',()=>requestAnimationFrame(snapLiquidToActive),{passive:true});
-  }
-
   function sync(){
     syncCartFocusChrome();
-    if (!dockRoot) return;
     const route = activeRoute();
-    dockRoot.querySelectorAll('.item[data-route]').forEach(el => el.classList.toggle('active', el.dataset.route === route));
-    snapLiquidToActive();
+    headerRoot?.querySelectorAll('.panel a[data-route]').forEach(el => el.classList.toggle('active', el.dataset.route === route));
+    const admin = headerRoot?.querySelector('.admin');
+    if (admin) admin.classList.toggle('show', window.__dingloftAdminEligible === true);
+    if (!dockRoot) return;
     const count = countCart();
     const badge = dockRoot.querySelector('.count');
     if (badge) { badge.textContent = String(count); badge.classList.toggle('empty', count < 1); }
-    const admin = headerRoot?.querySelector('.admin');
-    if (admin) admin.classList.toggle('show', window.__dingloftAdminEligible === true);
   }
 
   function mount(){
@@ -591,7 +538,6 @@
     searchRoot = searchHost.attachShadow({mode:'open'});
     headerMarkup(headerRoot);
     dockMarkup(dockRoot);
-    setupLiquidDock();
     searchMarkup(searchRoot);
 
     // Append as direct body children. Search is last so it can sit above the dock while open.
@@ -600,6 +546,13 @@
     const searchObserver = new MutationObserver(() => { searchHost.style.pointerEvents = searchOverlay?.classList.contains('show') ? 'auto' : 'none'; });
     if(searchOverlay) searchObserver.observe(searchOverlay,{attributes:true,attributeFilter:['class']});
     headerRoot.querySelector('.search')?.addEventListener('click', e => { e.preventDefault(); openSearch(); });
+    headerRoot.querySelector('.menu')?.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); toggleMenu(); });
+    headerRoot.querySelectorAll('.panel a[data-nav-close]').forEach(a => a.addEventListener('click', () => closeMenu()));
+    document.addEventListener('click', e => {
+      if (!menuPanel()?.classList.contains('open')) return;
+      if (e.target === headerHost || headerHost?.contains?.(e.target)) return;
+      closeMenu();
+    });
     searchRoot.querySelector('.close')?.addEventListener('click', e => { e.preventDefault(); closeSearch(); });
     searchRoot.querySelector('.overlay')?.addEventListener('click', e => { if(e.target===searchRoot.querySelector('.overlay')) closeSearch(); });
     searchRoot.querySelector('input')?.addEventListener('input', e => renderSearch(e.target.value));
@@ -608,7 +561,6 @@
       if (!interceptPersistentLink(e,{closeSearchFirst:true})) { closeSearch();beginHeaderLoading(); }
     });
     headerRoot.addEventListener('click', e => { interceptPersistentLink(e); });
-    dockRoot.addEventListener('click', e => { interceptPersistentLink(e); });
     dockRoot.querySelector('.cart')?.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); openCart(); });
     // Preload the single global cart after the shell is visible so the first tap is instant.
     if ('requestIdleCallback' in window) requestIdleCallback(() => loadMobileCart(), {timeout:1200});
@@ -643,7 +595,7 @@
       history[name] = function(...args){ const out = original.apply(this,args); queueMicrotask(sync); return out; };
     } catch (_) {}
   });
-  addEventListener('keydown', event => { if (event.key === 'Escape') closeSearch(); });
+  addEventListener('keydown', event => { if (event.key === 'Escape') { closeSearch(); closeMenu(); } });
   addEventListener('popstate', sync, {passive:true});
   addEventListener('hashchange', sync, {passive:true});
   addEventListener('storage', e => { if (e.key === CART_KEY) sync(); });

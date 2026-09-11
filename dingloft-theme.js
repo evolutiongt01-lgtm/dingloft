@@ -12,7 +12,8 @@
   const svg = `<svg class="dl-theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.6"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.55 1.55M17.15 17.15l1.55 1.55M18.7 5.3l-1.55 1.55M6.85 17.15 5.3 18.7"/></svg><svg class="dl-theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.2A8.3 8.3 0 0 1 8.8 4a8.4 8.4 0 1 0 11.2 11.2Z"/></svg>`;
 
   function stored(){ try { const v=localStorage.getItem(KEY); return v===LIGHT||v===DARK?v:null; } catch (_) { return null; } }
-  function resolved(value=stored()){ return value || (media.matches ? LIGHT : DARK); }
+  // Dingloft is dark-only now: ignore any stored/system preference and never resolve to LIGHT.
+  function resolved(){ return DARK; }
   function ensureCss(doc=document){
     if(doc.getElementById('dingloft-theme-css')) return;
     const link=doc.createElement('link'); link.id='dingloft-theme-css'; link.rel='stylesheet'; link.href='/dingloft-theme.css?v=2';
@@ -73,7 +74,8 @@
     if(!standalone.has(file))return false;
     const b=button('dl-theme-floating');(document.body||document.documentElement).appendChild(b);updateButtons();return true;
   }
-  function mountButtons(){if(window===top){mountDesktop();mountMobile();mountFloating()}}
+  // Dark-only Dingloft: never mount a light/dark toggle in any navbar.
+  function mountButtons(){}
 
   ensureCss();apply(resolved(),{broadcast:false});
   addEventListener('storage',e=>{if(e.key===KEY)apply(resolved(e.newValue),{broadcast:true})});
