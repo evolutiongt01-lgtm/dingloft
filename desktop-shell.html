@@ -193,24 +193,70 @@ html.dingloft-installed #navInstall{display:none!important}
 }
 @media (prefers-reduced-motion:reduce){.dl-search-overlay,.dl-search-panel,.dl-search-result{transition:none!important}}
 </style>
+
+<style id="dingloft-helmet-shell-nav-v90">
+@media (min-width:900px) and (pointer:fine){
+  [data-dl-theme-toggle]{display:none!important}
+  .helmet-shell-nav{
+    position:fixed!important;top:0!important;left:0!important;right:0!important;transform:none!important;
+    width:100%!important;height:68px!important;padding:0 5.4vw!important;border:0!important;border-radius:0!important;
+    display:grid!important;grid-template-columns:1fr auto 1fr!important;align-items:center!important;gap:28px!important;
+    background:rgba(5,7,10,.975)!important;border-bottom:1px solid rgba(255,255,255,.08)!important;
+    box-shadow:none!important;backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;
+  }
+  .helmet-shell-nav::before,.helmet-shell-nav::after{display:none!important}
+  .helmet-shell-brand{justify-self:start!important;gap:9px!important;color:#fff!important}
+  .helmet-shell-brand img{width:29px!important;height:29px!important;border-radius:8px!important;box-shadow:none!important;object-fit:contain!important}
+  .helmet-shell-brand .brand-copy{display:flex!important;flex-direction:row!important;align-items:center!important}
+  .helmet-shell-brand .brand-copy strong{font-size:13px!important;letter-spacing:-.02em!important;text-transform:none!important}
+  .helmet-shell-brand .brand-copy span{display:none!important}
+  .helmet-shell-links{justify-self:center!important;margin:0!important;padding:0!important;display:flex!important;align-items:center!important;gap:6px!important;background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+  .helmet-shell-links .nav-glider{display:none!important}
+  .helmet-shell-links .action{height:30px!important;padding:0 13px!important;border:1px solid transparent!important;border-radius:0!important;background:transparent!important;color:#a8adb4!important;box-shadow:none!important;font-size:9px!important;font-weight:800!important;letter-spacing:.025em!important}
+  .helmet-shell-links .action:hover{background:rgba(255,255,255,.05)!important;color:#fff!important;border-color:transparent!important}
+  .helmet-shell-links .action.active{background:#fff!important;color:#080a0d!important;border-color:#fff!important;box-shadow:none!important}
+  .helmet-shell-tools{justify-self:end;display:flex;align-items:center;gap:5px}
+  .helmet-shell-tools .action{height:32px!important;min-width:32px!important;padding:0 8px!important;border:0!important;border-radius:0!important;background:transparent!important;color:#d9dde2!important;box-shadow:none!important;font-size:9px!important}
+  .helmet-shell-tools .action:hover{background:rgba(255,255,255,.08)!important;color:#fff!important}
+  .helmet-shell-tools .search-action{width:32px!important;padding:0!important}
+  .helmet-shell-tools .action svg{width:16px!important;height:16px!important}
+  .helmet-admin-link{color:#b8ff24!important;gap:6px!important;text-transform:uppercase!important;letter-spacing:.06em!important}
+  .helmet-admin-link:hover{color:#d9ff85!important}
+  .stage{top:0!important}
+  .progress{display:none!important}
+  .dl-search-overlay{padding-top:76px!important}
+}
+</style>
 </head>
 <body style="background:#040609">
 <div id="desktopSplash" aria-label="Cargando Dingloft"><div class="desktop-splash-inner"><div class="desktop-splash-mark"><img src="/img/pwa-liquid-rounded-192-v17.png?v=18" alt="Dingloft"></div><div class="desktop-splash-brand">DINGLOFT</div><div class="desktop-splash-group">Evolution Group</div><div class="desktop-splash-status">Preparando tu espacio</div><div class="desktop-splash-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div></div>
-<header class="shell-nav" id="shellNav">
-  <a class="brand" href="/" data-shell-link="1" aria-label="Dingloft inicio"><img src="/img/pwa-liquid-192-v5.png?v=9" alt="Dingloft" onerror="this.src='/img/dingloft.png'"><span class="brand-copy"><strong>DINGLOFT</strong><span>EVOLUTION GROUP</span></span></a>
-  <nav class="actions" id="desktopNavActions" aria-label="Navegación principal">
+<header class="shell-nav helmet-shell-nav" id="shellNav">
+  <a class="brand helmet-shell-brand" href="/" data-shell-link="1" aria-label="Dingloft inicio">
+    <img src="/img/dingloft.png" alt="Dingloft" onerror="this.src='/img/pwa-liquid-192-v5.png?v=9'">
+    <span class="brand-copy"><strong>Dingloft</strong><span>Evolution Group</span></span>
+  </a>
+
+  <nav class="actions helmet-shell-links" id="desktopNavActions" aria-label="Navegación principal">
     <span class="nav-glider" id="navGlider" aria-hidden="true"></span>
-    <a class="action" id="navHome" href="/" data-shell-link="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M9.5 20v-6h5v6"/></svg><span>Home</span></a>
-    <button class="action search-action" id="navSearch" type="button" aria-label="Buscar en Dingloft" title="Buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg><span>Buscar</span></button>
-    <a class="action admin-link" id="navAdmin" href="/admin" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3.5 19 6v5.2c0 4.4-2.7 7.7-7 9.3-4.3-1.6-7-4.9-7-9.3V6l7-2.5Z"/><path d="m9.4 12 1.7 1.7 3.7-4"/></svg><span>Admin</span></a>
-    <a class="action" id="navMultitracks" href="/multitracks" data-shell-link="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12v2"/><path d="M8 8v8"/><path d="M12 5v14"/><path d="M16 8v8"/><path d="M20 11v3"/></svg><span>Multitracks</span></a>
-    <a class="action" id="navAccount" href="/cuenta" data-shell-link="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3"/><path d="M5 20c.8-4 3.2-6 7-6s6.2 2 7 6"/></svg><span>Cuenta</span></a>
+    <a class="action" id="navHome" href="/" data-shell-link="1"><span>Home</span></a>
+    <a class="action" id="navSoftware" href="/#catalogo" data-shell-link="1"><span>Software</span></a>
+    <a class="action" id="navMultitracks" href="/multitracks" data-shell-link="1"><span>Multitracks</span></a>
+    <a class="action" id="navAccount" href="/cuenta" data-shell-link="1"><span>Cuenta</span></a>
   </nav>
+
+  <div class="helmet-shell-tools" aria-label="Acciones">
+    <button class="action search-action helmet-shell-icon" id="navSearch" type="button" aria-label="Buscar en Dingloft" title="Buscar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+    </button>
+    <a class="action admin-link helmet-admin-link" id="navAdmin" href="/admin" hidden aria-label="Administración">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3.5 19 6v5.2c0 4.4-2.7 7.7-7 9.3-4.3-1.6-7-4.9-7-9.3V6l7-2.5Z"/><path d="m9.4 12 1.7 1.7 3.7-4"/></svg><span>Admin</span>
+    </a>
+  </div>
 </header>
 
 <div class="dl-search-overlay" id="desktopSearchOverlay" aria-hidden="true"><section class="dl-search-panel" role="dialog" aria-modal="true" aria-label="Buscar productos Dingloft"><div class="dl-search-head"><label class="dl-search-input"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg><input id="desktopSearchInput" type="search" autocomplete="off" placeholder="Buscar productos, software o Multitracks…" aria-label="Buscar"></label><button class="dl-search-close" id="desktopSearchClose" type="button" aria-label="Cerrar búsqueda"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div class="dl-search-meta">Catálogo en vivo · productos del Admin incluidos</div><div class="dl-search-results" id="desktopSearchResults"><div class="dl-search-empty"><b>Busca en todo Dingloft</b>Los productos nuevos aparecen aquí automáticamente.</div></div></section></div>
 <div class="stage" id="stage"></div><div class="progress" id="progress"></div>
-<script src="desktop-shell.js?v=89"></script>
+<script src="desktop-shell.js?v=90"></script>
 <script src="dingloft-ui-guard.js?v=58"></script>
 <script src="/pwa-runtime.js?v=77"></script>
 </body></html>
