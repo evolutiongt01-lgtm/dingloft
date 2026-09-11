@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><script src="/dingloft-theme.js?v=2"></script><script src="/dingloft-mobile-nav-v71.js?v=99" data-dingloft-mobile-chrome="71"></script>
+<head><script src="/dingloft-theme.js?v=2"></script><script src="/dingloft-cart-sync.js?v=120"></script><script src="/dingloft-global-nav.js?v=124"></script>
 <script>try{if(window.top!==window.self)document.documentElement.classList.add("dingloft-shell-embedded-v83")}catch(_){}</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
@@ -825,8 +825,215 @@ html,body{
 
   <script>window.__DINGLOFT_COMMERCE_V1__ = true;</script>
   <script src="mobile-shell-redirect.js?v=14"></script>
-<script defer src="desktop-global-nav.js?v=14"></script>
 <script>document.documentElement.classList.add("account-auth-pending");</script>
+
+<style id="dingloft-account-client-v127">
+:root{
+  --acc-bg:#05070a;
+  --acc-panel:#0b0f14;
+  --acc-panel-2:#10151b;
+  --acc-paper:#f4f3ef;
+  --acc-ink:#0a0c0f;
+  --acc-muted:#858d97;
+  --acc-line:#242a31;
+  --acc-accent:#b7ff34;
+}
+body{background:var(--acc-bg)!important}
+.account-page.account-v80{
+  width:min(1420px,calc(100% - 42px))!important;
+  padding:38px 0 78px!important;
+}
+.account-hero-v80{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.52fr) minmax(320px,.58fr)!important;
+  gap:1px!important;
+  border:1px solid var(--acc-line)!important;
+  background:var(--acc-line)!important;
+  border-radius:0!important;
+  overflow:hidden!important;
+  margin-bottom:14px!important;
+}
+.account-welcome-v80,.account-profile-v80{
+  border:0!important;border-radius:0!important;box-shadow:none!important;
+}
+.account-welcome-v80{
+  min-height:390px!important;
+  padding:48px 50px!important;
+  display:flex!important;flex-direction:column!important;justify-content:center!important;
+  background:
+    radial-gradient(circle at 78% 25%,rgba(183,255,52,.08),transparent 28%),
+    linear-gradient(135deg,#080b0f,#10171c)!important;
+}
+.account-welcome-v80::before{
+  content:"DINGLOFT ID";position:absolute;right:32px;bottom:-18px;
+  color:rgba(255,255,255,.018);font-size:clamp(78px,10vw,150px);font-weight:900;letter-spacing:-.08em;
+  pointer-events:none;
+}
+.account-kicker-v80,.side-label{
+  color:var(--acc-accent)!important;letter-spacing:.15em!important;font-size:.62rem!important;text-transform:uppercase!important;
+}
+.account-welcome-v80 h1{
+  max-width:780px!important;margin:17px 0 18px!important;
+  font-size:clamp(46px,5.1vw,78px)!important;line-height:.92!important;letter-spacing:-.06em!important;font-weight:350!important;
+}
+.account-welcome-v80 h1 em{font-style:normal!important;font-weight:850!important}
+.account-welcome-v80>p{max-width:680px!important;color:#a2aab3!important;font-size:.96rem!important;line-height:1.65!important}
+.hero-btn-v80{
+  min-height:48px!important;border-radius:0!important;border:1px solid #343a41!important;
+  background:#151a20!important;color:#fff!important;box-shadow:none!important;text-transform:uppercase!important;
+  font-size:.67rem!important;letter-spacing:.05em!important;
+}
+.hero-btn-v80.primary{background:var(--acc-accent)!important;color:#080a0d!important;border-color:var(--acc-accent)!important}
+.hero-btn-v80:hover{transform:translateY(-1px)!important}
+.hero-signals-v80{gap:18px!important;margin-top:24px!important}
+.hero-signals-v80 span{color:#737c86!important;font-size:.66rem!important}
+.hero-signals-v80 i{color:var(--acc-accent)!important}
+
+.account-profile-v80{
+  padding:34px 30px!important;background:#090d12!important;display:flex!important;flex-direction:column!important;justify-content:center!important;
+}
+.profile-glow-v80{display:none!important}
+.profile-top-v80{padding-bottom:22px!important;border-bottom:1px solid var(--acc-line)!important}
+.account-avatar.top-avatar{border-radius:0!important;border:1px solid #2d343b!important;background:#11171d!important}
+.profile-edit-v80{border-radius:0!important}
+.profile-status-v80{
+  margin:20px 0!important;padding:13px 0!important;border:0!important;border-top:1px solid #151b21!important;border-bottom:1px solid #151b21!important;background:transparent!important;
+}
+.profile-actions-v80{gap:6px!important}
+.profile-actions-v80>*{border-radius:0!important;min-height:40px!important;background:#11161c!important;border:1px solid #22282f!important}
+.profile-actions-v80 .danger-v80{color:#ff97a2!important}
+
+.account-metrics-v80{
+  grid-template-columns:repeat(3,1fr)!important;gap:1px!important;background:var(--acc-line)!important;
+  border:1px solid var(--acc-line)!important;margin-bottom:14px!important;
+}
+.metric-v80{
+  border:0!important;border-radius:0!important;box-shadow:none!important;background:#0b0f14!important;
+  min-height:108px!important;padding:20px 22px!important;
+}
+.metric-icon{border-radius:0!important;background:rgba(183,255,52,.055)!important;border:1px solid rgba(183,255,52,.12)!important;color:var(--acc-accent)!important}
+.metric-copy strong{font-size:1.16rem!important}.metric-copy span{font-size:.66rem!important}
+
+.account-grid-v80{grid-template-columns:minmax(0,1.72fr) minmax(300px,.58fr)!important;gap:14px!important}
+.library-v80{
+  border-radius:0!important;border:1px solid #d8d8d2!important;background:var(--acc-paper)!important;
+  box-shadow:0 26px 70px rgba(0,0,0,.18)!important;color:var(--acc-ink)!important;
+}
+.library-head-v80{padding:30px 32px 22px!important;border-bottom:1px solid #d9dad6!important}
+.library-head-v80 .side-label{color:#626b74!important}
+.library-head-v80 h2{color:var(--acc-ink)!important;font-size:1.8rem!important}
+.library-head-v80 p{color:#737b84!important}
+.library-chip{
+  border-radius:0!important;background:#0b0e11!important;border-color:#0b0e11!important;color:#fff!important;
+  text-transform:uppercase!important;letter-spacing:.05em!important;font-size:.58rem!important;
+}
+.tabs-v80{
+  display:flex!important;gap:0!important;padding:0!important;background:#ebeae5!important;border-bottom:1px solid #d4d5d1!important;
+}
+.tabs-v80 .tab-btn{
+  min-height:48px!important;border:0!important;border-right:1px solid #d3d4d0!important;border-radius:0!important;
+  color:#747b83!important;background:transparent!important;
+}
+.tabs-v80 .tab-btn.active{background:#0a0c0f!important;color:#fff!important}
+.tab-content{padding:20px!important}
+.account-loading-v80{color:#737b84!important}
+.download-row{
+  border-radius:0!important;border:1px solid #d9dadd!important;background:#fff!important;
+  box-shadow:none!important;margin-bottom:8px!important;color:#11161c!important;
+}
+.download-row:hover{border-color:#aeb4ba!important;transform:translateY(-1px)!important}
+.download-row h3{color:#101419!important}
+.download-row p{color:#808891!important}
+.product-art{border-radius:0!important;background:#f0f1f1!important;border:1px solid #e0e2e3!important}
+.download-row .badge{color:#26303a!important}
+.download-btn,.download-btn-small{
+  border-radius:0!important;background:#0b0e11!important;border-color:#0b0e11!important;color:#fff!important;
+}
+.bundle-container,.sub-downloads,.sub-download-row{border-radius:0!important}
+.sub-download-row{background:#f7f7f4!important;color:#30373f!important;border-color:#dedfdb!important}
+
+.side-stack-v80>.side-card{
+  border-radius:0!important;border:1px solid var(--acc-line)!important;background:#0b0f14!important;
+  box-shadow:none!important;padding:24px!important;
+}
+.support-v80{background:linear-gradient(155deg,#0b0f14,#10180d)!important}
+.support-art-v80{border-radius:0!important;color:var(--acc-accent)!important;background:rgba(183,255,52,.05)!important;border-color:rgba(183,255,52,.15)!important}
+.support-art-v80 span{border-radius:0!important}
+.support-v80 h2{font-size:1.55rem!important}
+.support-list-v80 span{color:#9ca4ad!important}
+.support-list-v80 i{color:var(--acc-accent)!important}
+.support-cta-v80{
+  border-radius:0!important;background:var(--acc-accent)!important;color:#080a0d!important;border-color:var(--acc-accent)!important;
+}
+.quick-links-v80 .quick-link{border-radius:0!important;background:#10151a!important;border:1px solid #22282f!important}
+.quick-links-v80 .quick-link i{color:var(--acc-accent)!important}
+.privacy-icon-v80{border-radius:0!important;color:var(--acc-accent)!important;background:rgba(183,255,52,.045)!important;border-color:rgba(183,255,52,.14)!important}
+
+/* Maintenance state shown only if library sync fails. */
+.library-maintenance-v127{
+  position:relative;overflow:hidden;display:grid;grid-template-columns:66px minmax(0,1fr);gap:18px;align-items:start;
+  padding:24px;border:1px solid #c8c9c5;background:#fff;color:#11161c;
+}
+.library-maintenance-v127::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc-accent);
+}
+.library-maintenance-icon-v127{
+  width:66px;height:66px;display:grid;place-items:center;background:#0a0d10;color:var(--acc-accent);font-size:1.35rem;
+}
+.library-maintenance-v127 small{display:block;color:#69727b;font-size:.59rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.library-maintenance-v127 h3{margin:7px 0 8px;font-size:1.25rem;letter-spacing:-.035em}
+.library-maintenance-v127 p{margin:0;color:#69727b;font-size:.79rem;line-height:1.55}
+.library-maintenance-meta-v127{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.library-maintenance-meta-v127 span{
+  display:inline-flex;align-items:center;gap:7px;padding:8px 10px;border:1px solid #d9dad6;
+  font-size:.62rem;font-weight:800;color:#343b42;background:#f7f7f4;
+}
+.library-maintenance-meta-v127 span:first-child{background:#0a0d10;color:#fff;border-color:#0a0d10}
+
+/* Checkout-derived remote agenda */
+.booking-calendar-head-v127{align-items:flex-start!important;gap:12px!important}
+.booking-calendar-kicker-v127{display:block;color:#6e7d8d;font-size:.54rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+.booking-weekend-urgent-v127{
+  margin-left:auto;min-height:39px;padding:0 11px;border:1px solid rgba(255,255,255,.10);border-radius:0;
+  background:#10161d;color:#98a4af;display:flex;align-items:center;gap:9px;cursor:pointer;font-size:.62rem;font-weight:800;
+}
+.booking-weekend-urgent-v127 strong{color:#fff}
+.booking-weekend-urgent-v127[aria-pressed="true"]{background:#221b08;border-color:#5b4710;color:#ffd66b}
+.booking-weekend-urgent-v127[aria-pressed="true"] strong{color:#ffd66b}
+.booking-mode-caption-v127{margin:-4px 0 12px;color:#718090;font-size:.62rem}
+.booking-mode-caption-v127 strong{color:#fff}
+.booking-checkout-note-v127{
+  display:flex;align-items:flex-start;gap:9px;margin-top:11px;padding:11px 12px;border:1px solid rgba(183,255,52,.10);
+  background:rgba(183,255,52,.025);color:#718090;font-size:.63rem;line-height:1.45;
+}
+.booking-checkout-note-v127 i{color:var(--acc-accent);margin-top:1px}
+#reservaModal .time-slot{border-radius:0!important}
+#reservaModal .time-slot.selected{background:var(--acc-accent)!important;color:#08100d!important;border-color:var(--acc-accent)!important}
+#reservaModal .software-btn{border-radius:0!important}
+#reservaModal .software-btn.selected{background:var(--acc-accent)!important;color:#07100a!important;border-color:var(--acc-accent)!important}
+#reservaModal .booking-pay-trigger-v83,#reservaModal .liquid-btn,#reservaModal .liquid-btn-cupon,#reservaModal .liquid-input{border-radius:0!important}
+
+@media(max-width:900px){
+  .account-hero-v80,.account-grid-v80{grid-template-columns:1fr!important}
+  .account-welcome-v80{min-height:330px!important;padding:34px 28px!important}
+  .account-profile-v80{padding:25px 24px!important}
+}
+@media(max-width:760px){
+  .account-page.account-v80{width:calc(100% - 14px)!important;padding-top:82px!important}
+  .account-welcome-v80{padding:28px 20px!important;min-height:auto!important}
+  .account-welcome-v80 h1{font-size:42px!important}
+  .account-metrics-v80{grid-template-columns:1fr!important}
+  .metric-v80{min-height:82px!important}
+  .library-head-v80{padding:22px 18px 17px!important}
+  .tab-content{padding:10px!important}
+  .side-stack-v80>.side-card{padding:20px!important}
+  .library-maintenance-v127{grid-template-columns:50px minmax(0,1fr);padding:17px;gap:12px}
+  .library-maintenance-icon-v127{width:50px;height:50px}
+  .booking-weekend-urgent-v127{padding:0 8px;font-size:.56rem}
+  .booking-weekend-urgent-v127 span{max-width:90px;line-height:1.15;text-align:left}
+}
+</style>
+
 </head>
 <body>
   <main class="account-page account-v80">
@@ -834,14 +1041,14 @@ html,body{
       <article class="account-welcome-v80">
         <div class="welcome-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
         <div class="account-kicker-v80"><i class="bi bi-stars"></i> Dingloft ID</div>
-        <h1>Hola, <span id="hero-first-name">Cliente</span>.<br><em>Todo lo tuyo está aquí.</em></h1>
-        <p>Compras, descargas, soporte remoto y tu acceso Dingloft reunidos en una sola experiencia, sin ruido y siempre sincronizada.</p>
+        <h1>Hola, <span id="hero-first-name">Cliente</span>.<br><em>Tu espacio Dingloft.</em></h1>
+        <p>Tus programas, descargas, reservas y soporte reunidos en un solo lugar, vinculados directamente a tu cuenta.</p>
         <div class="hero-actions-v80">
           <a href="#descargas" class="hero-btn-v80 primary"><i class="bi bi-grid-3x3-gap"></i><span>Mi biblioteca</span></a>
           <button type="button" class="hero-btn-v80" onclick="openReservaModal()"><i class="bi bi-headset"></i><span>Agendar soporte</span></button>
         </div>
         <div class="hero-signals-v80">
-          <span><i class="bi bi-cloud-check"></i> Sincronizado</span>
+          <span><i class="bi bi-bag-check"></i> Compras protegidas</span>
           <span><i class="bi bi-shield-check"></i> Acceso protegido</span>
           <span><i class="bi bi-lightning-charge"></i> Descarga directa</span>
         </div>
@@ -872,7 +1079,7 @@ html,body{
     <section class="account-metrics account-metrics-v80" aria-label="Resumen de cuenta">
       <article class="metric metric-v80"><div class="metric-icon"><i class="bi bi-box-seam"></i></div><div class="metric-copy"><small>Productos activos</small><strong id="stat-programas">0</strong><span>Compras vinculadas</span></div></article>
       <article class="metric metric-v80"><div class="metric-icon"><i class="bi bi-arrow-down-circle"></i></div><div class="metric-copy"><small>Descargas listas</small><strong id="stat-descargas">0</strong><span>Archivos disponibles</span></div></article>
-      <article class="metric metric-v80"><div class="metric-icon"><i class="bi bi-headset"></i></div><div class="metric-copy"><small>Soporte remoto</small><strong>Listo</strong><span>Agenda cuando lo necesites</span></div></article>
+      <article class="metric metric-v80"><div class="metric-icon"><i class="bi bi-headset"></i></div><div class="metric-copy"><small>Soporte remoto</small><strong>8 PM – 2 AM</strong><span>Hora de Miami · $10 / urgente $20</span></div></article>
     </section>
 
     <section class="account-grid account-grid-v80">
@@ -899,11 +1106,11 @@ html,body{
           <div class="support-art-v80"><span></span><i class="bi bi-headset"></i></div>
           <div class="side-label">Dingloft Care</div>
           <h2>Soporte remoto, sin complicarte.</h2>
-          <p>Reserva una sesión y deja que el equipo te ayude a instalar o configurar tu software mientras tú conservas el control.</p>
+          <p>Programa asistencia para instalación o configuración. Elige fecha, horario y conexión antes de confirmar.</p>
           <div class="support-list support-list-v80">
-            <span><i class="bi bi-eye"></i> Ves cada acción en tiempo real</span>
-            <span><i class="bi bi-shield-lock"></i> Conexión privada y temporal</span>
-            <span><i class="bi bi-check2-circle"></i> Validación antes de terminar</span>
+            <span><i class="bi bi-clock"></i> 8:00 PM – 2:00 AM · hora de Miami</span>
+            <span><i class="bi bi-calendar-week"></i> Lunes a viernes $10 · fin de semana urgente $20</span>
+            <span><i class="bi bi-display"></i> Chrome Remote Desktop o AnyDesk</span>
           </div>
           <button class="side-cta support-cta-v80" type="button" onclick="openReservaModal()"><i class="bi bi-calendar2-plus"></i> Elegir fecha y hora</button>
         </article>
@@ -957,24 +1164,29 @@ html,body{
       <div class="booking-modal-head">
         <div class="booking-kicker"><i class="bi bi-headset"></i> Soporte remoto Dingloft</div>
         <h3>Reserva tu sesión Dingloft</h3>
-        <p>Elige una fecha y un horario disponible. El calendario se adapta a tu pantalla y la navegación de Dingloft siempre queda libre.</p>
+        <p>Programa tu sesión entre 8:00 PM y 2:00 AM, siempre en hora de Miami. La tarifa normal aplica de lunes a viernes y el servicio urgente está disponible sábado y domingo.</p>
         <div class="booking-stepbar" aria-label="Pasos para reservar">
           <div class="booking-step active" data-booking-step="1"><b>1</b><span>Fecha</span></div>
           <div class="booking-step" data-booking-step="2"><b>2</b><span>Horario</span></div>
-          <div class="booking-step" data-booking-step="3"><b>3</b><span>Detalles</span></div>
-          <div class="booking-step" data-booking-step="4"><b>4</b><span>Confirmar</span></div>
+          <div class="booking-step" data-booking-step="3"><b>3</b><span>Conexión</span></div>
+          <div class="booking-step" data-booking-step="4"><b>4</b><span>Detalles</span></div>
         </div>
       </div>
 
       <div class="booking-body">
         <div class="booking-grid">
           <div class="calendar-box">
-            <div class="calendar-header">
-              <button id="btn-prev-month" class="calendar-nav-btn" onclick="cambiarMes(-1)" aria-label="Mes anterior"><i class="bi bi-chevron-left"></i></button>
-              <h4 id="calendar-month-year">Cargando...</h4>
-              <button class="calendar-nav-btn" onclick="cambiarMes(1)" aria-label="Mes siguiente"><i class="bi bi-chevron-right"></i></button>
+            <div class="calendar-header booking-calendar-head-v127">
+              <div>
+                <span class="booking-calendar-kicker-v127">Disponibilidad</span>
+                <h4 id="calendar-month-year">Cargando...</h4>
+              </div>
+              <button id="booking-weekend-urgent-v127" class="booking-weekend-urgent-v127" type="button" aria-pressed="false" onclick="toggleWeekendUrgentV127()">
+                <span>Urgente fin de semana</span><strong>$20</strong>
+              </button>
             </div>
-            <div class="calendar-days-head"><span>Do</span><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span></div>
+            <div class="booking-mode-caption-v127" id="booking-mode-caption-v127">Lunes a viernes · <strong>$10</strong></div>
+            <div class="calendar-days-head" id="calendar-days-head-v127"><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span></div>
             <div class="calendar-days-grid" id="calendar-days"></div>
           </div>
 
@@ -989,10 +1201,10 @@ html,body{
         <div class="booking-config">
           <div class="booking-config-title"><strong>Conexión y detalles de la sesión</strong><span class="booking-price"><i class="bi bi-tag"></i> <span id="booking-price">$10.00</span></span></div>
           <div class="software-options">
-            <div class="software-btn selected" onclick="seleccionarSoftware('Google Chrome Remote Desktop', this)"><i class="bi bi-browser-chrome"></i> Chrome Remote Desktop</div>
+            <div class="software-btn" onclick="seleccionarSoftware('Google Chrome Remote Desktop', this)"><i class="bi bi-browser-chrome"></i> Chrome Remote Desktop</div>
             <div class="software-btn" onclick="seleccionarSoftware('AnyDesk', this)"><i class="bi bi-display"></i> AnyDesk</div>
           </div>
-          <textarea id="reservaComentario" class="liquid-input" rows="2" placeholder="Cuéntanos qué programa instalaremos o qué necesitas configurar..."></textarea>
+          <textarea id="reservaComentario" class="liquid-input" rows="3" maxlength="500" placeholder="Ej. Instalar Motion-X, configurar el plugin en mi DAW y verificar audio/MIDI."></textarea><div class="booking-checkout-note-v127"><i class="bi bi-shield-check"></i><span>Después del pago, la reserva aparecerá en tu Cuenta Dingloft. El campo para enviar tu código o enlace se habilita 5 minutos antes de la sesión.</span></div>
         </div>
 
         <div class="booking-footer">
@@ -1098,165 +1310,252 @@ html,body{
       document.getElementById('reservasModal').classList.remove('active');
     };
 
-    let fechaActual = new Date();
-    let mesActual = fechaActual.getMonth();
-    let anoActual = fechaActual.getFullYear();
-    const fechaReal = new Date();
-    const mesReal = fechaReal.getMonth();
-    const anoReal = fechaReal.getFullYear();
+    const REMOTE_TIME_ZONE = "America/New_York";
+    const REMOTE_BASE_PRICE_USD = 10;
+    const REMOTE_WEEKEND_PRICE_USD = 20;
+    const REMOTE_BOOKING_SLOTS = [
+      {value:"20|0",label:"08:00 PM",hour:20,dayOffset:0},
+      {value:"21|0",label:"09:00 PM",hour:21,dayOffset:0},
+      {value:"22|0",label:"10:00 PM",hour:22,dayOffset:0},
+      {value:"23|0",label:"11:00 PM",hour:23,dayOffset:0},
+      {value:"0|1",label:"12:00 AM (+1 día)",hour:0,dayOffset:1},
+      {value:"1|1",label:"01:00 AM (+1 día)",hour:1,dayOffset:1},
+      {value:"2|1",label:"02:00 AM (+1 día)",hour:2,dayOffset:1}
+    ];
 
-    const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    const horariosDisponibles = ["01:00 AM (Miami/EST)", "02:00 AM (Miami/EST)", "03:00 AM (Miami/EST)", "04:00 AM (Miami/EST)", "05:00 AM (Miami/EST)", "06:00 AM (Miami/EST)", "07:00 AM (Miami/EST)"];
+    window.diaSeleccionado = null;
+    window.horaSeleccionada = null;
+    window.remoteSelectedSlotV127 = null;
+    window.remoteUrgentWeekendV127 = false;
+    window.softwareSeleccionado = "";
+    window.precioBase = REMOTE_BASE_PRICE_USD;
+    window.precioFinal = REMOTE_BASE_PRICE_USD;
 
-    function pseudoRandom(seed) {
-        let x = Math.sin(seed++) * 10000;
-        return x - Math.floor(x);
+    const nombresMeses = ["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
+
+    function pad2V127(value){ return String(value).padStart(2,"0"); }
+
+    function timezoneOffsetMsV127(date,timeZone){
+      const parts = new Intl.DateTimeFormat("en-CA",{
+        timeZone,year:"numeric",month:"2-digit",day:"2-digit",
+        hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"
+      }).formatToParts(date).reduce((acc,p)=>{ if(p.type!=="literal") acc[p.type]=p.value; return acc; },{});
+      const asUTC = Date.UTC(+parts.year,+parts.month-1,+parts.day,+parts.hour,+parts.minute,+parts.second);
+      return asUTC - date.getTime();
     }
 
-    window.horaYaPaso = function(horaStr, fechaElegida) {
-        let ahora = new Date(); 
-        let match = horaStr.match(/(\d+):(\d+)\s(AM|PM)/);
-        let hMiami = parseInt(match[1]);
-        if (match[3] === 'PM' && hMiami < 12) hMiami += 12;
-        if (match[3] === 'AM' && hMiami === 12) hMiami = 0;
-        
-        let hGuate = hMiami - 2;
-        let diaAjuste = 0;
-        if (hGuate < 0) {
-            hGuate += 24;
-            diaAjuste = -1; 
-        }
-        
-        let fechaSlot = new Date(fechaElegida);
-        fechaSlot.setDate(fechaSlot.getDate() + diaAjuste);
-        fechaSlot.setHours(hGuate, 0, 0, 0);
-        
-        return fechaSlot <= ahora;
-    };
+    function miamiTodayPartsV127(){
+      const parts = new Intl.DateTimeFormat("en-CA",{
+        timeZone:REMOTE_TIME_ZONE,year:"numeric",month:"2-digit",day:"2-digit"
+      }).formatToParts(new Date()).reduce((acc,p)=>{ if(p.type!=="literal") acc[p.type]=p.value; return acc; },{});
+      return {
+        y:Number(parts.year),m:Number(parts.month),d:Number(parts.day),
+        dateValue:`${parts.year}-${parts.month}-${parts.day}`
+      };
+    }
 
-    function actualizarBotonRetroceso() {
-      const btnPrev = document.getElementById('btn-prev-month');
-      if (anoActual < anoReal || (anoActual === anoReal && mesActual <= mesReal)) {
-        btnPrev.classList.add('disabled');
-      } else {
-        btnPrev.classList.remove('disabled');
-      }
+    function remoteDateInfoV127(dateValue){
+      if(!dateValue) return null;
+      const [y,m,d] = dateValue.split("-").map(Number);
+      const date = new Date(Date.UTC(y,m-1,d,12));
+      if(date.getUTCFullYear()!==y || date.getUTCMonth()!==m-1 || date.getUTCDate()!==d) return null;
+      const weekday = date.getUTCDay();
+      return {y,m,d,weekday,weekend:weekday===0||weekday===6};
+    }
+
+    function dateValueFromSelectedV127(){
+      if(!window.diaSeleccionado) return "";
+      return `${window.diaSeleccionado.getFullYear()}-${pad2V127(window.diaSeleccionado.getMonth()+1)}-${pad2V127(window.diaSeleccionado.getDate())}`;
+    }
+
+    function miamiSlotTimestampV127(dateValue,slot){
+      if(!dateValue || !slot) return NaN;
+      const [y,m,d] = dateValue.split("-").map(Number);
+      const wallUtc = Date.UTC(y,m-1,d+Number(slot.dayOffset||0),Number(slot.hour||0),0,0);
+      let guess = new Date(wallUtc);
+      let offset = timezoneOffsetMsV127(guess,REMOTE_TIME_ZONE);
+      let result = wallUtc-offset;
+      const corrected = timezoneOffsetMsV127(new Date(result),REMOTE_TIME_ZONE);
+      if(corrected!==offset) result = wallUtc-corrected;
+      return result;
+    }
+
+    function selectedDateAllowedV127(dateValue){
+      const info = remoteDateInfoV127(dateValue);
+      const today = miamiTodayPartsV127();
+      if(!info || info.y!==today.y || info.m!==today.m) return false;
+      return window.remoteUrgentWeekendV127 ? info.weekend : !info.weekend;
+    }
+
+    function updatePriceModeV127(){
+      window.precioBase = window.remoteUrgentWeekendV127 ? REMOTE_WEEKEND_PRICE_USD : REMOTE_BASE_PRICE_USD;
+      window.precioFinal = window.precioBase;
+      const price = document.getElementById('booking-price');
+      if(price) price.textContent = `$${window.precioFinal.toFixed(2)}`;
+      const caption = document.getElementById('booking-mode-caption-v127');
+      if(caption) caption.innerHTML = window.remoteUrgentWeekendV127
+        ? 'Sábado y domingo · servicio urgente · <strong>$20</strong>'
+        : 'Lunes a viernes · <strong>$10</strong>';
+      const urgent = document.getElementById('booking-weekend-urgent-v127');
+      if(urgent) urgent.setAttribute('aria-pressed',window.remoteUrgentWeekendV127?'true':'false');
+      const coupon = document.getElementById('cuponInput');
+      if(coupon) coupon.value = "";
+    }
+
+    function renderCalendarHeadV127(){
+      const head = document.getElementById('calendar-days-head-v127');
+      if(!head) return;
+      head.innerHTML = (window.remoteUrgentWeekendV127 ? ["Sá","Do"] : ["Lu","Ma","Mi","Ju","Vi"])
+        .map(x=>`<span>${x}</span>`).join("");
+      head.style.gridTemplateColumns = `repeat(${window.remoteUrgentWeekendV127 ? 2 : 5},1fr)`;
+      const grid = document.getElementById('calendar-days');
+      if(grid) grid.style.gridTemplateColumns = `repeat(${window.remoteUrgentWeekendV127 ? 2 : 5},1fr)`;
     }
 
     function renderizarCalendario() {
       const headerTitle = document.getElementById('calendar-month-year');
       const grid = document.getElementById('calendar-days');
-      
-      headerTitle.textContent = `${nombresMeses[mesActual]} ${anoActual}`;
-      grid.innerHTML = '';
+      if(!headerTitle || !grid) return;
 
-      const primerDiaMes = new Date(anoActual, mesActual, 1).getDay();
-      const totalDiasMes = new Date(anoActual, mesActual + 1, 0).getDate();
-      const hoy = new Date();
-      hoy.setHours(0,0,0,0);
+      const today = miamiTodayPartsV127();
+      const lastDay = new Date(Date.UTC(today.y,today.m,0,12)).getUTCDate();
+      headerTitle.textContent = `${nombresMeses[today.m-1]} ${today.y}`;
+      renderCalendarHeadV127();
 
-      for(let i = 0; i < primerDiaMes; i++) {
-        grid.innerHTML += `<div class="day-cell empty"></div>`;
-      }
-
-      for(let dia = 1; dia <= totalDiasMes; dia++) {
-        const fechaEvaluar = new Date(anoActual, mesActual, dia);
-        fechaEvaluar.setHours(0,0,0,0);
-
-        let esPasado = fechaEvaluar < hoy;
-        let diaSemana = fechaEvaluar.getDay();
-        let esFinDeSemana = (diaSemana === 0 || diaSemana === 6); 
-        let esSeleccionado = window.diaSeleccionado && window.diaSeleccionado.getDate() === dia && window.diaSeleccionado.getMonth() === mesActual && window.diaSeleccionado.getFullYear() === anoActual;
-
-        if (esPasado) {
-          grid.innerHTML += `<div class="day-cell disabled" title="Día pasado">${dia}</div>`;
-        } else if (esFinDeSemana) {
-          grid.innerHTML += `<div class="day-cell disabled" style="opacity: 0.3;" title="Fin de semana (No laboral)">${dia}</div>`;
-        } else {
-          grid.innerHTML += `<div class="day-cell available ${esSeleccionado ? 'selected' : ''}" onclick="seleccionarDia(${dia})">${dia}</div>`;
+      const wanted = [];
+      for(let d=1; d<=lastDay; d++){
+        const date = new Date(Date.UTC(today.y,today.m-1,d,12));
+        const weekday = date.getUTCDay();
+        if(window.remoteUrgentWeekendV127 ? (weekday===0||weekday===6) : (weekday>=1&&weekday<=5)){
+          wanted.push({d,weekday});
         }
       }
-      actualizarBotonRetroceso();
-    }
 
-
-    function actualizarResumenReserva(){
-      const price=document.getElementById('booking-price');
-      if(price) price.textContent=`$${Number(window.precioFinal||0).toFixed(2)}`;
-      const hasDate=Boolean(window.diaSeleccionado);
-      const hasTime=Boolean(window.horaSeleccionada);
-      const paymentOpen=Boolean(window.bookingPaymentOpenV83);
-      const steps=[...document.querySelectorAll('#reservaModal .booking-step')];
-      steps.forEach((step,index)=>{step.classList.remove('active','completed');
-        if(index===0){step.classList.add(hasDate?'completed':'active');}
-        if(index===1){if(hasTime)step.classList.add('completed');else if(hasDate)step.classList.add('active');}
-        if(index===2){if(paymentOpen)step.classList.add('completed');else if(hasTime)step.classList.add('active');}
-        if(index===3 && paymentOpen)step.classList.add('active');
-      });
-      const trigger=document.getElementById('btn-open-payment-v83');
-      if(trigger){
-        trigger.disabled=!(hasDate&&hasTime);
-        const label=trigger.querySelector('span');
-        if(label)label.textContent=hasDate&&hasTime?'Continuar a confirmar':'Selecciona fecha y horario';
+      let blanks = 0;
+      if(wanted.length){
+        const first = wanted[0];
+        if(window.remoteUrgentWeekendV127) blanks = first.weekday===0 ? 1 : 0;
+        else blanks = Math.max(0,first.weekday-1);
       }
-      const summary=document.getElementById('booking-payment-summary-v83');
-      if(summary && hasDate && hasTime){
-        const date=window.diaSeleccionado.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'});
-        summary.textContent=`${date} · ${window.horaSeleccionada} · $${Number(window.precioFinal||0).toFixed(2)}`;
+
+      let body = '<span class="day-cell empty"></span>'.repeat(blanks);
+      for(const item of wanted){
+        const value = `${today.y}-${pad2V127(today.m)}-${pad2V127(item.d)}`;
+        const past = value < today.dateValue;
+        const selected = dateValueFromSelectedV127() === value;
+        body += `<button type="button" class="day-cell ${past?'disabled':'available'} ${selected?'selected':''}" ${past?'disabled':''} onclick="seleccionarDiaV127('${value}')">${item.d}</button>`;
       }
+      grid.innerHTML = body || '<div style="grid-column:1/-1;color:#718090;font-size:.7rem;padding:12px">No hay fechas disponibles este mes.</div>';
+      updatePriceModeV127();
     }
 
-    window.cambiarMes = function(delta) {
-      let nuevoMes = mesActual + delta;
-      let nuevoAno = anoActual;
-      if (nuevoMes < 0) { nuevoMes = 11; nuevoAno--; } else if (nuevoMes > 11) { nuevoMes = 0; nuevoAno++; }
-      if (nuevoAno < anoReal || (nuevoAno === anoReal && nuevoMes < mesReal)) return; 
-      mesActual = nuevoMes; anoActual = nuevoAno;
-      renderizarCalendario();
-    }
-
-    window.seleccionarDia = function(dia) {
+    window.toggleWeekendUrgentV127 = function(){
       if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
-      window.diaSeleccionado = new Date(anoActual, mesActual, dia);
+      window.remoteUrgentWeekendV127 = !window.remoteUrgentWeekendV127;
+      window.diaSeleccionado = null;
       window.horaSeleccionada = null;
+      window.remoteSelectedSlotV127 = null;
+      document.getElementById('selected-date-text').textContent = 'Selecciona una fecha disponible';
+      document.getElementById('time-slots-list').innerHTML = '<p style="grid-column:1/-1;color:var(--muted);font-size:.8rem;text-align:center;margin:24px 0;">Selecciona un día del calendario para ver los horarios disponibles.</p>';
       renderizarCalendario();
-      
-      const headerText = document.getElementById('selected-date-text');
-      const slotsContainer = document.getElementById('time-slots-list');
-      const opcionesFecha = { weekday: 'short', month: 'short', day: 'numeric' };
-      headerText.textContent = window.diaSeleccionado.toLocaleDateString('es-ES', opcionesFecha);
       actualizarResumenReserva();
+    };
 
-      slotsContainer.innerHTML = '';
-      let seed = anoActual * 10000 + mesActual * 100 + dia;
+    window.cambiarMes = function(){ /* El checkout permite reservar únicamente el mes actual. */ };
 
-      horariosDisponibles.forEach((hora, index) => {
-        let yaPaso = window.horaYaPaso(hora, window.diaSeleccionado);
-        let ocupado = pseudoRandom(seed + index) < 0.40;
-
-        if (yaPaso) {
-          slotsContainer.innerHTML += `<div class="time-slot sold-out" title="Horario finalizado">${hora} - Finalizado</div>`;
-        } else if (ocupado) {
-          slotsContainer.innerHTML += `<div class="time-slot sold-out" title="Horario ocupado">${hora} - Agotado</div>`;
-        } else {
-          slotsContainer.innerHTML += `<div class="time-slot" onclick="seleccionarHora('${hora}', this)">${hora}</div>`;
-        }
-      });
-    }
-
-    window.seleccionarHora = function(hora, elemento) {
+    window.seleccionarDiaV127 = function(dateValue){
+      if(!selectedDateAllowedV127(dateValue)) return;
       if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
-      window.horaSeleccionada = hora;
-      document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
+
+      const [y,m,d] = dateValue.split("-").map(Number);
+      window.diaSeleccionado = new Date(y,m-1,d);
+      window.horaSeleccionada = null;
+      window.remoteSelectedSlotV127 = null;
+      renderizarCalendario();
+
+      const headerText = document.getElementById('selected-date-text');
+      const timestamp = Date.UTC(y,m-1,d,12);
+      headerText.textContent = new Intl.DateTimeFormat('es-ES',{
+        timeZone:REMOTE_TIME_ZONE,weekday:'short',day:'numeric',month:'short'
+      }).format(new Date(timestamp));
+
+      const slotsContainer = document.getElementById('time-slots-list');
+      slotsContainer.innerHTML = '';
+      REMOTE_BOOKING_SLOTS.forEach((slot,index)=>{
+        const slotTimestamp = miamiSlotTimestampV127(dateValue,slot);
+        const passed = slotTimestamp <= Date.now();
+        const display = slot.label;
+        slotsContainer.insertAdjacentHTML('beforeend', passed
+          ? `<button type="button" class="time-slot sold-out" disabled>${display} · Finalizado</button>`
+          : `<button type="button" class="time-slot" data-slot-index="${index}" onclick="seleccionarHoraV127(${index},this)">${display}</button>`);
+      });
+      actualizarResumenReserva();
+    };
+
+    window.seleccionarDia = function(dia){
+      const today = miamiTodayPartsV127();
+      window.seleccionarDiaV127(`${today.y}-${pad2V127(today.m)}-${pad2V127(dia)}`);
+    };
+
+    window.seleccionarHoraV127 = function(index,elemento){
+      if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
+      const slot = REMOTE_BOOKING_SLOTS[index];
+      if(!slot) return;
+      const dateValue = dateValueFromSelectedV127();
+      if(miamiSlotTimestampV127(dateValue,slot) <= Date.now()) return;
+      window.remoteSelectedSlotV127 = slot;
+      window.horaSeleccionada = slot.label.replace(" (+1 día)","");
+      document.querySelectorAll('#reservaModal .time-slot').forEach(slotEl=>slotEl.classList.remove('selected'));
       elemento.classList.add('selected');
       actualizarResumenReserva();
-    }
+    };
+
+    window.seleccionarHora = function(hora,elemento){
+      const index = REMOTE_BOOKING_SLOTS.findIndex(slot=>slot.label===hora || slot.label.replace(" (+1 día)","")===hora);
+      if(index>=0) window.seleccionarHoraV127(index,elemento);
+    };
 
     window.seleccionarSoftware = function(software, elemento) {
       if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
       window.softwareSeleccionado = software;
       document.querySelectorAll('.software-btn').forEach(btn => btn.classList.remove('selected'));
       elemento.classList.add('selected');
+      actualizarResumenReserva();
+    };
+
+    function actualizarResumenReserva(){
+      const price = document.getElementById('booking-price');
+      if(price) price.textContent = `$${Number(window.precioFinal||0).toFixed(2)}`;
+
+      const hasDate = Boolean(window.diaSeleccionado);
+      const hasTime = Boolean(window.remoteSelectedSlotV127);
+      const hasSoftware = Boolean(window.softwareSeleccionado);
+      const hasNotes = Boolean((document.getElementById('reservaComentario')?.value||'').trim());
+      const steps = [...document.querySelectorAll('#reservaModal .booking-step')];
+
+      const states = [hasDate,hasTime,hasSoftware,hasNotes];
+      steps.forEach((step,index)=>{
+        step.classList.remove('active','completed');
+        if(states[index]) step.classList.add('completed');
+        else if(states.slice(0,index).every(Boolean) && !states[index]) step.classList.add('active');
+      });
+
+      const trigger = document.getElementById('btn-open-payment-v83');
+      const ready = hasDate && hasTime && hasSoftware && hasNotes;
+      if(trigger){
+        trigger.disabled = !ready;
+        const label = trigger.querySelector('span');
+        if(label) label.textContent = ready ? 'Continuar a confirmar' : 'Completa los datos de tu sesión';
+      }
+
+      const summary = document.getElementById('booking-payment-summary-v83');
+      if(summary && hasDate && hasTime){
+        const timestamp = miamiSlotTimestampV127(dateValueFromSelectedV127(),window.remoteSelectedSlotV127);
+        const date = new Intl.DateTimeFormat('es-ES',{
+          timeZone:REMOTE_TIME_ZONE,weekday:'short',day:'numeric',month:'short'
+        }).format(new Date(timestamp));
+        summary.textContent = `${date} · ${window.horaSeleccionada} · $${Number(window.precioFinal||0).toFixed(2)}`;
+      }
     }
 
     window.cerrarPagoReservaV83 = function(silencioso=false) {
@@ -1273,8 +1572,11 @@ html,body{
 
     window.abrirPagoReservaV83 = function() {
       const comentario=(document.getElementById('reservaComentario')?.value||'').trim();
-      if(!window.diaSeleccionado || !window.horaSeleccionada){
+      if(!window.diaSeleccionado || !window.remoteSelectedSlotV127){
         window.mostrarAlertaModal('Selecciona una fecha y un horario disponible primero.',false);return;
+      }
+      if(!window.softwareSeleccionado){
+        window.mostrarAlertaModal('Elige Chrome Remote Desktop o AnyDesk para conectarnos.',false);return;
       }
       if(!comentario){
         window.mostrarAlertaModal('Cuéntanos brevemente qué necesitas configurar antes de continuar.',false);
@@ -1355,6 +1657,18 @@ html,body{
       if(paypalBox){paypalBox.innerHTML='';paypalBox.style.display='none';}
       const freeBtn=document.getElementById('btn-pagar-gratis');
       if(freeBtn)freeBtn.style.display='none';
+      window.remoteUrgentWeekendV127 = false;
+      window.diaSeleccionado = null;
+      window.horaSeleccionada = null;
+      window.remoteSelectedSlotV127 = null;
+      window.softwareSeleccionado = "";
+      window.precioBase = REMOTE_BASE_PRICE_USD;
+      window.precioFinal = REMOTE_BASE_PRICE_USD;
+      document.querySelectorAll('#reservaModal .software-btn').forEach(btn=>btn.classList.remove('selected'));
+      const selectedText=document.getElementById('selected-date-text');
+      if(selectedText)selectedText.textContent='Selecciona una fecha disponible';
+      const slots=document.getElementById('time-slots-list');
+      if(slots)slots.innerHTML='<p style="grid-column:1/-1;color:var(--muted);font-size:.8rem;text-align:center;margin:24px 0;">Selecciona un día del calendario para ver los horarios disponibles.</p>';
       document.getElementById('reservaModal').classList.add('active');
       renderizarCalendario();
       actualizarResumenReserva();
@@ -1379,7 +1693,7 @@ html,body{
   <script>
     document.addEventListener('DOMContentLoaded',()=>{
       const comment=document.getElementById('reservaComentario');
-      comment?.addEventListener('input',()=>{if(window.bookingPaymentOpenV83)window.cerrarPagoReservaV83?.(true);});
+      comment?.addEventListener('input',()=>{if(window.bookingPaymentOpenV83)window.cerrarPagoReservaV83?.(true);actualizarResumenReserva();});
       document.getElementById('reservaModal')?.addEventListener('click',e=>{if(e.target?.id==='reservaModal')window.closeReservaModal?.();});
     });
   </script>
@@ -1730,19 +2044,13 @@ html,body{
         
         window.procesarReservaFirebase = async function(paypalOrderId = null, payerName = null) {
           const comentario = document.getElementById('reservaComentario').value;
-          const fechaFormateada = window.diaSeleccionado.toLocaleDateString('es-ES', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-          
-          let matches = window.horaSeleccionada.match(/(\d+):(\d+)\s(AM|PM)/);
-          let hour = parseInt(matches[1]);
-          if (matches[3] === 'PM' && hour < 12) hour += 12;
-          if (matches[3] === 'AM' && hour === 12) hour = 0;
-          
-          let monthStr = String(window.diaSeleccionado.getMonth() + 1).padStart(2, '0');
-          let dayStr = String(window.diaSeleccionado.getDate()).padStart(2, '0');
-          let yearStr = window.diaSeleccionado.getFullYear();
-          let hourStr = String(hour).padStart(2, '0');
-          let isoString = `${yearStr}-${monthStr}-${dayStr}T${hourStr}:00:00-04:00`;
-          let timestampCalculado = new Date(isoString).getTime();
+          const dateValue = dateValueFromSelectedV127();
+          const slot = window.remoteSelectedSlotV127;
+          const timestampCalculado = miamiSlotTimestampV127(dateValue,slot);
+          const fechaFormateada = new Intl.DateTimeFormat("es-ES",{
+            timeZone:REMOTE_TIME_ZONE,weekday:"short",day:"numeric",month:"short",year:"numeric"
+          }).format(new Date(timestampCalculado));
+          const horaFormateada = `${slot.label.replace(" (+1 día)","")} (Hora de Miami)`;
 
           try {
             const reservaRef = await addDoc(collection(db, "reservas"), {
@@ -1750,12 +2058,16 @@ html,body{
               email: user.email,
               payerName: payerName || user.displayName || "",
               fecha: fechaFormateada,
-              hora: window.horaSeleccionada,
+              hora: horaFormateada,
               software: window.softwareSeleccionado,
               comentario: comentario,
               estado: "pendiente",
               timestampReserva: timestampCalculado,
               montoPagado: window.precioFinal,
+              urgentWeekend: Boolean(window.remoteUrgentWeekendV127),
+              tarifa: window.remoteUrgentWeekendV127 ? "urgente_fin_de_semana" : "lunes_a_viernes",
+              zonaHoraria: REMOTE_TIME_ZONE,
+              origen: "cuenta",
               paypalOrderId: paypalOrderId || "GRATIS",
               creado: serverTimestamp()
             });
@@ -1814,8 +2126,12 @@ html,body{
                 style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
                 onClick: function(data, actions) {
                     const comentario = document.getElementById('reservaComentario').value;
-                    if(!window.diaSeleccionado || !window.horaSeleccionada) {
-                        window.mostrarAlertaModal("Selecciona un día y un horario libre primero.", false);
+                    if(!window.diaSeleccionado || !window.remoteSelectedSlotV127) {
+                        window.mostrarAlertaModal("Selecciona un día y un horario disponible primero.", false);
+                        return actions.reject();
+                    }
+                    if(!window.softwareSeleccionado) {
+                        window.mostrarAlertaModal("Elige Chrome Remote Desktop o AnyDesk para conectarnos.", false);
                         return actions.reject();
                     }
                     if(comentario.trim() === "") {
@@ -1845,8 +2161,12 @@ html,body{
         // Procesar reserva si es de $0.00 (Botón Celeste)
         window.procesarReservaGratis = function() {
             const comentario = document.getElementById('reservaComentario').value;
-            if(!window.diaSeleccionado || !window.horaSeleccionada) {
-                window.mostrarAlertaModal("Selecciona un día y un horario libre primero.", false);
+            if(!window.diaSeleccionado || !window.remoteSelectedSlotV127) {
+                window.mostrarAlertaModal("Selecciona un día y un horario disponible primero.", false);
+                return;
+            }
+            if(!window.softwareSeleccionado) {
+                window.mostrarAlertaModal("Elige Chrome Remote Desktop o AnyDesk para conectarnos.", false);
                 return;
             }
             if(comentario.trim() === "") {
@@ -2048,8 +2368,27 @@ html,body{
           });
         } catch(error) {
           console.error(error);
-          downloadsContainer.innerHTML = `<div style="padding:22px;border:1px solid rgba(255,126,141,.17);border-radius:17px;background:rgba(255,90,110,.035);display:flex;align-items:flex-start;gap:12px"><div style="width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(255,126,141,.08);color:#ff8e9b"><i class="bi bi-exclamation-triangle"></i></div><div><strong style="display:block;color:#f2dce0;font-size:.82rem;margin:2px 0 5px">No pudimos sincronizar tu biblioteca</strong><span style="color:#9e8790;font-size:.70rem;line-height:1.45">Tus compras siguen seguras. Actualiza la página o vuelve a intentarlo en un momento.</span></div></div>`;
-          window.showAccountFeedbackV81?.({ state:'error', kicker:'Sincronización pendiente', title:'No pudimos cargar tus descargas', detail:'Tus compras siguen protegidas. Inténtalo nuevamente.', icon:'bi bi-cloud-slash', duration:4200 });
+          downloadsContainer.innerHTML = `
+            <section class="library-maintenance-v127" role="status">
+              <div class="library-maintenance-icon-v127"><i class="bi bi-tools"></i></div>
+              <div>
+                <small>Mantenimiento de biblioteca</small>
+                <h3>Estamos actualizando el sistema de descargas.</h3>
+                <p>Tus compras están seguras, almacenadas y vinculadas a tu cuenta Dingloft. No necesitas volver a comprar ni realizar ningún paso adicional.</p>
+                <div class="library-maintenance-meta-v127">
+                  <span><i class="bi bi-clock"></i> Descargas disponibles a partir de las 00:00</span>
+                  <span><i class="bi bi-shield-check"></i> Compra protegida</span>
+                </div>
+              </div>
+            </section>`;
+          window.showAccountFeedbackV81?.({
+            state:'loading',
+            kicker:'Mantenimiento programado',
+            title:'Tus compras están seguras',
+            detail:'La biblioteca de descargas estará disponible a partir de las 00:00.',
+            icon:'bi bi-tools',
+            duration:5200
+          });
         }
       } else {
         const next = encodeURIComponent('account.html');
@@ -2061,6 +2400,6 @@ html,body{
       try { await signOut(auth); window.location.replace('login.html?loggedout=1'); } catch (error) { console.error(error); }
     });
   </script>
-<script src="dingloft-ui-guard.js?v=58"></script>
+<script src="dingloft-ui-guard.js?v=59"></script>
 </body>
 </html>
