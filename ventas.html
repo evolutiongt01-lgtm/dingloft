@@ -579,6 +579,146 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
 }
 </style>
 
+
+<style id="dingloft-mobile-safari-space-v105">
+/* v105 · mobile Safari/Android: use the viewport efficiently without changing site logic. */
+@media (max-width:760px){
+  html{
+    width:100%;
+    min-height:100%;
+    min-height:100dvh;
+    background:#111315!important;
+    overscroll-behavior-x:none;
+  }
+  @supports(height:100lvh){
+    html{min-height:100lvh}
+  }
+  body{
+    width:100%;
+    min-height:100%;
+    min-height:100dvh;
+    margin:0!important;
+    background:#05070a!important;
+    overflow-x:hidden!important;
+  }
+  @supports(height:100lvh){
+    body{min-height:100lvh}
+  }
+
+  /* Same navbar identity as desktop, but edge-to-edge and safe-area aware. */
+  .helmet-site-header{
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+    padding-top:env(safe-area-inset-top,0px)!important;
+    background:linear-gradient(180deg,rgba(17,19,21,.995) 0%,rgba(8,10,13,.975) 78%,rgba(8,10,13,.94) 100%)!important;
+    border-bottom:1px solid rgba(255,255,255,.08)!important;
+    backdrop-filter:blur(20px) saturate(145%)!important;
+    -webkit-backdrop-filter:blur(20px) saturate(145%)!important;
+  }
+  .helmet-nav{
+    width:100%!important;
+    max-width:none!important;
+    min-height:60px!important;
+    padding-left:max(14px,env(safe-area-inset-left,0px))!important;
+    padding-right:max(14px,env(safe-area-inset-right,0px))!important;
+    margin:0!important;
+    gap:12px!important;
+  }
+  .helmet-brand{
+    min-width:0!important;
+    gap:9px!important;
+  }
+  .helmet-brand img{
+    width:36px!important;
+    height:36px!important;
+    border-radius:10px!important;
+    object-fit:cover!important;
+  }
+  .helmet-brand .brand-text{
+    display:flex!important;
+    font-size:15px!important;
+    font-weight:850!important;
+    letter-spacing:-.025em!important;
+    white-space:nowrap!important;
+  }
+  .helmet-nav-actions{gap:9px!important}
+  .helmet-icon-btn{
+    width:34px!important;
+    height:38px!important;
+  }
+  .helmet-icon-btn svg{width:19px!important;height:19px!important}
+  .helmet-cart-btn svg{width:20px!important;height:20px!important}
+  .helmet-menu-toggle svg{width:22px!important;height:22px!important}
+
+  /* Let Safari use the actual screen width; keep only useful content padding. */
+  .shell{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    padding-left:max(14px,env(safe-area-inset-left,0px))!important;
+    padding-right:max(14px,env(safe-area-inset-right,0px))!important;
+  }
+  .hero-grid{
+    padding-top:calc(60px + env(safe-area-inset-top,0px))!important;
+  }
+  .hero-copy{
+    padding-top:48px!important;
+    padding-bottom:12px!important;
+  }
+  .hero h1{margin-top:14px!important;margin-bottom:16px!important}
+  .hero-copy p{line-height:1.58!important}
+  .hero-actions{margin-top:22px!important;gap:10px!important}
+  .hero-actions .btn{min-width:0!important;flex:1 1 0!important;padding-left:12px!important;padding-right:12px!important}
+  .hero-art{min-height:285px!important}
+  .hero-art img{height:280px!important}
+  .service-strip{margin-top:-12px!important}
+  .section{padding-top:50px!important;padding-bottom:50px!important}
+  .section-head{gap:14px!important;margin-bottom:22px!important}
+
+  /* Product cards use more of the phone viewport without changing their data/logic. */
+  .product-grid,.multitrack-grid{gap:12px!important}
+  .product-media{height:228px!important;padding:8px 18px 28px!important}
+  .product-body{padding:14px 14px 15px!important}
+  .product-meta{margin-top:8px!important;min-height:0!important}
+  .product-foot{padding-top:12px!important}
+  .add-btn{height:36px!important;padding:0 12px!important}
+
+  /* Search uses the whole usable width above the keyboard. */
+  .helmet-search-box{
+    left:max(10px,env(safe-area-inset-left,0px))!important;
+    right:max(10px,env(safe-area-inset-right,0px))!important;
+    top:calc(64px + env(safe-area-inset-top,0px))!important;
+  }
+  .helmet-search-box input{
+    height:46px!important;
+    font-size:16px!important; /* avoids Safari auto-zoom */
+  }
+  .helmet-menu-panel{
+    left:max(10px,env(safe-area-inset-left,0px))!important;
+    right:max(10px,env(safe-area-inset-right,0px))!important;
+    top:calc(62px + env(safe-area-inset-top,0px))!important;
+  }
+
+  /* Keep bottom content available beneath Safari's floating toolbar. */
+  main,footer{
+    position:relative;
+  }
+  footer{
+    padding-bottom:max(30px,env(safe-area-inset-bottom,0px))!important;
+  }
+}
+@media(max-width:390px){
+  .helmet-brand img{width:34px!important;height:34px!important}
+  .helmet-brand .brand-text{font-size:14px!important}
+  .helmet-nav-actions{gap:6px!important}
+  .helmet-icon-btn{width:32px!important}
+  .hero-actions{display:grid!important;grid-template-columns:1fr 1fr!important}
+}
+</style>
+
 </head>
 <body data-dingloft-test-version="motion-box-v2">
 <div class="announcement">
@@ -587,7 +727,7 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
 <header class="site-header helmet-site-header" id="siteHeader">
 <nav aria-label="Navegación principal" class="nav shell helmet-nav">
 <a aria-label="Dingloft" class="brand helmet-brand" href="/">
-<img alt="Dingloft" src="img/pwa-liquid-rounded-192-v17.png?v=18"/>
+<img alt="Dingloft" src="img/dingloft.png"/>
 <span class="brand-text">Dingloft<small>Evolution Group</small></span>
 </a>
 <div class="nav-links helmet-nav-links">

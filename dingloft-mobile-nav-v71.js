@@ -275,7 +275,7 @@
       @keyframes dlHeaderSeam{0%,100%{opacity:.36;filter:brightness(1)}50%{opacity:.88;filter:brightness(1.5)}}
       @media(prefers-reduced-motion:reduce){.spark{animation:none!important}.bar.loading .spark-field{opacity:.45}.bar.loading::after{animation:none!important}}
       .brand{height:68px;display:flex;align-items:center;justify-content:center;gap:11px;color:#fff;text-decoration:none;-webkit-tap-highlight-color:transparent}
-      .brand img{width:32px;height:32px;border-radius:10px;object-fit:cover;display:block;box-shadow:none}
+      .brand img{width:36px;height:36px;border-radius:10px;object-fit:cover;display:block;box-shadow:none}
       .copy{line-height:1}.copy strong{display:block;color:#fff;font-size:.86rem;font-weight:900;letter-spacing:-.02em;white-space:nowrap}.copy small{display:none}
       .search{position:absolute;left:max(12px,env(safe-area-inset-left,0px));bottom:15px;width:38px;height:38px;padding:0;border:0;border-radius:0;background:transparent;color:#d9dde2;display:grid;place-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent}.search:active{transform:scale(.92)}.search svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
       .menu{position:absolute;right:max(12px,env(safe-area-inset-right,0px));bottom:15px;width:38px;height:38px;padding:0;border:0;border-radius:0;background:transparent;color:#d9dde2;display:grid;place-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent}.menu:active{transform:scale(.92)}.menu svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
@@ -294,7 +294,7 @@
     bar.innerHTML = `
       <button class="search" type="button" aria-label="Buscar en Dingloft"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg></button>
       <a class="brand" href="/ventas?app=1#inicio" aria-label="Dingloft inicio">
-        <img src="/img/pwa-liquid-rounded-192-v17.png" alt="Dingloft">
+        <img src="/img/dingloft.png" alt="Dingloft">
         <span class="copy"><strong>Dingloft</strong><small>Evolution Group</small></span>
       </a>
       <button class="menu" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Abrir menú"><svg viewBox="0 0 24 24"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"></path></svg></button>
