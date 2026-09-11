@@ -1,4 +1,4 @@
-/* Dingloft Persistent Mobile/Tablet App Shell · v101 · Route-Aware Scroll
+/* Dingloft Persistent Mobile/Tablet App Shell · v103 · Route-Aware Scroll
    The shell never reloads between internal pages. Only the content iframe changes.
    Header/search/bottom nav/cart live in the top document and remain mounted. */
 const DINGLOFT_BOOT_STARTED = performance.now();
@@ -73,13 +73,14 @@ function appUrl(i){
   if(i.key==='page')u.searchParams.set('src',cleanPublicSrc(i.src));
   return `${u.pathname}${u.search}`;
 }
-function activeDock(key){
+function activeDock(key,src=''){
   const visual=key==='page'?'catalog':key;
   activeKey=key;
   document.body.dataset.appRoute=visual;
+  document.body.dataset.appSrc=String(src||'');
   document.querySelectorAll('[data-route]').forEach(a=>a.classList.toggle('active',a.dataset.route===visual));
   window.__dingloftRefreshAdminButton?.();
-  window.dispatchEvent(new CustomEvent('dingloft:shell-route',{detail:{key,visual,version:97}}));
+  window.dispatchEvent(new CustomEvent('dingloft:shell-route',{detail:{key,visual,src:String(src||''),version:103}}));
 }
 function cartCount(){
   let n=0;try{const c=JSON.parse(localStorage.getItem('dingloft_cart')||'[]');if(Array.isArray(c))n=c.reduce((s,x)=>s+Math.max(1,Number(x?.qty??x?.quantity??1)||1),0)}catch(_){}
@@ -255,7 +256,7 @@ function child(frame){try{
 function navigate(route,params={},opt={}){
   const i=info(route,params);const id=++token;
   if(progress)progress.classList.add('show');
-  activeDock(i.key);
+  activeDock(i.key,i.src);
   const f=document.createElement('iframe');
   const productRoute=isProductInfo(i);
   f.className='frame in';f.allow='autoplay *; payment *; clipboard-read; clipboard-write';
@@ -283,7 +284,7 @@ function navigate(route,params={},opt={}){
       const mapped=mapHref(currentHref,currentHref);
       if(mapped&&!mapped.external) loadedInfo=info(mapped.route,mapped);
     } catch (_) {}
-    activeDock(loadedInfo.key);
+    activeDock(loadedInfo.key,loadedInfo.src);
     if(firstLoad){
       firstLoad=false;
       requestAnimationFrame(()=>{f.classList.remove('in');f.classList.add('active')});
@@ -294,13 +295,13 @@ function navigate(route,params={},opt={}){
     history.replaceState(state,'',appUrl(loadedInfo));
     if(progress)progress.classList.remove('show');
     cartCount();dingloftSplashReady();
-    window.dispatchEvent(new CustomEvent('dingloft:shell-ready',{detail:{key:loadedInfo.key,version:101}}));
+    window.dispatchEvent(new CustomEvent('dingloft:shell-ready',{detail:{key:loadedInfo.key,src:loadedInfo.src,version:103}}));
   });
   if(!opt.pop){const url=appUrl(i);if(opt.replace)history.replaceState({route:i.key,src:i.key==='page'?cleanPublicSrc(i.src):''},'',url);else if(opt.push!==false)history.pushState({route:i.key,src:i.key==='page'?cleanPublicSrc(i.src):''},'',url)}
 }
 
 window.DingloftPersistentShellV93={
-  version:101,
+  version:103,
   navigate:(route,params={})=>navigate(route,params,{push:true}),
   navigateHref:(href)=>shellNavigateHref(href,{push:true}),
   get activeKey(){return activeKey;},

@@ -384,6 +384,11 @@
     });
 
     document.addEventListener('keydown',event=>{ if (event.key === 'Escape' && openState) close(); });
+    // The checkout CTA is rendered dynamically by dingloft-commerce.js. Close this persistent
+    // cart in capture phase before its async handoff/router starts, preventing checkout behind the drawer.
+    document.addEventListener('click',event=>{
+      if(event.target?.closest?.('[data-dingloft-checkout-handoff]')) close();
+    },true);
     document.addEventListener('click',event=>{
       const add = event.target.closest?.('.btn-add-cart,[data-dingloft-add-cart]');
       if (!add) return;

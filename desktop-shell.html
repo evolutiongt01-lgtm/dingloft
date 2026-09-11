@@ -219,10 +219,11 @@ html.dingloft-installed #navInstall{display:none!important}
   .helmet-shell-tools .action{height:32px!important;min-width:32px!important;padding:0 8px!important;border:0!important;border-radius:0!important;background:transparent!important;color:#d9dde2!important;box-shadow:none!important;font-size:9px!important}
   .helmet-shell-tools .action:hover{background:rgba(255,255,255,.08)!important;color:#fff!important}
   .helmet-shell-tools .search-action{width:32px!important;padding:0!important}
-  .helmet-shell-tools .cart-action{width:32px!important;padding:0!important;position:relative!important}
   .helmet-shell-tools .action svg{width:16px!important;height:16px!important}
-  .helmet-shell-tools .cart-count{position:absolute!important;top:2px!important;right:2px!important;min-width:14px!important;height:14px!important;padding:0 4px!important;border-radius:999px!important;background:#fff!important;color:#080a0d!important;font-size:8px!important;font-weight:900!important;display:grid!important;place-items:center!important;line-height:1!important}
-  .helmet-shell-tools .cart-count[hidden]{display:none!important}
+  .helmet-shell-cart{position:relative!important;width:32px!important;padding:0!important}
+  .helmet-shell-cart[hidden]{display:none!important}
+  .helmet-shell-cart-count{position:absolute;right:-2px;top:0;min-width:14px;height:14px;padding:0 4px;border-radius:999px;background:#fff;color:#080a0c;border:1px solid #080a0c;display:grid;place-items:center;font-size:7px;font-weight:900;line-height:1}
+  .helmet-shell-cart-count[hidden]{display:none!important}
   .helmet-admin-link{color:#b8ff24!important;gap:6px!important;text-transform:uppercase!important;letter-spacing:.06em!important}
   .helmet-admin-link:hover{color:#d9ff85!important}
   .stage{top:0!important}
@@ -235,7 +236,7 @@ html.dingloft-installed #navInstall{display:none!important}
 <div id="desktopSplash" aria-label="Cargando Dingloft"><div class="desktop-splash-inner"><div class="desktop-splash-mark"><img src="/img/pwa-liquid-rounded-192-v17.png?v=18" alt="Dingloft"></div><div class="desktop-splash-brand">DINGLOFT</div><div class="desktop-splash-group">Evolution Group</div><div class="desktop-splash-status">Preparando tu espacio</div><div class="desktop-splash-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div></div>
 <header class="shell-nav helmet-shell-nav" id="shellNav">
   <a class="brand helmet-shell-brand" href="/" data-shell-link="1" aria-label="Dingloft inicio">
-    <img src="/img/dingloft.png" alt="Dingloft" onerror="this.src='/img/pwa-liquid-192-v5.png?v=9'">
+    <img src="/img/pwa-liquid-rounded-192-v17.png?v=18" alt="Dingloft" onerror="this.src='/img/pwa-liquid-192-v5.png?v=9'">
     <span class="brand-copy"><strong>Dingloft</strong><span>Evolution Group</span></span>
   </a>
 
@@ -251,9 +252,9 @@ html.dingloft-installed #navInstall{display:none!important}
     <button class="action search-action helmet-shell-icon" id="navSearch" type="button" aria-label="Buscar en Dingloft" title="Buscar">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
     </button>
-    <button class="action cart-action helmet-shell-icon" id="navCart" type="button" aria-label="Abrir carrito" title="Carrito">
+    <button class="action helmet-shell-icon helmet-shell-cart" id="navCart" type="button" aria-label="Abrir carrito" title="Carrito">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5h2.2l1.9 9.1h9.8l2-6.3H7"/><circle cx="9.2" cy="18.4" r="1.1" fill="currentColor" stroke="none"/><circle cx="17.1" cy="18.4" r="1.1" fill="currentColor" stroke="none"/></svg>
-      <span class="cart-count" id="navCartCount" hidden>0</span>
+      <span class="helmet-shell-cart-count" id="navCartCount" hidden>0</span>
     </button>
     <a class="action admin-link helmet-admin-link" id="navAdmin" href="/admin" hidden aria-label="Administración">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3.5 19 6v5.2c0 4.4-2.7 7.7-7 9.3-4.3-1.6-7-4.9-7-9.3V6l7-2.5Z"/><path d="m9.4 12 1.7 1.7 3.7-4"/></svg><span>Admin</span>
@@ -296,5 +297,5 @@ onAuthStateChanged(auth, async (user) => {
 });
 </script>
 <script src="dingloft-ui-guard.js?v=58"></script>
-<script src="/pwa-runtime.js?v=77"></script>
+<script src="/pwa-runtime.js?v=79"></script>
 </body></html>

@@ -508,7 +508,7 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
   .feature-band{width:min(var(--max),calc(100% - 26px));grid-template-columns:1fr;margin-bottom:68px}.feature-copy{order:2;padding:42px 26px}.feature-visual{order:1;min-height:360px}.feature-visual img{height:350px}.trust-grid{grid-template-columns:1fr}.catalog-cta{flex-direction:column;align-items:flex-start}
 }
 @media(max-width:510px){
-  .hero h1{font-size:43px}.hero-art{min-height:285px}.hero-art img{height:275px}.service-grid{grid-template-columns:1fr}.category-row{display:none}.product-grid,.multitrack-grid{grid-template-columns:1fr}.product-media{height:240px}.section{padding:56px 0}.feature-copy h2{font-size:40px}.feature-visual{min-height:300px}.feature-visual img{height:290px}.trust-cards{grid-template-columns:1fr}
+  .hero h1{font-size:43px}.hero-art{min-height:285px}.hero-art img{height:275px}.service-grid{grid-template-columns:1fr}.category-row{display:none}.product-grid,.multitrack-grid{grid-template-columns:1fr}.product-media{height:240px;padding:8px 22px 40px!important}.product-media img{object-fit:contain!important;object-position:center top!important}.section{padding:56px 0}.feature-copy h2{font-size:40px}.feature-visual{min-height:300px}.feature-visual img{height:290px}.trust-cards{grid-template-columns:1fr}
 }
 </style>
 
@@ -558,7 +558,7 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
   .helmet-nav{grid-template-columns:auto 1fr auto!important;gap:16px!important}.helmet-nav-links{gap:2px!important}.helmet-nav-links a{padding:0 9px!important;font-size:8px!important}.helmet-search.open .helmet-search-box{width:190px!important}
 }
 @media(max-width:720px){
-  .helmet-site-header{position:fixed!important}.helmet-nav{min-height:60px!important;grid-template-columns:auto auto!important;justify-content:space-between!important}.helmet-brand .brand-text{display:none!important}.helmet-brand img{width:30px!important;height:30px!important}.helmet-nav-links{display:none!important}.helmet-search-box{display:block!important;position:fixed!important;left:12px!important;right:12px!important;top:68px!important;transform:translateY(-6px)!important;width:auto!important}.helmet-search.open .helmet-search-box{width:auto!important;transform:none!important}.helmet-menu-panel{position:fixed;top:66px;right:12px;left:12px;width:auto}.hero-grid{padding-top:60px!important}
+  .helmet-site-header{position:fixed!important}.helmet-nav{min-height:60px!important;grid-template-columns:minmax(0,1fr) auto!important;justify-content:space-between!important;gap:10px!important}.helmet-brand{min-width:0!important;gap:8px!important}.helmet-brand .brand-text{display:inline-flex!important;font-size:12px!important;white-space:nowrap!important}.helmet-brand img{width:30px!important;height:30px!important;object-fit:cover!important}.helmet-nav-links{display:none!important}.helmet-nav-actions{gap:5px!important}.helmet-search-box{display:block!important;position:fixed!important;left:12px!important;right:12px!important;top:68px!important;transform:translateY(-6px)!important;width:auto!important}.helmet-search.open .helmet-search-box{width:auto!important;transform:none!important}.helmet-menu-panel{position:fixed;top:66px;right:12px;left:12px;width:auto}.hero-grid{padding-top:60px!important}
 }
 </style>
 
@@ -570,7 +570,7 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
 <header class="site-header helmet-site-header" id="siteHeader">
 <nav aria-label="Navegación principal" class="nav shell helmet-nav">
 <a aria-label="Dingloft" class="brand helmet-brand" href="/">
-<img alt="Dingloft" src="img/dingloft.png"/>
+<img alt="Dingloft" src="img/pwa-liquid-rounded-192-v17.png?v=18"/>
 <span class="brand-text">Dingloft<small>Evolution Group</small></span>
 </a>
 <div class="nav-links helmet-nav-links">
@@ -882,22 +882,13 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
     closeCartBtn?.addEventListener('click',closeCartDrawer);
     continueShoppingBtn?.addEventListener('click',closeCartDrawer);
     cartPanelOverlay?.addEventListener('click',closeCartDrawer);
-    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cartPanel?.classList.contains('show'))closeCartDrawer()});
-
-    // Both app.html and desktop-shell.html attach their OWN capture-phase click
-    // interceptor straight on this document (added once this document's "load" event
-    // reaches the parent frame) that hijacks every <a href> click, including this one,
-    // to drive their real SPA navigation and stopPropagation() before it ever reaches a
-    // bubble-phase listener on the button itself. So the drawer close cannot live in a
-    // listener on the button — it has to win the same capture phase, attached here
-    // during this document's own parse, which always runs before the parent's frame
-    // "load" handler (and therefore before the shell attaches its interceptor). Not
-    // calling preventDefault/stopPropagation here lets that real navigation still run
-    // right after, unmodified, for both shells; only a true standalone load (no parent
-    // shell) falls through to the plain anchor navigation.
+    // Shell routers intercept links in capture phase. Close the drawer first so checkout never opens behind it.
     document.addEventListener('click',e=>{
-      if(e.target?.closest?.('#cartCheckoutBtn'))closeCartDrawer();
+      const checkoutLink=e.target?.closest?.('#cartCheckoutBtn');
+      if(!checkoutLink||checkoutLink.classList.contains('is-disabled'))return;
+      closeCartDrawer();
     },true);
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cartPanel?.classList.contains('show'))closeCartDrawer()});
 
     const motionLaunchAt = new Date('2026-09-26T22:00:00Z'); // 6:00 PM Miami (EDT)
     function syncMotionLaunchUI(isLive){

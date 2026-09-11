@@ -1,4 +1,4 @@
-/* Dingloft Persistent Mobile Shell v99 (served through the v71 filename for compatibility)
+/* Dingloft Persistent Mobile Shell v101 (served through the v71 filename for compatibility)
    Header + search + bottom nav remain mounted while only the content frame changes.
    The independent mobile cart is loaded once and also remains mounted. Desktop stays on its persistent desktop shell. */
 (() => {
@@ -45,7 +45,7 @@
   const SEARCH_ID = 'dlMobileSearchV89';
   const CART_KEY = 'dingloft_cart';
   const OPEN_CART_KEY = 'dingloft_open_cart';
-  const MOBILE_CART_SRC = '/dingloft-mobile-cart-v92.js?v=94';
+  const MOBILE_CART_SRC = '/dingloft-mobile-cart-v92.js?v=95';
   let mobileCartLoadPromise = null;
   const WORKER = String(window.DINGLOFT_WORKER_BASE || 'https://autumn-breeze-dfa0.evolutiongt01.workers.dev').replace(/\/$/, '');
   const PRODUCT_FILES = new Set([
@@ -67,6 +67,8 @@
       }
       html.dl-mobile-nav-v71{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior-x:none!important;touch-action:pan-y!important}
       html.dl-mobile-nav-v71 body{position:relative!important;height:auto!important;min-height:100dvh!important;max-height:none!important;overflow-x:hidden!important;overflow-y:visible!important;overscroll-behavior-x:none!important;touch-action:pan-y!important;padding-top:calc(68px + env(safe-area-inset-top,0px))!important;padding-bottom:calc(90px + env(safe-area-inset-bottom,0px))!important}
+      html.dl-mobile-nav-v71.dl-persistent-app-shell,html.dl-mobile-nav-v71.dl-persistent-app-shell body{width:100%!important;height:100%!important;min-height:100dvh!important;max-height:100dvh!important;overflow:hidden!important;overscroll-behavior:none!important}
+      html.dl-mobile-nav-v71.dl-persistent-app-shell body{position:fixed!important;inset:0!important;padding:0!important;touch-action:pan-y!important}
       html.dl-mobile-nav-v71 body.cart-open,html.dl-mobile-nav-v71 body.no-scroll,html.dl-mobile-nav-v71 body.cart-open.no-scroll{position:relative!important;height:auto!important;min-height:100dvh!important;max-height:none!important;overflow-x:hidden!important;overflow-y:auto!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
       html.dl-mobile-nav-v71 body>.btn-floating-cart{position:fixed!important;left:-9999px!important;right:auto!important;bottom:0!important;width:1px!important;height:1px!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:none!important}
       html.dl-mobile-nav-v71 .mt-quickbar{top:0!important}
@@ -79,6 +81,8 @@
 
   const pathKey = () => (location.pathname.split('/').filter(Boolean).pop() || 'ventas').toLowerCase().replace(/\.html$/,'');
 
+  if (pathKey() === 'app') document.documentElement.classList.add('dl-persistent-app-shell');
+
   function activeRoute(){
     const file = pathKey();
     if (file === 'app') {
@@ -88,7 +92,7 @@
       if (route === 'account') return 'account';
       if (route === 'catalog') return 'catalog';
       if (route === 'page') {
-        const src = String(q.get('src') || '');
+        const src = String(document.body?.dataset?.appSrc || q.get('src') || '');
         let page = '';
         try { page = (new URL(src, location.origin).pathname.split('/').filter(Boolean).pop() || '').toLowerCase().replace(/\.html$/,''); } catch (_) {}
         if (page === 'multitrack') return 'multitrack';
@@ -117,11 +121,14 @@
     if (route === 'multitrack') return 'multitrack';
     if (route === 'account') return 'account';
     if (route === 'page') {
-      const src = String(q.get('src') || '');
+      const src = String(document.body?.dataset?.appSrc || q.get('src') || '');
       try { return (new URL(src, location.origin).pathname.split('/').filter(Boolean).pop() || '').toLowerCase().replace(/\.html$/,''); } catch (_) { return ''; }
     }
     return 'ventas';
   }
+
+  // Mark the initial route before body/stage paint so Home does not reserve shell chrome space.
+  syncRouteClasses();
 
   function persistentNavigate(href){
     const shell = window.DingloftPersistentShellV93;
@@ -528,36 +535,32 @@
   // Software nav item, but product pages (and index/tienda/login/register/producto) have no
   // navbar of their own, so this chrome must keep serving as theirs.
   function ownsNavbar(){ return embeddedFile() === 'ventas'; }
-
-  // Checkout has no cart of its own to open (checkout.html is never modified for this),
-  // and offering "open cart" while the user is already finalizing the purchase makes no
-  // sense, so the bottom cart dock — not the header — hides there too.
   function isCheckoutRoute(){ return embeddedFile() === 'checkout'; }
-  function dockHidden(){ return ownsNavbar() || isCheckoutRoute(); }
-
-  // How much space #stage must reserve for the header/dock, kept in exactly one place so
-  // it can never drift from what makeHost() actually gives those hosts. Falls back to the
-  // same figures the stylesheets already reserve by default, so nothing shifts before this
-  // runs; env(safe-area-inset-*) is read once here, never re-added on top of itself.
-  const HEADER_SPACE = 'calc(68px + env(safe-area-inset-top,0px))';
-  const DOCK_SPACE = 'calc(68px + max(0px,calc(env(safe-area-inset-bottom,0px) - 33px)))';
-  function syncStageSpacing(hideHeader, hideDock){
-    // Only app.html owns a #stage/iframe pair whose height depends on this chrome; a
-    // standalone page (chrome as a plain overlay, no reserved iframe box) has none.
-    const stage = document.getElementById('stage');
-    if (!stage) return;
-    stage.style.setProperty('top', hideHeader ? '0px' : HEADER_SPACE, 'important');
-    stage.style.setProperty('bottom', hideDock ? '0px' : DOCK_SPACE, 'important');
-    const progress = document.getElementById('progress');
-    if (progress) progress.style.setProperty('top', hideHeader ? '0px' : HEADER_SPACE, 'important');
+  function syncRouteClasses(){
+    const nativeNavbar = ownsNavbar();
+    const checkout = isCheckoutRoute();
+    document.documentElement.classList.toggle('dl-shell-native-navbar', nativeNavbar);
+    document.documentElement.classList.toggle('dl-shell-checkout', checkout);
+    const stage=document.getElementById('stage');
+    if(stage){
+      if(nativeNavbar){
+        stage.style.setProperty('top','0','important');
+        stage.style.setProperty('bottom','0','important');
+      }else{
+        stage.style.setProperty('top','calc(68px + env(safe-area-inset-top,0px))','important');
+        stage.style.setProperty('bottom',checkout?'0':'calc(68px + max(0px,calc(env(safe-area-inset-bottom,0px) - 33px)))','important');
+      }
+    }
   }
-
   function syncChromeVisibility(){
     const hideHeader = ownsNavbar();
-    const hideDock = dockHidden();
+    const hideDock = hideHeader || isCheckoutRoute();
+    syncRouteClasses();
     if (headerHost) headerHost.style.setProperty('display', hideHeader ? 'none' : 'block', 'important');
     if (dockHost) dockHost.style.setProperty('display', hideDock ? 'none' : 'block', 'important');
-    syncStageSpacing(hideHeader, hideDock);
+    if (isCheckoutRoute()) {
+      try { window.DingloftMobileCartV92?.close?.(); } catch (_) {}
+    }
   }
 
   function sync(){
@@ -590,14 +593,14 @@
 
     headerHost = makeHost(HEADER_ID, 'header');
     dockHost = makeHost(DOCK_ID, 'dock');
-    // Decide visibility — and the matching #stage reservation — before either host ever
-    // joins the document: when ventas.html owns the navbar or Checkout is active, this
-    // chrome (and the space #stage reserves for it) must never paint, not even one frame.
-    const hideHeaderAtBoot = ownsNavbar();
-    const hideDockAtBoot = dockHidden();
-    if (hideHeaderAtBoot) headerHost.style.setProperty('display', 'none', 'important');
-    if (hideDockAtBoot) dockHost.style.setProperty('display', 'none', 'important');
-    syncStageSpacing(hideHeaderAtBoot, hideDockAtBoot);
+    // Decide visibility before either host ever joins the document: when ventas.html itself
+    // is the embedded content, this chrome must never paint, not even for a single frame.
+    if (ownsNavbar()) {
+      headerHost.style.setProperty('display', 'none', 'important');
+      dockHost.style.setProperty('display', 'none', 'important');
+    } else if (isCheckoutRoute()) {
+      dockHost.style.setProperty('display', 'none', 'important');
+    }
     searchHost = document.createElement('div');
     searchHost.id = SEARCH_ID;
     searchHost.style.cssText = 'position:fixed;inset:0;z-index:2147483647;pointer-events:none;display:block;';
