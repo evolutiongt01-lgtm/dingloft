@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><script src="/dingloft-theme.js?v=2"></script><script src="/dingloft-cart-sync.js?v=120"></script><script src="/dingloft-global-nav.js?v=124"></script>
+<head><script src="/dingloft-theme.js?v=2"></script><script src="/dingloft-mobile-nav-v71.js?v=99" data-dingloft-mobile-chrome="71"></script>
 <script>try{if(window.top!==window.self)document.documentElement.classList.add("dingloft-shell-embedded-v83")}catch(_){}</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
@@ -821,219 +821,298 @@ html,body{
   #reservaModal .time-slots-container{grid-template-columns:1fr!important;}
 }
 
+
+/* =========================================================
+   DINGLOFT ACCOUNT v90 · Light editorial + dark library
+   ventas.html remains the visual source of truth.
+   ========================================================= */
+:root{
+  --acct-paper:#f4f3ee;
+  --acct-white:#ffffff;
+  --acct-ink:#0a0c0f;
+  --acct-muted:#737b84;
+  --acct-line:#d9dde0;
+  --acct-lime:#b7ff34;
+  --acct-dark:#080a0d;
+}
+body{
+  background:
+    radial-gradient(circle at 12% 4%,rgba(183,255,52,.08),transparent 24%),
+    linear-gradient(180deg,#f7f6f1 0%,#efeee8 100%)!important;
+}
+.account-page.account-v80{color:var(--acct-ink)!important}
+
+.account-welcome-v80,
+.metric-v80,
+.side-stack-v80>.side-card{
+  border:1px solid var(--acct-line)!important;
+  background:rgba(255,255,255,.97)!important;
+  color:var(--acct-ink)!important;
+  box-shadow:0 20px 55px rgba(20,28,34,.07)!important;
+}
+.account-welcome-v80::before{
+  background:
+    linear-gradient(110deg,rgba(183,255,52,.12),transparent 37%),
+    radial-gradient(circle at 91% 8%,rgba(10,12,15,.055),transparent 31%)!important;
+}
+.account-welcome-v80::after{
+  background:linear-gradient(90deg,transparent,#b7ff34,rgba(10,12,15,.22),transparent)!important;
+}
+.welcome-orbit{border-color:rgba(10,12,15,.06)!important}
+.welcome-orbit span{border-color:rgba(10,12,15,.055)!important}
+.welcome-orbit span:nth-child(2){border-color:rgba(183,255,52,.22)!important}
+.welcome-orbit span:nth-child(3){background:radial-gradient(circle,rgba(183,255,52,.14),transparent 68%)!important}
+.account-kicker-v80{color:#516313!important}
+.account-welcome-v80 h1 span{color:var(--acct-ink)!important}
+.account-welcome-v80 h1 em{
+  background:none!important;
+  -webkit-background-clip:initial!important;
+  background-clip:initial!important;
+  color:var(--acct-ink)!important;
+}
+.account-welcome-v80>p{color:#66707a!important}
+.hero-btn-v80{
+  border-color:#cfd3d6!important;
+  background:#fff!important;
+  color:#111418!important;
+  box-shadow:none!important;
+}
+.hero-btn-v80:hover{border-color:#111418!important;background:#f7f7f4!important}
+.hero-btn-v80.primary{background:#111418!important;color:#fff!important;border-color:#111418!important}
+.hero-signals-v80{border-top-color:#e3e5e7!important;color:#7a828a!important}
+.hero-signals-v80 i{color:#7d9e13!important}
+
+/* Black profile anchor */
+.account-profile-v80{
+  background:#0a0c0f!important;
+  border-color:#20252a!important;
+  color:#fff!important;
+  box-shadow:0 22px 60px rgba(0,0,0,.16)!important;
+}
+.profile-glow-v80{background:radial-gradient(circle,rgba(183,255,52,.15),transparent 68%)!important}
+.profile-copy-v80 strong{color:#fff!important}
+.profile-copy-v80 small,.profile-copy-v80 span{color:#89919a!important}
+.profile-status-v80{background:#11151a!important;border-color:#242a30!important}
+.profile-actions-v80 button,.profile-actions-v80 a{
+  background:#11151a!important;border-color:#252b31!important;color:#aeb4bb!important;
+}
+.profile-actions-v80 button:hover,.profile-actions-v80 a:hover{
+  background:#fff!important;border-color:#fff!important;color:#080a0d!important;
+}
+
+/* White metrics */
+.metric-v80 .metric-icon{background:#f3f4f0!important;border-color:#dfe3de!important;color:#111!important}
+.metric-v80:nth-child(1) .metric-icon{background:#eff8d7!important;color:#526a0c!important;border-color:#d9e9ad!important}
+.metric-v80:nth-child(2) .metric-icon{background:#f1f2f3!important;color:#111!important;border-color:#dde0e3!important}
+.metric-v80:nth-child(3) .metric-icon{background:#eaf8f2!important;color:#19724e!important;border-color:#cceade!important}
+.metric-v80 .metric-copy small{color:#8b9299!important}
+.metric-v80 .metric-copy strong{color:#111418!important}
+.metric-v80 .metric-copy span{color:#7e868e!important}
+
+/* Keep Programas y descargas dark */
+.library-v80{
+  background:linear-gradient(155deg,rgba(13,20,28,.985),rgba(6,9,13,.995))!important;
+  border-color:rgba(255,255,255,.12)!important;
+  color:#f3f7fb!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.17)!important;
+}
+.library-v80 .side-label{color:#b7ff34!important}
+.library-v80 .library-head h2{color:#fff!important}
+.library-v80 .library-head p{color:#8a929c!important}
+.library-v80 .tabs-header{background:rgba(8,14,25,.42)!important;border-bottom-color:rgba(255,255,255,.09)!important}
+.library-v80 .tab-btn{color:#8a929c!important}
+.library-v80 .tab-btn.active{color:#fff!important;background:rgba(183,255,52,.10)!important;border-bottom-color:#b7ff34!important}
+.library-v80 .tab-btn:hover{color:#fff!important}
+
+/* Light side cards */
+.side-stack-v80>.side-card .side-label{color:#6b8118!important}
+.side-stack-v80>.side-card h2{color:#111418!important}
+.side-stack-v80>.side-card p{color:#6f7780!important}
+.support-art-v80{background:#eff8d7!important;border-color:#d9e9ad!important;color:#536d0b!important}
+.support-art-v80 span{border-color:rgba(83,109,11,.14)!important}
+.support-list-v80 span{color:#5e666e!important}
+.support-list-v80 i{color:#6e8d0e!important}
+.support-cta-v80{background:#111418!important;color:#fff!important;border-color:#111418!important}
+.support-cta-v80:hover{background:#000!important}
+.quick-links-v80 .quick-link{background:#fafaf8!important;border-color:#e2e4e5!important;color:#15181c!important}
+.quick-links-v80 .quick-link i{color:#6c8a0d!important}
+.quick-links-v80 .quick-link:hover{background:#111418!important;color:#fff!important;border-color:#111418!important}
+.quick-links-v80 .quick-link:hover i{color:#b7ff34!important}
+
+/* One intentional dark support/privacy accent */
+.privacy-v80{background:#0b0d10!important;border-color:#20252a!important;color:#fff!important}
+.privacy-v80 .side-label{color:#b7ff34!important}
+.privacy-v80 h2{color:#fff!important}
+.privacy-v80 p{color:#939aa2!important}
+.privacy-icon-v80{color:#b7ff34!important;border-color:#293128!important;background:#111710!important}
+
+/* Modals match checkout */
+.liquid-modal-overlay{
+  background:rgba(7,9,11,.58)!important;
+  backdrop-filter:blur(8px)!important;
+  -webkit-backdrop-filter:blur(8px)!important;
+}
+#reservaModal .liquid-modal-card{
+  background:#f7f7f4!important;color:#16181b!important;
+  border:1px solid #d7d9d7!important;
+  box-shadow:0 38px 100px rgba(0,0,0,.22)!important;
+}
+#reservaModal .liquid-close{background:#111418!important;border-color:#111418!important;color:#fff!important}
+
+.account-booking-head{padding:25px 28px 18px;border-bottom:1px solid #dedfdd;background:#fff}
+.account-booking-head .booking-kicker{color:#6e8612;font-size:.64rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase}
+.account-booking-head h3{margin:8px 0 6px;color:#111418;font-size:1.65rem;letter-spacing:-.05em}
+.account-booking-head p{margin:0;color:#777e85;font-size:.78rem;line-height:1.5;max-width:720px}
+.account-booking-body{padding:18px 22px 24px;overflow:auto;min-height:0}
+
+.account-booking-intro{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:13px 14px;margin-bottom:12px;border:1px solid #dedfdd;background:#fff;
+}
+.account-booking-intro b{display:block;color:#111418;font-size:.82rem}
+.account-booking-intro span{display:block;margin-top:3px;color:#858b91;font-size:.69rem}
+.account-booking-hours{
+  flex:none;padding:8px 10px;background:#111418;color:#fff!important;
+  font-size:.60rem!important;font-weight:900!important;letter-spacing:.08em;text-transform:uppercase;
+}
+
+.account-remote-guide{padding:12px;margin-bottom:12px;border:1px solid #dedfdd;background:#fff}
+.account-remote-guide-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.account-remote-guide-copy b{display:block;color:#17191c;font-size:.78rem}
+.account-remote-guide-copy span{display:block;margin-top:3px;color:#8c9298;font-size:.66rem}
+.account-remote-guide-badge{
+  min-width:72px;padding:7px 9px;background:#111418;color:#fff;text-align:center;
+  font-size:.56rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;
+}
+.account-remote-guide-track{height:3px;margin:10px 0;background:#ececea;overflow:hidden}
+.account-remote-guide-track span{display:block;width:0;height:100%;background:#111418;transition:width .35s cubic-bezier(.22,1,.36,1)}
+.account-remote-guide-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.account-remote-guide-step{
+  min-height:34px;padding:6px;display:flex;align-items:center;gap:6px;
+  border:1px solid #e1e2e0;background:#f8f8f5;color:#9a9fa4;font-size:.60rem;font-weight:800;
+}
+.account-remote-guide-step i{
+  width:19px;height:19px;border-radius:50%;display:grid;place-items:center;
+  background:#eceeeb;color:#737a81;font-style:normal;font-size:.58rem;
+}
+.account-remote-guide-step.active{background:#fff;border-color:#bfc3c5;color:#111418}
+.account-remote-guide-step.active i{background:#111418;color:#fff}
+.account-remote-guide-step.complete{color:#367354}
+.account-remote-guide-step.complete i{background:#e1f5ea;color:#1b7a52}
+
+.account-remote-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(280px,.70fr);gap:12px}
+.account-remote-field label{
+  display:block;margin:0 0 7px;color:#7d8389;
+  font-size:.59rem;font-weight:900;letter-spacing:.10em;text-transform:uppercase;
+}
+.account-remote-side{display:grid;gap:10px;align-content:start}
+.account-remote-field select,.account-remote-field textarea{
+  width:100%;border:1px solid #d7d9d7;background:#fff;color:#17191c;
+  border-radius:12px;padding:11px 12px;outline:0;font:700 .76rem/1.35 Inter,sans-serif;
+}
+.account-remote-field textarea{min-height:94px;resize:vertical}
+.account-remote-field select:focus,.account-remote-field textarea:focus{border-color:#111418;box-shadow:0 0 0 3px rgba(17,20,24,.06)}
+
+.account-remote-calendar{border:1px solid #d7d9d7;background:#fff;overflow:hidden}
+.account-remote-calendar-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;
+  border-bottom:1px solid #ececea;
+}
+.account-remote-calendar-kicker{display:block;color:#9b9fa3;font-size:.56rem;font-weight:850;letter-spacing:.10em;text-transform:uppercase}
+.account-remote-calendar-head b{display:block;margin-top:3px;color:#17191c;font-size:.82rem}
+.account-weekend-urgent{
+  min-height:34px;padding:0 10px;border:1px solid #d7d9d7;background:#fff;color:#17191c;
+  display:flex;align-items:center;gap:8px;font-size:.60rem;font-weight:800;cursor:pointer;
+}
+.account-weekend-urgent strong{color:#111418}
+.account-weekend-urgent[aria-pressed="true"]{background:#111418;color:#fff;border-color:#111418}
+.account-weekend-urgent[aria-pressed="true"] strong{color:#b7ff34}
+.account-remote-weekdays,.account-remote-days{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding-left:10px;padding-right:10px;
+}
+.account-remote-calendar.weekend-mode .account-remote-weekdays,
+.account-remote-calendar.weekend-mode .account-remote-days{grid-template-columns:repeat(2,1fr)}
+.account-remote-weekdays{padding-top:9px;padding-bottom:4px}
+.account-remote-days{padding-top:1px;padding-bottom:10px}
+.account-remote-weekdays span{text-align:center;color:#9da2a7;font-size:.56rem;font-weight:850;letter-spacing:.05em}
+.account-remote-day{
+  min-height:38px;border:1px solid #e1e3e1;background:#fafaf8;color:#1c1e21;
+  font-size:.68rem;font-weight:800;cursor:pointer;
+  transition:transform .15s ease,border-color .15s ease,background .15s ease;
+}
+.account-remote-day:hover:not(:disabled){transform:translateY(-1px);border-color:#bfc3c5;background:#fff}
+.account-remote-day.selected{background:#111418;color:#fff;border-color:#111418}
+.account-remote-day:disabled{opacity:.28;cursor:not-allowed}
+.account-remote-blank{min-height:38px}
+.account-remote-caption{padding:9px 11px;border-top:1px solid #ececea;color:#83898f;font-size:.61rem}
+.account-remote-caption strong{color:#17191c}
+
+.account-remote-benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:11px}
+.account-remote-benefit{padding:10px;border:1px solid #dedfdd;background:#fff;color:#777e84;font-size:.62rem;line-height:1.45}
+.account-remote-benefit b{display:block;margin-bottom:3px;color:#222529;font-size:.66rem}
+
+.booking-footer.account-checkout-footer{
+  margin-top:12px!important;padding:13px!important;border:1px solid #d9dbd9!important;
+  background:#fff!important;border-radius:0!important;
+}
+.booking-prepay-v83{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.72fr);gap:9px!important}
+#reservaModal .liquid-input{background:#fafaf8!important;color:#111418!important;border:1px solid #d8dad8!important}
+#reservaModal .liquid-btn-cupon{background:#111418!important;color:#fff!important;border-color:#111418!important}
+.booking-pay-trigger-v83{background:#111418!important;color:#fff!important;border-color:#111418!important}
+.booking-pay-trigger-v83:not(:disabled):hover{background:#000!important}
+.booking-payment-v83{margin-top:10px!important;padding:13px!important;background:#f7f7f4!important;border:1px solid #dedfdd!important;color:#111418!important}
+.booking-payment-head-v83 strong{color:#111418!important}
+.booking-payment-head-v83 small,.booking-pay-security-v83{color:#777e84!important}
+.booking-payment-back-v83{color:#111418!important;border-color:#cfd2d0!important;background:#fff!important}
+
+#profileNameModal .liquid-modal-card{background:#fff!important;color:#111418!important;border-color:#d9dcde!important}
+#profileNameModal .profile-editor-v80 h3{color:#111418!important}
+#profileNameModal .profile-editor-v80>p,#profileNameModal .profile-editor-v80 label,#profileNameModal .profile-form-message-v80{color:#777e84!important}
+#profileNameModal .liquid-input{background:#f8f8f5!important;color:#111418!important;border-color:#d8dad8!important}
+
+/* Maintenance state inside dark library */
+.library-maintenance-v90{
+  padding:22px;border:1px solid rgba(183,255,52,.18);background:rgba(183,255,52,.045);
+  display:grid;grid-template-columns:46px minmax(0,1fr);gap:13px;align-items:start;
+}
+.library-maintenance-v90 .art{
+  width:46px;height:46px;display:grid;place-items:center;background:#111710;
+  color:#b7ff34;border:1px solid rgba(183,255,52,.18);font-size:1.05rem;
+}
+.library-maintenance-v90 strong{display:block;color:#fff;font-size:.86rem;margin:2px 0 5px}
+.library-maintenance-v90 span{display:block;color:#9aa1a9;font-size:.72rem;line-height:1.55}
+.library-maintenance-v90 b{color:#b7ff34}
+
+@media(max-width:760px){
+  .account-welcome-v80,.metric-v80,.side-stack-v80>.side-card{border-radius:18px!important}
+  .account-profile-v80,.library-v80{border-radius:20px!important}
+  #reservaModal{
+    top:calc(66px + env(safe-area-inset-top,0px))!important;
+    bottom:0!important;padding:6px!important;align-items:stretch!important;
+  }
+  #reservaModal .liquid-modal-card{
+    height:100%!important;max-height:none!important;border-radius:20px 20px 0 0!important;
+  }
+  .account-booking-head{padding:18px 48px 13px 15px}
+  .account-booking-head h3{font-size:1.2rem}
+  .account-booking-head p{font-size:.69rem}
+  .account-booking-body{padding:10px 8px calc(16px + env(safe-area-inset-bottom,0px))}
+  .account-booking-intro{display:block;padding:10px}
+  .account-booking-hours{display:inline-flex;margin-top:8px}
+  .account-remote-guide{padding:9px}
+  .account-remote-guide-steps{grid-template-columns:1fr 1fr}
+  .account-remote-grid{grid-template-columns:1fr}
+  .account-remote-benefits{grid-template-columns:1fr}
+  .account-remote-field select,.account-remote-field textarea{font-size:16px}
+  .booking-prepay-v83{grid-template-columns:1fr}
+}
+
 </style>
 
   <script>window.__DINGLOFT_COMMERCE_V1__ = true;</script>
   <script src="mobile-shell-redirect.js?v=14"></script>
+<script defer src="desktop-global-nav.js?v=14"></script>
 <script>document.documentElement.classList.add("account-auth-pending");</script>
-
-<style id="dingloft-account-client-v127">
-:root{
-  --acc-bg:#05070a;
-  --acc-panel:#0b0f14;
-  --acc-panel-2:#10151b;
-  --acc-paper:#f4f3ef;
-  --acc-ink:#0a0c0f;
-  --acc-muted:#858d97;
-  --acc-line:#242a31;
-  --acc-accent:#b7ff34;
-}
-body{background:var(--acc-bg)!important}
-.account-page.account-v80{
-  width:min(1420px,calc(100% - 42px))!important;
-  padding:38px 0 78px!important;
-}
-.account-hero-v80{
-  display:grid!important;
-  grid-template-columns:minmax(0,1.52fr) minmax(320px,.58fr)!important;
-  gap:1px!important;
-  border:1px solid var(--acc-line)!important;
-  background:var(--acc-line)!important;
-  border-radius:0!important;
-  overflow:hidden!important;
-  margin-bottom:14px!important;
-}
-.account-welcome-v80,.account-profile-v80{
-  border:0!important;border-radius:0!important;box-shadow:none!important;
-}
-.account-welcome-v80{
-  min-height:390px!important;
-  padding:48px 50px!important;
-  display:flex!important;flex-direction:column!important;justify-content:center!important;
-  background:
-    radial-gradient(circle at 78% 25%,rgba(183,255,52,.08),transparent 28%),
-    linear-gradient(135deg,#080b0f,#10171c)!important;
-}
-.account-welcome-v80::before{
-  content:"DINGLOFT ID";position:absolute;right:32px;bottom:-18px;
-  color:rgba(255,255,255,.018);font-size:clamp(78px,10vw,150px);font-weight:900;letter-spacing:-.08em;
-  pointer-events:none;
-}
-.account-kicker-v80,.side-label{
-  color:var(--acc-accent)!important;letter-spacing:.15em!important;font-size:.62rem!important;text-transform:uppercase!important;
-}
-.account-welcome-v80 h1{
-  max-width:780px!important;margin:17px 0 18px!important;
-  font-size:clamp(46px,5.1vw,78px)!important;line-height:.92!important;letter-spacing:-.06em!important;font-weight:350!important;
-}
-.account-welcome-v80 h1 em{font-style:normal!important;font-weight:850!important}
-.account-welcome-v80>p{max-width:680px!important;color:#a2aab3!important;font-size:.96rem!important;line-height:1.65!important}
-.hero-btn-v80{
-  min-height:48px!important;border-radius:0!important;border:1px solid #343a41!important;
-  background:#151a20!important;color:#fff!important;box-shadow:none!important;text-transform:uppercase!important;
-  font-size:.67rem!important;letter-spacing:.05em!important;
-}
-.hero-btn-v80.primary{background:var(--acc-accent)!important;color:#080a0d!important;border-color:var(--acc-accent)!important}
-.hero-btn-v80:hover{transform:translateY(-1px)!important}
-.hero-signals-v80{gap:18px!important;margin-top:24px!important}
-.hero-signals-v80 span{color:#737c86!important;font-size:.66rem!important}
-.hero-signals-v80 i{color:var(--acc-accent)!important}
-
-.account-profile-v80{
-  padding:34px 30px!important;background:#090d12!important;display:flex!important;flex-direction:column!important;justify-content:center!important;
-}
-.profile-glow-v80{display:none!important}
-.profile-top-v80{padding-bottom:22px!important;border-bottom:1px solid var(--acc-line)!important}
-.account-avatar.top-avatar{border-radius:0!important;border:1px solid #2d343b!important;background:#11171d!important}
-.profile-edit-v80{border-radius:0!important}
-.profile-status-v80{
-  margin:20px 0!important;padding:13px 0!important;border:0!important;border-top:1px solid #151b21!important;border-bottom:1px solid #151b21!important;background:transparent!important;
-}
-.profile-actions-v80{gap:6px!important}
-.profile-actions-v80>*{border-radius:0!important;min-height:40px!important;background:#11161c!important;border:1px solid #22282f!important}
-.profile-actions-v80 .danger-v80{color:#ff97a2!important}
-
-.account-metrics-v80{
-  grid-template-columns:repeat(3,1fr)!important;gap:1px!important;background:var(--acc-line)!important;
-  border:1px solid var(--acc-line)!important;margin-bottom:14px!important;
-}
-.metric-v80{
-  border:0!important;border-radius:0!important;box-shadow:none!important;background:#0b0f14!important;
-  min-height:108px!important;padding:20px 22px!important;
-}
-.metric-icon{border-radius:0!important;background:rgba(183,255,52,.055)!important;border:1px solid rgba(183,255,52,.12)!important;color:var(--acc-accent)!important}
-.metric-copy strong{font-size:1.16rem!important}.metric-copy span{font-size:.66rem!important}
-
-.account-grid-v80{grid-template-columns:minmax(0,1.72fr) minmax(300px,.58fr)!important;gap:14px!important}
-.library-v80{
-  border-radius:0!important;border:1px solid #d8d8d2!important;background:var(--acc-paper)!important;
-  box-shadow:0 26px 70px rgba(0,0,0,.18)!important;color:var(--acc-ink)!important;
-}
-.library-head-v80{padding:30px 32px 22px!important;border-bottom:1px solid #d9dad6!important}
-.library-head-v80 .side-label{color:#626b74!important}
-.library-head-v80 h2{color:var(--acc-ink)!important;font-size:1.8rem!important}
-.library-head-v80 p{color:#737b84!important}
-.library-chip{
-  border-radius:0!important;background:#0b0e11!important;border-color:#0b0e11!important;color:#fff!important;
-  text-transform:uppercase!important;letter-spacing:.05em!important;font-size:.58rem!important;
-}
-.tabs-v80{
-  display:flex!important;gap:0!important;padding:0!important;background:#ebeae5!important;border-bottom:1px solid #d4d5d1!important;
-}
-.tabs-v80 .tab-btn{
-  min-height:48px!important;border:0!important;border-right:1px solid #d3d4d0!important;border-radius:0!important;
-  color:#747b83!important;background:transparent!important;
-}
-.tabs-v80 .tab-btn.active{background:#0a0c0f!important;color:#fff!important}
-.tab-content{padding:20px!important}
-.account-loading-v80{color:#737b84!important}
-.download-row{
-  border-radius:0!important;border:1px solid #d9dadd!important;background:#fff!important;
-  box-shadow:none!important;margin-bottom:8px!important;color:#11161c!important;
-}
-.download-row:hover{border-color:#aeb4ba!important;transform:translateY(-1px)!important}
-.download-row h3{color:#101419!important}
-.download-row p{color:#808891!important}
-.product-art{border-radius:0!important;background:#f0f1f1!important;border:1px solid #e0e2e3!important}
-.download-row .badge{color:#26303a!important}
-.download-btn,.download-btn-small{
-  border-radius:0!important;background:#0b0e11!important;border-color:#0b0e11!important;color:#fff!important;
-}
-.bundle-container,.sub-downloads,.sub-download-row{border-radius:0!important}
-.sub-download-row{background:#f7f7f4!important;color:#30373f!important;border-color:#dedfdb!important}
-
-.side-stack-v80>.side-card{
-  border-radius:0!important;border:1px solid var(--acc-line)!important;background:#0b0f14!important;
-  box-shadow:none!important;padding:24px!important;
-}
-.support-v80{background:linear-gradient(155deg,#0b0f14,#10180d)!important}
-.support-art-v80{border-radius:0!important;color:var(--acc-accent)!important;background:rgba(183,255,52,.05)!important;border-color:rgba(183,255,52,.15)!important}
-.support-art-v80 span{border-radius:0!important}
-.support-v80 h2{font-size:1.55rem!important}
-.support-list-v80 span{color:#9ca4ad!important}
-.support-list-v80 i{color:var(--acc-accent)!important}
-.support-cta-v80{
-  border-radius:0!important;background:var(--acc-accent)!important;color:#080a0d!important;border-color:var(--acc-accent)!important;
-}
-.quick-links-v80 .quick-link{border-radius:0!important;background:#10151a!important;border:1px solid #22282f!important}
-.quick-links-v80 .quick-link i{color:var(--acc-accent)!important}
-.privacy-icon-v80{border-radius:0!important;color:var(--acc-accent)!important;background:rgba(183,255,52,.045)!important;border-color:rgba(183,255,52,.14)!important}
-
-/* Maintenance state shown only if library sync fails. */
-.library-maintenance-v127{
-  position:relative;overflow:hidden;display:grid;grid-template-columns:66px minmax(0,1fr);gap:18px;align-items:start;
-  padding:24px;border:1px solid #c8c9c5;background:#fff;color:#11161c;
-}
-.library-maintenance-v127::after{
-  content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc-accent);
-}
-.library-maintenance-icon-v127{
-  width:66px;height:66px;display:grid;place-items:center;background:#0a0d10;color:var(--acc-accent);font-size:1.35rem;
-}
-.library-maintenance-v127 small{display:block;color:#69727b;font-size:.59rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
-.library-maintenance-v127 h3{margin:7px 0 8px;font-size:1.25rem;letter-spacing:-.035em}
-.library-maintenance-v127 p{margin:0;color:#69727b;font-size:.79rem;line-height:1.55}
-.library-maintenance-meta-v127{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
-.library-maintenance-meta-v127 span{
-  display:inline-flex;align-items:center;gap:7px;padding:8px 10px;border:1px solid #d9dad6;
-  font-size:.62rem;font-weight:800;color:#343b42;background:#f7f7f4;
-}
-.library-maintenance-meta-v127 span:first-child{background:#0a0d10;color:#fff;border-color:#0a0d10}
-
-/* Checkout-derived remote agenda */
-.booking-calendar-head-v127{align-items:flex-start!important;gap:12px!important}
-.booking-calendar-kicker-v127{display:block;color:#6e7d8d;font-size:.54rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
-.booking-weekend-urgent-v127{
-  margin-left:auto;min-height:39px;padding:0 11px;border:1px solid rgba(255,255,255,.10);border-radius:0;
-  background:#10161d;color:#98a4af;display:flex;align-items:center;gap:9px;cursor:pointer;font-size:.62rem;font-weight:800;
-}
-.booking-weekend-urgent-v127 strong{color:#fff}
-.booking-weekend-urgent-v127[aria-pressed="true"]{background:#221b08;border-color:#5b4710;color:#ffd66b}
-.booking-weekend-urgent-v127[aria-pressed="true"] strong{color:#ffd66b}
-.booking-mode-caption-v127{margin:-4px 0 12px;color:#718090;font-size:.62rem}
-.booking-mode-caption-v127 strong{color:#fff}
-.booking-checkout-note-v127{
-  display:flex;align-items:flex-start;gap:9px;margin-top:11px;padding:11px 12px;border:1px solid rgba(183,255,52,.10);
-  background:rgba(183,255,52,.025);color:#718090;font-size:.63rem;line-height:1.45;
-}
-.booking-checkout-note-v127 i{color:var(--acc-accent);margin-top:1px}
-#reservaModal .time-slot{border-radius:0!important}
-#reservaModal .time-slot.selected{background:var(--acc-accent)!important;color:#08100d!important;border-color:var(--acc-accent)!important}
-#reservaModal .software-btn{border-radius:0!important}
-#reservaModal .software-btn.selected{background:var(--acc-accent)!important;color:#07100a!important;border-color:var(--acc-accent)!important}
-#reservaModal .booking-pay-trigger-v83,#reservaModal .liquid-btn,#reservaModal .liquid-btn-cupon,#reservaModal .liquid-input{border-radius:0!important}
-
-@media(max-width:900px){
-  .account-hero-v80,.account-grid-v80{grid-template-columns:1fr!important}
-  .account-welcome-v80{min-height:330px!important;padding:34px 28px!important}
-  .account-profile-v80{padding:25px 24px!important}
-}
-@media(max-width:760px){
-  .account-page.account-v80{width:calc(100% - 14px)!important;padding-top:82px!important}
-  .account-welcome-v80{padding:28px 20px!important;min-height:auto!important}
-  .account-welcome-v80 h1{font-size:42px!important}
-  .account-metrics-v80{grid-template-columns:1fr!important}
-  .metric-v80{min-height:82px!important}
-  .library-head-v80{padding:22px 18px 17px!important}
-  .tab-content{padding:10px!important}
-  .side-stack-v80>.side-card{padding:20px!important}
-  .library-maintenance-v127{grid-template-columns:50px minmax(0,1fr);padding:17px;gap:12px}
-  .library-maintenance-icon-v127{width:50px;height:50px}
-  .booking-weekend-urgent-v127{padding:0 8px;font-size:.56rem}
-  .booking-weekend-urgent-v127 span{max-width:90px;line-height:1.15;text-align:left}
-}
-</style>
-
 </head>
 <body>
   <main class="account-page account-v80">
@@ -1041,14 +1120,14 @@ body{background:var(--acc-bg)!important}
       <article class="account-welcome-v80">
         <div class="welcome-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
         <div class="account-kicker-v80"><i class="bi bi-stars"></i> Dingloft ID</div>
-        <h1>Hola, <span id="hero-first-name">Cliente</span>.<br><em>Tu espacio Dingloft.</em></h1>
-        <p>Tus programas, descargas, reservas y soporte reunidos en un solo lugar, vinculados directamente a tu cuenta.</p>
+        <h1>Hola, <span id="hero-first-name">Cliente</span>.<br><em>Todo lo tuyo está aquí.</em></h1>
+        <p>Tus programas, descargas y asistencia remota reunidos en un solo lugar, vinculados a tu cuenta Dingloft.</p>
         <div class="hero-actions-v80">
           <a href="#descargas" class="hero-btn-v80 primary"><i class="bi bi-grid-3x3-gap"></i><span>Mi biblioteca</span></a>
           <button type="button" class="hero-btn-v80" onclick="openReservaModal()"><i class="bi bi-headset"></i><span>Agendar soporte</span></button>
         </div>
         <div class="hero-signals-v80">
-          <span><i class="bi bi-bag-check"></i> Compras protegidas</span>
+          <span><i class="bi bi-cloud-check"></i> Sincronizado</span>
           <span><i class="bi bi-shield-check"></i> Acceso protegido</span>
           <span><i class="bi bi-lightning-charge"></i> Descarga directa</span>
         </div>
@@ -1079,7 +1158,7 @@ body{background:var(--acc-bg)!important}
     <section class="account-metrics account-metrics-v80" aria-label="Resumen de cuenta">
       <article class="metric metric-v80"><div class="metric-icon"><i class="bi bi-box-seam"></i></div><div class="metric-copy"><small>Productos activos</small><strong id="stat-programas">0</strong><span>Compras vinculadas</span></div></article>
       <article class="metric metric-v80"><div class="metric-icon"><i class="bi bi-arrow-down-circle"></i></div><div class="metric-copy"><small>Descargas listas</small><strong id="stat-descargas">0</strong><span>Archivos disponibles</span></div></article>
-      <article class="metric metric-v80"><div class="metric-icon"><i class="bi bi-headset"></i></div><div class="metric-copy"><small>Soporte remoto</small><strong>8 PM – 2 AM</strong><span>Hora de Miami · $10 / urgente $20</span></div></article>
+      <article class="metric metric-v80"><div class="metric-icon"><i class="bi bi-headset"></i></div><div class="metric-copy"><small>Soporte remoto</small><strong>Listo</strong><span>Agenda cuando lo necesites</span></div></article>
     </section>
 
     <section class="account-grid account-grid-v80">
@@ -1106,11 +1185,11 @@ body{background:var(--acc-bg)!important}
           <div class="support-art-v80"><span></span><i class="bi bi-headset"></i></div>
           <div class="side-label">Dingloft Care</div>
           <h2>Soporte remoto, sin complicarte.</h2>
-          <p>Programa asistencia para instalación o configuración. Elige fecha, horario y conexión antes de confirmar.</p>
+          <p>Reserva una sesión y deja que el equipo te ayude a instalar o configurar tu software mientras tú conservas el control.</p>
           <div class="support-list support-list-v80">
-            <span><i class="bi bi-clock"></i> 8:00 PM – 2:00 AM · hora de Miami</span>
-            <span><i class="bi bi-calendar-week"></i> Lunes a viernes $10 · fin de semana urgente $20</span>
-            <span><i class="bi bi-display"></i> Chrome Remote Desktop o AnyDesk</span>
+            <span><i class="bi bi-eye"></i> Ves cada acción en tiempo real</span>
+            <span><i class="bi bi-shield-lock"></i> Conexión privada y temporal</span>
+            <span><i class="bi bi-check2-circle"></i> Validación antes de terminar</span>
           </div>
           <button class="side-cta support-cta-v80" type="button" onclick="openReservaModal()"><i class="bi bi-calendar2-plus"></i> Elegir fecha y hora</button>
         </article>
@@ -1160,71 +1239,117 @@ body{background:var(--acc-bg)!important}
 
   <div class="liquid-modal-overlay" id="reservaModal">
     <div class="liquid-modal-card">
-      <button class="liquid-close" onclick="closeReservaModal()"><i class="bi bi-x-lg"></i></button>
-      <div class="booking-modal-head">
-        <div class="booking-kicker"><i class="bi bi-headset"></i> Soporte remoto Dingloft</div>
-        <h3>Reserva tu sesión Dingloft</h3>
-        <p>Programa tu sesión entre 8:00 PM y 2:00 AM, siempre en hora de Miami. La tarifa normal aplica de lunes a viernes y el servicio urgente está disponible sábado y domingo.</p>
-        <div class="booking-stepbar" aria-label="Pasos para reservar">
-          <div class="booking-step active" data-booking-step="1"><b>1</b><span>Fecha</span></div>
-          <div class="booking-step" data-booking-step="2"><b>2</b><span>Horario</span></div>
-          <div class="booking-step" data-booking-step="3"><b>3</b><span>Conexión</span></div>
-          <div class="booking-step" data-booking-step="4"><b>4</b><span>Detalles</span></div>
-        </div>
+      <button class="liquid-close" onclick="closeReservaModal()" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+
+      <div class="account-booking-head">
+        <div class="booking-kicker"><i class="bi bi-headset"></i> Dingloft Care</div>
+        <h3>Programa tu asistencia remota</h3>
+        <p>Elige la fecha, el horario y la vía de conexión. Los horarios se muestran siempre en hora de Miami.</p>
       </div>
 
-      <div class="booking-body">
-        <div class="booking-grid">
-          <div class="calendar-box">
-            <div class="calendar-header booking-calendar-head-v127">
-              <div>
-                <span class="booking-calendar-kicker-v127">Disponibilidad</span>
-                <h4 id="calendar-month-year">Cargando...</h4>
+      <div class="account-booking-body">
+        <div class="account-booking-intro">
+          <div>
+            <b>Instalación o configuración guiada</b>
+            <span>Lunes a viernes US$10 · fin de semana urgente US$20.</span>
+          </div>
+          <div class="account-booking-hours">8:00 PM – 2:00 AM · MIAMI</div>
+        </div>
+
+        <div class="account-remote-guide" id="account-remote-guide" aria-live="polite">
+          <div class="account-remote-guide-top">
+            <div class="account-remote-guide-copy">
+              <b id="account-remote-guide-title">Empecemos por la fecha</b>
+              <span id="account-remote-guide-hint">Selecciona el día en que quieres recibir la asistencia.</span>
+            </div>
+            <div class="account-remote-guide-badge" id="account-remote-guide-badge">Paso 1 de 4</div>
+          </div>
+          <div class="account-remote-guide-track"><span id="account-remote-guide-progress"></span></div>
+          <div class="account-remote-guide-steps">
+            <div class="account-remote-guide-step active" data-account-guide="0"><i>1</i><span>Fecha</span></div>
+            <div class="account-remote-guide-step" data-account-guide="1"><i>2</i><span>Hora</span></div>
+            <div class="account-remote-guide-step" data-account-guide="2"><i>3</i><span>Conexión</span></div>
+            <div class="account-remote-guide-step" data-account-guide="3"><i>4</i><span>Detalles</span></div>
+          </div>
+        </div>
+
+        <div class="account-remote-grid">
+          <div class="account-remote-field">
+            <label>Fecha</label>
+            <input id="remote-booking-date" type="hidden" autocomplete="off">
+            <div class="account-remote-calendar" id="account-remote-calendar">
+              <div class="account-remote-calendar-head">
+                <div>
+                  <span class="account-remote-calendar-kicker">Disponibilidad</span>
+                  <b id="account-remote-month">—</b>
+                </div>
+                <button class="account-weekend-urgent" id="account-weekend-urgent" type="button" aria-pressed="false">
+                  <span>Urgente fin de semana</span><strong>$20</strong>
+                </button>
               </div>
-              <button id="booking-weekend-urgent-v127" class="booking-weekend-urgent-v127" type="button" aria-pressed="false" onclick="toggleWeekendUrgentV127()">
-                <span>Urgente fin de semana</span><strong>$20</strong>
-              </button>
+              <div class="account-remote-weekdays" id="account-remote-weekdays"></div>
+              <div class="account-remote-days" id="account-remote-days"></div>
+              <div class="account-remote-caption" id="account-remote-caption">Lunes a viernes · <strong>$10</strong></div>
             </div>
-            <div class="booking-mode-caption-v127" id="booking-mode-caption-v127">Lunes a viernes · <strong>$10</strong></div>
-            <div class="calendar-days-head" id="calendar-days-head-v127"><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span></div>
-            <div class="calendar-days-grid" id="calendar-days"></div>
           </div>
 
-          <div class="times-box">
-            <div class="times-header" id="selected-date-text">Selecciona una fecha disponible</div>
-            <div class="time-slots-container" id="time-slots-list">
-              <p style="grid-column:1/-1;color:var(--muted);font-size:.8rem;text-align:center;margin:30px 0;">Selecciona un día del calendario para ver los horarios disponibles.</p>
+          <div class="account-remote-side">
+            <div class="account-remote-field">
+              <label for="remote-booking-time">Horario · Hora de Miami</label>
+              <select id="remote-booking-time">
+                <option value="">Selecciona un horario</option>
+              </select>
+            </div>
+            <div class="account-remote-field">
+              <label for="remote-booking-software">Conexión remota</label>
+              <select id="remote-booking-software">
+                <option value="">Selecciona una app</option>
+                <option value="Google Chrome Remote Desktop">Chrome Remote Desktop</option>
+                <option value="AnyDesk">AnyDesk</option>
+              </select>
+            </div>
+            <div class="account-remote-field">
+              <label for="reservaComentario">¿Qué necesitas instalar o configurar?</label>
+              <textarea id="reservaComentario" maxlength="500" placeholder="Ej. Instalar SketchUp, configurar plugins o revisar una instalación."></textarea>
             </div>
           </div>
         </div>
 
-        <div class="booking-config">
-          <div class="booking-config-title"><strong>Conexión y detalles de la sesión</strong><span class="booking-price"><i class="bi bi-tag"></i> <span id="booking-price">$10.00</span></span></div>
-          <div class="software-options">
-            <div class="software-btn" onclick="seleccionarSoftware('Google Chrome Remote Desktop', this)"><i class="bi bi-browser-chrome"></i> Chrome Remote Desktop</div>
-            <div class="software-btn" onclick="seleccionarSoftware('AnyDesk', this)"><i class="bi bi-display"></i> AnyDesk</div>
-          </div>
-          <textarea id="reservaComentario" class="liquid-input" rows="3" maxlength="500" placeholder="Ej. Instalar Motion-X, configurar el plugin en mi DAW y verificar audio/MIDI."></textarea><div class="booking-checkout-note-v127"><i class="bi bi-shield-check"></i><span>Después del pago, la reserva aparecerá en tu Cuenta Dingloft. El campo para enviar tu código o enlace se habilita 5 minutos antes de la sesión.</span></div>
+        <div class="account-remote-benefits">
+          <div class="account-remote-benefit"><b>Control visible</b>Ves cada acción durante la sesión.</div>
+          <div class="account-remote-benefit"><b>Conexión temporal</b>El acceso se utiliza únicamente durante la asistencia.</div>
+          <div class="account-remote-benefit"><b>Validación final</b>Revisamos todo antes de terminar.</div>
         </div>
 
-        <div class="booking-footer">
+        <div class="booking-footer account-checkout-footer">
           <div id="modal-notif"></div>
           <div class="booking-prepay-v83">
-            <div class="cupon-group"><input type="text" id="cuponInput" placeholder="CÓDIGO DE CUPÓN" class="liquid-input" style="text-transform:uppercase"><button type="button" class="liquid-btn-cupon" onclick="aplicarCupon()">Aplicar</button></div>
-            <button type="button" id="btn-open-payment-v83" class="booking-pay-trigger-v83" onclick="abrirPagoReservaV83()" disabled><i class="bi bi-arrow-right-circle"></i><span>Selecciona fecha y horario</span></button>
+            <div class="cupon-group">
+              <input type="text" id="cuponInput" placeholder="CÓDIGO DE CUPÓN" class="liquid-input" style="text-transform:uppercase">
+              <button type="button" class="liquid-btn-cupon" onclick="aplicarCupon()">Aplicar</button>
+            </div>
+            <button type="button" id="btn-open-payment-v83" class="booking-pay-trigger-v83" onclick="abrirPagoReservaV83()" disabled>
+              <i class="bi bi-arrow-right-circle"></i><span>Completa los datos de la sesión</span>
+            </button>
           </div>
+
           <section id="booking-payment-v83" class="booking-payment-v83" hidden aria-hidden="true">
             <div class="booking-payment-head-v83">
               <div><small>Confirmación segura</small><strong id="booking-payment-summary-v83">Revisa tu sesión antes de continuar</strong></div>
               <button type="button" class="booking-payment-back-v83" onclick="cerrarPagoReservaV83()"><i class="bi bi-pencil"></i> Editar</button>
             </div>
-            <div id="payment-buttons-container" style="width:100%"><button id="btn-pagar-gratis" class="liquid-btn" style="display:none" onclick="procesarReservaGratis()"><i class="bi bi-check2-circle"></i> Confirmar reserva gratis</button><div id="paypal-button-container" class="w-100"></div></div>
-            <div class="booking-pay-security-v83"><i class="bi bi-shield-check"></i><span>El pago solo se carga en este paso y nunca antes.</span></div>
+            <div id="payment-buttons-container" style="width:100%">
+              <button id="btn-pagar-gratis" class="liquid-btn" style="display:none" onclick="procesarReservaGratis()"><i class="bi bi-check2-circle"></i> Confirmar reserva gratis</button>
+              <div id="paypal-button-container" class="w-100"></div>
+            </div>
+            <div class="booking-pay-security-v83"><i class="bi bi-shield-check"></i><span>El pago solo se procesa en este paso.</span></div>
           </section>
         </div>
       </div>
     </div>
   </div>
+
+
 
 
   <div class="dl-feedback-v81" id="account-feedback-v81" role="status" aria-live="polite" aria-atomic="true">
@@ -1310,10 +1435,10 @@ body{background:var(--acc-bg)!important}
       document.getElementById('reservasModal').classList.remove('active');
     };
 
-    const REMOTE_TIME_ZONE = "America/New_York";
-    const REMOTE_BASE_PRICE_USD = 10;
-    const REMOTE_WEEKEND_PRICE_USD = 20;
-    const REMOTE_BOOKING_SLOTS = [
+    const ACCOUNT_REMOTE_TIME_ZONE = "America/New_York";
+    const ACCOUNT_REMOTE_BASE_PRICE_USD = 10;
+    const ACCOUNT_REMOTE_WEEKEND_PRICE_USD = 20;
+    const ACCOUNT_REMOTE_SLOTS = [
       {value:"20|0",label:"08:00 PM",hour:20,dayOffset:0},
       {value:"21|0",label:"09:00 PM",hour:21,dayOffset:0},
       {value:"22|0",label:"10:00 PM",hour:22,dayOffset:0},
@@ -1323,240 +1448,269 @@ body{background:var(--acc-bg)!important}
       {value:"2|1",label:"02:00 AM (+1 día)",hour:2,dayOffset:1}
     ];
 
-    window.diaSeleccionado = null;
-    window.horaSeleccionada = null;
-    window.remoteSelectedSlotV127 = null;
-    window.remoteUrgentWeekendV127 = false;
-    window.softwareSeleccionado = "";
-    window.precioBase = REMOTE_BASE_PRICE_USD;
-    window.precioFinal = REMOTE_BASE_PRICE_USD;
+    let accountRemoteUrgentWeekend = false;
 
-    const nombresMeses = ["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
+    function accountPad2(value){ return String(value).padStart(2,"0"); }
 
-    function pad2V127(value){ return String(value).padStart(2,"0"); }
-
-    function timezoneOffsetMsV127(date,timeZone){
+    function accountTimezoneOffsetMs(date,timeZone){
       const parts = new Intl.DateTimeFormat("en-CA",{
         timeZone,year:"numeric",month:"2-digit",day:"2-digit",
         hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"
       }).formatToParts(date).reduce((acc,p)=>{ if(p.type!=="literal") acc[p.type]=p.value; return acc; },{});
       const asUTC = Date.UTC(+parts.year,+parts.month-1,+parts.day,+parts.hour,+parts.minute,+parts.second);
-      return asUTC - date.getTime();
+      return asUTC-date.getTime();
     }
 
-    function miamiTodayPartsV127(){
-      const parts = new Intl.DateTimeFormat("en-CA",{
-        timeZone:REMOTE_TIME_ZONE,year:"numeric",month:"2-digit",day:"2-digit"
-      }).formatToParts(new Date()).reduce((acc,p)=>{ if(p.type!=="literal") acc[p.type]=p.value; return acc; },{});
-      return {
-        y:Number(parts.year),m:Number(parts.month),d:Number(parts.day),
-        dateValue:`${parts.year}-${parts.month}-${parts.day}`
-      };
-    }
-
-    function remoteDateInfoV127(dateValue){
-      if(!dateValue) return null;
-      const [y,m,d] = dateValue.split("-").map(Number);
-      const date = new Date(Date.UTC(y,m-1,d,12));
-      if(date.getUTCFullYear()!==y || date.getUTCMonth()!==m-1 || date.getUTCDate()!==d) return null;
-      const weekday = date.getUTCDay();
-      return {y,m,d,weekday,weekend:weekday===0||weekday===6};
-    }
-
-    function dateValueFromSelectedV127(){
-      if(!window.diaSeleccionado) return "";
-      return `${window.diaSeleccionado.getFullYear()}-${pad2V127(window.diaSeleccionado.getMonth()+1)}-${pad2V127(window.diaSeleccionado.getDate())}`;
-    }
-
-    function miamiSlotTimestampV127(dateValue,slot){
-      if(!dateValue || !slot) return NaN;
+    function accountMiamiSlotTimestamp(dateValue,slot){
+      if(!dateValue||!slot) return NaN;
       const [y,m,d] = dateValue.split("-").map(Number);
       const wallUtc = Date.UTC(y,m-1,d+Number(slot.dayOffset||0),Number(slot.hour||0),0,0);
       let guess = new Date(wallUtc);
-      let offset = timezoneOffsetMsV127(guess,REMOTE_TIME_ZONE);
+      let offset = accountTimezoneOffsetMs(guess,ACCOUNT_REMOTE_TIME_ZONE);
       let result = wallUtc-offset;
-      const corrected = timezoneOffsetMsV127(new Date(result),REMOTE_TIME_ZONE);
+      const corrected = accountTimezoneOffsetMs(new Date(result),ACCOUNT_REMOTE_TIME_ZONE);
       if(corrected!==offset) result = wallUtc-corrected;
       return result;
     }
 
-    function selectedDateAllowedV127(dateValue){
-      const info = remoteDateInfoV127(dateValue);
-      const today = miamiTodayPartsV127();
-      if(!info || info.y!==today.y || info.m!==today.m) return false;
-      return window.remoteUrgentWeekendV127 ? info.weekend : !info.weekend;
+    function accountMiamiTodayParts(){
+      const parts = new Intl.DateTimeFormat("en-CA",{
+        timeZone:ACCOUNT_REMOTE_TIME_ZONE,year:"numeric",month:"2-digit",day:"2-digit"
+      }).formatToParts(new Date()).reduce((acc,p)=>{ if(p.type!=="literal") acc[p.type]=p.value; return acc; },{});
+      return {y:Number(parts.year),m:Number(parts.month),d:Number(parts.day),dateValue:`${parts.year}-${parts.month}-${parts.day}`};
     }
 
-    function updatePriceModeV127(){
-      window.precioBase = window.remoteUrgentWeekendV127 ? REMOTE_WEEKEND_PRICE_USD : REMOTE_BASE_PRICE_USD;
-      window.precioFinal = window.precioBase;
-      const price = document.getElementById('booking-price');
-      if(price) price.textContent = `$${window.precioFinal.toFixed(2)}`;
-      const caption = document.getElementById('booking-mode-caption-v127');
-      if(caption) caption.innerHTML = window.remoteUrgentWeekendV127
+    function accountRemoteDateInfo(value){
+      if(!value) return null;
+      const [y,m,d]=value.split("-").map(Number);
+      const date=new Date(Date.UTC(y,m-1,d,12));
+      if(date.getUTCFullYear()!==y||date.getUTCMonth()!==m-1||date.getUTCDate()!==d) return null;
+      const weekday=date.getUTCDay();
+      return {y,m,d,weekday,weekend:weekday===0||weekday===6};
+    }
+
+    function accountMonthNameEs(month){
+      return ["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"][month-1]||"";
+    }
+
+    function accountSelectedSlot(){
+      const value=document.getElementById("remote-booking-time")?.value||"";
+      return ACCOUNT_REMOTE_SLOTS.find(slot=>slot.value===value)||null;
+    }
+
+    function accountBookingSyncLegacyState(){
+      const dateValue=document.getElementById("remote-booking-date")?.value||"";
+      const slot=accountSelectedSlot();
+      const software=document.getElementById("remote-booking-software")?.value||"";
+      const info=accountRemoteDateInfo(dateValue);
+
+      window.diaSeleccionado = info ? new Date(info.y,info.m-1,info.d,12,0,0) : null;
+      window.horaSeleccionada = slot ? `${slot.label.replace(" (+1 día)","")} (Hora de Miami)` : null;
+      window.softwareSeleccionado = software || "";
+      window.precioBase = accountRemoteUrgentWeekend ? ACCOUNT_REMOTE_WEEKEND_PRICE_USD : ACCOUNT_REMOTE_BASE_PRICE_USD;
+
+      const coupon=(document.getElementById("cuponInput")?.value||"").trim();
+      if(!coupon) window.precioFinal = window.precioBase;
+    }
+
+    window.getAccountBookingDataV90 = function(){
+      const dateValue=document.getElementById("remote-booking-date")?.value||"";
+      const slot=accountSelectedSlot();
+      const software=document.getElementById("remote-booking-software")?.value||"";
+      const notes=(document.getElementById("reservaComentario")?.value||"").trim();
+      if(!dateValue||!slot) return null;
+      const timestamp=accountMiamiSlotTimestamp(dateValue,slot);
+      const fecha=new Intl.DateTimeFormat("es-ES",{
+        timeZone:ACCOUNT_REMOTE_TIME_ZONE,weekday:"short",day:"numeric",month:"short",year:"numeric"
+      }).format(new Date(timestamp));
+      return {
+        dateValue,slot,software,notes,timestamp,
+        urgentWeekend:accountRemoteUrgentWeekend,
+        amountUsd:Number(window.precioFinal||0),
+        fecha,
+        hora:`${slot.label.replace(" (+1 día)","")} (Hora de Miami)`
+      };
+    };
+
+    function renderizarCalendario(){
+      const shell=document.getElementById("account-remote-calendar");
+      const month=document.getElementById("account-remote-month");
+      const weekdays=document.getElementById("account-remote-weekdays");
+      const days=document.getElementById("account-remote-days");
+      const caption=document.getElementById("account-remote-caption");
+      const dateInput=document.getElementById("remote-booking-date");
+      const urgent=document.getElementById("account-weekend-urgent");
+      if(!shell||!month||!weekdays||!days||!dateInput) return;
+
+      const today=accountMiamiTodayParts();
+      const lastDay=new Date(Date.UTC(today.y,today.m,0,12)).getUTCDate();
+      const selected=dateInput.value||"";
+
+      month.textContent=`${accountMonthNameEs(today.m)} ${today.y}`;
+      shell.classList.toggle("weekend-mode",accountRemoteUrgentWeekend);
+      urgent?.setAttribute("aria-pressed",accountRemoteUrgentWeekend?"true":"false");
+
+      weekdays.innerHTML=(accountRemoteUrgentWeekend?["SÁB","DOM"]:["LUN","MAR","MIÉ","JUE","VIE"])
+        .map(x=>`<span>${x}</span>`).join("");
+      if(caption) caption.innerHTML=accountRemoteUrgentWeekend
         ? 'Sábado y domingo · servicio urgente · <strong>$20</strong>'
         : 'Lunes a viernes · <strong>$10</strong>';
-      const urgent = document.getElementById('booking-weekend-urgent-v127');
-      if(urgent) urgent.setAttribute('aria-pressed',window.remoteUrgentWeekendV127?'true':'false');
-      const coupon = document.getElementById('cuponInput');
-      if(coupon) coupon.value = "";
-    }
 
-    function renderCalendarHeadV127(){
-      const head = document.getElementById('calendar-days-head-v127');
-      if(!head) return;
-      head.innerHTML = (window.remoteUrgentWeekendV127 ? ["Sá","Do"] : ["Lu","Ma","Mi","Ju","Vi"])
-        .map(x=>`<span>${x}</span>`).join("");
-      head.style.gridTemplateColumns = `repeat(${window.remoteUrgentWeekendV127 ? 2 : 5},1fr)`;
-      const grid = document.getElementById('calendar-days');
-      if(grid) grid.style.gridTemplateColumns = `repeat(${window.remoteUrgentWeekendV127 ? 2 : 5},1fr)`;
-    }
-
-    function renderizarCalendario() {
-      const headerTitle = document.getElementById('calendar-month-year');
-      const grid = document.getElementById('calendar-days');
-      if(!headerTitle || !grid) return;
-
-      const today = miamiTodayPartsV127();
-      const lastDay = new Date(Date.UTC(today.y,today.m,0,12)).getUTCDate();
-      headerTitle.textContent = `${nombresMeses[today.m-1]} ${today.y}`;
-      renderCalendarHeadV127();
-
-      const wanted = [];
-      for(let d=1; d<=lastDay; d++){
-        const date = new Date(Date.UTC(today.y,today.m-1,d,12));
-        const weekday = date.getUTCDay();
-        if(window.remoteUrgentWeekendV127 ? (weekday===0||weekday===6) : (weekday>=1&&weekday<=5)){
+      const wanted=[];
+      for(let d=1;d<=lastDay;d++){
+        const weekday=new Date(Date.UTC(today.y,today.m-1,d,12)).getUTCDay();
+        if(accountRemoteUrgentWeekend ? (weekday===0||weekday===6) : (weekday>=1&&weekday<=5)){
           wanted.push({d,weekday});
         }
       }
 
-      let blanks = 0;
+      let output="";
       if(wanted.length){
-        const first = wanted[0];
-        if(window.remoteUrgentWeekendV127) blanks = first.weekday===0 ? 1 : 0;
-        else blanks = Math.max(0,first.weekday-1);
+        const first=wanted[0];
+        const blanks=accountRemoteUrgentWeekend ? (first.weekday===0?1:0) : Math.max(0,first.weekday-1);
+        output+='<span class="account-remote-blank" aria-hidden="true"></span>'.repeat(blanks);
       }
 
-      let body = '<span class="day-cell empty"></span>'.repeat(blanks);
       for(const item of wanted){
-        const value = `${today.y}-${pad2V127(today.m)}-${pad2V127(item.d)}`;
-        const past = value < today.dateValue;
-        const selected = dateValueFromSelectedV127() === value;
-        body += `<button type="button" class="day-cell ${past?'disabled':'available'} ${selected?'selected':''}" ${past?'disabled':''} onclick="seleccionarDiaV127('${value}')">${item.d}</button>`;
+        const value=`${today.y}-${accountPad2(today.m)}-${accountPad2(item.d)}`;
+        const past=item.d<today.d;
+        const active=value===selected;
+        output+=`<button type="button" class="account-remote-day${active?' selected':''}" data-account-date="${value}"${past?' disabled':''} aria-pressed="${active?'true':'false'}">${item.d}</button>`;
       }
-      grid.innerHTML = body || '<div style="grid-column:1/-1;color:#718090;font-size:.7rem;padding:12px">No hay fechas disponibles este mes.</div>';
-      updatePriceModeV127();
+
+      days.innerHTML=output||'<div class="account-remote-caption">No hay fechas disponibles este mes.</div>';
+      days.querySelectorAll("[data-account-date]").forEach(btn=>btn.addEventListener("click",()=>{
+        if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
+        dateInput.value=btn.dataset.accountDate||"";
+        const time=document.getElementById("remote-booking-time");
+        if(time) time.value="";
+        renderizarCalendario();
+        refreshAccountTimeOptions();
+        accountBookingSyncLegacyState();
+        actualizarResumenReserva();
+      }));
     }
 
-    window.toggleWeekendUrgentV127 = function(){
-      if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
-      window.remoteUrgentWeekendV127 = !window.remoteUrgentWeekendV127;
-      window.diaSeleccionado = null;
-      window.horaSeleccionada = null;
-      window.remoteSelectedSlotV127 = null;
-      document.getElementById('selected-date-text').textContent = 'Selecciona una fecha disponible';
-      document.getElementById('time-slots-list').innerHTML = '<p style="grid-column:1/-1;color:var(--muted);font-size:.8rem;text-align:center;margin:24px 0;">Selecciona un día del calendario para ver los horarios disponibles.</p>';
-      renderizarCalendario();
-      actualizarResumenReserva();
-    };
+    function refreshAccountTimeOptions(){
+      const dateValue=document.getElementById("remote-booking-date")?.value||"";
+      const select=document.getElementById("remote-booking-time");
+      if(!select) return;
 
-    window.cambiarMes = function(){ /* El checkout permite reservar únicamente el mes actual. */ };
-
-    window.seleccionarDiaV127 = function(dateValue){
-      if(!selectedDateAllowedV127(dateValue)) return;
-      if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
-
-      const [y,m,d] = dateValue.split("-").map(Number);
-      window.diaSeleccionado = new Date(y,m-1,d);
-      window.horaSeleccionada = null;
-      window.remoteSelectedSlotV127 = null;
-      renderizarCalendario();
-
-      const headerText = document.getElementById('selected-date-text');
-      const timestamp = Date.UTC(y,m-1,d,12);
-      headerText.textContent = new Intl.DateTimeFormat('es-ES',{
-        timeZone:REMOTE_TIME_ZONE,weekday:'short',day:'numeric',month:'short'
-      }).format(new Date(timestamp));
-
-      const slotsContainer = document.getElementById('time-slots-list');
-      slotsContainer.innerHTML = '';
-      REMOTE_BOOKING_SLOTS.forEach((slot,index)=>{
-        const slotTimestamp = miamiSlotTimestampV127(dateValue,slot);
-        const passed = slotTimestamp <= Date.now();
-        const display = slot.label;
-        slotsContainer.insertAdjacentHTML('beforeend', passed
-          ? `<button type="button" class="time-slot sold-out" disabled>${display} · Finalizado</button>`
-          : `<button type="button" class="time-slot" data-slot-index="${index}" onclick="seleccionarHoraV127(${index},this)">${display}</button>`);
+      const current=select.value;
+      select.innerHTML='<option value="">Selecciona un horario</option>';
+      ACCOUNT_REMOTE_SLOTS.forEach(slot=>{
+        const option=document.createElement("option");
+        option.value=slot.value;
+        option.textContent=slot.label;
+        const ts=accountMiamiSlotTimestamp(dateValue,slot);
+        if(dateValue&&Number.isFinite(ts)&&ts<=Date.now()){
+          option.disabled=true;
+          option.textContent+=" · Finalizado";
+        }
+        select.appendChild(option);
       });
-      actualizarResumenReserva();
-    };
+      if([...select.options].some(o=>o.value===current&&!o.disabled)) select.value=current;
+    }
 
-    window.seleccionarDia = function(dia){
-      const today = miamiTodayPartsV127();
-      window.seleccionarDiaV127(`${today.y}-${pad2V127(today.m)}-${pad2V127(dia)}`);
-    };
+    function updateAccountBookingGuide(){
+      const dateValue=document.getElementById("remote-booking-date")?.value||"";
+      const slot=accountSelectedSlot();
+      const software=document.getElementById("remote-booking-software")?.value||"";
+      const notes=(document.getElementById("reservaComentario")?.value||"").trim();
+      const complete=[Boolean(dateValue),Boolean(slot),Boolean(software),Boolean(notes)];
 
-    window.seleccionarHoraV127 = function(index,elemento){
-      if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
-      const slot = REMOTE_BOOKING_SLOTS[index];
-      if(!slot) return;
-      const dateValue = dateValueFromSelectedV127();
-      if(miamiSlotTimestampV127(dateValue,slot) <= Date.now()) return;
-      window.remoteSelectedSlotV127 = slot;
-      window.horaSeleccionada = slot.label.replace(" (+1 día)","");
-      document.querySelectorAll('#reservaModal .time-slot').forEach(slotEl=>slotEl.classList.remove('selected'));
-      elemento.classList.add('selected');
-      actualizarResumenReserva();
-    };
+      let current=complete.findIndex(v=>!v);
+      if(current<0) current=4;
 
-    window.seleccionarHora = function(hora,elemento){
-      const index = REMOTE_BOOKING_SLOTS.findIndex(slot=>slot.label===hora || slot.label.replace(" (+1 día)","")===hora);
-      if(index>=0) window.seleccionarHoraV127(index,elemento);
-    };
+      const copy=[
+        ["Empecemos por la fecha","Selecciona el día en que quieres recibir la asistencia."],
+        ["Ahora elige la hora","Todos los horarios se muestran en hora de Miami."],
+        ["¿Cómo nos conectamos?","Selecciona Chrome Remote Desktop o AnyDesk."],
+        ["Cuéntanos qué necesitas","Describe brevemente la instalación o configuración."],
+        ["Todo listo","Revisa la sesión y continúa al pago."]
+      ][current];
 
-    window.seleccionarSoftware = function(software, elemento) {
-      if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
-      window.softwareSeleccionado = software;
-      document.querySelectorAll('.software-btn').forEach(btn => btn.classList.remove('selected'));
-      elemento.classList.add('selected');
-      actualizarResumenReserva();
-    };
+      const title=document.getElementById("account-remote-guide-title");
+      const hint=document.getElementById("account-remote-guide-hint");
+      const badge=document.getElementById("account-remote-guide-badge");
+      const progress=document.getElementById("account-remote-guide-progress");
+
+      if(title) title.textContent=copy[0];
+      if(hint) hint.textContent=copy[1];
+      if(badge) badge.textContent=current>=4?"Listo":`Paso ${current+1} de 4`;
+      if(progress) progress.style.width=`${current>=4?100:(current/4)*100}%`;
+
+      document.querySelectorAll("[data-account-guide]").forEach((el,index)=>{
+        el.classList.toggle("complete",index<current);
+        el.classList.toggle("active",index===current&&current<4);
+      });
+
+      const trigger=document.getElementById("btn-open-payment-v83");
+      if(trigger){
+        const ready=complete.every(Boolean);
+        trigger.disabled=!ready;
+        const label=trigger.querySelector("span");
+        if(label) label.textContent=ready?"Continuar al pago":"Completa los datos de la sesión";
+      }
+    }
 
     function actualizarResumenReserva(){
-      const price = document.getElementById('booking-price');
-      if(price) price.textContent = `$${Number(window.precioFinal||0).toFixed(2)}`;
+      accountBookingSyncLegacyState();
+      const booking=window.getAccountBookingDataV90?.();
+      const summary=document.getElementById("booking-payment-summary-v83");
+      if(summary&&booking){
+        summary.textContent=`${booking.fecha} · ${booking.hora} · $${Number(window.precioFinal||0).toFixed(2)}`;
+      }
+      updateAccountBookingGuide();
+    }
 
-      const hasDate = Boolean(window.diaSeleccionado);
-      const hasTime = Boolean(window.remoteSelectedSlotV127);
-      const hasSoftware = Boolean(window.softwareSeleccionado);
-      const hasNotes = Boolean((document.getElementById('reservaComentario')?.value||'').trim());
-      const steps = [...document.querySelectorAll('#reservaModal .booking-step')];
+    function initAccountRemoteBookingV90(){
+      if(window.__ACCOUNT_REMOTE_BOOKING_V90__) return;
+      window.__ACCOUNT_REMOTE_BOOKING_V90__=true;
 
-      const states = [hasDate,hasTime,hasSoftware,hasNotes];
-      steps.forEach((step,index)=>{
-        step.classList.remove('active','completed');
-        if(states[index]) step.classList.add('completed');
-        else if(states.slice(0,index).every(Boolean) && !states[index]) step.classList.add('active');
+      document.getElementById("account-weekend-urgent")?.addEventListener("click",()=>{
+        if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
+        accountRemoteUrgentWeekend=!accountRemoteUrgentWeekend;
+
+        const date=document.getElementById("remote-booking-date");
+        const time=document.getElementById("remote-booking-time");
+        const coupon=document.getElementById("cuponInput");
+        if(date) date.value="";
+        if(time) time.value="";
+        if(coupon) coupon.value="";
+
+        window.precioBase=accountRemoteUrgentWeekend?ACCOUNT_REMOTE_WEEKEND_PRICE_USD:ACCOUNT_REMOTE_BASE_PRICE_USD;
+        window.precioFinal=window.precioBase;
+
+        renderizarCalendario();
+        refreshAccountTimeOptions();
+        accountBookingSyncLegacyState();
+        actualizarResumenReserva();
       });
 
-      const trigger = document.getElementById('btn-open-payment-v83');
-      const ready = hasDate && hasTime && hasSoftware && hasNotes;
-      if(trigger){
-        trigger.disabled = !ready;
-        const label = trigger.querySelector('span');
-        if(label) label.textContent = ready ? 'Continuar a confirmar' : 'Completa los datos de tu sesión';
-      }
+      document.getElementById("remote-booking-time")?.addEventListener("change",()=>{
+        if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
+        accountBookingSyncLegacyState();
+        actualizarResumenReserva();
+      });
 
-      const summary = document.getElementById('booking-payment-summary-v83');
-      if(summary && hasDate && hasTime){
-        const timestamp = miamiSlotTimestampV127(dateValueFromSelectedV127(),window.remoteSelectedSlotV127);
-        const date = new Intl.DateTimeFormat('es-ES',{
-          timeZone:REMOTE_TIME_ZONE,weekday:'short',day:'numeric',month:'short'
-        }).format(new Date(timestamp));
-        summary.textContent = `${date} · ${window.horaSeleccionada} · $${Number(window.precioFinal||0).toFixed(2)}`;
-      }
+      document.getElementById("remote-booking-software")?.addEventListener("change",()=>{
+        if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
+        accountBookingSyncLegacyState();
+        actualizarResumenReserva();
+      });
+
+      document.getElementById("reservaComentario")?.addEventListener("input",()=>{
+        if(window.bookingPaymentOpenV83) window.cerrarPagoReservaV83?.(true);
+        updateAccountBookingGuide();
+      });
     }
+
+    window.cambiarMes = function(){};
+    window.seleccionarDia = function(){};
+    window.seleccionarHora = function(){};
+    window.seleccionarSoftware = function(){};
+
 
     window.cerrarPagoReservaV83 = function(silencioso=false) {
       window.bookingPaymentOpenV83 = false;
@@ -1572,11 +1726,13 @@ body{background:var(--acc-bg)!important}
 
     window.abrirPagoReservaV83 = function() {
       const comentario=(document.getElementById('reservaComentario')?.value||'').trim();
-      if(!window.diaSeleccionado || !window.remoteSelectedSlotV127){
+      if(!window.diaSeleccionado || !window.horaSeleccionada){
         window.mostrarAlertaModal('Selecciona una fecha y un horario disponible primero.',false);return;
       }
-      if(!window.softwareSeleccionado){
-        window.mostrarAlertaModal('Elige Chrome Remote Desktop o AnyDesk para conectarnos.',false);return;
+      const software=(document.getElementById('remote-booking-software')?.value||'').trim();
+      if(!software){
+        window.mostrarAlertaModal('Selecciona Chrome Remote Desktop o AnyDesk para la sesión.',false);
+        document.getElementById('remote-booking-software')?.focus();return;
       }
       if(!comentario){
         window.mostrarAlertaModal('Cuéntanos brevemente qué necesitas configurar antes de continuar.',false);
@@ -1657,20 +1813,11 @@ body{background:var(--acc-bg)!important}
       if(paypalBox){paypalBox.innerHTML='';paypalBox.style.display='none';}
       const freeBtn=document.getElementById('btn-pagar-gratis');
       if(freeBtn)freeBtn.style.display='none';
-      window.remoteUrgentWeekendV127 = false;
-      window.diaSeleccionado = null;
-      window.horaSeleccionada = null;
-      window.remoteSelectedSlotV127 = null;
-      window.softwareSeleccionado = "";
-      window.precioBase = REMOTE_BASE_PRICE_USD;
-      window.precioFinal = REMOTE_BASE_PRICE_USD;
-      document.querySelectorAll('#reservaModal .software-btn').forEach(btn=>btn.classList.remove('selected'));
-      const selectedText=document.getElementById('selected-date-text');
-      if(selectedText)selectedText.textContent='Selecciona una fecha disponible';
-      const slots=document.getElementById('time-slots-list');
-      if(slots)slots.innerHTML='<p style="grid-column:1/-1;color:var(--muted);font-size:.8rem;text-align:center;margin:24px 0;">Selecciona un día del calendario para ver los horarios disponibles.</p>';
       document.getElementById('reservaModal').classList.add('active');
+      initAccountRemoteBookingV90();
       renderizarCalendario();
+      refreshAccountTimeOptions();
+      accountBookingSyncLegacyState();
       actualizarResumenReserva();
     };
 
@@ -1693,7 +1840,7 @@ body{background:var(--acc-bg)!important}
   <script>
     document.addEventListener('DOMContentLoaded',()=>{
       const comment=document.getElementById('reservaComentario');
-      comment?.addEventListener('input',()=>{if(window.bookingPaymentOpenV83)window.cerrarPagoReservaV83?.(true);actualizarResumenReserva();});
+      comment?.addEventListener('input',()=>{if(window.bookingPaymentOpenV83)window.cerrarPagoReservaV83?.(true);});
       document.getElementById('reservaModal')?.addEventListener('click',e=>{if(e.target?.id==='reservaModal')window.closeReservaModal?.();});
     });
   </script>
@@ -2043,14 +2190,14 @@ body{background:var(--acc-bg)!important}
         // --- SISTEMA DE PAGO Y RESERVAS A FIREBASE ---
         
         window.procesarReservaFirebase = async function(paypalOrderId = null, payerName = null) {
-          const comentario = document.getElementById('reservaComentario').value;
-          const dateValue = dateValueFromSelectedV127();
-          const slot = window.remoteSelectedSlotV127;
-          const timestampCalculado = miamiSlotTimestampV127(dateValue,slot);
-          const fechaFormateada = new Intl.DateTimeFormat("es-ES",{
-            timeZone:REMOTE_TIME_ZONE,weekday:"short",day:"numeric",month:"short",year:"numeric"
-          }).format(new Date(timestampCalculado));
-          const horaFormateada = `${slot.label.replace(" (+1 día)","")} (Hora de Miami)`;
+          const booking = window.getAccountBookingDataV90?.();
+          if (!booking) {
+            window.mostrarAlertaModal("Completa la fecha y el horario de tu sesión.", false);
+            return;
+          }
+          const comentario = booking.notes;
+          const fechaFormateada = booking.fecha;
+          const timestampCalculado = booking.timestamp;
 
           try {
             const reservaRef = await addDoc(collection(db, "reservas"), {
@@ -2058,16 +2205,16 @@ body{background:var(--acc-bg)!important}
               email: user.email,
               payerName: payerName || user.displayName || "",
               fecha: fechaFormateada,
-              hora: horaFormateada,
+              hora: window.horaSeleccionada,
               software: window.softwareSeleccionado,
               comentario: comentario,
+              urgentWeekend: Boolean(booking.urgentWeekend),
+              dateValue: booking.dateValue,
+              slotValue: booking.slot?.value || "",
+              timeZone: ACCOUNT_REMOTE_TIME_ZONE,
               estado: "pendiente",
               timestampReserva: timestampCalculado,
               montoPagado: window.precioFinal,
-              urgentWeekend: Boolean(window.remoteUrgentWeekendV127),
-              tarifa: window.remoteUrgentWeekendV127 ? "urgente_fin_de_semana" : "lunes_a_viernes",
-              zonaHoraria: REMOTE_TIME_ZONE,
-              origen: "cuenta",
               paypalOrderId: paypalOrderId || "GRATIS",
               creado: serverTimestamp()
             });
@@ -2126,12 +2273,8 @@ body{background:var(--acc-bg)!important}
                 style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
                 onClick: function(data, actions) {
                     const comentario = document.getElementById('reservaComentario').value;
-                    if(!window.diaSeleccionado || !window.remoteSelectedSlotV127) {
-                        window.mostrarAlertaModal("Selecciona un día y un horario disponible primero.", false);
-                        return actions.reject();
-                    }
-                    if(!window.softwareSeleccionado) {
-                        window.mostrarAlertaModal("Elige Chrome Remote Desktop o AnyDesk para conectarnos.", false);
+                    if(!window.diaSeleccionado || !window.horaSeleccionada) {
+                        window.mostrarAlertaModal("Selecciona un día y un horario libre primero.", false);
                         return actions.reject();
                     }
                     if(comentario.trim() === "") {
@@ -2161,12 +2304,8 @@ body{background:var(--acc-bg)!important}
         // Procesar reserva si es de $0.00 (Botón Celeste)
         window.procesarReservaGratis = function() {
             const comentario = document.getElementById('reservaComentario').value;
-            if(!window.diaSeleccionado || !window.remoteSelectedSlotV127) {
-                window.mostrarAlertaModal("Selecciona un día y un horario disponible primero.", false);
-                return;
-            }
-            if(!window.softwareSeleccionado) {
-                window.mostrarAlertaModal("Elige Chrome Remote Desktop o AnyDesk para conectarnos.", false);
+            if(!window.diaSeleccionado || !window.horaSeleccionada) {
+                window.mostrarAlertaModal("Selecciona un día y un horario libre primero.", false);
                 return;
             }
             if(comentario.trim() === "") {
@@ -2368,27 +2507,8 @@ body{background:var(--acc-bg)!important}
           });
         } catch(error) {
           console.error(error);
-          downloadsContainer.innerHTML = `
-            <section class="library-maintenance-v127" role="status">
-              <div class="library-maintenance-icon-v127"><i class="bi bi-tools"></i></div>
-              <div>
-                <small>Mantenimiento de biblioteca</small>
-                <h3>Estamos actualizando el sistema de descargas.</h3>
-                <p>Tus compras están seguras, almacenadas y vinculadas a tu cuenta Dingloft. No necesitas volver a comprar ni realizar ningún paso adicional.</p>
-                <div class="library-maintenance-meta-v127">
-                  <span><i class="bi bi-clock"></i> Descargas disponibles a partir de las 00:00</span>
-                  <span><i class="bi bi-shield-check"></i> Compra protegida</span>
-                </div>
-              </div>
-            </section>`;
-          window.showAccountFeedbackV81?.({
-            state:'loading',
-            kicker:'Mantenimiento programado',
-            title:'Tus compras están seguras',
-            detail:'La biblioteca de descargas estará disponible a partir de las 00:00.',
-            icon:'bi bi-tools',
-            duration:5200
-          });
+          downloadsContainer.innerHTML = `<div class="library-maintenance-v90"><div class="art"><i class="bi bi-tools"></i></div><div><strong>Estamos realizando mantenimiento en tu biblioteca</strong><span>Tu compra está <b>segura y almacenada en tu cuenta Dingloft</b>. Los accesos y descargas se restablecerán automáticamente a partir de las <b>00:00</b>. No necesitas volver a comprar ni realizar ningún proceso adicional.</span></div></div>`;
+          window.showAccountFeedbackV81?.({ state:'loading', kicker:'Mantenimiento programado', title:'Tu compra está segura', detail:'La biblioteca volverá a estar disponible a partir de las 00:00.', icon:'bi bi-tools', duration:5200 });
         }
       } else {
         const next = encodeURIComponent('account.html');
@@ -2400,6 +2520,6 @@ body{background:var(--acc-bg)!important}
       try { await signOut(auth); window.location.replace('login.html?loggedout=1'); } catch (error) { console.error(error); }
     });
   </script>
-<script src="dingloft-ui-guard.js?v=59"></script>
+<script src="dingloft-ui-guard.js?v=58"></script>
 </body>
 </html>
