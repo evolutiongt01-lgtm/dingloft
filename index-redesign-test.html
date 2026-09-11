@@ -121,6 +121,21 @@
     .loading{height:354px;border-radius:15px;background:linear-gradient(90deg,#f0f2f4,#f7f8f9,#f0f2f4);background-size:200% 100%;animation:load 1.3s infinite}
     @keyframes load{to{background-position:-200% 0}}
 
+
+    .launch-card{margin:0 0 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .launch-badge{position:relative;display:inline-flex;align-items:center;gap:10px;background:#07162e;color:#fff;border-radius:999px;padding:11px 16px 11px 13px;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 14px 34px rgba(7,22,46,.16);overflow:hidden}
+    .launch-badge:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 0 38%,rgba(255,255,255,.25) 48%,transparent 58%);transform:translateX(-130%);animation:launchSheen 3.2s ease-in-out infinite}
+    .launch-dot{position:relative;z-index:1;width:9px;height:9px;border-radius:50%;background:#ff6a1a;box-shadow:0 0 0 0 rgba(255,106,26,.55);animation:launchPulse 1.9s ease-out infinite}
+    .launch-badge span:last-child{position:relative;z-index:1}
+    .launch-date{font-size:11px;font-weight:900;color:#07162e;background:#fff4ec;border:1px solid #ffd9c2;border-radius:999px;padding:10px 13px;white-space:nowrap}
+    .launch-countdown{display:grid;grid-template-columns:repeat(4,minmax(54px,1fr));gap:8px;max-width:390px;margin:2px 0 24px}
+    .launch-unit{background:#f7f8fa;border:1px solid #e7eaee;border-radius:12px;padding:12px 10px;text-align:center}
+    .launch-unit b{display:block;font-size:24px;line-height:1;color:#07162e;letter-spacing:-.05em}
+    .launch-unit span{display:block;margin-top:5px;font-size:8px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#8d96a2}
+    .launch-live{margin-top:2px;font-size:10px;font-weight:800;color:#e85d13}
+    @keyframes launchPulse{0%{box-shadow:0 0 0 0 rgba(255,106,26,.5)}70%{box-shadow:0 0 0 10px rgba(255,106,26,0)}100%{box-shadow:0 0 0 0 rgba(255,106,26,0)}}
+    @keyframes launchSheen{0%,35%{transform:translateX(-130%)}65%,100%{transform:translateX(130%)}}
+
     .feature-band{background:#fff;display:grid;grid-template-columns:1fr 1fr;min-height:390px}
     .feature-copy{padding:70px max(34px,calc((100vw - var(--max))/2));padding-right:60px;display:flex;flex-direction:column;justify-content:center}
     .feature-copy h2{font-size:clamp(32px,4vw,56px);line-height:.98;letter-spacing:-.06em;margin:0 0 16px}.feature-copy p{margin:0;color:#78818c;font-size:13px;line-height:1.65;max-width:540px}
@@ -257,8 +272,19 @@
     <section class="feature-band" aria-label="Motion-X">
       <div class="feature-copy">
         <div class="section-kicker">Motion-X · Instrumento virtual</div>
+        <div class="launch-card" aria-label="Lanzamiento de Motion-X">
+          <div class="launch-badge"><span class="launch-dot"></span><span>Lanzamiento oficial</span></div>
+          <div class="launch-date">26 SEP · 6:00 PM · MIAMI</div>
+        </div>
         <h2>Un instrumento pensado para tocar y producir.</h2>
         <p>Live Banks, 8 capas, Super Knob y un flujo directo dentro del ecosistema Dingloft. Disponible para macOS y Windows.</p>
+        <div class="launch-countdown" id="motionLaunchCountdown" aria-live="polite">
+          <div class="launch-unit"><b id="launchDays">00</b><span>Días</span></div>
+          <div class="launch-unit"><b id="launchHours">00</b><span>Horas</span></div>
+          <div class="launch-unit"><b id="launchMinutes">00</b><span>Min</span></div>
+          <div class="launch-unit"><b id="launchSeconds">00</b><span>Seg</span></div>
+        </div>
+        <div class="launch-live" id="motionLaunchStatus">Cuenta regresiva al lanzamiento en Miami.</div>
         <div class="hero-actions"><a class="btn btn-orange" href="motion-x.html">Conocer Motion-X</a><button class="btn" style="background:#07162e;color:#fff" type="button" data-add-sku="motion-x" data-add-name="Motion-X" data-add-price="28">Agregar al carrito</button></div>
       </div>
       <div class="feature-visual"><img src="img/motion-x-cover.png" alt="Motion-X"></div>
@@ -427,6 +453,30 @@
     });
 
     searchInput?.addEventListener('input',()=>{const q=String(searchInput.value||'').trim().toLowerCase();document.querySelectorAll('[data-search]').forEach(card=>card.style.display=!q||card.dataset.search.includes(q)?'':'none')});
+
+    const motionLaunchAt = new Date('2026-09-26T22:00:00Z'); // 6:00 PM Miami (EDT)
+    function updateMotionLaunchCountdown(){
+      const now=new Date();
+      let ms=motionLaunchAt-now;
+      const status=document.getElementById('motionLaunchStatus');
+      const wrap=document.getElementById('motionLaunchCountdown');
+      if(ms<=0){
+        ['launchDays','launchHours','launchMinutes','launchSeconds'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='00'});
+        if(status)status.textContent='Motion-X ya está disponible.';
+        if(wrap)wrap.setAttribute('aria-label','Motion-X disponible');
+        return;
+      }
+      const d=Math.floor(ms/86400000); ms%=86400000;
+      const h=Math.floor(ms/3600000); ms%=3600000;
+      const m=Math.floor(ms/60000); ms%=60000;
+      const sec=Math.floor(ms/1000);
+      const values={launchDays:d,launchHours:h,launchMinutes:m,launchSeconds:sec};
+      for(const [id,val] of Object.entries(values)){const el=document.getElementById(id);if(el)el.textContent=String(val).padStart(2,'0')}
+      if(status)status.textContent='26 de septiembre · 6:00 PM · hora de Miami';
+    }
+    updateMotionLaunchCountdown();
+    setInterval(updateMotionLaunchCountdown,1000);
+
     window.addEventListener('storage',updateCartCount);document.addEventListener('dingloft:cart-change',updateCartCount);updateCartCount();loadCatalog();loadTracks();
   })();
   </script>
