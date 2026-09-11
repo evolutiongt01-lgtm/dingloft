@@ -543,39 +543,14 @@
     const stage=document.getElementById('stage');
     if(stage){
       if(nativeNavbar){
-        /* Home/ventas owns its navbar. Fill the complete mobile shell viewport:
-           no dock reservation and no exposed dark shell strip at the bottom. */
-        const viewportH = Math.max(
-          1,
-          Math.ceil(window.innerHeight || 0),
-          Math.ceil(document.documentElement.clientHeight || 0)
-        );
         stage.style.setProperty('top','0','important');
-        stage.style.setProperty('bottom','auto','important');
-        stage.style.setProperty('height',viewportH + 'px','important');
-        stage.style.setProperty('min-height',viewportH + 'px','important');
-        stage.style.setProperty('background','#fff','important');
-        stage.querySelectorAll(':scope > .frame').forEach(frame=>{
-          frame.style.setProperty('inset','0','important');
-          frame.style.setProperty('height','100%','important');
-          frame.style.setProperty('min-height','100%','important');
-          frame.style.setProperty('background','#fff','important');
-        });
-        document.documentElement.style.setProperty('background','#fff','important');
-        document.body?.style.setProperty('background','#fff','important');
+        stage.style.setProperty('bottom','0','important');
       }else{
-        stage.style.removeProperty('height');
-        stage.style.removeProperty('min-height');
         stage.style.setProperty('top','calc(68px + env(safe-area-inset-top,0px))','important');
         stage.style.setProperty('bottom',checkout?'0':'calc(68px + max(0px,calc(env(safe-area-inset-bottom,0px) - 33px)))','important');
       }
     }
   }
-  const refitNativeViewport=()=>{ if(ownsNavbar()) syncRouteClasses(); };
-  window.addEventListener('resize',refitNativeViewport,{passive:true});
-  window.addEventListener('orientationchange',refitNativeViewport,{passive:true});
-  try{ window.visualViewport?.addEventListener('resize',refitNativeViewport,{passive:true}); }catch(_){}
-
   function syncChromeVisibility(){
     const hideHeader = ownsNavbar();
     const hideDock = hideHeader || isCheckoutRoute();

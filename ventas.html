@@ -742,9 +742,8 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
 </style>
 
 
-<style id="dingloft-mobile-product-image-position-v110">
+<style id="dingloft-mobile-product-image-position-v113">
 @media (max-width:600px){
-  /* Subir más los mockups sin cambiar assets, datos ni tamaño de tarjeta. */
   .product-media{
     overflow:hidden!important;
   }
@@ -756,79 +755,7 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
   .product-card:hover .product-media img{
     transform:translateY(-82px) scale(1.06)!important;
   }
-
-  /* El final de la página móvil nunca debe revelar una franja negra. */
-  html,body{
-    background:#fff!important;
-    padding-bottom:0!important;
-    margin-bottom:0!important;
-  }
-  main{
-    background:#fff!important;
-    margin-bottom:0!important;
-    padding-bottom:0!important;
-  }
-  footer{
-    display:none!important;
-    height:0!important;
-    min-height:0!important;
-    max-height:0!important;
-    padding:0!important;
-    margin:0!important;
-    border:0!important;
-    overflow:hidden!important;
-  }
-  .trust{
-    margin-bottom:0!important;
-    padding-bottom:max(20px,env(safe-area-inset-bottom,0px))!important;
-  }
-  body::after,main::after{
-    display:none!important;
-    content:none!important;
-  }
-}
-</style>
-
-
-<style id="dingloft-no-dark-footer-mobile-v112">
-/* Regla permanente: en teléfono/tablet NO existe el footer oscuro de ventas. */
-@media (max-width:900px), (hover:none) and (pointer:coarse){
-  html,body{
-    background:#fff!important;
-    margin-bottom:0!important;
-    padding-bottom:0!important;
-  }
-
-  body>footer,
-  footer,
-  .footer-grid,
-  .footer-brand,
-  .footer-links{
-    display:none!important;
-    visibility:hidden!important;
-    width:0!important;
-    height:0!important;
-    min-height:0!important;
-    max-height:0!important;
-    margin:0!important;
-    padding:0!important;
-    border:0!important;
-    overflow:hidden!important;
-    opacity:0!important;
-    pointer-events:none!important;
-  }
-
-  main{
-    margin-bottom:0!important;
-    padding-bottom:0!important;
-    background:#fff!important;
-  }
-
-  .trust{
-    margin-bottom:0!important;
-    border-bottom:0!important;
-    padding-bottom:max(20px,env(safe-area-inset-bottom,0px))!important;
-  }
+  .helmet-brand{gap:0!important}
 }
 </style>
 

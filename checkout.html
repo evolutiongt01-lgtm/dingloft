@@ -1612,6 +1612,46 @@
     @media(max-width:520px){.checkout-cart-item{grid-template-columns:50px minmax(0,1fr) auto;gap:9px;padding:9px}.checkout-cart-thumb{width:50px;height:50px}.checkout-cart-copy b{font-size:.76rem}.checkout-cart-price{font-size:.74rem}}
 
 </style>
+
+<style id="dingloft-checkout-no-dark-footer-mobile-v113">
+/* Mobile rule: checkout keeps its full functionality, but the dark copyright footer is removed. */
+@media (max-width:600px), (hover:none) and (pointer:coarse){
+  html,body{
+    background:#f4f4f2!important;
+    margin-bottom:0!important;
+    padding-bottom:0!important;
+  }
+  .footer,
+  body>footer.footer{
+    display:none!important;
+    visibility:hidden!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    overflow:hidden!important;
+  }
+  .shell{
+    margin-bottom:0!important;
+  }
+}
+</style>
+<script id="dingloft-remove-mobile-footer-v113">
+(()=>{
+  const mobile = matchMedia('(max-width:600px)').matches ||
+                 matchMedia('(hover:none) and (pointer:coarse)').matches;
+  if(!mobile) return;
+  const removeFooter=()=>document.querySelector('footer.footer')?.remove();
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',removeFooter,{once:true});
+  }else{
+    removeFooter();
+  }
+})();
+</script>
+
 </head>
 <body>
 <div class="page">
