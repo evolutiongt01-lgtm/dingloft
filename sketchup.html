@@ -803,6 +803,35 @@ body.no-scroll{overflow:hidden!important}
 </style>
 
 
+
+<style id="dingloft-sketchup-real-hero-image-v125">
+.su-workspace.su-workspace-image{
+  background:transparent!important;
+  border:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  transform:none!important;
+  box-shadow:0 34px 76px rgba(0,0,0,.32)!important;
+}
+.su-workspace.su-workspace-image > img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  border-radius:18px!important;
+}
+@media(max-width:900px){
+  .su-workspace.su-workspace-image{
+    border-radius:12px!important;
+    box-shadow:0 22px 48px rgba(0,0,0,.28)!important;
+  }
+  .su-workspace.su-workspace-image > img{
+    border-radius:12px!important;
+  }
+}
+</style>
+
 </head>
 <body>
 
@@ -871,29 +900,11 @@ body.no-scroll{overflow:hidden!important}
         </div>
 
         <div class="su-visual" aria-hidden="true">
-          <div class="su-workspace">
-            <div class="su-workspace-top">
-              <span class="su-dot"></span><span class="su-dot"></span><span class="su-dot"></span>
-            </div>
-            <div class="su-toolbar">
-              <span class="su-tool"></span><span class="su-tool"></span><span class="su-tool"></span>
-              <span class="su-tool"></span><span class="su-tool"></span><span class="su-tool"></span>
-            </div>
-            <div class="su-canvas">
-              <div class="su-grid"></div>
-              <div class="su-building">
-                <div class="su-building-main"></div>
-                <div class="su-building-wing"></div>
-                <div class="su-building-roof"></div>
-                <div class="su-building-line"></div>
-              </div>
-            </div>
-            <div class="su-inspector">
-              <div class="su-inspector-title"></div>
-              <div class="su-inspector-row"></div><div class="su-inspector-row"></div>
-              <div class="su-inspector-row"></div><div class="su-inspector-row"></div>
-              <div class="su-inspector-row"></div><div class="su-inspector-row"></div>
-            </div>
+          <div class="su-workspace su-workspace-image">
+            <img src="img/Sketchup/01.png"
+                 alt="SketchUp Pro 2026 en uso"
+                 loading="eager"
+                 decoding="async">
           </div>
           <div class="su-floating-chip">Diseño 3D profesional</div>
           <div class="su-box-float"><img src="img/sketchup.png" alt=""></div>
