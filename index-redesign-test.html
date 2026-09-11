@@ -563,7 +563,7 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
 </style>
 
 </head>
-<body>
+<body data-dingloft-test-version="motion-box-v2">
 <div class="announcement">
 <div class="shell"><span>Descargas digitales · acceso desde tu cuenta Dingloft</span><span>Soporte remoto disponible durante el checkout</span></div>
 </div>
@@ -665,7 +665,7 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
 <div class="launch-live" id="motionLaunchStatus">Cuenta regresiva al lanzamiento en Miami.</div>
 <div class="hero-actions"><a class="btn btn-orange" href="motion-x.html">Conocer Motion-X</a><span class="motion-release-note" data-motion-release-note=""><i class="bi bi-clock-fill"></i> Venta disponible el 26 SEP</span><button class="btn motion-buy-button" data-add-name="Motion-X Access" data-add-price="28" data-add-sku="motion-x-access" hidden="" id="motionBuyButton" style="background:#07162e;color:#fff" type="button">Comprar acceso FULL</button></div>
 </div>
-<div class="feature-visual"><img alt="Motion-X" src="img/motion-x-box-mockup.png"/></div>
+<div class="feature-visual"><img alt="Motion-X" src="img/motion-x-preview.png"/></div>
 </section>
 <section class="section dark" id="samples">
 <div class="shell">
@@ -748,7 +748,7 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
       'autocad-2026':'autocad.html','office-home-business':'office.html','sketchup-pro-2026':'sketchup.html','sketchup-2026-autocad-2026':'producto.html?sku=sketchup-2026-autocad-2026','cinema-4d':'cinema4d.html','logic-pro':'logic.html',
       'biblias-e-sword':'esword.html','pianos-legendarios-sf2-bundle':'dual.html','nord-stage-4-ultimate-library':'nord.html','nord-essentials-sf2-collection':'producto.html?sku=nord-essentials-sf2-collection','yamaha-legacy-collection-sf2':'producto.html?sku=yamaha-legacy-collection-sf2','yamaha-premium-keys':'yamahakeys.html','rhodes-affair-2':'rhodes.html','montage-8-nord-stage-3':'mainstage.html','cosmos-collection':'producto.html?sku=cosmos-collection','motion-x':'motion-x.html','motion-x-access':'motion-x.html'
     };
-    const imageMap={autocad:'img/autocad.png',office:'img/office.png',sketchup:'img/sketchup.png',combo:'img/combo.png',cinema4d:'img/cinema4d.png',logic:'img/logic.png',esword:'img/esword.png',dual:'img/dual.png',nord:'img/nord.png',nordessentials:'img/nordessentials.png',yamahalegacy:'img/yamahalegacy.png',yamahakeys:'img/yamahakeys.png',cosmos:'img/cosmos.png',rhodes:'img/rhodes.png',mainstage:'img/mainstage.png',motionx:'img/motion-x-cover.png',dingloft:'img/dingloft.png'};
+    const imageMap={autocad:'img/autocad.png',office:'img/office.png',sketchup:'img/sketchup.png',combo:'img/combo.png',cinema4d:'img/cinema4d.png',logic:'img/logic.png',esword:'img/esword.png',dual:'img/dual.png',nord:'img/nord.png',nordessentials:'img/nordessentials.png',yamahalegacy:'img/yamahalegacy.png',yamahakeys:'img/yamahakeys.png',cosmos:'img/cosmos.png',rhodes:'img/rhodes.png',mainstage:'img/mainstage.png',motionx:'img/motion-x-box-mockup.png',dingloft:'img/dingloft.png'};
     const fallbackProducts=[
       {sku:'autocad-2026',name:'AutoCAD 2026',priceUsd:35,img:'autocad',type:'Licencia vitalicia',category:'Software',shortDescription:'Diseño técnico y documentación profesional.'},
       {sku:'office-home-business',name:'Office Home & Business',priceUsd:40,img:'office',type:'Licencia vitalicia',category:'Software',shortDescription:'Productividad para trabajo, estudio y negocio.'},
@@ -775,7 +775,7 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
 
     function normalizeKey(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
     function money(n){return `$${Number(n||0).toFixed(2)}`}
-    function productImage(p){if(p.imageUrl)return p.imageUrl;return imageMap[p.img]||'img/dingloft.png'}
+    function productImage(p){if(String(p?.sku||'')==='motion-x-access')return 'img/motion-x-box-mockup.png';if(p.imageUrl)return p.imageUrl;return imageMap[p.img]||'img/dingloft.png'}
     function isMultitrackProduct(p){const t=`${p?.type||''} ${p?.category||''} ${p?.name||''}`.toLowerCase();return /multitrack/.test(t)||/^mt-\d+/i.test(String(p?.id||''))}
     function isAudioProduct(p){if(isMultitrackProduct(p))return false;const key=normalizeKey(`${p?.sku||''} ${p?.name||''} ${p?.category||''} ${p?.type||''}`);return /(motion-x|piano|nord|yamaha|rhodes|cosmos|montage|sf2|sample|vst|libreria|library|instrument|kontakt|sound|audio)/.test(key)}
     function isProgramProduct(p){return !isMultitrackProduct(p)&&!isAudioProduct(p)}
