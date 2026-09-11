@@ -1,0 +1,21 @@
+# Cloudflare Pages routing config.
+# Cloudflare Pages does not read vercel.json — this file restores the same
+# rewrites/redirects that vercel.json defined, now that hosting is Cloudflare Pages.
+# Same-name clean URLs (e.g. /ventas -> ventas.html, /account -> account.html,
+# /admin -> admin.html) already work automatically and need no entry here.
+
+# Pretty paths used by the app shell that don't share a name with their .html file.
+# Status 200 = rewrite (serves the content, keeps the URL in the address bar),
+# matching vercel.json's "rewrites" behavior exactly.
+/multitracks   /multitrack   200
+/cuenta        /account      200
+
+# Legacy marketing URLs (previously vercel.json "redirects").
+/es                                                          /             301
+/collections/all                                             /             301
+/es/products/yamaha-premium-keys                             /yamahakeys   301
+/products/biblias-y-diccionarios-para-e-sword                /esword       301
+/products/nord-essentials-sf2-collection-evosound-edition    /nord         301
+/products/sketchup-pro-2026                                  /sketchup     301
+/products/autocad-2026                                       /autocad     301
+/products/microsoft-office                                   /office       301

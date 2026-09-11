@@ -2,7 +2,7 @@
 'use strict';
 const DESKTOP=matchMedia('(min-width:900px) and (pointer:fine)').matches;
 const q=new URLSearchParams(location.search);
-if(!DESKTOP){const src=q.get('src')||'index.html';location.replace(src);return;}
+if(!DESKTOP){const src=q.get('src')||'ventas.html';location.replace(src);return;}
 const stage=document.getElementById('stage'),progress=document.getElementById('progress'),desktopSplash=document.getElementById('desktopSplash'),shellNav=document.getElementById('shellNav');let active=null,seq=0,firstFrameReady=false,navLoadSeq=0,navLoadTimer=0;const hideDesktopSplash=()=>{if(firstFrameReady)return;firstFrameReady=true;desktopSplash?.classList.add('hide');setTimeout(()=>desktopSplash?.remove(),600)};setTimeout(hideDesktopSplash,6500);const installed=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true||Boolean(localStorage.getItem('dingloft_installed_at'));document.documentElement.classList.toggle('dingloft-installed',installed);if(installed)document.getElementById('navInstall')?.remove();addEventListener('appinstalled',()=>{localStorage.setItem('dingloft_installed_at',String(Date.now()));document.getElementById('navInstall')?.remove()});
 const homeFiles=new Set(['index.html','ventas.html','tienda.html','autocad.html','cinema4d.html','dual.html','esword.html','logic.html','mainstage.html','nord.html','office.html','producto.html','rhodes.html','sketchup.html','yamahakeys.html']);
 const PRETTY_TO_FILE=new Map([
