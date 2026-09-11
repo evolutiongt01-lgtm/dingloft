@@ -636,6 +636,14 @@
       html{scroll-behavior:auto}
       *,*::before,*::after{transition:none!important; animation:none!important}
     }
+
+    /* Lanzamiento Motion-X · venta habilitada el 26 SEP 2026 · 6:00 PM Miami */
+    .btn-launch-lock[disabled]{
+      cursor:not-allowed;
+      opacity:.58;
+      transform:none!important;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)!important;
+    }
   </style>
 </head>
 <body>
@@ -666,7 +674,7 @@
           Motion-X combina 8 capas, Live Banks, Super Knob y control expresivo en un instrumento diseñado para performance y producción profesional. Compatible con cualquier DAW que soporte VST3 o AU.
         </p>
         <div class="hero-cta">
-          <button class="btn btn-primary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">PURCHASE</button>
+          <button class="btn btn-primary btn-launch-lock" type="button" data-product-id="motion-x-full" data-action="buy-motion-x" data-launch-label="PURCHASE" disabled>VENTA DISPONIBLE EL 26 SEP</button>
           <button class="btn btn-secondary" type="button" data-action="download-motion-x">DOWNLOAD FREE</button>
         </div>
       </div>
@@ -1067,7 +1075,7 @@
               </div>
               <div class="price">
                 <strong>US$28</strong>
-                <span>Oferta de lanzamiento. Precio regular US$60.</span>
+                <span>Oferta de lanzamiento. Precio regular US$60.<br><strong>Venta disponible el 26 SEP · 6:00 PM · hora de Miami.</strong></span>
               </div>
             </div>
             <ul>
@@ -1077,7 +1085,7 @@
               <li>La licencia se vincula a tu cuenta y desbloquea FULL sin límite de la prueba ni reinstalación.</li>
             </ul>
             <div class="cta-row">
-              <button class="btn btn-primary" type="button" data-product-id="motion-x-full" data-action="buy-motion-x">Comprar FULL</button>
+              <button class="btn btn-primary btn-launch-lock" type="button" data-product-id="motion-x-full" data-action="buy-motion-x" data-launch-label="Comprar FULL" disabled>Venta disponible el 26 SEP</button>
             </div>
           </article>
         </div>
@@ -1091,11 +1099,31 @@
   </main>
 
   <script>
+    const motionXSaleStartsAt = new Date('2026-09-26T22:00:00Z'); // 6:00 PM Miami (EDT)
+
+    function syncMotionXSaleState(){
+      const available = Date.now() >= motionXSaleStartsAt.getTime();
+
+      document.querySelectorAll('[data-action="buy-motion-x"]').forEach(btn => {
+        btn.disabled = !available;
+        btn.classList.toggle('btn-launch-lock', !available);
+        btn.textContent = available
+          ? (btn.dataset.launchLabel || 'Comprar FULL')
+          : 'VENTA DISPONIBLE EL 26 SEP';
+        btn.setAttribute('aria-disabled', String(!available));
+      });
+    }
+
+    syncMotionXSaleState();
+    setInterval(syncMotionXSaleState, 30000);
+
     document.querySelectorAll('[data-action="download-motion-x"]').forEach(btn => {
       btn.addEventListener('click', () => console.log('download hook: motion-x'));
     });
+
     document.querySelectorAll('[data-action="buy-motion-x"]').forEach(btn => {
       btn.addEventListener('click', event => {
+        if (event.currentTarget.disabled) return;
         console.log('checkout hook:', event.currentTarget.dataset.productId || 'motion-x-full');
       });
     });
