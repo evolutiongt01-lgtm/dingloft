@@ -884,6 +884,21 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
     cartPanelOverlay?.addEventListener('click',closeCartDrawer);
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cartPanel?.classList.contains('show'))closeCartDrawer()});
 
+    // Both app.html and desktop-shell.html attach their OWN capture-phase click
+    // interceptor straight on this document (added once this document's "load" event
+    // reaches the parent frame) that hijacks every <a href> click, including this one,
+    // to drive their real SPA navigation and stopPropagation() before it ever reaches a
+    // bubble-phase listener on the button itself. So the drawer close cannot live in a
+    // listener on the button — it has to win the same capture phase, attached here
+    // during this document's own parse, which always runs before the parent's frame
+    // "load" handler (and therefore before the shell attaches its interceptor). Not
+    // calling preventDefault/stopPropagation here lets that real navigation still run
+    // right after, unmodified, for both shells; only a true standalone load (no parent
+    // shell) falls through to the plain anchor navigation.
+    document.addEventListener('click',e=>{
+      if(e.target?.closest?.('#cartCheckoutBtn'))closeCartDrawer();
+    },true);
+
     const motionLaunchAt = new Date('2026-09-26T22:00:00Z'); // 6:00 PM Miami (EDT)
     function syncMotionLaunchUI(isLive){
       document.querySelectorAll('.motion-buy-button').forEach(el=>{el.hidden=!isLive});

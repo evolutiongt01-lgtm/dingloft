@@ -114,6 +114,16 @@ searchOverlay?.addEventListener('click',e=>{if(e.target===searchOverlay)closeDes
 searchResults?.addEventListener('click',e=>{const a=e.target.closest?.('[data-search-index]');if(!a)return;e.preventDefault();const rows=searchResults.__rows||[];const item=rows[Number(a.dataset.searchIndex)];if(!item)return;closeDesktopSearch();navigate(item.kind==='multitrack'?`multitrack.html#mt-${encodeURIComponent(item.id)}`:`producto.html?slug=${encodeURIComponent(item.sku)}`,{push:true})});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&searchOverlay?.classList.contains('show'))closeDesktopSearch()});
 
+/* ===== Cart button · delegates to the real cart already running inside the embedded page ===== */
+const navCart=document.getElementById('navCart'),navCartCount=document.getElementById('navCartCount');
+function desktopCartCount(){try{const cart=JSON.parse(localStorage.getItem('dingloft_cart')||'[]');if(!Array.isArray(cart))return 0;return cart.reduce((sum,item)=>sum+Math.max(1,Number(item?.quantity||1)||1),0)}catch(_){return 0}}
+function syncDesktopCartBadge(){if(!navCartCount)return;const n=desktopCartCount();navCartCount.textContent=String(n);navCartCount.hidden=n<1}
+function openEmbeddedCart(){const doc=active?.contentWindow?.document;if(!doc)return;const btn=doc.getElementById('openCartBtn')||doc.querySelector('.btn-floating-cart.cart-btn-global,#main-cart-btn,.cart-btn-global,.floating-cart,.cart-fab,[data-cart-open]');try{btn?.click()}catch(_){}}
+navCart?.addEventListener('click',e=>{e.preventDefault();openEmbeddedCart()});
+addEventListener('storage',e=>{if(e.key==='dingloft_cart')syncDesktopCartBadge()});
+setInterval(syncDesktopCartBadge,650);
+syncDesktopCartBadge();
+
 document.addEventListener('click',e=>{const a=e.target.closest?.('[data-shell-link]');if(!a)return;e.preventDefault();navigate(a.getAttribute('href'),{push:true})});
 addEventListener('message',e=>{if(e.origin!==location.origin||!e.data)return;if(e.data.type==='dingloft:admin-state'){adminSession=e.data.isAdmin===true;try{sessionStorage.setItem('dingloft_admin_nav',adminSession?'1':'0')}catch(_){}syncAdminNav();return}if(e.data.type==='dingloft:desktop-navigate')navigate(e.data.src||'index.html',{push:true})});
 // Same-document admin check (see the "dingloft-desktop-admin-auth" module below): Firebase session validated
