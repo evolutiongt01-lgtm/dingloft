@@ -1,13 +1,13 @@
-/* Dingloft Global Navbar + Cart · v120
+/* Dingloft Global Navbar + Cart · v121
    Single persistent component based on ventas.html.
    It renders only in the TOP document (desktop-shell/app/direct page), never inside iframes.
    Cart uses transform/opacity only: no page-wide blur/scale choreography. */
 (() => {
   'use strict';
-  if (window.__DINGLOFT_GLOBAL_NAV_V120__) return;
-  window.__DINGLOFT_GLOBAL_NAV_V120__ = true;
+  if (window.__DINGLOFT_GLOBAL_NAV_V121__) return;
+  window.__DINGLOFT_GLOBAL_NAV_V121__ = true;
 
-  const VERSION = 120;
+  const VERSION = 121;
   const CART_KEY = 'dingloft_cart';
   const WORKER = String(
     window.DINGLOFT_WORKER_BASE ||
@@ -493,11 +493,18 @@
     const priceOf = item => Number(item?.priceUsd ?? item?.price ?? 0) || 0;
     const cartApi = () => window.DingloftCartSync;
     const readCart = () => {
-      if (cartApi()?.read) return cartApi().read();
+      try {
+        if (cartApi()?.read) {
+          const value = cartApi().read();
+          return Array.isArray(value) ? value : [];
+        }
+      } catch (_) {}
       try {
         const value = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
         return Array.isArray(value) ? value : [];
-      } catch (_) { return []; }
+      } catch (_) {
+        return [];
+      }
     };
     const imageOf = item => {
       if (cartApi()?.imageOf) return cartApi().imageOf(item);
@@ -566,15 +573,31 @@
     };
 
     const openCart = () => {
-      if (routeInfo().checkout) return;
-      if (cartDirty) renderCart();
+      /* v121: never depend on route detection to open.
+         Checkout already hides the button through paintRoute(). */
       cartOpen = true;
       document.documentElement.classList.add('dgn-cart-open');
-      requestAnimationFrame(() => {
-        overlay.classList.add('show');
-        cart.classList.add('show');
-        cart.setAttribute('aria-hidden','false');
-      });
+
+      /* Open synchronously so no old shell listener / busy frame can swallow the action. */
+      overlay.classList.add('show');
+      cart.classList.add('show');
+      cart.setAttribute('aria-hidden','false');
+
+      /* Rendering can never block the visual opening of the drawer. */
+      if (cartDirty) {
+        queueMicrotask(() => {
+          try {
+            renderCart();
+          } catch (err) {
+            console.warn('[Dingloft cart] render fallback', err);
+            try {
+              cartMeta.textContent = 'Carrito';
+              cartTotal.textContent = '$0.00';
+              cartItems.innerHTML = '<div class="dgn-cart-empty"><b>Tu carrito</b>Actualizando productos…</div>';
+            } catch (_) {}
+          }
+        });
+      }
     };
     const closeCart = () => {
       cartOpen = false;
@@ -806,7 +829,16 @@
     });
 
     document.getElementById('dgnHeartV120').addEventListener('click',()=>navigate('account.html#favoritos'));
-    cartBtn.addEventListener('click',openCart);
+    document.addEventListener('click', event => {
+      const hit = event.target?.closest?.('#dgnCartBtnV120');
+      if (!hit) return;
+      event.preventDefault();
+      openCart();
+    }, true);
+    cartBtn.addEventListener('click', event => {
+      event.preventDefault();
+      openCart();
+    });
     cartClose.addEventListener('click',closeCart);
     cartContinue.addEventListener('click',closeCart);
     overlay.addEventListener('click',closeCart);
@@ -894,7 +926,7 @@
       if(e.data.type==='dingloft:cart-change'||e.data.type==='dingloft:cart-sync'){
         cartChanged();return;
       }
-      if(e.data.type==='dingloft:open-global-cart'){
+      if(e.data.type==='dingloft:open-global-cart'||e.data.type==='dingloft:open-cart'){
         openCart();return;
       }
       if(e.data.type==='dingloft:global-navigate'&&e.data.href){

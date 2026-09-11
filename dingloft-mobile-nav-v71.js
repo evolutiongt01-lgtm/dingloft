@@ -1,4 +1,4 @@
-/* Dingloft Mobile Nav compatibility bridge · v120
+/* Dingloft Mobile Nav compatibility bridge · v121
    Navbar UI moved to /dingloft-global-nav.js.
    Kept only because older pages still reference this filename. */
 (() => {
@@ -12,8 +12,8 @@
   if(!mobile)return;
   if(document.querySelector('script[data-dgn-global-loader]'))return;
   const s=document.createElement('script');
-  s.src='/dingloft-global-nav.js?v=120';
+  s.src='/dingloft-global-nav.js?v=121';
   s.defer=true;
-  s.dataset.dgnGlobalLoader='120';
+  s.dataset.dgnGlobalLoader='121';
   document.head.appendChild(s);
 })();
