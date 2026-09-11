@@ -1891,8 +1891,8 @@ html,body{
               <div style="background: rgba(53,221,146,0.08); border: 1px solid rgba(53,221,146,0.3); border-radius: 15px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: center; gap: 15px;">
                 <i class="bi bi-shield-check" style="color: var(--green); font-size: 1.8rem;"></i>
                 <div>
-                  <strong style="color: var(--green); display: block; font-size: 0.95rem;">Tus descargas están vinculadas a tu cuenta</strong>
-                  <span style="font-size: 0.82rem; color: #c4d0df;">Los botones se generan de forma segura desde Dingloft. Si Administración cambia un link, aquí se actualiza automáticamente.</span>
+                  <strong style="color: var(--green); display: block; font-size: 0.95rem;">Tus compras y accesos están vinculados a tu cuenta</strong>
+                  <span style="font-size: 0.82rem; color: #c4d0df;">Los accesos y descargas se generan de forma segura desde Dingloft. Si Administración cambia un link, aquí se actualiza automáticamente.</span>
                 </div>
               </div>
             `;
@@ -1902,9 +1902,25 @@ html,body{
               const imgProd = producto.img || 'dingloft';
               const typeProd = producto.type || 'Producto digital';
               const assets = Array.isArray(producto.assets) ? producto.assets : [];
-              const ready = producto.deliveryStatus === 'ready' && assets.length > 0;
+              const accessOnly = producto.accessOnly === true || producto.deliveryMode === 'account_access';
+              const licenseKey = String(producto.licenseKey || '').trim();
+              const ready = producto.deliveryStatus === 'ready' && (accessOnly || assets.length > 0);
 
-              if (ready && assets.length > 1) {
+              if (accessOnly) {
+                const appAction = assets.length ? `<button class="download-btn" data-url="${escHtml(assets[0].downloadUrl)}" data-product="${escHtml(nombreProd)}" data-image="img/${escHtml(imgProd)}.png" aria-label="Abrir recurso de ${escHtml(nombreProd)}"><i class="bi bi-box-arrow-up-right"></i></button>` : `<span class="download-btn" style="pointer-events:none;border-color:rgba(53,221,146,.32);color:var(--green);background:rgba(53,221,146,.08)" aria-label="Acceso activo"><i class="bi bi-unlock-fill"></i></span>`;
+                downloadsContainer.insertAdjacentHTML('beforeend', `
+                  <div class="download-row" style="grid-template-columns:68px minmax(120px,1fr) auto">
+                    <div class="product-art"><img src="img/${escHtml(imgProd)}.png" alt="${escHtml(nombreProd)}" onerror="this.src='img/dingloft.png'"></div>
+                    <div>
+                      <h3>${escHtml(nombreProd)}</h3>
+                      <p>${escHtml(typeProd)} · Vinculado a tu cuenta Dingloft</p>
+                      <span class="badge"><i class="bi bi-shield-check"></i> FULL habilitado</span>
+                      ${licenseKey ? `<div style="margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:.66rem;color:#7f91a5;text-transform:uppercase;letter-spacing:.08em">Licencia</span><code style="padding:6px 9px;border:1px solid rgba(103,221,255,.14);border-radius:9px;background:rgba(103,221,255,.04);color:#c8effa;font-size:.72rem;letter-spacing:.08em">${escHtml(licenseKey)}</code><button type="button" class="copy-motion-license" data-license="${escHtml(licenseKey)}" style="border:0;background:transparent;color:#71dcff;cursor:pointer;font-size:.72rem;font-weight:800"><i class="bi bi-copy"></i> Copiar</button></div><div style="margin-top:5px;color:#6f8194;font-size:.64rem">Clave de referencia. El acceso real se valida con tu inicio de sesión Dingloft.</div>` : ''}
+                    </div>
+                    ${appAction}
+                  </div>
+                `);
+              } else if (ready && assets.length > 1) {
                 const subHTML = assets.map(asset => `
                   <div class="sub-download-row">
                     <div><i class="bi bi-file-earmark-arrow-down"></i> ${escHtml(asset.name || 'Descarga')}</div>
@@ -1961,6 +1977,19 @@ html,body{
           }, 0);
           document.getElementById('stat-programas').textContent = totalProgramas;
           document.getElementById('stat-descargas').textContent = totalDescargas;
+
+          document.querySelectorAll('.copy-motion-license').forEach(button => {
+            button.addEventListener('click', async () => {
+              const key = button.getAttribute('data-license') || '';
+              if (!key) return;
+              try {
+                await navigator.clipboard.writeText(key);
+                const old = button.innerHTML;
+                button.innerHTML = '<i class="bi bi-check2"></i> Copiada';
+                setTimeout(() => { button.innerHTML = old; }, 1600);
+              } catch (_) {}
+            });
+          });
 
           document.querySelectorAll('.download-btn:not([disabled]), .download-btn-small:not([disabled])').forEach(button => {
             button.addEventListener('click', (e) => {
