@@ -45,107 +45,14 @@ function moveNavGlider(el){if(!navGlider||!el)return;navGlider.style.width=`${el
 function syncNavGlider(){const activeBtn=navButtons.find(btn=>btn.classList.contains('active'))||document.getElementById('navHome');requestAnimationFrame(()=>moveNavGlider(activeBtn))}
 navButtons.forEach(btn=>btn.addEventListener('pointerenter',()=>moveNavGlider(btn)));
 navActions?.addEventListener('pointerleave',syncNavGlider);
-addEventListener('resize',()=>{syncNavGlider();repairShellNav()},{passive:true});
-addEventListener('focus',repairShellNav,{passive:true});
+addEventListener('resize',syncNavGlider,{passive:true});
 function isTrueHome(src){try{const u=new URL(src,location.origin),file=(u.pathname.split('/').pop()||'index.html').toLowerCase();return file==='ventas.html'||file==='index.html'||file==='tienda.html'}catch(_){return false}}function syncAdminNav(){if(!navAdmin)return;navAdmin.hidden=!adminSession}
 function cartItems(){try{const c=JSON.parse(localStorage.getItem('dingloft_cart')||'[]');return Array.isArray(c)?c:[]}catch(_){return[]}}
 function shellCartCount(){return cartItems().reduce((sum,item)=>sum+Math.max(1,Number(item?.qty??item?.quantity??1)||1),0)}
 function isCheckoutSrc(src=currentSrc){try{const u=new URL(src||'',location.origin);return (u.pathname.split('/').filter(Boolean).pop()||'').toLowerCase().replace(/\.html$/,'')==='checkout'}catch(_){return false}}
 function syncShellCart(){if(!navCart)return;const checkout=isCheckoutSrc();navCart.hidden=checkout;const n=shellCartCount();if(navCartCount){navCartCount.textContent=String(n);navCartCount.hidden=n<1}}
-function repairShellNav(){
-  if(!shellNav)return;
-  shellNav.classList.remove('loading','load-complete');
-  shellNav.style.setProperty('top','0','important');
-  shellNav.style.setProperty('left','0','important');
-  shellNav.style.setProperty('right','0','important');
-  shellNav.style.setProperty('width','100%','important');
-  shellNav.style.setProperty('height','68px','important');
-  shellNav.style.setProperty('transform','none','important');
-  shellNav.style.setProperty('display','grid','important');
-  shellNav.style.setProperty('grid-template-columns','auto minmax(0,1fr) auto','important');
-
-  const brand=shellNav.querySelector('.helmet-shell-brand');
-  const links=shellNav.querySelector('.helmet-shell-links');
-  const tools=shellNav.querySelector('.helmet-shell-tools');
-
-  if(brand){
-    brand.hidden=false;
-    brand.style.setProperty('display','flex','important');
-    brand.style.setProperty('visibility','visible','important');
-    brand.style.setProperty('opacity','1','important');
-    brand.style.setProperty('transform','none','important');
-  }
-  if(links){
-    links.hidden=false;
-    links.style.setProperty('display','flex','important');
-    links.style.setProperty('visibility','visible','important');
-    links.style.setProperty('opacity','1','important');
-    links.style.setProperty('transform','none','important');
-  }
-  if(tools){
-    tools.style.setProperty('display','flex','important');
-    tools.style.setProperty('visibility','visible','important');
-    tools.style.setProperty('opacity','1','important');
-    tools.style.setProperty('transform','none','important');
-  }
-
-  navButtons.forEach(btn=>{
-    btn.hidden=false;
-    btn.style.removeProperty('display');
-    btn.style.removeProperty('visibility');
-    btn.style.removeProperty('opacity');
-    btn.style.removeProperty('transform');
-  });
-
-  syncAdminNav();
-  syncShellCart();
-}
-
-function bindFrameCartRepair(){
-  if(!active)return;
-  try{
-    const w=active.contentWindow,d=active.contentDocument;
-    if(!d||d.__dlShellCartRepairBound)return;
-    d.__dlShellCartRepairBound=1;
-
-    const repairSoon=()=>{
-      requestAnimationFrame(repairShellNav);
-      setTimeout(repairShellNav,80);
-      setTimeout(repairShellNav,340);
-    };
-
-    d.addEventListener('click',e=>{
-      const el=e.target instanceof w.Element?e.target.closest('#close-cart-btn,.btn-close-cart,#cart-overlay,.cart-overlay'):null;
-      if(el)repairSoon();
-    },true);
-
-    if(d.body){
-      let lastLocked=d.body.classList.contains('no-scroll')||d.body.classList.contains('cart-open');
-      const obs=new w.MutationObserver(()=>{
-        const locked=d.body.classList.contains('no-scroll')||d.body.classList.contains('cart-open');
-        if(lastLocked&&!locked)repairSoon();
-        lastLocked=locked;
-      });
-      obs.observe(d.body,{attributes:true,attributeFilter:['class']});
-    }
-  }catch(_){}
-}
-
-function openActiveCart(){
-  repairShellNav();
-  if(!active||isCheckoutSrc())return;
-  try{
-    const d=active.contentDocument;
-    const btn=d?.querySelector('#openCartBtn,.btn-floating-cart,[data-floating-cart],.floating-cart,.cart-fab');
-    if(btn){
-      btn.click();
-      bindFrameCartRepair();
-      setTimeout(repairShellNav,50);
-      return;
-    }
-  }catch(_){}
-}
-function paint(src){currentSrc=src;const c=classify(src);document.getElementById('navHome')?.classList.toggle('active',!!c.home);navSoftware?.classList.toggle('active',!!c.software);document.getElementById('navMultitracks')?.classList.toggle('active',!!c.multitracks);document.getElementById('navAccount')?.classList.toggle('active',!!c.account);syncAdminNav();syncShellCart()}
+function openActiveCart(){if(!active||isCheckoutSrc())return;try{const d=active.contentDocument;const btn=d?.querySelector('#openCartBtn,.btn-floating-cart,[data-floating-cart],.floating-cart,.cart-fab');if(btn){btn.click();return}}catch(_){}}
+function paint(src){currentSrc=src;window.dispatchEvent(new CustomEvent('dingloft:route-change',{detail:{src:publicSrc(src)}}));const c=classify(src);document.getElementById('navHome')?.classList.toggle('active',!!c.home);navSoftware?.classList.toggle('active',!!c.software);document.getElementById('navMultitracks')?.classList.toggle('active',!!c.multitracks);document.getElementById('navAccount')?.classList.toggle('active',!!c.account);syncAdminNav();syncShellCart()}
 function setNavLoadOrigin(){if(!shellNav)return;const activeBtn=navButtons.find(btn=>btn.classList.contains('active'))||document.getElementById('navHome');if(!activeBtn)return;const navRect=shellNav.getBoundingClientRect(),btnRect=activeBtn.getBoundingClientRect();const x=Math.max(24,Math.min(navRect.width-24,btnRect.left-navRect.left+btnRect.width/2));shellNav.style.setProperty('--load-x',`${x}px`)}
 function beginNavLoad(){if(!shellNav)return null;const token=++navLoadSeq;clearTimeout(navLoadTimer);setNavLoadOrigin();shellNav.classList.remove('loading','load-complete');void shellNav.offsetWidth;shellNav.classList.add('loading');return{token,started:performance.now()}}
 function endNavLoad(state){if(!shellNav||!state||state.token!==navLoadSeq)return;const delay=Math.max(0,380-(performance.now()-state.started));clearTimeout(navLoadTimer);navLoadTimer=setTimeout(()=>{if(state.token!==navLoadSeq)return;shellNav.classList.remove('loading');shellNav.classList.add('load-complete');setTimeout(()=>{if(state.token===navLoadSeq)shellNav.classList.remove('load-complete')},480)},delay)}
@@ -156,7 +63,7 @@ const normalizeCart=()=>{d.querySelectorAll('.btn-floating-cart').forEach(btn=>{
 if(!d.__dingloftDesktopBridge){d.__dingloftDesktopBridge=1;d.addEventListener('click',e=>{const a=e.target instanceof w.Element?e.target.closest('a[href]'):null;if(!a||a.target==='_blank'||a.hasAttribute('download')||a.getAttribute('href')?.startsWith('mailto:')||a.getAttribute('href')?.startsWith('tel:'))return;const m=mapHref(a.getAttribute('href'),w.location.href);if(!m)return;if(m.hashOnly)return;e.preventDefault();e.stopPropagation();navigate(m.src,{push:true})},true)}if(!w.__dlDesktopInteraction){w.__dlDesktopInteraction=1;['gesturestart','gesturechange','gestureend'].forEach(type=>d.addEventListener(type,e=>e.preventDefault(),{passive:false}));w.addEventListener('wheel',e=>{if(e.ctrlKey){e.preventDefault();return}let rail=e.target instanceof w.Element?e.target.closest('[data-horizontal-scroll],.tabs-header,.mt-filters,.mt-chip-row,.filter-row,.category-scroll,.product-tabs,.nav-pills,.horizontal-scroll,.table-scroll,.cards-scroll'):null;if(!rail){let n=e.target instanceof w.Element?e.target:null;while(n&&n!==d.body){if(n.scrollWidth>n.clientWidth+4){rail=n;break}n=n.parentElement}}if(!rail||rail.scrollWidth<=rail.clientWidth+4)return;const intent=Math.abs(e.deltaX)>1||(e.shiftKey&&Math.abs(e.deltaY)>1);if(!intent)return;const delta=Math.abs(e.deltaX)>1?e.deltaX:e.deltaY;const before=rail.scrollLeft;rail.scrollLeft+=delta;if(rail.scrollLeft!==before)e.preventDefault()},{passive:false});w.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&['+','=','-','0'].includes(e.key))e.preventDefault()},{passive:false})}
 const t=(d.title||'').trim();if(t)document.title=t.includes('Dingloft')?t:`${t} · Dingloft`;
 }catch(_){}}
-function navigate(raw,opt={}){const src=cleanSrc(raw);if(!src)return;const id=++seq;paint(src);const loadState=beginNavLoad();const f=document.createElement('iframe');f.className='frame';f.allow='autoplay *; payment *; clipboard-read; clipboard-write';f.src=src;stage.appendChild(f);f.addEventListener('load',()=>{if(id!==seq){f.remove();return}prepare(f);syncShellCart();requestAnimationFrame(()=>f.classList.add('active'));hideDesktopSplash();const old=active;active=f;bindFrameCartRepair();repairShellNav();if(old&&old!==f){old.classList.add('out');setTimeout(()=>old.remove(),220)}endNavLoad(loadState)},{once:true});if(!opt.pop){const url=shellUrl(src);if(opt.replace)history.replaceState({src:publicSrc(src)},'',url);else if(opt.push!==false)history.pushState({src:publicSrc(src)},'',url)}}
+function navigate(raw,opt={}){const src=cleanSrc(raw);if(!src)return;const id=++seq;paint(src);const loadState=beginNavLoad();const f=document.createElement('iframe');f.className='frame';f.allow='autoplay *; payment *; clipboard-read; clipboard-write';f.src=src;stage.appendChild(f);f.addEventListener('load',()=>{if(id!==seq){f.remove();return}prepare(f);syncShellCart();requestAnimationFrame(()=>f.classList.add('active'));hideDesktopSplash();const old=active;active=f;if(old&&old!==f){old.classList.add('out');setTimeout(()=>old.remove(),220)}endNavLoad(loadState)},{once:true});if(!opt.pop){const url=shellUrl(src);if(opt.replace)history.replaceState({src:publicSrc(src)},'',url);else if(opt.push!==false)history.pushState({src:publicSrc(src)},'',url)}}
 
 /* ===== Dynamic catalog search · v89 ===== */
 const SEARCH_WORKER=String(window.DINGLOFT_WORKER_BASE||'https://autumn-breeze-dfa0.evolutiongt01.workers.dev').replace(/\/$/,'');
@@ -216,14 +123,21 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&searchOverlay?.classList.con
 
 navCart?.addEventListener('click',e=>{e.preventDefault();openActiveCart()});
 addEventListener('storage',e=>{if(e.key==='dingloft_cart')syncShellCart()});
-setInterval(syncShellCart,800);
 document.addEventListener('click',e=>{const a=e.target.closest?.('[data-shell-link]');if(!a)return;e.preventDefault();navigate(a.getAttribute('href'),{push:true})});
-addEventListener('message',e=>{if(e.origin!==location.origin||!e.data)return;if(e.data.type==='dingloft:cart-closed'||e.data.type==='dingloft:cart-opened'){repairShellNav();setTimeout(repairShellNav,120);return}if(e.data.type==='dingloft:admin-state'){adminSession=e.data.isAdmin===true;try{sessionStorage.setItem('dingloft_admin_nav',adminSession?'1':'0')}catch(_){}syncAdminNav();return}if(e.data.type==='dingloft:desktop-navigate')navigate(e.data.src||'index.html',{push:true})});
+addEventListener('dingloft:global-navigate',e=>{const href=e.detail?.href;if(!href)return;e.preventDefault();navigate(href,{push:true})});
+addEventListener('message',e=>{if(e.origin!==location.origin||!e.data)return;if(e.data.type==='dingloft:global-navigate'&&e.data.href){navigate(e.data.href,{push:true});return}if(e.data.type==='dingloft:admin-state'){adminSession=e.data.isAdmin===true;try{sessionStorage.setItem('dingloft_admin_nav',adminSession?'1':'0')}catch(_){}syncAdminNav();return}if(e.data.type==='dingloft:desktop-navigate')navigate(e.data.src||'index.html',{push:true})});
 // Same-document admin check (see the "dingloft-desktop-admin-auth" module below): Firebase session validated
 // against the Worker's /admin/session endpoint, the same authority account.html and auth-global.js already use.
 addEventListener('dingloft:admin-state-local',e=>{adminSession=e.detail?.isAdmin===true;try{sessionStorage.setItem('dingloft_admin_nav',adminSession?'1':'0')}catch(_){}syncAdminNav()});
 try{adminSession=sessionStorage.getItem('dingloft_admin_nav')==='1'}catch(_){}
 syncAdminNav();
+window.DingloftDesktopShell={
+  version:120,
+  navigate:(href)=>navigate(href,{push:true}),
+  get current(){return publicSrc(currentSrc||'ventas.html')},
+  get activeFrame(){return active}
+};
+
 addEventListener('popstate',e=>{const src=e.state?.src||fileFromPublicPath(location.pathname)||'ventas.html';navigate(src,{pop:true,push:false})});
 const initial=q.get('src')||fileFromPublicPath(location.pathname)||'ventas.html';history.replaceState({src:publicSrc(initial)},'',shellUrl(initial));navigate(initial,{replace:true,push:false});
 })();

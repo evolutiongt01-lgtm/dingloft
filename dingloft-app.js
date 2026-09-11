@@ -1,4 +1,4 @@
-/* Dingloft Persistent Mobile/Tablet App Shell · v101 · Route-Aware Scroll
+/* Dingloft Persistent Mobile/Tablet App Shell · v120 · Global Navbar
    The shell never reloads between internal pages. Only the content iframe changes.
    Header/search/bottom nav/cart live in the top document and remain mounted. */
 const DINGLOFT_BOOT_STARTED = performance.now();
@@ -79,7 +79,7 @@ function activeDock(key){
   document.body.dataset.appRoute=visual;
   document.querySelectorAll('[data-route]').forEach(a=>a.classList.toggle('active',a.dataset.route===visual));
   window.__dingloftRefreshAdminButton?.();
-  window.dispatchEvent(new CustomEvent('dingloft:shell-route',{detail:{key,visual,version:97}}));
+  window.dispatchEvent(new CustomEvent('dingloft:shell-route',{detail:{key,visual,version:120}}));window.dispatchEvent(new CustomEvent('dingloft:route-change',{detail:{src:key==='home'?'ventas.html':key==='catalog'?'ventas.html#programas':key==='multitrack'?'multitrack.html':key==='account'?'account.html':new URLSearchParams(location.search).get('src')||''}}));
 }
 function cartCount(){
   let n=0;try{const c=JSON.parse(localStorage.getItem('dingloft_cart')||'[]');if(Array.isArray(c))n=c.reduce((s,x)=>s+Math.max(1,Number(x?.qty??x?.quantity??1)||1),0)}catch(_){}
@@ -123,8 +123,8 @@ function child(frame){try{
   // with an iOS/mobile scroll repair keyed to this attribute. v93 used
   // "mobile-v93", so that repair never matched inside the persistent shell.
   d.documentElement.dataset.dingloftShell='mobile';
-  d.documentElement.dataset.dingloftShellVersion='116';
-  if(d.body){d.body.classList.add('dingloft-shell-view');d.body.classList.toggle('dingloft-shell-product-view',productView);d.body.dataset.dingloftShell='mobile';d.body.dataset.dingloftShellVersion='116'}
+  d.documentElement.dataset.dingloftShellVersion='120';
+  if(d.body){d.body.classList.add('dingloft-shell-view');d.body.classList.toggle('dingloft-shell-product-view',productView);d.body.dataset.dingloftShell='mobile';d.body.dataset.dingloftShellVersion='120'}
   if(d.scrollingElement)d.scrollingElement.style.webkitOverflowScrolling='touch';
   const unlockProductScroll=()=>{
     if(!productView||!d.body)return;
@@ -167,21 +167,21 @@ function child(frame){try{
         html.dingloft-shell-view.dingloft-shell-product-view[data-dingloft-shell="mobile"] body.dingloft-shell-view.no-scroll,
         html.dingloft-shell-view.dingloft-shell-product-view[data-dingloft-shell="mobile"] body.dingloft-shell-view.cart-open,
         html.dingloft-shell-view.dingloft-shell-product-view[data-dingloft-shell="mobile"] body.dingloft-shell-view.no-scroll.cart-open{position:relative!important;top:auto!important;height:100%!important;min-height:100%!important;max-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important}
-        html.dingloft-shell-view #main-navbar,html.dingloft-shell-view nav.navbar-glass,html.dingloft-shell-view .navbar.navbar-glass,html.dingloft-shell-view nav.navbar.fixed-top,html.dingloft-shell-view .topbar,
+        html.dingloft-shell-view #main-navbar,html.dingloft-shell-view nav.navbar-glass,html.dingloft-shell-view .navbar.navbar-glass,html.dingloft-shell-view nav.navbar.fixed-top,html.dingloft-shell-view .topbar,html.dingloft-shell-view .helmet-site-header,
         html.dingloft-shell-view #mobileAppDock,html.dingloft-shell-view nav.mobile-app-dock,html.dingloft-shell-view .mobile-app-dock,html.dingloft-shell-view .dingloft-direct-top,html.dingloft-shell-view #dingloftDirectTop,html.dingloft-shell-view #dlDirectTop,html.dingloft-shell-view #dlDirectDock,
         html.dingloft-shell-view #dlUniversalHeader,html.dingloft-shell-view #dlUniversalDock,html.dingloft-shell-view #dlGlobalChromeHost,
-        html.dingloft-shell-view .btn-floating-cart,html.dingloft-shell-view .floating-cart,html.dingloft-shell-view .cart-fab,html.dingloft-shell-view [data-floating-cart],
+        html.dingloft-shell-view .btn-floating-cart,html.dingloft-shell-view .floating-cart,html.dingloft-shell-view .cart-fab,html.dingloft-shell-view [data-floating-cart],html.dingloft-shell-view .cart-panel,html.dingloft-shell-view .cart-panel-overlay,html.dingloft-shell-view #cartDrawer,html.dingloft-shell-view #cartPanelOverlay,
         html.dingloft-shell-view .cart-overlay,html.dingloft-shell-view #cart-overlay,html.dingloft-shell-view .cart-drawer,html.dingloft-shell-view #cart-drawer,html.dingloft-shell-view .cart-brand-watermark{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
         html.dingloft-shell-view .hero-section,html.dingloft-shell-view .mt-hero{padding-top:18px!important}
         html.dingloft-shell-view .mt-quickbar{top:0!important}
-        html.dingloft-shell-view main{padding-top:0!important}
+        html.dingloft-shell-view main{padding-top:0!important}html.dingloft-shell-view footer{display:none!important;height:0!important;margin:0!important;padding:0!important;border:0!important}
         html.dingloft-shell-view .hero-proof,html.dingloft-shell-view .trust-bar,html.dingloft-shell-view .category-grid,html.dingloft-shell-view .category-section>.row,html.dingloft-shell-view .steps,html.dingloft-shell-view .mt-filter-row,html.dingloft-shell-view .mt-seo-artists,html.dingloft-shell-view [data-horizontal-scroll]{touch-action:pan-x pan-y!important;overscroll-behavior-x:contain!important;-webkit-overflow-scrolling:touch!important}
         html.dingloft-shell-view .auth-page,html.dingloft-shell-view .login-page{min-height:calc(100dvh - 110px)!important}
       }`;
     d.head.appendChild(s);
   }
   const killLegacy=()=>{
-    d.querySelectorAll('#main-navbar,nav.navbar-glass,.navbar.navbar-glass,#mobileAppDock,nav.mobile-app-dock,.mobile-app-dock,.dingloft-direct-top,#dingloftDirectTop,#dlDirectTop,#dlDirectDock,#dlUniversalHeader,#dlUniversalDock,#dlGlobalChromeHost,.btn-floating-cart,.floating-cart,.cart-fab,[data-floating-cart]').forEach(el=>{el.style.setProperty('display','none','important');el.style.setProperty('pointer-events','none','important')});
+    d.querySelectorAll('#main-navbar,nav.navbar-glass,.navbar.navbar-glass,#mobileAppDock,nav.mobile-app-dock,.mobile-app-dock,.dingloft-direct-top,#dingloftDirectTop,#dlDirectTop,#dlDirectDock,#dlUniversalHeader,#dlUniversalDock,#dlGlobalChromeHost,.helmet-site-header,.btn-floating-cart,.floating-cart,.cart-fab,[data-floating-cart],.cart-panel,.cart-panel-overlay,#cartDrawer,#cartPanelOverlay').forEach(el=>{el.style.setProperty('display','none','important');el.style.setProperty('pointer-events','none','important')});
     unlockProductScroll();
   };
   killLegacy();
@@ -189,7 +189,7 @@ function child(frame){try{
   // v97 did that and killLegacy() itself writes styles, which could create a
   // self-sustaining mutation loop while program pages were booting.
   if(d.body&&!d.__dlShellV100Observer){
-    const chromeSelector='#main-navbar,nav.navbar-glass,.navbar.navbar-glass,#mobileAppDock,nav.mobile-app-dock,.mobile-app-dock,.dingloft-direct-top,#dingloftDirectTop,#dlDirectTop,#dlDirectDock,#dlUniversalHeader,#dlUniversalDock,#dlGlobalChromeHost,.btn-floating-cart,.floating-cart,.cart-fab,[data-floating-cart]';
+    const chromeSelector='#main-navbar,nav.navbar-glass,.navbar.navbar-glass,#mobileAppDock,nav.mobile-app-dock,.mobile-app-dock,.dingloft-direct-top,#dingloftDirectTop,#dlDirectTop,#dlDirectDock,#dlUniversalHeader,#dlUniversalDock,#dlGlobalChromeHost,.helmet-site-header,.btn-floating-cart,.floating-cart,.cart-fab,[data-floating-cart],.cart-panel,.cart-panel-overlay,#cartDrawer,#cartPanelOverlay';
     const hideNode=node=>{
       if(!(node instanceof w.Element))return;
       const matches=[];
@@ -229,19 +229,6 @@ function child(frame){try{
       if(m.external){window.top.location.href=m.url;return;}
       navigate(m.route,m,{push:true});
     },true);
-  }
-  if(productView&&!d.__dlProductCartBridgeV97){
-    d.__dlProductCartBridgeV97=1;
-    d.addEventListener('click',e=>{
-      const btn=e.target instanceof w.Element?e.target.closest('.btn-add-cart,[data-add-cart]'):null;
-      if(!btn)return;
-      // Let the page write the SKU to localStorage first, then release its old
-      // hidden drawer lock and open the one persistent cart owned by the shell.
-      setTimeout(()=>{
-        unlockProductScroll();
-        try{window.__dingloftOpenGlobalCart?.()}catch(_){}
-      },0);
-    },false);
   }
   if(IOS&&!w.__dlHorizontalLockV93){
     w.__dlHorizontalLockV93=1;let sx=0,sy=0,rail=null;
@@ -308,15 +295,16 @@ window.DingloftPersistentShellV93={
   get activeFrame(){return active;}
 };
 window.DingloftPersistentShellV97=window.DingloftPersistentShellV93;
+window.DingloftApp=window.DingloftPersistentShellV93;
 window.__DINGLOFT_PERSISTENT_SHELL_V93__=true;
 window.__DINGLOFT_PERSISTENT_SHELL_V97__=true;
 
 if(IOS){let sx=0,sy=0;document.addEventListener('touchstart',e=>{if(e.touches?.length===1){sx=e.touches[0].clientX;sy=e.touches[0].clientY}},{passive:true});document.addEventListener('touchmove',e=>{if(e.touches?.length!==1)return;const dx=e.touches[0].clientX-sx,dy=e.touches[0].clientY-sy;if(Math.abs(dx)>Math.abs(dy)+3)e.preventDefault()},{passive:false})}
-addEventListener('message',e=>{if(e.origin!==location.origin||!e.data||e.data.type!=='dingloft:navigate')return;navigate(e.data.route||'page',{src:e.data.src||''},{push:true})});
+addEventListener('message',e=>{if(e.origin!==location.origin||!e.data)return;if(e.data.type==='dingloft:global-navigate'&&e.data.href){shellNavigateHref(e.data.href,{push:true});return}if(e.data.type!=='dingloft:navigate')return;navigate(e.data.route||'page',{src:e.data.src||''},{push:true})});
+addEventListener('dingloft:global-navigate',e=>{const href=e.detail?.href;if(!href)return;e.preventDefault();shellNavigateHref(href,{push:true})});
 addEventListener('popstate',e=>{const state=e.state||{};const p=new URLSearchParams(location.search);navigate(state.route||p.get('route')||'home',{src:state.src||p.get('src')||''},{pop:true,push:false})});
 addEventListener('storage',e=>{if(e.key==='dingloft_cart')cartCount()});
 addEventListener('dingloft:cart-sync',cartCount);addEventListener('dingloft:mobile-cart-updated',cartCount);
-setInterval(cartCount,1200);
 
 const initial=info(qRoute(),{src:q.get('src')||''});
 history.replaceState({route:initial.key,src:initial.key==='page'?cleanPublicSrc(initial.src):''},'',appUrl(initial));
