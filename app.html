@@ -23,7 +23,7 @@ const u=new URL('/desktop-shell.html',location.origin);u.searchParams.set('src',
 .frame{overflow:hidden!important;touch-action:pan-y!important;overscroll-behavior:none!important;}
 
 </style>
-<meta name="theme-color" content="#040609">
+<meta name="theme-color" content="#111315">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -245,10 +245,15 @@ body.cart-sheet-open #stage{bottom:0!important}
   .dock{bottom:max(0px,calc(var(--safe-bottom) - 33px))!important;}
   #stage{bottom:calc(68px + max(0px,calc(var(--safe-bottom) - 33px)))!important;}
 }
-/* v103 · route-aware shell viewport. Home owns its navbar inside ventas.html; Checkout has no cart dock. */
+/* v104 · true edge-to-edge mobile viewport. Native pages can extend beneath Safari's floating bottom chrome. */
 @media (max-width:1024px){
-  html.dl-shell-native-navbar #stage{top:0!important;bottom:0!important;height:auto!important;}
-  html.dl-shell-checkout #stage{top:calc(68px + env(safe-area-inset-top,0px))!important;bottom:0!important;height:auto!important;}
+  html.dl-shell-native-navbar #stage{top:0!important;bottom:auto!important;height:100dvh!important;min-height:100dvh!important;}
+  html.dl-shell-checkout #stage{top:calc(68px + env(safe-area-inset-top,0px))!important;bottom:auto!important;height:calc(100dvh - 68px - env(safe-area-inset-top,0px))!important;min-height:calc(100dvh - 68px - env(safe-area-inset-top,0px))!important;}
+  @supports(height:100lvh){
+    html.dl-shell-native-navbar #stage{height:100lvh!important;min-height:100lvh!important;}
+    html.dl-shell-checkout #stage{height:calc(100lvh - 68px - env(safe-area-inset-top,0px))!important;min-height:calc(100lvh - 68px - env(safe-area-inset-top,0px))!important;}
+  }
+  html.dl-shell-native-navbar #stage>.frame,html.dl-shell-checkout #stage>.frame{height:100%!important;min-height:100%!important;}
 }
 </style>
 <link rel="stylesheet" href="dingloft-mobile-dock.css?v=34">
@@ -280,7 +285,7 @@ body.cart-sheet-open #stage{bottom:0!important}
 <div class="install-card" id="installCard" role="dialog" aria-label="Instalar Dingloft"><button class="install-close" id="installCardClose" aria-label="Cerrar">×</button><div class="install-logo"><img src="img/pwa-liquid-192-v5.png?v=6" alt=""></div><div class="install-copy"><strong>Instala Dingloft</strong><span>Ábrelo como una app desde tu pantalla principal.</span></div><button class="install-action" id="installCardAction">Instalar</button></div>
 <div class="install-guide" id="installGuide"><div class="install-sheet"><div class="install-handle"></div><h2 id="installGuideTitle">Instala Dingloft</h2><p id="installGuideText">Añádelo a tu pantalla de inicio.</p><div id="installSteps"></div><button class="install-done" id="installGuideClose">Entendido</button></div></div>
 <div class="toast" id="toast"></div><script src="dingloft-app.js?v=103"></script><script src="pwa-install.js?v=18"></script><script src="dingloft-ui-guard.js?v=58"></script>
-<script src="/pwa-runtime.js?v=79"></script>
+<script src="/pwa-runtime.js?v=80"></script>
 
 <script type="module" id="dingloft-home-admin-auth-v31">
 // Admin eligibility on mobile now mirrors desktop and account.html: a signed-in
