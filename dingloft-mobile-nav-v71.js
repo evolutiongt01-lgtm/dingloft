@@ -541,21 +541,18 @@
     document.documentElement.classList.toggle('dl-shell-native-navbar', nativeNavbar);
     document.documentElement.classList.toggle('dl-shell-checkout', checkout);
     const stage=document.getElementById('stage');
-    const whiteShell = nativeNavbar || checkout;
-    document.documentElement.style.setProperty('background',whiteShell?'#fff':'#05070a','important');
-    document.body?.style.setProperty('background',whiteShell?'#fff':'#05070a','important');
     if(stage){
       stage.style.setProperty('top',nativeNavbar?'0':'calc(68px + env(safe-area-inset-top,0px))','important');
-      /* Never reserve a dark footer/dock strip below the iframe. The cart dock floats above content. */
+      /* No bottom footer/dock reservation: page content reaches the viewport edge. */
       stage.style.setProperty('bottom','0','important');
       stage.style.setProperty('height','auto','important');
       stage.style.setProperty('min-height','0','important');
-      stage.style.setProperty('background',whiteShell?'#fff':'#05070a','important');
+      stage.style.removeProperty('background');
       stage.querySelectorAll(':scope > .frame').forEach(frame=>{
         frame.style.setProperty('bottom','0','important');
         frame.style.setProperty('height','100%','important');
         frame.style.setProperty('min-height','100%','important');
-        if(whiteShell) frame.style.setProperty('background','#fff','important');
+        frame.style.removeProperty('background');
       });
     }
   }
