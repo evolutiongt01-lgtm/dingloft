@@ -335,277 +335,734 @@
 <style id="dl-product-ios-scroll-v21">
 @media(max-width:1024px){html[data-dingloft-shell="mobile"],html[data-dingloft-shell="mobile"] body{overflow-x:hidden!important;overflow-y:auto!important;height:auto!important;min-height:100%!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important}html[data-dingloft-shell="mobile"] body.no-scroll{overflow:hidden!important}}
 </style>
+
+<style id="dingloft-sketchup-landing-v1">
+:root{
+  --su-ink:#111317;
+  --su-muted:#68717c;
+  --su-paper:#f6f5f1;
+  --su-white:#ffffff;
+  --su-line:#d9dde1;
+  --su-blue:#173744;
+  --su-blue-2:#0d2833;
+  --su-orange:#ffad1f;
+  --su-orange-hover:#f29a00;
+  --su-green:#b8ff32;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--su-paper)!important;
+  color:var(--su-ink)!important;
+  font-family:'Inter',sans-serif!important;
+}
+body.no-scroll{overflow:hidden!important}
+.page-wrapper{
+  min-height:100vh!important;
+  background:var(--su-paper)!important;
+  color:var(--su-ink)!important;
+  transform:none!important;
+  overflow:hidden;
+}
+.bg-orb,.side-menu-drawer,.side-menu-overlay{display:none!important}
+
+/* Product mini navigation */
+.su-product-nav{
+  position:relative;
+  z-index:30;
+  background:rgba(255,255,255,.96);
+  border-bottom:1px solid #e5e7e9;
+}
+.su-product-nav-inner{
+  width:min(1400px,calc(100% - 48px));
+  margin:0 auto;
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  gap:30px;
+}
+.su-mini-brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+  color:var(--su-ink);
+  min-width:max-content;
+}
+.su-mini-brand img{
+  width:38px;height:38px;object-fit:contain;border-radius:10px;
+}
+.su-mini-brand strong{font-size:16px;letter-spacing:-.02em}
+.su-mini-links{
+  margin-left:auto;
+  display:flex;align-items:center;gap:30px;
+}
+.su-mini-links a{
+  color:#30343a;text-decoration:none;font-size:13px;font-weight:800;
+  letter-spacing:.02em;text-transform:uppercase;
+}
+.su-mini-links a:hover{color:#000}
+.su-nav-price{font-weight:900;font-size:15px}
+.su-nav-buy{
+  border:0;background:var(--su-orange);color:#17202a;
+  border-radius:999px;padding:13px 22px;font-weight:900;
+  letter-spacing:.03em;text-transform:uppercase;font-size:12px;
+  cursor:pointer;transition:.2s ease;
+}
+.su-nav-buy:hover{background:var(--su-orange-hover);transform:translateY(-1px)}
+
+/* Hero */
+.su-hero{
+  position:relative;
+  overflow:hidden;
+  min-height:650px;
+  background:
+    radial-gradient(circle at 75% 25%,rgba(255,255,255,.12),transparent 32%),
+    linear-gradient(105deg,var(--su-blue-2) 0%,#173b49 44%,#6e7c7e 100%);
+  color:#fff;
+}
+.su-hero::before{
+  content:"";
+  position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,rgba(4,18,24,.78) 0%,rgba(4,18,24,.4) 42%,rgba(4,18,24,.04) 72%),
+    repeating-linear-gradient(90deg,transparent 0 119px,rgba(255,255,255,.028) 120px);
+  pointer-events:none;
+}
+.su-hero-inner{
+  position:relative;
+  width:min(1400px,calc(100% - 48px));
+  margin:0 auto;
+  min-height:650px;
+  display:grid;
+  grid-template-columns:minmax(0,.92fr) minmax(520px,1.08fr);
+  align-items:center;
+  gap:30px;
+}
+.su-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  color:var(--su-orange);
+  font-size:15px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;
+  margin-bottom:26px;
+}
+.su-eyebrow::before{content:"";width:34px;height:3px;background:currentColor}
+.su-hero h1{
+  font-size:clamp(58px,6vw,98px);
+  line-height:.92;
+  letter-spacing:-.055em;
+  font-weight:300;
+  margin:0 0 26px;
+  max-width:740px;
+}
+.su-hero h1 strong{font-weight:850}
+.su-hero-copy{
+  max-width:680px;
+  color:rgba(255,255,255,.9);
+  font-size:19px;
+  line-height:1.65;
+  margin:0 0 30px;
+}
+.su-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.su-btn-primary,.su-btn-secondary{
+  min-height:58px;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:0 26px;border-radius:999px;font-weight:900;font-size:14px;
+  letter-spacing:.06em;text-transform:uppercase;text-decoration:none;cursor:pointer;
+  transition:.2s ease;
+}
+.su-btn-primary{
+  border:0;background:var(--su-orange);color:#17202a;
+}
+.su-btn-primary:hover{background:var(--su-orange-hover);transform:translateY(-2px)}
+.su-btn-secondary{
+  border:2px solid rgba(255,255,255,.82);background:rgba(0,0,0,.06);color:#fff;
+}
+.su-btn-secondary:hover{background:#fff;color:#182126}
+.su-price-line{
+  margin-top:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  color:rgba(255,255,255,.85);font-size:13px;
+}
+.su-price-line strong{font-size:22px;color:#fff}
+.su-lifetime{
+  padding:7px 10px;border:1px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.08);font-weight:800;text-transform:uppercase;
+  letter-spacing:.06em;font-size:10px;
+}
+
+/* custom workspace visual — original Dingloft composition, not copied from reference */
+.su-visual{
+  position:relative;
+  min-height:560px;
+  display:flex;align-items:center;justify-content:flex-end;
+}
+.su-workspace{
+  position:relative;
+  width:min(760px,100%);
+  aspect-ratio:1.38/1;
+  background:#e6e9ea;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:18px;
+  box-shadow:0 42px 90px rgba(0,0,0,.38);
+  overflow:hidden;
+  transform:perspective(1200px) rotateY(-4deg) rotateX(1deg);
+}
+.su-workspace-top{
+  height:38px;background:#f4f4f4;border-bottom:1px solid #cfd3d5;
+  display:flex;align-items:center;gap:7px;padding:0 14px;
+}
+.su-dot{width:9px;height:9px;border-radius:50%;background:#c7c8ca}
+.su-toolbar{
+  position:absolute;left:0;top:38px;bottom:0;width:46px;background:#f7f7f7;
+  border-right:1px solid #d0d4d6;display:grid;align-content:start;gap:8px;padding:10px;
+}
+.su-tool{height:23px;border:1px solid #c7cccf;border-radius:4px;background:#fff}
+.su-inspector{
+  position:absolute;right:0;top:38px;bottom:0;width:155px;background:#f8f8f8;
+  border-left:1px solid #d0d4d6;padding:12px;
+}
+.su-inspector-title{height:12px;width:72px;background:#a9afb3;margin-bottom:12px}
+.su-inspector-row{height:8px;background:#d6d9db;margin:9px 0;border-radius:2px}
+.su-canvas{
+  position:absolute;left:46px;right:155px;top:38px;bottom:0;
+  overflow:hidden;
+  background:
+    linear-gradient(#dce8eb 0 53%,#c9d1c8 53% 100%);
+}
+.su-grid{
+  position:absolute;inset:53% 0 0;
+  background:
+    linear-gradient(30deg,transparent 48%,rgba(55,73,77,.12) 49%,rgba(55,73,77,.12) 51%,transparent 52%) 0 0/34px 18px,
+    linear-gradient(-30deg,transparent 48%,rgba(55,73,77,.12) 49%,rgba(55,73,77,.12) 51%,transparent 52%) 0 0/34px 18px;
+}
+.su-building{
+  position:absolute;left:17%;bottom:18%;width:58%;height:55%;
+  transform:skewY(-2deg);
+}
+.su-building-main{
+  position:absolute;left:9%;bottom:0;width:67%;height:58%;
+  background:linear-gradient(135deg,#e7e0d4,#bab6ad);
+  border:3px solid #3e4b50;
+  box-shadow:inset -26px 0 0 rgba(71,91,99,.12);
+}
+.su-building-main::before{
+  content:"";position:absolute;left:12%;right:8%;top:14%;height:45%;
+  background:
+    repeating-linear-gradient(90deg,#54717d 0 18%,#d6e4e8 19% 21%);
+  border:2px solid #35474d;
+}
+.su-building-wing{
+  position:absolute;right:0;bottom:8%;width:39%;height:38%;
+  background:#d5d0c7;border:3px solid #3e4b50;
+  transform:skewY(4deg);
+}
+.su-building-roof{
+  position:absolute;left:0;top:24%;width:82%;height:14%;
+  background:#5b4636;border:3px solid #3f3b37;transform:skewX(-18deg);
+}
+.su-building-line{
+  position:absolute;inset:-10%;border-top:2px solid rgba(214,49,49,.9);
+  transform:rotate(-7deg);
+}
+.su-box-float{
+  position:absolute;right:5%;bottom:3%;
+  width:230px;z-index:8;
+  filter:drop-shadow(0 24px 32px rgba(0,0,0,.42));
+}
+.su-box-float img{display:block;width:100%;height:auto}
+.su-floating-chip{
+  position:absolute;right:3%;top:8%;
+  padding:10px 14px;background:rgba(255,255,255,.94);color:#182126;
+  border-radius:999px;font-size:11px;font-weight:900;letter-spacing:.05em;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);text-transform:uppercase;
+}
+
+/* Value strip */
+.su-value-strip{
+  background:#fff;border-bottom:1px solid var(--su-line);
+}
+.su-value-grid{
+  width:min(1400px,calc(100% - 48px));margin:0 auto;
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+.su-value{
+  min-height:112px;padding:25px 28px;
+  border-right:1px solid var(--su-line);
+  display:flex;align-items:center;gap:14px;
+}
+.su-value:first-child{border-left:1px solid var(--su-line)}
+.su-value i{font-size:27px;color:#15181b}
+.su-value strong{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.06em}
+.su-value span{display:block;color:var(--su-muted);font-size:12px;margin-top:3px}
+
+/* Sections */
+.su-section{
+  padding:100px 0;
+  background:var(--su-paper);
+}
+.su-section.white{background:#fff}
+.su-container{width:min(1240px,calc(100% - 48px));margin:0 auto}
+.su-kicker{
+  color:#6d7580;font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  margin-bottom:16px;
+}
+.su-section h2{
+  margin:0;
+  max-width:920px;
+  font-size:clamp(40px,5vw,72px);
+  line-height:.98;letter-spacing:-.045em;font-weight:800;
+}
+.su-section-lead{
+  max-width:740px;color:var(--su-muted);font-size:18px;line-height:1.7;margin-top:24px;
+}
+.su-feature-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:55px;
+}
+.su-feature-card{
+  min-height:300px;padding:30px;background:#fff;border:1px solid var(--su-line);
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.su-feature-number{font-size:12px;color:#7a828b;font-weight:900;letter-spacing:.14em}
+.su-feature-card i{font-size:40px;color:#17202a}
+.su-feature-card h3{font-size:25px;letter-spacing:-.03em;margin:18px 0 10px}
+.su-feature-card p{margin:0;color:var(--su-muted);line-height:1.6;font-size:14px}
+
+/* showcase */
+.su-showcase{
+  display:grid;grid-template-columns:1fr 1fr;min-height:600px;background:#162a33;color:#fff;
+}
+.su-showcase-copy{padding:80px max(48px,calc((100vw - 1240px)/2));padding-right:70px;display:flex;flex-direction:column;justify-content:center}
+.su-showcase-copy .su-kicker{color:var(--su-orange)}
+.su-showcase-copy h2{font-size:clamp(44px,5vw,76px);line-height:.98;letter-spacing:-.045em;margin:0}
+.su-showcase-copy p{color:rgba(255,255,255,.82);font-size:18px;line-height:1.7;max-width:620px;margin:24px 0 0}
+.su-showcase-visual{
+  position:relative;overflow:hidden;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,0)),
+    #718083;
+}
+.su-showcase-visual::before{
+  content:"";position:absolute;left:12%;right:10%;bottom:11%;height:63%;
+  background:
+    linear-gradient(135deg,#e7e0d5 0 50%,#a99d8d 51% 100%);
+  clip-path:polygon(8% 18%,75% 0,100% 20%,90% 100%,0 100%,0 32%);
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 30px 60px rgba(0,0,0,.28);
+}
+.su-showcase-visual::after{
+  content:"";position:absolute;left:27%;right:17%;bottom:23%;height:30%;
+  background:repeating-linear-gradient(90deg,#567680 0 15%,#d8e6e9 16% 18%);
+  border:4px solid #34464d;
+}
+
+/* Purchase */
+.su-purchase{
+  background:#f0efe9;padding:100px 0;
+}
+.su-purchase-head{
+  display:flex;justify-content:space-between;gap:30px;align-items:flex-end;margin-bottom:34px;
+}
+.su-purchase-head h2{font-size:clamp(40px,5vw,66px);line-height:1;letter-spacing:-.04em;margin:0}
+.su-purchase-head p{max-width:520px;color:var(--su-muted);line-height:1.6}
+.su-package-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:16px}
+.su-package{
+  background:#fff;border:1px solid #d4d7da;padding:28px;min-height:350px;
+  display:flex;flex-direction:column;position:relative;
+}
+.su-package.popular{border:2px solid #162a33}
+.su-package-badge{
+  position:absolute;top:0;right:0;background:var(--su-orange);padding:8px 12px;
+  font-size:10px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;
+}
+.su-package h3{font-size:24px;margin:10px 0 8px;letter-spacing:-.03em}
+.su-package p{font-size:14px;color:var(--su-muted);line-height:1.6}
+.su-package-price{font-size:42px;font-weight:900;letter-spacing:-.04em;margin:22px 0 16px}
+.su-package .btn-add-cart{
+  margin-top:auto;width:100%;min-height:52px;border:0;border-radius:0;
+  background:#171a1d;color:#fff;font-weight:900;text-transform:uppercase;
+  letter-spacing:.05em;font-size:12px;cursor:pointer;
+}
+.su-package.popular .btn-add-cart{background:var(--su-orange);color:#17202a}
+.su-package .btn-add-cart:hover{filter:brightness(.95)}
+
+/* Video / compatibility */
+.su-two-col{display:grid;grid-template-columns:.9fr 1.1fr;gap:50px;align-items:center}
+.su-spec-list{display:grid;gap:0;border-top:1px solid var(--su-line)}
+.su-spec-row{display:flex;justify-content:space-between;gap:25px;padding:18px 0;border-bottom:1px solid var(--su-line)}
+.su-spec-row span{color:var(--su-muted);font-size:13px}
+.su-spec-row strong{font-size:13px;text-align:right}
+.su-video{
+  background:#111;box-shadow:0 25px 50px rgba(0,0,0,.18);overflow:hidden;
+}
+.su-video iframe{display:block;width:100%;aspect-ratio:16/9;border:0}
+
+/* Community */
+.comments-section{
+  margin:0!important;padding:90px 0!important;border:0!important;background:#15191d!important;
+}
+.comments-section .text-white{color:#fff!important}
+.comments-section .comment-card{
+  background:#20262b!important;border:1px solid rgba(255,255,255,.12)!important;
+  border-radius:0!important;padding:20px!important;
+}
+.comments-section .comment-form-box,
+.comments-section .login-prompt-box{
+  background:#20262b!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:0!important;
+}
+.comments-section .btn-cyan{background:var(--su-orange)!important;color:#17202a!important;box-shadow:none!important}
+
+/* Existing cart adapted, logic untouched */
+.btn-floating-cart{
+  background:#fff!important;color:#111!important;border:1px solid #d4d7da!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.18)!important;
+}
+.badge-floating{background:var(--su-orange)!important;color:#111!important;border-color:#fff!important}
+.cart-drawer{background:#15191d!important}
+.cart-footer{background:#101316!important}
+.text-accent{color:var(--su-orange)!important}
+.btn-cyan{background:var(--su-orange)!important;color:#111!important;box-shadow:none!important}
+.btn-outline-custom{border-color:rgba(255,255,255,.25)!important}
+
+/* no dark page footer on mobile: there is no landing footer at all */
+@media(max-width:900px){
+  body>footer,footer{display:none!important;height:0!important;margin:0!important;padding:0!important}
+  .su-mini-links a{display:none}
+  .su-product-nav-inner{width:min(100% - 28px,1400px);min-height:62px;gap:12px}
+  .su-mini-brand strong{font-size:14px}
+  .su-nav-price{margin-left:auto;font-size:13px}
+  .su-nav-buy{padding:11px 15px;font-size:10px}
+  .su-hero-inner{
+    width:min(100% - 28px,1400px);
+    min-height:auto;
+    grid-template-columns:1fr;
+    gap:18px;
+    padding:60px 0 28px;
+  }
+  .su-hero{min-height:auto}
+  .su-hero h1{font-size:clamp(50px,14vw,72px);max-width:600px}
+  .su-hero-copy{font-size:16px}
+  .su-visual{min-height:410px;justify-content:center}
+  .su-workspace{width:100%;transform:none;border-radius:12px}
+  .su-box-float{width:150px;right:1%;bottom:0}
+  .su-floating-chip{display:none}
+  .su-value-grid{grid-template-columns:1fr 1fr;width:100%}
+  .su-value{min-height:96px;border-bottom:1px solid var(--su-line);padding:20px}
+  .su-value:first-child{border-left:0}
+  .su-section{padding:70px 0}
+  .su-container{width:min(100% - 32px,1240px)}
+  .su-feature-grid{grid-template-columns:1fr;margin-top:35px}
+  .su-feature-card{min-height:230px}
+  .su-showcase{grid-template-columns:1fr}
+  .su-showcase-copy{padding:65px 24px}
+  .su-showcase-visual{min-height:420px}
+  .su-purchase{padding:70px 0}
+  .su-purchase-head{display:block}
+  .su-package-grid{grid-template-columns:1fr}
+  .su-package{min-height:300px}
+  .su-two-col{grid-template-columns:1fr}
+  .comments-section{padding:70px 0!important}
+}
+@media(max-width:560px){
+  .su-product-nav-inner{width:calc(100% - 24px)}
+  .su-mini-brand strong{display:none}
+  .su-mini-brand img{width:34px;height:34px}
+  .su-nav-buy{padding:10px 12px}
+  .su-nav-price{font-size:12px}
+  .su-actions{display:grid;grid-template-columns:1fr}
+  .su-btn-primary,.su-btn-secondary{width:100%}
+  .su-visual{min-height:330px}
+  .su-workspace{aspect-ratio:1.05/1}
+  .su-inspector{width:90px}
+  .su-canvas{right:90px}
+  .su-box-float{width:128px}
+  .su-value-grid{grid-template-columns:1fr 1fr}
+  .su-value{padding:16px 14px;gap:10px}
+  .su-value i{font-size:22px}
+  .su-value strong{font-size:11px}
+  .su-value span{font-size:10px}
+  .su-section h2,.su-purchase-head h2{font-size:42px}
+}
+</style>
+
+<style id="dingloft-product-mobile-no-footer-rule">
+@media(max-width:900px),(hover:none) and (pointer:coarse){
+  body>footer,footer{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important}
+}
+</style>
 </head>
 <body>
 
-  <!-- MENÚ LATERAL -->
-  <div class="side-menu-drawer" id="side-menu">
-    <div class="text-center mb-4 mt-2">
-      <img src="img/dingloft.png" alt="Dingloft" style="width: 120px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
-    </div>
-    <div class="d-flex flex-column gap-2">
-      <a href="index.html" class="side-menu-link"><i class="bi bi-house-door"></i> Inicio</a>
-      <a href="index.html" class="side-menu-link"><i class="bi bi-collection-play"></i> Catálogo</a>
-      <a href="account.html" class="side-menu-link" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 15px;">
-        <i class="bi bi-person-circle text-accent" style="color: var(--accent-color);"></i> Mi Cuenta
-      </a>
-    </div>
-    <div class="mt-auto text-center pb-3">
-      <p class="text-muted small" style="font-size: 0.75rem;">&copy; 2026 Dingloft</p>
-    </div>
-  </div>
-  <div class="side-menu-overlay" id="side-menu-overlay"></div>
-
-  <!-- PAGE WRAPPER -->
   <div class="page-wrapper" id="page-wrapper">
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
 
-    <!-- MODAL DE ÉXITO Y CREACIÓN EXPRESS DE CONTRASEÑA -->
+    <!-- Modal de compra: IDs originales preservados -->
     <div class="success-modal-overlay" id="success-modal">
       <div class="success-modal-box">
-        <img src="img/dingloft.png" alt="Dingloft" style="width: 110px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
+        <img src="img/dingloft.png" alt="Dingloft" style="width:110px;margin-bottom:15px;">
         <div class="success-icon-ring"><i class="bi bi-check-lg"></i></div>
-        <h3 style="color:#fff; font-weight:800; margin-bottom:10px; font-size: 1.4rem;">¡Compra Exitosa!</h3>
-        <p id="success-modal-text" style="color:#9ba9bd; margin-bottom:20px; font-size: 0.95rem;">Tu pedido se ha procesado correctamente.</p>
-        
-        <div class="express-signup-box" id="express-signup-container" style="display: none;">
-          <p style="font-size: 0.82rem; color: #fff; margin-bottom: 10px; font-weight: 500;">
-            <i class="bi bi-shield-lock-fill" style="color: var(--accent-color);"></i> Protege tu cuenta: Crea una contraseña para acceder a tus descargas después.
+        <h3 style="color:#fff;font-weight:800;margin-bottom:10px;font-size:1.4rem;">¡Compra exitosa!</h3>
+        <p id="success-modal-text" style="color:#9ba9bd;margin-bottom:20px;font-size:.95rem;">Tu pedido se ha procesado correctamente.</p>
+        <div class="express-signup-box" id="express-signup-container" style="display:none;">
+          <p style="font-size:.82rem;color:#fff;margin-bottom:10px;font-weight:500;">
+            <i class="bi bi-shield-lock-fill"></i> Crea una contraseña para acceder a tus descargas.
           </p>
           <label>Correo asociado:</label>
-          <input type="text" id="express-email" class="express-input" readonly style="opacity: 0.7;">
+          <input type="text" id="express-email" class="express-input" readonly>
           <label>Nueva contraseña:</label>
           <input type="password" id="express-password" class="express-input" placeholder="Mínimo 6 caracteres">
-          <button class="btn-cyan w-100 py-2" id="btn-save-express-account" onclick="crearCuentaExpress()">Crear Contraseña y Entrar</button>
+          <button class="btn-cyan w-100 py-2" id="btn-save-express-account" onclick="crearCuentaExpress()">Crear contraseña y entrar</button>
         </div>
-
-        <button class="btn-cyan w-100 py-2" id="btn-go-to-account" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
+        <button class="btn-cyan w-100 py-2" id="btn-go-to-account" onclick="window.location.href='account.html'">Ir a mis descargas</button>
       </div>
     </div>
 
     <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
 
-    <!-- NAVBAR -->
-<!-- DETALLES DEL PRODUCTO -->
-    <section class="product-detail-section">
-      <div class="container">
-        <div class="row align-items-center g-4">
-          <div class="col-lg-6">
-            <div class="product-boxes-display glass-effect">
-              <img src="img/sketchup.png" alt="SketchUp Pro 2026 Bundle" onerror="this.src='https://ui-avatars.com/api/?name=SketchUp&background=00e5ff&color=000&size=400'">
+    <!-- Barra propia del producto: referencia editorial, no copia de SketchUp -->
+    <nav class="su-product-nav" aria-label="Navegación de SketchUp">
+      <div class="su-product-nav-inner">
+        <a class="su-mini-brand" href="ventas.html">
+          <img src="img/dingloft.png" alt="Dingloft">
+          <strong>SketchUp Pro 2026</strong>
+        </a>
+        <div class="su-mini-links">
+          <a href="#flujo">Flujo</a>
+          <a href="#incluye">Qué incluye</a>
+          <a href="#requisitos">Requisitos</a>
+        </div>
+        <span class="su-nav-price">$27 USD</span>
+        <button class="su-nav-buy btn-add-cart"
+                data-id="15"
+                data-sku="sketchup-pro-2026"
+                data-name="SketchUp Pro 2026"
+                data-price="27"
+                data-img="sketchup"
+                data-type="Licencia vitalicia">
+          Comprar
+        </button>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="su-hero">
+      <div class="su-hero-inner">
+        <div class="su-hero-copy-wrap">
+          <div class="su-eyebrow">Software para arquitectura y diseño</div>
+          <h1>Modela ideas.<br><strong>Construye mejor.</strong></h1>
+          <p class="su-hero-copy">
+            SketchUp Pro 2026 en una página pensada como producto principal:
+            menos ficha técnica, más experiencia visual, flujo de trabajo y compra directa.
+          </p>
+          <div class="su-actions">
+            <button class="su-btn-primary btn-add-cart"
+                    data-id="15"
+                    data-sku="sketchup-pro-2026"
+                    data-name="SketchUp Pro 2026"
+                    data-price="27"
+                    data-img="sketchup"
+                    data-type="Licencia vitalicia">
+              <i class="bi bi-bag-check"></i> Comprar por $27
+            </button>
+            <a class="su-btn-secondary" href="#video-instalacion">
+              <i class="bi bi-play-circle"></i> Ver demostración
+            </a>
+          </div>
+          <div class="su-price-line">
+            <strong>$27.00</strong>
+            <span>USD · entrega digital</span>
+            <span class="su-lifetime">Licencia vitalicia</span>
+          </div>
+        </div>
+
+        <div class="su-visual" aria-hidden="true">
+          <div class="su-workspace">
+            <div class="su-workspace-top">
+              <span class="su-dot"></span><span class="su-dot"></span><span class="su-dot"></span>
+            </div>
+            <div class="su-toolbar">
+              <span class="su-tool"></span><span class="su-tool"></span><span class="su-tool"></span>
+              <span class="su-tool"></span><span class="su-tool"></span><span class="su-tool"></span>
+            </div>
+            <div class="su-canvas">
+              <div class="su-grid"></div>
+              <div class="su-building">
+                <div class="su-building-main"></div>
+                <div class="su-building-wing"></div>
+                <div class="su-building-roof"></div>
+                <div class="su-building-line"></div>
+              </div>
+            </div>
+            <div class="su-inspector">
+              <div class="su-inspector-title"></div>
+              <div class="su-inspector-row"></div><div class="su-inspector-row"></div>
+              <div class="su-inspector-row"></div><div class="su-inspector-row"></div>
+              <div class="su-inspector-row"></div><div class="su-inspector-row"></div>
             </div>
           </div>
-          <div class="col-lg-6">
-            <span class="text-uppercase text-info fw-bold" style="font-size: 0.7rem; letter-spacing: 2px;">Software de Arquitectura y Diseño</span>
-            <h1 class="fw-bold my-2 text-white" style="font-size: 2.5rem; letter-spacing: -1px;">SketchUp Pro 2026</h1>
-            
-            <p class="text-white mb-3" style="font-size: 0.98rem; line-height: 1.6; color: #f1f5f9;">
-              El estándar de la industria para modelado 3D profesional y proyectos BIM. Crea, visualiza y documenta tus ideas con total libertad y sin ataduras de suscripciones mensuales.
-            </p>
-
-            <div class="mb-3 p-3 rounded-3" style="background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.2);">
-              <div class="d-flex justify-content-between text-white small mb-1">
-                <span><i class="bi bi-box-seam text-info"></i> SketchUp Pro 2026:</span> <b class="text-white">INCLUIDO</b>
-              </div>
-            </div>
-
-            <div class="row g-2 mb-3 pt-2 border-top border-bottom border-secondary border-opacity-25 py-2">
-              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-shield-check"></i></div><p class="feature-title text-white">Garantizado</p></div></div>
-              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-infinity"></i></div><p class="feature-title text-white">Vitalicio</p></div></div>
-              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-download"></i></div><p class="feature-title text-white">Inmediato</p></div></div>
-            </div>
-
-            <div class="mb-3 d-flex align-items-end gap-3">
-              <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--accent-color) !important; line-height: 1;">$27.00</span>
-              <div class="d-flex flex-column pb-1">
-                <span class="text-decoration-line-through" style="color: rgba(255,255,255,0.75); font-size: 1.1rem; line-height: 1;">$65.00 USD</span>
-                <span class="badge bg-danger mt-1" style="font-size: 0.75rem; letter-spacing: 1px; padding: 4px 8px;">AHORRAS $38</span>
-              </div>
-            </div>
-
-            <div class="purchase-options mt-4">
-              <p class="text-info fw-bold mb-2" style="font-size: 0.8rem; letter-spacing: 1px;"><i class="bi bi-cart-check"></i> ELIGE TU LICENCIA:</p>
-              
-              <div class="package-card glass-effect p-3 mb-2" style="border-color: var(--accent-color); background: rgba(0, 229, 255, 0.05); position: relative; overflow: hidden;">
-                <div class="position-absolute top-0 end-0 px-2 py-1 fw-bold" style="font-size: 0.65rem; border-bottom-left-radius: 8px; background: var(--accent-color); color: #000;">MÁS POPULAR</div>
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                  <span class="fw-bold text-white">Combo: SketchUp + AutoCAD 2026</span>
-                  <span class="fw-bold text-accent">$50.00</span>
-                </div>
-                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Las dos herramientas esenciales para tu flujo de trabajo de diseño y arquitectura.</p>
-                <button class="btn-cyan w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="16" data-sku="sketchup-2026-autocad-2026" data-name="SketchUp 2026 & AutoCAD 2026" data-price="50" data-img="sketchup" data-type="Licencia vitalicia">
-                  <i class="bi bi-cart3"></i> AGREGAR COMBO
-                </button>
-              </div>
-
-              <div class="package-card glass-effect p-3 mb-2">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                  <span class="fw-bold text-white">Solo SketchUp Pro 2026</span>
-                  <span class="fw-bold text-white">$27.00</span>
-                </div>
-                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Modelado 3D avanzado y renderizado profesional.</p>
-                <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="15" data-sku="sketchup-pro-2026" data-name="SketchUp Pro 2026" data-price="27" data-img="sketchup" data-type="Licencia vitalicia">
-                  <i class="bi bi-cart-plus"></i> AGREGAR SKETCHUP
-                </button>
-              </div>
-
-              <div class="package-card glass-effect p-3 mb-3">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                  <span class="fw-bold text-white">Solo AutoCAD 2026</span>
-                  <span class="fw-bold text-white">$35.00</span>
-                </div>
-                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">El estándar de la industria para diseño y dibujo técnico.</p>
-                <button class="btn-outline-custom w-100 py-1 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="14" data-sku="autocad-2026" data-name="AutoCAD 2026" data-price="35" data-img="autocad" data-type="Licencia vitalicia">
-                  <i class="bi bi-cart-plus"></i> AGREGAR AUTOCAD
-                </button>
-              </div>
-
-              <button class="btn-outline-cyan w-100 d-flex align-items-center justify-content-center gap-2" id="btn-free-trial" data-url="#video-instalacion">
-                <i class="bi bi-play-circle fs-5"></i> VER GUÍA DE INSTALACIÓN
-              </button>
-            </div>
-          </div>
+          <div class="su-floating-chip">Diseño 3D profesional</div>
+          <div class="su-box-float"><img src="img/sketchup.png" alt=""></div>
         </div>
       </div>
     </section>
 
-    <!-- COMPATIBILIDAD Y NOTA DEL CREADOR -->
-    <section class="compatible-section">
-      <div class="container">
-        <div class="compatible-title">Plataformas y Plugins Compatibles</div>
-        
-        <div class="row g-3 justify-content-center mb-4">
-          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-windows" style="font-size: 3rem; margin-bottom: 15px; color: var(--accent-color); display: block;"></i><h5>WINDOWS 10/11</h5></div></div>
-          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: #ffffff; display: block;"></i><h5>MAC (INTEL/M1/M2)</h5></div></div>
-          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-box" style="font-size: 3rem; margin-bottom: 15px; color: #a200ff; display: block;"></i><h5>V-RAY & ENSCAPE</h5></div></div>
-        </div>
-
-        <div class="row justify-content-center mb-4">
-          <div class="col-lg-10">
-            <div class="creator-note-box">
-              <div class="d-flex align-items-center gap-3 mb-2">
-                <div class="creator-avatar">E</div>
-                <div>
-                  <h6 class="text-white mb-0 fw-bold">Nota del Creador</h6>
-                  <small class="text-info" style="font-size: 0.75rem;">Evolution Group — Desarrolladores</small>
-                </div>
-              </div>
-              <p class="text-white mb-2" style="font-size: 0.9rem; line-height: 1.6; color: #f1f5f9;">
-                "Adaptamos y preconfiguramos esta versión de SketchUp Pro 2026 pensando en la comunidad de arquitectos e ingenieros. Desarrollé esto específicamente para <b>no pagar mensualidades y pues obtener todo en un solo programa</b> de forma vitalicia.<br><br>
-                Al trabajar en proyectos, me topaba con que las suscripciones mensuales consumían todo el presupuesto. Por eso, pensando en la economía de los creadores, puedes elegir llevarte solo SketchUp, o aprovechar nuestro <b>Combo Estrella con AutoCAD 2026</b>.<br><br>
-                Todo viene activado de forma permanente y listo para integrarse a tu flujo de trabajo, para que te enfoques únicamente en diseñar y no en configuraciones molestas."
-              </p>
-              <div class="text-end text-info small fw-semibold" style="font-size: 0.75rem;"><i class="bi bi-patch-check-fill"></i> Software sin límites.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BADGES -->
-        <div class="row justify-content-center mb-4">
-          <div class="col-lg-10">
-            <div class="text-center mb-3">
-              <h4 class="fw-bold text-white fs-5">Motores de Renderizado Compatibles</h4>
-              <p class="text-white small" style="color: #f1f5f9; font-size: 0.8rem;">El paquete está optimizado para funcionar sin problemas con los plugins más usados.</p>
-            </div>
-            <div class="row g-2">
-              <div class="col-6 col-md-4"><div class="software-badge-box"><i class="bi bi-camera-video-fill"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">V-Ray Next</h6><small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Fotorealismo HD</small></div></div></div>
-              <div class="col-6 col-md-4"><div class="software-badge-box"><i class="bi bi-tree"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Enscape 3D</h6><small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Renderizado en Tiempo Real</small></div></div></div>
-              <div class="col-6 col-md-4"><div class="software-badge-box"><i class="bi bi-brightness-high"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Lumion</h6><small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Animaciones Arquitectónicas</small></div></div></div>
-              <div class="col-6 col-md-6"><div class="software-badge-box"><i class="bi bi-grid-1x2"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Twinmotion</h6><small class="text-white" style="color: rgba(255,255,255,0.85);">Visualización Ágil</small></div></div></div>
-              <div class="col-12 col-md-6"><div class="software-badge-box"><i class="bi bi-layers-half"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Layout Integrado</h6><small class="text-white" style="color: rgba(255,255,255,0.85);">Para planos 2D perfectos</small></div></div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- VIDEO GUÍA -->
-        <div class="row justify-content-center mb-4" id="video-instalacion">
-          <div class="col-lg-10">
-            <div class="text-center mb-3">
-              <span class="text-uppercase text-info fw-bold" style="font-size: 0.65rem; letter-spacing: 2px;">Guía y Demostración</span>
-              <h3 class="fw-bold text-white mt-1 fs-5">Míralo en acción y aprende a instalarlo</h3>
-            </div>
-            <div class="liquid-glass-container">
-              <div class="ratio ratio-16x9 rounded-3 overflow-hidden" style="box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
-                <iframe src="https://www.youtube.com/embed/Ns6ntMsTkc4" title="Demostración y Guía" allowfullscreen style="border:0;"></iframe>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- PRODUCTOS SIMILARES -->
-        <div class="row justify-content-center my-4">
-          <div class="col-lg-10">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-collection-play text-accent" style="color:var(--accent-color)"></i> Productos Recomendados</h5>
-              <span class="text-white small" style="color: #f1f5f9; font-size: 0.75rem;">Desliza <i class="bi bi-arrow-right"></i></span>
-            </div>
-            <div class="similar-carousel-wrapper">
-              <div class="similar-card">
-                <div>
-                  <div class="similar-img-box"><img src="img/autocad.png" alt="AutoCAD" onerror="this.src='https://ui-avatars.com/api/?name=AC&background=00e5ff&color=000'"></div>
-                  <h6 class="text-white fw-bold fs-6 mb-1">AutoCAD 2026</h6>
-                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Diseño y dibujo técnico.</p>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$35.00</span>
-                  <a href="autocad.html" class="btn-outline-custom py-1 px-2">Ver más</a>
-                </div>
-              </div>
-
-              <div class="similar-card">
-                <div>
-                  <div class="similar-img-box"><img src="img/office.png" alt="Office" onerror="this.src='https://ui-avatars.com/api/?name=Of&background=00e5ff&color=000'"></div>
-                  <h6 class="text-white fw-bold fs-6 mb-1">Office Home & Business</h6>
-                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Productividad diaria total.</p>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$40.00</span>
-                  <a href="office.html" class="btn-outline-custom py-1 px-2">Ver más</a>
-                </div>
-              </div>
-
-              <div class="similar-card">
-                <div>
-                  <div class="similar-img-box"><img src="img/cinema4d.png" alt="Cinema 4D" onerror="this.src='https://ui-avatars.com/api/?name=C4&background=00e5ff&color=000'"></div>
-                  <h6 class="text-white fw-bold fs-6 mb-1">Cinema 4D</h6>
-                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Renderizado avanzado 3D.</p>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$35.00</span>
-                  <a href="cinema4d.html" class="btn-outline-custom py-1 px-2">Ver más</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- COMENTARIOS -->
-        <div class="row justify-content-center comments-section">
-          <div class="col-lg-10">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-chat-square-text text-accent" style="color:var(--accent-color)"></i> Opiniones de la Comunidad</h5>
-            </div>
-            <div id="comment-section-wrapper" class="mb-4"></div>
-            <div id="comments-container">
-              <div class="text-center text-white py-3 small">Cargando opiniones de la comunidad...</div>
-            </div>
-          </div>
-        </div>
-
+    <section class="su-value-strip" aria-label="Ventajas">
+      <div class="su-value-grid">
+        <div class="su-value"><i class="bi bi-infinity"></i><div><strong>Vitalicio</strong><span>Sin pago mensual</span></div></div>
+        <div class="su-value"><i class="bi bi-download"></i><div><strong>Digital</strong><span>Acceso desde tu cuenta</span></div></div>
+        <div class="su-value"><i class="bi bi-shield-check"></i><div><strong>Soporte</strong><span>Dingloft Care opcional</span></div></div>
+        <div class="su-value"><i class="bi bi-laptop"></i><div><strong>Profesional</strong><span>Modelado y documentación</span></div></div>
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="py-4 mt-5 border-top" style="border-color: var(--border-color) !important;">
-      <div class="container text-center">
-        <p class="mb-0 text-white font-weight-bold" style="font-size: 0.9rem;">
-          &copy; 2026 Dingloft - Evolution Group. Todos los derechos reservados.
+    <section class="su-section white" id="flujo">
+      <div class="su-container">
+        <div class="su-kicker">01 · Un producto, no una ficha</div>
+        <h2>Una página que vende el flujo de trabajo.</h2>
+        <p class="su-section-lead">
+          La idea es presentar SketchUp como una solución completa para diseño y arquitectura:
+          primero la experiencia, después las características y al final la compra.
+        </p>
+
+        <div class="su-feature-grid">
+          <article class="su-feature-card">
+            <div class="su-feature-number">01 / MODELADO</div>
+            <i class="bi bi-box"></i>
+            <div>
+              <h3>Modelado 3D ágil</h3>
+              <p>Convierte bocetos y conceptos en modelos tridimensionales claros, editables y listos para presentar.</p>
+            </div>
+          </article>
+          <article class="su-feature-card">
+            <div class="su-feature-number">02 / DOCUMENTACIÓN</div>
+            <i class="bi bi-rulers"></i>
+            <div>
+              <h3>Del concepto al plano</h3>
+              <p>Organiza escenas, vistas, medidas y documentación para mantener el proyecto conectado.</p>
+            </div>
+          </article>
+          <article class="su-feature-card">
+            <div class="su-feature-number">03 / PRESENTACIÓN</div>
+            <i class="bi bi-badge-3d"></i>
+            <div>
+              <h3>Presentaciones más claras</h3>
+              <p>Usa el modelo como centro de conversación con clientes, equipo y colaboradores.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="su-showcase" id="incluye">
+      <div class="su-showcase-copy">
+        <div class="su-kicker">02 · Para proyectos exigentes</div>
+        <h2>Diseña, revisa y presenta en un mismo entorno.</h2>
+        <p>
+          En lugar de llenar la pantalla de tarjetas, esta sección comunica la idea principal
+          con una composición grande, técnica y limpia, inspirada en páginas de software profesional.
         </p>
       </div>
-    </footer>
+      <div class="su-showcase-visual" aria-hidden="true"></div>
+    </section>
 
-  </div><!-- FIN DE PAGE WRAPPER -->
+    <section class="su-purchase" id="comprar">
+      <div class="su-container">
+        <div class="su-purchase-head">
+          <div>
+            <div class="su-kicker">03 · Elige tu licencia</div>
+            <h2>Compra directa.</h2>
+          </div>
+          <p>Conservé los mismos SKU, precios y botones del carrito para no romper tu sistema actual.</p>
+        </div>
+
+        <div class="su-package-grid">
+          <article class="su-package popular">
+            <span class="su-package-badge">Más popular</span>
+            <div class="su-kicker">Combo profesional</div>
+            <h3>SketchUp + AutoCAD 2026</h3>
+            <p>Dos herramientas esenciales para modelado 3D, dibujo técnico y documentación.</p>
+            <div class="su-package-price">$50</div>
+            <button class="btn-add-cart"
+                    data-id="16"
+                    data-sku="sketchup-2026-autocad-2026"
+                    data-name="SketchUp 2026 & AutoCAD 2026"
+                    data-price="50"
+                    data-img="sketchup"
+                    data-type="Licencia vitalicia">
+              Agregar combo
+            </button>
+          </article>
+
+          <article class="su-package">
+            <div class="su-kicker">SketchUp</div>
+            <h3>SketchUp Pro 2026</h3>
+            <p>Modelado 3D profesional para arquitectura, interiores y diseño.</p>
+            <div class="su-package-price">$27</div>
+            <button class="btn-add-cart"
+                    data-id="15"
+                    data-sku="sketchup-pro-2026"
+                    data-name="SketchUp Pro 2026"
+                    data-price="27"
+                    data-img="sketchup"
+                    data-type="Licencia vitalicia">
+              Comprar SketchUp
+            </button>
+          </article>
+
+          <article class="su-package">
+            <div class="su-kicker">AutoCAD</div>
+            <h3>AutoCAD 2026</h3>
+            <p>Dibujo técnico y documentación profesional para completar el flujo.</p>
+            <div class="su-package-price">$35</div>
+            <button class="btn-add-cart"
+                    data-id="14"
+                    data-sku="autocad-2026"
+                    data-name="AutoCAD 2026"
+                    data-price="35"
+                    data-img="autocad"
+                    data-type="Licencia vitalicia">
+              Comprar AutoCAD
+            </button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="su-section white" id="requisitos">
+      <div class="su-container su-two-col">
+        <div>
+          <div class="su-kicker">04 · Compatibilidad</div>
+          <h2 style="font-size:clamp(38px,4vw,62px)">Listo para tu estación de trabajo.</h2>
+          <p class="su-section-lead">Una lectura rápida de compatibilidad antes de comprar.</p>
+          <div class="su-spec-list">
+            <div class="su-spec-row"><span>Sistema</span><strong>Windows 10 / 11</strong></div>
+            <div class="su-spec-row"><span>Apple</span><strong>Mac Intel / Apple Silicon</strong></div>
+            <div class="su-spec-row"><span>Flujo</span><strong>Modelado, Layout y presentación</strong></div>
+            <div class="su-spec-row"><span>Entrega</span><strong>Digital desde tu cuenta Dingloft</strong></div>
+          </div>
+        </div>
+        <div id="video-instalacion">
+          <div class="su-video">
+            <iframe src="https://www.youtube.com/embed/Ns6ntMsTkc4"
+                    title="SketchUp Pro 2026 — demostración e instalación"
+                    allowfullscreen></iframe>
+          </div>
+          <button class="su-btn-primary" id="btn-free-trial" data-url="#video-instalacion" style="margin-top:18px">
+            <i class="bi bi-play-circle"></i> Ver guía de instalación
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="comments-section">
+      <div class="su-container">
+        <div class="su-kicker" style="color:var(--su-orange)">Comunidad Dingloft</div>
+        <h2 style="color:#fff;font-size:clamp(36px,4vw,56px);margin-bottom:30px">Opiniones de clientes.</h2>
+        <div id="comment-section-wrapper" class="mb-4"></div>
+        <div id="comments-container">
+          <div class="text-center text-white py-3 small">Cargando opiniones de la comunidad...</div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /page-wrapper -->
+
 
   <!-- BOTÓN FLOTANTE CARRITO -->
   <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
