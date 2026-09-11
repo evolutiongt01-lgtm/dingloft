@@ -1,11 +1,11 @@
-/* Dingloft Presence v48 · live presence + anonymous ghost session analytics
+/* Dingloft Presence v49 · live presence + anonymous ghost session analytics
    - Approximate geolocation comes from Cloudflare request.cf on the Worker.
    - Raw IP is never stored.
    - Active duration is approximate and counts visible/heartbeat time only.
 */
 const DINGLOFT_PRESENCE_WORKER = 'https://autumn-breeze-dfa0.evolutiongt01.workers.dev';
-const DINGLOFT_PRESENCE_INTERVAL = 30_000;
-const DINGLOFT_PRESENCE_MIN_GAP = 8_000;
+const DINGLOFT_PRESENCE_INTERVAL = 120_000;
+const DINGLOFT_PRESENCE_MIN_GAP = 20_000;
 const DINGLOFT_PRESENCE_SESSION_TTL = 30 * 60_000;
 const DINGLOFT_VISITOR_KEY = 'dingloft_presence_visitor';
 const DINGLOFT_SESSION_KEY = 'dingloft_presence_session';
@@ -150,7 +150,7 @@ function injectAccountReviewStyle(){if(document.getElementById('dlAccountReviewS
 function showAccountReview(data={}){injectAccountReviewStyle();document.documentElement.style.overflow='hidden';document.body.style.overflow='hidden';let el=document.getElementById('dlAccountReview');if(!el){el=document.createElement('div');el.id='dlAccountReview';document.body.appendChild(el)}const msg=String(data.message||DINGLOFT_ACCOUNT_REVIEW_MESSAGE).replace(/[<>]/g,'');el.innerHTML=`<div class="dl-review-card"><div class="dl-review-logo"><img src="/img/pwa-liquid-rounded-192-v17.png" alt="Dingloft"></div><div class="dl-review-kicker">Dingloft · Seguridad de cuenta</div><h1 class="dl-review-title">Cuenta en revisión</h1><p class="dl-review-text">${msg}</p><div class="dl-review-status">Durante esta revisión no se puede acceder a compras, biblioteca, checkout ni generar nuevas descargas.</div><button class="dl-review-btn" id="dlReviewLogout" type="button">Cerrar sesión</button><div class="dl-review-brand">Evolution Group</div></div>`;document.getElementById('dlReviewLogout').onclick=logoutReviewedAccount}
 function clearAccountReview(){document.getElementById('dlAccountReview')?.remove();document.documentElement.style.overflow='';document.body.style.overflow=''}
 async function logoutReviewedAccount(){try{const [{getApps,initializeApp},{getAuth,signOut}]=await Promise.all([import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'),import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js')]);const firebaseConfig={apiKey:'AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA',authDomain:'login-dingloft.firebaseapp.com',projectId:'login-dingloft',storageBucket:'login-dingloft.firebasestorage.app',messagingSenderId:'549466738202',appId:'1:549466738202:web:8bf305fe2c753e9d76cba3'};const app=getApps()[0]||initializeApp(firebaseConfig);await signOut(getAuth(app))}catch(_){}location.replace('/login.html?account_review=1')}
-async function checkAccountReview(force=false){if(accountGateBusy||navigator.onLine===false)return;const now=Date.now();if(!force&&now-accountGateLast<25000)return;accountGateBusy=true;accountGateLast=now;try{const token=await presenceFirebaseToken();if(!token){clearAccountReview();return}const c=new AbortController(),timer=setTimeout(()=>c.abort(),6000);const r=await fetch(`${DINGLOFT_PRESENCE_WORKER}/me/account-status`,{headers:{authorization:`Bearer ${token}`},cache:'no-store',signal:c.signal});clearTimeout(timer);const d=await r.json().catch(()=>({}));if(r.ok&&d.blocked)showAccountReview(d);else if(r.ok)clearAccountReview()}catch(_){}finally{accountGateBusy=false}}
+async function checkAccountReview(force=false){if(accountGateBusy||navigator.onLine===false)return;const now=Date.now();if(!force&&now-accountGateLast<300000)return;accountGateBusy=true;accountGateLast=now;try{const token=await presenceFirebaseToken();if(!token){clearAccountReview();return}const c=new AbortController(),timer=setTimeout(()=>c.abort(),6000);const r=await fetch(`${DINGLOFT_PRESENCE_WORKER}/me/account-status`,{headers:{authorization:`Bearer ${token}`},cache:'no-store',signal:c.signal});clearTimeout(timer);const d=await r.json().catch(()=>({}));if(r.ok&&d.blocked)showAccountReview(d);else if(r.ok)clearAccountReview()}catch(_){}finally{accountGateBusy=false}}
 
 function startPresence(){
   if(isInfrastructurePage()) return;
