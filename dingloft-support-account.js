@@ -1,7 +1,7 @@
-/* Dingloft Support · Customer realtime chat · v3.2 · Lazy Firestore / zero idle reads */
+/* Dingloft Support · Customer realtime chat · v3.4 · Cached remote reservation + hidden-tab sleep + zero idle reads */
 import { getApps, getApp, initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, doc, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, doc, getDocs, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig={
   apiKey:"AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
@@ -16,6 +16,7 @@ const app=getApps().length?getApp():initializeApp(firebaseConfig);
 const auth=getAuth(app),db=getFirestore(app);
 const WORKER=String(window.DINGLOFT_WORKER_BASE||"https://autumn-breeze-dfa0.evolutiongt01.workers.dev").replace(/\/$/,"");
 const MAX_IMAGES=3,MAX_IMAGE_BYTES=5*1024*1024,MAX_TEXT=2000,TYPING_THROTTLE=5000,TYPING_IDLE=8000;
+const REMOTE_CACHE_POSITIVE_MS=15*60*1000,REMOTE_CACHE_EMPTY_MS=90*1000,REMOTE_QUERY_LIMIT=8;
 const SUPPORT_AVATARS={"Tony Bac":"/img/tony-bac.webp","Cesar Matzar":"/img/cesar-matzar.webp","Evolution Group":"/img/evolution-group.webp"};
 const PARAMS=new URLSearchParams(location.search);
 const AUTO_OPEN=PARAMS.get("support")==="1"||PARAMS.get("supportFeedback")==="1";
@@ -27,6 +28,7 @@ const PERSISTENT_SHELL=window.top===window.self&&(
 );
 
 let user=null,supportData=null,chatState={},chatExists=false,chatUnsub=null,msgUnsub=null,adminPresenceUnsub=null,lastMessages=[],remoteCountdownTimer=null,remoteEditingCode=false;
+let supportMode="welcome",remoteReservation=null,remoteReservationLoaded=false,remoteReservationLoading=false;
 let lastTypingWrite=0,typingTimer=null,typingIdleTimer=null,pendingImages=[],imageUrls=new Map();
 let feedbackRating=0,experiencesLoaded=false,experiencesLoading=false;
 let supportReady=false,supportLoadPromise=null;
@@ -110,6 +112,7 @@ function inject(){
   .dl-support-close{width:36px;height:36px;border:1px solid #edf0f3;border-radius:12px;background:#f7f8fa;color:#596474;cursor:pointer}.dl-support-close:hover{background:#eef1f4;color:#111827}
   .dl-support-team-avatars{width:64px;height:40px;position:relative;flex:0 0 64px;display:block}.dl-support-team-avatars .dl-support-agent-avatar{position:absolute;top:1px;width:38px;height:38px;box-shadow:0 0 0 2px #fff,0 3px 10px rgba(15,23,42,.12)}.dl-support-team-avatars .dl-support-agent-avatar:first-child{left:0;z-index:2}.dl-support-team-avatars .dl-support-agent-avatar:last-child{left:26px;right:auto;z-index:3}
   .dl-support-agent-avatar{width:30px;height:30px;border-radius:50%;position:relative;display:grid;place-items:center;flex:0 0 auto;overflow:hidden;background:#f0f2f5;border:1px solid #e0e5ea;box-shadow:0 0 0 2px #fff;color:#344054;font-size:8px;font-weight:900;letter-spacing:.03em}.dl-support-agent-avatar>span{position:relative;z-index:1}.dl-support-agent-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;background:#eef1f4}
+  .dl-support-root.welcome-mode .dl-support-tabs{display:none}.dl-support-welcome-view{overflow:auto;background:linear-gradient(180deg,#fff 0,#f8fafc 100%);align-content:start}.dl-support-welcome{padding:24px 18px 20px;display:grid;gap:14px}.dl-support-welcome-mark{width:54px;height:54px;border-radius:18px;background:#0b0e12;color:#b7ff34;display:grid;place-items:center;font-size:22px;box-shadow:0 14px 34px rgba(2,6,12,.18)}.dl-support-welcome small{font-size:9px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:#8a94a3}.dl-support-welcome h3{margin:0;color:#0c1118;font-size:28px;line-height:1.02;letter-spacing:-.045em}.dl-support-welcome p{margin:0;color:#667085;font-size:12px;line-height:1.55}.dl-support-choice{width:100%;border:1px solid #e1e6eb;background:#fff;border-radius:18px;padding:15px;display:grid;grid-template-columns:42px minmax(0,1fr) 28px;align-items:center;gap:12px;text-align:left;color:#101828;cursor:pointer;box-shadow:0 7px 22px rgba(15,23,42,.045);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.dl-support-choice:hover{transform:translateY(-1px);border-color:#cbd5df;box-shadow:0 12px 30px rgba(15,23,42,.08)}.dl-support-choice-icon{width:42px;height:42px;border-radius:13px;background:#f2f4f7;display:grid;place-items:center;font-size:17px}.dl-support-choice.remote .dl-support-choice-icon{background:#101318;color:#b7ff34}.dl-support-choice b{display:block;font-size:12px}.dl-support-choice span{display:block;margin-top:3px;color:#7a8492;font-size:9px;line-height:1.4}.dl-support-choice>i:last-child{color:#98a2b3}.dl-support-welcome-note{padding:12px 13px;border-radius:14px;background:#f0f5ec;color:#516047;font-size:9px;line-height:1.5}.dl-support-welcome-note i{color:#5d8d1f;margin-right:5px}.dl-support-welcome-link{border:0;background:transparent;color:#667085;font-size:9px;font-weight:800;cursor:pointer;padding:4px}.dl-support-backbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 11px 2px}.dl-support-back{border:0;background:transparent;color:#667085;font-size:9px;font-weight:850;cursor:pointer;padding:6px 3px}.dl-support-mode-label{font-size:8px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#98a2b3}.dl-support-root.remote-mode .dl-support-context{display:none}.dl-remote-empty{display:grid;grid-template-columns:38px minmax(0,1fr);gap:10px;align-items:start;margin:0 10px 10px;padding:12px;border:1px solid #e0e5ea;border-radius:16px;background:#f8fafc}.dl-remote-empty i{width:36px;height:36px;border-radius:11px;background:#111827;color:#b7ff34;display:grid;place-items:center}.dl-remote-empty b{display:block;color:#101828;font-size:10px}.dl-remote-empty span{display:block;color:#7a8492;font-size:8px;line-height:1.45;margin-top:3px}.dl-remote-empty a{display:inline-flex;margin-top:8px;color:#111827;font-size:8px;font-weight:900;text-decoration:none;border-bottom:1px solid #111827}.dl-remote-booked-tool{margin-top:9px;padding:8px 10px;border-radius:10px;background:#f5f7f8;color:#475467;font-size:8.5px}.dl-remote-booked-tool b{color:#111827}.dl-remote-paid{display:inline-flex;align-items:center;gap:5px;margin-top:7px;color:#28733f;font-size:8px;font-weight:850}.dl-remote-paid:before{content:"";width:6px;height:6px;border-radius:50%;background:#39b56a;box-shadow:0 0 0 3px rgba(57,181,106,.12)}
   .dl-support-tabs{padding:8px 10px;display:grid;grid-template-columns:1fr 1fr;gap:6px;border-bottom:1px solid #edf0f3;background:#fafbfc}.dl-support-tab{height:36px;border:1px solid transparent;border-radius:11px;background:transparent;color:#7a8492;font-size:10.5px;font-weight:850;cursor:pointer}.dl-support-tab.active{color:#111827;background:#fff;border-color:#e6e9ed;box-shadow:0 1px 3px rgba(16,24,40,.06)}
   .dl-support-view{min-height:0;display:none;background:#fff}.dl-support-view.active{display:grid}.dl-support-chat-view{grid-template-rows:auto minmax(0,1fr) auto}.dl-support-experience-view{overflow:auto;padding:14px;align-content:start;gap:12px;background:#f8f9fb}
   .dl-support-context-wrap{border-bottom:1px solid #edf0f3;background:#fff}.dl-support-context{padding:10px 12px 7px;display:flex;gap:8px;align-items:center}.dl-support-context select{width:100%;min-width:0;background:#f8fafc;border:1px solid #e2e7ec;color:#344054;border-radius:12px;padding:10px 11px;font-size:12px;outline:0}.dl-support-context select:focus{border-color:#b9c2cc;box-shadow:0 0 0 3px rgba(17,24,39,.04)}.dl-support-status-note{padding:0 12px 9px;color:#98a2b3;font-size:9.5px;text-align:center}
@@ -173,8 +176,20 @@ function inject(){
         <button class="dl-support-tab active" id="dlSupportTabChat" data-support-tab="chat" type="button">Conversación</button>
         <button class="dl-support-tab" id="dlSupportTabExperiences" data-support-tab="experiences" type="button">Experiencias</button>
       </div>
-      <div class="dl-support-view dl-support-chat-view active" id="dlSupportViewChat">
+      <div class="dl-support-view dl-support-welcome-view active" id="dlSupportViewWelcome">
+        <div class="dl-support-welcome">
+          <div class="dl-support-welcome-mark"><i class="bi bi-chat-square-heart"></i></div>
+          <div><small>Dingloft support</small><h3>Bienvenido a Dingloft.</h3></div>
+          <p>Elige el tipo de atención que necesitas y te llevamos al canal correcto.</p>
+          <button class="dl-support-choice" id="dlSupportTeamChoice" type="button"><span class="dl-support-choice-icon"><i class="bi bi-people"></i></span><span><b>Hablar con alguien del equipo</b><span>Consultas de compras, descargas, licencias o cualquier duda general.</span></span><i class="bi bi-chevron-right"></i></button>
+          <button class="dl-support-choice remote" id="dlSupportRemoteChoice" type="button"><span class="dl-support-choice-icon"><i class="bi bi-display"></i></span><span><b>Chat de instalación remota</b><span>Si ya pagaste tu reserva, aquí verás el cronómetro exacto de tu sesión.</span></span><i class="bi bi-chevron-right"></i></button>
+          <div class="dl-support-welcome-note"><i class="bi bi-shield-check"></i>El chat permanece vinculado únicamente a tu cuenta Dingloft.</div>
+          <button class="dl-support-welcome-link" id="dlSupportWelcomeExperiences" type="button">Ver experiencias de clientes</button>
+        </div>
+      </div>
+      <div class="dl-support-view dl-support-chat-view" id="dlSupportViewChat">
         <div class="dl-support-context-wrap">
+          <div class="dl-support-backbar"><button class="dl-support-back" id="dlSupportBack" type="button"><i class="bi bi-arrow-left"></i> Volver</button><span class="dl-support-mode-label" id="dlSupportModeLabel">Soporte</span></div>
           <div class="dl-support-context"><select id="dlSupportProduct" aria-label="Compra relacionada"><option value="">Selecciona una compra (opcional)</option></select></div>
           <div class="dl-support-status-note" id="dlSupportStatusNote">Tu conversación privada queda vinculada a tu cuenta Dingloft. No necesitas haber comprado.</div>
           <div class="dl-remote-session" id="dlRemoteSession"></div>
@@ -207,6 +222,10 @@ function inject(){
   document.getElementById("dlSupportLaunch").addEventListener("click",()=>togglePanel(true));
   document.getElementById("dlSupportClose").addEventListener("click",()=>togglePanel(false));
   document.getElementById("dlSupportBackdrop").addEventListener("click",()=>togglePanel(false));
+  document.getElementById("dlSupportTeamChoice")?.addEventListener("click",()=>enterSupportMode("team"));
+  document.getElementById("dlSupportRemoteChoice")?.addEventListener("click",()=>enterSupportMode("remote"));
+  document.getElementById("dlSupportBack")?.addEventListener("click",showWelcome);
+  document.getElementById("dlSupportWelcomeExperiences")?.addEventListener("click",async()=>{await ensureSupportReady();switchTab("experiences")});
   const attachLabel=document.getElementById("dlSupportAttach"),fileInput=document.getElementById("dlSupportFile");
   // The real file input covers the visible attachment control. This keeps the tap
   // as a native user gesture on iOS Safari/PWA instead of relying on input.click().
@@ -261,36 +280,53 @@ async function ensureSupportReady(){
   })();
   return supportLoadPromise;
 }
+function showWelcome(){
+  supportMode="welcome";remoteEditingCode=false;clearInterval(remoteCountdownTimer);remoteCountdownTimer=null;
+  stopOpenListeners();setTyping(false,"");
+  const root=document.getElementById("dlSupportRoot");root?.classList.add("welcome-mode");root?.classList.remove("remote-mode");
+  document.getElementById("dlSupportViewWelcome")?.classList.add("active");
+  document.getElementById("dlSupportViewChat")?.classList.remove("active");
+  document.getElementById("dlSupportViewExperiences")?.classList.remove("active");
+  document.getElementById("dlSupportTabChat")?.classList.add("active");document.getElementById("dlSupportTabExperiences")?.classList.remove("active");
+}
+async function enterSupportMode(mode){
+  const root=document.getElementById("dlSupportRoot"),p=document.getElementById("dlSupportPanel");if(!root||!p)return;
+  supportMode=mode==="remote"?"remote":"team";root.classList.remove("welcome-mode");root.classList.toggle("remote-mode",supportMode==="remote");
+  document.getElementById("dlSupportViewWelcome")?.classList.remove("active");document.getElementById("dlSupportViewExperiences")?.classList.remove("active");document.getElementById("dlSupportViewChat")?.classList.add("active");
+  document.getElementById("dlSupportTabChat")?.classList.add("active");document.getElementById("dlSupportTabExperiences")?.classList.remove("active");
+  const label=document.getElementById("dlSupportModeLabel");if(label)label.textContent=supportMode==="remote"?"Instalación remota":"Atención del equipo";
+  const note=document.getElementById("dlSupportStatusNote");if(note)note.textContent=supportMode==="remote"?"Buscando tu reserva pagada…":"Conectando con el equipo Dingloft…";
+  const ready=await ensureSupportReady();if(!ready||!p.classList.contains("open"))return;
+  if(supportMode==="remote"){if(!remoteReservation)remoteReservationLoaded=false;await loadPaidRemoteReservation();}
+  startBaseListeners();startConversationListeners();markRead();renderRemoteSession();renderMessages(lastMessages);
+  if(note){
+    if(supportMode==="remote")note.textContent=remoteReservation?"Canal privado para tu instalación remota. El cronómetro usa la fecha y hora exactas de tu reserva.":"No encontramos una reserva pagada activa. Puedes hablar con el equipo o reservar una sesión desde tu cuenta.";
+    else if(chatState.assignedAgentName)note.textContent=`${chatState.assignedAgentName} · ${chatState.assignedAgentRole||"Soporte Dingloft"}`;else note.textContent="Tu conversación queda vinculada a tu cuenta Dingloft.";
+  }
+  if(!mobileSupportMode())setTimeout(()=>document.getElementById("dlSupportInput")?.focus(),180);
+}
 async function togglePanel(open){
   const p=document.getElementById("dlSupportPanel"),root=document.getElementById("dlSupportRoot");if(!p||!root)return;
   if(supportCloseTimer){clearTimeout(supportCloseTimer);supportCloseTimer=null}
   if(open){
-    root.classList.add("panel-open");
-    document.body.classList.add("dl-support-open");
-    lockSupportBackground();
+    root.classList.add("panel-open");document.body.classList.add("dl-support-open");lockSupportBackground();showWelcome();
     requestAnimationFrame(()=>requestAnimationFrame(()=>p.classList.add("open")));
-    const ready=await ensureSupportReady();
-    if(ready&&p.classList.contains("open")){
-      startBaseListeners();startConversationListeners();markRead();
-      if(PARAMS.get("supportFeedback")==="1")switchTab("chat");
-      if(!mobileSupportMode())setTimeout(()=>document.getElementById("dlSupportInput")?.focus(),180);
-    }
+    if(PARAMS.get("supportFeedback")==="1")setTimeout(()=>enterSupportMode("team"),80);
     return;
   }
-  p.classList.remove("open");
-  stopOpenListeners();setTyping(false,"");
-  const finishClose=()=>{root.classList.remove("panel-open");document.body.classList.remove("dl-support-open");unlockSupportBackground();supportCloseTimer=null};
-  if(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches)finishClose();
-  else supportCloseTimer=setTimeout(finishClose,mobileSupportMode()?290:280);
+  p.classList.remove("open");stopOpenListeners();setTyping(false,"");
+  const finishClose=()=>{showWelcome();root.classList.remove("panel-open");document.body.classList.remove("dl-support-open");unlockSupportBackground();supportCloseTimer=null};
+  if(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches)finishClose();else supportCloseTimer=setTimeout(finishClose,mobileSupportMode()?290:280);
 }
 function switchTab(tab){
-  const experiences=tab==="experiences";
+  const experiences=tab==="experiences",root=document.getElementById("dlSupportRoot");root?.classList.remove("welcome-mode");
+  document.getElementById("dlSupportViewWelcome")?.classList.remove("active");
   document.getElementById("dlSupportTabChat")?.classList.toggle("active",!experiences);
   document.getElementById("dlSupportTabExperiences")?.classList.toggle("active",experiences);
   document.getElementById("dlSupportViewChat")?.classList.toggle("active",!experiences);
   document.getElementById("dlSupportViewExperiences")?.classList.toggle("active",experiences);
   if(experiences){stopMessageListeners();loadExperiences()}
-  else{startConversationListeners();markRead()}
+  else{if(supportMode==="welcome")supportMode="team";startConversationListeners();markRead()}
 }
 
 function startBaseListeners(){
@@ -304,6 +340,7 @@ function startBaseListeners(){
     const note=document.getElementById("dlSupportStatusNote");
     if(note){
       if(chatState.status==="resolved")note.textContent="Conversación finalizada. Puedes volver a escribir si necesitas retomar el caso.";
+      else if(supportMode==="remote")note.textContent=remoteReservation||chatState?.remoteSession?.id?"Canal privado de instalación remota · cronómetro sincronizado con tu reserva.":"No encontramos una reserva pagada activa. Puedes escribir al equipo o reservar una sesión desde tu cuenta.";
       else if(chatState.assignedAgentName)note.textContent=`${chatState.assignedAgentName} · ${chatState.assignedAgentRole||"Soporte Dingloft"}`;
       else note.textContent="Tu conversación queda vinculada a tu cuenta Dingloft.";
     }
@@ -320,6 +357,46 @@ function startBaseListeners(){
   },()=>{});
 }
 
+function reservationMs(r={}){
+  const raw=r.timestampReserva??r.startsAt??r.startAt??r.fechaHora??null;if(raw?.toMillis)return Number(raw.toMillis())||0;if(raw?.toDate)return Number(raw.toDate().getTime())||0;
+  const n=Number(raw);if(Number.isFinite(n)&&n>0)return n<1e12?n*1000:n;const d=new Date(raw);return Number.isNaN(d.getTime())?0:d.getTime();
+}
+function reservationPaid(r={}){
+  const payment=String(r.paymentStatus||r.estadoPago||"").toLowerCase(),state=String(r.estado||"").toLowerCase();
+  if(["cancelado","cancelled","completado","completed"].includes(state))return false;
+  return r.paymentVerifiedByServer===true||["paid","completed","completado"].includes(payment)||(Number(r.montoPagado||r.precio||0)>0&&String(r.paypalOrderId||r.paypalCaptureId||"").trim().length>5);
+}
+function reservationToSession(r={}){
+  const ms=reservationMs(r),software=String(r.software||r.metodoRemoto||"Instalación remota");
+  const tool=/anydesk/i.test(software)?"anydesk":/google|chrome/i.test(software)?"google_remote":"";
+  return {id:String(r.id||""),reservationId:String(r.id||""),status:"scheduled",startsAt:ms?new Date(ms).toISOString():null,serviceLabel:"Instalación remota",preferredTool:tool,accessCode:String(r.codigoAcceso||""),amountUsd:Number(r.montoPagado||r.precio||0),paymentMethodLabel:"Pago confirmado",paymentStatus:"paid",assignedStaffName:String(r.assignedStaffName||"Equipo Dingloft"),assignedStaffRole:String(r.assignedStaffRole||"Soporte remoto"),reservedSoftware:software,fromReservation:true};
+}
+function remoteCacheKey(){return user?.uid?`dingloft:remote-reservation:v2:${user.uid}`:""}
+function cacheableReservation(r){
+  if(!r||typeof r!=="object")return null;
+  return {id:String(r.id||""),uid:String(r.uid||user?.uid||""),fecha:String(r.fecha||""),hora:String(r.hora||""),software:String(r.software||r.metodoRemoto||""),comentario:String(r.comentario||""),estado:String(r.estado||""),paymentStatus:String(r.paymentStatus||r.estadoPago||""),paymentVerifiedByServer:r.paymentVerifiedByServer===true,montoPagado:Number(r.montoPagado||r.precio||0),paypalOrderId:String(r.paypalOrderId||""),paypalCaptureId:String(r.paypalCaptureId||""),codigoAcceso:String(r.codigoAcceso||""),timestampReserva:reservationMs(r),assignedStaffName:String(r.assignedStaffName||""),assignedStaffRole:String(r.assignedStaffRole||"")};
+}
+function readRemoteReservationCache(){
+  const key=remoteCacheKey();if(!key)return {hit:false,value:null};
+  try{const raw=localStorage.getItem(key);if(!raw)return {hit:false,value:null};const c=JSON.parse(raw);if(!c||Number(c.expiresAt||0)<=Date.now()){localStorage.removeItem(key);return {hit:false,value:null}}return {hit:true,value:c.reservation||null}}catch(_){return {hit:false,value:null}}
+}
+function writeRemoteReservationCache(value,ttl){
+  const key=remoteCacheKey();if(!key)return;
+  try{localStorage.setItem(key,JSON.stringify({version:2,savedAt:Date.now(),expiresAt:Date.now()+Math.max(1000,Number(ttl)||REMOTE_CACHE_EMPTY_MS),reservation:value?cacheableReservation(value):null}))}catch(_){}
+}
+function invalidateRemoteReservationCache(){const key=remoteCacheKey();if(key)try{localStorage.removeItem(key)}catch(_){}}
+async function loadPaidRemoteReservation({force=false}={}){
+  if(!force&&remoteReservationLoaded)return remoteReservation;if(remoteReservationLoading)return remoteReservation;remoteReservationLoading=true;
+  try{
+    if(!force){const cached=readRemoteReservationCache();if(cached.hit){remoteReservation=cached.value;remoteReservationLoaded=true;return remoteReservation}}
+    const snap=await getDocs(query(collection(db,"reservas"),where("uid","==",user.uid),limit(REMOTE_QUERY_LIMIT)));
+    const now=Date.now(),rows=snap.docs.map(d=>({id:d.id,...d.data()})).filter(reservationPaid).filter(r=>reservationMs(r)>now-6*60*60*1000);
+    rows.sort((a,b)=>{const am=reservationMs(a),bm=reservationMs(b),af=am>=now,bf=bm>=now;if(af!==bf)return af?-1:1;return af?am-bm:bm-am});
+    remoteReservation=rows[0]||null;remoteReservationLoaded=true;writeRemoteReservationCache(remoteReservation,remoteReservation?REMOTE_CACHE_POSITIVE_MS:REMOTE_CACHE_EMPTY_MS);return remoteReservation;
+  }catch(error){console.warn("Dingloft remote reservation",error);remoteReservation=null;remoteReservationLoaded=true;return null}
+  finally{remoteReservationLoading=false}
+}
+function remoteReservationEmpty(){return `<div class="dl-remote-empty"><i class="bi bi-calendar2-check"></i><div><b>No hay una reserva pagada activa</b><span>Cuando completes el pago de una sesión, el cronómetro aparecerá aquí automáticamente según la fecha y hora que elegiste.</span><a href="/account.html#reservations">Reservar una instalación remota</a></div></div>`}
 function remoteDate(value){const d=value?.toDate?value.toDate():new Date(value);return d&&!isNaN(d)?d:null}
 function countdownLabel(value,status){
   if(status==="completed")return "Completada";if(status==="cancelled")return "Cancelada";
@@ -329,23 +406,33 @@ function countdownLabel(value,status){
 }
 function renderRemoteSession(){
   const box=document.getElementById("dlRemoteSession");if(!box)return;clearInterval(remoteCountdownTimer);remoteCountdownTimer=null;
-  const s=chatState?.remoteSession||{};if(!s.id||["completed","cancelled"].includes(s.status)){box.classList.remove("show");box.innerHTML="";return}
-  const d=remoteDate(s.startsAt),tool=String(s.preferredTool||"");box.classList.add("show");
+  const live=chatState?.remoteSession||{},fallback=remoteReservation?reservationToSession(remoteReservation):{},s=live?.id?live:(supportMode==="remote"?fallback:{});
+  if(!s.id||["completed","cancelled"].includes(s.status)){
+    if(supportMode==="remote"){box.classList.add("show");box.innerHTML=remoteReservationEmpty()}else{box.classList.remove("show");box.innerHTML=""}return;
+  }
+  const d=remoteDate(s.startsAt),tool=String(s.preferredTool||""),fromReservation=s.fromReservation===true&&!live?.id;box.classList.add("show");
   const codeSaved=String(s.accessCode||"").trim().length>0&&!remoteEditingCode;
   const codeArea=codeSaved?`<div class="dl-remote-code-sent"><span class="dl-remote-sent-icon"><i class="bi bi-check2"></i></span><div><b>Código enviado correctamente</b><small>El equipo asignado ya puede consultarlo de forma segura.</small></div><button id="dlRemoteEdit" type="button"><i class="bi bi-pencil"></i> Editar</button></div>`:`<div class="dl-remote-code-row"><input id="dlRemoteCode" maxlength="120" value="${esc(s.accessCode||"")}" placeholder="Pega aquí el código de acceso"><button id="dlRemoteSave" type="button">Enviar código</button></div>`;
-  box.innerHTML=`<div class="dl-remote-session-head"><div><b><i class="bi bi-display"></i> ${esc(s.serviceLabel||"Instalación remota")}</b><small>${d?d.toLocaleString("es-US",{timeZone:"America/New_York",dateStyle:"medium",timeStyle:"short"})+" · Miami":"Fecha por confirmar"}</small><small>${esc(s.assignedStaffName||"Equipo Dingloft")} · ${esc(s.assignedStaffRole||"Soporte")}</small></div><span class="dl-remote-countdown" id="dlRemoteCountdown">${esc(countdownLabel(s.startsAt,s.status))}</span></div><div class="dl-remote-payment">${Number(s.amountUsd||0)>0?`Importe: <b>$${Number(s.amountUsd).toFixed(2)} USD</b> · ${esc(s.paymentMethodLabel||"Pago pendiente")}`:'<b>Sesión gratuita · $0</b>'}</div><div class="dl-remote-tools"><button class="dl-remote-tool ${tool==="anydesk"?"active":""}" data-remote-tool="anydesk">AnyDesk</button><button class="dl-remote-tool ${tool==="google_remote"?"active":""}" data-remote-tool="google_remote">Google Remote</button></div>${codeArea}<small class="dl-remote-help">Comparte únicamente el código temporal. Nunca envíes contraseñas personales.</small>`;
-  box.querySelectorAll("[data-remote-tool]").forEach(b=>b.onclick=()=>saveRemoteSession(b.dataset.remoteTool,String(document.getElementById("dlRemoteCode")?.value??s.accessCode??""),false));
-  const save=document.getElementById("dlRemoteSave");if(save)save.onclick=()=>saveRemoteSession(String(chatState?.remoteSession?.preferredTool||""),String(document.getElementById("dlRemoteCode")?.value||""),true);
+  const toolUi=fromReservation?`<div class="dl-remote-booked-tool">Conexión reservada: <b>${esc(s.reservedSoftware||"Por confirmar")}</b></div>`:`<div class="dl-remote-tools"><button class="dl-remote-tool ${tool==="anydesk"?"active":""}" data-remote-tool="anydesk">AnyDesk</button><button class="dl-remote-tool ${tool==="google_remote"?"active":""}" data-remote-tool="google_remote">Google Remote</button></div>`;
+  box.innerHTML=`<div class="dl-remote-session-head"><div><b><i class="bi bi-display"></i> ${esc(s.serviceLabel||"Instalación remota")}</b><small>${d?d.toLocaleString("es-US",{timeZone:"America/New_York",dateStyle:"medium",timeStyle:"short"})+" · Miami":"Fecha por confirmar"}</small><small>${esc(s.assignedStaffName||"Equipo Dingloft")} · ${esc(s.assignedStaffRole||"Soporte")}</small><span class="dl-remote-paid">Reserva pagada y confirmada</span></div><span class="dl-remote-countdown" id="dlRemoteCountdown">${esc(countdownLabel(s.startsAt,s.status))}</span></div><div class="dl-remote-payment">${Number(s.amountUsd||0)>0?`Importe: <b>$${Number(s.amountUsd).toFixed(2)} USD</b> · ${esc(s.paymentMethodLabel||"Pago confirmado")}`:'<b>Sesión confirmada</b>'}</div>${toolUi}${codeArea}<small class="dl-remote-help">El cronómetro toma directamente la fecha y hora de tu reserva. Comparte únicamente el código temporal; nunca envíes contraseñas personales.</small>`;
+  if(!fromReservation)box.querySelectorAll("[data-remote-tool]").forEach(b=>b.onclick=()=>saveRemoteSession(b.dataset.remoteTool,String(document.getElementById("dlRemoteCode")?.value??s.accessCode??""),false));
+  const save=document.getElementById("dlRemoteSave");if(save)save.onclick=()=>saveRemoteSession(String(s.preferredTool||""),String(document.getElementById("dlRemoteCode")?.value||""),true);
   const edit=document.getElementById("dlRemoteEdit");if(edit)edit.onclick=()=>{remoteEditingCode=true;renderRemoteSession();setTimeout(()=>document.getElementById("dlRemoteCode")?.focus(),40)};
   remoteCountdownTimer=setInterval(()=>{const el=document.getElementById("dlRemoteCountdown");if(el)el.textContent=countdownLabel(s.startsAt,s.status)},1000);
 }
 async function saveRemoteSession(preferredTool,accessCode,showConfirmation){
-  try{const d=await api("/support/remote-session",{method:"POST",body:{preferredTool,accessCode}});chatState.remoteSession=d.remoteSession||chatState.remoteSession;if(showConfirmation)remoteEditingCode=false;renderRemoteSession()}catch(e){alert(e.message||"No se pudo guardar el acceso remoto")}
+  try{
+    const code=String(accessCode||"").trim();if(code&&(!/^[A-Za-z0-9\-\s:/._?=&]{4,120}$/.test(code)))throw new Error("Escribe un código o enlace válido.");
+    if(chatState?.remoteSession?.id){const d=await api("/support/remote-session",{method:"POST",body:{preferredTool,accessCode:code}});chatState.remoteSession=d.remoteSession||chatState.remoteSession}
+    else if(remoteReservation?.id){await setDoc(doc(db,"reservas",remoteReservation.id),{codigoAcceso:code},{merge:true});remoteReservation={...remoteReservation,codigoAcceso:code};writeRemoteReservationCache(remoteReservation,REMOTE_CACHE_POSITIVE_MS)}
+    else throw new Error("No hay una reserva activa.");
+    if(showConfirmation)remoteEditingCode=false;renderRemoteSession();
+  }catch(e){alert(e.message||"No se pudo guardar el acceso remoto")}
 }
 
 function startConversationListeners(){
   if(msgUnsub||!user||!supportReady)return;
-  const q=query(collection(db,"supportChats",user.uid,"messages"),orderBy("createdAt","desc"),limit(30));
+  const q=query(collection(db,"supportChats",user.uid,"messages"),orderBy("createdAt","desc"),limit(20));
   msgUnsub=onSnapshot(q,s=>renderMessages(s.docs.map(x=>({id:x.id,...x.data()})).reverse()),()=>{
     const box=document.getElementById("dlSupportMessages");
     if(box)box.innerHTML='<div class="dl-support-empty">No pudimos cargar la conversación. Intenta nuevamente.</div>';
@@ -358,7 +445,7 @@ function renderMessages(messages){
   lastMessages=Array.isArray(messages)?messages:[];
   const box=document.getElementById("dlSupportMessages");if(!box)return;
   if(!messages.length){
-    box.innerHTML='<div class="dl-support-empty"><i class="bi bi-chat-heart"></i><b style="display:block;color:#101828;margin-bottom:5px">¿En qué podemos ayudarte?</b>Cuéntanos qué ocurre con tu compra. Puedes adjuntar hasta 3 capturas.</div>';
+    box.innerHTML=supportMode==="remote"?'<div class="dl-support-empty"><i class="bi bi-display"></i><b style="display:block;color:#101828;margin-bottom:5px">Chat de instalación remota</b>Escribe aquí cualquier detalle para el equipo asignado. Tu cronómetro aparece arriba cuando existe una reserva pagada activa.</div>':'<div class="dl-support-empty"><i class="bi bi-chat-heart"></i><b style="display:block;color:#101828;margin-bottom:5px">¿En qué podemos ayudarte?</b>Cuéntanos qué necesitas. Puedes adjuntar hasta 3 capturas.</div>';
     return;
   }
   box.innerHTML=messages.map((m,index)=>{
@@ -662,15 +749,27 @@ function cleanup(){
   pendingImages.forEach(x=>URL.revokeObjectURL(x.url));pendingImages=[];
   document.body?.classList.remove("dl-support-open");unlockSupportBackground();
   document.getElementById("dlSupportRoot")?.remove();document.getElementById("dlSupportStyle")?.remove();
-  supportData=null;chatState={};chatExists=false;experiencesLoaded=false;experiencesLoading=false;feedbackRating=0;supportReady=false;supportLoadPromise=null;
+  supportData=null;chatState={};chatExists=false;experiencesLoaded=false;experiencesLoading=false;feedbackRating=0;supportReady=false;supportLoadPromise=null;supportMode="welcome";remoteReservation=null;remoteReservationLoaded=false;remoteReservationLoading=false;clearInterval(remoteCountdownTimer);remoteCountdownTimer=null;
 }
+
+window.DingloftSupport=Object.assign(window.DingloftSupport||{},{
+  invalidateRemoteReservationCache,
+  primeRemoteReservationCache(reservation){if(!user)return false;remoteReservation=reservation?cacheableReservation(reservation):null;remoteReservationLoaded=true;writeRemoteReservationCache(remoteReservation,remoteReservation?REMOTE_CACHE_POSITIVE_MS:REMOTE_CACHE_EMPTY_MS);if(supportMode==="remote")renderRemoteSession();return true},
+  refreshRemoteReservation(){invalidateRemoteReservationCache();remoteReservationLoaded=false;return loadPaidRemoteReservation({force:true}).then(r=>{if(supportMode==="remote")renderRemoteSession();return r})}
+});
+
+document.addEventListener("visibilitychange",()=>{
+  const panel=document.getElementById("dlSupportPanel");
+  if(document.hidden){stopOpenListeners();setTyping(false,"");return}
+  if(panel?.classList.contains("open")&&supportMode!=="welcome"&&supportReady){startBaseListeners();startConversationListeners();markRead()}
+});
 
 onAuthStateChanged(auth,u=>{
   cleanup();user=u;if(!u)return;
   // Zero-idle mode: mounting the support button performs no Firestore/API reads.
   // The support session, entitlement and realtime listeners are created only after the user opens chat.
   supportData={eligible:true,contexts:[],customerName:u.displayName||u.email?.split("@")[0]||"Cliente Dingloft"};
-  inject();fillContexts();
+  inject();fillContexts();showWelcome();
   document.getElementById("dlSupportLaunch")?.classList.add("show");
   if(AUTO_OPEN)setTimeout(()=>togglePanel(true),180);
 });
