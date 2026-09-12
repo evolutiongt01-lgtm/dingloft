@@ -213,7 +213,7 @@
   <script>
   (()=>{
     'use strict';
-    const BONUS_IDS=new Set(['9','10','13']);
+    const BONUS_SKUS=new Set(['pianos-legendarios-sf2-bundle','nord-essentials-sf2-collection','yamaha-legacy-collection-sf2']);
     const LITE_SKU='dual-legend-lite-531mb';
     const WORKER='https://autumn-breeze-dfa0.evolutiongt01.workers.dev';
     const CATALOG_SKUS=new Set([
@@ -236,14 +236,14 @@
     const addOrMerge=(cart,item)=>window.DingloftCartSync?.addOrMerge?.(cart,item)||(()=>{const list=Array.isArray(cart)?cart.slice():[];if(!list.some(x=>String(x.sku||x.id)===String(item.sku||item.id)))list.push(item);return list})();
     const writeCart=(cart)=>{cart=normalize(cart);if(window.DingloftCartSync?.write)return window.DingloftCartSync.write(cart,true);localStorage.setItem('dingloft_cart',JSON.stringify(cart));window.dispatchEvent(new CustomEvent('dingloft:cart-change',{detail:{items:cart,cart}}));return cart};
     const syncBonus=(cart)=>{
-      const hasEligible=cart.some(item=>!item.uiOnly&&BONUS_IDS.has(String(item.id||'')));
+      const hasEligible=cart.some(item=>!item.uiOnly&&BONUS_SKUS.has(String(item.sku||item.id||'')));
       const index=cart.findIndex(item=>item.uiOnly&&item.id==='dual-legend-bonus-pad');
       if(hasEligible&&index<0)cart.push({id:'dual-legend-bonus-pad',sku:'dual-legend-bonus-pad',name:'Bonus PAD · Pianos Legendarios',price:0,img:'dual',type:'BONUS GRATIS · Incluido con tu pack',qty:1,uiOnly:true,bonusUiOnly:true});
       if(!hasEligible&&index>=0)cart.splice(index,1);
       return cart;
     };
     const notify=(button,item)=>{const r=button.getBoundingClientRect();const sourceRect={left:r.left,top:r.top,width:r.width,height:r.height};try{if(window.parent&&window.parent!==window)window.parent.postMessage({type:'dingloft:cart-added',item,sourceRect},location.origin);else window.DingloftGlobalNav?.notifyCart?.(item,sourceRect)}catch(_){}};
-    const addProduct=(button)=>{const item=buttonItem(button);let cart=readCart();cart=addOrMerge(cart,item);cart=syncBonus(cart);writeCart(cart);notify(button,item);toast(`${item.name} añadido al carrito.`)};
+    const addProduct=(button)=>{try{const item=buttonItem(button);let cart=readCart();cart=addOrMerge(cart,item);cart=syncBonus(cart);cart=writeCart(cart)||cart;notify(button,item);toast(`${item.name} añadido al carrito.`);return true}catch(error){console.error('[Dingloft Dual] No se pudo agregar al carrito',error);toast('No se pudo agregar. Intenta nuevamente.');return false}};
     const moneyLabel=value=>{const n=Number(value||0);return `$${Number.isInteger(n)?n:n.toFixed(2)}`};
     const applyCatalogProduct=product=>{
       const sku=String(product?.sku||product?.slug||'').trim();
@@ -258,22 +258,22 @@
         document.querySelectorAll('[data-save-for]').forEach(node=>{if(node.dataset.saveFor===sku)node.textContent=compare>price?`Ahorras ${moneyLabel(compare-price)}`:''});
       }
     };
-    const catalogButtons=[...document.querySelectorAll('.btn-add-cart[data-sku]')].filter(button=>CATALOG_SKUS.has(button.dataset.sku));
     const loadCatalogPrices=async()=>{
-      catalogButtons.forEach(button=>{button.disabled=true;button.setAttribute('aria-busy','true')});
+      const controller=new AbortController();
+      const timeout=setTimeout(()=>controller.abort(),4500);
       try{
-        const response=await fetch(`${WORKER}/products/public`,{headers:{Accept:'application/json'}});
+        const response=await fetch(`${WORKER}/products/public`,{headers:{Accept:'application/json'},signal:controller.signal});
         const data=await response.json();
         if(!response.ok||!data?.ok||!Array.isArray(data.products))throw new Error('CATALOG_UNAVAILABLE');
         data.products.forEach(applyCatalogProduct);
       }catch(_){
-        // Conserva los precios de respaldo del HTML si la red no está disponible.
+        // Conserva el precio visible actual si la red tarda o no está disponible.
       }finally{
-        catalogButtons.forEach(button=>{button.disabled=false;button.removeAttribute('aria-busy')});
+        clearTimeout(timeout);
       }
     };
 
-    document.querySelectorAll('.btn-add-cart').forEach(button=>button.addEventListener('click',event=>{event.preventDefault();if(!button.disabled)addProduct(button)}));
+    document.querySelectorAll('.btn-add-cart').forEach(button=>button.addEventListener('click',event=>{event.preventDefault();addProduct(button)}));
     loadCatalogPrices();
 
     const renderLiteState=()=>{
@@ -304,6 +304,6 @@
   </script>
   <script type="module" src="/dingloft-commerce.js?v=2.2.1-shell94"></script>
   <script src="/dingloft-ui-guard.js?v=74"></script>
-  <script src="/pwa-runtime.js?v=130"></script>
+  <script src="/pwa-runtime.js?v=131"></script>
 </body>
 </html>
