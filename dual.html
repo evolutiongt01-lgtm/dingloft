@@ -40,7 +40,7 @@
     .duality-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:52px}.family{position:relative;min-height:610px;overflow:hidden;border:1px solid var(--line);background:#0b0d10;display:flex;flex-direction:column;justify-content:space-between;padding:32px}.family:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none}.family.red:before{background:radial-gradient(circle at 15% 5%,rgba(227,39,52,.24),transparent 37%)}.family.blue:before{background:radial-gradient(circle at 85% 5%,rgba(8,169,239,.24),transparent 37%)}.family>div{position:relative;z-index:2}.family-top{display:flex;align-items:center;justify-content:space-between;gap:18px}.family-label{font-size:9px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.family.red .family-label{color:#ff5c67}.family.blue .family-label{color:#4fc8ff}.family-size{color:#6e7781;font-size:9px;font-weight:800}.family h3{margin:22px 0 0;font-size:clamp(38px,4vw,64px);line-height:.93;letter-spacing:-.055em}.family p{max-width:540px;color:#929aa4;font-size:14px;line-height:1.7}.family-image{height:330px;display:flex;align-items:flex-end;justify-content:center;position:relative}.family-image img{max-width:86%;max-height:310px;object-fit:contain;filter:drop-shadow(0 26px 34px rgba(0,0,0,.55));transition:transform .5s cubic-bezier(.2,.8,.2,1)}.family:hover .family-image img{transform:translateY(-7px) scale(1.015)}.family-line{height:4px;position:absolute;left:0;right:0;bottom:0}.family.red .family-line{background:var(--red)}.family.blue .family-line{background:var(--blue)}
 
     .packs{padding:118px 0;background:#f4f3ef;color:#0d0e10}.packs-head{display:flex;align-items:end;justify-content:space-between;gap:32px}.packs-head p{max-width:500px;margin:0;color:#646761;font-size:14px;line-height:1.7}.pack-grid{display:grid;grid-template-columns:1.18fr .91fr .91fr;gap:14px;margin-top:50px}.pack{position:relative;min-height:430px;border:1px solid #d6d5d0;background:#fff;padding:28px;display:flex;flex-direction:column;overflow:hidden}.pack.featured{background:#0b0d10;color:#fff;border-color:#0b0d10}.pack.featured:before{content:"";position:absolute;inset:auto -18% -36% 40%;height:340px;background:radial-gradient(circle,rgba(183,255,52,.16),transparent 65%)}.pack-accent{width:48px;height:5px;background:#111;margin-bottom:36px}.pack.featured .pack-accent{background:var(--lime)}.pack.red .pack-accent{background:var(--red)}.pack.blue .pack-accent{background:var(--blue)}.pack-badge{position:absolute;right:20px;top:20px;padding:7px 9px;background:var(--lime);color:#090b0d;font-size:8px;font-weight:950;letter-spacing:.09em;text-transform:uppercase}.pack h3{margin:0;font-size:29px;line-height:1;letter-spacing:-.045em}.pack-price{margin-top:17px;font-size:42px;font-weight:950;letter-spacing:-.055em}.pack ul{list-style:none;padding:0;margin:30px 0 32px;display:grid;gap:12px}.pack li{display:flex;gap:10px;align-items:flex-start;color:#5d625d;font-size:12px;line-height:1.45}.pack.featured li{color:#aab1ba}.pack li:before{content:"";width:7px;height:7px;margin-top:5px;border-radius:50%;background:#c8ccc5;flex:0 0 auto}.pack.featured li:before{background:var(--lime)}.pack.red li:before{background:var(--red)}.pack.blue li:before{background:var(--blue)}.pack .btn{margin-top:auto;width:100%}.pack:not(.featured) .btn{border-color:#151719;background:#151719;color:#fff}.pack.featured .btn{background:var(--lime);color:#090b0d}
-    .trial-row{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;margin-top:14px;padding:22px 24px;border:1px solid #d4d3ce;background:#fff}.trial-copy b{display:block;font-size:14px}.trial-copy span{display:block;margin-top:5px;color:#777b75;font-size:11px}.trial-btn{min-width:270px;white-space:nowrap}.trial-timer{margin-left:5px;color:#51613f;font-size:9px}
+    .trial-row{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;margin-top:14px;padding:22px 24px;border:1px solid #d4d3ce;background:#fff}.trial-copy b{display:block;font-size:14px}.trial-copy span{display:block;margin-top:5px;color:#777b75;font-size:11px}.trial-btn{min-width:240px;white-space:nowrap;border-color:#111315!important;background:#111315!important;color:#fff!important}.trial-btn:hover{border-color:#000!important;background:#000!important}.trial-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 
     .demo{padding:118px 0;background:#080a0c}.demo-card{display:grid;grid-template-columns:.78fr 1.22fr;border:1px solid var(--line);background:#0d1013}.demo-copy{padding:50px;display:flex;flex-direction:column;justify-content:center}.demo-copy p{color:#8c959f;font-size:14px;line-height:1.72}.demo-video{position:relative;min-height:520px;background:#000}.demo-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 
@@ -149,7 +149,7 @@
         </div>
         <div class="trial-row" id="lite">
           <div class="trial-copy"><b>Versión Lite · $6 USD</b><span>Una edición compacta de 531.5 MB para entrar al sonido de Pianos Legendarios antes de pasar a la colección completa.</span></div>
-          <button class="btn secondary trial-btn" id="btn-lite-version" type="button">Agregar Lite · $6 <span class="trial-timer" id="dual-lite-countdown">Calculando…</span></button>
+          <button class="btn trial-btn" id="btn-lite-version" type="button">Agregar Lite · $6</button>
         </div>
       </div>
     </section>
@@ -217,8 +217,6 @@
     const LITE_SKU='dual-legend-lite-531mb';
     const LITE_FALLBACK_END='2026-11-20T03:52:00.000Z';
     let liteActive=Date.now()<Date.parse(LITE_FALLBACK_END);
-    let liteEndMs=Date.parse(LITE_FALLBACK_END);
-    let liteClockOffset=0;
     let litePrice=6;
     let toastTimer=0;
 
@@ -243,25 +241,34 @@
 
     document.querySelectorAll('.btn-add-cart').forEach(button=>button.addEventListener('click',event=>{event.preventDefault();if(!button.disabled)addProduct(button)}));
 
-    const renderLiteTimer=()=>{
-      const timer=document.getElementById('dual-lite-countdown');
+    const renderLiteState=()=>{
       const button=document.getElementById('btn-lite-version');
       const row=document.getElementById('lite');
-      let ms=Math.max(0,liteEndMs-(Date.now()+liteClockOffset));
-      liteActive=liteActive&&ms>0;
-      if(!liteActive||ms<=0){if(row)row.style.display='none';let cart=readCart();const i=cart.findIndex(item=>String(item.sku||item.id)===LITE_SKU);if(i>=0){cart.splice(i,1);writeCart(syncBonus(cart))}return}
-      if(row)row.style.display='grid';
-      const days=Math.floor(ms/86400000);ms%=86400000;const h=Math.floor(ms/3600000);ms%=3600000;const m=Math.floor(ms/60000);const s=Math.floor((ms%60000)/1000);
-      if(timer)timer.textContent=`· ${days}d ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-      if(button)button.disabled=false;
+      if(row)row.style.display=liteActive?'grid':'none';
+      if(button){button.disabled=!liteActive;button.textContent=`Agregar Lite · $${Number(litePrice).toFixed(0)}`}
+      if(!liteActive){
+        let cart=readCart();
+        const i=cart.findIndex(item=>String(item.sku||item.id)===LITE_SKU);
+        if(i>=0){cart.splice(i,1);writeCart(syncBonus(cart))}
+      }
     };
-    const loadLiteStatus=async()=>{try{const response=await fetch('https://autumn-breeze-dfa0.evolutiongt01.workers.dev/promo/dual-lite',{cache:'no-store'});const data=await response.json();if(response.ok&&data?.ok){liteActive=data.active===true;litePrice=Number(data.priceUsd||6);liteEndMs=Date.parse(data.endsAt||LITE_FALLBACK_END);const serverMs=Date.parse(data.serverNow||'');if(Number.isFinite(serverMs))liteClockOffset=serverMs-Date.now()}}catch(_){}renderLiteTimer()};
+    const loadLiteStatus=async()=>{
+      try{
+        const response=await fetch('https://autumn-breeze-dfa0.evolutiongt01.workers.dev/promo/dual-lite',{cache:'no-store'});
+        const data=await response.json();
+        if(response.ok&&data?.ok){
+          liteActive=data.active===true;
+          litePrice=Number(data.priceUsd||6);
+        }
+      }catch(_){}
+      renderLiteState();
+    };
     document.getElementById('btn-lite-version')?.addEventListener('click',event=>{event.preventDefault();if(!liteActive)return;let cart=readCart();if(!cart.some(item=>String(item.sku||item.id)===LITE_SKU))cart.push({id:LITE_SKU,sku:LITE_SKU,name:'Pianos Legendarios SF2 · Versión Lite · 531.5 MB',price:litePrice,img:'dual',type:'Versión Lite · Licencia digital',qty:1});writeCart(syncBonus(cart));const item={id:LITE_SKU,sku:LITE_SKU,name:'Pianos Legendarios SF2 · Versión Lite · 531.5 MB',price:litePrice,img:'dual',type:'Versión Lite · Licencia digital',qty:1};notify(event.currentTarget,item);toast(`Versión Lite añadida al carrito · $${Number(litePrice).toFixed(2)} USD.`)});
-    setInterval(renderLiteTimer,1000);loadLiteStatus();
+    loadLiteStatus();
   })();
   </script>
   <script type="module" src="/dingloft-commerce.js?v=2.2.1-shell94"></script>
   <script src="/dingloft-ui-guard.js?v=74"></script>
-  <script src="/pwa-runtime.js?v=128"></script>
+  <script src="/pwa-runtime.js?v=129"></script>
 </body>
 </html>

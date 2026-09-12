@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="es">
-<head><script src="/dingloft-cart-sync.js?v=120"></script><script src="/dingloft-global-nav.js?v=121"></script>
+<head><script src="/dingloft-cart-sync.js?v=120"></script><script src="/dingloft-global-nav.js?v=136"></script>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <meta content="#111315" name="theme-color"/>
@@ -968,6 +968,16 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
     let allProducts=[];
     let currentAudio=null;
     let currentPreviewButton=null;
+    // Opciones que se compran dentro de su producto principal.
+    // Se mantienen en backend/checkout para resolver precio y entrega, pero no
+    // aparecen como productos independientes dentro de /ventas.
+    const HIDDEN_OPTION_SKUS=new Set([
+      'sketchup-2026-autocad-2026',
+      'nord-essentials-sf2-collection',
+      'dual-legend-lite-531mb',
+      'yamaha-legacy-collection-sf2'
+    ]);
+    const isHiddenOptionProduct=p=>HIDDEN_OPTION_SKUS.has(String(p?.sku||p?.slug||'').trim().toLowerCase());
 
     const productLinks={
       'autocad-2026':'autocad.html','office-home-business':'office.html','sketchup-pro-2026':'sketchup.html','sketchup-2026-autocad-2026':'producto.html?sku=sketchup-2026-autocad-2026','cinema-4d':'cinema4d.html','logic-pro':'logic.html',
@@ -978,14 +988,11 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
       {sku:'autocad-2026',name:'AutoCAD 2026',priceUsd:35,img:'autocad',type:'Licencia vitalicia',category:'Software',shortDescription:'Diseño técnico y documentación profesional.'},
       {sku:'office-home-business',name:'Office Home & Business',priceUsd:40,img:'office',type:'Licencia vitalicia',category:'Software',shortDescription:'Productividad para trabajo, estudio y negocio.'},
       {sku:'sketchup-pro-2026',name:'SketchUp Pro 2026',priceUsd:27,img:'sketchup',type:'Licencia vitalicia',category:'Software',shortDescription:'Modelado 3D directo y profesional.'},
-      {sku:'sketchup-2026-autocad-2026',name:'SketchUp 2026 & AutoCAD 2026',priceUsd:50,img:'combo',type:'Licencia vitalicia',category:'Software',shortDescription:'Combo para arquitectura y diseño técnico.'},
       {sku:'cinema-4d',name:'Cinema 4D',priceUsd:35,img:'cinema4d',type:'Licencia vitalicia',category:'Software',shortDescription:'Creación 3D y motion graphics.'},
       {sku:'logic-pro',name:'Logic Pro',priceUsd:25,img:'logic',type:'Licencia vitalicia',category:'Software',shortDescription:'Producción musical en macOS.'},
       {sku:'motion-x-access',name:'Motion-X Access',priceUsd:28,img:'motionx',type:'Acceso FULL',category:'Audio',badge:'Acceso',shortDescription:'Acceso completo vinculado a tu cuenta Dingloft. Inicia sesión en Motion-X y la app desbloquea automáticamente el modo FULL.'},
       {sku:'pianos-legendarios-sf2-bundle',name:'Pianos Legendarios SF2 Bundle',priceUsd:60,img:'dual',type:'Librería vitalicia',category:'Audio',shortDescription:'Colección SF2 para producción y performance.'},
       {sku:'nord-stage-4-ultimate-library',name:'Nord Stage 4 Ultimate Library',priceUsd:40,img:'nord',type:'Librería vitalicia',category:'Audio',shortDescription:'Sonidos y recursos para stage keyboards.'},
-      {sku:'nord-essentials-sf2-collection',name:'Nord Essentials SF2 Collection',priceUsd:33,img:'nordessentials',type:'Librería vitalicia',category:'Audio',shortDescription:'Colección esencial en formato SF2.'},
-      {sku:'yamaha-legacy-collection-sf2',name:'Yamaha Legacy Collection SF2',priceUsd:33,img:'yamahalegacy',type:'Librería vitalicia',category:'Audio',shortDescription:'Colección de sonidos Yamaha en SF2.'},
       {sku:'yamaha-premium-keys',name:'Yamaha Premium Keys',priceUsd:30,img:'yamahakeys',type:'Librería vitalicia',category:'Audio',shortDescription:'Teclados y pianos premium para Kontakt.'},
       {sku:'cosmos-collection',name:'Cosmos Collection',priceUsd:70,img:'cosmos',type:'Librería vitalicia',category:'Audio',shortDescription:'Colección amplia para producción musical.'},
       {sku:'rhodes-affair-2',name:'Rhodes Affair 2',priceUsd:30,img:'rhodes',type:'Librería vitalicia',category:'Audio',shortDescription:'Electric piano para macOS y Windows.'},
@@ -1031,13 +1038,13 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
     function trackCard(t){const cover=t.cover||'img/dingloft.png',preview=t.preview||'',sku=t.commerceSku||t.sku||normalizeKey(t.title);return `<article class="track-card" data-search="${String(t.title||'').toLowerCase()} ${String(t.artist||'').toLowerCase()}"><div class="track-cover"><img src="${cover}" alt="${t.title}" loading="lazy"><div class="track-overlay"><button class="preview-btn" type="button" aria-label="Reproducir preview de ${t.title}" data-preview="${preview}"><svg class="play-icon" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></button></div></div><div class="track-body"><div class="track-id">${t.id||'Multitrack'}</div><div class="track-title">${t.title}</div><div class="track-artist">${t.artist||'Dingloft'}</div><div class="track-facts"><span class="fact">${t.bpm||'—'} BPM</span><span class="fact">${t.chord||t.key||'—'}</span><span class="fact">${t.stems||'—'} stems</span></div><div class="track-progress"><span></span></div><div class="track-time">Preview</div><div class="track-foot"><span class="track-price">${money(t.priceUsd??t.price??0)}</span><div class="track-actions"><a class="small-btn" href="multitrack.html">Ver</a><button class="small-btn cart" type="button" data-add-product="${encodeURIComponent(JSON.stringify({sku,name:t.title,priceUsd:Number(t.priceUsd??t.price??0),img:'dingloft'}))}">Agregar</button></div></div></div></article>`}
 
     function renderProducts(products){
-      allProducts=products.filter(p=>p&&p.active!==false&&!isMultitrackProduct(p));
+      allProducts=products.filter(p=>p&&p.active!==false&&!isMultitrackProduct(p)&&!isHiddenOptionProduct(p));
       const motionAccess=fallbackProducts.find(p=>p.sku==='motion-x-access');
       if(motionAccess&&!allProducts.some(p=>String(p.sku||'')==='motion-x-access')) allProducts.push(motionAccess);
       const programs=allProducts.filter(isProgramProduct);
       const audio=allProducts.filter(isAudioProduct);
-      programGrid.innerHTML=(programs.length?programs:fallbackProducts.filter(isProgramProduct)).map(productCard).join('');
-      sampleGrid.innerHTML=(audio.length?audio:fallbackProducts.filter(isAudioProduct)).map(productCard).join('');
+      programGrid.innerHTML=(programs.length?programs:fallbackProducts.filter(p=>isProgramProduct(p)&&!isHiddenOptionProduct(p))).map(productCard).join('');
+      sampleGrid.innerHTML=(audio.length?audio:fallbackProducts.filter(p=>isAudioProduct(p)&&!isHiddenOptionProduct(p))).map(productCard).join('');
     }
     function mtNumber(id){const m=String(id||'').match(/(\d+)/);return m?Number(m[1]):0}
     function renderTracks(list){const rows=(Array.isArray(list)?list:[]).filter(x=>x&&x.active!==false).sort((a,b)=>mtNumber(b.id)-mtNumber(a.id)).slice(0,4);trackGrid.innerHTML=(rows.length?rows:fallbackTracks).map(trackCard).join('')}
@@ -1168,6 +1175,6 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
 })();
 </script>
 
-  <script src="/pwa-runtime.js?v=99"></script>
+  <script src="/pwa-runtime.js?v=129"></script>
 </body>
 </html>

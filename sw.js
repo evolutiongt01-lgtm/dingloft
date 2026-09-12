@@ -1,4 +1,4 @@
-const VERSION = '165';
+const VERSION = '166';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -108,6 +108,7 @@ const CORE = [
   '/pwa-install.js',
   '/dingloft-commerce.js?v=2.2.1-shell94',
   '/dingloft-cart-sync.js?v=120',
+  '/pwa-runtime.js?v=129',
   '/pwa-runtime.js?v=128',
   '/pwa-runtime.js?v=127',
   '/pwa-runtime.js?v=126',
