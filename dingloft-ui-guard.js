@@ -131,14 +131,16 @@
   }
 
   function loadNationalDays(){
-    // National celebrations are a standalone visual layer owned only by the top document.
+    // Compatibility path for legacy public pages that still load UI Guard but not Global Nav.
+    // Global Nav v127 is the canonical owner; this fallback prevents editing HTML page-by-page.
     if (window.self !== window.top) return;
     if (/^\/(?:admin|admin\.html|commerce-admin|commerce-admin\.html)(?:\/|$)/i.test(location.pathname)) return;
+    if (window.DingloftGlobalNav || document.querySelector('script[src*="dingloft-global-nav.js"]')) return;
     if (document.querySelector('script[data-dingloft-national-days],script[src*="dingloft-national-days.js"]')) return;
     const script=document.createElement('script');
-    script.src='/dingloft-national-days.js?v=1';
-    script.defer=true;
-    script.dataset.dingloftNationalDays='1';
+    script.src='/dingloft-national-days.js?v=2';
+    script.async=true;
+    script.dataset.dingloftNationalDays='2';
     (document.head||document.documentElement).appendChild(script);
   }
 

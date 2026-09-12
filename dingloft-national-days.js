@@ -1,10 +1,13 @@
 (() => {
   'use strict';
 
-  // Dingloft National Days · v1
+  // Dingloft National Days · v2
   // Componente visual 100% local: no Firebase, no backend, no geolocalización, no APIs externas.
   // Una fecha patria/nacional principal por país/estado; fechas móviles especiales se resuelven abajo.
-  const VERSION = '1';
+  if (window.__DINGLOFT_NATIONAL_DAYS_V2__) return;
+  window.__DINGLOFT_NATIONAL_DAYS_V2__ = true;
+
+  const VERSION = '2';
   const ROOT_ID = 'dlNationalDayRoot';
   const STYLE_ID = 'dlNationalDayStyle';
   const STORAGE_PREFIX = 'dingloft_national_day_hidden_';
@@ -276,7 +279,8 @@
       @keyframes dlNdSpark{0%,72%,100%{opacity:0;transform:scale(.4)}78%{opacity:.9;transform:scale(1.9)}84%{opacity:0;transform:scale(.7)}}
       @keyframes dlNdSwap{0%{opacity:1;transform:none}45%{opacity:0;transform:translateY(4px)}100%{opacity:1;transform:none}}
       @media(max-width:620px){#${ROOT_ID}{top:max(72px,calc(env(safe-area-inset-top) + 62px));right:10px;width:calc(100vw - 20px)}.dl-nd-inner{grid-template-columns:62px minmax(0,1fr) 30px;padding:13px 12px 13px 14px}.dl-nd-flagbox{height:54px}.dl-nd-country{font-size:14px}}
-      @media(prefers-reduced-motion:reduce){.dl-nd-card,.dl-nd-flag,.dl-nd-spark,.dl-nd-card.is-switching .dl-nd-flag,.dl-nd-card.is-switching .dl-nd-copy{animation:none!important}}
+      html.dgn-cart-open #${ROOT_ID},body.dl-support-open #${ROOT_ID}{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transition:opacity .16s ease,visibility .16s ease}
+      @media(prefers-reduced-motion:reduce){.dl-nd-card,.dl-nd-flag,.dl-nd-spark,.dl-nd-card.is-switching .dl-nd-flag,.dl-nd-card.is-switching .dl-nd-copy{animation:none!important;transition:none!important}}
       @media print{#${ROOT_ID}{display:none!important}}
     `;
     (document.head||document.documentElement).appendChild(s);
@@ -342,9 +346,33 @@
     rotateTimer=setInterval(()=>paint(activeIndex+1),4800);
   }
 
+  let renderedDayStamp='';
+  let rolloverTimer=0;
+
   function renderToday() {
     const now=new Date();
-    return render(eventsFor(localKey(now),now.getFullYear()),dayStamp(now));
+    renderedDayStamp=dayStamp(now);
+    return render(eventsFor(localKey(now),now.getFullYear()),renderedDayStamp);
+  }
+
+  function scheduleLocalRollover(){
+    clearTimeout(rolloverTimer);
+    const now=new Date();
+    const next=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,0,2,0);
+    rolloverTimer=setTimeout(()=>{
+      remove();
+      renderToday();
+      scheduleLocalRollover();
+    },Math.max(1000,next.getTime()-now.getTime()));
+  }
+
+  function syncLocalDay(){
+    const now=new Date();
+    if(dayStamp(now)!==renderedDayStamp){
+      remove();
+      renderToday();
+      scheduleLocalRollover();
+    }
   }
 
   function previewDate(dateKey, year=(new Date()).getFullYear()) {
@@ -363,6 +391,11 @@
 
   if(window.self!==window.top) return;
   if(/^\/(?:admin|admin\.html|commerce-admin|commerce-admin\.html)(?:\/|$)/i.test(location.pathname)) return;
-  const start=()=>{renderToday();const now=new Date();const next=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,0,2);setTimeout(()=>{remove();renderToday()},Math.max(1000,next-now))};
+  const start=()=>{
+    renderToday();
+    scheduleLocalRollover();
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden)syncLocalDay()},{passive:true});
+    window.addEventListener('pageshow',syncLocalDay,{passive:true});
+  };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();

@@ -1,14 +1,15 @@
-/* Dingloft Global Navbar + Cart · v126
+/* Dingloft Global Navbar + Cart · v127
    Single persistent component based on ventas.html.
    It renders only in the TOP document (desktop-shell/app/direct page), never inside iframes.
    Cart uses transform/opacity only: no page-wide blur/scale choreography. */
 (() => {
   'use strict';
-  if (window.__DINGLOFT_GLOBAL_NAV_V126__ || window.__DINGLOFT_GLOBAL_NAV_V125__ || window.__DINGLOFT_GLOBAL_NAV_V124__) return;
+  if (window.__DINGLOFT_GLOBAL_NAV_V127__ || window.__DINGLOFT_GLOBAL_NAV_V126__ || window.__DINGLOFT_GLOBAL_NAV_V125__ || window.__DINGLOFT_GLOBAL_NAV_V124__) return;
+  window.__DINGLOFT_GLOBAL_NAV_V127__ = true;
   window.__DINGLOFT_GLOBAL_NAV_V126__ = true;
   window.__DINGLOFT_GLOBAL_NAV_V124__ = true;
 
-  const VERSION = 126;
+  const VERSION = 127;
   const CART_KEY = 'dingloft_cart';
   const WORKER = String(
     window.DINGLOFT_WORKER_BASE ||
@@ -36,6 +37,16 @@
 
   const file = (location.pathname.split('/').filter(Boolean).pop() || '').toLowerCase();
   if (file.includes('admin') || file === 'commerce-admin') return;
+
+  // National Days v2 is owned canonically by the global public shell/navbar.
+  // It is fully local: no Firebase, backend, geolocation or external API calls.
+  if (!document.querySelector('script[data-dingloft-national-days],script[src*="dingloft-national-days.js"]')) {
+    const nationalDaysScript=document.createElement('script');
+    nationalDaysScript.src='/dingloft-national-days.js?v=2';
+    nationalDaysScript.dataset.dingloftNationalDays='2';
+    nationalDaysScript.async=true;
+    (document.head||document.documentElement).appendChild(nationalDaysScript);
+  }
 
   // Presence v57 is owned by the top document. This also covers Home, Cuenta,
   // Checkout and persistent app shells that do not load UI Guard themselves.
