@@ -130,6 +130,18 @@
     const script=document.createElement('script');script.type='module';script.src='/dingloft-support-account.js?v=31';script.dataset.dingloftGlobalSupport='31';document.head.appendChild(script);
   }
 
+  function loadNationalDays(){
+    // National celebrations are a standalone visual layer owned only by the top document.
+    if (window.self !== window.top) return;
+    if (/^\/(?:admin|admin\.html|commerce-admin|commerce-admin\.html)(?:\/|$)/i.test(location.pathname)) return;
+    if (document.querySelector('script[data-dingloft-national-days],script[src*="dingloft-national-days.js"]')) return;
+    const script=document.createElement('script');
+    script.src='/dingloft-national-days.js?v=1';
+    script.defer=true;
+    script.dataset.dingloftNationalDays='1';
+    (document.head||document.documentElement).appendChild(script);
+  }
+
   function openGlobalSupportFromChild(){
     loadGlobalSupport();
     let tries=0;
@@ -152,8 +164,8 @@
   // Start the isolated overlay immediately so legacy page navbars never get a chance to take control.
   if (document.readyState === 'loading') {
     loadMobileChrome();
-    document.addEventListener('DOMContentLoaded', () => { markInstalled(); loadPresence(); loadCustomerPush(); loadGlobalSupport(); }, {once:true});
-  } else { markInstalled(); loadPresence(); loadCustomerPush(); loadGlobalSupport(); loadMobileChrome(); }
+    document.addEventListener('DOMContentLoaded', () => { markInstalled(); loadPresence(); loadCustomerPush(); loadGlobalSupport(); loadNationalDays(); }, {once:true});
+  } else { markInstalled(); loadPresence(); loadCustomerPush(); loadGlobalSupport(); loadNationalDays(); loadMobileChrome(); }
   addEventListener('appinstalled', () => { localStorage.setItem('dingloft_installed_at', String(Date.now())); markInstalled(); });
   matchMedia('(display-mode: standalone)').addEventListener?.('change', markInstalled);
 })();

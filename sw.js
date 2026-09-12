@@ -1,4 +1,4 @@
-const VERSION = '151';
+const VERSION = '152';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -58,12 +58,14 @@ const CORE = [
   '/dingloft-global-nav.js?v=125',
   '/dingloft-global-nav.js?v=124',
   '/dingloft-global-nav.js?v=121',
+  '/dingloft-ui-guard.js?v=64',
   '/dingloft-ui-guard.js?v=63',
   '/dingloft-ui-guard.js?v=62',
   '/dingloft-ui-guard.js?v=61',
   '/dingloft-ui-guard.js?v=60',
   '/dingloft-ui-guard.js?v=59',
   '/dingloft-ui-guard.js?v=58',
+  '/dingloft-national-days.js?v=1',
   '/dingloft-support-account.js?v=31',
   '/dingloft-support-account.js?v=28',
   '/dingloft-support-account.js?v=26',
@@ -75,6 +77,7 @@ const CORE = [
   '/pwa-install.js',
   '/dingloft-commerce.js?v=2.2.1-shell94',
   '/dingloft-cart-sync.js?v=120',
+  '/pwa-runtime.js?v=115',
   '/pwa-runtime.js?v=114',
   '/pwa-runtime.js?v=113',
   '/pwa-runtime.js?v=112',
@@ -243,7 +246,7 @@ self.addEventListener('fetch', event => {
 
   // Critical shell/presence code must be fresh immediately. These files control
   // one-socket presence ownership and cannot wait one navigation for SWR refresh.
-  if (url.origin === self.location.origin && ['/dingloft-presence.js','/dingloft-ui-guard.js','/dingloft-global-nav.js'].includes(url.pathname)) {
+  if (url.origin === self.location.origin && ['/dingloft-presence.js','/dingloft-ui-guard.js','/dingloft-global-nav.js','/dingloft-national-days.js'].includes(url.pathname)) {
     event.respondWith(networkFirst(req));
     return;
   }
