@@ -1612,7 +1612,7 @@
     .checkout-cart-remove{width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border:1px solid #d9dcdf;border-radius:9px;background:#fff;color:#777d84;font-size:.88rem;line-height:1;transition:.16s ease;box-shadow:0 1px 0 rgba(0,0,0,.02)}
     .checkout-cart-remove:hover{border-color:#111;background:#111;color:#fff;transform:translateY(-1px)}
     .checkout-cart-remove:focus-visible{outline:2px solid #111;outline-offset:2px}
-    .checkout-cart-remove:disabled{opacity:.45;cursor:not-allowed;transform:none}
+    .checkout-cart-remove:disabled{opacity:.45;cursor:not-allowed;transform:none}.checkout-cart-remove svg{width:14px;height:14px;display:block;stroke:currentColor;stroke-width:1.85;fill:none;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
     .checkout-cart-empty{padding:18px;text-align:center;color:var(--muted);font-size:.78rem;border:1px dashed rgba(255,255,255,.11);border-radius:16px}
     @media(max-width:520px){.checkout-cart-item{grid-template-columns:50px minmax(0,1fr) auto;gap:9px;padding:9px}.checkout-cart-thumb{width:50px;height:50px}.checkout-cart-copy b{font-size:.76rem}.checkout-cart-price{font-size:.74rem}.checkout-cart-end{min-width:82px;gap:8px}.checkout-cart-remove{width:28px;height:28px;flex-basis:28px;border-radius:8px;font-size:.82rem}}
 
@@ -2572,7 +2572,7 @@ function cartItemMarkup(item){
   const image=esc(productImageUrl(item));
   const safeName=esc(item.name||"Producto Dingloft");
   const safeType=esc(item.type||"Producto digital");
-  return `<article class="checkout-cart-item"><div class="checkout-cart-thumb"><img src="${image}" alt="" onerror="this.onerror=null;this.src='/img/dingloft.png'"></div><div class="checkout-cart-copy"><b>${safeName}</b><span>${safeType}</span></div><div class="checkout-cart-end"><div class="checkout-cart-price">${money(item.priceUsd??item.price??0)}</div><button class="checkout-cart-remove" type="button" data-cart-remove="${esc(cartItemKey(item))}" aria-label="Eliminar ${safeName} del carrito" title="Eliminar"><i class="bi bi-trash3" aria-hidden="true"></i></button></div></article>`;
+  return `<article class="checkout-cart-item"><div class="checkout-cart-thumb"><img src="${image}" alt="" onerror="this.onerror=null;this.src='/img/dingloft.png'"></div><div class="checkout-cart-copy"><b>${safeName}</b><span>${safeType}</span></div><div class="checkout-cart-end"><div class="checkout-cart-price">${money(item.priceUsd??item.price??0)}</div><button class="checkout-cart-remove" type="button" data-cart-remove="${esc(cartItemKey(item))}" aria-label="Eliminar ${safeName} del carrito" title="Eliminar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M9 7V5.8c0-.44.36-.8.8-.8h4.4c.44 0 .8.36.8.8V7"></path><path d="M18 7l-.7 10.15c-.06.84-.75 1.49-1.59 1.49H8.29c-.84 0-1.53-.65-1.59-1.49L6 7"></path><path d="M10 10.2v5.6"></path><path d="M14 10.2v5.6"></path></svg></button></div></article>`;
 }
 
 function renderCheckoutCart(){
