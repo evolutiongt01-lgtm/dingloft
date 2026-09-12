@@ -1,4 +1,4 @@
-const VERSION = '136';
+const VERSION = '137';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -54,8 +54,8 @@ const CORE = [
   '/desktop-global-nav.js',
   '/dingloft-theme.js?v=2',
   '/dingloft-theme.css?v=2',
-  '/dingloft-ui-guard.js?v=58',
-  '/dingloft-support-account.js?v=25',
+  '/dingloft-ui-guard.js?v=60',
+  '/dingloft-support-account.js?v=26',
   '/dingloft-presence.js?v=55',
   '/dingloft-customer-push.js?v=1',
   '/mobile-shell-redirect.js',
@@ -63,13 +63,13 @@ const CORE = [
   '/pwa-install.js',
   '/dingloft-commerce.js?v=2.2.1-shell94',
   '/dingloft-cart-sync.js?v=120',
-  '/pwa-runtime.js?v=98',
+  '/pwa-runtime.js?v=100',
   '/dingloft-mobile-nav-v71.js?v=120',
   '/dingloft-mobile-dock.css?v=34',
   '/dingloft-mobile-cart-v92.js?v=95',
   '/manifest.webmanifest?v=94',
-  '/img/pwa-liquid-rounded-192-v18.png',
-  '/img/pwa-liquid-rounded-512-v18.png',
+  '/img/pwa-liquid-rounded-192-v17.png',
+  '/img/pwa-liquid-rounded-512-v17.png',
   '/img/pwa-liquid-192-v5.png',
   '/img/pwa-liquid-512-v5.png',
   '/img/pwa-liquid-maskable-512-v5.png'
@@ -271,7 +271,7 @@ self.addEventListener('push',event=>{
   event.waitUntil((async()=>{
     await self.registration.showNotification(title,{
       body,
-      icon:'/img/pwa-liquid-rounded-192-v18.png',
+      icon:'/img/pwa-liquid-rounded-192-v17.png',
       badge:'/img/favicon.png',
       tag:`${kind}-${eventId}`.slice(0,180),
       renotify:true,

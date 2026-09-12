@@ -1,4 +1,4 @@
-/* Dingloft Support · Customer realtime chat · v3.1 · Persistent shell positioning */
+/* Dingloft Support · Customer realtime chat · v3.2 · Lazy Firestore / zero idle reads */
 import { getApps, getApp, initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, doc, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -15,7 +15,7 @@ const firebaseConfig={
 const app=getApps().length?getApp():initializeApp(firebaseConfig);
 const auth=getAuth(app),db=getFirestore(app);
 const WORKER=String(window.DINGLOFT_WORKER_BASE||"https://autumn-breeze-dfa0.evolutiongt01.workers.dev").replace(/\/$/,"");
-const MAX_IMAGES=3,MAX_IMAGE_BYTES=5*1024*1024,MAX_TEXT=2000,TYPING_THROTTLE=700,TYPING_IDLE=2400;
+const MAX_IMAGES=3,MAX_IMAGE_BYTES=5*1024*1024,MAX_TEXT=2000,TYPING_THROTTLE=5000,TYPING_IDLE=8000;
 const SUPPORT_AVATARS={"Tony Bac":"/img/tony-bac.webp","Cesar Matzar":"/img/cesar-matzar.webp","Evolution Group":"/img/evolution-group.webp"};
 const PARAMS=new URLSearchParams(location.search);
 const AUTO_OPEN=PARAMS.get("support")==="1"||PARAMS.get("supportFeedback")==="1";
@@ -29,6 +29,7 @@ const PERSISTENT_SHELL=window.top===window.self&&(
 let user=null,supportData=null,chatState={},chatExists=false,chatUnsub=null,msgUnsub=null,adminPresenceUnsub=null,lastMessages=[],remoteCountdownTimer=null,remoteEditingCode=false;
 let lastTypingWrite=0,typingTimer=null,typingIdleTimer=null,pendingImages=[],imageUrls=new Map();
 let feedbackRating=0,experiencesLoaded=false,experiencesLoading=false;
+let supportReady=false,supportLoadPromise=null;
 let supportScrollLock=null,supportCloseTimer=null;
 
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -240,7 +241,27 @@ function unlockSupportBackground(){
   html.style.overflow=s.htmlOverflow;html.style.overscrollBehavior=s.htmlOverscroll;
   requestAnimationFrame(()=>window.scrollTo(0,s.y));
 }
-function togglePanel(open){
+async function ensureSupportReady(){
+  if(supportReady)return true;
+  if(supportLoadPromise)return supportLoadPromise;
+  supportLoadPromise=(async()=>{
+    const note=document.getElementById("dlSupportStatusNote");
+    if(note)note.textContent="Conectando con soporte…";
+    try{
+      const d=await api("/support/me");
+      if(!d?.eligible)throw new Error("SUPPORT_UNAVAILABLE");
+      supportData=d;supportReady=true;fillContexts();
+      if(note)note.textContent="Tu conversación queda vinculada a tu cuenta Dingloft.";
+      return true;
+    }catch(e){
+      if(note)note.textContent="No pudimos conectar con soporte. Intenta nuevamente.";
+      console.warn("Dingloft Support:",e?.message||e);
+      return false;
+    }finally{supportLoadPromise=null}
+  })();
+  return supportLoadPromise;
+}
+async function togglePanel(open){
   const p=document.getElementById("dlSupportPanel"),root=document.getElementById("dlSupportRoot");if(!p||!root)return;
   if(supportCloseTimer){clearTimeout(supportCloseTimer);supportCloseTimer=null}
   if(open){
@@ -248,13 +269,16 @@ function togglePanel(open){
     document.body.classList.add("dl-support-open");
     lockSupportBackground();
     requestAnimationFrame(()=>requestAnimationFrame(()=>p.classList.add("open")));
-    startConversationListeners();markRead();
-    if(PARAMS.get("supportFeedback")==="1")switchTab("chat");
-    if(!mobileSupportMode())setTimeout(()=>document.getElementById("dlSupportInput")?.focus(),180);
+    const ready=await ensureSupportReady();
+    if(ready&&p.classList.contains("open")){
+      startBaseListeners();startConversationListeners();markRead();
+      if(PARAMS.get("supportFeedback")==="1")switchTab("chat");
+      if(!mobileSupportMode())setTimeout(()=>document.getElementById("dlSupportInput")?.focus(),180);
+    }
     return;
   }
   p.classList.remove("open");
-  stopMessageListeners();setTyping(false,"");
+  stopOpenListeners();setTyping(false,"");
   const finishClose=()=>{root.classList.remove("panel-open");document.body.classList.remove("dl-support-open");unlockSupportBackground();supportCloseTimer=null};
   if(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches)finishClose();
   else supportCloseTimer=setTimeout(finishClose,mobileSupportMode()?290:280);
@@ -265,13 +289,13 @@ function switchTab(tab){
   document.getElementById("dlSupportTabExperiences")?.classList.toggle("active",experiences);
   document.getElementById("dlSupportViewChat")?.classList.toggle("active",!experiences);
   document.getElementById("dlSupportViewExperiences")?.classList.toggle("active",experiences);
-  if(experiences)loadExperiences();
+  if(experiences){stopMessageListeners();loadExperiences()}
   else{startConversationListeners();markRead()}
 }
 
 function startBaseListeners(){
-  chatUnsub?.();
-  chatUnsub=onSnapshot(doc(db,"supportChats",user.uid),snap=>{
+  if(!user||!supportReady)return;
+  if(!chatUnsub)chatUnsub=onSnapshot(doc(db,"supportChats",user.uid),snap=>{
     chatExists=snap.exists();
     chatState=chatExists?snap.data():{};
     const n=Math.max(0,Number(chatState.unreadCustomer||0));
@@ -288,8 +312,7 @@ function startBaseListeners(){
     updateSeenReceipt();
   },()=>{});
 
-  adminPresenceUnsub?.();
-  adminPresenceUnsub=onSnapshot(doc(db,"supportChats",user.uid,"presence","admin"),snap=>{
+  if(!adminPresenceUnsub)adminPresenceUnsub=onSnapshot(doc(db,"supportChats",user.uid,"presence","admin"),snap=>{
     const d=snap.exists()?snap.data():{};
     const age=Date.now()-(d.updatedAt?.toMillis?.()||0);
     const el=document.getElementById("dlSupportTyping");
@@ -321,14 +344,15 @@ async function saveRemoteSession(preferredTool,accessCode,showConfirmation){
 }
 
 function startConversationListeners(){
-  if(msgUnsub)return;
-  const q=query(collection(db,"supportChats",user.uid,"messages"),orderBy("createdAt","asc"),limit(250));
-  msgUnsub=onSnapshot(q,s=>renderMessages(s.docs.map(x=>({id:x.id,...x.data()}))),()=>{
+  if(msgUnsub||!user||!supportReady)return;
+  const q=query(collection(db,"supportChats",user.uid,"messages"),orderBy("createdAt","desc"),limit(30));
+  msgUnsub=onSnapshot(q,s=>renderMessages(s.docs.map(x=>({id:x.id,...x.data()})).reverse()),()=>{
     const box=document.getElementById("dlSupportMessages");
     if(box)box.innerHTML='<div class="dl-support-empty">No pudimos cargar la conversación. Intenta nuevamente.</div>';
   });
 }
 function stopMessageListeners(){msgUnsub?.();msgUnsub=null}
+function stopOpenListeners(){chatUnsub?.();msgUnsub?.();adminPresenceUnsub?.();chatUnsub=msgUnsub=adminPresenceUnsub=null}
 
 function renderMessages(messages){
   lastMessages=Array.isArray(messages)?messages:[];
@@ -631,26 +655,24 @@ function feedback(message){
   else alert(message);
 }
 function cleanup(){
-  chatUnsub?.();msgUnsub?.();adminPresenceUnsub?.();chatUnsub=msgUnsub=adminPresenceUnsub=null;
+  stopOpenListeners();
   if(supportCloseTimer){clearTimeout(supportCloseTimer);supportCloseTimer=null}
   clearTimeout(typingTimer);clearTimeout(typingIdleTimer);
   for(const u of imageUrls.values())URL.revokeObjectURL(u);imageUrls.clear();
   pendingImages.forEach(x=>URL.revokeObjectURL(x.url));pendingImages=[];
   document.body?.classList.remove("dl-support-open");unlockSupportBackground();
   document.getElementById("dlSupportRoot")?.remove();document.getElementById("dlSupportStyle")?.remove();
-  supportData=null;chatState={};chatExists=false;experiencesLoaded=false;experiencesLoading=false;feedbackRating=0;
+  supportData=null;chatState={};chatExists=false;experiencesLoaded=false;experiencesLoading=false;feedbackRating=0;supportReady=false;supportLoadPromise=null;
 }
 
-onAuthStateChanged(auth,async u=>{
+onAuthStateChanged(auth,u=>{
   cleanup();user=u;if(!u)return;
-  try{
-    const d=await api("/support/me");
-    if(!d?.eligible)return;
-    supportData=d;inject();fillContexts();
-    document.getElementById("dlSupportLaunch")?.classList.add("show");
-    startBaseListeners();
-    if(AUTO_OPEN)setTimeout(()=>togglePanel(true),180);
-  }catch(e){console.warn("Dingloft Support:",e?.message||e)}
+  // Zero-idle mode: mounting the support button performs no Firestore/API reads.
+  // The support session, entitlement and realtime listeners are created only after the user opens chat.
+  supportData={eligible:true,contexts:[],customerName:u.displayName||u.email?.split("@")[0]||"Cliente Dingloft"};
+  inject();fillContexts();
+  document.getElementById("dlSupportLaunch")?.classList.add("show");
+  if(AUTO_OPEN)setTimeout(()=>togglePanel(true),180);
 });
-window.addEventListener("pagehide",unlockSupportBackground);
+window.addEventListener("pagehide",()=>{stopOpenListeners();unlockSupportBackground()});
 window.addEventListener("beforeunload",unlockSupportBackground);

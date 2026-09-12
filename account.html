@@ -63,24 +63,6 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}button{cursor:poi
 /* PEDIDOS */
 .orders-section{padding:84px 0;background:#f4f4f2}.orders-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#dedfe1;border:1px solid #dedfe1}.order-card{background:#fff;padding:22px}.order-top{display:flex;justify-content:space-between;align-items:start;gap:20px}.order-id{font-size:8px;color:#989ea4;text-transform:uppercase;letter-spacing:.09em;font-weight:900}.order-card h4{margin:7px 0 0;font-size:15px}.order-price{font-size:17px;font-weight:900}.order-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#eceef0;margin-top:18px}.order-meta div{background:#fafafa;padding:12px}.order-meta span{display:block;color:#9b9fa5;font-size:7px;text-transform:uppercase;letter-spacing:.08em}.order-meta strong{display:block;margin-top:5px;font-size:9px}.order-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:18px}.order-status{display:inline-flex;align-items:center;gap:7px;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}.order-status:before{content:"";width:7px;height:7px;border-radius:50%;background:#79ad10}.invoice-btn{height:34px;border:1px solid #dfe2e4;background:#fff;padding:0 11px;font-size:7.5px;font-weight:900;text-transform:uppercase}.invoice-btn:hover{background:#0b0d10;color:#fff}
 
-
-/* COMPROBANTE OFICIAL */
-.receipt-modal-card{width:min(820px,100%);padding:0;background:#f4f4f2}
-.receipt-loading{padding:64px 28px;text-align:center;color:#858b92;font-size:9px;line-height:1.7}
-.receipt-loading i{display:block;margin-bottom:12px;font-size:24px;color:#111}
-.receipt-sheet{background:#fff;color:#101216}
-.receipt-header{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;padding:28px 30px 24px;border-bottom:1px solid #e5e7e9;background:#090b0e;color:#fff}
-.receipt-brand{display:flex;align-items:center;gap:12px}.receipt-brand img{width:42px;height:42px;object-fit:contain;border-radius:10px}.receipt-brand b{display:block;font-size:13px;letter-spacing:-.03em}.receipt-brand span{display:block;margin-top:4px;color:#7e858d;font-size:7px;text-transform:uppercase;letter-spacing:.10em}
-.receipt-status{display:inline-flex;align-items:center;gap:7px;color:#fff;font-size:7px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.receipt-status:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--acid);box-shadow:0 0 0 5px rgba(183,255,52,.08)}
-.receipt-body{padding:28px 30px 30px}.receipt-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:24px}.receipt-title-row h3{margin:0;font-size:28px;letter-spacing:-.06em}.receipt-title-row p{margin:7px 0 0;color:#8a9097;font-size:8px;line-height:1.55}.receipt-number{text-align:right}.receipt-number span{display:block;color:#9aa0a7;font-size:6.8px;font-weight:900;text-transform:uppercase;letter-spacing:.10em}.receipt-number strong{display:block;margin-top:5px;font-size:10px}
-.receipt-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#e6e8ea;border:1px solid #e6e8ea;margin-top:24px}.receipt-meta div{background:#fafafa;padding:13px}.receipt-meta span{display:block;color:#9a9fa5;font-size:6.5px;text-transform:uppercase;letter-spacing:.08em}.receipt-meta strong{display:block;margin-top:5px;font-size:8.5px;line-height:1.35;word-break:break-word}
-.receipt-customer{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e6e8ea;border:1px solid #e6e8ea;border-top:0}.receipt-customer div{background:#fff;padding:13px}.receipt-customer span{display:block;color:#9a9fa5;font-size:6.5px;text-transform:uppercase;letter-spacing:.08em}.receipt-customer strong{display:block;margin-top:5px;font-size:8.5px;word-break:break-word}
-.receipt-items{margin-top:24px;border:1px solid #e1e4e6}.receipt-items-head,.receipt-item-row{display:grid;grid-template-columns:minmax(0,1fr) 70px 105px 105px;gap:0}.receipt-items-head{background:#f4f4f2;border-bottom:1px solid #e1e4e6;color:#8f959c;font-size:6.5px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.receipt-items-head span,.receipt-item-row>div{padding:11px 12px}.receipt-item-row{border-bottom:1px solid #eceef0}.receipt-item-row:last-child{border-bottom:0}.receipt-item-row>div+div{border-left:1px solid #eceef0}.receipt-item-name strong{display:block;font-size:9px}.receipt-item-name small{display:block;margin-top:4px;color:#92989f;font-size:7px}.receipt-item-value{font-size:8px;font-weight:800}
-.receipt-summary{width:min(360px,100%);margin:20px 0 0 auto;border-top:1px solid #dfe2e4}.receipt-summary-row{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:9px 0;border-bottom:1px solid #eceef0;color:#7f868d;font-size:8px}.receipt-summary-row strong{color:#111;font-size:8.5px}.receipt-summary-row.total{padding:13px 0;color:#111;font-weight:900;text-transform:uppercase;letter-spacing:.05em}.receipt-summary-row.total strong{font-size:20px;letter-spacing:-.05em}
-.receipt-verification{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;margin-top:24px;padding:15px 16px;border:1px solid #dfe2e4;background:#fafaf8}.receipt-verification b{display:block;font-size:8.5px}.receipt-verification p{margin:5px 0 0;color:#8a9097;font-size:7px;line-height:1.5}.receipt-code{text-align:right}.receipt-code span{display:block;color:#9a9fa5;font-size:6.5px;text-transform:uppercase;letter-spacing:.08em}.receipt-code strong{display:block;margin-top:4px;font-size:8px;letter-spacing:.06em}
-.receipt-note{margin:16px 0 0;color:#989da3;font-size:6.8px;line-height:1.6}.receipt-actions{display:flex;justify-content:flex-end;gap:8px;padding:16px 30px 22px;border-top:1px solid #e5e7e9;background:#fff}.receipt-actions button{height:38px;border:1px solid #dfe2e5;background:#fff;padding:0 14px;color:#111;font-size:7.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}.receipt-actions button.primary{background:#0a0c0f;border-color:#0a0c0f;color:#fff}.receipt-actions button.primary i{margin-right:6px}.receipt-actions button.primary:hover{background:var(--acid);border-color:var(--acid);color:#080a0c}
-.receipt-error{padding:54px 28px;text-align:center}.receipt-error i{font-size:28px}.receipt-error h4{margin:13px 0 7px;font-size:18px}.receipt-error p{max-width:430px;margin:0 auto;color:#858b92;font-size:8.5px;line-height:1.6}
-
 /* FOOTER */
 .account-trust{padding:64px 0;background:#fff}.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#e7e9ec;border:1px solid #e7e9ec}.trust-item{background:#fff;padding:20px}.trust-item i{display:block;color:#0b0d10;font-size:20px;margin-bottom:18px}.trust-item b{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.05em}.trust-item span{display:block;margin-top:6px;color:#8a9097;font-size:8px;line-height:1.5}
 footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171a1e}.footer-grid{display:flex;align-items:center;justify-content:space-between;gap:30px;font-size:9px}.footer-brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:900}.footer-brand img{width:32px;height:32px;border-radius:8px}.footer-links{display:flex;gap:18px}.footer-links a:hover{color:#fff}
@@ -143,27 +125,11 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
 .booking-payment{margin-top:18px;border-top:1px solid var(--line);padding-top:18px}.booking-payment-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:13px}.booking-payment-head span{color:#8a9097;font-size:8px}.booking-payment-head strong{font-size:18px}.booking-payment-lock{padding:14px;background:#f7f7f5;color:#838a92;font-size:8px;line-height:1.55}.paypal-shell{max-width:430px;margin:0 auto}.paypal-status{min-height:17px;margin-top:8px;text-align:center;color:#7f868e;font-size:8px}.paypal-status.error{color:#a7333f}.booking-success{display:none;padding:22px;border:1px solid #dce0e2;background:#fafaf8;text-align:center}.booking-success.show{display:block}.booking-success i{font-size:26px;color:#648f00}.booking-success h4{margin:10px 0 6px;font-size:16px}.booking-success p{margin:0;color:#7c838b;font-size:9px;line-height:1.6}
 
 .toast{bottom:max(24px,env(safe-area-inset-bottom,0px))}
-@media(min-width:721px){
-  #bookingModal{padding:32px clamp(24px,4vw,48px)}
-  #bookingModal .booking-modal-card{width:min(920px,calc(100vw - 64px));max-height:min(82vh,860px);margin-inline:auto;justify-self:center;align-self:center}
-}
 @media(max-width:720px){
   .account-hero{padding-top:0}.reservation-list{grid-template-columns:1fr}.remote-booking-grid{grid-template-columns:1fr}.remote-booking-benefits{grid-template-columns:1fr}.booking-head{padding:23px 20px 17px;flex-direction:column}.booking-body{padding:18px 20px 22px}.booking-hours{align-self:flex-start}.account-modal{padding:12px}.account-modal-card{padding:23px 18px}.booking-modal-card{padding:0}.sub-downloads{padding:0 14px 14px 95px}.reservations-section{padding:62px 0}.remote-code-form{grid-template-columns:1fr}.remote-code-form button{width:100%}
-  .receipt-header{padding:23px 20px 20px}.receipt-body{padding:22px 20px 24px}.receipt-title-row{flex-direction:column}.receipt-number{text-align:left}.receipt-meta{grid-template-columns:1fr 1fr}.receipt-customer{grid-template-columns:1fr}.receipt-items{overflow-x:auto}.receipt-items-head,.receipt-item-row{min-width:560px}.receipt-verification{grid-template-columns:1fr}.receipt-code{text-align:left}.receipt-actions{padding:14px 20px 18px}
   footer{background:#fff;color:#7e858d;border-top:1px solid var(--line)}.footer-brand{color:#0b0d10}.footer-links a:hover{color:#0b0d10}
 }
 @media(max-width:480px){.remote-guide-steps span{display:none}.remote-calendar-head{align-items:flex-start;flex-direction:column}.remote-weekend-urgent{font-size:8px;min-height:30px}.sub-downloads{padding-left:14px}.maintenance-state{grid-template-columns:1fr;margin:12px}.booking-payment-head{align-items:flex-start;flex-direction:column}.reservation-meta{grid-template-columns:1fr}}
-
-
-@media print{
-  body.receipt-printing{background:#fff!important}
-  body.receipt-printing>*:not(#receiptModal){display:none!important}
-  body.receipt-printing #receiptModal{position:static!important;display:block!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;background:#fff!important;padding:0!important}
-  body.receipt-printing #receiptModal .receipt-modal-card{width:100%!important;max-height:none!important;overflow:visible!important;border:0!important;box-shadow:none!important}
-  body.receipt-printing #receiptModal .account-modal-close,
-  body.receipt-printing #receiptModal .receipt-actions{display:none!important}
-  body.receipt-printing #receiptModal .receipt-sheet{break-inside:avoid}
-}
 
 </style>
 </head>
@@ -270,7 +236,7 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
   <section class="orders-section" id="pedidos">
     <div class="shell">
       <div class="section-head">
-        <div><div class="section-kicker">Historial</div><h2>Tus pedidos.</h2><p>Un registro limpio de tus compras, estado de pago y acceso a comprobantes.</p></div>
+        <div><div class="section-kicker">Historial</div><h2>Tus pedidos.</h2><p>Compras verificadas vinculadas a tu Dingloft ID.</p></div>
       </div>
       <div class="orders-grid" id="orders-grid">
         <div class="orders-empty"><strong>Cargando historial</strong>Estamos preparando tus pedidos verificados.</div>
@@ -307,16 +273,6 @@ footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171
     <div class="modal-actions">
       <button class="modal-btn" type="button" data-close-modal="profileModal">Cancelar</button>
       <button class="modal-btn primary" id="save-profile-btn" type="button">Guardar cambios</button>
-    </div>
-  </div>
-</div>
-
-
-<div class="account-modal" id="receiptModal" aria-hidden="true">
-  <div class="account-modal-card receipt-modal-card" role="dialog" aria-modal="true" aria-labelledby="receiptModalTitle">
-    <button class="account-modal-close" type="button" data-close-modal="receiptModal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
-    <div id="receipt-content">
-      <div class="receipt-loading"><i class="bi bi-receipt-cutoff"></i>Preparando tu comprobante verificado…</div>
     </div>
   </div>
 </div>
@@ -571,97 +527,10 @@ function renderOrders(orders){
   host.classList.toggle("single",orders.length===1);
   host.innerHTML=orders.map(order=>{
     const items=Array.isArray(order.items)?order.items:[];
-    const rawTotal=order.amountPaidUsd;
-    const total=(rawTotal===null||rawTotal===undefined||rawTotal==="")?NaN:Number(rawTotal);
-    const totalLabel=Number.isFinite(total)?money(total):"Pagado";
-    const paymentMethod=String(order.paymentMethod||"Pago verificado");
-    const title=items.length===1?esc(items[0]?.name||"Compra Dingloft"):`${items.length} productos Dingloft`;
-    return `<article class="order-card"><div class="order-top"><div><div class="order-id">Pedido ${esc(order.orderNumber||order.purchaseId||"Dingloft")}</div><h4>${title}</h4></div><div class="order-price">${esc(totalLabel)}</div></div><div class="order-meta"><div><span>Fecha</span><strong>${dateText(order.createdAt)}</strong></div><div><span>Productos</span><strong>${items.length} ${items.length===1?"artículo":"artículos"}</strong></div><div><span>Pago</span><strong>${esc(paymentMethod)}</strong></div></div><div class="order-foot"><span class="order-status">Completado</span><button class="invoice-btn" type="button" data-receipt-purchase="${esc(order.purchaseId||"")}" ${order.receiptAvailable===false?"disabled":""}>Ver comprobante</button></div></article>`;
+    const ready=String(order.fulfillmentStatus||"").toLowerCase()==="ready";
+    const status=String(order.paymentStatus||"paid").toLowerCase()==="paid"?"Pagado":"Confirmado";
+    return `<article class="order-card"><div class="order-top"><div><div class="order-id">Pedido ${esc(order.orderNumber||order.purchaseId||"Dingloft")}</div><h4>${items.length===1?esc(items[0]?.name||"Compra Dingloft"):`${items.length} productos Dingloft`}</h4></div><div class="order-price paid">${status}</div></div><div class="order-meta"><div><span>Fecha</span><strong>${dateText(order.createdAt)}</strong></div><div><span>Productos</span><strong>${items.length} ${items.length===1?"artículo":"artículos"}</strong></div><div><span>Acceso</span><strong>${ready?"Disponible":"Procesando"}</strong></div></div><div class="order-foot"><span class="order-status">Compra verificada</span><a class="invoice-btn" href="#descargas">Ver archivos</a></div></article>`;
   }).join("");
-}
-
-function receiptMoney(value,currency="USD"){
-  if(value===null||value===undefined||value==="")return "—";
-  const n=Number(value);
-  if(!Number.isFinite(n))return "—";
-  try{return new Intl.NumberFormat("en-US",{style:"currency",currency:String(currency||"USD").toUpperCase()}).format(n)}
-  catch(_){return `$${n.toFixed(2)}`}
-}
-function receiptSummaryRow(label,value,currency,extraClass=""){
-  const n=Number(value);
-  if(!Number.isFinite(n)||Math.abs(n)<0.005)return "";
-  return `<div class="receipt-summary-row ${extraClass}"><span>${esc(label)}</span><strong>${esc(receiptMoney(n,currency))}</strong></div>`;
-}
-function renderReceipt(receipt){
-  const host=$("#receipt-content");if(!host)return;
-  const items=Array.isArray(receipt?.items)?receipt.items:[];
-  const currency=String(receipt?.currency||"USD").toUpperCase();
-  const itemRows=items.length?items.map(item=>{
-    const unit=item.unitPriceUsd===null||item.unitPriceUsd===undefined?"Incluido":receiptMoney(item.unitPriceUsd,currency);
-    const total=item.lineTotalUsd===null||item.lineTotalUsd===undefined?"Incluido":receiptMoney(item.lineTotalUsd,currency);
-    return `<div class="receipt-item-row"><div class="receipt-item-name"><strong>${esc(item.name||"Producto Dingloft")}</strong><small>${esc(item.type||item.sku||"Producto digital")}</small></div><div class="receipt-item-value">${esc(item.quantity||1)}</div><div class="receipt-item-value">${esc(unit)}</div><div class="receipt-item-value">${esc(total)}</div></div>`;
-  }).join(""):'<div class="receipt-loading">No hay artículos para mostrar en este comprobante.</div>';
-
-  const discount=Number(receipt.discountUsd||0);
-  const coupon=receipt.couponCode?` · ${esc(receipt.couponCode)}`:"";
-  host.innerHTML=`<div class="receipt-sheet">
-    <div class="receipt-header">
-      <div class="receipt-brand"><img src="img/dingloft.png" alt="Dingloft"><div><b>Dingloft</b><span>Evolution Group</span></div></div>
-      <div class="receipt-status">${esc(receipt.statusLabel||"Pago verificado")}</div>
-    </div>
-    <div class="receipt-body">
-      <div class="receipt-title-row">
-        <div><h3 id="receiptModalTitle">Comprobante de compra</h3><p>Registro digital emitido desde tu cuenta Dingloft.</p></div>
-        <div class="receipt-number"><span>Comprobante</span><strong>${esc(receipt.receiptNumber||"—")}</strong></div>
-      </div>
-      <div class="receipt-meta">
-        <div><span>Pedido</span><strong>${esc(receipt.orderNumber||"—")}</strong></div>
-        <div><span>Fecha</span><strong>${dateText(receipt.createdAt)}</strong></div>
-        <div><span>Método</span><strong>${esc(receipt.paymentMethod||"Pago verificado")}</strong></div>
-        <div><span>Referencia</span><strong>${esc(receipt.transactionReference||"Referencia protegida")}</strong></div>
-      </div>
-      <div class="receipt-customer">
-        <div><span>Cliente</span><strong>${esc(receipt.customer?.name||"Cliente Dingloft")}</strong></div>
-        <div><span>Cuenta vinculada</span><strong>${esc(receipt.customer?.email||"—")}</strong></div>
-      </div>
-      <div class="receipt-items">
-        <div class="receipt-items-head"><span>Producto</span><span>Cant.</span><span>Precio</span><span>Total</span></div>
-        ${itemRows}
-      </div>
-      <div class="receipt-summary">
-        ${receiptSummaryRow("Subtotal",receipt.subtotalUsd,currency)}
-        ${discount>0?`<div class="receipt-summary-row"><span>Descuento${coupon}</span><strong>−${esc(receiptMoney(discount,currency))}</strong></div>`:""}
-        ${receiptSummaryRow("Asistencia remota",receipt.remoteAssistanceUsd,currency)}
-        ${receiptSummaryRow("Donación",receipt.donationUsd,currency)}
-        <div class="receipt-summary-row total"><span>Total pagado</span><strong>${esc(receiptMoney(receipt.totalPaidUsd,currency))}</strong></div>
-      </div>
-      <div class="receipt-verification">
-        <div><b>Comprobante verificado por Dingloft</b><p>La información de este documento fue validada contra el registro de compra asociado a tu cuenta.</p></div>
-        <div class="receipt-code"><span>Código de verificación</span><strong>${esc(receipt.verification?.code||"—")}</strong></div>
-      </div>
-      <p class="receipt-note">Este comprobante acredita el registro de una compra confirmada en Dingloft y no expone la referencia completa del proveedor de pago.</p>
-    </div>
-    <div class="receipt-actions">
-      <button type="button" data-close-modal="receiptModal">Cerrar</button>
-      <button class="primary" id="print-receipt-btn" type="button"><i class="bi bi-printer"></i> Imprimir / Guardar PDF</button>
-    </div>
-  </div>`;
-  $("#receipt-content")?.querySelector('[data-close-modal="receiptModal"]')?.addEventListener("click",()=>closeModal("receiptModal"));
-  $("#print-receipt-btn")?.addEventListener("click",()=>{document.body.classList.add("receipt-printing");window.print()});
-}
-async function openReceipt(purchaseId){
-  if(!currentUser||!purchaseId)return;
-  const host=$("#receipt-content");
-  if(host)host.innerHTML='<div class="receipt-loading"><i class="bi bi-receipt-cutoff"></i>Preparando tu comprobante verificado…</div>';
-  openModal("receiptModal");
-  try{
-    const data=await commerceApi(currentUser,`/me/receipt?purchaseId=${encodeURIComponent(purchaseId)}`);
-    renderReceipt(data.receipt||{});
-  }catch(error){
-    console.error("Dingloft receipt",error);
-    const maintenance=error?.code==="FIRESTORE_QUOTA_EXCEEDED"||error?.status===503;
-    if(host)host.innerHTML=`<div class="receipt-error"><i class="bi ${maintenance?"bi-tools":"bi-receipt"}"></i><h4>${maintenance?"Mantenimiento programado":"Comprobante no disponible"}</h4><p>${maintenance?"Estamos actualizando el acceso a tu historial. Tu compra permanece segura y podrás abrir el comprobante cuando finalice el mantenimiento.":"No pudimos abrir este comprobante en este momento. Inténtalo nuevamente desde tu historial de pedidos."}</p></div>`;
-  }
 }
 async function loadLibrary(user){
   const container=$("#downloads-container");
@@ -871,7 +740,6 @@ $("#downloads-container")?.addEventListener("click",event=>{
   const button=event.target.closest("[data-download-url]");if(!button)return;const url=String(button.dataset.downloadUrl||"");if(!url)return;toast(`Preparando la descarga de ${button.dataset.downloadName||"tu archivo"}…`);setTimeout(()=>{location.href=url},120);
 });
 $("#reservations-container")?.addEventListener("click",event=>{const btn=event.target.closest("[data-save-code]");if(btn)saveRemoteCode(btn.dataset.saveCode)});
-$("#orders-grid")?.addEventListener("click",event=>{const btn=event.target.closest("[data-receipt-purchase]");if(btn&&!btn.disabled)openReceipt(btn.dataset.receiptPurchase)});
 $("#edit-profile-btn")?.addEventListener("click",()=>{if(!currentUser)return;$("#profile-name-input").value=currentUser.displayName||currentUser.email?.split("@")[0]||"";$("#profile-modal-error").textContent="";openModal("profileModal");setTimeout(()=>$("#profile-name-input")?.focus(),80)});
 $("#save-profile-btn")?.addEventListener("click",async()=>{
   if(!currentUser)return;const input=$("#profile-name-input"),error=$("#profile-modal-error"),button=$("#save-profile-btn"),name=String(input.value||"").replace(/\s+/g," ").trim();
@@ -886,7 +754,6 @@ $("#open-booking-btn")?.addEventListener("click",openBooking);$("#new-booking-in
 $$('[data-close-modal]').forEach(btn=>btn.addEventListener("click",()=>closeModal(btn.dataset.closeModal)));
 $$('.account-modal').forEach(modal=>modal.addEventListener("pointerdown",event=>{if(event.target===modal)closeModal(modal.id)}));
 document.addEventListener("keydown",event=>{if(event.key==="Escape")$$('.account-modal.open').forEach(modal=>closeModal(modal.id))});
-window.addEventListener("afterprint",()=>document.body.classList.remove("receipt-printing"));
 $$('.tab-links a').forEach(link=>link.addEventListener("click",()=>{$$('.tab-links a').forEach(a=>a.classList.remove("active"));link.classList.add("active")}));
 initBookingControls();
 
@@ -898,6 +765,6 @@ onAuthStateChanged(auth,async user=>{
 });
 </script>
 <script type="module" src="/dingloft-customer-push.js?v=1"></script>
-<script type="module" src="/dingloft-support-account.js?v=25"></script>
+<script type="module" src="/dingloft-support-account.js?v=26"></script>
 </body>
 </html>
