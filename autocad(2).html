@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>AutoCAD 2026 | Dingloft</title>
+  <meta name="description" content="AutoCAD 2026 en Dingloft. Programa vitalicio, entrega digital y acceso desde tu cuenta.">
+  <link rel="icon" href="img/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="/dingloft-theme.js?v=2"></script>
+  <script src="/dingloft-cart-sync.js?v=120"></script>
+  <script src="/dingloft-global-nav.js?v=121" defer></script>
+  <script src="/mobile-shell-redirect.js?v=28"></script>
+  <style>
+    :root{
+      --ink:#f7f8fa;--muted:#b7bcc4;--paper:#f5f5f2;--white:#fff;--black:#050608;
+      --panel:#111315;--line:#2b2e32;--soft-line:#d9dde1;--red:#ee244d;--lime:#b7ff34;
+      --max:1380px;
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--paper);color:#15171a;overflow-x:hidden}
+    button,a{font:inherit}button{cursor:pointer}.shell{width:min(var(--max),calc(100% - 48px));margin:0 auto}
+
+    /* HERO */
+    .ac-hero{position:relative;isolation:isolate;min-height:720px;background:#050607;color:#fff;overflow:hidden}
+    .ac-hero:before{content:"";position:absolute;inset:0;z-index:-3;background:radial-gradient(circle at 79% 38%,rgba(84,108,118,.42),transparent 36%),linear-gradient(90deg,#050607 0 38%,#0a0d10 56%,#101619 100%)}
+    .ac-hero:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.98) 0%,rgba(0,0,0,.84) 29%,rgba(0,0,0,.28) 55%,rgba(0,0,0,.02) 76%),linear-gradient(0deg,rgba(0,0,0,.76),transparent 37%)}
+    .ac-grid-lines{position:absolute;inset:0;z-index:-2;opacity:.23;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(90deg,transparent 34%,#000 70%)}
+    .ac-hero-inner{min-height:720px;display:grid;grid-template-columns:minmax(0,.84fr) minmax(540px,1.16fr);align-items:center;gap:24px;padding:66px 0}
+    .ac-brandline{display:flex;align-items:center;gap:12px;font-size:15px;font-weight:800;margin-bottom:20px}.ac-a{width:34px;height:34px;display:grid;place-items:center;background:var(--red);font-size:21px;font-weight:900}
+    .ac-hero h1{max-width:760px;margin:0;font-size:clamp(48px,5.35vw,82px);line-height:1.01;letter-spacing:-.055em;font-weight:850}.ac-hero-copy{max-width:660px;margin:22px 0 0;color:rgba(255,255,255,.86);font-size:20px;line-height:1.55}
+    .ac-subcopy{margin-top:10px;color:#aeb6bd;font-size:13px}.ac-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}.ac-btn{min-height:54px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:0 24px;border-radius:3px;font-size:14px;font-weight:850;text-decoration:none;transition:.18s ease}.ac-btn.primary{border:1px solid #fff;background:#fff;color:#08090b}.ac-btn.primary:hover{background:var(--lime);border-color:var(--lime);transform:translateY(-2px)}.ac-btn.secondary{border:1px solid rgba(255,255,255,.68);background:transparent;color:#fff}.ac-btn.secondary:hover{background:#fff;color:#08090b}.ac-price{display:flex;align-items:end;gap:10px;margin-top:27px;color:#c4c9ce}.ac-price strong{color:#fff;font-size:31px;line-height:1}.ac-price span{font-size:12px}.ac-chip{display:inline-flex;align-items:center;margin-left:5px;padding:7px 9px;border:1px solid rgba(255,255,255,.28);font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+
+    .ac-scene{position:relative;min-height:590px;align-self:stretch;display:flex;align-items:center;justify-content:flex-end}
+    .ac-cad-window{position:relative;width:min(760px,100%);height:520px;border:1px solid rgba(255,255,255,.22);background:#151a1d;box-shadow:0 40px 95px rgba(0,0,0,.52);overflow:hidden;transform:perspective(1300px) rotateY(-4deg)}
+    .ac-cad-top{height:38px;display:flex;align-items:center;gap:7px;padding:0 13px;background:#22272b;border-bottom:1px solid #30363a}.ac-cad-top i{width:8px;height:8px;border-radius:50%;background:#646b70}.ac-cad-top b{margin-left:8px;color:#b7bdc2;font-size:10px;font-weight:600}
+    .ac-canvas{position:absolute;inset:38px 0 0;background:linear-gradient(155deg,#171d20 0 54%,#0f1416 54% 100%);overflow:hidden}
+    .ac-canvas:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(85,154,184,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(85,154,184,.1) 1px,transparent 1px);background-size:28px 28px}
+    .ac-canvas:after{content:"";position:absolute;left:7%;right:7%;bottom:15%;height:2px;background:rgba(255,78,78,.75);transform:rotate(-7deg);box-shadow:0 -145px 0 rgba(88,138,255,.46)}
+    .ac-plan{position:absolute;right:6%;top:7%;width:72%;height:78%;border:2px solid rgba(230,239,242,.72);clip-path:polygon(9% 4%,76% 4%,76% 12%,96% 12%,96% 64%,83% 64%,83% 91%,18% 91%,18% 81%,5% 81%,5% 31%,9% 31%)}
+    .ac-plan span{position:absolute;display:block;border:1px solid rgba(230,239,242,.62)}.ac-plan .r1{left:16%;top:15%;width:38%;height:31%}.ac-plan .r2{left:54%;top:15%;width:31%;height:31%}.ac-plan .r3{left:16%;top:46%;width:26%;height:32%}.ac-plan .r4{left:42%;top:46%;width:43%;height:32%}.ac-plan .door{left:52%;top:36%;width:34px;height:34px;border-radius:50%;border-left-color:transparent;border-bottom-color:transparent}
+    .ac-building{position:absolute;left:8%;bottom:8%;width:54%;height:57%;filter:drop-shadow(0 18px 26px rgba(0,0,0,.45))}.ac-building .face{position:absolute;left:8%;bottom:0;width:70%;height:62%;background:linear-gradient(135deg,#73838c,#2f3e45);border:2px solid #a4c6d6;transform:skewY(-3deg)}.ac-building .face:before{content:"";position:absolute;inset:13% 10%;background:repeating-linear-gradient(90deg,#1e3038 0 14%,#7ca4b6 14.5% 17%);border:1px solid #9fc4d4}.ac-building .wing{position:absolute;right:0;bottom:8%;width:38%;height:42%;background:#495960;border:2px solid #9fc4d4;transform:skewY(5deg)}.ac-building .roof{position:absolute;left:1%;top:21%;width:84%;height:13%;background:#29383f;border:2px solid #a2c1cf;transform:skewX(-18deg)}
+    .ac-box{position:absolute;right:0;bottom:4%;width:205px;z-index:5;filter:drop-shadow(0 26px 36px rgba(0,0,0,.55))}.ac-box img{display:block;width:100%;height:auto}.ac-scene-label{position:absolute;right:0;top:8%;z-index:5;padding:10px 14px;background:#fff;color:#101215;font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+
+    /* VALUE STRIP */
+    .ac-value-strip{background:#fff;border-bottom:1px solid var(--soft-line)}.ac-values{display:grid;grid-template-columns:repeat(4,1fr)}.ac-value{min-height:108px;padding:25px;border-left:1px solid var(--soft-line);display:flex;align-items:center;gap:14px}.ac-value:last-child{border-right:1px solid var(--soft-line)}.ac-value i{font-size:25px}.ac-value b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.06em}.ac-value span{display:block;margin-top:3px;color:#757d85;font-size:11px}
+
+    /* EDITORIAL SECTIONS */
+    .ac-section{padding:100px 0;background:var(--paper)}.ac-section.white{background:#fff}.ac-kicker{color:#7b828a;font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-bottom:15px}.ac-section h2{max-width:900px;margin:0;font-size:clamp(40px,5vw,72px);line-height:.98;letter-spacing:-.05em}.ac-lead{max-width:760px;margin:22px 0 0;color:#6d747c;font-size:17px;line-height:1.7}
+    .ac-feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}.ac-feature{min-height:300px;padding:28px;background:#fff;border:1px solid var(--soft-line);display:flex;flex-direction:column;justify-content:space-between}.ac-feature.dark{background:#121416;color:#fff;border-color:#121416}.ac-feature i{font-size:36px}.ac-feature .num{font-size:10px;font-weight:900;letter-spacing:.12em;color:#8a9198}.ac-feature h3{margin:22px 0 10px;font-size:25px;letter-spacing:-.035em}.ac-feature p{margin:0;color:#747c84;font-size:14px;line-height:1.6}.ac-feature.dark p{color:#b4bac0}
+
+    .ac-showcase{display:grid;grid-template-columns:.92fr 1.08fr;min-height:560px;background:#131719;color:#fff}.ac-showcase-copy{padding:76px max(48px,calc((100vw - 1240px)/2));padding-right:54px}.ac-showcase-copy .ac-kicker{color:#aeb5bb}.ac-showcase-copy h2{font-size:clamp(42px,4.3vw,66px)}.ac-showcase-copy p{max-width:600px;color:#c1c6cb;font-size:16px;line-height:1.75}.ac-showcase-art{position:relative;overflow:hidden;background:linear-gradient(145deg,#62737b,#20292d)}.ac-showcase-art:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:42px 42px}.ac-showcase-art svg{position:absolute;inset:7% 6%;width:88%;height:86%}
+
+    /* PURCHASE */
+    .ac-buy{padding:92px 0;background:#090a0c;color:#fff}.ac-buy-head{display:flex;justify-content:space-between;align-items:end;gap:30px}.ac-buy-head h2{margin:0;font-size:clamp(42px,4.5vw,68px);letter-spacing:-.05em}.ac-buy-head p{max-width:500px;margin:0;color:#abb2b9;line-height:1.6}.ac-packages{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:42px}.ac-package{position:relative;min-height:380px;padding:30px;border:1px solid #50545a;background:#000;display:flex;flex-direction:column}.ac-package.popular{border-color:#fff}.ac-package-badge{position:absolute;right:18px;top:18px;padding:7px 9px;background:var(--lime);color:#080a0c;font-size:9px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}.ac-package .small{color:#9da4ab;font-size:11px;text-transform:uppercase;letter-spacing:.08em}.ac-package h3{margin:15px 0 8px;font-size:27px;letter-spacing:-.035em}.ac-package .price{margin:15px 0 5px;font-size:42px;font-weight:850}.ac-package .price span{font-size:13px;color:#9ca3a9;font-weight:500}.ac-package ul{list-style:none;margin:22px 0 28px;padding:0;display:grid;gap:11px;color:#c3c7cb;font-size:13px}.ac-package li:before{content:"✓";margin-right:9px;color:var(--lime);font-weight:900}.ac-package-actions{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:9px}.ac-package button{min-height:46px;border:1px solid #fff;background:#fff;color:#090a0c;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}.ac-package button.secondary{background:transparent;color:#fff}.ac-package button:hover{background:var(--lime);border-color:var(--lime);color:#090a0c}
+
+    .ac-note{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.ac-note-card{padding:28px;background:#fff;border:1px solid var(--soft-line)}.ac-note-card b{font-size:14px}.ac-note-card p{margin:10px 0 0;color:#737b83;font-size:13px;line-height:1.65}
+
+    .toast{position:fixed;right:24px;bottom:24px;z-index:2147483000;transform:translateY(120px);padding:13px 17px;border:1px solid rgba(183,255,52,.4);background:#10150c;color:#efffd4;font-size:12px;box-shadow:0 18px 45px rgba(0,0,0,.25);transition:.22s ease}.toast.show{transform:translateY(0)}
+
+    @media(max-width:1050px){.ac-hero-inner{grid-template-columns:1fr;min-height:auto;padding:70px 0 30px}.ac-scene{min-height:470px}.ac-cad-window{height:440px;transform:none}.ac-values{grid-template-columns:1fr 1fr}.ac-showcase{grid-template-columns:1fr}.ac-showcase-copy{padding:70px 36px}.ac-showcase-art{min-height:440px}}
+    @media(max-width:760px){.shell{width:min(100% - 28px,var(--max))}.ac-hero{min-height:0}.ac-hero-inner{padding:54px 0 30px}.ac-hero h1{font-size:48px}.ac-hero-copy{font-size:16px}.ac-actions{display:grid;grid-template-columns:1fr}.ac-btn{width:100%}.ac-price{align-items:center;flex-wrap:wrap}.ac-scene{min-height:350px}.ac-cad-window{height:320px}.ac-box{width:120px}.ac-scene-label{font-size:8px}.ac-values{grid-template-columns:1fr 1fr}.ac-value{min-height:88px;padding:16px}.ac-section{padding:70px 0}.ac-feature-grid{grid-template-columns:1fr}.ac-feature{min-height:230px}.ac-showcase-copy{padding:62px 20px}.ac-showcase-art{min-height:330px}.ac-buy{padding:70px 0}.ac-buy-head{display:block}.ac-buy-head p{margin-top:14px}.ac-packages{grid-template-columns:1fr}.ac-package-actions{grid-template-columns:1fr}.ac-note{grid-template-columns:1fr}}
+    @media(max-width:480px){.ac-hero h1{font-size:41px}.ac-brandline{font-size:13px}.ac-cad-window{height:275px}.ac-box{width:96px}.ac-canvas:after{display:none}.ac-values{grid-template-columns:1fr}.ac-value:last-child{border-right:0}.ac-section h2,.ac-buy-head h2{font-size:39px}}
+  </style>
+</head>
+<body>
+  <main>
+    <section class="ac-hero">
+      <div class="ac-grid-lines"></div>
+      <div class="shell ac-hero-inner">
+        <div>
+          <div class="ac-brandline"><span class="ac-a">A</span><span>AutoCAD 2026</span></div>
+          <h1>Dibujo técnico y diseño CAD con precisión profesional.</h1>
+          <p class="ac-hero-copy">Trabaja planos, documentación y geometría 2D/3D en un entorno preparado para arquitectura, ingeniería y diseño técnico.</p>
+          <p class="ac-subcopy">Entrega digital desde Dingloft · acceso vinculado a tu cuenta.</p>
+          <div class="ac-actions">
+            <button class="ac-btn primary btn-buy-now" data-id="14" data-sku="autocad-2026" data-name="AutoCAD 2026" data-price="35" data-img="autocad" data-type="Licencia vitalicia"><i class="bi bi-lightning-charge-fill"></i> Comprar ahora</button>
+            <button class="ac-btn secondary btn-add-cart" data-id="14" data-sku="autocad-2026" data-name="AutoCAD 2026" data-price="35" data-img="autocad" data-type="Licencia vitalicia"><i class="bi bi-bag-plus"></i> Añadir al carrito</button>
+          </div>
+          <div class="ac-price"><strong>$35.00</strong><span>USD · entrega digital</span><span class="ac-chip">Programa vitalicio</span></div>
+        </div>
+        <div class="ac-scene" aria-hidden="true">
+          <div class="ac-cad-window">
+            <div class="ac-cad-top"><i></i><i></i><i></i><b>Proyecto arquitectónico · AutoCAD 2026</b></div>
+            <div class="ac-canvas">
+              <div class="ac-plan"><span class="r1"></span><span class="r2"></span><span class="r3"></span><span class="r4"></span><span class="door"></span></div>
+              <div class="ac-building"><div class="face"></div><div class="wing"></div><div class="roof"></div></div>
+            </div>
+          </div>
+          <div class="ac-scene-label">CAD 2D + 3D</div>
+          <div class="ac-box"><img src="img/autocad.png" alt=""></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ac-value-strip">
+      <div class="shell ac-values">
+        <div class="ac-value"><i class="bi bi-infinity"></i><div><b>Programa vitalicio</b><span>Sin pago mensual</span></div></div>
+        <div class="ac-value"><i class="bi bi-cloud-arrow-down"></i><div><b>Entrega digital</b><span>Desde tu cuenta Dingloft</span></div></div>
+        <div class="ac-value"><i class="bi bi-shield-check"></i><div><b>Compra protegida</b><span>Validada por el Worker</span></div></div>
+        <div class="ac-value"><i class="bi bi-headset"></i><div><b>Dingloft Care</b><span>Asistencia remota opcional</span></div></div>
+      </div>
+    </section>
+
+    <section class="ac-section white" id="herramientas">
+      <div class="shell">
+        <div class="ac-kicker">Herramientas para proyectos exigentes</div>
+        <h2>Del plano inicial a la documentación final.</h2>
+        <p class="ac-lead">Organiza el dibujo técnico, revisa detalles y desarrolla documentación en un flujo CAD pensado para trabajo profesional.</p>
+        <div class="ac-feature-grid">
+          <article class="ac-feature"><span class="num">01 · DIBUJO</span><div><i class="bi bi-bounding-box-circles"></i><h3>Precisión 2D</h3><p>Desarrolla geometría, anotaciones, cotas y planos con una estructura clara para documentación técnica.</p></div></article>
+          <article class="ac-feature dark"><span class="num">02 · MODELO</span><div><i class="bi bi-box"></i><h3>Entorno 3D</h3><p>Combina dibujo y visualización espacial para revisar propuestas, componentes y relaciones de proyecto.</p></div></article>
+          <article class="ac-feature"><span class="num">03 · ENTREGA</span><div><i class="bi bi-file-earmark-check"></i><h3>Documentación</h3><p>Centraliza información de proyecto y prepara entregables con una presentación consistente y profesional.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ac-showcase">
+      <div class="ac-showcase-copy">
+        <div class="ac-kicker">Un entorno para revisar y construir</div>
+        <h2>Visualiza decisiones antes de llevarlas a obra.</h2>
+        <p>La composición está inspirada en la claridad de las páginas profesionales de software CAD, pero mantiene el lenguaje visual propio de Dingloft.</p>
+      </div>
+      <div class="ac-showcase-art" aria-hidden="true">
+        <svg viewBox="0 0 900 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M75 430L208 310L349 349L472 238L672 276L814 151" stroke="#D9F1FA" stroke-width="3"/>
+          <path d="M77 430V226L207 166V310L77 430Z" stroke="#D9F1FA" stroke-width="3"/>
+          <path d="M208 310V166L350 219V349" stroke="#89C5DC" stroke-width="3"/>
+          <path d="M350 349V219L472 156V238" stroke="#D9F1FA" stroke-width="3"/>
+          <path d="M472 238V156L671 206V276" stroke="#89C5DC" stroke-width="3"/>
+          <path d="M672 276V206L814 111V151" stroke="#D9F1FA" stroke-width="3"/>
+          <path d="M141 402V259L207 230L275 255V326" stroke="#6EA9BF" stroke-width="2"/>
+          <path d="M520 251V191L600 211V263" stroke="#6EA9BF" stroke-width="2"/>
+          <path d="M75 430L75 458L349 390L672 316L814 190" stroke="#EE244D" stroke-width="2" opacity=".8"/>
+          <circle cx="472" cy="238" r="7" fill="#B7FF34"/>
+        </svg>
+      </div>
+    </section>
+
+    <section class="ac-buy" id="comprar">
+      <div class="shell">
+        <div class="ac-buy-head"><div><div class="ac-kicker">Compra en Dingloft</div><h2>Elige cómo quieres trabajar.</h2></div><p>Compra AutoCAD por separado o combina AutoCAD + SketchUp en un solo pedido. El checkout valida el precio final antes de cobrar.</p></div>
+        <div class="ac-packages">
+          <article class="ac-package popular">
+            <span class="ac-package-badge">Más completo</span><span class="small">Combo profesional</span><h3>SketchUp 2026 + AutoCAD 2026</h3><div class="price">$50.00 <span>USD</span></div>
+            <ul><li>AutoCAD 2026</li><li>SketchUp Pro 2026</li><li>Entrega digital</li><li>Acceso desde tu cuenta</li></ul>
+            <div class="ac-package-actions"><button class="btn-buy-now" data-id="16" data-sku="sketchup-2026-autocad-2026" data-name="SketchUp 2026 & AutoCAD 2026" data-price="50" data-img="combo" data-type="Licencia vitalicia">Comprar ahora</button><button class="secondary btn-add-cart" data-id="16" data-sku="sketchup-2026-autocad-2026" data-name="SketchUp 2026 & AutoCAD 2026" data-price="50" data-img="combo" data-type="Licencia vitalicia">Añadir al carrito</button></div>
+          </article>
+          <article class="ac-package"><span class="small">AutoCAD individual</span><h3>AutoCAD 2026</h3><div class="price">$35.00 <span>USD</span></div>
+            <ul><li>Programa vitalicio</li><li>Entrega digital</li><li>Compra asociada a tu cuenta</li><li>Dingloft Care opcional</li></ul>
+            <div class="ac-package-actions"><button class="btn-buy-now" data-id="14" data-sku="autocad-2026" data-name="AutoCAD 2026" data-price="35" data-img="autocad" data-type="Licencia vitalicia">Comprar ahora</button><button class="secondary btn-add-cart" data-id="14" data-sku="autocad-2026" data-name="AutoCAD 2026" data-price="35" data-img="autocad" data-type="Licencia vitalicia">Añadir al carrito</button></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ac-section">
+      <div class="shell">
+        <div class="ac-kicker">Antes de comprar</div><h2>Todo queda vinculado a tu cuenta Dingloft.</h2>
+        <div class="ac-note"><div class="ac-note-card"><b>Descargas y compras</b><p>Después de una compra confirmada, el acceso se gestiona desde Cuenta. Los enlaces de entrega son autorizados por el Worker.</p></div><div class="ac-note-card"><b>Instalación asistida</b><p>Si necesitas acompañamiento, puedes agregar Dingloft Care desde Checkout y programar fecha y horario de asistencia.</p></div></div>
+      </div>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status">Producto añadido al carrito.</div>
+
+  <script>
+  (()=>{
+    const toast=document.getElementById('toast');
+    const showToast=(msg)=>{if(!toast)return;toast.textContent=msg;toast.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(()=>toast.classList.remove('show'),2200)};
+    const itemFromButton=button=>({
+      id:button.dataset.id||button.dataset.sku,
+      sku:button.dataset.sku||button.dataset.id,
+      name:button.dataset.name,
+      price:Number(button.dataset.price||0),
+      img:button.dataset.img||'autocad',
+      cover:button.dataset.cover||'',
+      type:button.dataset.type||'Licencia vitalicia',qty:1,quantity:1
+    });
+    const commitItem=button=>{
+      const incoming=itemFromButton(button);
+      let cart=window.DingloftCartSync?.read?.()||[];
+      cart=window.DingloftCartSync?window.DingloftCartSync.addOrMerge(cart,incoming):cart;
+      if(!window.DingloftCartSync&&!cart.some(x=>String(x.sku||x.id)===String(incoming.sku)))cart.push(incoming);
+      if(window.DingloftCartSync?.write)cart=window.DingloftCartSync.write(cart,true);else{localStorage.setItem('dingloft_cart',JSON.stringify(cart));window.dispatchEvent(new CustomEvent('dingloft:cart-change',{detail:{items:cart}}));}
+      return incoming;
+    };
+    const notify=(button,item)=>{const r=button.getBoundingClientRect();const sourceRect={left:r.left,top:r.top,width:r.width,height:r.height};try{if(window.parent&&window.parent!==window)window.parent.postMessage({type:'dingloft:cart-added',item,sourceRect},location.origin);else window.DingloftGlobalNav?.notifyCart?.(item,sourceRect)}catch(_){}};
+    const goCheckout=()=>{try{if(window.parent&&window.parent!==window){window.parent.postMessage({type:'dingloft:global-navigate',href:'checkout.html'},location.origin);return}}catch(_){}if(window.DingloftGlobalNav?.navigate){window.DingloftGlobalNav.navigate('checkout.html');return}location.href='checkout.html'};
+    document.querySelectorAll('.btn-add-cart').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();const item=commitItem(btn);notify(btn,item);showToast(`${item.name} añadido al carrito.`)}));
+    document.querySelectorAll('.btn-buy-now').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();commitItem(btn);goCheckout()}));
+  })();
+  </script>
+  <script type="module" src="/dingloft-commerce.js?v=2.2.0"></script>
+  <script src="/dingloft-ui-guard.js?v=58"></script>
+</body>
+</html>
