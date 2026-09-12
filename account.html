@@ -864,7 +864,17 @@ function initBookingControls(){
 }
 
 function openBooking(){resetBooking();openModal("bookingModal")}
-function openSupport(){const trigger=document.getElementById("dlSupportLaunch");if(trigger){trigger.click();return}location.href="account.html?support=1#soporte"}
+window.DingloftAccountOpenBooking=openBooking;
+function consumeRemoteBookingDeepLink(){
+  const params=new URLSearchParams(location.search);
+  if(params.get("booking")!=="1")return false;
+  params.delete("booking");
+  const qs=params.toString();
+  history.replaceState(null,"",`${location.pathname}${qs?`?${qs}`:""}#reservas`);
+  setTimeout(openBooking,120);
+  return true;
+}
+function openSupport(){try{if(window.parent&&window.parent!==window){window.parent.postMessage({type:"dingloft:open-support"},location.origin);return}}catch(_){}const trigger=document.getElementById("dlSupportLaunch");if(trigger){trigger.click();return}location.href="account.html?support=1#soporte"}
 
 $("#downloads-container")?.addEventListener("click",event=>{
   const toggle=event.target.closest(".bundle-toggle");if(toggle){const bundle=toggle.closest(".bundle-container"),open=bundle.classList.toggle("open");toggle.setAttribute("aria-expanded",String(open));return}
@@ -895,9 +905,16 @@ onAuthStateChanged(auth,async user=>{
   currentUser=user;syncProfileUI(user);revealAccount();
   syncAllowedProfile(user);syncAdminState(user);
   await Promise.allSettled([loadLibrary(user),loadReservations(user)]);
+  consumeRemoteBookingDeepLink();
 });
 </script>
 <script type="module" src="/dingloft-customer-push.js?v=1"></script>
-<script type="module" src="/dingloft-support-account.js?v=29"></script>
+<script type="module">
+// El shell global es el único dueño del chat cuando Cuenta está embebida.
+// En carga directa de /cuenta sí montamos el chat local.
+if (window.self === window.top) {
+  import('/dingloft-support-account.js?v=31');
+}
+</script>
 </body>
 </html>

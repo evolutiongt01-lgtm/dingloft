@@ -1,4 +1,4 @@
-/* Dingloft Support · Customer realtime chat · v3.5 · Premium welcome + free-hours rest mode + cached remote reservation */
+/* Dingloft Support · Customer realtime chat · v3.7 · Miami hours + reservation gate + persistent countdown + zero-blur backdrop */
 import { getApps, getApp, initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, doc, getDocs, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -17,7 +17,7 @@ const auth=getAuth(app),db=getFirestore(app);
 const WORKER=String(window.DINGLOFT_WORKER_BASE||"https://autumn-breeze-dfa0.evolutiongt01.workers.dev").replace(/\/$/,"");
 const MAX_IMAGES=3,MAX_IMAGE_BYTES=5*1024*1024,MAX_TEXT=2000,TYPING_THROTTLE=5000,TYPING_IDLE=8000;
 const REMOTE_CACHE_POSITIVE_MS=15*60*1000,REMOTE_CACHE_EMPTY_MS=90*1000,REMOTE_QUERY_LIMIT=8;
-const FREE_SUPPORT_TIME_ZONE="America/Guatemala",FREE_SUPPORT_OPEN_HOUR=10,FREE_SUPPORT_CLOSE_HOUR=20,FREE_SUPPORT_CLOCK_MS=30*1000;
+const FREE_SUPPORT_TIME_ZONE="America/New_York",FREE_SUPPORT_OPEN_HOUR=10,FREE_SUPPORT_CLOSE_HOUR=20,FREE_SUPPORT_CLOCK_MS=30*1000;
 const SUPPORT_AVATARS={"Tony Bac":"/img/tony-bac.webp","Cesar Matzar":"/img/cesar-matzar.webp","Evolution Group":"/img/evolution-group.webp"};
 const PARAMS=new URLSearchParams(location.search);
 const AUTO_OPEN=PARAMS.get("support")==="1"||PARAMS.get("supportFeedback")==="1";
@@ -44,12 +44,27 @@ function freeSupportClock(date=new Date()){
   const values={};for(const part of FREE_CLOCK_FORMATTER.formatToParts(date)){if(part.type!=="literal")values[part.type]=Number(part.value)}
   return {year:values.year||0,month:values.month||0,day:values.day||0,hour:values.hour||0,minute:values.minute||0,second:values.second||0};
 }
+function zonedWallTimeToUtc(year,month,day,hour,minute=0,second=0){
+  const desired=Date.UTC(year,month-1,day,hour,minute,second);
+  let guess=desired;
+  for(let i=0;i<4;i++){
+    const c=freeSupportClock(new Date(guess));
+    const represented=Date.UTC(c.year,c.month-1,c.day,c.hour,c.minute,c.second);
+    const delta=desired-represented;
+    guess+=delta;
+    if(Math.abs(delta)<1000)break;
+  }
+  return guess;
+}
 function freeSupportState(){
   const now=Date.now(),c=freeSupportClock(new Date(now)),open=c.hour>=FREE_SUPPORT_OPEN_HOUR&&c.hour<FREE_SUPPORT_CLOSE_HOUR;
-  const addDay=c.hour>=FREE_SUPPORT_CLOSE_HOUR?1:0;
-  // Guatemala remains UTC-6 year-round. 10:00 GT = 16:00 UTC.
-  const nextOpen=Date.UTC(c.year,c.month-1,c.day+addDay,FREE_SUPPORT_OPEN_HOUR+6,0,0);
-  return {open,nextOpen,diffMs:Math.max(0,nextOpen-now),hour:c.hour,minute:c.minute};
+  let y=c.year,m=c.month,d=c.day;
+  if(c.hour>=FREE_SUPPORT_CLOSE_HOUR){
+    const tomorrow=new Date(Date.UTC(y,m-1,d+1));
+    y=tomorrow.getUTCFullYear();m=tomorrow.getUTCMonth()+1;d=tomorrow.getUTCDate();
+  }
+  const nextOpen=zonedWallTimeToUtc(y,m,d,FREE_SUPPORT_OPEN_HOUR,0,0);
+  return {open,nextOpen,diffMs:open?0:Math.max(0,nextOpen-now),hour:c.hour,minute:c.minute,timeZone:FREE_SUPPORT_TIME_ZONE};
 }
 function freeSupportCountdown(ms){
   const total=Math.max(0,Math.ceil(Number(ms||0)/60000)),hours=Math.floor(total/60),mins=total%60;
@@ -138,12 +153,12 @@ function inject(){
   style.id="dlSupportStyle";
   style.textContent=`
   .dl-support-root{position:relative;z-index:95;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#111827}
-  .dl-support-backdrop{position:fixed;inset:0;border:0;padding:0;margin:0;background:rgba(2,6,12,.58);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:993;opacity:0;visibility:hidden;pointer-events:none;cursor:default;transition:opacity .22s ease,visibility 0s linear .34s}.dl-support-root.panel-open .dl-support-backdrop{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .24s ease,visibility 0s}
+  .dl-support-backdrop{position:fixed;inset:0;border:0;padding:0;margin:0;background:rgba(2,6,12,.20);backdrop-filter:none;-webkit-backdrop-filter:none;z-index:993;opacity:0;visibility:hidden;pointer-events:none;cursor:default;transition:opacity .22s ease,visibility 0s linear .34s}.dl-support-root.panel-open .dl-support-backdrop{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .24s ease,visibility 0s}
   .dl-support-launch{position:fixed;right:24px;bottom:24px;width:54px;height:54px;border-radius:18px;border:1px solid rgba(15,23,42,.12);background:#fff;color:#111827;display:none;place-items:center;font-size:21px;box-shadow:0 16px 46px rgba(0,0,0,.28),0 1px 0 rgba(255,255,255,.8) inset;z-index:995;transition:transform .18s ease,box-shadow .18s ease;cursor:pointer}
   .dl-support-launch:hover{transform:translateY(-2px);box-shadow:0 20px 52px rgba(0,0,0,.32)}.dl-support-launch.show{display:grid}.dl-support-root.panel-open .dl-support-launch{opacity:0;pointer-events:none;transform:translateY(8px)}
   .dl-support-badge{position:absolute;right:-4px;top:-4px;min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:#111827;color:#fff;border:2px solid #fff;display:none;place-items:center;font-size:9px;font-weight:900}.dl-support-badge.show{display:grid}
-  .dl-support-panel{position:fixed;right:28px;top:94px;bottom:auto;width:min(400px,calc(100vw - 40px));height:min(610px,calc(100dvh - 122px));border:1px solid rgba(15,23,42,.10);background:rgba(255,255,255,.985);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:24px;box-shadow:0 26px 80px rgba(0,0,0,.27);z-index:994;display:grid;grid-template-rows:auto auto 1fr;overflow:hidden;color:#111827;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(12px) scale(.975);transform-origin:100% 20%;will-change:transform,opacity;transition:opacity .20s ease,transform .26s cubic-bezier(.4,0,1,1),visibility 0s linear .28s}.dl-support-panel.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1);transition:opacity .22s ease,transform .42s cubic-bezier(.16,1,.3,1),visibility 0s}.dl-support-root.desktop-shell .dl-support-panel{top:150px;height:min(590px,calc(100dvh - 176px))}
-  .dl-support-root.feedback-cinema{--cinema-accent:#ffd166}.dl-support-root.feedback-cinema .dl-support-backdrop{background:radial-gradient(circle at calc(100% - 220px) 48%,color-mix(in srgb,var(--cinema-accent) 32%,transparent),transparent 40%),rgba(2,6,12,.78);backdrop-filter:blur(19px) saturate(1.18);-webkit-backdrop-filter:blur(19px) saturate(1.18);transition:background .62s ease,opacity .24s ease}.dl-support-root.feedback-cinema .dl-support-panel{border-color:color-mix(in srgb,var(--cinema-accent) 42%,rgba(15,23,42,.10));box-shadow:0 30px 95px rgba(0,0,0,.44),0 0 36px color-mix(in srgb,var(--cinema-accent) 36%,transparent),0 0 100px color-mix(in srgb,var(--cinema-accent) 18%,transparent);transition:opacity .22s ease,transform .42s cubic-bezier(.16,1,.3,1),visibility 0s,border-color .55s ease,box-shadow .62s ease}.dl-support-root.feedback-cinema .dl-support-chat-view{background:linear-gradient(180deg,color-mix(in srgb,var(--cinema-accent) 7%,#fff),#fff 38%);transition:background .6s ease}
+  .dl-support-panel{position:fixed;right:28px;top:94px;bottom:auto;width:min(400px,calc(100vw - 40px));height:min(610px,calc(100dvh - 122px));border:1px solid rgba(15,23,42,.10);background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none;border-radius:24px;box-shadow:0 26px 80px rgba(0,0,0,.27);z-index:994;display:grid;grid-template-rows:auto auto 1fr;overflow:hidden;color:#111827;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(12px) scale(.975);transform-origin:100% 20%;will-change:transform,opacity;transition:opacity .20s ease,transform .26s cubic-bezier(.4,0,1,1),visibility 0s linear .28s}.dl-support-panel.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1);transition:opacity .22s ease,transform .42s cubic-bezier(.16,1,.3,1),visibility 0s}.dl-support-root.desktop-shell .dl-support-panel{top:150px;height:min(590px,calc(100dvh - 176px))}
+  .dl-support-root.feedback-cinema{--cinema-accent:#ffd166}.dl-support-root.feedback-cinema .dl-support-backdrop{background:radial-gradient(circle at calc(100% - 220px) 48%,color-mix(in srgb,var(--cinema-accent) 32%,transparent),transparent 40%),rgba(2,6,12,.78);backdrop-filter:none;-webkit-backdrop-filter:none;transition:background .62s ease,opacity .24s ease}.dl-support-root.feedback-cinema .dl-support-panel{border-color:color-mix(in srgb,var(--cinema-accent) 42%,rgba(15,23,42,.10));box-shadow:0 30px 95px rgba(0,0,0,.44),0 0 36px color-mix(in srgb,var(--cinema-accent) 36%,transparent),0 0 100px color-mix(in srgb,var(--cinema-accent) 18%,transparent);transition:opacity .22s ease,transform .42s cubic-bezier(.16,1,.3,1),visibility 0s,border-color .55s ease,box-shadow .62s ease}.dl-support-root.feedback-cinema .dl-support-chat-view{background:linear-gradient(180deg,color-mix(in srgb,var(--cinema-accent) 7%,#fff),#fff 38%);transition:background .6s ease}
   .dl-support-head{padding:16px 16px 13px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #edf0f3;background:#fff}
   .dl-support-headcopy{min-width:0;flex:1}.dl-support-headcopy b{display:block;color:#101828;font-size:15px;font-weight:850;letter-spacing:-.02em}.dl-support-headcopy small{display:flex;align-items:center;gap:5px;color:#7a8492;font-size:10.5px;margin-top:3px}.dl-support-headcopy small i{font-size:10px;color:#64748b}
   .dl-support-close{width:36px;height:36px;border:1px solid #edf0f3;border-radius:12px;background:#f7f8fa;color:#596474;cursor:pointer}.dl-support-close:hover{background:#eef1f4;color:#111827}
@@ -191,7 +206,7 @@ function inject(){
     /* Mobile: soporte se comporta como una vista nativa a pantalla completa.
        Cubre el contenido de Cuenta y el dock para que nada del fondo se mueva o se asome. */
     .dl-support-root.panel-open{position:fixed;inset:0;z-index:2147483000;pointer-events:none}
-    .dl-support-root.panel-open .dl-support-backdrop{z-index:2147483001;pointer-events:auto;background:rgba(2,6,12,.58);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+    .dl-support-root.panel-open .dl-support-backdrop{z-index:2147483001;pointer-events:auto;background:rgba(2,6,12,.20);backdrop-filter:none;-webkit-backdrop-filter:none}
     .dl-support-root.panel-open.feedback-cinema .dl-support-backdrop{background:radial-gradient(circle at 50% 44%,color-mix(in srgb,var(--cinema-accent) 42%,transparent),transparent 62%),rgba(2,6,12,.84)!important}.dl-support-root.feedback-cinema .dl-support-panel{border-color:var(--cinema-accent)!important;box-shadow:0 26px 80px rgba(0,0,0,.45),0 0 30px color-mix(in srgb,var(--cinema-accent) 55%,transparent),0 0 85px color-mix(in srgb,var(--cinema-accent) 28%,transparent)!important}.dl-support-root.feedback-cinema .dl-support-messages{background:linear-gradient(180deg,color-mix(in srgb,var(--cinema-accent) 12%,#fff),#fff 52%)!important;transition:background .5s ease}.dl-feedback-slider{height:52px;margin:-8px 0;touch-action:none!important}.dl-feedback-slider::-webkit-slider-runnable-track{height:11px}.dl-feedback-slider::-webkit-slider-thumb{width:32px;height:32px;margin-top:-10.5px;border-width:6px}
     .dl-support-panel{left:6px!important;right:6px!important;top:6px!important;bottom:6px!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;border:1px solid rgba(15,23,42,.10)!important;border-radius:30px!important;box-shadow:0 28px 90px rgba(0,0,0,.34),0 1px 0 rgba(255,255,255,.72) inset!important;z-index:2147483002!important;overscroll-behavior:contain;pointer-events:none;background:#fff;transform:translateY(34px) scale(.965);transform-origin:50% 100%;opacity:0;visibility:hidden;transition:opacity .18s ease,transform .25s cubic-bezier(.4,0,1,1),visibility 0s linear .28s}
     .dl-support-panel.open{pointer-events:auto;opacity:1;visibility:visible;transform:translateY(0) scale(1);transition:opacity .22s ease,transform .46s cubic-bezier(.16,1,.3,1),visibility 0s}
@@ -233,13 +248,13 @@ function inject(){
           </div>
           <button class="dl-support-choice team" id="dlSupportTeamChoice" type="button"><span class="dl-support-choice-badge">Gratis</span><span class="dl-support-choice-icon">${supportIconTeam()}</span><span class="dl-support-choice-copy"><b>Hablar con alguien del equipo</b><span class="desc">Compras, descargas, licencias y consultas generales.</span><span class="dl-support-choice-meta" id="dlSupportFreeState" data-free-state>Disponible ahora</span></span><span class="dl-support-choice-arrow"><i class="bi bi-arrow-up-right"></i></span></button>
           <button class="dl-support-choice remote" id="dlSupportRemoteChoice" type="button"><span class="dl-support-choice-badge">Reserva</span><span class="dl-support-choice-icon">${supportIconRemote()}</span><span class="dl-support-choice-copy"><b>Instalación remota</b><span class="desc">Tu sesión pagada, cronómetro y código de conexión en un mismo lugar.</span><span class="dl-support-choice-meta">Disponible según tu reserva</span></span><span class="dl-support-choice-arrow"><i class="bi bi-arrow-up-right"></i></span></button>
-          <div class="dl-support-rest-card" id="dlSupportRestCard"><div class="dl-support-rest-visual"><span class="dl-support-rest-moon"></span><span class="dl-support-rest-z z1">Z</span><span class="dl-support-rest-z z2">z</span></div><div class="dl-support-rest-copy"><b>El equipo está descansando.</b><span>La atención gratuita está disponible de 10:00 AM a 8:00 PM, hora de Guatemala. Las sesiones remotas pagadas siguen disponibles según su reserva.</span><span class="dl-support-rest-countdown" id="dlSupportRestCountdown"></span></div></div>
+          <div class="dl-support-rest-card" id="dlSupportRestCard"><div class="dl-support-rest-visual"><span class="dl-support-rest-moon"></span><span class="dl-support-rest-z z1">Z</span><span class="dl-support-rest-z z2">z</span></div><div class="dl-support-rest-copy"><b>El equipo está descansando.</b><span>La atención gratuita está disponible de 10:00 AM a 8:00 PM, hora de Miami, Florida, EE. UU. Las sesiones remotas pagadas siguen disponibles según su reserva.</span><span class="dl-support-rest-countdown" id="dlSupportRestCountdown"></span></div></div>
           <div class="dl-support-welcome-note"><i class="bi bi-shield-check"></i>Conversación privada vinculada únicamente a tu cuenta Dingloft.</div>
           <button class="dl-support-welcome-link" id="dlSupportWelcomeExperiences" type="button">Ver experiencias de clientes</button>
         </div>
       </div>
       <div class="dl-support-view dl-support-chat-view" id="dlSupportViewChat">
-        <div class="dl-support-rest-gate" id="dlSupportRestGate"><div class="gate-moon"></div><small>Modo descanso</small><h4>Volvemos a las 10:00 AM.</h4><p>El chat gratuito está cerrado entre 8:00 PM y 10:00 AM, hora de Guatemala. Si tienes una instalación remota pagada, puedes entrar desde la opción de reserva.</p><strong id="dlSupportRestGateCountdown">Horario protegido</strong><button id="dlSupportRestBack" type="button"><i class="bi bi-arrow-left"></i> Volver a opciones</button></div>
+        <div class="dl-support-rest-gate" id="dlSupportRestGate"><div class="gate-moon"></div><small>Modo descanso</small><h4>Volvemos a las 10:00 AM.</h4><p>El chat gratuito está cerrado entre 8:00 PM y 10:00 AM, hora de Miami, Florida, EE. UU. Si tienes una instalación remota pagada, puedes entrar desde la opción de reserva.</p><strong id="dlSupportRestGateCountdown">Horario protegido</strong><button id="dlSupportRestBack" type="button"><i class="bi bi-arrow-left"></i> Volver a opciones</button></div>
         <div class="dl-support-context-wrap">
           <div class="dl-support-backbar"><button class="dl-support-back" id="dlSupportBack" type="button"><i class="bi bi-arrow-left"></i> Volver</button><span class="dl-support-mode-label" id="dlSupportModeLabel">Soporte</span></div>
           <div class="dl-support-context"><select id="dlSupportProduct" aria-label="Compra relacionada"><option value="">Selecciona una compra (opcional)</option></select></div>
@@ -275,7 +290,7 @@ function inject(){
   document.getElementById("dlSupportClose").addEventListener("click",()=>togglePanel(false));
   document.getElementById("dlSupportBackdrop").addEventListener("click",()=>togglePanel(false));
   document.getElementById("dlSupportTeamChoice")?.addEventListener("click",()=>enterSupportMode("team"));
-  document.getElementById("dlSupportRemoteChoice")?.addEventListener("click",()=>enterSupportMode("remote"));
+  document.getElementById("dlSupportRemoteChoice")?.addEventListener("click",handleRemoteReservationChoice);
   document.getElementById("dlSupportBack")?.addEventListener("click",showWelcome);
   document.getElementById("dlSupportWelcomeExperiences")?.addEventListener("click",async()=>{await ensureSupportReady();switchTab("experiences")});
   document.getElementById("dlSupportRestBack")?.addEventListener("click",showWelcome);
@@ -344,7 +359,38 @@ function showWelcome(){
   document.getElementById("dlSupportTabChat")?.classList.add("active");document.getElementById("dlSupportTabExperiences")?.classList.remove("active");
   updateSupportScheduleUI();
 }
-async function enterSupportMode(mode){
+async function handleRemoteReservationChoice(){
+  const button=document.getElementById("dlSupportRemoteChoice");
+  if(button?.classList.contains("is-checking"))return;
+  button?.classList.add("is-checking");
+  const meta=button?.querySelector(".dl-support-choice-meta"),previous=meta?.textContent||"Disponible según tu reserva";
+  if(meta)meta.textContent="Verificando tu reserva…";
+  try{
+    // Reservation lookup happens only after this explicit click and reuses the local UID cache.
+    const reservation=await loadPaidRemoteReservation();
+    if(!reservation){
+      if(meta)meta.textContent="No tienes una reserva pagada activa";
+      setTimeout(()=>{
+        togglePanel(false);
+        if(typeof window.DingloftAccountOpenBooking==="function"){window.DingloftAccountOpenBooking();return}
+        const target="/cuenta?booking=1#reservas";
+        try{if(window.DingloftGlobalNav?.navigate){window.DingloftGlobalNav.navigate(target);return}}catch(_){}
+        location.assign(target);
+      },260);
+      return;
+    }
+    if(meta)meta.textContent="Reserva confirmada · abriendo sesión";
+    await enterSupportMode("remote",{reservationChecked:true});
+  }catch(error){
+    console.warn("Dingloft remote reservation gate",error);
+    if(meta)meta.textContent="No pudimos verificar tu reserva";
+  }finally{
+    button?.classList.remove("is-checking");
+    if(meta&&meta.textContent==="Verificando tu reserva…")meta.textContent=previous;
+  }
+}
+
+async function enterSupportMode(mode,{reservationChecked=false}={}){
   const root=document.getElementById("dlSupportRoot"),p=document.getElementById("dlSupportPanel");if(!root||!p)return;
   if(mode!=="remote"&&!freeSupportState().open){showWelcome();updateSupportScheduleUI();const card=document.getElementById("dlSupportRestCard");card?.animate?.([{transform:"scale(1)"},{transform:"scale(1.018)"},{transform:"scale(1)"}],{duration:460,easing:"cubic-bezier(.16,1,.3,1)"});return}
   supportMode=mode==="remote"?"remote":"team";root.classList.remove("welcome-mode");root.classList.toggle("remote-mode",supportMode==="remote");
@@ -352,8 +398,11 @@ async function enterSupportMode(mode){
   document.getElementById("dlSupportTabChat")?.classList.add("active");document.getElementById("dlSupportTabExperiences")?.classList.remove("active");
   const label=document.getElementById("dlSupportModeLabel");if(label)label.textContent=supportMode==="remote"?"Instalación remota":"Atención del equipo";
   const note=document.getElementById("dlSupportStatusNote");if(note)note.textContent=supportMode==="remote"?"Buscando tu reserva pagada…":"Conectando con el equipo Dingloft…";
+  if(supportMode==="remote"){
+    if(!reservationChecked){if(!remoteReservation)remoteReservationLoaded=false;await loadPaidRemoteReservation()}
+    if(!remoteReservation){showWelcome();handleRemoteReservationChoice();return}
+  }
   const ready=await ensureSupportReady();if(!ready||!p.classList.contains("open"))return;
-  if(supportMode==="remote"){if(!remoteReservation)remoteReservationLoaded=false;await loadPaidRemoteReservation();}
   startBaseListeners();startConversationListeners();markRead();renderRemoteSession();renderMessages(lastMessages);
   if(note){
     if(supportMode==="remote")note.textContent=remoteReservation?"Canal privado para tu instalación remota. El cronómetro usa la fecha y hora exactas de tu reserva.":"No encontramos una reserva pagada activa. Puedes hablar con el equipo o reservar una sesión desde tu cuenta.";
@@ -453,12 +502,13 @@ async function loadPaidRemoteReservation({force=false}={}){
   }catch(error){console.warn("Dingloft remote reservation",error);remoteReservation=null;remoteReservationLoaded=true;return null}
   finally{remoteReservationLoading=false}
 }
-function remoteReservationEmpty(){return `<div class="dl-remote-empty"><i class="bi bi-calendar2-check"></i><div><b>No hay una reserva pagada activa</b><span>Cuando completes el pago de una sesión, el cronómetro aparecerá aquí automáticamente según la fecha y hora que elegiste.</span><a href="/account.html#reservations">Reservar una instalación remota</a></div></div>`}
+function remoteReservationEmpty(){return `<div class="dl-remote-empty"><i class="bi bi-calendar2-check"></i><div><b>No hay una reserva pagada activa</b><span>Te llevaremos a Cuenta para elegir fecha y hora.</span><a href="/cuenta?booking=1#reservas">Reservar una instalación remota</a></div></div>`}
 function remoteDate(value){const d=value?.toDate?value.toDate():new Date(value);return d&&!isNaN(d)?d:null}
 function countdownLabel(value,status){
   if(status==="completed")return "Completada";if(status==="cancelled")return "Cancelada";
-  const d=remoteDate(value);if(!d)return "Programada";const diff=d.getTime()-Date.now();
-  if(diff<=0)return "Lista para comenzar";const total=Math.floor(diff/1000),days=Math.floor(total/86400),hours=Math.floor(total%86400/3600),mins=Math.floor(total%3600/60),secs=total%60;
+  const d=remoteDate(value);if(!d)return "Fecha por confirmar";const diff=d.getTime()-Date.now();
+  if(diff<=0){const elapsed=Math.max(0,Math.floor((-diff)/1000)),hours=Math.floor(elapsed/3600),mins=Math.floor(elapsed%3600/60),secs=elapsed%60;return `EN CURSO · +${String(hours).padStart(2,"0")}:${String(mins).padStart(2,"0")}:${String(secs).padStart(2,"0")}`}
+  const total=Math.floor(diff/1000),days=Math.floor(total/86400),hours=Math.floor(total%86400/3600),mins=Math.floor(total%3600/60),secs=total%60;
   return days?`${days}d ${hours}h ${mins}m`:`${String(hours).padStart(2,"0")}:${String(mins).padStart(2,"0")}:${String(secs).padStart(2,"0")}`;
 }
 function renderRemoteSession(){

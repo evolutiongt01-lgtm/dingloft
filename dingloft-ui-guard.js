@@ -123,12 +123,26 @@
     if(/^\/(?:admin|admin\.html|commerce-admin|commerce-admin\.html)(?:\/|$)/i.test(location.pathname))return;
     // The top-level persistent shell owns the chat. Embedded pages must never
     // create another copy, otherwise every route change would remount it.
-    if (window.self !== window.top || document.querySelector('script[data-dingloft-global-support]')) return;
+    if (window.self !== window.top || document.getElementById('dlSupportRoot') || document.querySelector('script[data-dingloft-global-support],script[src*="dingloft-support-account.js"]')) return;
     if (!document.querySelector('link[data-dingloft-support-icons],link[href*="bootstrap-icons"]')) {
       const icons=document.createElement('link');icons.rel='stylesheet';icons.href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css';icons.dataset.dingloftSupportIcons='1';document.head.appendChild(icons);
     }
-    const script=document.createElement('script');script.type='module';script.src='/dingloft-support-account.js?v=29';script.dataset.dingloftGlobalSupport='29';document.head.appendChild(script);
+    const script=document.createElement('script');script.type='module';script.src='/dingloft-support-account.js?v=31';script.dataset.dingloftGlobalSupport='31';document.head.appendChild(script);
   }
+
+  function openGlobalSupportFromChild(){
+    loadGlobalSupport();
+    let tries=0;
+    const timer=setInterval(()=>{
+      const trigger=document.getElementById('dlSupportLaunch');
+      if(trigger){clearInterval(timer);trigger.click();return}
+      if(++tries>=20)clearInterval(timer);
+    },50);
+  }
+  addEventListener('message',event=>{
+    if(event.origin!==location.origin||event.data?.type!=='dingloft:open-support')return;
+    openGlobalSupportFromChild();
+  });
 
   // v71: mobile header/nav are loaded directly by each customer page from
   // /dingloft-mobile-nav-v71.js. UI Guard no longer creates, positions or bootstraps navigation.
