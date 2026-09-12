@@ -366,6 +366,8 @@ function showView(name){
   const active=document.querySelector(`.mobile-admin-nav button[data-view="${currentAdminView}"]`);active?.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
   window.dispatchEvent(new CustomEvent('dingloft:admin-view',{detail:{view:currentAdminView}}));
   if(currentAdminView==='ghosts')startGhostAutoRefresh();else stopGhostAutoRefresh();
+  // Cambiar de sección no debe arrastrar avisos de otra vista.
+  renderSyncHealth();
   loadViewData(currentAdminView,false).catch(e=>{console.error('Admin view load',e);renderSyncHealth()});
   decorateMobileTables();
 }
@@ -374,7 +376,33 @@ document.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>showView(b.dat
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>$(b.dataset.close).classList.remove('show'));document.querySelectorAll('.modal').forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove('show')});
 const loadErrors={};const adminDataReady=new Set();const adminDataLoading=new Map();let currentAdminView="dashboard";
 async function guardedLoad(key,fn){try{await fn();adminDataReady.add(key);delete loadErrors[key];return{key,ok:true}}catch(error){loadErrors[key]=error;console.error(`[Admin ${key}]`,error);return{key,ok:false,error}}}
-function renderSyncHealth(){const box=$('adminSyncHealth');if(!box)return;const entries=Object.entries(loadErrors);if(!entries.length){box.classList.remove('show','auth');return}box.classList.add('show');const authProblem=entries.some(([,e])=>Number(e?.status)===401||Number(e?.status)===403);box.classList.toggle('auth',authProblem);$('adminSyncTitle').textContent=authProblem?'El servidor rechazó parte del panel':'Algunos módulos no pudieron sincronizar';$('adminSyncText').textContent=entries.map(([k,e])=>`${({products:'Productos',dualTrial:'Prueba gratis Dual Legend',multitracks:'Multitracks',orders:'Pedidos',customers:'Clientes',presence:'Presencia',reviews:'Reseñas',reservations:'Reservas'}[k]||k)}: ${e?.message||'error'}`).join(' · ');$('adminSyncHint').textContent=authProblem?'Si estás usando matzarcesar01@hotmail.com, confirma que el servidor desplegado también tenga ese correo en ADMIN_EMAILS. Los demás módulos seguirán cargando por separado.':'El panel ya no se pone todo en cero por un solo fallo. Pulsa Actualizar para reintentar.'}
+function syncErrorKeysForView(view=currentAdminView){
+  const map={
+    dashboard:['products','orders'],
+    orders:['orders'],
+    finance:['orders'],
+    products:['products','dualTrial'],
+    multitracks:['multitracks'],
+    customers:['orders','customers'],
+    ghosts:['presence'],
+    reviews:['reviews'],
+    reservations:['reservations'],
+    support:[]
+  };
+  return map[String(view||'dashboard')]||[];
+}
+function renderSyncHealth(){
+  const box=$('adminSyncHealth');if(!box)return;
+  const relevant=new Set(syncErrorKeysForView());
+  const entries=Object.entries(loadErrors).filter(([key])=>relevant.has(key));
+  if(!entries.length){box.classList.remove('show','auth');return}
+  box.classList.add('show');
+  const authProblem=entries.some(([,e])=>Number(e?.status)===401||Number(e?.status)===403);
+  box.classList.toggle('auth',authProblem);
+  $('adminSyncTitle').textContent=authProblem?'El servidor rechazó esta sección':'Esta sección no pudo sincronizar';
+  $('adminSyncText').textContent=entries.map(([k,e])=>`${({products:'Productos',dualTrial:'Prueba gratis Dual Legend',multitracks:'Multitracks',orders:'Pedidos',customers:'Clientes',presence:'Presencia',reviews:'Reseñas',reservations:'Reservas'}[k]||k)}: ${e?.message||'error'}`).join(' · ');
+  $('adminSyncHint').textContent=authProblem?'Tu sesión sigue activa; pulsa Actualizar para reintentar esta sección.':'Pulsa Actualizar para reintentar únicamente esta sección.';
+}
 async function runOnce(key,fn,force=false){
   if(!force&&adminDataReady.has(key))return;
   if(adminDataLoading.has(key))return adminDataLoading.get(key);
