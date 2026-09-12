@@ -1,15 +1,14 @@
-/* Dingloft Presence v49 · live presence + anonymous ghost session analytics
-   - Approximate geolocation comes from Cloudflare request.cf on the Worker.
-   - Raw IP is never stored.
-   - Active duration is approximate and counts visible/heartbeat time only.
+/* Dingloft Presence v56 · Durable Objects + WebSocket Hibernation
+   - Live presence no longer uses Firestore.
+   - No periodic presence heartbeat.
+   - Approximate location is resolved by Cloudflare; raw IP is never stored.
 */
-const DINGLOFT_PRESENCE_WORKER = 'https://autumn-breeze-dfa0.evolutiongt01.workers.dev';
-const DINGLOFT_PRESENCE_INTERVAL = 120_000;
-const DINGLOFT_PRESENCE_MIN_GAP = 20_000;
+const DINGLOFT_COMMERCE_BACKEND = 'https://autumn-breeze-dfa0.evolutiongt01.workers.dev';
+const DINGLOFT_PRESENCE_SERVICE = 'https://dingloft-presence-live.evolutiongt01.workers.dev';
+const DINGLOFT_ACCOUNT_REVIEW_INTERVAL = 5 * 60_000;
 const DINGLOFT_PRESENCE_SESSION_TTL = 30 * 60_000;
 const DINGLOFT_VISITOR_KEY = 'dingloft_presence_visitor';
 const DINGLOFT_SESSION_KEY = 'dingloft_presence_session';
-const DINGLOFT_LAST_KEY = 'dingloft_presence_last_ping';
 
 function safeStorageGet(key){ try{return localStorage.getItem(key)||''}catch(_){return ''} }
 function safeStorageSet(key,value){ try{localStorage.setItem(key,value)}catch(_){} }
@@ -65,7 +64,7 @@ function presenceClientInfo(){
 function presencePath(){ return `${location.pathname}${location.search}`.slice(0,500) }
 function isInfrastructurePage(){
   const p=(location.pathname||'').toLowerCase();
-  return /\/(?:launch|desktop-shell|app)\.html$/.test(p);
+  return /\/(?:launch|desktop-shell|app)(?:\.html)?\/?$/.test(p);
 }
 async function presenceFirebaseToken(){
   try{
@@ -88,60 +87,111 @@ async function presenceFirebaseToken(){
     return user ? await user.getIdToken(false) : '';
   }catch(_){return ''}
 }
+function presencePayload(){
+  const info=presenceClientInfo();
+  return {
+    visitorId:presenceVisitorId(),
+    sessionId:presenceSessionId(),
+    path:presencePath(),
+    title:(document.title||'Dingloft').slice(0,180),
+    referrer:(document.referrer||'').slice(0,500),
+    device:info.device,
+    browser:info.browser,
+    os:info.os,
+    standalone:matchMedia('(display-mode: standalone)').matches||navigator.standalone===true,
+    language:(navigator.language||'').slice(0,30),
+    visible:document.visibilityState==='visible'
+  };
+}
 
-let presenceBusy=false;
-let lastPathSent='';
-async function dingloftPresencePing(reason='heartbeat',force=false,{anonymousFast=false}={}){
-  if(navigator.onLine===false || isInfrastructurePage()) return;
-  const now=Date.now(), path=presencePath();
-  if(!force){
-    const last=Number(safeStorageGet(DINGLOFT_LAST_KEY)||0);
-    if(now-last<DINGLOFT_PRESENCE_MIN_GAP && path===lastPathSent)return;
+let presenceSocket=null;
+let presenceReconnectTimer=0;
+let presenceReconnectDelay=1200;
+let presencePageClosing=false;
+let presenceIdentifyBusy=false;
+
+function presenceWsUrl(){
+  const p=presencePayload();
+  const u=new URL('/presence/ws',DINGLOFT_PRESENCE_SERVICE);
+  u.protocol=u.protocol==='https:'?'wss:':'ws:';
+  Object.entries(p).forEach(([k,v])=>u.searchParams.set(k,typeof v==='boolean'?(v?'1':'0'):String(v??'')));
+  return u.toString();
+}
+function presenceSocketOpen(){return presenceSocket&&presenceSocket.readyState===WebSocket.OPEN}
+function clearPresenceReconnect(){if(presenceReconnectTimer){clearTimeout(presenceReconnectTimer);presenceReconnectTimer=0}}
+function schedulePresenceReconnect(){
+  if(presencePageClosing||document.visibilityState!=='visible'||navigator.onLine===false||isInfrastructurePage())return;
+  clearPresenceReconnect();
+  const wait=Math.min(15_000,presenceReconnectDelay);
+  presenceReconnectTimer=setTimeout(()=>connectPresenceSocket(),wait);
+  presenceReconnectDelay=Math.min(15_000,Math.round(presenceReconnectDelay*1.7));
+}
+async function identifyPresence(){
+  if(presenceIdentifyBusy||navigator.onLine===false)return false;
+  presenceIdentifyBusy=true;
+  try{
+    const token=await presenceFirebaseToken();
+    if(!token)return false;
+    const payload=presencePayload();
+    const c=new AbortController(),timer=setTimeout(()=>c.abort(),6000);
+    try{
+      const r=await fetch(`${DINGLOFT_PRESENCE_SERVICE}/presence/identify`,{
+        method:'POST',
+        headers:{authorization:`Bearer ${token}`,'content-type':'application/json'},
+        body:JSON.stringify(payload),cache:'no-store',signal:c.signal
+      });
+      return r.ok;
+    }finally{clearTimeout(timer)}
+  }catch(_){return false}
+  finally{presenceIdentifyBusy=false}
+}
+function sendPresenceEvent(type='event'){
+  touchSession();
+  if(!presenceSocketOpen()){
+    if(document.visibilityState==='visible')connectPresenceSocket();
+    return;
   }
-  if(presenceBusy && !anonymousFast)return;
-  if(!anonymousFast)presenceBusy=true;
+  try{
+    presenceSocket.send(JSON.stringify({
+      type,
+      path:presencePath(),
+      title:(document.title||'Dingloft').slice(0,180),
+      visible:document.visibilityState==='visible'
+    }));
+  }catch(_){}
+}
+function connectPresenceSocket(){
+  if(isInfrastructurePage()||navigator.onLine===false||document.visibilityState!=='visible')return;
+  if(presenceSocket&&[WebSocket.OPEN,WebSocket.CONNECTING].includes(presenceSocket.readyState))return;
+  presencePageClosing=false;
+  clearPresenceReconnect();
   touchSession();
   try{
-    const headers={'content-type':'application/json'};
-    if(!anonymousFast){
-      const token=await presenceFirebaseToken();
-      if(token)headers.authorization=`Bearer ${token}`;
-    }
-    const clientInfo=presenceClientInfo();
-    const payload={
-      visitorId:presenceVisitorId(),
-      sessionId:presenceSessionId(),
-      path,
-      title:(document.title||'Dingloft').slice(0,180),
-      referrer:(document.referrer||'').slice(0,500),
-      device:clientInfo.device,
-      browser:clientInfo.browser,
-      os:clientInfo.os,
-      standalone:matchMedia('(display-mode: standalone)').matches||navigator.standalone===true,
-      language:(navigator.language||'').slice(0,30),
-      reason:String(reason||'heartbeat').slice(0,40),
-      visible:document.visibilityState==='visible',
-      clientAt:new Date().toISOString()
-    };
-    const controller=new AbortController();
-    const timer=setTimeout(()=>controller.abort(),6500);
-    await fetch(`${DINGLOFT_PRESENCE_WORKER}/presence/heartbeat`,{
-      method:'POST',headers,body:JSON.stringify(payload),signal:controller.signal,cache:'no-store',keepalive:true
+    const ws=new WebSocket(presenceWsUrl());
+    presenceSocket=ws;
+    ws.addEventListener('open',()=>{
+      if(presenceSocket!==ws)return;
+      presenceReconnectDelay=1200;
+      sendPresenceEvent('visible');
+      identifyPresence().then(ok=>{if(!ok)setTimeout(()=>{if(presenceSocket===ws&&presenceSocketOpen())identifyPresence()},2500)});
     });
-    clearTimeout(timer);
-    safeStorageSet(DINGLOFT_LAST_KEY,String(Date.now()));
-    lastPathSent=path;
-  }catch(_){
-    // Analytics must never block navigation, checkout, downloads or audio.
-  }finally{if(!anonymousFast)presenceBusy=false}
+    ws.addEventListener('close',()=>{
+      if(presenceSocket===ws)presenceSocket=null;
+      schedulePresenceReconnect();
+    });
+    ws.addEventListener('error',()=>{
+      try{ws.close()}catch(_){}
+    });
+  }catch(_){schedulePresenceReconnect()}
 }
-
-function fastClose(reason){
-  if(navigator.onLine===false || isInfrastructurePage())return;
-  // A no-auth keepalive still closes the existing session because sessionId/visitorId are stable.
-  dingloftPresencePing(reason,true,{anonymousFast:true});
+function closePresenceSocket(reason='close'){
+  clearPresenceReconnect();
+  const ws=presenceSocket;
+  presenceSocket=null;
+  if(!ws)return;
+  try{if(ws.readyState===WebSocket.OPEN)ws.send(JSON.stringify({type:'hidden',path:presencePath(),title:(document.title||'Dingloft').slice(0,180),visible:false,reason}))}catch(_){}
+  try{ws.close(1000,String(reason).slice(0,60))}catch(_){}
 }
-
 
 // Account Review Gate v46 · universal for every signed-in Dingloft page.
 const DINGLOFT_ACCOUNT_REVIEW_MESSAGE='Tu cuenta está temporalmente en revisión. Hemos recibido un reporte relacionado con una transacción o posible actividad irregular y nuestro equipo está verificando la información. Durante esta revisión, el acceso a la cuenta y a sus funciones permanece suspendido.';
@@ -150,21 +200,28 @@ function injectAccountReviewStyle(){if(document.getElementById('dlAccountReviewS
 function showAccountReview(data={}){injectAccountReviewStyle();document.documentElement.style.overflow='hidden';document.body.style.overflow='hidden';let el=document.getElementById('dlAccountReview');if(!el){el=document.createElement('div');el.id='dlAccountReview';document.body.appendChild(el)}const msg=String(data.message||DINGLOFT_ACCOUNT_REVIEW_MESSAGE).replace(/[<>]/g,'');el.innerHTML=`<div class="dl-review-card"><div class="dl-review-logo"><img src="/img/pwa-liquid-rounded-192-v17.png" alt="Dingloft"></div><div class="dl-review-kicker">Dingloft · Seguridad de cuenta</div><h1 class="dl-review-title">Cuenta en revisión</h1><p class="dl-review-text">${msg}</p><div class="dl-review-status">Durante esta revisión no se puede acceder a compras, biblioteca, checkout ni generar nuevas descargas.</div><button class="dl-review-btn" id="dlReviewLogout" type="button">Cerrar sesión</button><div class="dl-review-brand">Evolution Group</div></div>`;document.getElementById('dlReviewLogout').onclick=logoutReviewedAccount}
 function clearAccountReview(){document.getElementById('dlAccountReview')?.remove();document.documentElement.style.overflow='';document.body.style.overflow=''}
 async function logoutReviewedAccount(){try{const [{getApps,initializeApp},{getAuth,signOut}]=await Promise.all([import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'),import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js')]);const firebaseConfig={apiKey:'AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA',authDomain:'login-dingloft.firebaseapp.com',projectId:'login-dingloft',storageBucket:'login-dingloft.firebasestorage.app',messagingSenderId:'549466738202',appId:'1:549466738202:web:8bf305fe2c753e9d76cba3'};const app=getApps()[0]||initializeApp(firebaseConfig);await signOut(getAuth(app))}catch(_){}location.replace('/login.html?account_review=1')}
-async function checkAccountReview(force=false){if(accountGateBusy||navigator.onLine===false)return;const now=Date.now();if(!force&&now-accountGateLast<300000)return;accountGateBusy=true;accountGateLast=now;try{const token=await presenceFirebaseToken();if(!token){clearAccountReview();return}const c=new AbortController(),timer=setTimeout(()=>c.abort(),6000);const r=await fetch(`${DINGLOFT_PRESENCE_WORKER}/me/account-status`,{headers:{authorization:`Bearer ${token}`},cache:'no-store',signal:c.signal});clearTimeout(timer);const d=await r.json().catch(()=>({}));if(r.ok&&d.blocked)showAccountReview(d);else if(r.ok)clearAccountReview()}catch(_){}finally{accountGateBusy=false}}
+async function checkAccountReview(force=false){if(accountGateBusy||navigator.onLine===false)return;const now=Date.now();if(!force&&now-accountGateLast<300000)return;accountGateBusy=true;accountGateLast=now;try{const token=await presenceFirebaseToken();if(!token){clearAccountReview();return}const c=new AbortController(),timer=setTimeout(()=>c.abort(),6000);const r=await fetch(`${DINGLOFT_COMMERCE_BACKEND}/me/account-status`,{headers:{authorization:`Bearer ${token}`},cache:'no-store',signal:c.signal});clearTimeout(timer);const d=await r.json().catch(()=>({}));if(r.ok&&d.blocked)showAccountReview(d);else if(r.ok)clearAccountReview()}catch(_){}finally{accountGateBusy=false}}
 
 function startPresence(){
   if(isInfrastructurePage()) return;
-  dingloftPresencePing('open',true);
+  if(document.visibilityState==='visible')connectPresenceSocket();
   checkAccountReview(true);
-  setInterval(()=>{if(document.visibilityState==='visible'){dingloftPresencePing('heartbeat');checkAccountReview(false)}},DINGLOFT_PRESENCE_INTERVAL);
-  addEventListener('online',()=>{dingloftPresencePing('online',true);checkAccountReview(true)});
-  addEventListener('pageshow',()=>dingloftPresencePing('pageshow',true));
-  addEventListener('popstate',()=>setTimeout(()=>dingloftPresencePing('route',true),0));
+  setInterval(()=>{if(document.visibilityState==='visible')checkAccountReview(false)},DINGLOFT_ACCOUNT_REVIEW_INTERVAL);
+  addEventListener('online',()=>{presencePageClosing=false;connectPresenceSocket();checkAccountReview(true)});
+  addEventListener('offline',()=>closePresenceSocket('offline'));
+  addEventListener('pageshow',()=>{presencePageClosing=false;connectPresenceSocket();sendPresenceEvent('route')});
+  addEventListener('popstate',()=>setTimeout(()=>sendPresenceEvent('route'),0));
   document.addEventListener('visibilitychange',()=>{
-    if(document.visibilityState==='visible'){dingloftPresencePing('visible',true);checkAccountReview(true)}
-    else fastClose('hidden');
+    if(document.visibilityState==='visible'){
+      presencePageClosing=false;
+      connectPresenceSocket();
+      sendPresenceEvent('visible');
+      checkAccountReview(true);
+    } else {
+      sendPresenceEvent('hidden');
+    }
   });
-  addEventListener('pagehide',()=>fastClose('pagehide'));
-  addEventListener('beforeunload',()=>fastClose('unload'));
+  addEventListener('pagehide',()=>{presencePageClosing=true;closePresenceSocket('pagehide')});
+  addEventListener('beforeunload',()=>{presencePageClosing=true;closePresenceSocket('unload')});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startPresence,{once:true});else startPresence();
