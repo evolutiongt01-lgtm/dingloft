@@ -148,7 +148,7 @@
           </article>
         </div>
         <div class="trial-row" id="lite">
-          <div class="trial-copy"><b>Versión Lite · $6 USD</b><span>Una edición compacta de 531.5 MB para entrar al sonido de Pianos Legendarios antes de pasar a la colección completa.</span></div>
+          <div class="trial-copy"><b id="lite-price-label">Versión Lite · $6 USD</b><span>Una edición compacta de 531.5 MB para entrar al sonido de Pianos Legendarios antes de pasar a la colección completa.</span></div>
           <button class="btn trial-btn" id="btn-lite-version" type="button">Agregar Lite · $6</button>
         </div>
       </div>
@@ -219,10 +219,10 @@
     const CATALOG_SKUS=new Set([
       'pianos-legendarios-sf2-bundle',
       'nord-essentials-sf2-collection',
-      'yamaha-legacy-collection-sf2'
+      'yamaha-legacy-collection-sf2',
+      'dual-legend-lite-531mb'
     ]);
-    const LITE_FALLBACK_END='2026-11-20T03:52:00.000Z';
-    let liteActive=Date.now()<Date.parse(LITE_FALLBACK_END);
+    let liteActive=true;
     let litePrice=6;
     let toastTimer=0;
 
@@ -257,6 +257,11 @@
         document.querySelectorAll('[data-compare-for]').forEach(node=>{if(node.dataset.compareFor===sku)node.textContent=`${moneyLabel(compare)} USD`});
         document.querySelectorAll('[data-save-for]').forEach(node=>{if(node.dataset.saveFor===sku)node.textContent=compare>price?`Ahorras ${moneyLabel(compare-price)}`:''});
       }
+      if(sku===LITE_SKU){
+        litePrice=price;
+        liteActive=product?.active!==false;
+        renderLiteState();
+      }
     };
     const loadCatalogPrices=async()=>{
       const controller=new AbortController();
@@ -279,31 +284,22 @@
     const renderLiteState=()=>{
       const button=document.getElementById('btn-lite-version');
       const row=document.getElementById('lite');
+      const label=document.getElementById('lite-price-label');
       if(row)row.style.display=liteActive?'grid':'none';
-      if(button){button.disabled=!liteActive;button.textContent=`Agregar Lite · $${Number(litePrice).toFixed(0)}`}
+      if(button){button.disabled=!liteActive;button.textContent=`Agregar Lite · ${moneyLabel(litePrice)}`}
+      if(label)label.textContent=`Versión Lite · ${moneyLabel(litePrice)} USD`;
       if(!liteActive){
         let cart=readCart();
         const i=cart.findIndex(item=>String(item.sku||item.id)===LITE_SKU);
         if(i>=0){cart.splice(i,1);writeCart(syncBonus(cart))}
       }
     };
-    const loadLiteStatus=async()=>{
-      try{
-        const response=await fetch(`${WORKER}/promo/dual-lite`,{cache:'no-store'});
-        const data=await response.json();
-        if(response.ok&&data?.ok){
-          liteActive=data.active===true;
-          litePrice=Number(data.priceUsd||6);
-        }
-      }catch(_){}
-      renderLiteState();
-    };
     document.getElementById('btn-lite-version')?.addEventListener('click',event=>{event.preventDefault();if(!liteActive)return;let cart=readCart();if(!cart.some(item=>String(item.sku||item.id)===LITE_SKU))cart.push({id:LITE_SKU,sku:LITE_SKU,name:'Pianos Legendarios SF2 · Versión Lite · 531.5 MB',price:litePrice,img:'dual',type:'Versión Lite · Licencia digital',qty:1});writeCart(syncBonus(cart));const item={id:LITE_SKU,sku:LITE_SKU,name:'Pianos Legendarios SF2 · Versión Lite · 531.5 MB',price:litePrice,img:'dual',type:'Versión Lite · Licencia digital',qty:1};notify(event.currentTarget,item);toast(`Versión Lite añadida al carrito · $${Number(litePrice).toFixed(2)} USD.`)});
-    loadLiteStatus();
+    renderLiteState();
   })();
   </script>
   <script type="module" src="/dingloft-commerce.js?v=2.2.1-shell94"></script>
   <script src="/dingloft-ui-guard.js?v=74"></script>
-  <script src="/pwa-runtime.js?v=131"></script>
+  <script src="/pwa-runtime.js?v=132"></script>
 </body>
 </html>
