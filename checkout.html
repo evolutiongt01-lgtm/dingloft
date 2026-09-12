@@ -1608,14 +1608,19 @@
     .checkout-cart-thumb img{width:100%;height:100%;object-fit:contain;padding:0;background:transparent}
     .checkout-cart-copy{min-width:0}.checkout-cart-copy b{display:block;color:var(--text);font-size:.82rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.checkout-cart-copy span{display:block;margin-top:4px;color:var(--muted);font-size:.67rem;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .checkout-cart-price{color:var(--text);font-size:.82rem;font-weight:820;white-space:nowrap}
+    .checkout-cart-end{display:flex;align-items:center;justify-content:flex-end;gap:10px;min-width:92px}
+    .checkout-cart-remove{width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border:1px solid #d9dcdf;border-radius:9px;background:#fff;color:#777d84;font-size:.88rem;line-height:1;transition:.16s ease;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+    .checkout-cart-remove:hover{border-color:#111;background:#111;color:#fff;transform:translateY(-1px)}
+    .checkout-cart-remove:focus-visible{outline:2px solid #111;outline-offset:2px}
+    .checkout-cart-remove:disabled{opacity:.45;cursor:not-allowed;transform:none}
     .checkout-cart-empty{padding:18px;text-align:center;color:var(--muted);font-size:.78rem;border:1px dashed rgba(255,255,255,.11);border-radius:16px}
-    @media(max-width:520px){.checkout-cart-item{grid-template-columns:50px minmax(0,1fr) auto;gap:9px;padding:9px}.checkout-cart-thumb{width:50px;height:50px}.checkout-cart-copy b{font-size:.76rem}.checkout-cart-price{font-size:.74rem}.checkout-cart-end{min-width:58px}.checkout-cart-remove{font-size:.6rem}}
+    @media(max-width:520px){.checkout-cart-item{grid-template-columns:50px minmax(0,1fr) auto;gap:9px;padding:9px}.checkout-cart-thumb{width:50px;height:50px}.checkout-cart-copy b{font-size:.76rem}.checkout-cart-price{font-size:.74rem}.checkout-cart-end{min-width:82px;gap:8px}.checkout-cart-remove{width:28px;height:28px;flex-basis:28px;border-radius:8px;font-size:.82rem}}
 
 </style>
 
 <style id="dingloft-checkout-no-dark-footer-mobile-v113">
 
-    .free-checkout-panel{display:none;border:1px solid var(--line);border-radius:18px;background:#fff;padding:24px;text-align:center}.free-checkout-panel.show{display:block}.free-checkout-icon{width:52px;height:52px;margin:0 auto 13px;border-radius:15px;display:grid;place-items:center;background:#0a0c0f;color:#b7ff34;font-size:1.2rem}.free-checkout-panel h3{margin:0 0 6px;font-size:17px;letter-spacing:-.02em}.free-checkout-panel p{max-width:470px;margin:0 auto 17px;color:#84848a;font-size:10px;line-height:1.55}.free-checkout-panel .primary-btn{max-width:440px;margin:0 auto}.free-checkout-note{margin-top:10px;color:#96969c;font-size:8px;line-height:1.45}
+    .free-checkout-panel{display:none;border:1px solid var(--line);border-radius:18px;background:#fff;padding:24px;text-align:center}.free-checkout-panel.show{display:block}.free-checkout-icon{width:64px;height:42px;margin:0 auto 14px;border:1px solid #0b0d10;border-radius:12px;display:grid;place-items:center;background:#0b0d10;color:#b7ff34;font-size:.72rem;font-weight:900;letter-spacing:.14em;text-indent:.14em;box-shadow:0 8px 22px rgba(0,0,0,.10)}.free-checkout-panel h3{margin:0 0 6px;font-size:17px;letter-spacing:-.02em}.free-checkout-panel p{max-width:470px;margin:0 auto 17px;color:#84848a;font-size:10px;line-height:1.55}.free-checkout-panel .primary-btn{max-width:440px;margin:0 auto}.free-checkout-note{margin-top:10px;color:#96969c;font-size:8px;line-height:1.45}
 /* Mobile rule: checkout keeps its full functionality, but the dark copyright footer is removed. */
 @media (max-width:600px), (hover:none) and (pointer:coarse){
   html,body{
@@ -1951,11 +1956,11 @@
               </div>
 
               <div class="free-checkout-panel" id="free-checkout-panel">
-                <div class="free-checkout-icon"><i class="bi bi-person-check"></i></div>
+                <div class="free-checkout-icon" aria-hidden="true">FREE</div>
                 <h3>Vincula tu compra a Dingloft</h3>
                 <p>Este pedido no requiere pago. Confirma para añadir el producto directamente a tu cuenta y habilitar su acceso.</p>
                 <button class="primary-btn" id="free-checkout-btn" type="button">Comprar y vincular a mi cuenta</button>
-                <div class="free-checkout-note">El Worker valida el pedido antes de asociarlo a tu cuenta.</div>
+                <div class="free-checkout-note">Acceso vinculado de forma segura a tu cuenta Dingloft.</div>
                 <div class="payment-message" id="free-checkout-message"></div>
               </div>
 
@@ -2567,7 +2572,7 @@ function cartItemMarkup(item){
   const image=esc(productImageUrl(item));
   const safeName=esc(item.name||"Producto Dingloft");
   const safeType=esc(item.type||"Producto digital");
-  return `<article class="checkout-cart-item"><div class="checkout-cart-thumb"><img src="${image}" alt="" onerror="this.onerror=null;this.src='/img/dingloft.png'"></div><div class="checkout-cart-copy"><b>${safeName}</b><span>${safeType}</span></div><div class="checkout-cart-end"><div class="checkout-cart-price">${money(item.priceUsd??item.price??0)}</div><button class="checkout-cart-remove" type="button" data-cart-remove="${esc(cartItemKey(item))}" aria-label="Eliminar ${safeName} del carrito">Eliminar</button></div></article>`;
+  return `<article class="checkout-cart-item"><div class="checkout-cart-thumb"><img src="${image}" alt="" onerror="this.onerror=null;this.src='/img/dingloft.png'"></div><div class="checkout-cart-copy"><b>${safeName}</b><span>${safeType}</span></div><div class="checkout-cart-end"><div class="checkout-cart-price">${money(item.priceUsd??item.price??0)}</div><button class="checkout-cart-remove" type="button" data-cart-remove="${esc(cartItemKey(item))}" aria-label="Eliminar ${safeName} del carrito" title="Eliminar"><i class="bi bi-trash3" aria-hidden="true"></i></button></div></article>`;
 }
 
 function renderCheckoutCart(){
