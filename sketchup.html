@@ -590,22 +590,11 @@ body.no-scroll{overflow:hidden!important}
 .su-showcase-copy p{color:rgba(255,255,255,.82);font-size:18px;line-height:1.7;max-width:620px;margin:24px 0 0}
 .su-showcase-visual{
   position:relative;overflow:hidden;
-  background:
-    linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,0)),
-    #718083;
+  background:#718083;
 }
-.su-showcase-visual::before{
-  content:"";position:absolute;left:12%;right:10%;bottom:11%;height:63%;
-  background:
-    linear-gradient(135deg,#e7e0d5 0 50%,#a99d8d 51% 100%);
-  clip-path:polygon(8% 18%,75% 0,100% 20%,90% 100%,0 100%,0 32%);
-  border:1px solid rgba(255,255,255,.25);
-  box-shadow:0 30px 60px rgba(0,0,0,.28);
-}
-.su-showcase-visual::after{
-  content:"";position:absolute;left:27%;right:17%;bottom:23%;height:30%;
-  background:repeating-linear-gradient(90deg,#567680 0 15%,#d8e6e9 16% 18%);
-  border:4px solid #34464d;
+.su-showcase-visual img{
+  display:block;width:100%;height:100%;
+  object-fit:cover;object-position:center;
 }
 
 /* Purchase */
@@ -985,7 +974,7 @@ body.no-scroll{overflow:hidden!important}
           visual pensado para mantener tu proceso claro y eficiente.
         </p>
       </div>
-      <div class="su-showcase-visual" aria-hidden="true"></div>
+      <div class="su-showcase-visual"><img src="img/Sketchup/02.jpg" alt="Proyecto arquitectónico desarrollado en SketchUp"></div>
     </section>
 
     <section class="su-purchase" id="comprar">
