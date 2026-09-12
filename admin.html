@@ -411,7 +411,7 @@ async function runOnce(key,fn,force=false){
 }
 async function loadViewData(name=currentAdminView,force=false){
   const view=String(name||'dashboard');
-  if(view==='dashboard')await Promise.all([runOnce('products',loadProducts,force),runOnce('orders',loadOrders,force)]);
+  if(view==='dashboard')await Promise.all([runOnce('products',loadProducts,force),runOnce('orders',loadOrders,force),runOnce('presence',loadPresence,force)]);
   else if(view==='orders'||view==='finance')await runOnce('orders',loadOrders,force);
   else if(view==='products')await Promise.all([runOnce('products',loadProducts,force),runOnce('dualTrial',loadDualTrial,force)]);
   else if(view==='multitracks')await runOnce('multitracks',loadMultitracks,force);
@@ -450,7 +450,7 @@ function presencePlace(p){const g=p.geo||{};return [g.city,g.region,g.country].f
 function renderClientLocationList(){
   const root=$('recentClientLocations'); if(!root) return;
   const live=livePresence(),recent=recentPresence(),weeklyUnique=uniqueWeeklyPresence();
-  const badge=document.querySelector('.geo-live'); if(badge) badge.textContent=live.length?`${live.length} conectado${live.length===1?'':'s'}`:'Sin clientes activos';
+  const badge=document.querySelector('.geo-live'); if(badge) badge.textContent=live.length?`EN VIVO · ${live.length} conectado${live.length===1?'':'s'}`:(adminDataReady.has('presence')?'PRESENCIA EN VIVO · 0 activos':'Sincronizando presencia…');
   const label=document.querySelector('.geo-list-label'); if(label) label.textContent=`Actividad de esta semana · ${weekRangeLabel()}`;
   if(recent.length){
     $('geoCoverage').textContent=`${weeklyUnique.length} visitante${weeklyUnique.length===1?'':'s'} único${weeklyUnique.length===1?'':'s'} esta semana · ${live.length} en línea`;
@@ -460,11 +460,14 @@ function renderClientLocationList(){
   // El Resumen nunca debe quedar bloqueado por un fallo de presencia en vivo.
   // Si presencia no responde, este bloque cae a la actividad histórica de clientes/pedidos.
   const presenceUnavailable=Boolean(loadErrors.presence);
+  if(!presenceUnavailable&&adminDataReady.has('presence')){
+    $('geoCoverage').textContent='0 visitantes registrados esta semana · 0 en línea';
+    root.innerHTML='<div class="geo-empty">Presencia en vivo conectada. No hay visitantes recientes para mostrar.</div>';
+    return;
+  }
   const list=recentCustomers(); const located=list.filter(c=>COUNTRY_COORDS[String(c.nationalityCode||'').toUpperCase()]);
   if(badge&&presenceUnavailable) badge.textContent='Actividad histórica';
-  $('geoCoverage').textContent=presenceUnavailable
-    ? `${located.length} de ${list.length} ubicaciones históricas`
-    : `${located.length} de ${list.length} ubicaciones históricas`;
+  $('geoCoverage').textContent=`${located.length} de ${list.length} ubicaciones históricas`;
   root.innerHTML=list.length?list.map(c=>{const code=String(c.nationalityCode||'').toUpperCase();const photo=String(c.photoURL||'').trim();const name=c.displayName||String(c.email||'Cliente').split('@')[0];const when=c.lastPurchaseAt||c.lastLogin;const device=String(c.lastPresenceDevice||'Sin actividad reciente');const browser=String(c.lastPresenceBrowser||'Sin navegador');return `<div class="geo-client"><div class="geo-avatar">${photo?`<img src="${esc(photo)}" alt="">`:flag(code)}</div><div class="geo-copy"><b>${esc(name)}</b><small>${flag(code)} ${esc(c.nationality||'Ubicación sin registrar')} · ${esc(c.email||'')}</small><div class="geo-badges">${geoPill('device',device)}${geoPill('browser',browser)}</div></div><div class="geo-time"><b>${Number(c.ordersCount||0)} compra${Number(c.ordersCount||0)===1?'':'s'}</b><small>${date(when)}</small></div></div>`}).join(''):'<div class="geo-empty">Todavía no hay clientes para mostrar.</div>'
 }
 function activeGlobeSources(){
@@ -554,12 +557,35 @@ function drawClientGlobe(ts=performance.now()){
 }
 function renderClientGlobe(){renderClientLocationList(); cancelAnimationFrame(globeRAF); hideGlobeTooltip(); ensureWorldLand(); globeRAF=requestAnimationFrame(drawClientGlobe)}
 window.addEventListener('resize',()=>renderClientLocationList());
+const PRESENCE_ADMIN_URL='https://dingloft-presence-live.evolutiongt01.workers.dev/admin/presence';
+async function directPresenceSnapshot(forceRefresh=false){
+  const u=auth.currentUser;if(!u)throw Error('Sesión no válida');
+  const token=await u.getIdToken(forceRefresh);
+  const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),10000);
+  let r;
+  try{r=await fetch(PRESENCE_ADMIN_URL,{method:'GET',signal:controller.signal,cache:'no-store',headers:{Authorization:`Bearer ${token}`,Accept:'application/json'}})}
+  catch(networkError){const e=Error(networkError?.name==='AbortError'?'Presencia tardó demasiado en responder':'No se pudo conectar con Presencia');e.status=0;throw e}
+  finally{clearTimeout(timer)}
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok||d.ok===false){const e=Error(d.error||`Presencia ${r.status}`);e.status=r.status;throw e}
+  return d;
+}
 async function loadPresence(){
-  // Fantasmas v58: Administración consulta exclusivamente el proxy seguro de Dingloft.
-  // El proxy obtiene el snapshot del Durable Object; esta vista no consulta Firestore.
-  const d=await api('/admin/presence');
-  presenceSessions=Array.isArray(d.sessions)?d.sessions:[];
+  // Presencia real de Dingloft: primero usa el proxy del backend principal.
+  // Si el proxy aún no está disponible, el Admin consulta directamente el servicio
+  // de presencia con el mismo Firebase ID token. Ninguna de las dos rutas usa Firestore.
+  let d;
+  try{d=await api('/admin/presence')}
+  catch(proxyError){
+    try{d=await directPresenceSnapshot(false)}
+    catch(directError){
+      if(Number(directError?.status)===401||Number(directError?.status)===403){d=await directPresenceSnapshot(true)}
+      else throw proxyError
+    }
+  }
+  presenceSessions=Array.isArray(d?.sessions)?d.sessions:[];
   delete loadErrors.presence;
+  adminDataReady.add('presence');
   renderClientGlobe();
   renderGhosts();
   return d;
