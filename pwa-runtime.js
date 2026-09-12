@@ -62,7 +62,7 @@
     document.head.appendChild(style);
     const ui = document.createElement('div');
     ui.id = 'dlPwaUpdate';
-    ui.innerHTML = `<div class="dl-up-card"><div class="dl-up-mark"><img src="/img/pwa-liquid-rounded-192-v17.png?v=24" alt="Dingloft"></div><div class="dl-up-kicker">Actualización de Dingloft</div><h2 class="dl-up-title" id="dlUpTitle">Nueva versión disponible</h2><p class="dl-up-text" id="dlUpText">Hay una versión más reciente de la app. Actualiza para obtener las últimas mejoras y correcciones.</p><button class="dl-up-btn" id="dlUpButton" type="button">Actualizar Dingloft</button></div>`;
+    ui.innerHTML = `<div class="dl-up-card"><div class="dl-up-mark"><img src="/img/pwa-liquid-rounded-192-v18.png?v=24" alt="Dingloft"></div><div class="dl-up-kicker">Actualización de Dingloft</div><h2 class="dl-up-title" id="dlUpTitle">Nueva versión disponible</h2><p class="dl-up-text" id="dlUpText">Hay una versión más reciente de la app. Actualiza para obtener las últimas mejoras y correcciones.</p><button class="dl-up-btn" id="dlUpButton" type="button">Actualizar Dingloft</button></div>`;
     document.body.appendChild(ui);
     const pill = document.createElement('div');
     pill.id = 'dlOfflinePill'; pill.innerHTML = '<b></b><span>Modo sin conexión</span>'; document.body.appendChild(pill);

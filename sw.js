@@ -68,8 +68,8 @@ const CORE = [
   '/dingloft-mobile-dock.css?v=34',
   '/dingloft-mobile-cart-v92.js?v=95',
   '/manifest.webmanifest?v=94',
-  '/img/pwa-liquid-rounded-192-v17.png',
-  '/img/pwa-liquid-rounded-512-v17.png',
+  '/img/pwa-liquid-rounded-192-v18.png',
+  '/img/pwa-liquid-rounded-512-v18.png',
   '/img/pwa-liquid-192-v5.png',
   '/img/pwa-liquid-512-v5.png',
   '/img/pwa-liquid-maskable-512-v5.png'
@@ -271,7 +271,7 @@ self.addEventListener('push',event=>{
   event.waitUntil((async()=>{
     await self.registration.showNotification(title,{
       body,
-      icon:'/img/pwa-liquid-rounded-192-v17.png',
+      icon:'/img/pwa-liquid-rounded-192-v18.png',
       badge:'/img/favicon.png',
       tag:`${kind}-${eventId}`.slice(0,180),
       renotify:true,
