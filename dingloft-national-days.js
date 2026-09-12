@@ -1,14 +1,14 @@
 (() => {
   'use strict';
 
-  // Dingloft National Days · v10
+  // Dingloft National Days · v11
   // 100% local: no Firebase, no backend, no geolocalización precisa, no APIs externas.
   // En la fecha oficial celebra globalmente; 4 días antes muestra una cuenta regresiva
   // del país local inferido únicamente desde zona horaria/idioma del dispositivo.
-  if (window.DingloftNationalDays || window.__DINGLOFT_NATIONAL_DAYS_V10__) return;
-  window.__DINGLOFT_NATIONAL_DAYS_V10__ = true;
+  if (window.DingloftNationalDays || window.__DINGLOFT_NATIONAL_DAYS_V11__) return;
+  window.__DINGLOFT_NATIONAL_DAYS_V11__ = true;
 
-  const VERSION = '10';
+  const VERSION = '11';
   const LEAD_DAYS = 4;
   const ROOT_ID = 'dlNationalDayRoot';
   const STYLE_ID = 'dlNationalDayStyle';
@@ -392,7 +392,7 @@
   };
   const kickerFor = event => event.daysUntil===0 ? 'HOY CELEBRAMOS' : event.daysUntil===1 ? 'FALTA 1 DÍA' : `FALTAN ${event.daysUntil} DÍAS`;
   const countdownFor = event => event.daysUntil===0 ? 'HOY' : String(event.daysUntil);
-  const thanksFor = event => `Gracias ${event.country} por confiar en Dingloft`;
+  const thanksFor = () => 'Gracias por confiar en Dingloft';
 
   function injectStyle() {
     if(document.getElementById(STYLE_ID)) return;
