@@ -1,14 +1,14 @@
 (() => {
   'use strict';
 
-  // Dingloft National Days · v9
+  // Dingloft National Days · v10
   // 100% local: no Firebase, no backend, no geolocalización precisa, no APIs externas.
   // En la fecha oficial celebra globalmente; 4 días antes muestra una cuenta regresiva
   // del país local inferido únicamente desde zona horaria/idioma del dispositivo.
-  if (window.DingloftNationalDays || window.__DINGLOFT_NATIONAL_DAYS_V9__) return;
-  window.__DINGLOFT_NATIONAL_DAYS_V9__ = true;
+  if (window.DingloftNationalDays || window.__DINGLOFT_NATIONAL_DAYS_V10__) return;
+  window.__DINGLOFT_NATIONAL_DAYS_V10__ = true;
 
-  const VERSION = '9';
+  const VERSION = '10';
   const LEAD_DAYS = 4;
   const ROOT_ID = 'dlNationalDayRoot';
   const STYLE_ID = 'dlNationalDayStyle';
@@ -252,11 +252,45 @@
     return new Date(Number(year)||new Date().getFullYear(),(m||1)-1,d||1,12,0,0,0);
   };
   const daysBetween = (fromDate, toDate) => Math.max(0,Math.round((atNoon(toDate).getTime()-atNoon(fromDate).getTime())/86400000));
-  const flag = code => {
+  const flagEmoji = code => {
     const clean=String(code||'').toUpperCase();
     if(!/^[A-Z]{2}$/.test(clean)) return '🏳️';
     return [...clean].map(c=>String.fromCodePoint(127397+c.charCodeAt(0))).join('');
   };
+  const svgToDataUri = svg => `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+  const flagSVG = code => {
+    const clean=String(code||'').toUpperCase();
+    const map={
+      GT:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="20" height="40" fill="#6ccff6"/><rect x="20" width="20" height="40" fill="#fff"/><rect x="40" width="20" height="40" fill="#6ccff6"/><circle cx="30" cy="20" r="4.1" fill="#9bbd3f" opacity=".85"/></svg>`,
+      HN:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="13.33" fill="#2f8cff"/><rect y="13.33" width="60" height="13.34" fill="#fff"/><rect y="26.67" width="60" height="13.33" fill="#2f8cff"/><g fill="#2f8cff"><circle cx="24" cy="20" r="1.15"/><circle cx="30" cy="17" r="1.15"/><circle cx="30" cy="23" r="1.15"/><circle cx="36" cy="20" r="1.15"/><circle cx="30" cy="20" r="1.15"/></g></svg>`,
+      SV:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="13.33" fill="#1d6de0"/><rect y="13.33" width="60" height="13.34" fill="#fff"/><rect y="26.67" width="60" height="13.33" fill="#1d6de0"/><circle cx="30" cy="20" r="2.2" fill="#f0c24b" opacity=".95"/></svg>`,
+      NI:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="13.33" fill="#2a76e8"/><rect y="13.33" width="60" height="13.34" fill="#fff"/><rect y="26.67" width="60" height="13.33" fill="#2a76e8"/><polygon points="30,16 33,22 27,22" fill="#f0c24b" opacity=".9"/></svg>`,
+      CR:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="40" fill="#1d479c"/><rect y="6" width="60" height="6" fill="#fff"/><rect y="12" width="60" height="16" fill="#ce1126"/><rect y="28" width="60" height="6" fill="#fff"/><rect y="34" width="60" height="6" fill="#1d479c"/></svg>`,
+      PA:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="30" height="20" fill="#fff"/><rect x="30" width="30" height="20" fill="#db202c"/><rect y="20" width="30" height="20" fill="#2458c6"/><rect x="30" y="20" width="30" height="20" fill="#fff"/><polygon points="15,6.5 16.7,11.5 22,11.5 17.7,14.6 19.3,19.6 15,16.5 10.7,19.6 12.3,14.6 8,11.5 13.3,11.5" fill="#2458c6"/><polygon points="45,26.5 46.7,31.5 52,31.5 47.7,34.6 49.3,39.6 45,36.5 40.7,39.6 42.3,34.6 38,31.5 43.3,31.5" fill="#db202c"/></svg>`,
+      MX:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="20" height="40" fill="#006847"/><rect x="20" width="20" height="40" fill="#fff"/><rect x="40" width="20" height="40" fill="#ce1126"/><circle cx="30" cy="20" r="3.4" fill="#a67c52" opacity=".9"/></svg>`,
+      US:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="40" fill="#fff"/><g fill="#b22234"><rect width="60" height="3.08" y="0"/><rect width="60" height="3.08" y="6.16"/><rect width="60" height="3.08" y="12.32"/><rect width="60" height="3.08" y="18.48"/><rect width="60" height="3.08" y="24.64"/><rect width="60" height="3.08" y="30.8"/><rect width="60" height="3.08" y="36.96"/></g><rect width="27" height="21.6" fill="#3c3b6e"/><g fill="#fff"><circle cx="5" cy="5" r="1"/><circle cx="10" cy="9" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="20" cy="9" r="1"/><circle cx="9" cy="14" r="1"/><circle cx="18" cy="14" r="1"/></g></svg>`,
+      CA:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="15" height="40" fill="#d52b1e"/><rect x="15" width="30" height="40" fill="#fff"/><rect x="45" width="15" height="40" fill="#d52b1e"/><polygon points="30,10 32,16 38,15 34,20 38,24 32,24 30,30 28,24 22,24 26,20 22,15 28,16" fill="#d52b1e"/></svg>`,
+      FR:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="20" height="40" fill="#0055a4"/><rect x="20" width="20" height="40" fill="#fff"/><rect x="40" width="20" height="40" fill="#ef4135"/></svg>`,
+      ES:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="40" fill="#c60b1e"/><rect y="10" width="60" height="20" fill="#ffc400"/></svg>`,
+      DE:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="13.33" fill="#000"/><rect y="13.33" width="60" height="13.34" fill="#dd0000"/><rect y="26.67" width="60" height="13.33" fill="#ffce00"/></svg>`,
+      IT:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="20" height="40" fill="#009246"/><rect x="20" width="20" height="40" fill="#fff"/><rect x="40" width="20" height="40" fill="#ce2b37"/></svg>`,
+      JP:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="40" fill="#fff"/><circle cx="30" cy="20" r="9" fill="#bc002d"/></svg>`,
+      AR:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="13.33" fill="#75aadb"/><rect y="13.33" width="60" height="13.34" fill="#fff"/><rect y="26.67" width="60" height="13.33" fill="#75aadb"/><circle cx="30" cy="20" r="3" fill="#f4b400"/></svg>`,
+      BR:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="40" fill="#009c3b"/><polygon points="30,6 48,20 30,34 12,20" fill="#ffdf00"/><circle cx="30" cy="20" r="7" fill="#002776"/></svg>`,
+      CO:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="20" fill="#fcd116"/><rect y="20" width="60" height="10" fill="#003893"/><rect y="30" width="60" height="10" fill="#ce1126"/></svg>`,
+      CL:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="20" fill="#fff"/><rect y="20" width="60" height="20" fill="#d52b1e"/><rect width="24" height="20" fill="#0039a6"/><polygon points="12,5 13.6,9.5 18.4,9.5 14.4,12.3 16,16.8 12,14 8,16.8 9.6,12.3 5.6,9.5 10.4,9.5" fill="#fff"/></svg>`,
+      PE:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="20" height="40" fill="#d91023"/><rect x="20" width="20" height="40" fill="#fff"/><rect x="40" width="20" height="40" fill="#d91023"/></svg>`,
+      GB:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="40" fill="#012169"/><path d="M0 0l24 16M36 24 60 40M60 0 36 16M24 24 0 40" stroke="#fff" stroke-width="8"/><path d="M0 0l24 16M36 24 60 40M60 0 36 16M24 24 0 40" stroke="#c8102e" stroke-width="4"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="12"/><path d="M30 0v40M0 20h60" stroke="#c8102e" stroke-width="7"/></svg>`
+    };
+    return map[clean] || '';
+  };
+  const flagImage = code => {
+    const svg=flagSVG(code);
+    if(svg) return svgToDataUri(svg);
+    const clean=String(code||'').toUpperCase().replace(/[^A-Z]/g,'').slice(0,2) || 'DL';
+    return svgToDataUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="40" rx="6" fill="#0f1419"/><rect x="1" y="1" width="58" height="38" rx="5" fill="none" stroke="#26303a"/><text x="30" y="25" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700" fill="#ecf2f8" text-anchor="middle">${clean}</text></svg>`);
+  };
+  const flagLabel = code => flagSVG(code) ? '' : flagEmoji(code);
   const thirdSaturdayOfJune = year => {
     const d=new Date(year,5,1,12,0,0,0);
     const offset=(6-d.getDay()+7)%7;
@@ -365,58 +399,50 @@
     const s=document.createElement('style');
     s.id=STYLE_ID;
     s.textContent=`
-      #${ROOT_ID}{position:fixed;top:calc(var(--dgn-total-h,68px) + 5px);left:10px;z-index:2147481200;width:min(304px,calc(100vw - 20px));font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f7f8fa;pointer-events:none;-webkit-font-smoothing:antialiased}
+      #${ROOT_ID}{position:fixed;top:calc(var(--dgn-total-h,68px) + 5px);left:10px;z-index:2147481200;width:min(308px,calc(100vw - 20px));font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f7f8fa;pointer-events:none;-webkit-font-smoothing:antialiased}
       #${ROOT_ID} *{box-sizing:border-box}
-      .dl-nd-card{--nd-accent:#b7ff34;position:relative;overflow:hidden;pointer-events:auto;border:1px solid rgba(255,255,255,.09);border-radius:18px;background:linear-gradient(180deg,rgba(12,15,19,.96),rgba(7,9,12,.98));box-shadow:0 18px 42px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.04);transform-origin:top left;animation:dlNdIn .5s cubic-bezier(.2,.85,.2,1) both;isolation:isolate}
-      .dl-nd-card::before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(circle at 14% 18%,rgba(183,255,52,.13),transparent 24%),radial-gradient(circle at 88% 16%,rgba(255,255,255,.05),transparent 26%),linear-gradient(180deg,rgba(255,255,255,.02),transparent 34%)}
-      .dl-nd-card::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.024) 1px,transparent 1px);background-size:26px 26px;mask-image:linear-gradient(180deg,rgba(255,255,255,.2),transparent 78%);opacity:.35}
-      .dl-nd-edge{position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--nd-accent),rgba(183,255,52,.18));box-shadow:0 0 18px rgba(183,255,52,.22)}
-      .dl-nd-card .nd-corner-top,.dl-nd-card .nd-corner-bottom{position:absolute;pointer-events:none;border-color:rgba(183,255,52,.22)}
-      .dl-nd-card .nd-corner-top{left:12px;top:10px;width:18px;height:18px;border-top:1px solid;border-left:1px solid;border-radius:8px 0 0 0;opacity:.9}
-      .dl-nd-card .nd-corner-bottom{right:12px;bottom:10px;width:18px;height:18px;border-right:1px solid;border-bottom:1px solid;border-radius:0 0 8px 0;opacity:.48}
-      .dl-nd-inner{position:relative;display:grid;grid-template-columns:52px minmax(0,1fr) 46px;gap:10px;align-items:center;padding:12px 12px 12px 14px;min-height:76px}
-      .dl-nd-flagbox{width:50px;height:50px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:linear-gradient(180deg,#151a21,#0e1217);box-shadow:inset 0 1px 0 rgba(255,255,255,.04);display:grid;place-items:center;position:relative;overflow:hidden}
-      .dl-nd-flagbox::before{content:"";position:absolute;inset:6px;border-radius:10px;border:1px solid rgba(183,255,52,.14);opacity:.9}
-      .dl-nd-flagbox::after{content:"";position:absolute;left:-24%;top:-24%;width:64%;height:64%;border-radius:50%;background:radial-gradient(circle,rgba(183,255,52,.16),transparent 72%);animation:dlNdGlow 5.6s ease-in-out infinite}
-      .dl-nd-flag{position:relative;font-size:26px;line-height:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,.24));transform-origin:50% 70%;animation:dlNdFlag 3.35s ease-in-out infinite}
-      .dl-nd-copy{min-width:0;padding-top:1px}
-      .dl-nd-kicker{display:flex;align-items:center;gap:6px;color:var(--nd-accent);font-size:7.1px;font-weight:900;letter-spacing:.19em;text-transform:uppercase;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .dl-nd-kicker::before{content:"";width:10px;height:2px;flex:0 0 10px;border-radius:999px;background:linear-gradient(90deg,var(--nd-accent),rgba(183,255,52,.22));box-shadow:0 0 10px rgba(183,255,52,.12);animation:dlNdPulse 2.4s ease-in-out infinite}
-      .dl-nd-country{margin:0;color:#fff;font-size:15.4px;line-height:1.03;font-weight:840;letter-spacing:-.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .dl-nd-label{margin:4px 0 0;color:#d0d6dd;font-size:8px;line-height:1.22;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .dl-nd-thanks{margin:4px 0 0;color:#808a95;font-size:7.2px;line-height:1.2;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .dl-nd-countdown{width:44px;height:46px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;position:relative;overflow:hidden}
-      .dl-nd-countdown::before{content:"";position:absolute;left:50%;top:6px;transform:translateX(-50%);width:18px;height:2px;border-radius:999px;background:rgba(183,255,52,.58)}
-      .dl-nd-count-value{color:#f8fbff;font-size:13px;line-height:1;font-weight:900;letter-spacing:-.03em}
-      .dl-nd-count-label{color:#83909c;font-size:5px;line-height:1;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
-      .dl-nd-card.is-today .dl-nd-countdown{border-color:rgba(183,255,52,.25);background:linear-gradient(180deg,rgba(183,255,52,.11),rgba(183,255,52,.05))}
-      .dl-nd-card.is-today .dl-nd-count-value{color:var(--nd-accent);font-size:9px;letter-spacing:.11em}
-      .dl-nd-close{position:absolute;right:7px;top:7px;width:18px;height:18px;border:1px solid rgba(255,255,255,.06);border-radius:7px;background:rgba(255,255,255,.03);color:#74808b;display:grid;place-items:center;padding:0;cursor:pointer;opacity:0;transform:translateY(-2px);transition:opacity .2s,transform .2s,background .2s,color .2s,border-color .2s;z-index:3}
+      .dl-nd-card{--nd-accent:#b7ff34;position:relative;overflow:hidden;pointer-events:auto;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:linear-gradient(180deg,#0c0f13 0%,#090b0e 100%);box-shadow:0 20px 44px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.035);transform-origin:top left;animation:dlNdIn .46s cubic-bezier(.2,.85,.2,1) both;isolation:isolate}
+      .dl-nd-card::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 0% 0%,rgba(183,255,52,.12),transparent 22%),linear-gradient(135deg,rgba(255,255,255,.028),transparent 30%) }
+      .dl-nd-rail{position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--nd-accent),rgba(183,255,52,.18),transparent 78%)}
+      .dl-nd-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px 0 14px}
+      .dl-nd-kicker{display:inline-flex;align-items:center;gap:7px;min-width:0;color:#c6ff64;font-size:7px;font-weight:900;letter-spacing:.22em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .dl-nd-kicker::before{content:"";width:14px;height:2px;flex:0 0 14px;border-radius:999px;background:linear-gradient(90deg,var(--nd-accent),rgba(183,255,52,.22));box-shadow:0 0 10px rgba(183,255,52,.16)}
+      .dl-nd-rotate{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:20px;padding:0 7px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#8e98a3;font-size:9px;font-weight:800;letter-spacing:.04em}
+      .dl-nd-body{display:grid;grid-template-columns:66px minmax(0,1fr) 48px;gap:12px;align-items:center;padding:10px 12px 11px 14px}
+      .dl-nd-flagbox{position:relative;width:66px;height:44px;border-radius:11px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:#0f1318;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+      .dl-nd-flag-image{display:block;width:100%;height:100%;object-fit:cover}
+      .dl-nd-flag-fallback{position:absolute;right:6px;bottom:4px;font-size:10px;line-height:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+      .dl-nd-copy{min-width:0}
+      .dl-nd-country{margin:0;color:#fff;font-size:15px;line-height:1.04;font-weight:850;letter-spacing:-.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .dl-nd-label{margin:4px 0 0;color:#cfd5dc;font-size:8px;line-height:1.26;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .dl-nd-thanks{margin:5px 0 0;color:#79838f;font-size:7.1px;line-height:1.24;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .dl-nd-countdown{width:48px;height:48px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.018));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;position:relative;overflow:hidden}
+      .dl-nd-countdown::before{content:"";position:absolute;left:9px;right:9px;top:7px;height:2px;border-radius:999px;background:rgba(183,255,52,.48)}
+      .dl-nd-count-value{color:#f6fbef;font-size:13px;line-height:1;font-weight:900;letter-spacing:-.03em}
+      .dl-nd-count-label{color:#7c8791;font-size:5px;line-height:1;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
+      .dl-nd-card.is-today .dl-nd-countdown{border-color:rgba(183,255,52,.22);background:linear-gradient(180deg,rgba(183,255,52,.12),rgba(183,255,52,.03))}
+      .dl-nd-card.is-today .dl-nd-count-value{color:var(--nd-accent);font-size:9px;letter-spacing:.12em}
+      .dl-nd-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 12px 11px 14px}
+      .dl-nd-date{display:inline-flex;align-items:center;gap:6px;min-width:0;color:#98a3ae;font-size:7px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .dl-nd-date::before{content:"";width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.26)}
+      .dl-nd-line{flex:1 1 auto;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.14),transparent)}
+      .dl-nd-close{position:absolute;right:8px;top:8px;width:18px;height:18px;border:1px solid rgba(255,255,255,.06);border-radius:7px;background:rgba(255,255,255,.03);color:#727d87;display:grid;place-items:center;padding:0;cursor:pointer;opacity:0;transform:translateY(-2px);transition:opacity .2s,transform .2s,background .2s,color .2s,border-color .2s;z-index:3}
       .dl-nd-card:hover .dl-nd-close,.dl-nd-close:focus-visible{opacity:1;transform:none}.dl-nd-close:hover{background:#fff;color:#090b0e;border-color:#fff}.dl-nd-close svg{width:9px;height:9px}
-      .dl-nd-spark,.dl-nd-burst{position:absolute;pointer-events:none}
-      .dl-nd-spark{width:2px;height:2px;border-radius:50%;background:var(--nd-accent);opacity:0;animation:dlNdSpark 4.8s ease-in-out infinite}
-      .dl-nd-s1{top:13px;right:62px;animation-delay:.22s}.dl-nd-s2{top:40px;right:24px;animation-delay:1.28s}.dl-nd-s3{bottom:13px;left:78px;animation-delay:2.26s}.dl-nd-s4{top:18px;left:94px;animation-delay:3.02s}
-      .dl-nd-burst{width:16px;height:16px;opacity:0;animation:dlNdBurst 5.8s ease-in-out infinite}
-      .dl-nd-b1{top:14px;right:96px;animation-delay:.88s}.dl-nd-b2{bottom:14px;right:42px;animation-delay:2.75s}
-      .dl-nd-burst::before,.dl-nd-burst::after{content:"";position:absolute;left:50%;top:50%;width:1px;height:10px;border-radius:999px;background:linear-gradient(180deg,rgba(183,255,52,.9),rgba(183,255,52,0));transform-origin:50% 100%}
-      .dl-nd-burst::after{transform:translate(-50%,-50%) rotate(90deg)}
-      .dl-nd-burst::before{transform:translate(-50%,-50%) rotate(18deg)}
-      .dl-nd-card.is-switching .dl-nd-flag,.dl-nd-card.is-switching .dl-nd-copy,.dl-nd-card.is-switching .dl-nd-countdown{animation:dlNdSwap .34s ease both}
+      .dl-nd-spark{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--nd-accent);opacity:0;pointer-events:none;animation:dlNdSpark 4.8s ease-in-out infinite}
+      .dl-nd-s1{top:11px;left:86px;animation-delay:.4s}.dl-nd-s2{top:19px;right:66px;animation-delay:1.8s}.dl-nd-s3{bottom:13px;left:125px;animation-delay:2.9s}
+      .dl-nd-card.is-switching .dl-nd-flagbox,.dl-nd-card.is-switching .dl-nd-copy,.dl-nd-card.is-switching .dl-nd-countdown{animation:dlNdSwap .32s ease both}
       @keyframes dlNdIn{from{opacity:0;transform:translateY(-10px) scale(.975)}to{opacity:1;transform:none}}
-      @keyframes dlNdFlag{0%,100%{transform:translateY(0) rotate(-1deg)}45%{transform:translateY(-2px) rotate(1.5deg)}72%{transform:translateY(-1px) rotate(-.5deg)}}
-      @keyframes dlNdGlow{0%,100%{opacity:.62;transform:translate3d(0,0,0) scale(.9)}50%{opacity:1;transform:translate3d(7px,5px,0) scale(1.08)}}
-      @keyframes dlNdPulse{0%,100%{opacity:.72;transform:scaleX(.92)}50%{opacity:1;transform:scaleX(1)}}
-      @keyframes dlNdSpark{0%,72%,100%{opacity:0;transform:translateY(2px) scale(.45)}79%{opacity:.95;transform:translateY(-2px) scale(1.75)}86%{opacity:0;transform:translateY(-6px) scale(.72)}}
-      @keyframes dlNdBurst{0%,76%,100%{opacity:0;transform:translateY(3px) scale(.5)}82%{opacity:.84;transform:translateY(-1px) scale(1)}90%{opacity:0;transform:translateY(-5px) scale(.78)}}
-      @keyframes dlNdSwap{0%{opacity:1;transform:none}48%{opacity:0;transform:translateX(-5px)}100%{opacity:1;transform:none}}
-      @media(max-width:620px){#${ROOT_ID}{top:calc(var(--dgn-total-h,64px) + 5px);left:8px;width:min(296px,calc(100vw - 16px))}.dl-nd-inner{grid-template-columns:48px minmax(0,1fr) 44px;padding:11px 11px 11px 12px;gap:9px}.dl-nd-flagbox{width:46px;height:46px}.dl-nd-country{font-size:15px}.dl-nd-label{font-size:7.8px}.dl-nd-thanks{font-size:7px}.dl-nd-countdown{width:42px;height:44px}}
+      @keyframes dlNdSpark{0%,74%,100%{opacity:0;transform:translateY(2px) scale(.5)}80%{opacity:.95;transform:translateY(-2px) scale(1.7)}87%{opacity:0;transform:translateY(-5px) scale(.75)}}
+      @keyframes dlNdSwap{0%{opacity:1;transform:none}45%{opacity:0;transform:translateX(-5px)}100%{opacity:1;transform:none}}
+      @media(max-width:620px){#${ROOT_ID}{top:calc(var(--dgn-total-h,64px) + 5px);left:8px;width:min(300px,calc(100vw - 16px))}.dl-nd-body{grid-template-columns:64px minmax(0,1fr) 46px;gap:10px;padding:10px 11px 10px 12px}.dl-nd-flagbox{width:64px;height:42px}.dl-nd-country{font-size:14.5px}.dl-nd-label{font-size:7.8px}.dl-nd-thanks{font-size:7px}}
       @media(hover:none){.dl-nd-close{opacity:.78;transform:none}}
       html.dgn-cart-open #${ROOT_ID},body.dl-support-open #${ROOT_ID}{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transition:opacity .16s ease,visibility .16s ease}
-      @media(prefers-reduced-motion:reduce){.dl-nd-card,.dl-nd-flagbox::after,.dl-nd-flag,.dl-nd-kicker::before,.dl-nd-spark,.dl-nd-burst,.dl-nd-card.is-switching .dl-nd-flag,.dl-nd-card.is-switching .dl-nd-copy,.dl-nd-card.is-switching .dl-nd-countdown{animation:none!important;transition:none!important}}
+      @media(prefers-reduced-motion:reduce){.dl-nd-card,.dl-nd-spark,.dl-nd-card.is-switching .dl-nd-flagbox,.dl-nd-card.is-switching .dl-nd-copy,.dl-nd-card.is-switching .dl-nd-countdown{animation:none!important;transition:none!important}}
       @media print{#${ROOT_ID}{display:none!important}}
     `;
     (document.head||document.documentElement).appendChild(s);
   }
+
 
   let rotateTimer=0;
   let currentEvents=[];
@@ -436,14 +462,23 @@
     if(animate){card?.classList.add('is-switching');setTimeout(()=>card?.classList.remove('is-switching'),330)}
     card?.classList.toggle('is-today',event.daysUntil===0);
     card?.classList.toggle('is-upcoming',event.daysUntil>0);
-    root.querySelector('.dl-nd-flag').textContent=flag(event.code);
+    const flagImageEl=root.querySelector('.dl-nd-flag-image');
+    if(flagImageEl){
+      flagImageEl.src=flagImage(event.code);
+      flagImageEl.alt=`Bandera de ${event.country}`;
+    }
+    const fallbackEl=root.querySelector('.dl-nd-flag-fallback');
+    if(fallbackEl) fallbackEl.textContent=flagLabel(event.code);
     root.querySelector('.dl-nd-kicker').textContent=kickerFor(event);
     root.querySelector('.dl-nd-country').textContent=event.country;
     root.querySelector('.dl-nd-label').textContent=`${event.label} · ${eventDateLabel(event)}`;
     root.querySelector('.dl-nd-thanks').textContent=thanksFor(event);
     root.querySelector('.dl-nd-count-value').textContent=countdownFor(event);
     root.querySelector('.dl-nd-count-label').textContent=event.daysUntil===0?'FIESTA':'DÍAS';
+    root.querySelector('.dl-nd-date').textContent=eventDateLabel(event);
+    root.querySelector('.dl-nd-rotate').textContent=currentEvents.length>1?`${activeIndex+1}/${currentEvents.length}`:'1/1';
   }
+
 
   function render(events, stamp, options={}) {
     remove();
@@ -455,15 +490,16 @@
     currentEvents=events;activeIndex=0;
     const root=document.createElement('div'); root.id=ROOT_ID; root.setAttribute('role','status'); root.setAttribute('aria-live','polite');
     root.innerHTML=`<section class="dl-nd-card" aria-label="Celebración nacional">
-      <span class="dl-nd-edge" aria-hidden="true"></span><span class="nd-corner-top" aria-hidden="true"></span><span class="nd-corner-bottom" aria-hidden="true"></span>
-      <i class="dl-nd-spark dl-nd-s1"></i><i class="dl-nd-spark dl-nd-s2"></i><i class="dl-nd-spark dl-nd-s3"></i><i class="dl-nd-spark dl-nd-s4"></i>
-      <i class="dl-nd-burst dl-nd-b1"></i><i class="dl-nd-burst dl-nd-b2"></i>
+      <span class="dl-nd-rail" aria-hidden="true"></span>
+      <i class="dl-nd-spark dl-nd-s1"></i><i class="dl-nd-spark dl-nd-s2"></i><i class="dl-nd-spark dl-nd-s3"></i>
       <button class="dl-nd-close" type="button" aria-label="Ocultar celebración por hoy" title="Ocultar por hoy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-      <div class="dl-nd-inner">
-        <div class="dl-nd-flagbox" aria-hidden="true"><span class="dl-nd-flag"></span></div>
-        <div class="dl-nd-copy"><div class="dl-nd-kicker"></div><h3 class="dl-nd-country"></h3><p class="dl-nd-label"></p><p class="dl-nd-thanks"></p></div>
+      <div class="dl-nd-head"><div class="dl-nd-kicker"></div><span class="dl-nd-rotate" aria-hidden="true"></span></div>
+      <div class="dl-nd-body">
+        <div class="dl-nd-flagbox" aria-hidden="true"><img class="dl-nd-flag-image" alt="" /><span class="dl-nd-flag-fallback"></span></div>
+        <div class="dl-nd-copy"><h3 class="dl-nd-country"></h3><p class="dl-nd-label"></p><p class="dl-nd-thanks"></p></div>
         <div class="dl-nd-countdown" aria-hidden="true"><strong class="dl-nd-count-value"></strong><span class="dl-nd-count-label"></span></div>
       </div>
+      <div class="dl-nd-meta"><span class="dl-nd-date"></span><span class="dl-nd-line" aria-hidden="true"></span></div>
     </section>`;
     (document.body||document.documentElement).appendChild(root);
     paint(0,false);
@@ -471,6 +507,7 @@
     restartRotation();
     return true;
   }
+
 
   function restartRotation() {
     clearInterval(rotateTimer);rotateTimer=0;

@@ -1,4 +1,4 @@
-/* Dingloft UI Guard · v72 */
+/* Dingloft UI Guard · v73 */
 (() => {
   'use strict';
   const ua = navigator.userAgent || '';
@@ -133,13 +133,13 @@
 
   function loadNationalDays(){
     // Compatibility path for legacy public pages that still load UI Guard but not Global Nav.
-    // Global Nav v134 is the canonical owner; this fallback prevents editing HTML page-by-page.
+    // Global Nav v135 is the canonical owner; this fallback prevents editing HTML page-by-page.
     if (window.self !== window.top) return;
     if (/^\/(?:admin|admin\.html|commerce-admin|commerce-admin\.html)(?:\/|$)/i.test(location.pathname)) return;
     if (window.DingloftGlobalNav || document.querySelector('script[src*="dingloft-global-nav.js"]')) return;
-    if (window.DingloftNationalDays || document.querySelector('script[data-dingloft-national-days="9"],script[src*="dingloft-national-days.js?v=9"]')) return;
+    if (window.DingloftNationalDays || document.querySelector('script[data-dingloft-national-days="10"],script[src*="dingloft-national-days.js?v=10"]')) return;
     const script=document.createElement('script');
-    script.src='/dingloft-national-days.js?v=9';
+    script.src='/dingloft-national-days.js?v=10';
     script.async=true;
     script.dataset.dingloftNationalDays='8';
     (document.head||document.documentElement).appendChild(script);
@@ -159,8 +159,8 @@
     openGlobalSupportFromChild();
   });
 
-  // v72: mobile header/nav are loaded directly by each customer page from
-  // /dingloft-mobile-nav-v72.js. UI Guard no longer creates, positions or bootstraps navigation.
+  // v73: mobile header/nav are loaded directly by each customer page from
+  // /dingloft-mobile-nav-v73.js. UI Guard no longer creates, positions or bootstraps navigation.
   function loadMobileChrome(){ /* intentionally empty */ }
 
   addBaseStyle();
