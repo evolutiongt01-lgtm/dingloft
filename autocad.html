@@ -35,7 +35,7 @@
 
     .ac-scene{position:relative;min-height:590px;align-self:stretch;display:flex;align-items:center;justify-content:flex-end}
     .ac-cad-window{position:relative;width:min(760px,100%);height:520px;border:1px solid rgba(255,255,255,.22);background:#151a1d;box-shadow:0 40px 95px rgba(0,0,0,.52);overflow:hidden;transform:perspective(1300px) rotateY(-4deg)}
-    .ac-cad-top{height:38px;display:flex;align-items:center;gap:7px;padding:0 13px;background:#22272b;border-bottom:1px solid #30363a}.ac-cad-top i{width:8px;height:8px;border-radius:50%;background:#646b70}.ac-cad-top b{margin-left:8px;color:#b7bdc2;font-size:10px;font-weight:600}
+    .ac-cad-top{height:38px;display:flex;align-items:center;gap:7px;padding:0 13px;background:#22272b;border-bottom:1px solid #30363a}.ac-cad-top i{width:8px;height:8px;border-radius:50%;background:#646b70}.ac-cad-top b{margin-left:8px;color:#b7bdc2;font-size:10px;font-weight:600}.ac-window-shot{height:calc(100% - 38px);background:#7a878b}.ac-window-shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
     .ac-canvas{position:absolute;inset:38px 0 0;background:linear-gradient(155deg,#171d20 0 54%,#0f1416 54% 100%);overflow:hidden}
     .ac-canvas:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(85,154,184,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(85,154,184,.1) 1px,transparent 1px);background-size:28px 28px}
     .ac-canvas:after{content:"";position:absolute;left:7%;right:7%;bottom:15%;height:2px;background:rgba(255,78,78,.75);transform:rotate(-7deg);box-shadow:0 -145px 0 rgba(88,138,255,.46)}
@@ -84,10 +84,7 @@
         <div class="ac-scene" aria-hidden="true">
           <div class="ac-cad-window">
             <div class="ac-cad-top"><i></i><i></i><i></i><b>Proyecto arquitectónico · AutoCAD 2026</b></div>
-            <div class="ac-canvas">
-              <div class="ac-plan"><span class="r1"></span><span class="r2"></span><span class="r3"></span><span class="r4"></span><span class="door"></span></div>
-              <div class="ac-building"><div class="face"></div><div class="wing"></div><div class="roof"></div></div>
-            </div>
+            <div class="ac-window-shot"><img src="img/AutoCAD/01.png" alt="Proyecto arquitectónico trabajado en AutoCAD"></div>
           </div>
           <div class="ac-scene-label">CAD 2D + 3D</div>
           <div class="ac-box"><img src="img/autocad.png" alt=""></div>
