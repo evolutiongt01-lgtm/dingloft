@@ -1,4 +1,4 @@
-/* Dingloft Persistent Mobile/Tablet Shell · v93
+/* Dingloft Persistent Mobile/Tablet Shell · v136
    All phone/tablet routes enter app.html once. From there only the content frame changes,
    so the header, search, bottom nav and independent cart never remount between pages. */
 (() => {
@@ -6,7 +6,11 @@
   if (window.self !== window.top) return;
 
   const ua = navigator.userAgent || '';
-  const mobileOS = /Android|iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isIPad = /iPad/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  // iPad Safari uses the responsive page directly. Avoiding the iframe shell prevents
+  // WebKit black first-paint/reload flashes while preserving the existing phone app shell.
+  if (isIPad) return;
+  const mobileOS = /Android|iPhone|iPod/i.test(ua);
   const mobileViewport = window.matchMedia('(max-width:1024px)').matches && navigator.maxTouchPoints > 0;
   if (!(mobileOS || mobileViewport)) return;
 

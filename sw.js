@@ -1,4 +1,4 @@
-const VERSION = '135';
+const VERSION = '136';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -15,6 +15,8 @@ const CORE = [
   '/',
   '/multitrack',
   '/multitrack?app=1',
+  '/motion-x',
+  '/motion-x?app=1',
   '/account',
   '/account?app=1',
   '/login',
@@ -57,7 +59,7 @@ const CORE = [
   '/dingloft-presence.js?v=55',
   '/dingloft-customer-push.js?v=1',
   '/mobile-shell-redirect.js',
-  '/mobile-shell-redirect.js?v=94',
+  '/mobile-shell-redirect.js?v=136',
   '/pwa-install.js',
   '/dingloft-commerce.js?v=2.2.1-shell94',
   '/dingloft-cart-sync.js?v=120',
@@ -94,6 +96,7 @@ self.addEventListener('activate', event => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
     await Promise.all(keys.filter(k => k.startsWith(CACHE_PREFIX) && ![CACHE,RUNTIME].includes(k)).map(k => caches.delete(k)));
+    try { if (self.registration.navigationPreload) await self.registration.navigationPreload.enable(); } catch(_) {}
     await self.clients.claim();
   })());
 });
@@ -124,6 +127,33 @@ async function networkFirst(req){
     if (exact) return exact;
     return (await caches.match(OFFLINE)) || new Response('Sin conexión', {status:503, headers:{'content-type':'text/plain;charset=utf-8'}});
   }
+}
+
+async function fastDocumentNavigation(req, preloadPromise){
+  const cache = await caches.open(RUNTIME);
+  const cached = await cache.match(req, {ignoreSearch:true}) || await caches.match(req, {ignoreSearch:true});
+  const network = (async () => {
+    try {
+      const preloaded = preloadPromise ? await preloadPromise : null;
+      const fresh = preloaded || await fetch(req);
+      if (fresh && fresh.ok) cache.put(req, fresh.clone()).catch(()=>{});
+      return fresh;
+    } catch(_) { return null; }
+  })();
+
+  if (!cached) {
+    return await network || (await caches.match(OFFLINE)) || new Response('Sin conexión', {status:503, headers:{'content-type':'text/plain;charset=utf-8'}});
+  }
+
+  // Give a very fast network response a chance, otherwise paint the cached document
+  // immediately instead of leaving Safari/iPad on a black viewport for seconds.
+  const quickNetwork = await Promise.race([
+    network,
+    new Promise(resolve => setTimeout(() => resolve(null), 180))
+  ]);
+  if (quickNetwork) return quickNetwork;
+  network.catch(()=>{});
+  return cached;
 }
 
 async function staleWhileRevalidate(req){
@@ -188,9 +218,10 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Normal documents remain network-first and fall back to the last visited copy/offline page.
+  // Normal documents use a fast first paint: fresh network if it answers immediately,
+  // otherwise the last good local copy while the network refreshes silently.
   if (isDocument) {
-    event.respondWith(networkFirst(req));
+    event.respondWith(fastDocumentNavigation(req, event.preloadResponse));
     return;
   }
 
