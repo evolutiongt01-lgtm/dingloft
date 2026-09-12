@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="es">
-<head><script src="/dingloft-cart-sync.js?v=120"></script><script src="/dingloft-global-nav.js?v=121"></script>
+<head><script src="/dingloft-cart-sync.js?v=120"></script><script src="/dingloft-global-nav.js?v=124"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#000000" />
@@ -1609,11 +1609,13 @@
     .checkout-cart-copy{min-width:0}.checkout-cart-copy b{display:block;color:var(--text);font-size:.82rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.checkout-cart-copy span{display:block;margin-top:4px;color:var(--muted);font-size:.67rem;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .checkout-cart-price{color:var(--text);font-size:.82rem;font-weight:820;white-space:nowrap}
     .checkout-cart-empty{padding:18px;text-align:center;color:var(--muted);font-size:.78rem;border:1px dashed rgba(255,255,255,.11);border-radius:16px}
-    @media(max-width:520px){.checkout-cart-item{grid-template-columns:50px minmax(0,1fr) auto;gap:9px;padding:9px}.checkout-cart-thumb{width:50px;height:50px}.checkout-cart-copy b{font-size:.76rem}.checkout-cart-price{font-size:.74rem}}
+    @media(max-width:520px){.checkout-cart-item{grid-template-columns:50px minmax(0,1fr) auto;gap:9px;padding:9px}.checkout-cart-thumb{width:50px;height:50px}.checkout-cart-copy b{font-size:.76rem}.checkout-cart-price{font-size:.74rem}.checkout-cart-end{min-width:58px}.checkout-cart-remove{font-size:.6rem}}
 
 </style>
 
 <style id="dingloft-checkout-no-dark-footer-mobile-v113">
+
+    .free-checkout-panel{display:none;border:1px solid var(--line);border-radius:18px;background:#fff;padding:24px;text-align:center}.free-checkout-panel.show{display:block}.free-checkout-icon{width:52px;height:52px;margin:0 auto 13px;border-radius:15px;display:grid;place-items:center;background:#0a0c0f;color:#b7ff34;font-size:1.2rem}.free-checkout-panel h3{margin:0 0 6px;font-size:17px;letter-spacing:-.02em}.free-checkout-panel p{max-width:470px;margin:0 auto 17px;color:#84848a;font-size:10px;line-height:1.55}.free-checkout-panel .primary-btn{max-width:440px;margin:0 auto}.free-checkout-note{margin-top:10px;color:#96969c;font-size:8px;line-height:1.45}
 /* Mobile rule: checkout keeps its full functionality, but the dark copyright footer is removed. */
 @media (max-width:600px), (hover:none) and (pointer:coarse){
   html,body{
@@ -1938,7 +1940,7 @@
                 </div>
                 <div class="mini-price" id="checkout-price">$0.00</div>
               </div>
-              <div class="divider">Paga de forma segura con PayPal</div>
+              <div class="divider" id="payment-method-divider">Paga de forma segura con PayPal</div>
 <div class="alt-method-panel active" id="paypal-method-panel">
                 <div class="paypal-shell">
                   <h3>Paga con PayPal</h3>
@@ -1946,6 +1948,15 @@
                   <div id="paypal-button-container"></div>
                   <div class="payment-message" id="paypal-payment-message"></div>
                 </div>
+              </div>
+
+              <div class="free-checkout-panel" id="free-checkout-panel">
+                <div class="free-checkout-icon"><i class="bi bi-person-check"></i></div>
+                <h3>Vincula tu compra a Dingloft</h3>
+                <p>Este pedido no requiere pago. Confirma para añadir el producto directamente a tu cuenta y habilitar su acceso.</p>
+                <button class="primary-btn" id="free-checkout-btn" type="button">Comprar y vincular a mi cuenta</button>
+                <div class="free-checkout-note">El Worker valida el pedido antes de asociarlo a tu cuenta.</div>
+                <div class="payment-message" id="free-checkout-message"></div>
               </div>
 
               <div id="result-zone" class="result">
@@ -2556,7 +2567,7 @@ function cartItemMarkup(item){
   const image=esc(productImageUrl(item));
   const safeName=esc(item.name||"Producto Dingloft");
   const safeType=esc(item.type||"Producto digital");
-  return `<article class="checkout-cart-item"><div class="checkout-cart-thumb"><img src="${image}" alt="" onerror="this.onerror=null;this.src='/img/dingloft.png'"></div><div class="checkout-cart-copy"><b>${safeName}</b><span>${safeType}</span></div><div class="checkout-cart-price">${money(item.priceUsd??item.price??0)}</div></article>`;
+  return `<article class="checkout-cart-item"><div class="checkout-cart-thumb"><img src="${image}" alt="" onerror="this.onerror=null;this.src='/img/dingloft.png'"></div><div class="checkout-cart-copy"><b>${safeName}</b><span>${safeType}</span></div><div class="checkout-cart-end"><div class="checkout-cart-price">${money(item.priceUsd??item.price??0)}</div><button class="checkout-cart-remove" type="button" data-cart-remove="${esc(cartItemKey(item))}" aria-label="Eliminar ${safeName} del carrito">Eliminar</button></div></article>`;
 }
 
 function renderCheckoutCart(){
@@ -2569,6 +2580,63 @@ function renderCheckoutCart(){
   const thumb=$("#checkout-product-image");
   if(thumb){thumb.src=first?productImageUrl(first):"/img/dingloft.png";thumb.alt=first?.name||"Dingloft";thumb.onerror=()=>{thumb.onerror=null;thumb.src="/img/dingloft.png";};}
 }
+
+async function removeCheckoutItem(key,button=null){
+  const target=String(key||"").trim().toLowerCase();
+  if(!target)return;
+  const previous=[...checkoutCart];
+  const next=previous.filter(item=>cartItemKey(item)!==target);
+  if(next.length===previous.length)return;
+  if(button)button.disabled=true;
+  checkoutCart=next;
+  currentProduct=checkoutCart[0]||null;
+  currentQuote=null;
+  cartQuote=null;
+  try{localStorage.setItem("dingloft_cart",JSON.stringify(checkoutCart));}catch(_){}
+  try{window.dispatchEvent(new CustomEvent("dingloft:cart-sync",{detail:{cart:checkoutCart,source:"checkout-remove"}}));}catch(_){}
+  renderCheckoutCart();
+
+  try{
+    await syncCheckoutCartToServer(checkoutCart).catch(()=>null);
+    if(!checkoutCart.length){
+      remoteAssistanceEnabled=false;
+      donationUsd=0;
+      paintDonation();
+      const prepareBtn=$("#prepare-btn");
+      if(prepareBtn)prepareBtn.disabled=true;
+      const setup=$("#setup-error");
+      if(setup)setup.textContent="Tu carrito está vacío. Agrega un producto para continuar.";
+      return;
+    }
+    let quote=await api("/checkout/quote",{method:"POST",body:{items:cartItems(),couponCode:activeCouponCode,remoteAssistance:{enabled:false},donationUsd:0}});
+    if(activeCouponCode&&!quote.couponValid){
+      activeCouponCode="";
+      try{sessionStorage.removeItem("dingloft_checkout_coupon");}catch(_){}
+      quote=await api("/checkout/quote",{method:"POST",body:{items:cartItems(),couponCode:"",remoteAssistance:{enabled:false},donationUsd:0}});
+    }
+    cartQuote={...quote,totalUsd:Number(quote.productTotalUsd??quote.totalUsd??0)};
+    mergeQuoteIntoCart(quote);
+    renderCheckoutCart();
+    paintDonation();
+    const prepareBtn=$("#prepare-btn");
+    if(prepareBtn)prepareBtn.disabled=false;
+    const setup=$("#setup-error");
+    if(setup)setup.textContent="";
+  }catch(error){
+    console.error("Dingloft checkout remove",error);
+    const setup=$("#setup-error");
+    if(setup)setup.textContent="El producto se eliminó del carrito, pero no pudimos actualizar el total. Inténtalo de nuevo.";
+  }finally{
+    if(button)button.disabled=false;
+  }
+}
+
+document.addEventListener("click",event=>{
+  const button=event.target.closest?.("[data-cart-remove]");
+  if(!button)return;
+  event.preventDefault();
+  removeCheckoutItem(button.dataset.cartRemove,button);
+});
 
 async function removePurchasedItemsFromLocalCart(){
   const purchased=new Set(checkoutCart.map(cartItemKey).filter(Boolean));
@@ -2781,11 +2849,9 @@ function updatePreview(){
 }
 
 async function loadConfig(){
-  const paypalCfg=await api("/paypal/config");
-  config={paypalClientId:String(paypalCfg.clientId||"").trim()};
+  config=null;
   remoteAssistanceEnabled=false;
   remoteUrgentWeekend=false;
-  if(!config.paypalClientId)throw new Error("PayPal no está configurado.");
 
   try{activeCouponCode=String(sessionStorage.getItem("dingloft_checkout_coupon")||"").trim().toUpperCase();}catch(_){activeCouponCode="";}
   checkoutCart=await loadCheckoutCart();
@@ -2811,6 +2877,11 @@ async function loadConfig(){
 async function loadPayPalSDK(){
   if(window.paypal?.Buttons)return window.paypal;
   if(paypalSdkPromise)return paypalSdkPromise;
+  if(!config?.paypalClientId){
+    const paypalCfg=await api("/paypal/config");
+    config={paypalClientId:String(paypalCfg.clientId||"").trim()};
+    if(!config.paypalClientId)throw new Error("PayPal no está configurado.");
+  }
 
   paypalSdkPromise=new Promise((resolve,reject)=>{
     const s=document.createElement("script");
@@ -2875,13 +2946,54 @@ async function captureOrder(orderId){
   });
 }
 
+async function completeFreeCheckout(){
+  const button=$("#free-checkout-btn");
+  const message=$("#free-checkout-message");
+  if(!currentUser)throw new Error("Debes iniciar sesión para vincular el producto.");
+  if(!currentQuote||Number(currentQuote.totalUsd)!==0)throw new Error("Este pedido ya no tiene total $0.00. Vuelve a verificarlo.");
+  if(button){button.disabled=true;button.textContent="Vinculando a tu cuenta…";}
+  if(message){message.textContent="Validando tu compra con Dingloft…";message.classList.remove("error");}
+  try{
+    const result=await api("/checkout/free",{
+      method:"POST",authRequired:true,
+      body:{items:cartItems(),couponCode:activeCouponCode}
+    });
+    await removePurchasedItemsFromLocalCart();
+    showSuccess({...result,amountPaidUsd:0,paymentProvider:"Dingloft"});
+  }catch(error){
+    if(message){message.textContent=error?.message||"No se pudo vincular el producto a tu cuenta.";message.classList.add("error");}
+    if(button){button.disabled=false;button.textContent="Comprar y vincular a mi cuenta";}
+    throw error;
+  }
+}
+
+function showFreeCheckout(){
+  const divider=$("#payment-method-divider");
+  const paypalPanel=$("#paypal-method-panel");
+  const freePanel=$("#free-checkout-panel");
+  if(divider)divider.style.display="none";
+  if(paypalPanel)paypalPanel.style.display="none";
+  if(freePanel)freePanel.classList.add("show");
+  step("elements","done");
+  setMessage("");
+}
+
+function showPaidCheckout(){
+  const divider=$("#payment-method-divider");
+  const paypalPanel=$("#paypal-method-panel");
+  const freePanel=$("#free-checkout-panel");
+  if(divider){divider.style.display="";divider.textContent="Paga de forma segura con PayPal";}
+  if(paypalPanel)paypalPanel.style.display="";
+  if(freePanel)freePanel.classList.remove("show");
+}
+
 function showSuccess(result){
   step("payment","done");
   step("webhook","done");
   $("#checkout-zone").style.display="none";
   $("#setup-zone").style.display="none";
   $("#result-zone").style.display="block";
-  $("#r-session").textContent="PayPal";
+  $("#r-session").textContent=Number(result?.amountPaidUsd??currentQuote?.totalUsd??payableTotal())===0?"Dingloft":"PayPal";
   $("#r-transaction").textContent=result?.captureId||result?.orderNumber||"Confirmado";
   $("#r-total").textContent=`${money(Number(result?.amountPaidUsd||currentQuote?.totalUsd||payableTotal()))} USD`;
 }
@@ -2987,7 +3099,12 @@ async function prepare(){
     step("session","done");
     $("#setup-zone").style.display="none";
     $("#checkout-zone").style.display="block";
-    await renderPayPal();
+    if(Number(currentQuote?.totalUsd||0)===0){
+      showFreeCheckout();
+    }else{
+      showPaidCheckout();
+      await renderPayPal();
+    }
   }catch(error){
     console.error(error);
     step("session","");
@@ -3042,6 +3159,7 @@ $("#remote-assistance-toggle")?.addEventListener("click",()=>{
 initRemoteBookingControls();
 
 $("#prepare-btn")?.addEventListener("click",prepare);
+$("#free-checkout-btn")?.addEventListener("click",()=>completeFreeCheckout().catch(error=>console.error("Dingloft free checkout",error)));
 $("#new-test-btn")?.addEventListener("click",reset);
 
 onAuthStateChanged(auth,async user=>{
