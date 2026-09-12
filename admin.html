@@ -773,7 +773,20 @@ function drawClientGlobe(ts=performance.now()){
 }
 function renderClientGlobe(){renderClientLocationList(); cancelAnimationFrame(globeRAF); hideGlobeTooltip(); ensureWorldLand(); globeRAF=requestAnimationFrame(drawClientGlobe)}
 window.addEventListener('resize',()=>renderClientLocationList());
-async function loadPresence(){const d=await api('/admin/presence');presenceSessions=d.sessions||[];renderClientGlobe();renderGhosts()}
+async function loadPresence(){
+  const u=auth.currentUser;if(!u)throw Error("Sesión no válida");
+  const endpoint="https://dingloft-presence-live.evolutiongt01.workers.dev/admin/presence";
+  const run=async(forceRefresh=false)=>{
+    const token=await u.getIdToken(forceRefresh);
+    const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),9000);
+    let r;try{r=await fetch(endpoint,{signal:controller.signal,cache:"no-store",headers:{Authorization:`Bearer ${token}`,Accept:"application/json"}})}finally{clearTimeout(timer)}
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok||d.ok===false){const e=Error(d.error||`Error ${r.status}`);e.status=r.status;throw e}
+    return d;
+  };
+  let d;try{d=await run(false)}catch(e){if(e.status===401||e.status===403)d=await run(true);else throw e}
+  presenceSessions=Array.isArray(d.sessions)?d.sessions:[];renderClientGlobe();renderGhosts();
+}
 function currentWeekStart(){const d=new Date();d.setHours(0,0,0,0);const mondayOffset=(d.getDay()+6)%7;d.setDate(d.getDate()-mondayOffset);return d}
 function currentWeekEnd(){const d=currentWeekStart();d.setDate(d.getDate()+7);return d}
 function presenceTime(p){return new Date(p?.lastSeenAt||p?.startedAt||0).getTime()||0}
