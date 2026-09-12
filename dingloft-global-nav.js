@@ -1,15 +1,16 @@
-/* Dingloft Global Navbar + Cart · v127
+/* Dingloft Global Navbar + Cart · v128
    Single persistent component based on ventas.html.
    It renders only in the TOP document (desktop-shell/app/direct page), never inside iframes.
    Cart uses transform/opacity only: no page-wide blur/scale choreography. */
 (() => {
   'use strict';
-  if (window.__DINGLOFT_GLOBAL_NAV_V127__ || window.__DINGLOFT_GLOBAL_NAV_V126__ || window.__DINGLOFT_GLOBAL_NAV_V125__ || window.__DINGLOFT_GLOBAL_NAV_V124__) return;
+  if (window.__DINGLOFT_GLOBAL_NAV_V128__ || window.__DINGLOFT_GLOBAL_NAV_V127__ || window.__DINGLOFT_GLOBAL_NAV_V126__ || window.__DINGLOFT_GLOBAL_NAV_V125__ || window.__DINGLOFT_GLOBAL_NAV_V124__) return;
+  window.__DINGLOFT_GLOBAL_NAV_V128__ = true;
   window.__DINGLOFT_GLOBAL_NAV_V127__ = true;
   window.__DINGLOFT_GLOBAL_NAV_V126__ = true;
   window.__DINGLOFT_GLOBAL_NAV_V124__ = true;
 
-  const VERSION = 127;
+  const VERSION = 128;
   const CART_KEY = 'dingloft_cart';
   const WORKER = String(
     window.DINGLOFT_WORKER_BASE ||
@@ -38,15 +39,24 @@
   const file = (location.pathname.split('/').filter(Boolean).pop() || '').toLowerCase();
   if (file.includes('admin') || file === 'commerce-admin') return;
 
-  // National Days v2 is owned canonically by the global public shell/navbar.
-  // It is fully local: no Firebase, backend, geolocation or external API calls.
-  if (!document.querySelector('script[data-dingloft-national-days],script[src*="dingloft-national-days.js"]')) {
+  // National Days v3 is owned canonically by the global public shell/navbar.
+  // It is a static same-origin asset: zero Firebase, zero API/backend calls and zero external dependencies.
+  const ensureNationalDays = () => {
+    if (window.DingloftNationalDays) return;
+    const exact = document.querySelector('script[data-dingloft-national-days="3"],script[src*="dingloft-national-days.js?v=3"]');
+    if (exact) return;
     const nationalDaysScript=document.createElement('script');
-    nationalDaysScript.src='/dingloft-national-days.js?v=2';
-    nationalDaysScript.dataset.dingloftNationalDays='2';
+    nationalDaysScript.src='/dingloft-national-days.js?v=3';
+    nationalDaysScript.dataset.dingloftNationalDays='3';
     nationalDaysScript.async=true;
+    nationalDaysScript.addEventListener('load',()=>{ nationalDaysScript.dataset.loaded='1'; },{once:true});
+    nationalDaysScript.addEventListener('error',()=>{
+      nationalDaysScript.dataset.failed='1';
+      console.error('[Dingloft National Days] No se pudo cargar /dingloft-national-days.js?v=3. Verifica que el archivo esté publicado en la raíz del sitio.');
+    },{once:true});
     (document.head||document.documentElement).appendChild(nationalDaysScript);
-  }
+  };
+  ensureNationalDays();
 
   // Presence v57 is owned by the top document. This also covers Home, Cuenta,
   // Checkout and persistent app shells that do not load UI Guard themselves.
@@ -643,15 +653,15 @@
 
       if (!href) return false;
       try {
-        if (window.DingloftDesktopShell?.navigate) {
+        if (typeof window.DingloftDesktopShell?.navigate === 'function') {
           window.DingloftDesktopShell.navigate(href);
           return true;
         }
-        if (window.DingloftPersistentShellV93?.navigateHref) {
+        if (typeof window.DingloftPersistentShellV93?.navigateHref === 'function') {
           window.DingloftPersistentShellV93.navigateHref(href);
           return true;
         }
-        if (window.DingloftApp?.navigateHref) {
+        if (typeof window.DingloftApp?.navigateHref === 'function') {
           window.DingloftApp.navigateHref(href);
           return true;
         }
@@ -667,7 +677,9 @@
     const routeInfo = (raw = '') => {
       let path = raw;
       if (!path) {
-        if (window.DingloftDesktopShell?.current) path = window.DingloftDesktopShell.current();
+        const desktopCurrent = window.DingloftDesktopShell?.current;
+        if (typeof desktopCurrent === 'function') path = desktopCurrent.call(window.DingloftDesktopShell);
+        else if (typeof desktopCurrent === 'string' && desktopCurrent) path = desktopCurrent;
         else if (window.DingloftPersistentShellV93?.activeKey) {
           const key = window.DingloftPersistentShellV93.activeKey;
           path = key === 'home' ? 'ventas.html' : key === 'catalog' ? 'ventas.html#programas' :

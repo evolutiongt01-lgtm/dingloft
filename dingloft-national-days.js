@@ -1,13 +1,13 @@
 (() => {
   'use strict';
 
-  // Dingloft National Days · v2
+  // Dingloft National Days · v3
   // Componente visual 100% local: no Firebase, no backend, no geolocalización, no APIs externas.
   // Una fecha patria/nacional principal por país/estado; fechas móviles especiales se resuelven abajo.
-  if (window.__DINGLOFT_NATIONAL_DAYS_V2__) return;
-  window.__DINGLOFT_NATIONAL_DAYS_V2__ = true;
+  if (window.DingloftNationalDays || window.__DINGLOFT_NATIONAL_DAYS_V3__) return;
+  window.__DINGLOFT_NATIONAL_DAYS_V3__ = true;
 
-  const VERSION = '2';
+  const VERSION = '3';
   const ROOT_ID = 'dlNationalDayRoot';
   const STYLE_ID = 'dlNationalDayStyle';
   const STORAGE_PREFIX = 'dingloft_national_day_hidden_';
