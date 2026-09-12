@@ -1,10 +1,11 @@
-/* Dingloft Global Navbar + Cart · v136
+/* Dingloft Global Navbar + Cart · v137
    Single persistent component based on ventas.html.
    It renders only in the TOP document (desktop-shell/app/direct page), never inside iframes.
    Cart uses transform/opacity only: no page-wide blur/scale choreography. */
 (() => {
   'use strict';
-  if (window.__DINGLOFT_GLOBAL_NAV_V136__ || window.__DINGLOFT_GLOBAL_NAV_V132__ || window.__DINGLOFT_GLOBAL_NAV_V131__ || window.__DINGLOFT_GLOBAL_NAV_V130__ || window.__DINGLOFT_GLOBAL_NAV_V129__ || window.__DINGLOFT_GLOBAL_NAV_V128__ || window.__DINGLOFT_GLOBAL_NAV_V127__ || window.__DINGLOFT_GLOBAL_NAV_V126__ || window.__DINGLOFT_GLOBAL_NAV_V125__ || window.__DINGLOFT_GLOBAL_NAV_V124__) return;
+  if (window.__DINGLOFT_GLOBAL_NAV_V137__ || window.__DINGLOFT_GLOBAL_NAV_V136__ || window.__DINGLOFT_GLOBAL_NAV_V132__ || window.__DINGLOFT_GLOBAL_NAV_V131__ || window.__DINGLOFT_GLOBAL_NAV_V130__ || window.__DINGLOFT_GLOBAL_NAV_V129__ || window.__DINGLOFT_GLOBAL_NAV_V128__ || window.__DINGLOFT_GLOBAL_NAV_V127__ || window.__DINGLOFT_GLOBAL_NAV_V126__ || window.__DINGLOFT_GLOBAL_NAV_V125__ || window.__DINGLOFT_GLOBAL_NAV_V124__) return;
+  window.__DINGLOFT_GLOBAL_NAV_V137__ = true;
   window.__DINGLOFT_GLOBAL_NAV_V136__ = true;
   window.__DINGLOFT_GLOBAL_NAV_V132__ = true;
   window.__DINGLOFT_GLOBAL_NAV_V131__ = true;
@@ -15,7 +16,7 @@
   window.__DINGLOFT_GLOBAL_NAV_V126__ = true;
   window.__DINGLOFT_GLOBAL_NAV_V124__ = true;
 
-  const VERSION = 136;
+  const VERSION = 137;
   const CART_KEY = 'dingloft_cart';
   const WORKER = String(
     window.DINGLOFT_WORKER_BASE ||
@@ -158,10 +159,10 @@
       .dgn-brand{
         display:flex;align-items:center;justify-content:flex-start;
         color:#fff;text-decoration:none;
-        width:32px;height:40px;
+        width:84px;height:40px;overflow:visible;
       }
       .dgn-brand img{
-        display:block;width:30px;height:30px;object-fit:contain;border-radius:8px;
+        display:block;width:78px;height:auto;max-height:30px;object-fit:contain;border-radius:0;
       }
       .dgn-links{
         display:flex;align-items:center;justify-content:center;gap:6px;
@@ -382,7 +383,7 @@
       @media(max-width:900px){
         .dgn-inner{padding:0 28px;grid-template-columns:auto minmax(0,1fr) auto;gap:16px}
         .dgn-links{display:none}
-        .dgn-brand img{width:31px;height:31px}
+        .dgn-brand{width:76px}.dgn-brand img{width:70px;height:auto;max-height:27px}
         .dgn-actions{gap:13px}
         .dgn-icon{width:28px;height:34px}
         .dgn-admin-btn{display:none!important}
@@ -398,8 +399,10 @@
       }
       @media(max-width:560px){
         :root{--dgn-h:64px}
-        .dgn-inner{padding:0 28px;gap:12px}
-        .dgn-actions{gap:12px}
+        .dgn-inner{padding:0 20px;gap:10px}
+        .dgn-brand{width:64px}
+        .dgn-brand img{width:60px;height:auto;max-height:24px}
+        .dgn-actions{gap:10px}
         .dgn-cart-panel{
           top:auto;bottom:0;left:0;right:0;width:100%;height:min(82dvh,720px);
           border-left:0;border-top:1px solid #23272c;
