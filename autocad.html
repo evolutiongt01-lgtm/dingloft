@@ -48,6 +48,13 @@
 
     .ac-showcase{display:grid;grid-template-columns:.92fr 1.08fr;min-height:560px;background:#131719;color:#fff}.ac-showcase-copy{padding:76px max(48px,calc((100vw - 1240px)/2));padding-right:54px}.ac-showcase-copy .ac-kicker{color:#aeb5bb}.ac-showcase-copy h2{font-size:clamp(42px,4.3vw,66px)}.ac-showcase-copy p{max-width:600px;color:#c1c6cb;font-size:16px;line-height:1.75}.ac-showcase-art{position:relative;overflow:hidden;background:linear-gradient(145deg,#62737b,#20292d)}.ac-showcase-art:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:42px 42px}.ac-showcase-art svg{position:absolute;inset:7% 6%;width:88%;height:86%}
 
+    /* SYSTEM REQUIREMENTS */
+    .ac-requirements{padding:100px 0;background:#f2f2ef;border-top:1px solid var(--soft-line);border-bottom:1px solid var(--soft-line)}
+    .ac-requirements-head{display:flex;align-items:end;justify-content:space-between;gap:34px}.ac-requirements-head h2{max-width:760px;margin:0;font-size:clamp(42px,5vw,70px);line-height:.98;letter-spacing:-.05em}.ac-requirements-head p{max-width:520px;margin:0;color:#6d747c;font-size:15px;line-height:1.7}
+    .ac-compat-banner{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:38px;padding:24px 26px;background:#0b0d10;color:#fff;border:1px solid #0b0d10}.ac-compat-banner strong{display:block;font-size:23px;letter-spacing:-.035em}.ac-compat-banner span{display:block;margin-top:6px;color:#b7bdc3;font-size:12px;line-height:1.5}.ac-compat-chip{flex:0 0 auto;padding:9px 12px;background:var(--lime);color:#090b0d;font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+    .ac-requirement-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px;max-width:980px}.ac-req-card{padding:30px;background:#fff;border:1px solid var(--soft-line)}.ac-req-card.dark{background:#151719;color:#fff;border-color:#151719}.ac-req-top{display:flex;align-items:center;justify-content:space-between;gap:15px;padding-bottom:20px;border-bottom:1px solid #e1e3e4}.ac-req-card.dark .ac-req-top{border-color:#35393d}.ac-req-platform{display:flex;align-items:center;gap:12px}.ac-req-platform i{font-size:28px}.ac-req-platform b{display:block;font-size:20px;letter-spacing:-.03em}.ac-req-platform small{display:block;margin-top:3px;color:#7d848b;font-size:9px;text-transform:uppercase;letter-spacing:.08em}.ac-req-card.dark .ac-req-platform small{color:#9fa6ad}.ac-req-badge{padding:7px 9px;border:1px solid #d8dbde;color:#303438;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}.ac-req-card.dark .ac-req-badge{border-color:#4b5055;color:#dce0e3}
+    .ac-req-list{display:grid;margin-top:4px}.ac-req-row{display:grid;grid-template-columns:130px 1fr;gap:18px;padding:15px 0;border-bottom:1px solid #eceeed}.ac-req-row:last-child{border-bottom:0}.ac-req-card.dark .ac-req-row{border-color:#2d3135}.ac-req-row dt{color:#8a9198;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.07em}.ac-req-row dd{margin:0;color:#25292d;font-size:12px;line-height:1.55}.ac-req-card.dark .ac-req-row dd{color:#d6dadd}.ac-req-note{margin-top:16px;padding:17px 18px;border:1px solid #d8dbde;background:#fff;color:#747b82;font-size:11px;line-height:1.6}.ac-req-note strong{color:#171a1d}
+
     /* PURCHASE */
     .ac-buy{padding:92px 0;background:#090a0c;color:#fff}.ac-buy-head{display:flex;justify-content:space-between;align-items:end;gap:30px}.ac-buy-head h2{margin:0;font-size:clamp(42px,4.5vw,68px);letter-spacing:-.05em}.ac-buy-head p{max-width:500px;margin:0;color:#abb2b9;line-height:1.6}.ac-packages{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:42px}.ac-package{position:relative;min-height:380px;padding:30px;border:1px solid #50545a;background:#000;display:flex;flex-direction:column}.ac-package.popular{border-color:#fff}.ac-package-badge{position:absolute;right:18px;top:18px;padding:7px 9px;background:var(--lime);color:#080a0c;font-size:9px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}.ac-package .small{color:#9da4ab;font-size:11px;text-transform:uppercase;letter-spacing:.08em}.ac-package h3{margin:15px 0 8px;font-size:27px;letter-spacing:-.035em}.ac-package .price{margin:15px 0 5px;font-size:42px;font-weight:850}.ac-package .price span{font-size:13px;color:#9ca3a9;font-weight:500}.ac-package ul{list-style:none;margin:22px 0 28px;padding:0;display:grid;gap:11px;color:#c3c7cb;font-size:13px}.ac-package li:before{content:"✓";margin-right:9px;color:var(--lime);font-weight:900}.ac-package-actions{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:9px}.ac-package button{min-height:46px;border:1px solid #fff;background:#fff;color:#090a0c;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}.ac-package button.secondary{background:transparent;color:#fff}.ac-package button:hover{background:var(--lime);border-color:var(--lime);color:#090a0c}
 
@@ -55,8 +62,8 @@
 
     .toast{position:fixed;right:24px;bottom:24px;z-index:2147483000;transform:translateY(120px);padding:13px 17px;border:1px solid rgba(183,255,52,.4);background:#10150c;color:#efffd4;font-size:12px;box-shadow:0 18px 45px rgba(0,0,0,.25);transition:.22s ease}.toast.show{transform:translateY(0)}
 
-    @media(max-width:1050px){.ac-hero-inner{grid-template-columns:1fr;min-height:auto;padding:70px 0 30px}.ac-scene{min-height:470px}.ac-hero-image{width:min(760px,100%)}.ac-values{grid-template-columns:1fr 1fr}.ac-showcase{grid-template-columns:1fr}.ac-showcase-copy{padding:70px 36px}.ac-showcase-art{min-height:440px}}
-    @media(max-width:760px){.shell{width:min(100% - 28px,var(--max))}.ac-hero{min-height:0}.ac-hero-inner{padding:54px 0 30px}.ac-hero h1{font-size:48px}.ac-hero-copy{font-size:16px}.ac-actions{display:grid;grid-template-columns:1fr}.ac-btn{width:100%}.ac-price{align-items:center;flex-wrap:wrap}.ac-scene{min-height:350px}.ac-hero-image{width:100%}.ac-box{width:120px}.ac-scene-label{font-size:8px}.ac-values{grid-template-columns:1fr 1fr}.ac-value{min-height:88px;padding:16px}.ac-section{padding:70px 0}.ac-feature-grid{grid-template-columns:1fr}.ac-feature{min-height:230px}.ac-showcase-copy{padding:62px 20px}.ac-showcase-art{min-height:330px}.ac-buy{padding:70px 0}.ac-buy-head{display:block}.ac-buy-head p{margin-top:14px}.ac-packages{grid-template-columns:1fr}.ac-package-actions{grid-template-columns:1fr}.ac-note{grid-template-columns:1fr}}
+    @media(max-width:1050px){.ac-hero-inner{grid-template-columns:1fr;min-height:auto;padding:70px 0 30px}.ac-scene{min-height:470px}.ac-hero-image{width:min(760px,100%)}.ac-values{grid-template-columns:1fr 1fr}.ac-showcase{grid-template-columns:1fr}.ac-showcase-copy{padding:70px 36px}.ac-showcase-art{min-height:440px}.ac-requirements-head{display:block}.ac-requirements-head p{margin-top:18px}.ac-requirement-grid{grid-template-columns:1fr}}
+    @media(max-width:760px){.shell{width:min(100% - 28px,var(--max))}.ac-hero{min-height:0}.ac-hero-inner{padding:54px 0 30px}.ac-hero h1{font-size:48px}.ac-hero-copy{font-size:16px}.ac-actions{display:grid;grid-template-columns:1fr}.ac-btn{width:100%}.ac-price{align-items:center;flex-wrap:wrap}.ac-scene{min-height:350px}.ac-hero-image{width:100%}.ac-box{width:120px}.ac-scene-label{font-size:8px}.ac-values{grid-template-columns:1fr 1fr}.ac-value{min-height:88px;padding:16px}.ac-section{padding:70px 0}.ac-feature-grid{grid-template-columns:1fr}.ac-feature{min-height:230px}.ac-showcase-copy{padding:62px 20px}.ac-showcase-art{min-height:330px}.ac-requirements{padding:70px 0}.ac-compat-banner{align-items:flex-start;flex-direction:column}.ac-req-row{grid-template-columns:1fr;gap:6px}.ac-buy{padding:70px 0}.ac-buy-head{display:block}.ac-buy-head p{margin-top:14px}.ac-packages{grid-template-columns:1fr}.ac-package-actions{grid-template-columns:1fr}.ac-note{grid-template-columns:1fr}}
     @media(max-width:480px){.ac-hero h1{font-size:41px}.ac-brandline{font-size:13px}.ac-hero-image{width:100%}.ac-box{width:96px}.ac-image-badge{right:9px;top:9px;padding:8px 10px;font-size:8px}.ac-values{grid-template-columns:1fr}.ac-value:last-child{border-right:0}.ac-section h2,.ac-buy-head h2{font-size:39px}}
   </style>
 </head>
@@ -127,6 +134,32 @@
           <path d="M75 430L75 458L349 390L672 316L814 190" stroke="#EE244D" stroke-width="2" opacity=".8"/>
           <circle cx="472" cy="238" r="7" fill="#B7FF34"/>
         </svg>
+      </div>
+    </section>
+
+    <section class="ac-requirements" id="requisitos">
+      <div class="shell">
+        <div class="ac-requirements-head">
+          <div><div class="ac-kicker">Compatibilidad y requisitos</div><h2>AutoCAD 2026 para Mac.</h2></div>
+          <p>La versión disponible en Dingloft está destinada a macOS y es compatible tanto con equipos Mac Intel de 64 bits como con Mac equipados con Apple Silicon.</p>
+        </div>
+        <div class="ac-compat-banner">
+          <div><strong>Mac Intel + Apple Silicon</strong><span>Compatible desde procesadores Intel de 64 bits hasta la generación actual de chips Apple de la serie M.</span></div>
+          <div class="ac-compat-chip">Solo para Mac</div>
+        </div>
+        <div class="ac-requirement-grid">
+          <article class="ac-req-card dark">
+            <div class="ac-req-top"><div class="ac-req-platform"><i class="bi bi-apple"></i><div><b>macOS</b><small>Intel + Apple Silicon</small></div></div><span class="ac-req-badge">AutoCAD 2026 for Mac</span></div>
+            <dl class="ac-req-list">
+              <div class="ac-req-row"><dt>Sistema</dt><dd>macOS Ventura 13, Sonoma 14, Sequoia 15 o versiones compatibles posteriores.</dd></div>
+              <div class="ac-req-row"><dt>Procesador</dt><dd>Mac con Intel de 64 bits o Apple Silicon de la serie M.</dd></div>
+              <div class="ac-req-row"><dt>Memoria</dt><dd>8 GB mínimo · 16 GB o más recomendado.</dd></div>
+              <div class="ac-req-row"><dt>Gráficos</dt><dd>Mac compatible con Metal y gráficos integrados o nativos del equipo.</dd></div>
+              <div class="ac-req-row"><dt>Espacio</dt><dd>8 GB libres para descarga e instalación.</dd></div>
+            </dl>
+          </article>
+        </div>
+        <div class="ac-req-note"><strong>Para proyectos 3D grandes:</strong> se recomienda 16 GB o más de memoria y un Mac con mayor capacidad gráfica para trabajar con modelos exigentes y visualización de alta resolución.</div>
       </div>
     </section>
 
