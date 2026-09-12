@@ -1,4 +1,4 @@
-/* Dingloft UI Guard · v69 */
+/* Dingloft UI Guard · v70 */
 (() => {
   'use strict';
   const ua = navigator.userAgent || '';
@@ -133,15 +133,15 @@
 
   function loadNationalDays(){
     // Compatibility path for legacy public pages that still load UI Guard but not Global Nav.
-    // Global Nav v131 is the canonical owner; this fallback prevents editing HTML page-by-page.
+    // Global Nav v132 is the canonical owner; this fallback prevents editing HTML page-by-page.
     if (window.self !== window.top) return;
     if (/^\/(?:admin|admin\.html|commerce-admin|commerce-admin\.html)(?:\/|$)/i.test(location.pathname)) return;
     if (window.DingloftGlobalNav || document.querySelector('script[src*="dingloft-global-nav.js"]')) return;
-    if (window.DingloftNationalDays || document.querySelector('script[data-dingloft-national-days="6"],script[src*="dingloft-national-days.js?v=6"]')) return;
+    if (window.DingloftNationalDays || document.querySelector('script[data-dingloft-national-days="7"],script[src*="dingloft-national-days.js?v=7"]')) return;
     const script=document.createElement('script');
-    script.src='/dingloft-national-days.js?v=6';
+    script.src='/dingloft-national-days.js?v=7';
     script.async=true;
-    script.dataset.dingloftNationalDays='6';
+    script.dataset.dingloftNationalDays='7';
     (document.head||document.documentElement).appendChild(script);
   }
 
