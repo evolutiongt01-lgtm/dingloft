@@ -1,13 +1,14 @@
-/* Dingloft Global Navbar + Cart · v121
+/* Dingloft Global Navbar + Cart · v126
    Single persistent component based on ventas.html.
    It renders only in the TOP document (desktop-shell/app/direct page), never inside iframes.
    Cart uses transform/opacity only: no page-wide blur/scale choreography. */
 (() => {
   'use strict';
-  if (window.__DINGLOFT_GLOBAL_NAV_V124__) return;
+  if (window.__DINGLOFT_GLOBAL_NAV_V126__ || window.__DINGLOFT_GLOBAL_NAV_V125__ || window.__DINGLOFT_GLOBAL_NAV_V124__) return;
+  window.__DINGLOFT_GLOBAL_NAV_V126__ = true;
   window.__DINGLOFT_GLOBAL_NAV_V124__ = true;
 
-  const VERSION = 124;
+  const VERSION = 126;
   const CART_KEY = 'dingloft_cart';
   const WORKER = String(
     window.DINGLOFT_WORKER_BASE ||
@@ -35,6 +36,16 @@
 
   const file = (location.pathname.split('/').filter(Boolean).pop() || '').toLowerCase();
   if (file.includes('admin') || file === 'commerce-admin') return;
+
+  // Presence v57 is owned by the top document. This also covers Home, Cuenta,
+  // Checkout and persistent app shells that do not load UI Guard themselves.
+  if (!document.querySelector('script[data-dingloft-presence]')) {
+    const presenceScript=document.createElement('script');
+    presenceScript.type='module';
+    presenceScript.src='/dingloft-presence.js?v=58';
+    presenceScript.dataset.dingloftPresence='58';
+    (document.head||document.documentElement).appendChild(presenceScript);
+  }
 
   const onReady = fn => document.readyState === 'loading'
     ? document.addEventListener('DOMContentLoaded', fn, {once:true})
@@ -950,7 +961,10 @@
         navigate(e.data.href);return;
       }
       if(e.data.type==='dingloft:route-change'){
-        paintRoute(e.data.src||e.data.href||'');return;
+        const route=e.data.src||e.data.href||'';
+        paintRoute(route);
+        try{window.dispatchEvent(new CustomEvent('dingloft:presence-route',{detail:{src:route,href:route}}))}catch(_){}
+        return;
       }
     });
 

@@ -102,12 +102,16 @@
 
   // Universal presence tracker: one bootstrap for every Dingloft page that loads this guard.
   function loadPresence(){
+    // One tracker only: the top document owns presence. Embedded pages report
+    // route changes to the shell instead of opening duplicate sockets.
+    if (window.self !== window.top) return;
+    if (/^\/(?:admin|admin\.html|commerce-admin|commerce-admin\.html)(?:\/|$)/i.test(location.pathname)) return;
     if (document.querySelector('script[data-dingloft-presence]')) return;
     const script=document.createElement('script');
     script.type='module';
-    script.src='/dingloft-presence.js?v=56';
-    script.dataset.dingloftPresence='56';
-    document.head.appendChild(script);
+    script.src='/dingloft-presence.js?v=58';
+    script.dataset.dingloftPresence='58';
+    (document.head||document.documentElement).appendChild(script);
   }
   function loadCustomerPush(){
     if(/^\/(?:admin|admin\.html)(?:\/|$)/i.test(location.pathname))return;

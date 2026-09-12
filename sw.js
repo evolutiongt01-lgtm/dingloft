@@ -1,4 +1,4 @@
-const VERSION = '140';
+const VERSION = '142';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -54,16 +54,24 @@ const CORE = [
   '/desktop-global-nav.js',
   '/dingloft-theme.js?v=2',
   '/dingloft-theme.css?v=2',
+  '/dingloft-global-nav.js?v=126',
+  '/dingloft-global-nav.js?v=125',
+  '/dingloft-global-nav.js?v=124',
+  '/dingloft-global-nav.js?v=121',
   '/dingloft-ui-guard.js?v=61',
+  '/dingloft-ui-guard.js?v=60',
+  '/dingloft-ui-guard.js?v=59',
+  '/dingloft-ui-guard.js?v=58',
   '/dingloft-support-account.js?v=26',
-  '/dingloft-presence.js?v=56',
+  '/dingloft-presence.js?v=58',
+  '/dingloft-presence.js?v=57',
   '/dingloft-customer-push.js?v=1',
   '/mobile-shell-redirect.js',
   '/mobile-shell-redirect.js?v=136',
   '/pwa-install.js',
   '/dingloft-commerce.js?v=2.2.1-shell94',
   '/dingloft-cart-sync.js?v=120',
-  '/pwa-runtime.js?v=103',
+  '/pwa-runtime.js?v=105',
   '/dingloft-mobile-nav-v71.js?v=120',
   '/dingloft-mobile-dock.css?v=34',
   '/dingloft-mobile-cart-v92.js?v=95',
@@ -222,6 +230,13 @@ self.addEventListener('fetch', event => {
   // otherwise the last good local copy while the network refreshes silently.
   if (isDocument) {
     event.respondWith(fastDocumentNavigation(req, event.preloadResponse));
+    return;
+  }
+
+  // Critical shell/presence code must be fresh immediately. These files control
+  // one-socket presence ownership and cannot wait one navigation for SWR refresh.
+  if (url.origin === self.location.origin && ['/dingloft-presence.js','/dingloft-ui-guard.js','/dingloft-global-nav.js'].includes(url.pathname)) {
+    event.respondWith(networkFirst(req));
     return;
   }
 

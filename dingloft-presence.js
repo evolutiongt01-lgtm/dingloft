@@ -1,4 +1,4 @@
-/* Dingloft Presence v56 · Durable Objects + WebSocket Hibernation
+/* Dingloft Presence v58 · Durable Objects + WebSocket Hibernation
    - Live presence no longer uses Firestore.
    - No periodic presence heartbeat.
    - Approximate location is resolved by Cloudflare; raw IP is never stored.
@@ -61,11 +61,21 @@ function presenceClientInfo(){
   else if(/Version\//i.test(ua)&&/Safari/i.test(ua))browser='Safari';
   return {device,browser,os};
 }
-function presencePath(){ return `${location.pathname}${location.search}`.slice(0,500) }
+let dingloftPresenceLogicalPath='';
+function normalizePresenceRoute(value=''){
+  try{
+    const raw=String(value||'').trim();if(!raw)return '';
+    const u=new URL(raw,location.origin);
+    if(u.origin!==location.origin)return '';
+    return `${u.pathname}${u.search}`.slice(0,500);
+  }catch(_){return ''}
+}
+function presencePath(){ return (dingloftPresenceLogicalPath||`${location.pathname}${location.search}`).slice(0,500) }
 function isInfrastructurePage(){
   const p=(location.pathname||'').toLowerCase();
-  return /\/(?:launch|desktop-shell|app)(?:\.html)?\/?$/.test(p);
+  return /\/(?:admin|admin\.html|commerce-admin|commerce-admin\.html)(?:\/|$)/.test(p);
 }
+
 async function presenceFirebaseToken(){
   try{
     const [{getApps,initializeApp},{getAuth}] = await Promise.all([
@@ -109,6 +119,29 @@ let presenceReconnectTimer=0;
 let presenceReconnectDelay=1200;
 let presencePageClosing=false;
 let presenceIdentifyBusy=false;
+let presenceHttpFallbackLast=0;
+let presenceSocketOpenedAt=0;
+let presenceSocketAttempt=0;
+
+async function presenceHttpFallback(reason='fallback'){
+  const now=Date.now();
+  if(now-presenceHttpFallbackLast<45_000||navigator.onLine===false||isInfrastructurePage())return false;
+  presenceHttpFallbackLast=now;
+  try{
+    const payload={...presencePayload(),reason:String(reason||'fallback').slice(0,40)};
+    const token=await presenceFirebaseToken();
+    const c=new AbortController(),timer=setTimeout(()=>c.abort(),6500);
+    try{
+      const r=await fetch(`${DINGLOFT_PRESENCE_SERVICE}/presence/heartbeat`,{
+        method:'POST',cache:'no-store',signal:c.signal,
+        headers:{'content-type':'application/json',...(token?{authorization:`Bearer ${token}`}:{})},
+        body:JSON.stringify(payload)
+      });
+      if(r.ok){document.documentElement.dataset.dingloftPresence='http';return true}
+      return false;
+    }finally{clearTimeout(timer)}
+  }catch(_){return false}
+}
 
 function presenceWsUrl(){
   const p=presencePayload();
@@ -167,22 +200,30 @@ function connectPresenceSocket(){
   clearPresenceReconnect();
   touchSession();
   try{
+    presenceSocketAttempt=Date.now();
     const ws=new WebSocket(presenceWsUrl());
     presenceSocket=ws;
+    const fallbackTimer=setTimeout(()=>{if(presenceSocket===ws&&ws.readyState!==WebSocket.OPEN)presenceHttpFallback('ws-timeout')},2800);
     ws.addEventListener('open',()=>{
+      clearTimeout(fallbackTimer);
       if(presenceSocket!==ws)return;
+      presenceSocketOpenedAt=Date.now();
+      document.documentElement.dataset.dingloftPresence='ws';
       presenceReconnectDelay=1200;
       sendPresenceEvent('visible');
       identifyPresence().then(ok=>{if(!ok)setTimeout(()=>{if(presenceSocket===ws&&presenceSocketOpen())identifyPresence()},2500)});
     });
     ws.addEventListener('close',()=>{
+      clearTimeout(fallbackTimer);
       if(presenceSocket===ws)presenceSocket=null;
+      if(!presenceSocketOpenedAt||Date.now()-presenceSocketOpenedAt<3500)presenceHttpFallback('ws-close');
       schedulePresenceReconnect();
     });
     ws.addEventListener('error',()=>{
+      presenceHttpFallback('ws-error');
       try{ws.close()}catch(_){}
     });
-  }catch(_){schedulePresenceReconnect()}
+  }catch(_){presenceHttpFallback('ws-constructor');schedulePresenceReconnect()}
 }
 function closePresenceSocket(reason='close'){
   clearPresenceReconnect();
@@ -205,12 +246,22 @@ async function checkAccountReview(force=false){if(accountGateBusy||navigator.onL
 function startPresence(){
   if(isInfrastructurePage()) return;
   if(document.visibilityState==='visible')connectPresenceSocket();
+  setTimeout(()=>{if(document.visibilityState==='visible'&&!presenceSocketOpen())presenceHttpFallback('startup-watchdog')},3200);
   checkAccountReview(true);
   setInterval(()=>{if(document.visibilityState==='visible')checkAccountReview(false)},DINGLOFT_ACCOUNT_REVIEW_INTERVAL);
   addEventListener('online',()=>{presencePageClosing=false;connectPresenceSocket();checkAccountReview(true)});
   addEventListener('offline',()=>closePresenceSocket('offline'));
   addEventListener('pageshow',()=>{presencePageClosing=false;connectPresenceSocket();sendPresenceEvent('route')});
   addEventListener('popstate',()=>setTimeout(()=>sendPresenceEvent('route'),0));
+  addEventListener('dingloft:presence-route',e=>{const next=normalizePresenceRoute(e.detail?.src||e.detail?.href||'');if(next){dingloftPresenceLogicalPath=next;sendPresenceEvent('route')}});
+  addEventListener('dingloft:route-change',e=>{const next=normalizePresenceRoute(e.detail?.src||e.detail?.href||'');if(next){dingloftPresenceLogicalPath=next;sendPresenceEvent('route')}});
+  addEventListener('message',e=>{
+    if(e.origin!==location.origin||!e.data)return;
+    if(e.data.type==='dingloft:route-change'){
+      const next=normalizePresenceRoute(e.data.src||e.data.href||'');
+      if(next){dingloftPresenceLogicalPath=next;sendPresenceEvent('route')}
+    }
+  });
   document.addEventListener('visibilitychange',()=>{
     if(document.visibilityState==='visible'){
       presencePageClosing=false;
@@ -223,5 +274,6 @@ function startPresence(){
   });
   addEventListener('pagehide',()=>{presencePageClosing=true;closePresenceSocket('pagehide')});
   addEventListener('beforeunload',()=>{presencePageClosing=true;closePresenceSocket('unload')});
+  window.DingloftPresence={version:58,reconnect:connectPresenceSocket,fallback:presenceHttpFallback,get transport(){return document.documentElement.dataset.dingloftPresence||'connecting'},get path(){return presencePath()}};
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startPresence,{once:true});else startPresence();
