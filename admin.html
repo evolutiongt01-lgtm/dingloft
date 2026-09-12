@@ -457,9 +457,14 @@ function renderClientLocationList(){
     root.innerHTML=recent.map(p=>{const place=presencePlace(p),name=presenceDisplayName(p),who=p.email||p.path||'Sesión web';const device=sessionDeviceLabel(p),browser=sessionBrowserLabel(p),online=p.online===true;return `<div class="geo-client"><div class="geo-avatar">${online?'🟢':sessionDeviceGlyph(device)}</div><div class="geo-copy"><b>${esc(name)}</b><small>${esc(place)}</small><div class="geo-badges">${geoPill('device',device)}${geoPill('browser',browser)}</div><small>${esc(who)}</small></div><div class="geo-time"><b>${online?'En línea':'Reciente'}</b><small>${date(p.lastSeenAt)}</small></div></div>`}).join('');
     return;
   }
-  if(loadErrors.presence){root.innerHTML=`<div class="geo-empty">${esc(loadErrors.presence.message||'No se pudo cargar presencia en vivo.')}</div>`;$('geoCoverage').textContent='Presencia sin sincronizar';return}
+  // El Resumen nunca debe quedar bloqueado por un fallo de presencia en vivo.
+  // Si presencia no responde, este bloque cae a la actividad histórica de clientes/pedidos.
+  const presenceUnavailable=Boolean(loadErrors.presence);
   const list=recentCustomers(); const located=list.filter(c=>COUNTRY_COORDS[String(c.nationalityCode||'').toUpperCase()]);
-  $('geoCoverage').textContent=`${located.length} de ${list.length} ubicaciones históricas`;
+  if(badge&&presenceUnavailable) badge.textContent='Actividad histórica';
+  $('geoCoverage').textContent=presenceUnavailable
+    ? `${located.length} de ${list.length} ubicaciones históricas`
+    : `${located.length} de ${list.length} ubicaciones históricas`;
   root.innerHTML=list.length?list.map(c=>{const code=String(c.nationalityCode||'').toUpperCase();const photo=String(c.photoURL||'').trim();const name=c.displayName||String(c.email||'Cliente').split('@')[0];const when=c.lastPurchaseAt||c.lastLogin;const device=String(c.lastPresenceDevice||'Sin actividad reciente');const browser=String(c.lastPresenceBrowser||'Sin navegador');return `<div class="geo-client"><div class="geo-avatar">${photo?`<img src="${esc(photo)}" alt="">`:flag(code)}</div><div class="geo-copy"><b>${esc(name)}</b><small>${flag(code)} ${esc(c.nationality||'Ubicación sin registrar')} · ${esc(c.email||'')}</small><div class="geo-badges">${geoPill('device',device)}${geoPill('browser',browser)}</div></div><div class="geo-time"><b>${Number(c.ordersCount||0)} compra${Number(c.ordersCount||0)===1?'':'s'}</b><small>${date(when)}</small></div></div>`}).join(''):'<div class="geo-empty">Todavía no hay clientes para mostrar.</div>'
 }
 function activeGlobeSources(){
