@@ -1,1101 +1,214 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><script src="/dingloft-theme.js?v=2"></script><script src="/dingloft-cart-sync.js?v=91"></script><script src="/dingloft-mobile-nav-v71.js?v=99" data-dingloft-mobile-chrome="71"></script>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Rhodes Affair 2 | Dingloft</title>
-  
-  <!-- FAVICON -->
+  <meta name="description" content="Rhodes Affair 2 en Dingloft. Colección de piano eléctrico con tres módulos, compatible con Mac y Windows.">
   <link rel="icon" href="img/favicon.png" type="image/png">
-
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  
-  <!-- Google Fonts: Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
-
-  <!-- PAYPAL SDK -->
-  <script src="https://www.paypal.com/sdk/js?client-id=BAA88hYhrlAVHUFkzsqrlDE1atrFHrCZe7j0XOYtbB4YlxcxBASouD2NAU2J_BV1fp9-jGGYK2Mh4bHN20&currency=USD"></script>
-  
+  <script src="/dingloft-theme.js?v=2"></script>
+  <script src="/dingloft-cart-sync.js?v=120"></script>
+  <script src="/dingloft-global-nav.js?v=124" defer></script>
+  <script src="/mobile-shell-redirect.js?v=94"></script>
   <style>
-    :root {
-      --bg-color: #030406;
-      --accent-color: #00e5ff;
-      --accent-hover: #00b5cc;
-      --text-main: #ffffff;
-      --text-muted: #f1f5f9;
-      --border-color: rgba(255, 255, 255, 0.12);
-      --glass-bg: rgba(12, 16, 24, 0.55);
-      --orange-btn: #ffa600;
-      --orange-btn-hover: #ff8c00;
+    :root{
+      --bg:#090909;--panel:#11100f;--panel2:#181512;--paper:#f2eee6;--paper2:#e8e0d3;
+      --white:#fff;--ink:#171411;--muted:#97918a;--line:#302b26;--red:#ff2c24;--red2:#c91612;
+      --gold:#c99a54;--gold2:#8f6434;--lime:#b7ff34;--max:1380px;
     }
-    
-    body {
-      background-color: var(--bg-color);
-      background-image: 
-        radial-gradient(circle at 50% 20%, rgba(20, 30, 48, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 50% 80%, rgba(255, 166, 0, 0.03) 0%, transparent 40%);
-      color: var(--text-main);
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
-      margin: 0;
-      padding: 0;
-    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:#fff;overflow-x:hidden}.shell{width:min(var(--max),calc(100% - 48px));margin:0 auto}button,a{font:inherit}button{cursor:pointer}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-    body.no-scroll { overflow: hidden !important; height: 100vh; touch-action: none; }
+    .ra-strip{position:sticky;top:0;z-index:80;background:rgba(8,8,8,.91);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.09)}
+    .ra-strip-inner{height:52px;display:flex;align-items:center;justify-content:space-between;gap:20px}.ra-strip-name{font-size:12px;font-weight:850}.ra-strip-links{display:flex;align-items:center;gap:18px}.ra-strip-links a{color:#aaa39c;text-decoration:none;font-size:10px;font-weight:750}.ra-strip-links a:hover{color:#fff}.ra-strip-buy{min-height:32px;border:1px solid #fff;background:#fff;color:#0b0b0b;padding:0 14px;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
 
-    /* ====== EFECTO PUSH MENU ULTRA FLUIDO ====== */
-    .page-wrapper {
-      position: relative;
-      width: 100%;
-      min-height: 100vh;
-      background-color: transparent;
-      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      will-change: transform;
-      z-index: 1;
-    }
+    .ra-hero{position:relative;min-height:800px;overflow:hidden;background:#080808;isolation:isolate}
+    .ra-hero:before{content:"";position:absolute;inset:0;z-index:-4;background:radial-gradient(circle at 74% 30%,rgba(255,44,36,.19),transparent 27%),radial-gradient(circle at 65% 68%,rgba(201,154,84,.12),transparent 32%),linear-gradient(145deg,#080808 0%,#12100e 56%,#090909 100%)}
+    .ra-hero:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(5,5,5,.97) 0 34%,rgba(5,5,5,.55) 53%,rgba(5,5,5,.02) 82%),linear-gradient(0deg,#090909 0,transparent 32%)}
+    .ra-lines{position:absolute;inset:0;z-index:-2;opacity:.19;background-image:linear-gradient(rgba(201,154,84,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(201,154,84,.14) 1px,transparent 1px);background-size:74px 74px;mask-image:linear-gradient(90deg,transparent 26%,#000 70%)}
+    .ra-hero-inner{min-height:800px;display:grid;grid-template-columns:minmax(0,.86fr) minmax(520px,1.14fr);gap:28px;align-items:center;padding:72px 0 58px}
+    .ra-eyebrow{display:inline-flex;align-items:center;gap:10px;color:#c4bbb1;font-size:10px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.ra-eyebrow:before{content:"";width:30px;height:2px;background:linear-gradient(90deg,var(--red),var(--gold))}
+    .ra-hero h1{margin:20px 0 0;max-width:760px;font-size:clamp(60px,6.1vw,96px);line-height:.91;letter-spacing:-.065em;font-weight:900}.ra-accent{color:var(--red)}
+    .ra-hero-copy{max-width:650px;margin:24px 0 0;color:#c9c1b9;font-size:18px;line-height:1.66}.ra-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.ra-badge{padding:8px 10px;border:1px solid rgba(255,255,255,.17);background:rgba(255,255,255,.035);color:#d9d3cd;font-size:9px;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
+    .ra-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}.ra-btn{min-height:52px;border:1px solid #fff;padding:0 22px;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-size:12px;font-weight:900;text-decoration:none;transition:.18s ease}.ra-btn.primary{background:#fff;color:#090909}.ra-btn.primary:hover{background:var(--red);border-color:var(--red);color:#fff;transform:translateY(-2px)}.ra-btn.secondary{background:transparent;color:#fff}.ra-btn.secondary:hover{background:#fff;color:#090909}.ra-price{display:flex;align-items:end;gap:9px;margin-top:27px;color:#a59d95}.ra-price strong{font-size:36px;line-height:1;color:#fff}.ra-price span{font-size:11px}.ra-life{margin-left:8px;padding:7px 9px;border:1px solid rgba(255,255,255,.2);font-size:8px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#ddd5cd}
+    .ra-visual{position:relative;min-height:700px;display:grid;place-items:center}.ra-product{position:relative;width:min(610px,86%);z-index:3;filter:drop-shadow(0 44px 62px rgba(0,0,0,.62))}.ra-product img{display:block;width:100%;height:auto}.ra-halo{position:absolute;width:72%;aspect-ratio:1;right:3%;top:11%;z-index:1;border-radius:50%;background:radial-gradient(circle,rgba(255,44,36,.26),rgba(201,154,84,.08) 42%,transparent 67%);filter:blur(8px)}.ra-floating{position:absolute;right:1%;bottom:7%;z-index:4;width:220px;padding:17px 18px;border:1px solid rgba(255,255,255,.16);background:rgba(12,11,10,.76);backdrop-filter:blur(18px)}.ra-floating b{display:block;font-size:12px}.ra-floating span{display:block;margin-top:5px;color:#aaa198;font-size:9px;line-height:1.5}
 
-    .side-menu-drawer {
-      position: fixed;
-      top: 0;
-      left: -280px; 
-      width: 280px;
-      height: 100vh;
-      background: linear-gradient(145deg, rgba(10, 14, 20, 0.98), rgba(5, 7, 10, 1));
-      border-right: 1px solid var(--border-color);
-      z-index: 1040;
-      padding: 25px 20px;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      will-change: transform;
-      overscroll-behavior: none;
-    }
+    .ra-intro{padding:112px 0;background:var(--paper);color:var(--ink)}.ra-intro-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:74px;align-items:end}.ra-kicker{color:#7d7369;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px}.ra-intro h2,.ra-section h2,.ra-require h2,.ra-buy h2{margin:0;font-size:clamp(46px,5.3vw,78px);line-height:.95;letter-spacing:-.058em}.ra-intro p{margin:0;color:#655d56;font-size:17px;line-height:1.76}.ra-statbar{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #d2c8bb;border-left:1px solid #d2c8bb;margin-top:60px}.ra-stat{min-height:124px;padding:24px;border-right:1px solid #d2c8bb;border-bottom:1px solid #d2c8bb;background:#f8f5ef}.ra-stat strong{display:block;font-size:24px;letter-spacing:-.045em}.ra-stat span{display:block;margin-top:7px;color:#7a7067;font-size:10px;line-height:1.5}
 
-    .side-menu-drawer.active, 
-    .page-wrapper.menu-pushed, 
-    .navbar-glass.menu-pushed {
-      transform: translateX(280px);
-    }
+    .ra-modules{padding:108px 0;background:#0b0b0b;color:#fff}.ra-section-head{display:grid;grid-template-columns:1fr .72fr;gap:60px;align-items:end}.ra-section-head p{margin:0;color:#a69d94;font-size:15px;line-height:1.72}.ra-module-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px}.ra-module{min-height:390px;padding:28px;border:1px solid #2b2723;background:linear-gradient(155deg,#161310,#0f0e0d);display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}.ra-module:before{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-70px;top:-70px;background:radial-gradient(circle,rgba(255,44,36,.22),transparent 70%)}.ra-module-top{display:flex;justify-content:space-between;gap:12px;align-items:center;position:relative}.ra-module-label{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.13em;color:#aaa097}.ra-chip{padding:6px 8px;background:var(--red);color:#fff;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.07em}.ra-module h3{margin:44px 0 12px;font-size:30px;letter-spacing:-.045em}.ra-module p{margin:0;color:#aaa198;font-size:13px;line-height:1.65}.ra-module-list{display:grid;gap:8px;margin-top:22px}.ra-module-list span{display:flex;gap:9px;align-items:flex-start;color:#cbc4bd;font-size:10px;line-height:1.5}.ra-module-list span:before{content:"";width:6px;height:6px;margin-top:5px;border-radius:50%;background:var(--gold);flex:0 0 6px}
 
-    .side-menu-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1035;
-      opacity: 0; visibility: hidden; transition: opacity 0.4s; cursor: pointer;
-      touch-action: none;
-    }
-    .side-menu-overlay.active { opacity: 1; visibility: visible; }
+    .ra-console{position:relative;min-height:570px;background:#17120e;color:#fff;overflow:hidden}.ra-console:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(201,154,84,.17),transparent 35%),linear-gradient(90deg,#120f0c 0 48%,#1a1510 100%)}.ra-console-inner{position:relative;display:grid;grid-template-columns:.78fr 1.22fr;min-height:570px;align-items:center;gap:70px}.ra-console-copy h2{margin:0;font-size:clamp(46px,5vw,72px);line-height:.96;letter-spacing:-.055em}.ra-console-copy p{margin:22px 0 0;color:#b7aea5;font-size:15px;line-height:1.74;max-width:560px}.ra-console-ui{border:1px solid #5a4632;background:#211b16;padding:22px;box-shadow:0 35px 80px rgba(0,0,0,.35)}.ra-console-screen{min-height:310px;border:1px solid #6d5338;background:linear-gradient(#2b241d,#17130f);padding:28px;display:flex;flex-direction:column;justify-content:center}.ra-knobs{display:grid;grid-template-columns:repeat(8,1fr);gap:10px}.ra-knob{text-align:center}.ra-knob i{width:54px;height:54px;border-radius:50%;display:block;margin:0 auto 10px;border:6px solid #0d0c0b;background:radial-gradient(circle at 38% 34%,#554839,#171411 58%);box-shadow:0 0 0 1px #775e42}.ra-knob b{font-size:8px;text-transform:uppercase;letter-spacing:.07em;color:#d6c7b5}.ra-switches{display:flex;justify-content:center;gap:10px;margin-top:28px}.ra-switches span{padding:9px 13px;border:1px solid #66472d;background:#120f0c;color:#d4b27d;font-size:8px;font-weight:900;text-transform:uppercase}
 
-    .side-menu-link {
-      color: rgba(255,255,255,0.85); font-size: 1.1rem; font-weight: 600; text-decoration: none;
-      display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 12px; transition: all 0.2s;
-    }
-    .side-menu-link:hover { background: rgba(0, 229, 255, 0.1); color: var(--accent-color); }
-    .side-menu-link i { font-size: 1.3rem; }
+    .ra-demo{padding:105px 0;background:#fff;color:var(--ink)}.ra-demo-card{display:grid;grid-template-columns:1.08fr .92fr;border:1px solid #dad4cc;background:#f7f4ee;min-height:500px}.ra-demo-visual{position:relative;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 45%,rgba(255,44,36,.15),transparent 34%),#191715}.ra-demo-visual img{width:min(390px,58%);height:auto;filter:drop-shadow(0 30px 45px rgba(0,0,0,.55))}.ra-play{position:absolute;width:74px;height:74px;border-radius:50%;display:grid;place-items:center;text-decoration:none;background:#fff;color:#111;font-size:25px;box-shadow:0 18px 42px rgba(0,0,0,.24);transition:.18s}.ra-play:hover{transform:scale(1.06);background:var(--red);color:#fff}.ra-demo-copy{padding:65px;display:flex;flex-direction:column;justify-content:center}.ra-demo-copy h3{margin:0;font-size:clamp(38px,4vw,58px);line-height:1;letter-spacing:-.05em}.ra-demo-copy p{margin:20px 0 0;color:#6b625a;font-size:14px;line-height:1.72}.ra-demo-copy a{display:inline-flex;margin-top:25px;color:#16120f;font-size:11px;font-weight:900;text-decoration:none;border-bottom:1px solid #16120f;width:max-content;padding-bottom:4px}
 
-    /* ====== BUSCADOR LIQUID GLASS ====== */
-    .search-overlay-fullscreen {
-      position: fixed; inset: 0; background: rgba(5, 7, 10, 0.95);
-      backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-      z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.4s ease;
-      display: flex; flex-direction: column; padding: 50px 20px 20px;
-    }
-    .search-overlay-fullscreen.active { opacity: 1; visibility: visible; }
-    
-    .search-modal-box { width: min(600px, 100%); margin: 0 auto; transform: translateY(-30px); transition: transform 0.4s ease; }
-    .search-overlay-fullscreen.active .search-modal-box { transform: translateY(0); }
+    .ra-require{padding:108px 0;background:var(--paper2);color:var(--ink)}.ra-require-head{display:grid;grid-template-columns:1fr .8fr;gap:60px;align-items:end}.ra-require-head p{margin:0;color:#6f655c;font-size:15px;line-height:1.72}.ra-platforms{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:46px}.ra-platform{padding:28px;border:1px solid #cfc3b4;background:#f5f0e8}.ra-platform.dark{background:#171411;color:#fff;border-color:#171411}.ra-platform-title{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:16px;border-bottom:1px solid currentColor}.ra-platform-title b{font-size:22px}.ra-platform-title span{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.09em;opacity:.65}.ra-req-list{display:grid;gap:0;margin-top:7px}.ra-req{display:grid;grid-template-columns:130px 1fr;gap:18px;padding:13px 0;border-bottom:1px solid rgba(100,90,80,.18)}.ra-platform.dark .ra-req{border-color:rgba(255,255,255,.12)}.ra-req b{font-size:9px;text-transform:uppercase;letter-spacing:.08em}.ra-req span{font-size:11px;line-height:1.55;color:#6f665d}.ra-platform.dark .ra-req span{color:#bdb4aa}.ra-note{margin-top:14px;padding:14px 16px;border:1px solid #cfc3b4;background:#f5f0e8;color:#6e645b;font-size:10px;line-height:1.6}.ra-note strong{color:#181411}
 
-    .search-input-liquid {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-      border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 15px rgba(255,255,255,0.05);
-      display: flex; align-items: center; padding: 15px 20px; gap: 15px;
-    }
-    .search-input-liquid:focus-within { border-color: var(--accent-color); box-shadow: 0 10px 40px rgba(0,229,255,0.2); }
-    .search-input-liquid input { background: transparent; border: none; color: #fff; width: 100%; font-size: 1.2rem; outline: none; font-weight: 500; }
-    .search-input-liquid input::placeholder { color: rgba(255, 255, 255, 0.7); }
-    
-    .search-results-container {
-      max-height: 60vh; overflow-y: auto; padding-right: 5px; overscroll-behavior: contain;
-    }
-    .search-results-container::-webkit-scrollbar { width: 5px; }
-    .search-results-container::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
+    .ra-buy{padding:105px 0;background:#090909;color:#fff}.ra-buy-grid{display:grid;grid-template-columns:.78fr 1.22fr;gap:72px;align-items:center}.ra-buy-product{position:relative;display:grid;place-items:center;min-height:540px;background:radial-gradient(circle at 50% 44%,rgba(255,44,36,.2),transparent 36%),#11100f;border:1px solid #2b2723}.ra-buy-product img{width:min(420px,67%);height:auto;filter:drop-shadow(0 34px 48px rgba(0,0,0,.58))}.ra-buy-copy h2{font-size:clamp(50px,5vw,78px)}.ra-buy-copy p{max-width:590px;margin:22px 0 0;color:#a9a198;font-size:15px;line-height:1.75}.ra-buy-price{margin-top:28px;font-size:44px;font-weight:900;letter-spacing:-.04em}.ra-buy-price span{font-size:12px;color:#8f8780;font-weight:500;letter-spacing:0}.ra-buy-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:26px}.ra-buy-point{padding:12px 13px;border:1px solid #302b26;background:#11100f;color:#cbc3bb;font-size:11px}.ra-buy-point:before{content:"✓";margin-right:8px;color:var(--red);font-weight:900}.ra-buy .ra-actions{margin-top:26px}
 
-    .search-result-item {
-      display: flex; align-items: center; gap: 15px; padding: 15px; background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; text-decoration: none;
-      transition: all 0.2s; margin-bottom: 10px;
-    }
-    .search-result-item:hover { background: rgba(0,229,255,0.05); border-color: rgba(0,229,255,0.3); transform: translateY(-2px); }
-    .search-result-item img { width: 55px; height: 55px; object-fit: contain; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 5px; }
+    .ra-footnote{padding:34px 0;background:#f3efe8;color:var(--ink);border-top:1px solid #d8cfc4}.ra-footnote-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#d5cbc0;border:1px solid #d5cbc0}.ra-footnote-card{padding:20px;background:#faf7f1}.ra-footnote-card b{font-size:11px}.ra-footnote-card p{margin:7px 0 0;color:#71675e;font-size:10px;line-height:1.6}.toast{position:fixed;right:24px;bottom:max(24px,env(safe-area-inset-bottom,0px));z-index:2147480000;padding:13px 16px;background:#fff;color:#111;border:1px solid #d6d0c8;box-shadow:0 16px 40px rgba(0,0,0,.26);font-size:10px;font-weight:800;transform:translateY(90px);opacity:0;transition:.2s}.toast.show{transform:none;opacity:1}
 
-    /* ====== ANIMACIONES DE ORBES ====== */
-    @keyframes orbFloat1 { 0% { transform: translate(0px, 0px) scale(1); background: #00e5ff; } 50% { transform: translate(150px, 200px) scale(1.2); background: #a200ff; } 100% { transform: translate(0px, 0px) scale(1); background: #00e5ff; } }
-    @keyframes orbFloat2 { 0% { transform: translate(0px, 0px) scale(1); background: #a200ff; } 50% { transform: translate(-200px, -150px) scale(1.3); background: #00ff88; } 100% { transform: translate(0px, 0px) scale(1); background: #a200ff; } }
-    .bg-orb { position: absolute; border-radius: 50%; filter: blur(140px); z-index: -1; opacity: 0.25; pointer-events: none; }
-    .orb-1 { width: 500px; height: 500px; top: -100px; left: -100px; animation: orbFloat1 18s infinite alternate ease-in-out; }
-    .orb-2 { width: 600px; height: 600px; bottom: -150px; right: -150px; animation: orbFloat2 22s infinite alternate ease-in-out; }
-
-    .glass-effect { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border-color); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4); }
-
-    /* ====== NAVBAR Y BOTONES ====== */
-    .navbar-glass {
-      background: rgba(3, 4, 6, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border-color); padding: 12px 0; z-index: 1040; 
-      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      will-change: transform;
-    }
-    
-    .mobile-liquid-btn, .mobile-nav-avatar {
-      width: 40px; height: 40px; border-radius: 50%; 
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02));
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3), inset 0 0 10px rgba(255, 255, 255, 0.1); 
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.3s ease; text-decoration: none; color: #fff; padding: 0; cursor: pointer; flex-shrink: 0;
-    }
-    .mobile-liquid-btn i { font-size: 1.15rem; margin: 0; padding: 0; line-height: 1; }
-    .mobile-liquid-btn:hover, .mobile-nav-avatar:hover { transform: scale(1.05); border-color: var(--accent-color); color: var(--accent-color); box-shadow: 0 4px 20px rgba(0, 229, 255, 0.4); }
-    .mobile-nav-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
-    .mobile-nav-avatar .avatar-fallback { background: var(--accent-color); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; width: 100%; height: 100%; border-radius: 50%; margin: 0; }
-
-    .btn-floating-cart {
-      position: fixed;
-      bottom: max(30px, env(safe-area-inset-bottom));
-      right: 25px;
-      z-index: 9999; 
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, rgba(0, 229, 255, 0.9), rgba(0, 181, 204, 0.95));
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      color: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 10px 30px rgba(0, 229, 255, 0.4), inset 0 0 10px rgba(255,255,255,0.3);
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .btn-floating-cart:hover {
-      transform: scale(1.1) translateY(-3px);
-      box-shadow: 0 15px 35px rgba(0, 229, 255, 0.6);
-      color: #000;
-    }
-    .badge-floating {
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      background: #ff0055;
-      color: #fff;
-      font-weight: 800;
-      font-size: 0.75rem;
-      border-radius: 50%;
-      padding: 2px 7px;
-      border: 2px solid var(--bg-color);
-    }
-    
-    @media (max-width: 768px) {
-      .btn-floating-cart { bottom: 90px; right: 20px; }
-    }
-
-    .nav-link { color: var(--text-main) !important; font-size: 0.95rem; font-weight: 500; margin: 0 10px; transition: color 0.3s; }
-    .nav-link:hover { color: var(--accent-color) !important; }
-
-    /* BOTONES NARANJAS */
-    .btn-orange-custom { background: var(--orange-btn); color: #000; font-weight: 600; border: none; border-radius: 8px; padding: 10px 24px; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(255, 166, 0, 0.3); }
-    .btn-orange-custom:hover { background: var(--orange-btn-hover); color: #000; transform: translateY(-2px); box-shadow: 0 5px 25px rgba(255, 166, 0, 0.5); }
-    
-    .btn-outline-custom { background: rgba(255,255,255,0.05); color: var(--text-main); font-weight: 600; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; padding: 6px 15px; transition: all 0.3s ease; backdrop-filter: blur(5px); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
-    .btn-outline-custom:hover { border-color: var(--orange-btn); color: var(--orange-btn); background: rgba(255, 166, 0, 0.05); }
-
-    .btn-obtained-glass {
-      background: rgba(255, 166, 0, 0.1) !important;
-      color: #ffa600 !important;
-      border: 1px solid rgba(255, 166, 0, 0.4) !important;
-      pointer-events: none;
-      font-weight: 700;
-      border-radius: 8px;
-      padding: 10px 24px;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    /* SECCIÓN DE PRODUCTO */
-    .product-detail-section { padding: 120px 0 30px; }
-    .product-boxes-display { width: 100%; border-radius: 16px; padding: 10px; }
-    .product-boxes-display img { width: 100%; height: auto; object-fit: contain; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.7)); }
-
-    .feature-box { text-align: center; padding: 5px; }
-    .feature-icon-circle { width: 40px; height: 40px; border: 1px solid rgba(255, 166, 0, 0.3); background: rgba(255, 166, 0, 0.05); border-radius: 50%; display: grid; place-items: center; margin: 0 auto 8px; color: var(--orange-btn); font-size: 1rem; }
-    .feature-title { font-size: 0.75rem; color: rgba(255,255,255,0.85); font-weight: 500; line-height: 1.2; margin: 0; }
-
-    .package-card { border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-color); }
-    .package-card:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.08) !important; border-color: rgba(255,255,255,0.3); }
-
-    .compatible-section { padding: 20px 0 50px; }
-    .compatible-title { text-align: center; letter-spacing: 1px; font-size: 0.85rem; font-weight: 700; color: var(--orange-btn); text-transform: uppercase; margin-bottom: 25px; padding: 0 10px; line-height: 1.5; }
-    
-    .keyboard-card { background: linear-gradient(145deg, rgba(12, 17, 26, 0.9), rgba(6, 9, 15, 0.98)); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px 15px; text-align: center; transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
-    .keyboard-card i { font-size: 3rem; margin-bottom: 10px; color: var(--orange-btn); filter: drop-shadow(0 0 10px rgba(255,166,0,0.3)); }
-    .keyboard-card h5 { font-size: 0.85rem; font-weight: 800; letter-spacing: 0.5px; margin: 0; color: #fff; }
-
-    .creator-note-box { background: linear-gradient(135deg, rgba(255, 166, 0, 0.07), rgba(122, 0, 255, 0.04)); border: 1px solid rgba(255, 166, 0, 0.25); border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-    .creator-avatar { width: 48px; height: 48px; min-width: 48px; min-height: 48px; border-radius: 50%; background: linear-gradient(135deg, #ffa600, #7a00ff); display: grid; place-items: center; font-weight: 800; font-size: 1.1rem; color: #000; flex-shrink: 0; }
-
-    .software-badge-box { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 15px; display: flex; align-items: center; gap: 12px; }
-    .software-badge-box i { font-size: 1.5rem; color: var(--orange-btn); }
-    .liquid-glass-container { background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); padding: 12px; }
-
-    /* ====== ETIQUETAS TECH ====== */
-    .tech-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 0.65rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .tech-tag-plugin {
-      color: #ffa600;
-      background: rgba(255, 166, 0, 0.1);
-      border: 1px solid rgba(255, 166, 0, 0.3);
-    }
-
-    .similar-carousel-wrapper { display: flex; gap: 15px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 10px 5px 20px 5px; scrollbar-width: thin; scrollbar-color: var(--orange-btn) rgba(255,255,255,0.05); }
-    .similar-carousel-wrapper::-webkit-scrollbar { height: 5px; }
-    .similar-carousel-wrapper::-webkit-scrollbar-thumb { background: var(--orange-btn); border-radius: 10px; }
-    .similar-card { min-width: 260px; max-width: 260px; flex: 0 0 auto; scroll-snap-align: start; background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-    .similar-img-box { width: 100%; height: 150px; background: rgba(0,0,0,0.4); border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 8px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; }
-    .similar-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.6)); }
-
-    /* ====== COMENTARIOS ====== */
-    .comments-section { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 30px; }
-    .comment-card { background: rgba(12, 17, 26, 0.85); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 12px; }
-    .comment-card:hover { border-color: rgba(255,166,0,0.4); }
-    .login-prompt-box { background: linear-gradient(135deg, rgba(255, 166, 0, 0.06), rgba(17, 21, 31, 0.95)); border: 1px solid rgba(255, 166, 0, 0.3); border-radius: 16px; padding: 30px 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    .login-prompt-icon { width: 60px; height: 60px; background: rgba(255, 166, 0, 0.1); border: 2px solid var(--orange-btn); border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: var(--orange-btn); font-size: 1.5rem; }
-    .comment-form-box { background: rgba(12, 17, 26, 0.95); border: 1px solid rgba(255, 166, 0, 0.3); border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
-    .form-control-custom { background: rgba(5, 7, 10, 0.9); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 8px; padding: 10px; font-size: 0.9rem; }
-    .form-control-custom:focus { background: rgba(5, 7, 10, 1); border-color: var(--orange-btn); color: #fff; box-shadow: 0 0 10px rgba(255,166,0,0.3); outline: none; }
-    .form-control-custom::placeholder { color: rgba(255,255,255,0.7); }
-    .btn-like { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: rgba(255,255,255,0.85); border-radius: 20px; padding: 3px 10px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s ease; }
-    .btn-like:hover { background: rgba(255, 0, 85, 0.1); color: #ff0055; border-color: rgba(255, 0, 85, 0.3); }
-    .btn-like.liked { background: rgba(255, 0, 85, 0.15); color: #ff0055; border-color: #ff0055; }
-
-    /* ====== CARRITO LATERAL ====== */
-    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; touch-action: none; }
-    .cart-overlay.active { opacity: 1; visibility: visible; }
-    .cart-drawer { 
-      position: fixed; top: 0; right: -480px; width: 450px; max-width: 100%; height: 100vh; 
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.5)); 
-      backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); 
-      border-left: 1px solid rgba(255, 255, 255, 0.2); box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8), inset 2px 0 15px rgba(255, 255, 255, 0.05); 
-      z-index: 1060; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; overscroll-behavior: none;
-    }
-    .cart-drawer.active { right: 0; }
-    .cart-header { padding: 20px 25px; border-bottom: 1px solid rgba(255, 255, 255, 0.15); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
-    .btn-close-cart { background: transparent; border: none; color: #ffffff; font-size: 1.3rem; line-height: 1; transition: color 0.3s; cursor: pointer; }
-    .btn-close-cart:hover { color: var(--accent-color); }
-    .cart-items-container { flex: 1; overflow-y: auto; padding: 20px 25px; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
-    .cart-footer { padding: 20px 25px; background: rgba(0, 0, 0, 0.3); border-top: 1px solid rgba(255, 255, 255, 0.15); flex-shrink: 0; max-height: 55vh; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
-    .cart-item { display: flex; gap: 15px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); position: relative; }
-    .cart-item-img { width: 60px; height: 80px; background: rgba(0,0,0,0.3); border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; padding: 5px; }
-    .cart-item-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
-    .cart-item-info { flex: 1; }
-    .cart-item-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; color: #ffffff; }
-    .cart-item-desc { font-size: 0.75rem; color: #ffffff; opacity: 0.85; margin-bottom: 10px; }
-    .qty-controls { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; background: rgba(0,0,0,0.3); }
-    .qty-btn { background: transparent; border: none; color: #fff; padding: 2px 10px; font-size: 0.9rem; cursor: pointer; }
-    .qty-btn:hover { background: rgba(255,255,255,0.1); }
-    .qty-value { padding: 0 10px; font-size: 0.85rem; font-weight: 600; color: #ffffff; }
-    .cart-item-remove { position: absolute; top: 0; right: 0; background: transparent; border: none; color: #ffffff; font-size: 1rem; cursor: pointer; }
-    .cart-item-remove:hover { color: #ff4444; }
-
-    .cart-empty-msg { text-align: center; color: #ffffff; margin-top: 50px; }
-    .coupon-box { display: flex; gap: 8px; margin-bottom: 15px; }
-    .coupon-input { flex: 1; background: rgba(4, 9, 18, 0.7); border: 1px solid rgba(153, 185, 216, 0.25); border-radius: 8px; color: #fff; padding: 8px 12px; font-size: 0.85rem; text-transform: uppercase; }
-    .coupon-input::placeholder { color: rgba(255,255,255,0.7); text-transform: none; }
-    .coupon-input:focus { border-color: var(--accent-color); outline: none; background: rgba(4, 9, 18, 0.9); }
-    .btn-apply-coupon { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0 15px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-    .btn-apply-coupon:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
-    .coupon-msg { font-size: 0.78rem; margin-bottom: 12px; font-weight: 500; }
-
-    .paypal-white-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.4); padding: 15px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); margin-top: 10px; }
-    .btn-free-checkout { background: #00ff88; color: #000; font-weight: 700; border: none; border-radius: 12px; padding: 14px; width: 100%; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,255,136,0.2); cursor: pointer; }
-    .btn-free-checkout:hover { background: #00e67a; transform: translateY(-2px); }
-
-    /* ====== MODAL DE ÉXITO Y CREACIÓN EXPRESS DE CONTRASEÑA ====== */
-    .success-modal-overlay { position: fixed; inset: 0; background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: grid; place-items: center; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-    .success-modal-overlay.active { opacity: 1; visibility: visible; }
-    .success-modal-box { background: linear-gradient(145deg, rgba(18, 25, 42, 0.95), rgba(7, 11, 22, 0.98)); border: 1px solid rgba(255, 166, 0, 0.3); border-radius: 24px; padding: 30px 20px; width: min(420px, 90%); text-align: center; transform: scale(0.85) translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); max-height: 90vh; overflow-y: auto; }
-    .success-modal-overlay.active .success-modal-box { transform: scale(1) translateY(0); }
-    .success-icon-ring { width: 70px; height: 70px; background: rgba(255, 166, 0, 0.1); border: 2px solid var(--orange-btn); border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; color: var(--orange-btn); font-size: 1.8rem; }
-    
-    .express-signup-box { background: rgba(0, 229, 255, 0.05); border: 1px dashed rgba(0, 229, 255, 0.4); border-radius: 14px; padding: 20px; margin-bottom: 20px; text-align: left; }
-    .express-signup-box label { font-size: 0.82rem; font-weight: 600; color: var(--accent-color); margin-bottom: 6px; display: block; }
-    .express-input { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; padding: 10px 14px; font-size: 0.9rem; margin-bottom: 12px; }
-    .express-input:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
-
-    .toast { position: fixed; right: 24px; bottom: 24px; transform: translateY(120px); padding: 14px 18px; border: 1px solid rgba(255,166,0,.5); border-radius: 12px; color: #fff; background: #1a1000; box-shadow: 0 14px 32px rgba(0,0,0,.3); transition: .25s ease; z-index: 9999; }
-    .toast.show { transform: translateY(0); }
+    @media(max-width:1050px){.ra-hero-inner{grid-template-columns:1fr;min-height:auto}.ra-visual{min-height:580px}.ra-intro-grid,.ra-section-head,.ra-console-inner,.ra-require-head,.ra-buy-grid{grid-template-columns:1fr}.ra-statbar{grid-template-columns:1fr 1fr}.ra-module-grid{grid-template-columns:1fr}.ra-console-inner{gap:30px;padding:68px 0}.ra-demo-card{grid-template-columns:1fr}.ra-demo-visual{min-height:440px}.ra-platforms{grid-template-columns:1fr}.ra-buy-grid{gap:34px}.ra-buy-product{min-height:450px}}
+    @media(max-width:760px){.shell{width:min(var(--max),calc(100% - 28px))}.ra-strip{display:none}.ra-hero{min-height:0}.ra-hero-inner{padding:52px 0 28px}.ra-hero h1{font-size:50px}.ra-hero-copy{font-size:15px}.ra-actions{display:grid;grid-template-columns:1fr}.ra-btn{width:100%}.ra-price{align-items:center;flex-wrap:wrap}.ra-visual{min-height:450px}.ra-product{width:min(430px,90%)}.ra-floating{right:0;bottom:3%;width:175px}.ra-intro,.ra-modules,.ra-demo,.ra-require,.ra-buy{padding:74px 0}.ra-intro h2,.ra-section h2,.ra-require h2,.ra-buy h2{font-size:42px}.ra-intro-grid,.ra-section-head,.ra-require-head{gap:22px}.ra-statbar{grid-template-columns:1fr 1fr}.ra-stat{min-height:104px;padding:18px}.ra-console-inner{padding:66px 0}.ra-knobs{grid-template-columns:repeat(4,1fr);row-gap:24px}.ra-knob i{width:48px;height:48px}.ra-demo-copy{padding:34px 24px}.ra-platform{padding:22px}.ra-req{grid-template-columns:1fr;gap:5px}.ra-buy-product{min-height:380px}.ra-buy-list{grid-template-columns:1fr}.ra-footnote-grid{grid-template-columns:1fr}}
+    @media(max-width:480px){.ra-hero h1{font-size:43px}.ra-visual{min-height:390px}.ra-product{width:88%}.ra-floating{width:150px;padding:13px}.ra-statbar{grid-template-columns:1fr}.ra-demo-visual{min-height:350px}.ra-buy-product{min-height:340px}}
   </style>
-
-  <script>window.__DINGLOFT_COMMERCE_V1__ = true;</script>
-  <script src="mobile-shell-redirect.js?v=28"></script>
-<script defer src="desktop-global-nav.js?v=10"></script>
-
-<style id="dl-product-ios-scroll-v21">
-@media(max-width:1024px){html[data-dingloft-shell="mobile"],html[data-dingloft-shell="mobile"] body{overflow-x:hidden!important;overflow-y:auto!important;height:auto!important;min-height:100%!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important}html[data-dingloft-shell="mobile"] body.no-scroll{overflow:hidden!important}}
-</style>
 </head>
 <body>
-
-  <!-- MENÚ LATERAL -->
-  <div class="side-menu-drawer" id="side-menu">
-    <div class="text-center mb-4 mt-2">
-      <img src="img/dingloft.png" alt="Dingloft" style="width: 120px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
-    </div>
-    <div class="d-flex flex-column gap-2">
-      <a href="index.html" class="side-menu-link"><i class="bi bi-house-door"></i> Inicio</a>
-      <a href="index.html" class="side-menu-link"><i class="bi bi-collection-play"></i> Catálogo</a>
-      <a href="account.html" class="side-menu-link" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 15px;">
-        <i class="bi bi-person-circle text-accent" style="color: var(--accent-color);"></i> Mi Cuenta
-      </a>
-    </div>
-    <div class="mt-auto text-center pb-3">
-      <p class="text-muted small" style="font-size: 0.75rem;">&copy; 2026 Dingloft</p>
-    </div>
-  </div>
-  <div class="side-menu-overlay" id="side-menu-overlay"></div>
-
-  <!-- PAGE WRAPPER -->
-  <div class="page-wrapper" id="page-wrapper">
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
-
-    <!-- MODAL DE ÉXITO Y CREACIÓN EXPRESS DE CONTRASEÑA -->
-    <div class="success-modal-overlay" id="success-modal">
-      <div class="success-modal-box">
-        <img src="img/dingloft.png" alt="Dingloft" style="width: 110px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(0,229,255,0.3));">
-        <div class="success-icon-ring"><i class="bi bi-check-lg"></i></div>
-        <h3 style="color:#fff; font-weight:800; margin-bottom:10px; font-size: 1.4rem;">¡Compra Exitosa!</h3>
-        <p id="success-modal-text" style="color:#9ba9bd; margin-bottom:20px; font-size: 0.95rem;">Tu pedido se ha procesado correctamente.</p>
-        
-        <div class="express-signup-box" id="express-signup-container" style="display: none;">
-          <p style="font-size: 0.82rem; color: #fff; margin-bottom: 10px; font-weight: 500;">
-            <i class="bi bi-shield-lock-fill" style="color: var(--accent-color);"></i> Protege tu cuenta: Crea una contraseña para acceder a tus descargas después.
-          </p>
-          <label>Correo asociado:</label>
-          <input type="text" id="express-email" class="express-input" readonly style="opacity: 0.7;">
-          <label>Nueva contraseña:</label>
-          <input type="password" id="express-password" class="express-input" placeholder="Mínimo 6 caracteres">
-          <button class="btn-cyan w-100 py-2" id="btn-save-express-account" onclick="crearCuentaExpress()">Crear Contraseña y Entrar</button>
-        </div>
-
-        <button class="btn-orange-custom w-100 py-2" id="btn-go-to-account" onclick="window.location.href='account.html'">Ir a mis descargas ahora</button>
+  <div class="ra-strip" aria-label="Navegación del producto">
+    <div class="shell ra-strip-inner">
+      <div class="ra-strip-name">Rhodes Affair 2</div>
+      <div class="ra-strip-links">
+        <a href="#incluye">Incluye</a><a href="#demo">Demostración</a><a href="#requisitos">Requisitos</a>
+        <button class="ra-strip-buy btn-buy-now" data-id="rhodes-affair-2" data-sku="rhodes-affair-2" data-name="Rhodes Affair 2" data-price="30" data-img="rhodes" data-type="Librería vitalicia">Comprar · $30</button>
       </div>
     </div>
+  </div>
 
-    <div class="toast" id="toast-message" role="status">La descarga comenzará en breve.</div>
-
-    <!-- NAVBAR -->
-<!-- DETALLES DEL PRODUCTO -->
-    <section class="product-detail-section">
-      <div class="container">
-        <div class="row align-items-center g-4">
-          <div class="col-lg-6">
-            <div class="product-boxes-display glass-effect">
-              <img src="img/rhodes.png" alt="Rhodes Affair 2" onerror="this.src='https://ui-avatars.com/api/?name=Rhodes+Affair+2&background=00e5ff&color=000&size=400'">
-            </div>
+  <main>
+    <section class="ra-hero">
+      <div class="ra-lines"></div>
+      <div class="shell ra-hero-inner">
+        <div>
+          <div class="ra-eyebrow">Electric Piano Collection</div>
+          <h1>Ese piano eléctrico que conoces. <span class="ra-accent">Más flexible.</span></h1>
+          <p class="ra-hero-copy">Rhodes Affair 2 reúne tres módulos pensados para tocar, producir y construir capas con el carácter suave, cálido y expresivo de los pianos eléctricos clásicos.</p>
+          <div class="ra-badges"><span class="ra-badge">3 módulos</span><span class="ra-badge">Mac + Windows</span><span class="ra-badge">VST2 / VST3 / AU</span></div>
+          <div class="ra-actions">
+            <button class="ra-btn primary btn-buy-now" data-id="rhodes-affair-2" data-sku="rhodes-affair-2" data-name="Rhodes Affair 2" data-price="30" data-img="rhodes" data-type="Librería vitalicia">Comprar ahora</button>
+            <button class="ra-btn secondary btn-add-cart" data-id="rhodes-affair-2" data-sku="rhodes-affair-2" data-name="Rhodes Affair 2" data-price="30" data-img="rhodes" data-type="Librería vitalicia">Añadir al carrito</button>
           </div>
-          <div class="col-lg-6">
-            <span class="text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 2px; color: var(--orange-btn);">Plugin VST/AU Profesional</span>
-            <h1 class="fw-bold my-2 text-white" style="font-size: 2.5rem; letter-spacing: -1px;">Rhodes Affair 2</h1>
-            
-            <p class="text-white mb-3" style="font-size: 0.98rem; line-height: 1.6; color: #f1f5f9;">
-              Sonidos de piano eléctrico cálidos y profesionales para tus directos y producciones. Emulación clásica con controles avanzados de tono y efectos integrados.
-            </p>
+          <div class="ra-price"><strong>$30.00</strong><span>USD · entrega digital</span><span class="ra-life">Acceso vitalicio</span></div>
+        </div>
+        <div class="ra-visual" aria-hidden="true">
+          <div class="ra-halo"></div>
+          <div class="ra-product"><img src="img/rhodes.png" alt="" onerror="this.onerror=null;this.src='img/dingloft.png'"></div>
+          <div class="ra-floating"><b>Rhodes Affair 2</b><span>Player + Premium + Affair Drums en una sola compra.</span></div>
+        </div>
+      </div>
+    </section>
 
-            <div class="tech-tag tech-tag-plugin mb-3"><i class="bi bi-plugin"></i> Plugin VST/AU para DAWs (Mac y Windows)</div>
+    <section class="ra-intro">
+      <div class="shell">
+        <div class="ra-intro-grid">
+          <div><div class="ra-kicker">Segunda generación</div><h2>Más capas. Más control. Más formas de tocar.</h2></div>
+          <p>La segunda generación amplía el concepto del instrumento original con tres módulos distintos. Puedes ir directo a un preset, construir una textura más compleja o sumar batería y percusión sin abandonar el mismo ecosistema sonoro.</p>
+        </div>
+        <div class="ra-statbar">
+          <div class="ra-stat"><strong>3</strong><span>Módulos incluidos en el paquete.</span></div>
+          <div class="ra-stat"><strong>7</strong><span>Instrumentos en el Player.</span></div>
+          <div class="ra-stat"><strong>9</strong><span>Capas disponibles en Premium.</span></div>
+          <div class="ra-stat"><strong>31</strong><span>Sonidos de batería y percusión.</span></div>
+        </div>
+      </div>
+    </section>
 
-            <div class="mb-3 p-3 rounded-3" style="background: rgba(255, 166, 0, 0.05); border: 1px solid rgba(255, 166, 0, 0.2);">
-              <div class="d-flex justify-content-between text-white small mb-1">
-                <span><i class="bi bi-box-seam" style="color:var(--orange-btn);"></i> Rhodes Affair 2 Plugin:</span> <b class="text-white">INCLUIDO</b>
-              </div>
-              <div class="d-flex justify-content-between small fw-bold" style="color:var(--orange-btn);">
-                <span><i class="bi bi-sliders"></i> Formatos VST / AU / AAX:</span> <b>INCLUIDO GRATIS</b>
-              </div>
+    <section class="ra-modules" id="incluye">
+      <div class="shell">
+        <div class="ra-section-head">
+          <div><div class="ra-kicker">Qué incluye</div><h2>Tres maneras de entrar al sonido.</h2></div>
+          <p>El paquete se divide en tres módulos con funciones distintas: un reproductor rápido, un instrumento por capas y una sección de batería/percusión para completar el arreglo.</p>
+        </div>
+        <div class="ra-module-grid">
+          <article class="ra-module">
+            <div><div class="ra-module-top"><span class="ra-module-label">01 · Player</span><span class="ra-chip">3.65 GB</span></div><h3>Player</h3><p>Un reproductor de presets expandible pensado para llegar al sonido rápido y mantener el flujo de interpretación.</p></div>
+            <div class="ra-module-list"><span>7 instrumentos incluidos</span><span>Presets orientados al sonido eléctrico de los 80/90</span><span>AU / VST en 64 bits</span></div>
+          </article>
+          <article class="ra-module">
+            <div><div class="ra-module-top"><span class="ra-module-label">02 · Premium</span><span class="ra-chip">6.35 GB</span></div><h3>Premium</h3><p>La versión de mayor profundidad, con capas, mezcla integrada y controles para construir sonidos más complejos.</p></div>
+            <div class="ra-module-list"><span>9 capas: piano, pads, bells, lead y más</span><span>Pan, volumen, reverb y rango dinámico</span><span>Modulación de voz, mono, legato y glide</span></div>
+          </article>
+          <article class="ra-module">
+            <div><div class="ra-module-top"><span class="ra-module-label">03 · Drums</span><span class="ra-chip">33.8 MB</span></div><h3>Affair Drums</h3><p>Un módulo compacto de batería y percusión para acompañar el mismo lenguaje musical del paquete.</p></div>
+            <div class="ra-module-list"><span>31 sonidos de batería y percusión</span><span>Control por teclado o controlador MIDI</span><span>Salidas independientes para bombo y caja</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ra-console">
+      <div class="shell ra-console-inner">
+        <div class="ra-console-copy"><div class="ra-kicker">Control directo</div><h2>Moldea el carácter sin perderte en menús.</h2><p>El diseño prioriza controles musicales y rápidos: tono, ecualización, drive, phaser, vibrato y volumen. La idea es ajustar el color mientras sigues tocando.</p></div>
+        <div class="ra-console-ui" aria-hidden="true"><div class="ra-console-screen"><div class="ra-knobs"><div class="ra-knob"><i></i><b>Tone</b></div><div class="ra-knob"><i></i><b>Bass</b></div><div class="ra-knob"><i></i><b>Mid</b></div><div class="ra-knob"><i></i><b>Treble</b></div><div class="ra-knob"><i></i><b>Drive</b></div><div class="ra-knob"><i></i><b>Phaser</b></div><div class="ra-knob"><i></i><b>Vibrato</b></div><div class="ra-knob"><i></i><b>Volume</b></div></div><div class="ra-switches"><span>Off</span><span>Soft</span><span>Deep</span></div></div></div>
+      </div>
+    </section>
+
+    <section class="ra-demo" id="demo">
+      <div class="shell">
+        <div class="ra-demo-card">
+          <div class="ra-demo-visual"><img src="img/rhodes.png" alt="Rhodes Affair 2" onerror="this.onerror=null;this.src='img/dingloft.png'"><a class="ra-play" href="https://www.youtube.com/watch?v=klCdZR3Xkw8" target="_blank" rel="noopener" aria-label="Ver demostración">▶</a></div>
+          <div class="ra-demo-copy"><div class="ra-kicker">Demostración</div><h3>Escúchalo dentro de una producción.</h3><p>Abre la demostración para escuchar el carácter del instrumento antes de comprar. El video se abre únicamente cuando tú lo solicitas.</p><a href="https://www.youtube.com/watch?v=klCdZR3Xkw8" target="_blank" rel="noopener">Ver demostración ↗</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ra-require" id="requisitos">
+      <div class="shell">
+        <div class="ra-require-head">
+          <div><div class="ra-kicker">Compatibilidad y requisitos</div><h2>Listo para Mac y Windows.</h2></div>
+          <p>La entrega incluye versiones para equipos de 64 bits. En Mac funciona tanto en Intel como en Apple Silicon; en Windows requiere un sistema de 64 bits y un host compatible.</p>
+        </div>
+        <div class="ra-platforms">
+          <article class="ra-platform dark">
+            <div class="ra-platform-title"><b>macOS</b><span>Intel + Apple Silicon</span></div>
+            <div class="ra-req-list">
+              <div class="ra-req"><b>Sistema</b><span>macOS High Sierra hasta Tahoe, en 64 bits.</span></div>
+              <div class="ra-req"><b>Procesador</b><span>Mac Intel o Apple Silicon serie M con soporte nativo.</span></div>
+              <div class="ra-req"><b>Formatos</b><span>Audio Units, VST2 y VST3 en hosts compatibles.</span></div>
+              <div class="ra-req"><b>DAW</b><span>Cualquier DAW principal compatible con AU o VST de 64 bits.</span></div>
             </div>
-
-            <div class="row g-2 mb-3 pt-2 border-top border-bottom border-secondary border-opacity-25 py-2">
-              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-shield-check"></i></div><p class="feature-title text-white">Garantizado</p></div></div>
-              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-infinity"></i></div><p class="feature-title text-white">Vitalicio</p></div></div>
-              <div class="col-4"><div class="feature-box"><div class="feature-icon-circle"><i class="bi bi-download"></i></div><p class="feature-title text-white">Inmediato</p></div></div>
+          </article>
+          <article class="ra-platform">
+            <div class="ra-platform-title"><b>Windows</b><span>64 bits</span></div>
+            <div class="ra-req-list">
+              <div class="ra-req"><b>Sistema</b><span>Windows 10 o posterior, 64 bits.</span></div>
+              <div class="ra-req"><b>Formatos</b><span>VST2 y VST3.</span></div>
+              <div class="ra-req"><b>DAW</b><span>Cualquier DAW principal compatible con VST2/3 de 64 bits.</span></div>
+              <div class="ra-req"><b>Control</b><span>Compatible con teclado o controlador MIDI.</span></div>
             </div>
+          </article>
+        </div>
+        <div class="ra-note"><strong>Consejo:</strong> utiliza SSD y memoria suficiente para trabajar con el módulo Premium y proyectos con varias instancias simultáneas.</div>
+      </div>
+    </section>
 
-            <div class="mb-3 d-flex align-items-end gap-3">
-              <span class="fw-extrabold text-white" style="font-size: 2.5rem; letter-spacing: -1px; color: var(--orange-btn) !important; line-height: 1;">$30.00</span>
-              <div class="d-flex flex-column pb-1">
-                <span class="text-decoration-line-through" style="color: rgba(255,255,255,0.75); font-size: 1.1rem; line-height: 1;">$100.00 USD</span>
-                <span class="badge bg-danger mt-1" style="font-size: 0.75rem; letter-spacing: 1px; padding: 4px 8px;">AHORRAS $70</span>
-              </div>
-            </div>
-
-            <div class="purchase-options mt-4">
-              <p class="fw-bold mb-2" style="font-size: 0.8rem; letter-spacing: 1px; color: var(--orange-btn);"><i class="bi bi-cart-check"></i> ELIGE TU PAQUETE:</p>
-              
-              <div class="package-card glass-effect p-3 mb-2" style="border-color: var(--orange-btn); background: rgba(255, 166, 0, 0.05); position: relative; overflow: hidden;">
-                <div class="position-absolute top-0 end-0 px-2 py-1 fw-bold" style="font-size: 0.65rem; border-bottom-left-radius: 8px; background: var(--orange-btn); color: #000;">VERSIÓN COMPLETA</div>
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                  <span class="fw-bold text-white">Rhodes Affair 2 (Plugin VST/AU)</span>
-                  <span class="fw-bold" style="color: var(--orange-btn);">$30.00</span>
-                </div>
-                <p class="small mb-2" style="color: rgba(255, 255, 255, 0.85); font-size: 0.75rem;">Plugin independiente optimizado para Mac y Windows.</p>
-                <button class="btn-orange-custom w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-add-cart" data-id="11" data-sku="rhodes-affair-2" data-name="Rhodes Affair 2" data-price="30" data-img="rhodes" data-type="Librería vitalicia">
-                  <i class="bi bi-cart3"></i> AGREGAR PLUGIN
-                </button>
-              </div>
-            </div>
+    <section class="ra-buy" id="comprar">
+      <div class="shell ra-buy-grid">
+        <div class="ra-buy-product"><img src="img/rhodes.png" alt="Rhodes Affair 2" onerror="this.onerror=null;this.src='img/dingloft.png'"></div>
+        <div class="ra-buy-copy">
+          <div class="ra-kicker">Rhodes Affair 2</div>
+          <h2>Un clásico eléctrico, listo para tu sesión.</h2>
+          <p>Compra una vez y conserva el acceso desde tu cuenta Dingloft. La entrega para Mac y Windows queda asociada a tu compra confirmada.</p>
+          <div class="ra-buy-price">$30.00 <span>USD</span></div>
+          <div class="ra-buy-list"><div class="ra-buy-point">3 módulos incluidos</div><div class="ra-buy-point">Mac + Windows</div><div class="ra-buy-point">VST2 / VST3 / AU</div><div class="ra-buy-point">Dingloft Care opcional</div></div>
+          <div class="ra-actions">
+            <button class="ra-btn primary btn-buy-now" data-id="rhodes-affair-2" data-sku="rhodes-affair-2" data-name="Rhodes Affair 2" data-price="30" data-img="rhodes" data-type="Librería vitalicia">Comprar ahora</button>
+            <button class="ra-btn secondary btn-add-cart" data-id="rhodes-affair-2" data-sku="rhodes-affair-2" data-name="Rhodes Affair 2" data-price="30" data-img="rhodes" data-type="Librería vitalicia">Añadir al carrito</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- COMPATIBILIDAD Y NOTA DEL CREADOR -->
-    <section class="compatible-section">
-      <div class="container">
-        <div class="compatible-title" style="color: var(--orange-btn);">Plataformas y Formatos Compatibles</div>
-        
-        <div class="row g-3 justify-content-center mb-4">
-          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-windows" style="font-size: 3rem; margin-bottom: 15px; color: var(--orange-btn); display: block;"></i><h5>WINDOWS (VST / VST3)</h5></div></div>
-          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-apple" style="font-size: 3rem; margin-bottom: 15px; color: #ffffff; display: block;"></i><h5>MAC (AU / VST / VST3)</h5></div></div>
-          <div class="col-4"><div class="keyboard-card" style="padding-top: 25px;"><i class="bi bi-file-earmark-code" style="font-size: 3rem; margin-bottom: 15px; color: #00e5ff; display: block;"></i><h5>AAX (PRO TOOLS)</h5></div></div>
-        </div>
-
-        <div class="row justify-content-center mb-4">
-          <div class="col-lg-10">
-            <div class="creator-note-box" style="border-color: rgba(255,166,0,0.25); background: linear-gradient(135deg, rgba(255, 166, 0, 0.07), rgba(122, 0, 255, 0.04));">
-              <div class="d-flex align-items-center gap-3 mb-2">
-                <div class="creator-avatar" style="background: linear-gradient(135deg, #ffa600, #7a00ff);">C</div>
-                <div>
-                  <h6 class="text-white mb-0 fw-bold">Nota del Creador</h6>
-                  <small class="text-info" style="font-size: 0.75rem; color: #ffa600 !important;">César — Músico y Desarrollador</small>
-                </div>
-              </div>
-              <p class="text-white mb-2" style="font-size: 0.9rem; line-height: 1.6; color: #f1f5f9;">
-                "El sonido clásico de un piano eléctrico Rhodes define cualquier balada, soul o jazz moderno. Encontrarle la calidez y el timbre exacto sin necesidad de cargar instrumentos pesados fue el reto al configurar este plugin.<br><br>
-                <b>Rhodes Affair 2</b> te entrega esa textura analógica y cremosa directo en tu DAW favorito (tanto en <b>Mac como en Windows</b>), con controles sencillos para moldear el chorus, el trémolo y la ecualización.<br><br>
-                Lo probamos exhaustivamente para garantizar estabilidad total en sesiones de mezcla pesadas y en presentaciones en vivo."
-              </p>
-              <div class="text-end fw-semibold" style="font-size: 0.75rem; color: var(--orange-btn);"><i class="bi bi-patch-check-fill"></i> Sonido analógico sin complicaciones.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CARACTERÍSTICAS -->
-        <div class="row justify-content-center mb-4">
-          <div class="col-lg-10">
-            <div class="text-center mb-3">
-              <h4 class="fw-bold text-white fs-5">Características Principales</h4>
-              <p class="text-white small" style="color: #f1f5f9; font-size: 0.8rem;">Efectos y controles integrados para un sonido profesional.</p>
-            </div>
-            <div class="row g-2">
-              <div class="col-6 col-md-4"><div class="software-badge-box"><i class="bi bi-sliders" style="color: var(--orange-btn);"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Efectos Clásicos</h6><small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Chorus y Trémolo</small></div></div></div>
-              <div class="col-6 col-md-4"><div class="software-badge-box"><i class="bi bi-soundwave" style="color: var(--orange-btn);"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Tono Ajustable</h6><small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Ecualización integrada</small></div></div></div>
-              <div class="col-6 col-md-4"><div class="software-badge-box"><i class="bi bi-cpu" style="color: var(--orange-btn);"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Bajo Consumo RAM</h6><small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Optimizado para proyectos</small></div></div></div>
-              <div class="col-6 col-md-6"><div class="software-badge-box"><i class="bi bi-laptop" style="color: var(--orange-btn);"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Multiplataforma</h6><small class="text-white" style="color: rgba(255,255,255,0.85);">Windows y macOS</small></div></div></div>
-              <div class="col-12 col-md-6"><div class="software-badge-box"><i class="bi bi-lightning-charge" style="color: var(--orange-btn);"></i><div><h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;">Instalación Ágil</h6><small class="text-white" style="color: rgba(255,255,255,0.85);">Listos para usar en tu DAW</small></div></div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- VIDEO DEMOSTRACIÓN -->
-        <section class="pb-5 mt-4">
-          <div class="container">
-            <div class="row justify-content-center">
-              <div class="col-lg-10">
-                <div class="text-center mb-3">
-                  <span class="text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 2px; color: var(--orange-btn);">Demostración en Estudio</span>
-                  <h3 class="fw-bold text-white mt-1 fs-5">Escucha la calidez de Rhodes Affair 2 en acción</h3>
-                </div>
-                <div class="liquid-glass-container">
-                  <div class="ratio ratio-16x9 rounded-3 overflow-hidden" style="box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
-                    <iframe src="https://www.youtube.com/embed/klCdZR3Xkw8" title="Demostración Rhodes Affair 2" allowfullscreen style="border:0;"></iframe>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- PRODUCTOS SIMILARES -->
-        <div class="row justify-content-center my-4">
-          <div class="col-lg-10">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-collection-play" style="color: var(--orange-btn);"></i> Librerías Relacionadas</h5>
-              <span class="text-white small" style="color: #f1f5f9; font-size: 0.75rem;">Desliza <i class="bi bi-arrow-right"></i></span>
-            </div>
-            <div class="similar-carousel-wrapper">
-              <div class="similar-card">
-                <div>
-                  <div class="similar-img-box"><img src="img/nord.png" alt="Nord Stage 4 Ultimate" onerror="this.src='https://ui-avatars.com/api/?name=NS&background=00e5ff&color=000'"></div>
-                  <h6 class="text-white fw-bold fs-6 mb-1">Nord Stage 4 Ultimate Library</h6>
-                  <div class="tech-tag tech-tag-plugin"><i class="bi bi-music-player-fill"></i> Librería Kontakt</div>
-                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Librería definitiva optimizada con samples de alta fidelidad.</p>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$40.00</span>
-                  <a href="nord.html" class="btn-outline-custom py-1 px-2">Ver más</a>
-                </div>
-              </div>
-              <div class="similar-card">
-                <div>
-                  <div class="similar-img-box"><img src="img/yamahakeys.png" alt="Yamaha Premium Keys" onerror="this.src='https://ui-avatars.com/api/?name=YK&background=00e5ff&color=000'"></div>
-                  <h6 class="text-white fw-bold fs-6 mb-1">Yamaha Premium Keys</h6>
-                  <div class="tech-tag tech-tag-plugin"><i class="bi bi-disc"></i> Incluye Kontakt 7</div>
-                  <p class="text-white small mb-2" style="color:rgba(255,255,255,0.85); font-size: 0.75rem;">Pianos acústicos y eléctricos de gama alta.</p>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                  <span class="fw-bold text-accent" style="color:var(--accent-color); font-size: 0.9rem;">$30.00</span>
-                  <a href="yamahakeys.html" class="btn-outline-custom py-1 px-2">Ver más</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- COMENTARIOS -->
-        <div class="row justify-content-center comments-section">
-          <div class="col-lg-10">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 class="fw-bold text-white mb-0 fs-6"><i class="bi bi-chat-square-text" style="color: var(--orange-btn);"></i> Opiniones de la Comunidad</h5>
-            </div>
-            <div id="comment-section-wrapper" class="mb-4"></div>
-            <div id="comments-container">
-              <div class="text-center text-white py-3 small">Cargando opiniones de la comunidad...</div>
-            </div>
-          </div>
-        </div>
-
+    <section class="ra-footnote">
+      <div class="shell ra-footnote-grid">
+        <div class="ra-footnote-card"><b>Descargas y compras</b><p>Después de una compra confirmada, el acceso se gestiona desde Cuenta y permanece vinculado de forma segura a tu perfil Dingloft.</p></div>
+        <div class="ra-footnote-card"><b>Instalación asistida</b><p>Si necesitas acompañamiento, puedes agregar Dingloft Care en Checkout y programar tu sesión de asistencia.</p></div>
       </div>
     </section>
+  </main>
 
-    <!-- Footer -->
-    <footer class="py-4 mt-5 border-top" style="border-color: var(--border-color) !important;">
-      <div class="container text-center">
-        <p class="mb-0 text-white font-weight-bold" style="font-size: 0.9rem;">
-          &copy; 2026 Dingloft - Evolution Group. Todos los derechos reservados.
-        </p>
-      </div>
-    </footer>
+  <div class="toast" id="toast" role="status">Producto añadido al carrito.</div>
 
-  </div><!-- FIN DE PAGE WRAPPER -->
-
-  <!-- BOTÓN FLOTANTE CARRITO -->
-  <button class="btn-floating-cart cart-btn-global" title="Ver Carrito">
-    <i class="bi bi-cart3 fs-4"></i>
-    <span class="badge-floating cart-badge-count-global">0</span>
-  </button>
-
-  <!-- MODAL BUSCADOR -->
-  <div class="search-overlay-fullscreen" id="search-overlay-fullscreen">
-    <div class="search-modal-box">
-      <div class="search-input-liquid mb-4">
-        <i class="bi bi-search text-accent" style="font-size: 1.4rem;"></i>
-        <input type="text" id="live-search-input" placeholder="Buscar productos..." autocomplete="off">
-        <button class="btn-close-search" id="btn-close-search" style="background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;"><i class="bi bi-x-lg"></i></button>
-      </div>
-      <div id="live-search-results" class="search-results-container">
-        <p class="text-center" style="color: rgba(255,255,255,0.7); font-size: 0.9rem;" id="search-empty-state">Escribe el nombre del producto para buscar...</p>
-        <a href="rhodes.html" class="search-result-item" data-title="rhodes affair 2 piano electrico">
-          <img src="img/rhodes.png" alt="Rhodes" onerror="this.src='https://ui-avatars.com/api/?name=Rh&background=00e5ff&color=000'">
-          <div><h6 class="mb-0 text-white fw-bold">Rhodes Affair 2</h6><span class="text-accent small fw-bold" style="color: var(--accent-color);">$30.00</span></div>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- CARRITO LATERAL -->
-  <div class="cart-overlay" id="cart-overlay"></div>
-  <div class="cart-drawer" id="cart-drawer">
-    <div class="cart-header">
-      <div>
-        <h4 class="mb-1 text-white" style="font-weight: 600;"><i class="bi bi-cart4"></i> Tu carrito</h4>
-        <span class="text-white" style="font-size: 0.85rem;" id="cart-item-count-text">0 productos</span>
-      </div>
-      <button class="btn-close-cart" id="close-cart-btn"><i class="bi bi-x-lg"></i></button>
-    </div>
-    <div class="cart-items-container" id="cart-items-container">
-      <div class="cart-empty-msg" id="empty-cart-msg"><p>Tu carrito está vacío.</p></div>
-    </div>
-    <div class="cart-footer">
-      <div class="coupon-box" id="coupon-section" style="display: none;">
-        <input type="text" id="coupon-input" class="coupon-input" placeholder="Código de descuento">
-        <button type="button" id="apply-coupon-btn" class="btn-apply-coupon">Aplicar</button>
-      </div>
-      <div id="coupon-msg" class="coupon-msg" style="display: none;"></div>
-      <div class="d-flex justify-content-between mb-2" id="subtotal-row" style="display: none;"><span class="text-white">Subtotal</span><span id="cart-subtotal" class="text-white">$0.00</span></div>
-      <div class="d-flex justify-content-between mb-4" id="total-row" style="display: none;"><span class="fs-5 fw-bold text-white">Total</span><span class="fs-4 fw-bold text-accent" id="cart-total">$0.00</span></div>
-      <div class="paypal-white-card mb-3" id="paypal-container-wrapper" style="display: none;"><div id="paypal-button-container" class="w-100"></div></div>
-      <button id="free-checkout-btn" class="btn-orange-custom mb-3 w-100" style="display: none;">Obtener gratis <i class="bi bi-download ms-1"></i></button>
-    </div>
-  </div>
-
-  <!-- Bootstrap 5 JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- SCRIPT GLOBAL EXTERNO PARA AUTENTICACIÓN Y MODO ADMIN -->
-  <script type="module" src="auth-global.js"></script>
-
-  <!-- LÓGICA LOCAL (FIREBASE, COMENTARIOS Y PASARELA EXPRESS) -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, orderBy, serverTimestamp, increment, arrayUnion, arrayRemove, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyAKxQdUM49cVbBaXWJ5DF3s7EaNKlJRGhA",
-      authDomain: "login-dingloft.firebaseapp.com",
-      projectId: "login-dingloft",
-      storageBucket: "login-dingloft.firebasestorage.app",
-      messagingSenderId: "549466738202",
-      appId: "1:549466738202:web:8bf305fe2c753e9d76cba3",
-      measurementId: "G-R9SGZCDN13"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    window.globalCurrentUser = null;
-    let currentUser = null;
-    window.globalEmailRecienComprado = "";
-
-    async function checkUserPurchases(uid) {
-      try {
-        const q = query(collection(db, "purchases"), where("uid", "==", uid));
-        const snapshot = await getDocs(q);
-        let purchasedNames = [];
-        snapshot.forEach(docSnap => {
-          const data = docSnap.data();
-          if (data.items && Array.isArray(data.items)) {
-            data.items.forEach(item => purchasedNames.push(item.name));
-          }
-        });
-        const buyButtons = document.querySelectorAll('.btn-add-cart');
-        buyButtons.forEach(btn => {
-          const prodName = btn.getAttribute('data-name');
-          if (purchasedNames.includes(prodName)) {
-            btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> OBTENIDO';
-            btn.classList.remove('btn-cyan', 'btn-outline-custom', 'btn-orange-custom');
-            btn.classList.add('btn-obtained-glass');
-            btn.disabled = true;
-          }
-        });
-      } catch (err) { console.error("Error verificando compras:", err); }
-    }
-
-    const initialDefaultComments = [
-      { name: "Estudio de Mezcla Pro", rating: 5, text: "El sonido de este piano eléctrico es una maravilla. Los controles de chorus y ecualización le dan el toque exacto.", likes: 35, likedBy: [] },
-      { name: "Gabriel Morales", rating: 5, text: "Lo compré para mis sesiones en Logic Pro y va de lujo. Cero latencia y una calidez increíble.", likes: 21, likedBy: [] },
-      { name: "Andrés V.", rating: 5, text: "Excelente emulación, se siente como tocar un instrumento real en cada nota.", likes: 19, likedBy: [] }
-    ];
-
-    function renderCommentsUI(commentsData) {
-      const container = document.getElementById('comments-container');
-      container.innerHTML = '';
-      commentsData.forEach((com) => {
-        const docId = com.id;
-        let stars = '★★★★★'.substring(0, com.rating || 5) + '☆☆☆☆☆'.substring(0, 5 - (com.rating || 5));
-        let likedByArray = com.likedBy || [];
-        let isLiked = currentUser && likedByArray.includes(currentUser.uid);
-        let btnClass = isLiked ? "btn-like liked" : "btn-like";
-        let iconClass = isLiked ? "bi bi-heart-fill" : "bi bi-heart";
-
-        container.insertAdjacentHTML('beforeend', `
-          <div class="comment-card" id="comment-${docId}">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <h6 class="text-white mb-0 fw-bold" style="font-size: 0.85rem;"><i class="bi bi-person-circle" style="color:var(--orange-btn);"></i> ${com.name}</h6>
-              <span class="text-warning small" style="font-size: 0.75rem;">${stars}</span>
-            </div>
-            <p class="text-white mb-2 small" style="color: #f1f5f9; font-size: 0.8rem;">${com.text}</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <small class="text-white" style="color: rgba(255,255,255,0.85); font-size: 0.7rem;">Opinión verificada</small>
-              <button class="${btnClass}" onclick="toggleLikeFirestore('${docId}', this)"><i class="${iconClass}"></i> <span class="like-count">${com.likes || 0}</span></button>
-            </div>
-          </div>
-        `);
-      });
-    }
-
-    async function loadComments() {
-      try {
-        const commentsRef = collection(db, "rhodes_comments_final");
-        const q = query(commentsRef, orderBy("createdAt", "desc"));
-        let snapshot = await getDocs(q);
-        let dbComments = [];
-        snapshot.forEach(docSnap => dbComments.push({ id: docSnap.id, ...docSnap.data() }));
-        const allComments = [...dbComments, ...initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c }))];
-        renderCommentsUI(allComments);
-      } catch (err) {
-        renderCommentsUI(initialDefaultComments.map((c, i) => ({ id: 'local-'+i, ...c })));
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => { loadComments(); });
-
-    onAuthStateChanged(auth, (user) => {
-      currentUser = user;
-      window.globalCurrentUser = user;
-      const commentWrapper = document.getElementById('comment-section-wrapper');
-
-      if (user) {
-        checkUserPurchases(user.uid);
-        let displayName = user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : "Usuario");
-
-        commentWrapper.innerHTML = `
-          <div class="comment-form-box">
-            <h6 class="text-white mb-2 fw-semibold" style="font-size: 0.9rem;">Deja tu reseña o comentario</h6>
-            <form id="comment-form">
-              <div class="row g-2">
-                <div class="col-12 col-md-6"><input type="text" id="comment-name" class="form-control form-control-custom" value="${displayName}" placeholder="Tu Nombre o Estudio" required></div>
-                <div class="col-12 col-md-6">
-                  <select id="comment-rating" class="form-control form-control-custom">
-                    <option value="5">★★★★★ (5/5 - Excelente)</option>
-                    <option value="4">★★★★☆ (4/5 - Muy bueno)</option>
-                  </select>
-                </div>
-                <div class="col-12"><textarea id="comment-text" class="form-control form-control-custom" rows="2" placeholder="Escribe tu experiencia..." required></textarea></div>
-                <div class="col-12 text-end"><button type="submit" class="btn-orange-custom px-3 py-1" style="font-size: 0.85rem; padding: 6px 15px;" id="btn-submit-comment">Publicar Comentario</button></div>
-              </div>
-            </form>
-          </div>
-        `;
-        document.getElementById('comment-form').addEventListener('submit', handleCommentSubmit);
-      } else {
-        commentWrapper.innerHTML = `
-          <div class="login-prompt-box">
-            <div class="login-prompt-icon"><i class="bi bi-lock-fill"></i></div>
-            <h5 class="text-white fw-bold mb-2 fs-6">Inicia sesión para dejar tu reseña</h5>
-            <a href="login.html" class="btn-orange-custom d-inline-block px-4 py-2 text-decoration-none" style="font-size: 0.9rem;">Iniciar Sesión / Registrarse</a>
-          </div>
-        `;
-      }
-      loadComments();
-    });
-
-    async function handleCommentSubmit(e) {
-      e.preventDefault();
-      if (!currentUser) return;
-      const name = document.getElementById('comment-name').value.trim();
-      const rating = parseInt(document.getElementById('comment-rating').value);
-      const text = document.getElementById('comment-text').value.trim();
-      if (!name || !text) return;
-
-      try {
-        await addDoc(collection(db, "rhodes_comments_final"), { name, rating, text, likes: 0, likedBy: [], createdAt: serverTimestamp() });
-        document.getElementById('comment-form').reset();
-        loadComments();
-      } catch (err) { alert("Error al publicar."); }
-    }
-
-    window.toggleLikeFirestore = async function(docId, btn) {
-      if (!currentUser) { window.location.href = 'login.html'; return; }
-      if (docId.startsWith('local-')) return;
-      const countSpan = btn.querySelector('.like-count');
-      let currentLikes = parseInt(countSpan.textContent);
-      let isLiking = !btn.classList.contains('liked');
-
-      if (isLiking) { btn.classList.add('liked'); btn.querySelector('i').className = 'bi bi-heart-fill'; countSpan.textContent = currentLikes + 1; }
-      else { btn.classList.remove('liked'); btn.querySelector('i').className = 'bi bi-heart'; countSpan.textContent = currentLikes - 1; }
-
-      try {
-        const commentRef = doc(db, "rhodes_comments_final", docId);
-        await updateDoc(commentRef, { likes: increment(isLiking ? 1 : -1), likedBy: isLiking ? arrayUnion(currentUser.uid) : arrayRemove(currentUser.uid) });
-      } catch (err) { console.error(err); }
-    };
-
-    function mostrarModalExito(mensaje, esInvitado = false, emailInvitado = "") {
-      const modal = document.getElementById('success-modal');
-      const text = document.getElementById('success-modal-text');
-      const expressBox = document.getElementById('express-signup-container');
-      const btnGoAccount = document.getElementById('btn-go-to-account');
-      if (text && mensaje) text.textContent = mensaje;
-      if (esInvitado && emailInvitado) {
-        window.globalEmailRecienComprado = emailInvitado;
-        document.getElementById('express-email').value = emailInvitado;
-        expressBox.style.display = 'block';
-        btnGoAccount.style.display = 'none';
-      } else {
-        expressBox.style.display = 'none';
-        btnGoAccount.style.display = 'block';
-      }
-      if (modal) modal.classList.add('active');
-    }
-
-    window.crearCuentaExpress = async function() {
-      const passInput = document.getElementById('express-password').value.trim();
-      const email = window.globalEmailRecienComprado;
-      if (passInput.length < 6) { alert("Mínimo 6 caracteres."); return; }
-      try {
-        await createUserWithEmailAndPassword(auth, email, passInput);
-        window.location.href = 'account.html';
-      } catch (error) {
-        if (error.code === 'auth/email-already-in-use') {
-          try { await signInWithEmailAndPassword(auth, email, passInput); window.location.href = 'account.html'; return; }
-          catch(innerErr) { window.location.href = 'login.html'; return; }
-        }
-        window.location.href = 'account.html';
-      }
-    };
-
-    window.renderPayPalStableLegacyDisabled = function(monto) {
-      const container = document.getElementById('paypal-button-container');
-      if (!container) return;
-      container.innerHTML = '';
-      if (typeof paypal === 'undefined') return;
-
-      paypal.Buttons({
-        style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
-        createOrder: function(data, actions) { return actions.order.create({ purchase_units: [{ amount: { value: monto.toFixed(2) } }] }); },
-        onApprove: async function(data, actions) {
-          // Legacy browser capture is permanently disabled. Secure checkout is rendered by dingloft-commerce.js.
-          if (window.__DINGLOFT_COMMERCE_V1__) {
-            if (typeof window.renderPayPalStable === 'function') window.renderPayPalStable();
-            return;
-          }
-          return actions.order.capture().then(async function(details) {
-            let user = auth.currentUser;
-            let userId = user ? user.uid : "GUEST-" + Date.now();
-            let userEmail = details.payer.email_address || (user ? user.email : "invitado@dingloft.com");
-            let payerName = details.payer.name.given_name || "Cliente";
-
-            try {
-              const itemsComprados = window.cartItemsList || [];
-              await addDoc(collection(db, "purchases"), { uid: userId, userEmail, paypalOrderId: details.id, payerName, items: itemsComprados, createdAt: serverTimestamp() });
-              if (typeof window.clearCart === 'function') window.clearCart();
-              if (!user) { mostrarModalExito(`¡Pago exitoso, ${payerName}!`, true, userEmail); }
-              else { mostrarModalExito(`¡Pago exitoso! Redirigiendo...`, false, ""); setTimeout(() => { window.location.href = 'account.html'; }, 2200); }
-            } catch (error) { console.error(error); }
-          });
-        }
-      }).render('#paypal-button-container');
-    };
-  </script>
-
-  <!-- LÓGICA LOCAL DEL CARRITO Y NAVEGACIÓN -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const btnOpenSidebar = document.getElementById('btn-open-sidebar');
-      const sideMenu = document.getElementById('side-menu');
-      const sideMenuOverlay = document.getElementById('side-menu-overlay');
-      const pageWrapper = document.getElementById('page-wrapper');
-      const mainNavbar = document.getElementById('main-navbar');
-
-      function toggleSidebar() {
-        sideMenu.classList.toggle('active');
-        sideMenuOverlay.classList.toggle('active');
-        pageWrapper.classList.toggle('menu-pushed');
-        mainNavbar.classList.toggle('menu-pushed');
-        document.body.classList.toggle('no-scroll');
-      }
-      if(btnOpenSidebar) btnOpenSidebar.addEventListener('click', toggleSidebar);
-      if(sideMenuOverlay) sideMenuOverlay.addEventListener('click', toggleSidebar);
-
-      const searchOverlayFullscreen = document.getElementById('search-overlay-fullscreen');
-      const btnOpenSearchMobile = document.getElementById('btn-open-search-mobile');
-      const btnOpenSearchDesktop = document.getElementById('btn-open-search-desktop');
-      const btnCloseSearch = document.getElementById('btn-close-search');
-      const liveSearchInput = document.getElementById('live-search-input');
-      const searchItems = document.querySelectorAll('.search-result-item');
-      const searchEmptyState = document.getElementById('search-empty-state');
-
-      function openSearch() { searchOverlayFullscreen.classList.add('active'); document.body.classList.add('no-scroll'); setTimeout(() => liveSearchInput.focus(), 100); }
-      function closeSearch() { searchOverlayFullscreen.classList.remove('active'); document.body.classList.remove('no-scroll'); }
-
-      if(btnOpenSearchMobile) btnOpenSearchMobile.addEventListener('click', openSearch);
-      if(btnOpenSearchDesktop) btnOpenSearchDesktop.addEventListener('click', openSearch);
-      if(btnCloseSearch) btnCloseSearch.addEventListener('click', closeSearch);
-
-      liveSearchInput.addEventListener('input', function() {
-        const query = this.value.toLowerCase().trim();
-        let found = false;
-        if (query.length > 1) {
-          searchEmptyState.style.display = 'none';
-          searchItems.forEach(item => {
-            if (item.getAttribute('data-title').includes(query)) { item.style.display = 'flex'; found = true; }
-            else { item.style.display = 'none'; }
-          });
-          if (!found) { searchEmptyState.textContent = 'No se encontraron resultados.'; searchEmptyState.style.display = 'block'; }
-        } else {
-          searchItems.forEach(item => item.style.display = 'none');
-          searchEmptyState.textContent = 'Escribe el nombre del producto para buscar...';
-          searchEmptyState.style.display = 'block';
-        }
-      });
-
-      let cart = JSON.parse(localStorage.getItem('dingloft_cart')) || [];
-      cart = window.DingloftCartSync ? window.DingloftCartSync.normalize(cart) : cart;
-      let couponApplied = false;
-      const cartBtns = document.querySelectorAll('.cart-btn-global, #main-cart-btn');
-      const cartDrawer = document.getElementById('cart-drawer');
-      const cartOverlay = document.getElementById('cart-overlay');
-      const closeCartBtn = document.getElementById('close-cart-btn');
-      const cartBadges = document.querySelectorAll('.cart-badge-count-global');
-      const cartItemCountText = document.getElementById('cart-item-count-text');
-      const cartItemsContainer = document.getElementById('cart-items-container');
-      const emptyCartMsg = document.getElementById('empty-cart-msg');
-      const cartSubtotalText = document.getElementById('cart-subtotal');
-      const cartTotalText = document.getElementById('cart-total');
-      const paypalWrapper = document.getElementById('paypal-container-wrapper');
-      const freeCheckoutBtn = document.getElementById('free-checkout-btn');
-      const securityBadge = document.getElementById('security-badge-box');
-      const couponSection = document.getElementById('coupon-section');
-      const subtotalRow = document.getElementById('subtotal-row');
-      const totalRow = document.getElementById('total-row');
-      const couponInput = document.getElementById('coupon-input');
-      const applyCouponBtn = document.getElementById('apply-coupon-btn');
-      const couponMsg = document.getElementById('coupon-msg');
-      const addButtons = document.querySelectorAll('.btn-add-cart');
-
-      const openCart = (e) => { if(e) e.preventDefault(); cartDrawer.classList.add('active'); cartOverlay.classList.add('active'); document.body.classList.add('no-scroll'); updateCartUI(); };
-      const closeCart = (e) => { if(e) e.preventDefault(); cartDrawer.classList.remove('active'); cartOverlay.classList.remove('active'); document.body.classList.remove('no-scroll'); };
-
-      cartBtns.forEach(btn => { if(btn) btn.addEventListener('click', openCart); });
-      if(closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
-      if(cartOverlay) cartOverlay.addEventListener('click', closeCart);
-
-      const updateCartUI = () => {
-        cartItemsContainer.innerHTML = '';
-        let totalItems = 0; let totalPrice = 0;
-        window.cartItemsList = [];
-
-        if (cart.length === 0) {
-          cartItemsContainer.appendChild(emptyCartMsg);
-          emptyCartMsg.style.display = 'block';
-          if(paypalWrapper) paypalWrapper.style.display = 'none';
-          if(freeCheckoutBtn) freeCheckoutBtn.style.display = 'none';
-          if(securityBadge) securityBadge.style.display = 'none';
-          if(couponSection) couponSection.style.display = 'none';
-          if(subtotalRow) subtotalRow.style.display = 'none';
-          if(totalRow) totalRow.style.display = 'none';
-          couponApplied = false;
-          if(couponMsg) couponMsg.style.display = 'none';
-        } else {
-          emptyCartMsg.style.display = 'none';
-          if(couponSection) couponSection.style.display = 'flex';
-          if(subtotalRow) subtotalRow.style.display = 'flex';
-          if(totalRow) totalRow.style.display = 'flex';
-          
-          cart.forEach((item, index) => {
-            totalItems += item.qty;
-            totalPrice += (item.price * item.qty);
-            for(let i=0; i<item.qty; i++) {
-              window.cartItemsList.push({ id:item.id, sku:item.sku || item.id, name:item.name, img:item.img, imageUrl:item.imageUrl || '', cover:item.cover || '', type:item.type, price:couponApplied ? 0 : item.price });
-            }
-            cartItemsContainer.insertAdjacentHTML('beforeend', `
-              <div class="cart-item">
-                <div class="cart-item-img ${item.cover ? 'has-cover' : ''}"><img src="${item.cover || item.imageUrl || `img/${item.img}.png`}" alt="${item.name}" onerror="this.onerror=null;this.src='img/dingloft.png';this.closest('.cart-item-img')?.classList.remove('has-cover');"></div>
-                <div class="cart-item-info">
-                  <h4 class="cart-item-title">${item.name}</h4>
-                  <p class="cart-item-desc">${item.type}</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <span class="fw-bold text-accent">$${(couponApplied ? 0 : item.price).toFixed(2)}</span>
-                    <div class="qty-controls">
-                      <button class="qty-btn" onclick="changeQty(${index}, -1)"><i class="bi bi-dash"></i></button>
-                      <span class="qty-value">${item.qty}</span>
-                      <button class="qty-btn" onclick="changeQty(${index}, 1)"><i class="bi bi-plus"></i></button>
-                    </div>
-                  </div>
-                </div>
-                <button class="cart-item-remove" onclick="removeItem(${index})"><i class="bi bi-trash"></i></button>
-              </div>
-            `);
-          });
-
-          let finalTotal = couponApplied ? 0 : totalPrice;
-
-          if (finalTotal === 0) {
-            if(paypalWrapper) paypalWrapper.style.display = 'none';
-            if(securityBadge) securityBadge.style.display = 'none';
-            if(freeCheckoutBtn) freeCheckoutBtn.style.display = 'block';
-          } else {
-            if(paypalWrapper) paypalWrapper.style.display = 'block';
-            if(securityBadge) securityBadge.style.display = 'block';
-            if(freeCheckoutBtn) freeCheckoutBtn.style.display = 'none';
-            setTimeout(() => { if (typeof window.renderPayPalStable === 'function') window.renderPayPalStable(finalTotal); }, 100);
-          }
-        }
-
-        cartBadges.forEach(badge => { if(badge) badge.textContent = totalItems; });
-        if(cartItemCountText) cartItemCountText.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
-        if(cartSubtotalText) cartSubtotalText.textContent = `$${totalPrice.toFixed(2)}`;
-        if(cartTotalText) cartTotalText.textContent = `$${(couponApplied ? 0 : totalPrice).toFixed(2)}`;
-        localStorage.setItem('dingloft_cart', JSON.stringify(cart));
-      };
-
-      if(applyCouponBtn) {
-        applyCouponBtn.addEventListener('click', () => {
-          if (couponInput.value.trim().toUpperCase() === '__LEGACY_DISABLED__') {
-            couponApplied = true;
-            couponMsg.style.display = 'block'; couponMsg.style.color = '#00ff88'; couponMsg.innerHTML = '<i class="bi bi-check-circle-fill"></i> ¡Cupón __LEGACY_DISABLED__ aplicado!';
-          } else {
-            couponApplied = false;
-            couponMsg.style.display = 'block'; couponMsg.style.color = '#ff4444'; couponMsg.innerHTML = '<i class="bi bi-x-circle-fill"></i> Código de cupón inválido.';
-          }
-          updateCartUI();
-        });
-      }
-
-      window.changeQty = (index, delta) => { if (cart[index].qty + delta > 0) cart[index].qty += delta; else cart.splice(index, 1); updateCartUI(); };
-      window.removeItem = (index) => { cart.splice(index, 1); updateCartUI(); };
-
-      addButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-          e.preventDefault();
-          if(this.disabled) return;
-          const id = this.getAttribute('data-id');
-          const sku = this.getAttribute('data-sku') || id || this.getAttribute('data-name');
-          const name = this.getAttribute('data-name');
-          const price = parseFloat(this.getAttribute('data-price'));
-          const img = this.getAttribute('data-img');
-          const cover = this.getAttribute('data-cover') || '';
-          const type = this.getAttribute('data-type');
-
-          const incoming = { id, sku, name, price, img, cover, type, qty:1 };
-          cart = window.DingloftCartSync
-            ? window.DingloftCartSync.addOrMerge(cart, incoming)
-            : cart;
-          if (!window.DingloftCartSync && !cart.some(item => String(item.sku || item.id) === String(sku))) cart.push(incoming);
-          
-          updateCartUI();
-          openCart();
-        });
-      });
-
-      const syncCartFromSharedState = (event) => {
-        const incoming = event?.detail?.cart || (() => { try { return JSON.parse(localStorage.getItem('dingloft_cart') || '[]'); } catch (_) { return []; } })();
-        cart = window.DingloftCartSync ? window.DingloftCartSync.normalize(incoming) : (Array.isArray(incoming) ? incoming : []);
-        updateCartUI();
-      };
-      window.addEventListener('dingloft:cart-sync', syncCartFromSharedState);
-      window.addEventListener('storage', event => { if (event.key === 'dingloft_cart') syncCartFromSharedState(); });
-      updateCartUI();
-    });
+  (()=>{
+    const toast=document.getElementById('toast');
+    const showToast=(msg)=>{if(!toast)return;toast.textContent=msg;toast.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(()=>toast.classList.remove('show'),2200)};
+    const itemFromButton=button=>({id:button.dataset.id||button.dataset.sku,sku:button.dataset.sku||button.dataset.id,name:button.dataset.name,price:Number(button.dataset.price||0),img:button.dataset.img||'rhodes',cover:button.dataset.cover||'',type:button.dataset.type||'Librería vitalicia',qty:1,quantity:1});
+    const commitItem=button=>{const incoming=itemFromButton(button);let cart=window.DingloftCartSync?.read?.()||[];cart=window.DingloftCartSync?window.DingloftCartSync.addOrMerge(cart,incoming):cart;if(!window.DingloftCartSync&&!cart.some(x=>String(x.sku||x.id)===String(incoming.sku)))cart.push(incoming);if(window.DingloftCartSync?.write)cart=window.DingloftCartSync.write(cart,true);else{localStorage.setItem('dingloft_cart',JSON.stringify(cart));window.dispatchEvent(new CustomEvent('dingloft:cart-change',{detail:{items:cart}}));}return incoming};
+    const notify=(button,item)=>{const r=button.getBoundingClientRect();const sourceRect={left:r.left,top:r.top,width:r.width,height:r.height};try{if(window.parent&&window.parent!==window)window.parent.postMessage({type:'dingloft:cart-added',item,sourceRect},location.origin);else window.DingloftGlobalNav?.notifyCart?.(item,sourceRect)}catch(_){}};
+    const goCheckout=()=>{try{if(window.parent&&window.parent!==window){window.parent.postMessage({type:'dingloft:global-navigate',href:'checkout.html'},location.origin);return}}catch(_){}if(window.DingloftGlobalNav?.navigate){window.DingloftGlobalNav.navigate('checkout.html');return}location.href='checkout.html'};
+    document.querySelectorAll('.btn-add-cart').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();const item=commitItem(btn);notify(btn,item);showToast(`${item.name} añadido al carrito.`)}));
+    document.querySelectorAll('.btn-buy-now').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();commitItem(btn);goCheckout()}));
+  })();
   </script>
-  <script type="module" src="dingloft-commerce.js?v=2.2.0"></script>
-<script src="dingloft-ui-guard.js?v=58"></script>
-  <script src="dingloft-video-cinema.js?v=28" defer></script>
+  <script type="module" src="/dingloft-commerce.js?v=2.2.1-shell94"></script>
+  <script src="/dingloft-ui-guard.js?v=58"></script>
 </body>
 </html>
