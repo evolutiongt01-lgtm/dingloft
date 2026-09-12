@@ -597,6 +597,13 @@ body.no-scroll{overflow:hidden!important}
   object-fit:cover;object-position:center;
 }
 
+/* System requirements */
+.su-requirements{padding:100px 0;background:#f2f2ef;border-top:1px solid var(--su-line);border-bottom:1px solid var(--su-line)}
+.su-requirements-head{display:flex;align-items:end;justify-content:space-between;gap:34px}.su-requirements-head h2{max-width:760px;margin:0;font-size:clamp(42px,5vw,70px);line-height:.98;letter-spacing:-.05em}.su-requirements-head p{max-width:520px;margin:0;color:#6d747c;font-size:15px;line-height:1.7}
+.su-compat-banner{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:38px;padding:24px 26px;background:#162a33;color:#fff;border:1px solid #162a33}.su-compat-banner strong{display:block;font-size:23px;letter-spacing:-.035em}.su-compat-banner span{display:block;margin-top:6px;color:#c0c9cd;font-size:12px;line-height:1.5}.su-compat-chip{flex:0 0 auto;padding:9px 12px;background:var(--su-orange);color:#111;font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.su-requirement-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.su-req-card{padding:30px;background:#fff;border:1px solid var(--su-line)}.su-req-card.dark{background:#151719;color:#fff;border-color:#151719}.su-req-top{display:flex;align-items:center;justify-content:space-between;gap:15px;padding-bottom:20px;border-bottom:1px solid #e1e3e4}.su-req-card.dark .su-req-top{border-color:#35393d}.su-req-platform{display:flex;align-items:center;gap:12px}.su-req-platform i{font-size:28px}.su-req-platform b{display:block;font-size:20px;letter-spacing:-.03em}.su-req-platform small{display:block;margin-top:3px;color:#7d848b;font-size:9px;text-transform:uppercase;letter-spacing:.08em}.su-req-card.dark .su-req-platform small{color:#9fa6ad}.su-req-badge{padding:7px 9px;border:1px solid #d8dbde;color:#303438;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}.su-req-card.dark .su-req-badge{border-color:#4b5055;color:#dce0e3}
+.su-req-list{display:grid;margin-top:4px}.su-req-row{display:grid;grid-template-columns:112px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid #eceeed}.su-req-row:last-child{border-bottom:0}.su-req-card.dark .su-req-row{border-color:#2d3135}.su-req-row dt{color:#8a9198;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.07em}.su-req-row dd{margin:0;color:#25292d;font-size:12px;line-height:1.55}.su-req-card.dark .su-req-row dd{color:#d6dadd}.su-req-note{margin-top:16px;padding:17px 18px;border:1px solid #d8dbde;background:#fff;color:#747b82;font-size:11px;line-height:1.6}.su-req-note strong{color:#171a1d}.su-install-guide{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:18px;align-items:center;margin-top:18px;padding:20px;background:#fff;border:1px solid var(--su-line)}.su-install-guide .su-video{min-height:260px}.su-install-guide-copy h3{margin:0 0 8px;font-size:22px;letter-spacing:-.03em}.su-install-guide-copy p{margin:0 0 16px;color:#737b83;font-size:12px;line-height:1.6}
+
 /* Purchase */
 .su-purchase{
   background:#f0efe9;padding:100px 0;
@@ -725,7 +732,7 @@ body.no-scroll{overflow:hidden!important}
   .su-showcase{grid-template-columns:1fr}
   .su-showcase-copy{padding:65px 24px}
   .su-showcase-visual{min-height:420px}
-  .su-purchase{padding:70px 0}
+  .su-requirements{padding:70px 0}.su-requirements-head{display:block}.su-requirements-head p{margin-top:18px}.su-requirement-grid{grid-template-columns:1fr}.su-install-guide{grid-template-columns:1fr}.su-purchase{padding:70px 0}
   .su-purchase-head{display:block}
   .su-package-grid{grid-template-columns:1fr}
   .su-package{min-height:300px}
@@ -746,6 +753,10 @@ body.no-scroll{overflow:hidden!important}
   .su-value strong{font-size:11px}
   .su-value span{font-size:10px}
   .su-section h2,.su-purchase-head h2{font-size:42px}
+  .su-compat-banner{align-items:flex-start;flex-direction:column;padding:20px}
+  .su-req-row{grid-template-columns:1fr;gap:6px}
+  .su-install-guide{padding:14px}
+  .su-install-guide .su-video{min-height:210px}
 }
 </style>
 
@@ -1073,28 +1084,49 @@ body.no-scroll{overflow:hidden!important}
       </div>
     </section>
 
-    <section class="su-section white" id="requisitos">
-      <div class="su-container su-two-col">
-        <div>
-          <div class="su-kicker">04 · Compatibilidad</div>
-          <h2 style="font-size:clamp(38px,4vw,62px)">Listo para tu estación de trabajo.</h2>
-          <p class="su-section-lead">Una lectura rápida de compatibilidad antes de comprar.</p>
-          <div class="su-spec-list">
-            <div class="su-spec-row"><span>Sistema</span><strong>Windows 10 / 11</strong></div>
-            <div class="su-spec-row"><span>Apple</span><strong>Mac Intel / Apple Silicon</strong></div>
-            <div class="su-spec-row"><span>Flujo</span><strong>Modelado, Layout y presentación</strong></div>
-            <div class="su-spec-row"><span>Entrega</span><strong>Digital desde tu cuenta Dingloft</strong></div>
-          </div>
+    <section class="su-requirements" id="requisitos">
+      <div class="su-container">
+        <div class="su-requirements-head">
+          <div><div class="su-kicker">04 · Compatibilidad y requisitos</div><h2>SketchUp Pro 2026 para Mac y Windows.</h2></div>
+          <p>Disponible para escritorio en ambas plataformas, con soporte para Mac Intel, Apple Silicon y equipos Windows de 64 bits compatibles.</p>
         </div>
-        <div id="video-instalacion">
+        <div class="su-compat-banner">
+          <div><strong>macOS + Windows</strong><span>Una misma experiencia de modelado profesional en Mac y PC, con requisitos adaptados a cada plataforma.</span></div>
+          <div class="su-compat-chip">2 plataformas</div>
+        </div>
+        <div class="su-requirement-grid">
+          <article class="su-req-card dark">
+            <div class="su-req-top"><div class="su-req-platform"><i class="bi bi-apple"></i><div><b>macOS</b><small>Intel + Apple Silicon</small></div></div><span class="su-req-badge">SketchUp 2026</span></div>
+            <dl class="su-req-list">
+              <div class="su-req-row"><dt>Sistema</dt><dd>macOS Sonoma 14, Sequoia 15 o Tahoe 26.</dd></div>
+              <div class="su-req-row"><dt>Procesador</dt><dd>Mac Intel compatible o Apple Silicon de la serie M.</dd></div>
+              <div class="su-req-row"><dt>Memoria</dt><dd>8 GB RAM mínimo recomendado.</dd></div>
+              <div class="su-req-row"><dt>Gráficos</dt><dd>GPU compatible con Metal 2. Algunos gráficos Intel antiguos no son compatibles.</dd></div>
+              <div class="su-req-row"><dt>Espacio</dt><dd>6 GB libres como mínimo.</dd></div>
+            </dl>
+          </article>
+          <article class="su-req-card">
+            <div class="su-req-top"><div class="su-req-platform"><i class="bi bi-windows"></i><div><b>Windows</b><small>64 bits</small></div></div><span class="su-req-badge">SketchUp 2026</span></div>
+            <dl class="su-req-list">
+              <div class="su-req-row"><dt>Sistema</dt><dd>Windows 11 de 64 bits.</dd></div>
+              <div class="su-req-row"><dt>Procesador</dt><dd>Procesador de 2 GHz o superior.</dd></div>
+              <div class="su-req-row"><dt>Memoria</dt><dd>8 GB RAM mínimo recomendado.</dd></div>
+              <div class="su-req-row"><dt>Gráficos</dt><dd>GPU moderna compatible con DirectX 12, nivel de característica 11.0.</dd></div>
+              <div class="su-req-row"><dt>Espacio</dt><dd>6 GB libres como mínimo.</dd></div>
+            </dl>
+          </article>
+        </div>
+        <div class="su-req-note"><strong>Para modelos grandes:</strong> 16 GB de RAM o más y una GPU dedicada moderna ayudan a mantener un flujo más fluido con escenas complejas, materiales y presentaciones pesadas.</div>
+        <div class="su-install-guide" id="video-instalacion">
           <div class="su-video">
-            <iframe src="https://www.youtube.com/embed/Ns6ntMsTkc4"
-                    title="SketchUp Pro 2026 — demostración e instalación"
-                    allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/Ns6ntMsTkc4" title="SketchUp Pro 2026 — demostración e instalación" allowfullscreen></iframe>
           </div>
-          <button class="su-btn-primary" id="btn-free-trial" data-url="#video-instalacion" style="margin-top:18px">
-            <i class="bi bi-play-circle"></i> Ver guía de instalación
-          </button>
+          <div class="su-install-guide-copy">
+            <div class="su-kicker">Guía de instalación</div>
+            <h3>Prepáralo correctamente.</h3>
+            <p>Consulta la guía antes de instalar para revisar el proceso y dejar SketchUp listo en tu equipo.</p>
+            <button class="su-btn-primary" id="btn-free-trial" data-url="#video-instalacion"><i class="bi bi-play-circle"></i> Ver guía de instalación</button>
+          </div>
         </div>
       </div>
     </section>
