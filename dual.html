@@ -71,9 +71,9 @@
           <h1>Dos <span class="red">leyendas.</span><br>Un solo <span class="blue">arsenal.</span></h1>
           <p>Una colección creada para llevar el carácter de <strong>Nord Stage</strong> y la familia <strong>Motif / Montage</strong> a un formato SF2 práctico, portátil y listo para tocar.</p>
           <div class="hero-tags"><span class="tag">Descarga inmediata</span><span class="tag">Licencia vitalicia</span><span class="tag">Bonus PAD incluido</span><span class="tag">Formato SF2</span></div>
-          <div class="hero-price"><strong>$60</strong><span>$150 USD</span><span class="save">Ahorras $90</span></div>
+          <div class="hero-price"><strong data-price-for="pianos-legendarios-sf2-bundle">$50</strong><span data-compare-for="pianos-legendarios-sf2-bundle">$150 USD</span><span class="save" data-save-for="pianos-legendarios-sf2-bundle">Ahorras $100</span></div>
           <div class="hero-actions">
-            <button class="btn primary btn-add-cart" data-id="9" data-sku="pianos-legendarios-sf2-bundle" data-name="Pianos Legendarios SF2 Bundle completo" data-price="60" data-img="dual" data-type="Librería vitalicia">Agregar bundle</button>
+            <button class="btn primary btn-add-cart" data-id="9" data-sku="pianos-legendarios-sf2-bundle" data-name="Pianos Legendarios SF2 Bundle completo" data-price="50" data-img="dual" data-type="Librería vitalicia">Agregar bundle</button>
             <a class="btn secondary" href="#escuchar">Escuchar demo</a>
           </div>
         </div>
@@ -132,17 +132,17 @@
         </div>
         <div class="pack-grid">
           <article class="pack featured">
-            <span class="pack-badge">Más popular</span><div class="pack-accent"></div><h3>Bundle Completo</h3><div class="pack-price">$60</div>
+            <span class="pack-badge">Más popular</span><div class="pack-accent"></div><h3>Bundle Completo</h3><div class="pack-price" data-price-for="pianos-legendarios-sf2-bundle">$50</div>
             <ul><li>Nord Essentials SF2 · 2.73 GB</li><li>Yamaha Legacy Collection · 3.71 GB</li><li>Bonus PAD incluido gratis</li><li>Descarga digital + acceso vitalicio</li></ul>
-            <button class="btn btn-add-cart" data-id="9" data-sku="pianos-legendarios-sf2-bundle" data-name="Pianos Legendarios SF2 Bundle completo" data-price="60" data-img="dual" data-type="Librería vitalicia">Agregar bundle</button>
+            <button class="btn btn-add-cart" data-id="9" data-sku="pianos-legendarios-sf2-bundle" data-name="Pianos Legendarios SF2 Bundle completo" data-price="50" data-img="dual" data-type="Librería vitalicia">Agregar bundle</button>
           </article>
           <article class="pack red">
-            <div class="pack-accent"></div><h3>Solo Nord Essentials</h3><div class="pack-price">$33</div>
+            <div class="pack-accent"></div><h3>Solo Nord Essentials</h3><div class="pack-price" data-price-for="nord-essentials-sf2-collection">$33</div>
             <ul><li>Stage 3/4 Pianos</li><li>2.73 GB de contenido</li><li>Bonus PAD incluido gratis</li><li>Licencia vitalicia</li></ul>
             <button class="btn btn-add-cart" data-id="10" data-sku="nord-essentials-sf2-collection" data-name="Nord Essentials SF2 Collection" data-price="33" data-img="nordessentials" data-type="Librería vitalicia">Agregar Nord</button>
           </article>
           <article class="pack blue">
-            <div class="pack-accent"></div><h3>Solo Yamaha Legacy</h3><div class="pack-price">$33</div>
+            <div class="pack-accent"></div><h3>Solo Yamaha Legacy</h3><div class="pack-price" data-price-for="yamaha-legacy-collection-sf2">$33</div>
             <ul><li>Serie Motif / Montage</li><li>3.71 GB de contenido</li><li>Bonus PAD incluido gratis</li><li>Licencia vitalicia</li></ul>
             <button class="btn btn-add-cart" data-id="13" data-sku="yamaha-legacy-collection-sf2" data-name="Yamaha Legacy Collection SF2" data-price="33" data-img="yamahalegacy" data-type="Librería vitalicia">Agregar Yamaha</button>
           </article>
@@ -215,6 +215,12 @@
     'use strict';
     const BONUS_IDS=new Set(['9','10','13']);
     const LITE_SKU='dual-legend-lite-531mb';
+    const WORKER='https://autumn-breeze-dfa0.evolutiongt01.workers.dev';
+    const CATALOG_SKUS=new Set([
+      'pianos-legendarios-sf2-bundle',
+      'nord-essentials-sf2-collection',
+      'yamaha-legacy-collection-sf2'
+    ]);
     const LITE_FALLBACK_END='2026-11-20T03:52:00.000Z';
     let liteActive=Date.now()<Date.parse(LITE_FALLBACK_END);
     let litePrice=6;
@@ -238,8 +244,37 @@
     };
     const notify=(button,item)=>{const r=button.getBoundingClientRect();const sourceRect={left:r.left,top:r.top,width:r.width,height:r.height};try{if(window.parent&&window.parent!==window)window.parent.postMessage({type:'dingloft:cart-added',item,sourceRect},location.origin);else window.DingloftGlobalNav?.notifyCart?.(item,sourceRect)}catch(_){}};
     const addProduct=(button)=>{const item=buttonItem(button);let cart=readCart();cart=addOrMerge(cart,item);cart=syncBonus(cart);writeCart(cart);notify(button,item);toast(`${item.name} añadido al carrito.`)};
+    const moneyLabel=value=>{const n=Number(value||0);return `$${Number.isInteger(n)?n:n.toFixed(2)}`};
+    const applyCatalogProduct=product=>{
+      const sku=String(product?.sku||product?.slug||'').trim();
+      const price=Number(product?.priceUsd);
+      if(!CATALOG_SKUS.has(sku)||!Number.isFinite(price)||price<0)return;
+      document.querySelectorAll('[data-price-for]').forEach(node=>{if(node.dataset.priceFor===sku)node.textContent=moneyLabel(price)});
+      document.querySelectorAll('.btn-add-cart[data-sku]').forEach(button=>{if(button.dataset.sku===sku)button.dataset.price=String(price)});
+      if(sku==='pianos-legendarios-sf2-bundle'){
+        const compareRaw=Number(product?.compareAtUsd);
+        const compare=Number.isFinite(compareRaw)&&compareRaw>price?compareRaw:150;
+        document.querySelectorAll('[data-compare-for]').forEach(node=>{if(node.dataset.compareFor===sku)node.textContent=`${moneyLabel(compare)} USD`});
+        document.querySelectorAll('[data-save-for]').forEach(node=>{if(node.dataset.saveFor===sku)node.textContent=compare>price?`Ahorras ${moneyLabel(compare-price)}`:''});
+      }
+    };
+    const catalogButtons=[...document.querySelectorAll('.btn-add-cart[data-sku]')].filter(button=>CATALOG_SKUS.has(button.dataset.sku));
+    const loadCatalogPrices=async()=>{
+      catalogButtons.forEach(button=>{button.disabled=true;button.setAttribute('aria-busy','true')});
+      try{
+        const response=await fetch(`${WORKER}/products/public`,{headers:{Accept:'application/json'}});
+        const data=await response.json();
+        if(!response.ok||!data?.ok||!Array.isArray(data.products))throw new Error('CATALOG_UNAVAILABLE');
+        data.products.forEach(applyCatalogProduct);
+      }catch(_){
+        // Conserva los precios de respaldo del HTML si la red no está disponible.
+      }finally{
+        catalogButtons.forEach(button=>{button.disabled=false;button.removeAttribute('aria-busy')});
+      }
+    };
 
     document.querySelectorAll('.btn-add-cart').forEach(button=>button.addEventListener('click',event=>{event.preventDefault();if(!button.disabled)addProduct(button)}));
+    loadCatalogPrices();
 
     const renderLiteState=()=>{
       const button=document.getElementById('btn-lite-version');
@@ -254,7 +289,7 @@
     };
     const loadLiteStatus=async()=>{
       try{
-        const response=await fetch('https://autumn-breeze-dfa0.evolutiongt01.workers.dev/promo/dual-lite',{cache:'no-store'});
+        const response=await fetch(`${WORKER}/promo/dual-lite`,{cache:'no-store'});
         const data=await response.json();
         if(response.ok&&data?.ok){
           liteActive=data.active===true;
@@ -269,6 +304,6 @@
   </script>
   <script type="module" src="/dingloft-commerce.js?v=2.2.1-shell94"></script>
   <script src="/dingloft-ui-guard.js?v=74"></script>
-  <script src="/pwa-runtime.js?v=129"></script>
+  <script src="/pwa-runtime.js?v=130"></script>
 </body>
 </html>
