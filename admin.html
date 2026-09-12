@@ -2,7 +2,7 @@
 <html lang="es">
 <head><script src="/dingloft-theme.js?v=2"></script>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#080a0d"><meta name="color-scheme" content="dark"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f4f4ef"><meta name="color-scheme" content="light dark"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="mobile-web-app-capable" content="yes">
 <title>Dingloft Admin</title><link rel="icon" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -503,6 +503,127 @@ body .dl-support-root{display:none!important}
 @media(max-width:700px){.admin-intro{padding:22px!important}.admin-welcome-topline{grid-template-columns:auto 1fr}.admin-welcome-secure{display:none}.admin-intro-title{font-size:clamp(58px,20vw,92px)!important}.admin-welcome-steps{grid-template-columns:1fr}.admin-welcome-step{min-height:44px}.admin-welcome-foot{left:22px;bottom:18px}}
 @media(prefers-reduced-motion:reduce){.admin-intro *,.admin-intro::before,.admin-intro::after{animation:none!important}.admin-intro-loader span{width:100%!important}}
 </style>
+
+<style id="dingloft-admin-control-center-v2">
+/* ======================================================================
+   DINGLOFT CONTROL CENTER · 2026
+   Rediseño visual. IDs, endpoints y lógica permanecen intactos.
+   ====================================================================== */
+:root{
+  --dc-canvas:#f4f4ef!important;
+  --dc-paper:#ffffff!important;
+  --dc-ink:#0a0c0e!important;
+  --dc-muted:#737873!important;
+  --dc-line:#ddddd7!important;
+  --dc-soft:#ecece6!important;
+  --dc-black:#090b0d!important;
+  --dc-lime:#b7ff34!important;
+  --dc-lime-soft:#eaffc4!important;
+  --dc-success:#168252!important;
+  --dc-warn:#8f6200!important;
+  --bg:var(--dc-canvas)!important;
+  --side:var(--dc-black)!important;
+  --panel:var(--dc-paper)!important;
+  --panel2:#f8f8f4!important;
+  --line:var(--dc-line)!important;
+  --text:var(--dc-ink)!important;
+  --muted:var(--dc-muted)!important;
+  --accent:var(--dc-lime)!important;
+  --cyan:var(--dc-lime)!important;
+  --green:#28a66a!important;
+  --amber:#e5a900!important;
+  --violet:#565c63!important;
+}
+html{background:var(--dc-canvas)!important;color-scheme:light!important;overscroll-behavior:auto!important}
+body{background:var(--dc-canvas)!important;color:var(--dc-ink)!important;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;letter-spacing:-.012em!important;min-height:100dvh!important}
+::selection{background:var(--dc-lime)!important;color:#080a0d!important}
+
+/* Shell */
+.app{grid-template-columns:236px minmax(0,1fr)!important;background:var(--dc-canvas)!important;min-height:100dvh!important}
+.side{background:#090b0d!important;border-right:0!important;padding:18px 12px 16px!important;box-shadow:14px 0 38px rgba(0,0,0,.06)!important;z-index:30!important}
+.main{background:var(--dc-canvas)!important;position:relative!important;min-width:0!important}
+.main:before{content:"";position:fixed;inset:0 0 0 236px;pointer-events:none;opacity:.42;background-image:linear-gradient(rgba(12,15,16,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(12,15,16,.025) 1px,transparent 1px);background-size:36px 36px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.5),transparent 50%);-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.5),transparent 50%)}
+.content{position:relative;z-index:1;max-width:1720px!important;padding:38px 42px 70px!important;margin:0 auto!important}
+
+/* Sidebar */
+.brand{font-size:21px!important;color:#fff!important;font-weight:900!important;letter-spacing:-.06em!important;padding:7px 10px 28px!important;display:flex!important;align-items:center!important;gap:0!important}
+.brand b{color:#fff!important}
+.brand::after{content:"CONTROL"!important;margin-left:9px!important;padding:4px 7px!important;border-radius:999px!important;background:var(--dc-lime)!important;color:#080a0d!important;font-size:7px!important;font-weight:950!important;letter-spacing:.13em!important;vertical-align:2px!important}
+.label{color:#596068!important;font-size:8px!important;font-weight:900!important;letter-spacing:.18em!important;padding:16px 10px 7px!important}
+.nav{gap:2px!important}
+.nav button{min-height:42px!important;border:0!important;border-radius:9px!important;padding:0 11px!important;color:#8f969d!important;background:transparent!important;font-size:11px!important;font-weight:760!important;letter-spacing:-.01em!important;transition:background .18s ease,color .18s ease,transform .18s ease!important}
+.nav button i{font-size:15px!important;width:20px!important;color:#6f777e!important}
+.nav button:hover{background:#14181c!important;color:#fff!important;transform:translateX(2px)!important}
+.nav button:hover i{color:#c9d0d5!important}
+.nav button.active{background:var(--dc-lime)!important;color:#080a0d!important;box-shadow:0 8px 24px rgba(183,255,52,.12)!important}
+.nav button.active i{color:#080a0d!important}
+.profile{border-top:1px solid #24292d!important;padding:17px 10px 0!important}
+.profile strong{color:#fff!important;font-size:11px!important}.profile small{color:#747c83!important;font-size:9px!important}
+.logout{border:1px solid #2a3035!important;background:#111519!important;color:#a9b0b5!important;border-radius:8px!important;padding:9px 10px!important;font-size:10px!important;font-weight:800!important}
+.logout:hover{background:#fff!important;color:#080a0d!important;border-color:#fff!important}
+
+/* Topbar */
+.top{height:72px!important;position:sticky!important;top:0!important;z-index:25!important;padding:0 42px!important;background:rgba(244,244,239,.86)!important;border-bottom:1px solid rgba(17,19,20,.09)!important;backdrop-filter:blur(18px) saturate(140%)!important;-webkit-backdrop-filter:blur(18px) saturate(140%)!important;box-shadow:none!important}
+.top-brand{display:flex!important;align-items:center!important;gap:11px!important}.top-brand-icon{width:30px!important;height:30px!important;border-radius:9px!important;box-shadow:0 5px 14px rgba(0,0,0,.13)!important}.top-brand-copy b{color:#101214!important;font-size:10px!important;letter-spacing:.085em!important}.crumb{color:#8a8e89!important;font-size:9px!important;margin-top:2px!important}.top-actions{gap:7px!important}
+
+/* Headings */
+.head{align-items:flex-end!important;margin-bottom:28px!important;gap:24px!important}.eyebrow{color:#535852!important;font-size:9px!important;font-weight:900!important;letter-spacing:.16em!important}.eyebrow:before{content:""!important;display:inline-block!important;width:30px!important;height:2px!important;margin-right:9px!important;vertical-align:3px!important;background:var(--dc-lime)!important}.head h1{margin:9px 0 0!important;color:#080a0d!important;font-size:clamp(42px,4vw,68px)!important;line-height:.92!important;letter-spacing:-.07em!important;font-weight:900!important}.head p{color:#747973!important;font-size:12px!important;line-height:1.55!important;margin-top:10px!important;max-width:650px!important}
+
+/* Buttons */
+.btn{min-height:38px!important;border-radius:9px!important;padding:0 13px!important;border:1px solid #d5d6d0!important;background:#fff!important;color:#171a1c!important;font-size:10px!important;font-weight:850!important;letter-spacing:.005em!important;box-shadow:0 1px 0 rgba(0,0,0,.02)!important;transition:transform .17s ease,background .17s ease,border-color .17s ease,box-shadow .17s ease!important}
+.btn:hover{background:#f9f9f5!important;color:#080a0d!important;border-color:#bfc1ba!important;transform:translateY(-1px)!important;box-shadow:0 8px 22px rgba(0,0,0,.07)!important}
+.btn.primary,.btn.accent{background:#090b0d!important;color:#fff!important;border-color:#090b0d!important}.btn.primary:hover,.btn.accent:hover{background:var(--dc-lime)!important;color:#080a0d!important;border-color:var(--dc-lime)!important}.btn.danger{background:#fff5f5!important;color:#b53d3d!important;border-color:#eccaca!important}.btn.small{min-height:32px!important;padding:0 10px!important;font-size:9px!important}
+
+/* Dashboard */
+.stats{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important}.stat{position:relative!important;overflow:hidden!important;min-height:142px!important;padding:20px!important;border:1px solid var(--dc-line)!important;border-radius:14px!important;background:#fff!important;box-shadow:0 8px 30px rgba(22,24,20,.025)!important}.stat:before{content:"";position:absolute;left:20px;top:0;width:38px;height:3px;background:#0c0e0f!important}.stat:nth-child(2):before{background:var(--dc-lime)!important}.stat:nth-child(3):before{background:#bfc4be!important}.stat:nth-child(4):before{background:#0c0e0f!important}.stat .k{color:#858a84!important;font-size:9px!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.1em!important}.stat strong{color:#090b0d!important;font-size:clamp(32px,3vw,46px)!important;line-height:1!important;font-weight:900!important;letter-spacing:-.06em!important;margin-top:18px!important}.stat .delta{color:#969a95!important;font-size:9px!important;font-weight:650!important;margin-top:9px!important;text-transform:uppercase!important;letter-spacing:.06em!important}.grid2{grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr)!important;gap:10px!important;margin-top:10px!important}.panel{border:1px solid var(--dc-line)!important;background:#fff!important;border-radius:14px!important;padding:18px!important;box-shadow:0 8px 28px rgba(22,24,20,.025)!important}.panel-title{margin-bottom:14px!important}.panel-title h3{color:#121416!important;font-size:12px!important;font-weight:850!important;letter-spacing:-.02em!important}.muted{color:#888d87!important}
+#recentOrders>div{border-bottom-color:#ecece6!important;color:#151719!important}#recentOrders>div:last-child{border-bottom:0!important}
+.alert{border:1px solid #ead6a6!important;background:#fff9ea!important;color:#815b0e!important;border-radius:9px!important;padding:11px 12px!important;font-size:11px!important}.pill.ok{color:#13693f!important;border-color:#b9ddc9!important;background:#effaf3!important}.pill.warn{color:#806013!important;border-color:#ead9a9!important;background:#fff9e8!important}.pill.bad{color:#a93f46!important;border-color:#ebc5c8!important;background:#fff3f4!important}.pill.info{color:#3f4a45!important;border-color:#d4d8d3!important;background:#f5f6f3!important}
+
+/* Sync health */
+.admin-sync-health{border-radius:12px!important;border:1px solid #e4cf96!important;background:#fff9e8!important;color:#60480a!important;box-shadow:none!important;margin-bottom:18px!important}.admin-sync-health i{color:#b17b00!important}.admin-sync-health b{color:#3f310d!important}.admin-sync-health small,#adminSyncText{color:#7f6c3e!important}
+
+/* Data controls */
+.toolbar{gap:8px!important;margin-bottom:12px!important}.field{min-height:39px!important;background:#fff!important;border:1px solid #d7d8d2!important;color:#131516!important;border-radius:9px!important;padding:9px 11px!important;outline:none!important;box-shadow:none!important}.field::placeholder{color:#a1a59f!important}.field:focus{border-color:#7f857d!important;box-shadow:0 0 0 3px rgba(15,18,16,.055)!important}.search{min-width:260px!important}
+.table-wrap{border:1px solid var(--dc-line)!important;border-radius:13px!important;background:#fff!important;box-shadow:0 8px 28px rgba(22,24,20,.02)!important;overflow:auto!important}table{background:#fff!important}th,td{border-bottom:1px solid #ecece7!important;color:#202324!important}th{top:0!important;background:#f6f6f2!important;color:#777c76!important;font-size:9px!important;font-weight:850!important;letter-spacing:.09em!important;padding:12px 13px!important}td{font-size:11px!important;padding:13px!important}tbody tr{transition:background .14s ease!important}tbody tr:hover{background:#fafaf6!important}.empty{color:#91958f!important}
+
+/* Catalog / editors */
+.product-layout{gap:10px!important}.product-list,.editor{border:1px solid var(--dc-line)!important;background:#fff!important;border-radius:14px!important;box-shadow:0 8px 28px rgba(22,24,20,.02)!important}.pitem{border-top:1px solid #ecece7!important;color:#17191a!important}.pitem:hover,.pitem.active{background:#f2f3ee!important}.pitem small{color:#888d87!important}.group label{color:#777c76!important;font-size:9px!important;font-weight:850!important}.assetbox{border:1px dashed #cfd2cb!important;background:#fafaf7!important;border-radius:10px!important}.switchline label{color:#626761!important}.dual-bonus-admin{border:1px solid #daddd4!important;background:linear-gradient(135deg,#f7ffe7 0,#fff 58%)!important;border-radius:14px!important;box-shadow:none!important}.dual-bonus-admin-head small{color:#777c76!important}.dual-bonus-admin .promo-state{color:#527015!important}
+
+/* Finance + reservations */
+.finance{gap:10px!important}.finance .panel strong{color:#090b0d!important;font-size:34px!important;letter-spacing:-.055em!important}.reservation{border:1px solid var(--dc-line)!important;border-radius:12px!important;background:#fff!important;color:#17191a!important;padding:14px!important}.reservation-grid small{color:#8a8f89!important}
+
+/* Geo / global activity: intentional dark data island */
+.geo-panel{margin-top:10px!important;border:1px solid #171b1e!important;border-radius:16px!important;background:radial-gradient(circle at 18% 12%,rgba(183,255,52,.09),transparent 34%),linear-gradient(150deg,#111416,#090b0d 68%)!important;box-shadow:0 16px 45px rgba(0,0,0,.10)!important}.geo-panel:before{display:none!important}.geo-title b{color:#fff!important}.geo-title small{color:#7f878d!important}.geo-icon{border-color:rgba(183,255,52,.23)!important;background:rgba(183,255,52,.07)!important;color:var(--dc-lime)!important;box-shadow:none!important}.geo-live{color:#a7e557!important}.geo-live:before{background:var(--dc-lime)!important;box-shadow:0 0 0 5px rgba(183,255,52,.07)!important}.globe-wrap{border-right-color:#202529!important;background:radial-gradient(circle at 48% 48%,rgba(183,255,52,.06),transparent 48%)!important}.geo-list{background:#0c0f11!important}.geo-client{border-color:#202529!important}.geo-client b{color:#f2f4f2!important}.geo-client small{color:#7e868b!important}.geo-empty{color:#737b80!important}
+
+/* Fantasmas */
+.ghost-stats{gap:10px!important;margin-bottom:12px!important}.ghost-stat{border:1px solid var(--dc-line)!important;background:#fff!important;border-radius:13px!important;box-shadow:none!important}.ghost-stat small{color:#7c817b!important}.ghost-stat strong{color:#0a0c0e!important;font-size:30px!important;letter-spacing:-.05em!important}.ghost-stat.live{background:#0a0c0e!important;border-color:#0a0c0e!important}.ghost-stat.live small{color:#8b938b!important}.ghost-stat.live strong{color:var(--dc-lime)!important}.ghost-session-id{color:#8a8f89!important}.ghost-offline{color:#898e88!important}.ghost-path small{color:#878c86!important}.ghost-badge{background:#f2f3ef!important;border-color:#d9dcd5!important;color:#4e554f!important}.ghost-access.web{color:#5d645f!important;background:#f4f5f1!important;border-color:#d7dad4!important}.ghost-access.pwa{color:#176844!important;background:#eff9f3!important;border-color:#c4e1d1!important}.ghost-privacy{border:1px solid #dfe1dc!important;background:#f7f8f5!important;color:#747a74!important;border-radius:10px!important}.ghost-step{border-color:#e4e5e0!important;background:#fafaf7!important}.ghost-step .n{background:#101214!important;border-color:#101214!important;color:var(--dc-lime)!important}.ghost-step b{color:#17191a!important}.ghost-step small,.ghost-step .t{color:#818680!important}.ghost-online{color:#168252!important}.ghost-online:before{background:#26a66a!important;box-shadow:0 0 0 4px rgba(38,166,106,.08)!important}
+
+/* Support */
+.support-layout{grid-template-columns:330px minmax(0,1fr)!important;gap:10px!important}.support-list-panel,.support-chat-panel{border:1px solid var(--dc-line)!important;background:#fff!important;border-radius:14px!important;box-shadow:0 8px 28px rgba(22,24,20,.02)!important}.support-list-head{border-bottom:1px solid #e9eae5!important;background:#fafaf7!important}.support-summary div{background:#fff!important;border:1px solid #e2e3de!important;border-radius:9px!important}.support-summary small{color:#878c86!important}.support-summary b{color:#0d0f10!important}.support-conversation{border-top:1px solid #ecece7!important;color:#17191a!important}.support-conversation:hover,.support-conversation.active{background:#f3f4ef!important}.support-avatar{background:#111416!important;border-color:#111416!important;color:var(--dc-lime)!important}.support-conv-copy small{color:#7f847e!important}.support-conv-copy em{color:#9b9f99!important}.support-chat-head{border-bottom-color:#e6e7e2!important;background:#fff!important}.support-customer-head b{color:#111315!important}.support-customer-head small,.support-meta span{color:#7f847e!important}.support-messages{background:#f8f8f4!important}.support-admin-msg-bubble,.support-admin-bubble{background:#111416!important;color:#fff!important;border-color:#111416!important}.support-admin-msg.customer .support-admin-msg-bubble,.support-admin-msg.customer .support-admin-bubble{background:#fff!important;color:#17191a!important;border:1px solid #dddeda!important}.support-compose{background:#fff!important;border-top-color:#e3e4df!important}.support-reply-row textarea{background:#f8f8f5!important;color:#161819!important;border-color:#d7d9d3!important}.support-customer-typing{color:#6b716b!important}.support-admin-empty,.support-detail-empty{color:#8a8f89!important}.support-remote-admin{background:#f7f8f4!important;border-color:#dfe1da!important;color:#17191a!important}.support-remote-title b{color:#111315!important}.support-push-btn.active{border-color:#b8d7c5!important;background:#eef9f2!important;color:#176844!important}.support-nav-count{background:var(--dc-lime)!important;color:#080a0d!important}
+
+/* Modals */
+.modal{background:rgba(10,12,13,.55)!important;backdrop-filter:blur(12px)!important;-webkit-backdrop-filter:blur(12px)!important}.modalbox{border:1px solid #d7d9d3!important;background:#fff!important;color:#17191a!important;border-radius:16px!important;box-shadow:0 35px 100px rgba(0,0,0,.22)!important}.modalhead h2{color:#0c0e0f!important}.close{color:#727872!important}.totals div{color:#747a74!important}.totals div.total{color:#090b0d!important;border-top-color:#dddeda!important}.notice{color:#818680!important}.statusmsg.ok{color:#168252!important}.statusmsg.bad{color:#b64248!important}.statusmsg.warn{color:#8a6500!important}
+
+/* Toast */
+.toast{background:#0a0c0e!important;color:#fff!important;border:1px solid #25292c!important;border-radius:10px!important;box-shadow:0 20px 50px rgba(0,0,0,.2)!important}
+
+/* scrollbar */
+*{scrollbar-width:thin;scrollbar-color:#aeb2ac transparent!important}*::-webkit-scrollbar{width:9px;height:9px}*::-webkit-scrollbar-track{background:transparent}*::-webkit-scrollbar-thumb{background:#b8bbb5!important;border-radius:999px!important;border:2px solid transparent!important;background-clip:padding-box!important}*::-webkit-scrollbar-thumb:hover{background:#8e938c!important;background-clip:padding-box!important}
+
+/* Intro remains premium dark, but aligned to new identity */
+.admin-intro{background:radial-gradient(circle at 50% 36%,rgba(183,255,52,.10),transparent 30%),#090b0d!important}.admin-welcome-grid{opacity:.20!important}.admin-intro-title span,.admin-welcome-kicker{color:var(--dc-lime)!important}.admin-intro-loader span{background:var(--dc-lime)!important}.admin-intro-status{color:#aab0aa!important}.admin-intro-dot{background:var(--dc-lime)!important;box-shadow:0 0 0 5px rgba(183,255,52,.07)!important}
+
+/* Responsive */
+.mobile-admin-nav{background:rgba(244,244,239,.96)!important;border-color:#dadbd5!important;box-shadow:0 -10px 35px rgba(0,0,0,.08)!important}.mobile-admin-nav button{color:#6f746e!important}.mobile-admin-nav button.active{background:#0a0c0e!important;color:#fff!important}.mobile-admin-nav button.active i{color:var(--dc-lime)!important}
+@media(max-width:1050px){
+  .app{grid-template-columns:74px minmax(0,1fr)!important}.main:before{inset-left:74px!important}.side{padding-inline:8px!important}.brand{font-size:0!important;justify-content:center!important;padding-inline:0!important}.brand b{font-size:20px!important}.brand::after{display:none!important}.nav button{justify-content:center!important;padding:0!important}.nav button span,.label,.profile strong,.profile small{display:none!important}.nav button:hover{transform:none!important}.content{padding:32px 26px 58px!important}.top{padding:0 26px!important}.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.grid2{grid-template-columns:1fr!important}.product-layout{grid-template-columns:1fr!important}.support-layout{grid-template-columns:1fr!important}
+}
+@media(max-width:700px){
+  html,body{background:var(--dc-canvas)!important}.app{display:block!important}.side{display:none!important}.main{padding-bottom:84px!important}.main:before{display:none!important}.top{min-height:64px!important;height:auto!important;padding:10px 14px!important}.top-brand-icon{width:28px!important;height:28px!important}.top-actions .btn{width:38px!important;min-width:38px!important;padding:0!important;justify-content:center!important}.top-actions .btn:not(.primary){font-size:0!important}.top-actions .btn i{font-size:14px!important;margin:0!important}.top-actions .btn.primary{font-size:0!important}.top-actions .btn.primary i{font-size:14px!important}.content{padding:22px 14px 40px!important}.head{align-items:flex-start!important;flex-direction:column!important;margin-bottom:20px!important}.head h1{font-size:42px!important}.head p{font-size:11px!important}.stats,.finance,.ghost-stats{grid-template-columns:1fr 1fr!important;gap:8px!important}.stat{min-height:118px!important;padding:16px!important}.stat strong{font-size:31px!important}.grid2{gap:8px!important}.panel{padding:14px!important}.toolbar{display:grid!important;grid-template-columns:1fr!important}.search{min-width:0!important;width:100%!important}.field{width:100%!important}.table-wrap{border-radius:11px!important}.product-layout{display:block!important}.formgrid{grid-template-columns:1fr!important}.reservation-grid{grid-template-columns:1fr 1fr!important}.geo-grid{grid-template-columns:1fr!important}.globe-wrap{border-right:0!important;border-bottom:1px solid #202529!important}.support-head-tools{width:100%!important;justify-content:flex-start!important}.support-layout{grid-template-columns:1fr!important}.modal{padding:10px!important}.modalbox{border-radius:14px!important;padding:14px!important}
+}
+@media(max-width:460px){.stats,.finance,.ghost-stats{grid-template-columns:1fr!important}.head h1{font-size:37px!important}.reservation-grid{grid-template-columns:1fr!important}}
+</style>
+
 </head><body><div class="admin-intro" id="adminIntro" aria-hidden="true">
   <div class="admin-welcome-grid"></div>
   <div class="admin-welcome-scan"></div>
@@ -512,7 +633,7 @@ body .dl-support-root{display:none!important}
       <div class="admin-welcome-brand"><b>DINGLOFT</b><span>EVOLUTION GROUP</span></div>
       <div class="admin-welcome-secure"><i></i> SESIÓN SEGURA</div>
     </div>
-    <div class="admin-welcome-kicker">ADMINISTRACIÓN · COMERCIO DIGITAL</div>
+    <div class="admin-welcome-kicker">CONTROL CENTER · COMERCIO DIGITAL</div>
     <div class="admin-intro-title">CONTROL<br><span>CENTER.</span></div>
     <div class="admin-intro-sub">BIENVENIDO AL PANEL DE DINGLOFT</div>
     <div class="admin-welcome-steps" aria-hidden="true">
@@ -523,7 +644,7 @@ body .dl-support-root{display:none!important}
     <div class="admin-intro-loader"><span></span></div>
     <div class="admin-intro-status"><span class="admin-intro-dot"></span><span id="adminWelcomeStatus">Verificando sesión administrativa</span></div>
   </div>
-  <div class="admin-welcome-foot">DINGLOFT ADMIN · 2026</div>
+  <div class="admin-welcome-foot">DINGLOFT CONTROL CENTER · 2026</div>
 </div>
 <script id="admin-welcome-sequence-v2">
 (()=>{
@@ -546,7 +667,7 @@ body .dl-support-root{display:none!important}
 </script>
 <div class="app"><aside class="side"><a class="brand" href="index.html"><b>D</b>ingloft</a><div class="label">COMERCIO</div><nav class="nav">
 <button class="active" data-view="dashboard"><i class="bi bi-grid"></i><span>Resumen</span></button><button data-view="orders"><i class="bi bi-receipt"></i><span>Pedidos</span></button><button data-view="products"><i class="bi bi-box-seam"></i><span>Productos</span></button><button data-view="multitracks"><i class="bi bi-music-note-list"></i><span>Multitracks</span></button><button data-view="customers"><i class="bi bi-people"></i><span>Clientes</span></button><button data-view="ghosts"><i class="bi bi-incognito"></i><span>Fantasmas</span></button><button data-view="reviews"><i class="bi bi-chat-square-text"></i><span>Reseñas</span></button><button data-view="finance"><i class="bi bi-graph-up"></i><span>Finanzas</span></button><div class="label">OPERACIÓN</div><button data-view="reservations"><i class="bi bi-headset"></i><span>Reservas</span></button><button data-view="support"><i class="bi bi-chat-dots"></i><span>Soporte</span></button></nav><div class="profile"><strong id="adminName">Administrador</strong><small id="adminEmail">...</small><button class="logout" id="logout"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</button></div></aside>
-<main class="main"><header class="top"><div class="top-brand"><img class="top-brand-icon" src="/img/pwa-liquid-rounded-192-v17.png" alt="Dingloft"><div class="top-brand-copy"><b>DINGLOFT ADMIN</b><div class="crumb" id="crumb">Resumen</div></div></div><div class="top-actions"><a class="btn" id="backHome" href="ventas.html" aria-label="Regresar a Home" title="Regresar a Home"><i class="bi bi-house"></i> Home</a><button class="btn" id="refreshAll" aria-label="Actualizar panel" title="Actualizar"><i class="bi bi-arrow-clockwise"></i> Actualizar</button><button class="btn primary" id="newOrderTop" aria-label="Nuevo pedido" title="Nuevo pedido"><i class="bi bi-plus-lg"></i> Nuevo pedido</button></div></header><nav class="mobile-admin-nav" id="mobileAdminNav" aria-label="Secciones de administración">
+<main class="main"><header class="top"><div class="top-brand"><img class="top-brand-icon" src="/img/pwa-liquid-rounded-192-v17.png" alt="Dingloft"><div class="top-brand-copy"><b>DINGLOFT CONTROL CENTER</b><div class="crumb" id="crumb">Resumen</div></div></div><div class="top-actions"><a class="btn" id="backHome" href="ventas.html" aria-label="Regresar a Home" title="Regresar a Home"><i class="bi bi-house"></i> Home</a><button class="btn" id="refreshAll" aria-label="Actualizar panel" title="Actualizar"><i class="bi bi-arrow-clockwise"></i> Actualizar</button><button class="btn primary" id="newOrderTop" aria-label="Nuevo pedido" title="Nuevo pedido"><i class="bi bi-plus-lg"></i> Nuevo pedido</button></div></header><nav class="mobile-admin-nav" id="mobileAdminNav" aria-label="Secciones de administración">
 <button class="active" data-view="dashboard"><i class="bi bi-grid"></i><span>Resumen</span></button>
 <button data-view="orders"><i class="bi bi-receipt"></i><span>Pedidos</span></button>
 <button data-view="products"><i class="bi bi-box-seam"></i><span>Productos</span></button>

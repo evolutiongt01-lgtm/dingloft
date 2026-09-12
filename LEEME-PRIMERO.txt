@@ -1,0 +1,24 @@
+DINGLOFT CONTROL CENTER · REDISEÑO ADMIN 2026
+
+Archivos a reemplazar en el frontend:
+- admin.html
+- pwa-runtime.js
+- sw.js
+
+Este paquete parte del admin optimizado v3.10.20 y NO cambia endpoints, pedidos, productos, checkout, soporte ni Fantasmas.
+
+Cambios visuales:
+- nuevo workspace claro editorial
+- sidebar negro con acento lime
+- dashboard con cards blancas y mayor jerarquía
+- tablas, formularios, catálogo, reservas y modales rediseñados
+- Fantasmas conserva su integración nueva y tiene visual propio
+- Actividad global se mantiene como isla de datos oscura
+- Soporte fue adaptado al nuevo sistema visual
+- responsive para desktop, tablet y móvil
+
+PWA/cache:
+- pwa-runtime 103
+- service cache 140
+
+No reemplazar el backend v3.10.20 por este paquete: este ZIP es solamente el rediseño visual del Admin.
