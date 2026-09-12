@@ -46,7 +46,7 @@
 
     .proof{padding:112px 0;background:#050607;border-top:1px solid var(--line)}.proof-head{text-align:center;max-width:800px;margin:0 auto}.proof-head h2{margin:12px 0 0;font-size:clamp(40px,4.6vw,68px);letter-spacing:-.055em;line-height:.95}.proof-head p{color:#818a94;line-height:1.65}.reels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px}.reel{position:relative;aspect-ratio:9/16;border:1px solid var(--line);background:#0c0f12;overflow:hidden}.reel iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 
-    .compat{padding:112px 0;background:#f4f3ef;color:#0e0f11}.compat-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:64px;align-items:start}.compat h2{margin:0;font-size:clamp(44px,5vw,74px);line-height:.93;letter-spacing:-.06em}.compat p{color:#646761;font-size:14px;line-height:1.75}.compat-list{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #d5d4cf}.compat-item{padding:24px 0;border-bottom:1px solid #d5d4cf;display:flex;align-items:center;justify-content:space-between;gap:18px}.compat-item:nth-child(odd){padding-right:24px}.compat-item:nth-child(even){padding-left:24px;border-left:1px solid #d5d4cf}.compat-item strong{font-size:14px}.compat-item span{color:#81847e;font-size:10px;text-align:right}
+    .compat{padding:112px 0;background:#f4f3ef;color:#0e0f11;border-top:1px solid #deddd8}.compat-grid{display:block}.compat-intro{display:grid;grid-template-columns:.88fr 1.12fr;gap:70px;align-items:end}.compat h2{margin:0;font-size:clamp(44px,5vw,74px);line-height:.93;letter-spacing:-.06em}.compat-copy{max-width:650px}.compat-copy>p{margin:0;color:#646761;font-size:14px;line-height:1.75}.compat-note{margin-top:18px;padding-top:16px;border-top:1px solid #d6d5d0;color:#858982;font-size:10px;line-height:1.55}.compat-platforms{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:48px}.compat-card{position:relative;min-height:340px;border:1px solid #d5d4cf;background:#fff;padding:26px;display:flex;flex-direction:column;overflow:hidden}.compat-card:before{content:"";position:absolute;left:26px;right:26px;top:0;height:4px;background:#111}.compat-card.ios:before{background:#111}.compat-card.android:before{background:var(--lime)}.compat-card.desktop:before{background:linear-gradient(90deg,var(--red),var(--blue))}.compat-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding-top:12px}.compat-card-head small{display:block;color:#7e827c;font-size:8px;font-weight:900;letter-spacing:.15em;text-transform:uppercase}.compat-card-head h3{margin:7px 0 0;font-size:23px;line-height:1.02;letter-spacing:-.045em}.compat-index{color:#b8bbb5;font-size:11px;font-weight:900;letter-spacing:.08em}.compat-apps{margin-top:28px;border-top:1px solid #e0dfda}.compat-app{padding:16px 0;border-bottom:1px solid #e0dfda}.compat-app strong{display:block;font-size:14px;letter-spacing:-.02em}.compat-app span{display:block;margin-top:4px;color:#7b7f79;font-size:9px;line-height:1.45}.compat-foot{margin-top:auto;padding-top:22px;color:#8b8e88;font-size:8px;font-weight:850;letter-spacing:.11em;text-transform:uppercase}.compat-card.android .compat-foot{color:#58721f}
 
     .creator{padding:112px 0;background:#0b0d10}.creator-grid{display:grid;grid-template-columns:.6fr 1.4fr;gap:70px;align-items:start}.creator-mark{width:70px;height:70px;border:1px solid var(--line);display:grid;place-items:center;font-size:24px;font-weight:950;letter-spacing:-.05em;background:#101318}.creator .quote{margin:0;color:#c7ccd2;font-size:18px;line-height:1.8}.creator-sign{margin-top:28px;color:#7e8791;font-size:10px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
 
@@ -55,8 +55,8 @@
     .footer{padding:42px 0;background:#050607;border-top:1px solid var(--line)}.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:28px}.footer-brand img{display:block;width:88px;height:auto;object-fit:contain}.footer small{color:#666f79;font-size:9px}.toast{position:fixed;left:50%;bottom:26px;z-index:2147482000;transform:translate(-50%,30px);opacity:0;visibility:hidden;padding:12px 15px;border:1px solid rgba(183,255,52,.26);background:#11160d;color:#eaffcb;font-size:10px;font-weight:750;box-shadow:0 18px 38px rgba(0,0,0,.32);transition:.24s ease}.toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
 
     @keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}@keyframes orbSpin{to{transform:rotate(360deg)}}
-    @media(max-width:1080px){.hero-inner,.section-head,.demo-card,.compat-grid,.creator-grid{grid-template-columns:1fr}.hero-inner{padding-top:70px}.hero-visual{min-height:560px}.section-head{gap:24px}.pack-grid{grid-template-columns:1fr 1fr}.pack.featured{grid-column:1/-1}.demo-video{min-height:500px}.creator-grid{gap:34px}.related-grid{grid-template-columns:1fr 1fr}}
-    @media(max-width:760px){.shell{width:min(var(--max),calc(100% - 28px))}.hero-inner{min-height:auto;padding:58px 0 56px;gap:30px}.hero-copy h1{font-size:52px}.hero-copy>p{font-size:14px}.hero-price strong{font-size:36px}.hero-actions{display:grid;grid-template-columns:1fr}.btn{width:100%}.hero-visual{min-height:420px}.hero-box{width:min(430px,88%)}.hero-orb{width:380px;height:380px}.hero-chip{min-width:132px;padding:10px 11px}.hero-chip.red{left:0;bottom:8%}.hero-chip.blue{right:0;top:12%}.spec-grid{grid-template-columns:1fr 1fr}.spec{min-height:98px;padding:19px 18px}.spec:nth-child(2){border-right:0}.spec:nth-child(-n+2){border-bottom:1px solid var(--line)}.duality,.packs,.demo,.proof,.compat,.creator,.related{padding:76px 0}.duality-grid,.pack-grid,.reels,.related-grid{grid-template-columns:1fr}.family{min-height:520px;padding:24px}.family-image{height:280px}.packs-head{display:block}.packs-head p{margin-top:18px}.pack.featured{grid-column:auto}.trial-row{grid-template-columns:1fr}.trial-btn{min-width:0}.demo-copy{padding:32px 24px}.demo-video{min-height:290px}.compat-list{grid-template-columns:1fr}.compat-item:nth-child(odd),.compat-item:nth-child(even){padding:20px 0;border-left:0}.related-card{grid-template-columns:90px 1fr}.related-card img{width:90px;height:90px}.footer-inner{align-items:flex-start;flex-direction:column}.footer-brand img{width:100px}}
+    @media(max-width:1080px){.hero-inner,.section-head,.demo-card,.creator-grid{grid-template-columns:1fr}.compat-intro{grid-template-columns:1fr}.compat-platforms{grid-template-columns:1fr 1fr 1fr}.hero-inner{padding-top:70px}.hero-visual{min-height:560px}.section-head{gap:24px}.pack-grid{grid-template-columns:1fr 1fr}.pack.featured{grid-column:1/-1}.demo-video{min-height:500px}.creator-grid{gap:34px}.related-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:760px){.shell{width:min(var(--max),calc(100% - 28px))}.hero-inner{min-height:auto;padding:58px 0 56px;gap:30px}.hero-copy h1{font-size:52px}.hero-copy>p{font-size:14px}.hero-price strong{font-size:36px}.hero-actions{display:grid;grid-template-columns:1fr}.btn{width:100%}.hero-visual{min-height:420px}.hero-box{width:min(430px,88%)}.hero-orb{width:380px;height:380px}.hero-chip{min-width:132px;padding:10px 11px}.hero-chip.red{left:0;bottom:8%}.hero-chip.blue{right:0;top:12%}.spec-grid{grid-template-columns:1fr 1fr}.spec{min-height:98px;padding:19px 18px}.spec:nth-child(2){border-right:0}.spec:nth-child(-n+2){border-bottom:1px solid var(--line)}.duality,.packs,.demo,.proof,.compat,.creator,.related{padding:76px 0}.duality-grid,.pack-grid,.reels,.related-grid{grid-template-columns:1fr}.family{min-height:520px;padding:24px}.family-image{height:280px}.packs-head{display:block}.packs-head p{margin-top:18px}.pack.featured{grid-column:auto}.trial-row{grid-template-columns:1fr}.trial-btn{min-width:0}.demo-copy{padding:32px 24px}.demo-video{min-height:290px}.compat-intro{gap:24px}.compat-platforms{grid-template-columns:1fr}.compat-card{min-height:0;padding:22px}.compat-card:before{left:22px;right:22px}.related-card{grid-template-columns:90px 1fr}.related-card img{width:90px;height:90px}.footer-inner{align-items:flex-start;flex-direction:column}.footer-brand img{width:100px}}
     @media(max-width:480px){.hero-copy h1{font-size:46px}.hero-visual{min-height:370px}.hero-chip{display:none}.spec strong{font-size:19px}.family h3{font-size:40px}.section-head h2,.packs-head h2,.demo-copy h2,.creator h2,.compat h2{font-size:42px}.reels{gap:10px}.related-card{grid-template-columns:78px 1fr}.related-card img{width:78px;height:78px}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-box,.hero-orb{animation:none!important}.btn,.family-image img,.related-card,.toast{transition:none!important}}
   </style>
@@ -172,16 +172,45 @@
       </div>
     </section>
 
-    <section class="compat">
+    <section class="compat" id="compatibilidad">
       <div class="shell compat-grid">
-        <div><div class="kicker">Formato SF2</div><h2>Portátil por naturaleza.</h2><p>Optimizado para trabajar en computadoras, tablets y teléfonos mediante reproductores compatibles con SoundFont.</p></div>
-        <div class="compat-list">
-          <div class="compat-item"><strong>Audio Evolution</strong><span>iOS / Android</span></div>
-          <div class="compat-item"><strong>BS-16i / Bismark</strong><span>SoundFont Player</span></div>
-          <div class="compat-item"><strong>Caustic 3</strong><span>Modular Synth</span></div>
-          <div class="compat-item"><strong>FL Studio Mobile</strong><span>DirectWave</span></div>
-          <div class="compat-item"><strong>Reproductores SF2</strong><span>PC / Mac / móvil</span></div>
-          <div class="compat-item"><strong>Entrega</strong><span>Descarga digital</span></div>
+        <div class="compat-intro">
+          <div><div class="kicker">Compatibilidad SF2</div><h2>Tu librería.<br>En el dispositivo que usas.</h2></div>
+          <div class="compat-copy">
+            <p>Los archivos SF2 pueden abrirse en reproductores y samplers compatibles en computadora, tablet y móvil. Aquí tienes opciones actuales para cada plataforma.</p>
+            <div class="compat-note">Las aplicaciones se adquieren por separado. En bancos grandes, la carga completa depende de la memoria RAM disponible y de los límites de cada reproductor.</div>
+          </div>
+        </div>
+
+        <div class="compat-platforms">
+          <article class="compat-card desktop">
+            <div class="compat-card-head"><div><small>Computadora</small><h3>Windows · Mac · Linux</h3></div><span class="compat-index">01</span></div>
+            <div class="compat-apps">
+              <div class="compat-app"><strong>FL Studio</strong><span>Windows / macOS · SoundFont Player para cargar y tocar archivos .sf2.</span></div>
+              <div class="compat-app"><strong>LMMS</strong><span>Windows / macOS / Linux · Incluye SF2 Player dedicado.</span></div>
+              <div class="compat-app"><strong>MuseScore Studio</strong><span>Windows / macOS / Linux · Admite SoundFonts .sf2 y .sf3.</span></div>
+            </div>
+            <div class="compat-foot">Producción · ensayo · reproducción</div>
+          </article>
+
+          <article class="compat-card ios">
+            <div class="compat-card-head"><div><small>Tablet y móvil Apple</small><h3>iPad · iPhone</h3></div><span class="compat-index">02</span></div>
+            <div class="compat-apps">
+              <div class="compat-app"><strong>bismark bs-16i</strong><span>Sampler SoundFont para cargar archivos .sf2 y tocar por MIDI.</span></div>
+              <div class="compat-app"><strong>Logic Pro · GarageBand · AUM</strong><span>Pueden alojar bs-16i como instrumento AUv3 para integrar tus SoundFonts.</span></div>
+            </div>
+            <div class="compat-foot">Standalone · AUv3 · MIDI</div>
+          </article>
+
+          <article class="compat-card android">
+            <div class="compat-card-head"><div><small>Tablet y móvil Android</small><h3>Android</h3></div><span class="compat-index">03</span></div>
+            <div class="compat-apps">
+              <div class="compat-app"><strong>MIDILIVE</strong><span>Carga .sf2, permite proyectos, capas, splits y controladores MIDI.</span></div>
+              <div class="compat-app"><strong>MIDI Clef</strong><span>Compatible con SoundFonts SF2, SF3 y SFZ.</span></div>
+              <div class="compat-app"><strong>Soundfont Piano</strong><span>Reproduce bancos .sf2 directamente en teléfono o tablet.</span></div>
+            </div>
+            <div class="compat-foot">Directo · práctica · controlador MIDI</div>
+          </article>
         </div>
       </div>
     </section>
@@ -300,6 +329,6 @@
   </script>
   <script type="module" src="/dingloft-commerce.js?v=2.2.1-shell94"></script>
   <script src="/dingloft-ui-guard.js?v=74"></script>
-  <script src="/pwa-runtime.js?v=132"></script>
+  <script src="/pwa-runtime.js?v=133"></script>
 </body>
 </html>
