@@ -1,14 +1,14 @@
 (() => {
   'use strict';
 
-  // Dingloft National Days · v5
+  // Dingloft National Days · v6
   // 100% local: no Firebase, no backend, no geolocalización precisa, no APIs externas.
   // En la fecha oficial celebra globalmente; 4 días antes muestra una cuenta regresiva
   // del país local inferido únicamente desde zona horaria/idioma del dispositivo.
-  if (window.DingloftNationalDays || window.__DINGLOFT_NATIONAL_DAYS_V5__) return;
-  window.__DINGLOFT_NATIONAL_DAYS_V5__ = true;
+  if (window.DingloftNationalDays || window.__DINGLOFT_NATIONAL_DAYS_V6__) return;
+  window.__DINGLOFT_NATIONAL_DAYS_V6__ = true;
 
-  const VERSION = '5';
+  const VERSION = '6';
   const LEAD_DAYS = 4;
   const ROOT_ID = 'dlNationalDayRoot';
   const STYLE_ID = 'dlNationalDayStyle';
@@ -318,8 +318,10 @@
 
   function nearbyGroupedEvents(anchorDate, now, preferredCode='') {
     const items=[];
-    for(let offset=0; offset<=NEARBY_GROUP_DAYS; offset++){
+    const today=atNoon(now);
+    for(let offset=-NEARBY_GROUP_DAYS; offset<=NEARBY_GROUP_DAYS; offset++){
       const probe=new Date(anchorDate.getFullYear(),anchorDate.getMonth(),anchorDate.getDate()+offset,12,0,0,0);
+      if(probe.getTime()<today.getTime()) continue;
       const list=eventsFor(localKey(probe),probe.getFullYear()).map(event=>withTiming(event,probe,daysBetween(now,probe)));
       items.push(...list);
     }
@@ -357,49 +359,41 @@
   const kickerFor = event => event.daysUntil===0 ? 'HOY CELEBRAMOS' : event.daysUntil===1 ? 'FALTA 1 DÍA' : `FALTAN ${event.daysUntil} DÍAS`;
   const countdownFor = event => event.daysUntil===0 ? 'HOY' : String(event.daysUntil);
   const thanksFor = event => `Gracias ${event.country} por confiar en Dingloft`;
-  const multiTitleFor = events => events.length>1 ? 'Celebraciones cercanas' : 'Dingloft celebra';
-  const chipLabelFor = event => `${event.country} · ${eventDateLabel(event)}`;
 
   function injectStyle() {
     if(document.getElementById(STYLE_ID)) return;
     const s=document.createElement('style');
     s.id=STYLE_ID;
     s.textContent=`
-      #${ROOT_ID}{position:fixed;top:max(82px,calc(env(safe-area-inset-top) + 70px));right:18px;z-index:2147481200;width:min(392px,calc(100vw - 28px));font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f7f8fa;pointer-events:none;-webkit-font-smoothing:antialiased}
+      #${ROOT_ID}{position:fixed;top:calc(var(--dgn-total-h,68px) + 5px);left:10px;z-index:2147481200;width:min(324px,calc(100vw - 20px));font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f7f8fa;pointer-events:none;-webkit-font-smoothing:antialiased}
       #${ROOT_ID} *{box-sizing:border-box}
-      .dl-nd-card{--nd-accent:#b7ff34;position:relative;overflow:hidden;pointer-events:auto;border:1px solid rgba(255,255,255,.14);border-radius:22px;background:linear-gradient(135deg,rgba(7,10,13,.98),rgba(7,10,13,.98));box-shadow:0 28px 70px rgba(0,0,0,.38);transform-origin:top right;animation:dlNdIn .58s cubic-bezier(.2,.85,.2,1) both;isolation:isolate}
+      .dl-nd-card{--nd-accent:#b7ff34;position:relative;overflow:hidden;pointer-events:auto;border:1px solid rgba(255,255,255,.13);border-radius:18px;background:linear-gradient(135deg,rgba(7,10,13,.985),rgba(7,10,13,.97));box-shadow:0 18px 46px rgba(0,0,0,.34);transform-origin:top left;animation:dlNdIn .5s cubic-bezier(.2,.85,.2,1) both;isolation:isolate}
       .dl-nd-card::before{content:"";position:absolute;inset:-35% -20%;z-index:-2;pointer-events:none;background:radial-gradient(circle at 78% 22%,rgba(183,255,52,.2),transparent 28%),radial-gradient(circle at 20% 80%,rgba(93,156,255,.08),transparent 30%);animation:dlNdAura 7s ease-in-out infinite}
       .dl-nd-card::after{content:"";position:absolute;left:-45%;top:0;width:32%;height:100%;z-index:-1;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.08),transparent);transform:skewX(-14deg);animation:dlNdSweep 6.2s ease-in-out infinite}
       .dl-nd-edge{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--nd-accent);box-shadow:0 0 22px rgba(183,255,52,.3);opacity:.95}
-      .dl-nd-inner{position:relative;display:grid;grid-template-columns:84px minmax(0,1fr) 58px;gap:14px;align-items:center;padding:16px 16px 13px 18px;min-height:100px}
-      .dl-nd-flagbox{height:72px;border:1px solid rgba(255,255,255,.11);border-radius:18px;background:linear-gradient(145deg,#141b22,#0b1014);display:grid;place-items:center;position:relative;overflow:hidden}
-      .dl-nd-flagbox::before{content:"";position:absolute;width:66px;height:66px;border-radius:50%;border:1px solid rgba(183,255,52,.16);opacity:.75;animation:dlNdRing 3.8s ease-in-out infinite}
-      .dl-nd-flag{position:relative;font-size:40px;line-height:1;filter:drop-shadow(0 9px 13px rgba(0,0,0,.3));transform-origin:50% 70%;animation:dlNdFlag 3.1s ease-in-out infinite}
+      .dl-nd-inner{position:relative;display:grid;grid-template-columns:58px minmax(0,1fr) 44px;gap:10px;align-items:center;padding:11px 12px 10px 13px;min-height:78px}
+      .dl-nd-flagbox{height:52px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:linear-gradient(145deg,#141b22,#0b1014);display:grid;place-items:center;position:relative;overflow:hidden}
+      .dl-nd-flagbox::before{content:"";position:absolute;width:46px;height:46px;border-radius:50%;border:1px solid rgba(183,255,52,.15);opacity:.7;animation:dlNdRing 3.8s ease-in-out infinite}
+      .dl-nd-flag{position:relative;font-size:30px;line-height:1;filter:drop-shadow(0 7px 10px rgba(0,0,0,.3));transform-origin:50% 70%;animation:dlNdFlag 3.1s ease-in-out infinite}
       .dl-nd-copy{min-width:0}
-      .dl-nd-kicker{display:flex;align-items:center;gap:8px;color:var(--nd-accent);font-size:12px;font-weight:900;letter-spacing:.22em;text-transform:uppercase;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .dl-nd-kicker::before{content:"";width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ddff95 0 28%,var(--nd-accent) 30% 100%);box-shadow:0 0 0 5px rgba(183,255,52,.08),0 0 18px rgba(183,255,52,.2);animation:dlNdDot 1.9s ease-in-out infinite}
-      .dl-nd-country{margin:0;color:#fff;font-size:19px;line-height:1.06;font-weight:850;letter-spacing:-.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .dl-nd-label{margin:5px 0 0;color:#cdd3db;font-size:11px;line-height:1.35;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .dl-nd-thanks{margin:5px 0 0;color:#909aa6;font-size:10px;line-height:1.35;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .dl-nd-countdown{height:56px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(255,255,255,.04);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
-      .dl-nd-count-value{color:#fff;font-size:20px;line-height:1;font-weight:900;letter-spacing:-.04em}
-      .dl-nd-count-label{color:#6f7a84;font-size:7px;line-height:1;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+      .dl-nd-kicker{display:flex;align-items:center;gap:6px;color:var(--nd-accent);font-size:8.5px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .dl-nd-kicker::before{content:"";width:7px;height:7px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ddff95 0 28%,var(--nd-accent) 30% 100%);box-shadow:0 0 0 3px rgba(183,255,52,.07),0 0 13px rgba(183,255,52,.18);animation:dlNdDot 1.9s ease-in-out infinite}
+      .dl-nd-country{margin:0;color:#fff;font-size:16px;line-height:1.06;font-weight:850;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .dl-nd-label{margin:3px 0 0;color:#c7ced6;font-size:8.5px;line-height:1.25;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .dl-nd-thanks{margin:3px 0 0;color:#8e98a4;font-size:8px;line-height:1.25;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .dl-nd-countdown{height:42px;border:1px solid rgba(255,255,255,.09);border-radius:12px;background:rgba(255,255,255,.035);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+      .dl-nd-count-value{color:#fff;font-size:15px;line-height:1;font-weight:900;letter-spacing:-.04em}
+      .dl-nd-count-label{color:#6f7a84;font-size:5.5px;line-height:1;font-weight:900;letter-spacing:.15em;text-transform:uppercase}
       .dl-nd-card.is-today .dl-nd-countdown{border-color:rgba(183,255,52,.32);background:rgba(183,255,52,.1)}
-      .dl-nd-card.is-today .dl-nd-count-value{color:var(--nd-accent);font-size:13px;letter-spacing:.12em}
-      .dl-nd-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px 12px 18px;border-top:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.012));min-height:44px}
-      .dl-nd-meta-title{flex:0 0 auto;color:#798390;font-size:9px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
-      .dl-nd-flags{display:flex;align-items:center;gap:7px;min-width:0;overflow-x:auto;scrollbar-width:none;padding-bottom:1px}.dl-nd-flags::-webkit-scrollbar{display:none}
-      .dl-nd-mini{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;max-width:210px;height:23px;padding:0 10px;border-radius:999px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);color:#cbd2db;font-size:10px;font-weight:750;line-height:1;white-space:nowrap;opacity:.72;transition:opacity .25s,transform .25s,border-color .25s,background .25s;cursor:pointer}
-      .dl-nd-mini .flag{font-size:13px;line-height:1}
-      .dl-nd-mini.active{opacity:1;transform:translateY(-1px);border-color:rgba(183,255,52,.22);background:rgba(183,255,52,.08);color:#f7f8fa}
-      .dl-nd-close{position:absolute;right:9px;top:9px;width:25px;height:25px;border:1px solid rgba(255,255,255,.09);border-radius:8px;background:rgba(8,11,14,.72);color:#7d8791;display:grid;place-items:center;padding:0;cursor:pointer;opacity:0;transform:translateY(-2px);transition:opacity .2s,transform .2s,background .2s,color .2s,border-color .2s;z-index:3}
-      .dl-nd-card:hover .dl-nd-close,.dl-nd-close:focus-visible{opacity:1;transform:none}.dl-nd-close:hover{background:#fff;color:#090b0e;border-color:#fff}.dl-nd-close svg{width:12px;height:12px}
+      .dl-nd-card.is-today .dl-nd-count-value{color:var(--nd-accent);font-size:10px;letter-spacing:.1em}
+      .dl-nd-close{position:absolute;right:6px;top:6px;width:20px;height:20px;border:1px solid rgba(255,255,255,.08);border-radius:7px;background:rgba(8,11,14,.7);color:#707a84;display:grid;place-items:center;padding:0;cursor:pointer;opacity:0;transform:translateY(-2px);transition:opacity .2s,transform .2s,background .2s,color .2s,border-color .2s;z-index:3}
+      .dl-nd-card:hover .dl-nd-close,.dl-nd-close:focus-visible{opacity:1;transform:none}.dl-nd-close:hover{background:#fff;color:#090b0e;border-color:#fff}.dl-nd-close svg{width:10px;height:10px}
       .dl-nd-spark,.dl-nd-burst{position:absolute;pointer-events:none}
       .dl-nd-spark{width:3px;height:3px;border-radius:50%;background:var(--nd-accent);opacity:0;animation:dlNdSpark 3.6s ease-in-out infinite}
-      .dl-nd-s1{top:14px;right:78px;animation-delay:.15s}.dl-nd-s2{top:44px;right:28px;animation-delay:1.1s}.dl-nd-s3{bottom:16px;left:92px;animation-delay:2s}.dl-nd-s4{top:22px;left:118px;animation-delay:2.7s}
-      .dl-nd-burst{width:24px;height:24px;opacity:0;animation:dlNdBurst 4.4s ease-in-out infinite}
-      .dl-nd-b1{top:18px;right:116px;animation-delay:.6s}.dl-nd-b2{bottom:18px;right:48px;animation-delay:2.25s}
-      .dl-nd-burst::before,.dl-nd-burst::after{content:"";position:absolute;left:50%;top:50%;width:2px;height:14px;border-radius:999px;background:linear-gradient(180deg,rgba(183,255,52,.95),rgba(183,255,52,0));transform-origin:50% 100%}
+      .dl-nd-s1{top:11px;right:62px;animation-delay:.15s}.dl-nd-s2{top:36px;right:24px;animation-delay:1.1s}.dl-nd-s3{bottom:12px;left:74px;animation-delay:2s}.dl-nd-s4{top:17px;left:92px;animation-delay:2.7s}
+      .dl-nd-burst{width:18px;height:18px;opacity:0;animation:dlNdBurst 4.4s ease-in-out infinite}
+      .dl-nd-b1{top:13px;right:92px;animation-delay:.6s}.dl-nd-b2{bottom:12px;right:38px;animation-delay:2.25s}
+      .dl-nd-burst::before,.dl-nd-burst::after{content:"";position:absolute;left:50%;top:50%;width:1.5px;height:10px;border-radius:999px;background:linear-gradient(180deg,rgba(183,255,52,.92),rgba(183,255,52,0));transform-origin:50% 100%}
       .dl-nd-burst::after{transform:translate(-50%,-50%) rotate(90deg)}
       .dl-nd-burst::before{transform:translate(-50%,-50%) rotate(15deg)}
       .dl-nd-card.is-switching .dl-nd-flag,.dl-nd-card.is-switching .dl-nd-copy,.dl-nd-card.is-switching .dl-nd-countdown{animation:dlNdSwap .32s ease both}
@@ -412,10 +406,10 @@
       @keyframes dlNdSpark{0%,70%,100%{opacity:0;transform:translateY(3px) scale(.35)}77%{opacity:.95;transform:translateY(-2px) scale(1.85)}84%{opacity:0;transform:translateY(-6px) scale(.65)}}
       @keyframes dlNdBurst{0%,72%,100%{opacity:0;transform:translateY(4px) scale(.4)}79%{opacity:.9;transform:translateY(-1px) scale(1)}88%{opacity:0;transform:translateY(-5px) scale(.72)}}
       @keyframes dlNdSwap{0%{opacity:1;transform:none}45%{opacity:0;transform:translateY(5px)}100%{opacity:1;transform:none}}
-      @media(max-width:620px){#${ROOT_ID}{top:max(72px,calc(env(safe-area-inset-top) + 62px));right:10px;width:calc(100vw - 20px)}.dl-nd-inner{grid-template-columns:72px minmax(0,1fr) 54px;padding:15px 14px 12px 15px;gap:12px}.dl-nd-flagbox{height:64px}.dl-nd-country{font-size:17px}.dl-nd-kicker{font-size:11px}.dl-nd-mini{max-width:170px}}
+      @media(max-width:620px){#${ROOT_ID}{top:calc(var(--dgn-total-h,64px) + 5px);left:8px;width:min(310px,calc(100vw - 16px))}.dl-nd-inner{grid-template-columns:54px minmax(0,1fr) 42px;padding:10px 11px 9px 12px;gap:9px}.dl-nd-flagbox{height:48px}.dl-nd-country{font-size:15px}.dl-nd-kicker{font-size:8px}.dl-nd-label{font-size:8px}.dl-nd-thanks{font-size:7.5px}}
       @media(hover:none){.dl-nd-close{opacity:.82;transform:none}}
       html.dgn-cart-open #${ROOT_ID},body.dl-support-open #${ROOT_ID}{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transition:opacity .16s ease,visibility .16s ease}
-      @media(prefers-reduced-motion:reduce){.dl-nd-card,.dl-nd-card::before,.dl-nd-card::after,.dl-nd-flagbox::before,.dl-nd-flag,.dl-nd-kicker::before,.dl-nd-spark,.dl-nd-burst,.dl-nd-card.is-switching .dl-nd-flag,.dl-nd-card.is-switching .dl-nd-copy,.dl-nd-card.is-switching .dl-nd-countdown,.dl-nd-mini{animation:none!important;transition:none!important}}
+      @media(prefers-reduced-motion:reduce){.dl-nd-card,.dl-nd-card::before,.dl-nd-card::after,.dl-nd-flagbox::before,.dl-nd-flag,.dl-nd-kicker::before,.dl-nd-spark,.dl-nd-burst,.dl-nd-card.is-switching .dl-nd-flag,.dl-nd-card.is-switching .dl-nd-copy,.dl-nd-card.is-switching .dl-nd-countdown{animation:none!important;transition:none!important}}
       @media print{#${ROOT_ID}{display:none!important}}
     `;
     (document.head||document.documentElement).appendChild(s);
@@ -446,8 +440,6 @@
     root.querySelector('.dl-nd-thanks').textContent=thanksFor(event);
     root.querySelector('.dl-nd-count-value').textContent=countdownFor(event);
     root.querySelector('.dl-nd-count-label').textContent=event.daysUntil===0?'FIESTA':'DÍAS';
-    root.querySelector('.dl-nd-meta-title').textContent=multiTitleFor(currentEvents);
-    root.querySelectorAll('.dl-nd-mini').forEach((node,i)=>node.classList.toggle('active',i===activeIndex));
   }
 
   function render(events, stamp, options={}) {
@@ -469,12 +461,10 @@
         <div class="dl-nd-copy"><div class="dl-nd-kicker"></div><h3 class="dl-nd-country"></h3><p class="dl-nd-label"></p><p class="dl-nd-thanks"></p></div>
         <div class="dl-nd-countdown" aria-hidden="true"><strong class="dl-nd-count-value"></strong><span class="dl-nd-count-label"></span></div>
       </div>
-      <div class="dl-nd-meta"><small class="dl-nd-meta-title"></small><div class="dl-nd-flags">${events.map((e,i)=>`<button class="dl-nd-mini ${i===0?'active':''}" type="button" data-index="${i}" aria-label="${e.country}"><span class="flag">${flag(e.code)}</span><span>${chipLabelFor(e)}</span></button>`).join('')}</div></div>
     </section>`;
     (document.body||document.documentElement).appendChild(root);
     paint(0,false);
     root.querySelector('.dl-nd-close').addEventListener('click',()=>{try{localStorage.setItem(STORAGE_PREFIX+stamp,'1')}catch(_){} remove()});
-    root.querySelectorAll('.dl-nd-mini').forEach(btn=>btn.addEventListener('click',()=>{paint(Number(btn.dataset.index)||0);restartRotation()}));
     restartRotation();
     return true;
   }
@@ -482,7 +472,7 @@
   function restartRotation() {
     clearInterval(rotateTimer);rotateTimer=0;
     if(currentEvents.length<2 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    rotateTimer=setInterval(()=>paint(activeIndex+1),4800);
+    rotateTimer=setInterval(()=>paint(activeIndex+1),4200);
   }
 
   let renderedDayStamp='';

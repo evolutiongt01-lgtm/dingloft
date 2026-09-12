@@ -1,10 +1,11 @@
-/* Dingloft Global Navbar + Cart · v130
+/* Dingloft Global Navbar + Cart · v131
    Single persistent component based on ventas.html.
    It renders only in the TOP document (desktop-shell/app/direct page), never inside iframes.
    Cart uses transform/opacity only: no page-wide blur/scale choreography. */
 (() => {
   'use strict';
-  if (window.__DINGLOFT_GLOBAL_NAV_V130__ || window.__DINGLOFT_GLOBAL_NAV_V129__ || window.__DINGLOFT_GLOBAL_NAV_V128__ || window.__DINGLOFT_GLOBAL_NAV_V127__ || window.__DINGLOFT_GLOBAL_NAV_V126__ || window.__DINGLOFT_GLOBAL_NAV_V125__ || window.__DINGLOFT_GLOBAL_NAV_V124__) return;
+  if (window.__DINGLOFT_GLOBAL_NAV_V131__ || window.__DINGLOFT_GLOBAL_NAV_V130__ || window.__DINGLOFT_GLOBAL_NAV_V129__ || window.__DINGLOFT_GLOBAL_NAV_V128__ || window.__DINGLOFT_GLOBAL_NAV_V127__ || window.__DINGLOFT_GLOBAL_NAV_V126__ || window.__DINGLOFT_GLOBAL_NAV_V125__ || window.__DINGLOFT_GLOBAL_NAV_V124__) return;
+  window.__DINGLOFT_GLOBAL_NAV_V131__ = true;
   window.__DINGLOFT_GLOBAL_NAV_V130__ = true;
   window.__DINGLOFT_GLOBAL_NAV_V129__ = true;
   window.__DINGLOFT_GLOBAL_NAV_V128__ = true;
@@ -12,7 +13,7 @@
   window.__DINGLOFT_GLOBAL_NAV_V126__ = true;
   window.__DINGLOFT_GLOBAL_NAV_V124__ = true;
 
-  const VERSION = 130;
+  const VERSION = 131;
   const CART_KEY = 'dingloft_cart';
   const WORKER = String(
     window.DINGLOFT_WORKER_BASE ||
@@ -41,20 +42,20 @@
   const file = (location.pathname.split('/').filter(Boolean).pop() || '').toLowerCase();
   if (file.includes('admin') || file === 'commerce-admin') return;
 
-  // National Days v5 is owned canonically by the global public shell/navbar.
+  // National Days v6 is owned canonically by the global public shell/navbar.
   // It is a static same-origin asset: zero Firebase, zero API/backend calls and zero external dependencies.
   const ensureNationalDays = () => {
     if (window.DingloftNationalDays) return;
-    const exact = document.querySelector('script[data-dingloft-national-days="5"],script[src*="dingloft-national-days.js?v=5"]');
+    const exact = document.querySelector('script[data-dingloft-national-days="6"],script[src*="dingloft-national-days.js?v=6"]');
     if (exact) return;
     const nationalDaysScript=document.createElement('script');
-    nationalDaysScript.src='/dingloft-national-days.js?v=5';
-    nationalDaysScript.dataset.dingloftNationalDays='5';
+    nationalDaysScript.src='/dingloft-national-days.js?v=6';
+    nationalDaysScript.dataset.dingloftNationalDays='6';
     nationalDaysScript.async=true;
     nationalDaysScript.addEventListener('load',()=>{ nationalDaysScript.dataset.loaded='1'; },{once:true});
     nationalDaysScript.addEventListener('error',()=>{
       nationalDaysScript.dataset.failed='1';
-      console.error('[Dingloft National Days] No se pudo cargar /dingloft-national-days.js?v=5. Verifica que el archivo esté publicado en la raíz del sitio.');
+      console.error('[Dingloft National Days] No se pudo cargar /dingloft-national-days.js?v=6. Verifica que el archivo esté publicado en la raíz del sitio.');
     },{once:true});
     (document.head||document.documentElement).appendChild(nationalDaysScript);
   };

@@ -1,4 +1,4 @@
-const VERSION = '156';
+const VERSION = '157';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -54,6 +54,7 @@ const CORE = [
   '/desktop-global-nav.js',
   '/dingloft-theme.js?v=2',
   '/dingloft-theme.css?v=2',
+  '/dingloft-global-nav.js?v=131',
   '/dingloft-global-nav.js?v=130',
   '/dingloft-global-nav.js?v=129',
   '/dingloft-global-nav.js?v=128',
@@ -62,6 +63,7 @@ const CORE = [
   '/dingloft-global-nav.js?v=125',
   '/dingloft-global-nav.js?v=124',
   '/dingloft-global-nav.js?v=121',
+  '/dingloft-ui-guard.js?v=69',
   '/dingloft-ui-guard.js?v=68',
   '/dingloft-ui-guard.js?v=67',
   '/dingloft-ui-guard.js?v=66',
@@ -73,6 +75,7 @@ const CORE = [
   '/dingloft-ui-guard.js?v=60',
   '/dingloft-ui-guard.js?v=59',
   '/dingloft-ui-guard.js?v=58',
+  '/dingloft-national-days.js?v=6',
   '/dingloft-national-days.js?v=5',
   '/dingloft-national-days.js?v=4',
   '/dingloft-national-days.js?v=3',
@@ -89,6 +92,7 @@ const CORE = [
   '/pwa-install.js',
   '/dingloft-commerce.js?v=2.2.1-shell94',
   '/dingloft-cart-sync.js?v=120',
+  '/pwa-runtime.js?v=120',
   '/pwa-runtime.js?v=119',
   '/pwa-runtime.js?v=118',
   '/pwa-runtime.js?v=117',
