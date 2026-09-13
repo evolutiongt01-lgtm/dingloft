@@ -1,4 +1,4 @@
-const VERSION = '152';
+const VERSION = '164';
 const CACHE_PREFIX = 'dingloft-app-';
 const CACHE = `${CACHE_PREFIX}v${VERSION}-offline`;
 const RUNTIME = `${CACHE_PREFIX}runtime-v${VERSION}`;
@@ -54,17 +54,48 @@ const CORE = [
   '/desktop-global-nav.js',
   '/dingloft-theme.js?v=2',
   '/dingloft-theme.css?v=2',
+  '/dingloft-global-nav.js?v=136',
+  '/dingloft-global-nav.js?v=135',
+  '/dingloft-global-nav.js?v=134',
+  '/dingloft-global-nav.js?v=133',
+  '/dingloft-global-nav.js?v=132',
+  '/dingloft-global-nav.js?v=131',
+  '/dingloft-global-nav.js?v=130',
+  '/dingloft-global-nav.js?v=129',
+  '/dingloft-global-nav.js?v=128',
+  '/dingloft-global-nav.js?v=127',
   '/dingloft-global-nav.js?v=126',
   '/dingloft-global-nav.js?v=125',
   '/dingloft-global-nav.js?v=124',
   '/dingloft-global-nav.js?v=121',
+  '/dingloft-ui-guard.js?v=74',
+  '/dingloft-ui-guard.js?v=73',
+  '/dingloft-ui-guard.js?v=72',
+  '/dingloft-ui-guard.js?v=71',
+  '/dingloft-ui-guard.js?v=70',
+  '/dingloft-ui-guard.js?v=69',
+  '/dingloft-ui-guard.js?v=68',
+  '/dingloft-ui-guard.js?v=67',
+  '/dingloft-ui-guard.js?v=66',
+  '/dingloft-ui-guard.js?v=65',
+  '/dingloft-ui-guard.js?v=64',
   '/dingloft-ui-guard.js?v=63',
   '/dingloft-ui-guard.js?v=62',
   '/dingloft-ui-guard.js?v=61',
   '/dingloft-ui-guard.js?v=60',
   '/dingloft-ui-guard.js?v=59',
   '/dingloft-ui-guard.js?v=58',
-  '/dingloft-support-account.js?v=32',
+  '/dingloft-national-days.js?v=11',
+  '/dingloft-national-days.js?v=10',
+  '/dingloft-national-days.js?v=9',
+  '/dingloft-national-days.js?v=8',
+  '/dingloft-national-days.js?v=7',
+  '/dingloft-national-days.js?v=6',
+  '/dingloft-national-days.js?v=5',
+  '/dingloft-national-days.js?v=4',
+  '/dingloft-national-days.js?v=3',
+  '/dingloft-national-days.js?v=2',
+  '/dingloft-national-days.js?v=1',
   '/dingloft-support-account.js?v=31',
   '/dingloft-support-account.js?v=28',
   '/dingloft-support-account.js?v=26',
@@ -76,6 +107,18 @@ const CORE = [
   '/pwa-install.js',
   '/dingloft-commerce.js?v=2.2.1-shell94',
   '/dingloft-cart-sync.js?v=120',
+  '/pwa-runtime.js?v=126',
+  '/pwa-runtime.js?v=125',
+  '/pwa-runtime.js?v=124',
+  '/pwa-runtime.js?v=123',
+  '/pwa-runtime.js?v=122',
+  '/pwa-runtime.js?v=121',
+  '/pwa-runtime.js?v=120',
+  '/pwa-runtime.js?v=119',
+  '/pwa-runtime.js?v=118',
+  '/pwa-runtime.js?v=117',
+  '/pwa-runtime.js?v=116',
+  '/pwa-runtime.js?v=115',
   '/pwa-runtime.js?v=114',
   '/pwa-runtime.js?v=113',
   '/pwa-runtime.js?v=112',
@@ -244,7 +287,7 @@ self.addEventListener('fetch', event => {
 
   // Critical shell/presence code must be fresh immediately. These files control
   // one-socket presence ownership and cannot wait one navigation for SWR refresh.
-  if (url.origin === self.location.origin && ['/dingloft-presence.js','/dingloft-ui-guard.js','/dingloft-global-nav.js'].includes(url.pathname)) {
+  if (url.origin === self.location.origin && ['/dingloft-presence.js','/dingloft-ui-guard.js','/dingloft-global-nav.js','/dingloft-national-days.js'].includes(url.pathname)) {
     event.respondWith(networkFirst(req));
     return;
   }
