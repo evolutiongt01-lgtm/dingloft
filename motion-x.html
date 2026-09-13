@@ -654,7 +654,7 @@
       line-height:1.45;
       text-align:center;
     }
-    .motion-preorder-note strong{color:#fff;font-weight:800}
+    .motion-preorder-note strong{color:#fff;font-weight:800}.motion-preorder-account{flex-basis:100%;color:rgba(255,255,255,.52);font-size:10px;letter-spacing:.02em}
     .motion-preorder-badge{
       display:inline-flex;
       align-items:center;
@@ -711,6 +711,7 @@
           <span class="motion-preorder-badge">Preventa</span>
           <strong>US$28 antes del lanzamiento.</strong>
           <span>Acceso FULL disponible el 26 SEP · 6:00 PM · Miami. Después: US$60.</span>
+          <span class="motion-preorder-account">Al reservar, tu licencia aparece inmediatamente en Cuenta con el tiempo restante y la descarga bloqueada hasta el lanzamiento.</span>
         </div>
       </div>
     </section>
@@ -1175,7 +1176,7 @@
       document.querySelectorAll('[data-motion-preorder-note]').forEach(el => {
         el.innerHTML = launched
           ? '<span class="motion-preorder-badge">Disponible</span><strong>Motion-X FULL · US$60.</strong><span>Compra vinculada a tu cuenta Dingloft.</span>'
-          : '<span class="motion-preorder-badge">Preventa</span><strong>US$28 antes del lanzamiento.</strong><span>Acceso FULL disponible el 26 SEP · 6:00 PM · Miami. Después: US$60.</span>';
+          : '<span class="motion-preorder-badge">Preventa</span><strong>US$28 antes del lanzamiento.</strong><span>Acceso FULL disponible el 26 SEP · 6:00 PM · Miami. Después: US$60.</span><span class="motion-preorder-account">Tu licencia aparece inmediatamente en Cuenta; la descarga FULL permanece bloqueada hasta el lanzamiento.</span>';
       });
     }
 
