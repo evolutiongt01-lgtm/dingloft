@@ -639,12 +639,55 @@
       *,*::before,*::after{transition:none!important; animation:none!important}
     }
 
-    /* Lanzamiento Motion-X · venta habilitada el 26 SEP 2026 · 6:00 PM Miami */
-    .btn-launch-lock[disabled]{
-      cursor:not-allowed;
-      opacity:.58;
-      transform:none!important;
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)!important;
+    /* Motion-X · preventa hasta el 26 SEP 2026 · 6:00 PM Miami */
+    .motion-preorder-note{
+      margin:16px auto 0;
+      width:max-content;
+      max-width:min(620px,92vw);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      flex-wrap:wrap;
+      color:rgba(255,255,255,.78);
+      font-size:12px;
+      line-height:1.45;
+      text-align:center;
+    }
+    .motion-preorder-note strong{color:#fff;font-weight:800}
+    .motion-preorder-badge{
+      display:inline-flex;
+      align-items:center;
+      min-height:26px;
+      padding:0 10px;
+      border-radius:999px;
+      background:#b7ff34;
+      color:#0d1107;
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .motion-price-save{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      margin-top:10px;
+      padding:7px 10px;
+      border-radius:999px;
+      background:#111318;
+      color:#b7ff34;
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+    }
+    .motion-launch-price{transition:opacity .18s ease}
+    .motion-buy-button{white-space:nowrap}
+    @media(max-width:600px){
+      .motion-preorder-note{font-size:11px;gap:7px}
+      .motion-buy-button{width:100%;padding-left:18px;padding-right:18px}
     }
   </style>
 </head>
@@ -661,8 +704,13 @@
           Motion-X combina 8 capas, Live Banks, Super Knob y control expresivo en un instrumento diseñado para performance y producción profesional. Compatible con cualquier DAW que soporte VST3 o AU.
         </p>
         <div class="hero-cta">
-          <button class="btn btn-primary btn-launch-lock" type="button" data-product-id="motion-x-full" data-action="buy-motion-x" data-launch-label="PURCHASE" disabled>VENTA DISPONIBLE EL 26 SEP</button>
+          <button class="btn btn-primary motion-buy-button btn-buy-now" type="button" data-product-id="motion-x-access" data-action="buy-motion-x" data-sku="motion-x-access" data-name="Motion-X Access" data-price="28" data-img="motionx" data-type="Reserva anticipada · Acceso FULL">RESERVAR MOTION-X · $28</button>
           <button class="btn btn-secondary" type="button" data-action="download-motion-x">DOWNLOAD FREE</button>
+        </div>
+        <div class="motion-preorder-note" data-motion-preorder-note>
+          <span class="motion-preorder-badge">Preventa</span>
+          <strong>US$28 antes del lanzamiento.</strong>
+          <span>Acceso FULL disponible el 26 SEP · 6:00 PM · Miami. Después: US$60.</span>
         </div>
       </div>
     </section>
@@ -1060,9 +1108,10 @@
                 <small>Unlock tier</small>
                 <h3>FULL</h3>
               </div>
-              <div class="price">
-                <strong>US$28</strong>
-                <span>Oferta de lanzamiento. Precio regular US$60.<br><strong>Venta disponible el 26 SEP · 6:00 PM · hora de Miami.</strong></span>
+              <div class="price motion-launch-price">
+                <strong data-motion-full-price>US$28</strong>
+                <span data-motion-price-copy>Preventa. Reserva ahora y conserva este precio.<br><strong>Acceso FULL disponible el 26 SEP · 6:00 PM · hora de Miami.</strong></span>
+                <em class="motion-price-save" data-motion-price-save>Ahorras US$32</em>
               </div>
             </div>
             <ul>
@@ -1072,7 +1121,7 @@
               <li>La licencia se vincula a tu cuenta y desbloquea FULL sin límite de la prueba ni reinstalación.</li>
             </ul>
             <div class="cta-row">
-              <button class="btn btn-primary btn-launch-lock" type="button" data-product-id="motion-x-full" data-action="buy-motion-x" data-launch-label="Comprar FULL" disabled>Venta disponible el 26 SEP</button>
+              <button class="btn btn-primary motion-buy-button btn-buy-now" type="button" data-product-id="motion-x-access" data-action="buy-motion-x" data-sku="motion-x-access" data-name="Motion-X Access" data-price="28" data-img="motionx" data-type="Reserva anticipada · Acceso FULL">RESERVAR MOTION-X · $28</button>
             </div>
           </article>
         </div>
@@ -1086,22 +1135,113 @@
 
   <script>
     const motionXSaleStartsAt = new Date('2026-09-26T22:00:00Z'); // 6:00 PM Miami (EDT)
+    const MOTION_X_SKU = 'motion-x-access';
+    const MOTION_X_PREORDER_PRICE = 28;
+    const MOTION_X_LAUNCH_PRICE = 60;
+
+    function motionXIsLaunched(){
+      return Date.now() >= motionXSaleStartsAt.getTime();
+    }
 
     function syncMotionXSaleState(){
-      const available = Date.now() >= motionXSaleStartsAt.getTime();
+      const launched = motionXIsLaunched();
+      const price = launched ? MOTION_X_LAUNCH_PRICE : MOTION_X_PREORDER_PRICE;
 
       document.querySelectorAll('[data-action="buy-motion-x"]').forEach(btn => {
-        btn.disabled = !available;
-        btn.classList.toggle('btn-launch-lock', !available);
-        btn.textContent = available
-          ? (btn.dataset.launchLabel || 'Comprar FULL')
-          : 'VENTA DISPONIBLE EL 26 SEP';
-        btn.setAttribute('aria-disabled', String(!available));
+        btn.disabled = false;
+        btn.dataset.price = String(price);
+        btn.dataset.type = launched ? 'Acceso FULL' : 'Reserva anticipada · Acceso FULL';
+        btn.textContent = launched
+          ? `COMPRAR MOTION-X · $${price}`
+          : `RESERVAR MOTION-X · $${price}`;
+        btn.removeAttribute('aria-disabled');
+      });
+
+      document.querySelectorAll('[data-motion-full-price]').forEach(el => {
+        el.textContent = `US$${price}`;
+      });
+
+      document.querySelectorAll('[data-motion-price-copy]').forEach(el => {
+        el.innerHTML = launched
+          ? 'Precio oficial de Motion-X FULL.<br><strong>Acceso vinculado a tu cuenta Dingloft.</strong>'
+          : 'Preventa. Reserva ahora y conserva este precio.<br><strong>Acceso FULL disponible el 26 SEP · 6:00 PM · hora de Miami.</strong>';
+      });
+
+      document.querySelectorAll('[data-motion-price-save]').forEach(el => {
+        el.hidden = launched;
+        el.textContent = 'Ahorras US$32';
+      });
+
+      document.querySelectorAll('[data-motion-preorder-note]').forEach(el => {
+        el.innerHTML = launched
+          ? '<span class="motion-preorder-badge">Disponible</span><strong>Motion-X FULL · US$60.</strong><span>Compra vinculada a tu cuenta Dingloft.</span>'
+          : '<span class="motion-preorder-badge">Preventa</span><strong>US$28 antes del lanzamiento.</strong><span>Acceso FULL disponible el 26 SEP · 6:00 PM · Miami. Después: US$60.</span>';
       });
     }
 
+    const readCart = () => window.DingloftCartSync?.read?.() || (() => {
+      try { return JSON.parse(localStorage.getItem('dingloft_cart') || '[]'); }
+      catch (_) { return []; }
+    })();
+
+    function commitMotionX(button){
+      const launched = motionXIsLaunched();
+      const price = launched ? MOTION_X_LAUNCH_PRICE : MOTION_X_PREORDER_PRICE;
+      const item = {
+        id:MOTION_X_SKU,
+        sku:MOTION_X_SKU,
+        name:'Motion-X Access',
+        price,
+        priceUsd:price,
+        img:'motionx',
+        type:launched ? 'Acceso FULL' : 'Reserva anticipada · Acceso FULL',
+        qty:1,
+        quantity:1
+      };
+
+      let cart = readCart();
+      if(window.DingloftCartSync?.addOrMerge){
+        cart = window.DingloftCartSync.addOrMerge(cart,item);
+      }else{
+        const i = cart.findIndex(x => String(x.sku || x.id) === MOTION_X_SKU);
+        if(i >= 0) cart[i] = {...cart[i],...item}; else cart.push(item);
+      }
+
+      if(window.DingloftCartSync?.write){
+        window.DingloftCartSync.write(cart,true);
+      }else{
+        localStorage.setItem('dingloft_cart',JSON.stringify(cart));
+        window.dispatchEvent(new CustomEvent('dingloft:cart-change',{detail:{items:cart,cart}}));
+      }
+
+      const r = button.getBoundingClientRect();
+      const sourceRect = {left:r.left,top:r.top,width:r.width,height:r.height};
+      try{
+        if(window.parent && window.parent !== window){
+          window.parent.postMessage({type:'dingloft:cart-added',item,sourceRect},location.origin);
+        }else{
+          window.DingloftGlobalNav?.notifyCart?.(item,sourceRect);
+        }
+      }catch(_){}
+      return item;
+    }
+
+    function goCheckout(){
+      try{
+        if(window.parent && window.parent !== window){
+          window.parent.postMessage({type:'dingloft:global-navigate',href:'checkout.html'},location.origin);
+          return;
+        }
+      }catch(_){}
+      if(window.DingloftGlobalNav?.navigate){
+        window.DingloftGlobalNav.navigate('checkout.html');
+        return;
+      }
+      location.href='checkout.html';
+    }
+
     syncMotionXSaleState();
-    setInterval(syncMotionXSaleState, 30000);
+    setInterval(syncMotionXSaleState,30000);
 
     document.querySelectorAll('[data-action="download-motion-x"]').forEach(btn => {
       btn.addEventListener('click', () => console.log('download hook: motion-x'));
@@ -1109,8 +1249,9 @@
 
     document.querySelectorAll('[data-action="buy-motion-x"]').forEach(btn => {
       btn.addEventListener('click', event => {
-        if (event.currentTarget.disabled) return;
-        console.log('checkout hook:', event.currentTarget.dataset.productId || 'motion-x-full');
+        event.preventDefault();
+        commitMotionX(event.currentTarget);
+        goCheckout();
       });
     });
   </script>
