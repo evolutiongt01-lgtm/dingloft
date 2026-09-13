@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <script src="/dingloft-cart-sync.js?v=120"></script>
-<script src="/dingloft-global-nav.js?v=137"></script>
+<script src="/dingloft-global-nav.js?v=126"></script>
 <style>
 :root{
   --black:#05070a;
@@ -83,7 +83,7 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}button{cursor:poi
 
 /* FOOTER */
 .account-trust{padding:64px 0;background:#fff}.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#e7e9ec;border:1px solid #e7e9ec}.trust-item{background:#fff;padding:20px}.trust-item i{display:block;color:#0b0d10;font-size:20px;margin-bottom:18px}.trust-item b{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.05em}.trust-item span{display:block;margin-top:6px;color:#8a9097;font-size:8px;line-height:1.5}
-footer{background:#05070a;color:#7e858d;padding:34px 0;border-top:1px solid #171a1e}.footer-grid{display:flex;align-items:center;justify-content:space-between;gap:34px;font-size:9px}.footer-brand{display:flex;align-items:center;gap:16px;min-height:42px;color:#fff;font-weight:900}.footer-brand img{display:block;width:94px;height:auto;max-height:34px;object-fit:contain;border-radius:0;flex:0 0 auto}.footer-links{display:flex;gap:18px}.footer-links a:hover{color:#fff}
+footer{background:#05070a;color:#7e858d;padding:30px 0;border-top:1px solid #171a1e}.footer-grid{display:flex;align-items:center;justify-content:space-between;gap:30px;font-size:9px}.footer-brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:900}.footer-brand img{width:32px;height:32px;border-radius:8px}.footer-links{display:flex;gap:18px}.footer-links a:hover{color:#fff}
 .toast{position:fixed;left:50%;bottom:24px;z-index:200;transform:translate(-50%,18px);opacity:0;pointer-events:none;background:#0a0c0e;color:#fff;padding:11px 15px;border:1px solid #24292f;font-size:9px;font-weight:800;transition:.22s}.toast.show{opacity:1;transform:translate(-50%,0)}
 
 @media(max-width:980px){
@@ -150,7 +150,7 @@ footer{background:#05070a;color:#7e858d;padding:34px 0;border-top:1px solid #171
 @media(max-width:720px){
   .account-hero{padding-top:0}.reservation-list{grid-template-columns:1fr}.remote-booking-grid{grid-template-columns:1fr}.remote-booking-benefits{grid-template-columns:1fr}.booking-head{padding:23px 20px 17px;flex-direction:column}.booking-body{padding:18px 20px 22px}.booking-hours{align-self:flex-start}.account-modal{padding:12px}.account-modal-card{padding:23px 18px}.booking-modal-card{padding:0}.sub-downloads{padding:0 14px 14px 95px}.reservations-section{padding:62px 0}.remote-code-form{grid-template-columns:1fr}.remote-code-form button{width:100%}
   .receipt-header{padding:23px 20px 20px}.receipt-body{padding:22px 20px 24px}.receipt-title-row{flex-direction:column}.receipt-number{text-align:left}.receipt-meta{grid-template-columns:1fr 1fr}.receipt-customer{grid-template-columns:1fr}.receipt-items{overflow-x:auto}.receipt-items-head,.receipt-item-row{min-width:560px}.receipt-verification{grid-template-columns:1fr}.receipt-code{text-align:left}.receipt-actions{padding:14px 20px 18px}
-  footer{background:#fff;color:#7e858d;border-top:1px solid var(--line)}.footer-brand{color:#0b0d10;gap:14px}.footer-brand img{width:88px;filter:invert(1)}.footer-links a:hover{color:#0b0d10}
+  footer{background:#fff;color:#7e858d;border-top:1px solid var(--line)}.footer-brand{color:#0b0d10}.footer-links a:hover{color:#0b0d10}
 }
 @media(max-width:480px){.remote-guide-steps span{display:none}.remote-calendar-head{align-items:flex-start;flex-direction:column}.remote-weekend-urgent{font-size:8px;min-height:30px}.sub-downloads{padding-left:14px}.maintenance-state{grid-template-columns:1fr;margin:12px}.booking-payment-head{align-items:flex-start;flex-direction:column}.reservation-meta{grid-template-columns:1fr}}
 
@@ -913,7 +913,7 @@ onAuthStateChanged(auth,async user=>{
 // El shell global es el único dueño del chat cuando Cuenta está embebida.
 // En carga directa de /cuenta sí montamos el chat local.
 if (window.self === window.top) {
-  import('/dingloft-support-account.js?v=31');
+  import('/dingloft-support-account.js?v=32');
 }
 </script>
 </body>

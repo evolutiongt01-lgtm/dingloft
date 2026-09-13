@@ -1,4 +1,3 @@
-/* Dingloft UI Guard · v74 */
 (() => {
   'use strict';
   const ua = navigator.userAgent || '';
@@ -128,21 +127,7 @@
     if (!document.querySelector('link[data-dingloft-support-icons],link[href*="bootstrap-icons"]')) {
       const icons=document.createElement('link');icons.rel='stylesheet';icons.href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css';icons.dataset.dingloftSupportIcons='1';document.head.appendChild(icons);
     }
-    const script=document.createElement('script');script.type='module';script.src='/dingloft-support-account.js?v=31';script.dataset.dingloftGlobalSupport='31';document.head.appendChild(script);
-  }
-
-  function loadNationalDays(){
-    // Compatibility path for legacy public pages that still load UI Guard but not Global Nav.
-    // Global Nav v136 is the canonical owner; this fallback prevents editing HTML page-by-page.
-    if (window.self !== window.top) return;
-    if (/^\/(?:admin|admin\.html|commerce-admin|commerce-admin\.html)(?:\/|$)/i.test(location.pathname)) return;
-    if (window.DingloftGlobalNav || document.querySelector('script[src*="dingloft-global-nav.js"]')) return;
-    if (window.DingloftNationalDays || document.querySelector('script[data-dingloft-national-days="11"],script[src*="dingloft-national-days.js?v=11"]')) return;
-    const script=document.createElement('script');
-    script.src='/dingloft-national-days.js?v=11';
-    script.async=true;
-    script.dataset.dingloftNationalDays='8';
-    (document.head||document.documentElement).appendChild(script);
+    const script=document.createElement('script');script.type='module';script.src='/dingloft-support-account.js?v=32';script.dataset.dingloftGlobalSupport='32';document.head.appendChild(script);
   }
 
   function openGlobalSupportFromChild(){
@@ -159,16 +144,16 @@
     openGlobalSupportFromChild();
   });
 
-  // v74: mobile header/nav are loaded directly by each customer page from
-  // /dingloft-mobile-nav-v74.js. UI Guard no longer creates, positions or bootstraps navigation.
+  // v71: mobile header/nav are loaded directly by each customer page from
+  // /dingloft-mobile-nav-v71.js. UI Guard no longer creates, positions or bootstraps navigation.
   function loadMobileChrome(){ /* intentionally empty */ }
 
   addBaseStyle();
   // Start the isolated overlay immediately so legacy page navbars never get a chance to take control.
   if (document.readyState === 'loading') {
     loadMobileChrome();
-    document.addEventListener('DOMContentLoaded', () => { markInstalled(); loadPresence(); loadCustomerPush(); loadGlobalSupport(); loadNationalDays(); }, {once:true});
-  } else { markInstalled(); loadPresence(); loadCustomerPush(); loadGlobalSupport(); loadNationalDays(); loadMobileChrome(); }
+    document.addEventListener('DOMContentLoaded', () => { markInstalled(); loadPresence(); loadCustomerPush(); loadGlobalSupport(); }, {once:true});
+  } else { markInstalled(); loadPresence(); loadCustomerPush(); loadGlobalSupport(); loadMobileChrome(); }
   addEventListener('appinstalled', () => { localStorage.setItem('dingloft_installed_at', String(Date.now())); markInstalled(); });
   matchMedia('(display-mode: standalone)').addEventListener?.('change', markInstalled);
 })();
