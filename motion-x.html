@@ -654,7 +654,7 @@
       line-height:1.45;
       text-align:center;
     }
-    .motion-preorder-note strong{color:#fff;font-weight:800}.motion-preorder-account{flex-basis:100%;color:rgba(255,255,255,.52);font-size:10px;letter-spacing:.02em}
+    .motion-preorder-note strong{color:#fff;font-weight:800}
     .motion-preorder-badge{
       display:inline-flex;
       align-items:center;
@@ -685,9 +685,47 @@
     }
     .motion-launch-price{transition:opacity .18s ease}
     .motion-buy-button{white-space:nowrap}
+    .motion-launch-countdown{
+      margin:40px auto 0;
+      width:min(620px,92vw);
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      text-align:center;
+    }
+    .motion-countdown-unit{
+      min-width:0;
+      padding:14px 12px 12px;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:12px;
+      background:rgba(8,10,14,.52);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+    }
+    .motion-countdown-unit strong{
+      display:block;
+      color:#fff;
+      font-size:clamp(24px,3vw,38px);
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-.04em;
+      font-variant-numeric:tabular-nums;
+    }
+    .motion-countdown-unit span{
+      display:block;
+      margin-top:7px;
+      color:rgba(255,255,255,.52);
+      font-size:9px;
+      font-weight:800;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
     @media(max-width:600px){
       .motion-preorder-note{font-size:11px;gap:7px}
       .motion-buy-button{width:100%;padding-left:18px;padding-right:18px}
+      .motion-launch-countdown{gap:7px}
+      .motion-countdown-unit{padding:12px 6px 10px;border-radius:10px}
+      .motion-countdown-unit span{font-size:8px;letter-spacing:.1em}
     }
   </style>
 </head>
@@ -711,7 +749,12 @@
           <span class="motion-preorder-badge">Preventa</span>
           <strong>US$28 antes del lanzamiento.</strong>
           <span>Acceso FULL disponible el 26 SEP · 6:00 PM · Miami. Después: US$60.</span>
-          <span class="motion-preorder-account">Al reservar, tu licencia aparece inmediatamente en Cuenta con el tiempo restante y la descarga bloqueada hasta el lanzamiento.</span>
+        </div>
+        <div class="motion-launch-countdown" data-motion-launch-countdown aria-label="Tiempo restante para el lanzamiento de Motion-X">
+          <div class="motion-countdown-unit"><strong data-countdown-days>00</strong><span>Días</span></div>
+          <div class="motion-countdown-unit"><strong data-countdown-hours>00</strong><span>Horas</span></div>
+          <div class="motion-countdown-unit"><strong data-countdown-minutes>00</strong><span>Minutos</span></div>
+          <div class="motion-countdown-unit"><strong data-countdown-seconds>00</strong><span>Segundos</span></div>
         </div>
       </div>
     </section>
@@ -1144,6 +1187,33 @@
       return Date.now() >= motionXSaleStartsAt.getTime();
     }
 
+    function updateMotionXCountdown(){
+      const countdown = document.querySelector('[data-motion-launch-countdown]');
+      if(!countdown) return;
+      const remaining = Math.max(0, motionXSaleStartsAt.getTime() - Date.now());
+      const launched = remaining <= 0;
+      countdown.hidden = launched;
+      if(launched) return;
+
+      const totalSeconds = Math.floor(remaining / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      const pad = value => String(value).padStart(2,'0');
+
+      const values = {
+        '[data-countdown-days]': String(days).padStart(2,'0'),
+        '[data-countdown-hours]': pad(hours),
+        '[data-countdown-minutes]': pad(minutes),
+        '[data-countdown-seconds]': pad(seconds)
+      };
+      Object.entries(values).forEach(([selector,value]) => {
+        const el = countdown.querySelector(selector);
+        if(el && el.textContent !== value) el.textContent = value;
+      });
+    }
+
     function syncMotionXSaleState(){
       const launched = motionXIsLaunched();
       const price = launched ? MOTION_X_LAUNCH_PRICE : MOTION_X_PREORDER_PRICE;
@@ -1176,7 +1246,7 @@
       document.querySelectorAll('[data-motion-preorder-note]').forEach(el => {
         el.innerHTML = launched
           ? '<span class="motion-preorder-badge">Disponible</span><strong>Motion-X FULL · US$60.</strong><span>Compra vinculada a tu cuenta Dingloft.</span>'
-          : '<span class="motion-preorder-badge">Preventa</span><strong>US$28 antes del lanzamiento.</strong><span>Acceso FULL disponible el 26 SEP · 6:00 PM · Miami. Después: US$60.</span><span class="motion-preorder-account">Tu licencia aparece inmediatamente en Cuenta; la descarga FULL permanece bloqueada hasta el lanzamiento.</span>';
+          : '<span class="motion-preorder-badge">Preventa</span><strong>US$28 antes del lanzamiento.</strong><span>Acceso FULL disponible el 26 SEP · 6:00 PM · Miami. Después: US$60.</span>';
       });
     }
 
@@ -1242,7 +1312,9 @@
     }
 
     syncMotionXSaleState();
+    updateMotionXCountdown();
     setInterval(syncMotionXSaleState,30000);
+    setInterval(updateMotionXCountdown,1000);
 
     document.querySelectorAll('[data-action="download-motion-x"]').forEach(btn => {
       btn.addEventListener('click', () => console.log('download hook: motion-x'));
