@@ -411,8 +411,9 @@
       line-height:1;
       letter-spacing:-.05em;
     }
-    .price strong{display:block; font-size:40px; line-height:1; letter-spacing:-.06em}
+    .price > strong{display:block; font-size:40px; line-height:1; letter-spacing:-.06em}
     .price span{display:block; margin-top:8px; color:#676d7b; font-size:13px; line-height:1.6}
+    .price span strong{display:inline; font-size:inherit; line-height:inherit; letter-spacing:inherit; color:#24262c; font-weight:800}
     .pricing ul{list-style:none; padding:0; margin:22px 0 0; display:grid; gap:12px}
     .pricing li{
       position:relative;
@@ -430,6 +431,45 @@
       color:#111;
     }
     .pricing .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:24px}
+    .pricing .cta-row .btn-secondary{background:#111318;color:#fff;box-shadow:none}
+    .pricing-full{
+      border-color:rgba(0,0,0,.09);
+      box-shadow:0 22px 60px rgba(0,0,0,.09);
+      background:linear-gradient(180deg,#fff 0%,#fbfbfb 100%);
+    }
+    .pricing-full .pricing-top{gap:28px}
+    .pricing-full .price{min-width:0;max-width:100%}
+    .pricing-full .price > strong{font-size:44px}
+    .pricing-full .price span{
+      margin-top:14px;
+      padding:13px 15px;
+      border-radius:14px;
+      background:#f3f4f5;
+      border:1px solid rgba(0,0,0,.055);
+      color:#676d7b;
+      line-height:1.5;
+    }
+    .pricing-full .price span strong{display:block;margin-top:4px;color:#17191d;font-size:13px;line-height:1.45;letter-spacing:0}
+    .pricing-full .motion-price-save{
+      margin-top:12px;
+      padding:6px 10px;
+      background:rgba(183,255,52,.18);
+      border:1px solid rgba(100,145,0,.16);
+      color:#405d00;
+      font-size:9px;
+      box-shadow:none;
+    }
+    .pricing-full .cta-row .btn-primary{
+      width:100%;
+      max-width:none;
+      background:#111318;
+      color:#fff;
+      box-shadow:none;
+    }
+    @media (hover:hover) and (pointer:fine){
+      .pricing-full .cta-row .btn-primary:hover{background:#24272d}
+      .pricing .cta-row .btn-secondary:hover{background:#24272d}
+    }
 
     .platforms-wrap{margin-top:84px}
     .platform-grid{
@@ -600,7 +640,8 @@
       .requirement-level.advanced{grid-column:auto}
       .pricing{padding:22px}
       .pricing h3{font-size:34px}
-      .price strong{font-size:34px}
+      .price > strong{font-size:34px}
+      .pricing-full .price > strong{font-size:38px}
       .pricing-top{display:grid; grid-template-columns:1fr; gap:12px}
       .license-callout{grid-template-columns:1fr; padding:24px}
       .license-badge{width:max-content}
@@ -1146,7 +1187,7 @@
             </div>
           </article>
 
-          <article class="pricing">
+          <article class="pricing pricing-full">
             <div class="pricing-top">
               <div>
                 <small>Unlock tier</small>
