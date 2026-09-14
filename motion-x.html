@@ -434,7 +434,7 @@
     .pricing .cta-row .btn-secondary{background:#111318;color:#fff;box-shadow:none}
     .pricing-full{
       border-color:rgba(0,0,0,.09);
-      box-shadow:0 22px 60px rgba(0,0,0,.09);
+      box-shadow:0 14px 34px rgba(0,0,0,.065);
       background:linear-gradient(180deg,#fff 0%,#fbfbfb 100%);
     }
     .pricing-full .pricing-top{gap:28px}
@@ -737,11 +737,10 @@
     .motion-countdown-unit{
       min-width:0;
       padding:14px 12px 12px;
-      border:1px solid rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.12);
       border-radius:12px;
-      background:rgba(8,10,14,.52);
-      backdrop-filter:blur(12px);
-      -webkit-backdrop-filter:blur(12px);
+      background:rgba(8,10,14,.88);
+      contain:paint;
     }
     .motion-countdown-unit strong{
       display:block;
@@ -1228,12 +1227,22 @@
       return Date.now() >= motionXSaleStartsAt.getTime();
     }
 
+    const motionCountdown = (() => {
+      const root = document.querySelector('[data-motion-launch-countdown]');
+      return root ? {
+        root,
+        days: root.querySelector('[data-countdown-days]'),
+        hours: root.querySelector('[data-countdown-hours]'),
+        minutes: root.querySelector('[data-countdown-minutes]'),
+        seconds: root.querySelector('[data-countdown-seconds]')
+      } : null;
+    })();
+
     function updateMotionXCountdown(){
-      const countdown = document.querySelector('[data-motion-launch-countdown]');
-      if(!countdown) return;
+      if(!motionCountdown || document.hidden) return;
       const remaining = Math.max(0, motionXSaleStartsAt.getTime() - Date.now());
       const launched = remaining <= 0;
-      countdown.hidden = launched;
+      motionCountdown.root.hidden = launched;
       if(launched) return;
 
       const totalSeconds = Math.floor(remaining / 1000);
@@ -1242,17 +1251,12 @@
       const minutes = Math.floor((totalSeconds % 3600) / 60);
       const seconds = totalSeconds % 60;
       const pad = value => String(value).padStart(2,'0');
+      const setText = (el, value) => { if(el && el.textContent !== value) el.textContent = value; };
 
-      const values = {
-        '[data-countdown-days]': String(days).padStart(2,'0'),
-        '[data-countdown-hours]': pad(hours),
-        '[data-countdown-minutes]': pad(minutes),
-        '[data-countdown-seconds]': pad(seconds)
-      };
-      Object.entries(values).forEach(([selector,value]) => {
-        const el = countdown.querySelector(selector);
-        if(el && el.textContent !== value) el.textContent = value;
-      });
+      setText(motionCountdown.days, String(days).padStart(2,'0'));
+      setText(motionCountdown.hours, pad(hours));
+      setText(motionCountdown.minutes, pad(minutes));
+      setText(motionCountdown.seconds, pad(seconds));
     }
 
     function syncMotionXSaleState(){
@@ -1354,8 +1358,22 @@
 
     syncMotionXSaleState();
     updateMotionXCountdown();
-    setInterval(syncMotionXSaleState,30000);
-    setInterval(updateMotionXCountdown,1000);
+
+    let motionCountdownTimer = setInterval(updateMotionXCountdown,1000);
+    document.addEventListener('visibilitychange', () => {
+      if(document.hidden) return;
+      syncMotionXSaleState();
+      updateMotionXCountdown();
+    }, {passive:true});
+
+    const launchDelay = motionXSaleStartsAt.getTime() - Date.now();
+    if(launchDelay > 0 && launchDelay < 2147483647){
+      setTimeout(() => {
+        syncMotionXSaleState();
+        updateMotionXCountdown();
+        if(motionCountdownTimer){ clearInterval(motionCountdownTimer); motionCountdownTimer = null; }
+      }, launchDelay + 1000);
+    }
 
     document.querySelectorAll('[data-action="download-motion-x"]').forEach(btn => {
       btn.addEventListener('click', () => console.log('download hook: motion-x'));
